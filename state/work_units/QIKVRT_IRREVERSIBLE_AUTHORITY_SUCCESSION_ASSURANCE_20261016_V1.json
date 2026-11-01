@@ -133,5 +133,23 @@
     },
     "native_next_action": "Observe the existing pull_request-triggered 42-loop reproduction on the successor HEAD/TREE, read original logs and all 42-loop fingerprint receipts; no unchanged rerun/dispatch.",
     "native_success_inferred": false
+  },
+  "owner_handoff_interruption_continuation_20261031": {
+    "principal": "Ingolf Lohmann",
+    "authorization": "Owner directs Codex to prepare for interruption of Claude's Authority handoff and continue existing authorized quality and integration work without another generic permission request.",
+    "original_role_directive_task": "c8b4bb31-26c9-5ea0-8a97-ef73b21aaafb",
+    "checkpoint": "evidence/native-runtime-acceptance/authority-succession-20261016/CODEX_CONTINUATION_20261031.json",
+    "existing_implementation": "tools/qikvrt_authority_transition.py",
+    "resource_warning_is_failure_or_promotion_evidence": false,
+    "work_continuation_is_writer_activation": false,
+    "native_role_activation": "UNVERIFIED",
+    "claude_authenticated_ack": "UNVERIFIED",
+    "first_native_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "on_incomplete_unconfirmed_handoff": "Continue reviewable source repairs as Codex under existing grants; keep Claude's designation and unconfirmed live role distinct. Do not invent a completed transfer or rollback.",
+    "on_uncertain_effect_or_activation": "Read original control-plane/journal and exact provider effect first. Preserve pending identity and idempotency keys. No blind commit, replay, new identity or second writer.",
+    "on_confirmed_role_holder_failure": "Use only the existing admitted observe/takeover/activate route with current capability, accepted-state catch-up, epoch/revision CAS, single-writer fencing and separate fresh activation readback. Missing binding holds native writes while independent authorized source work continues.",
+    "successor_keeps_all_original_open_work": true,
+    "new_scheduler_or_executor": false,
+    "productive_effect_ack_done": false
   }
 }

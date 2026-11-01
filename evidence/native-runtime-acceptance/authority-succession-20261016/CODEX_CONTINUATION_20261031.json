@@ -1,0 +1,661 @@
+{
+  "schema": "qikvrt-owner-handoff-interruption-checkpoint/v1",
+  "principal": "Ingolf Lohmann",
+  "contributions": {
+    "human": "Ingolf Lohmann: role designation, interruption preparedness and quality mandate",
+    "artificial_cognitive": "Claude: original three-part FA1-FA6/W1-W6/N1-N10 analysis; Codex: source reconciliation, failure reproduction, policy repair, existing regression execution and recovery checkpoint",
+    "origin": "separable; acceptance does not change attribution"
+  },
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "tree": "bf7120b1acfe7cf909750417c8befe399779ea5b",
+    "main": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "main_tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "owner_instruction_scope": "Prepare for an interrupted Claude Authority handoff; Codex continues already authorized work and investigates all retained defects. The reported resource warning is not an observed outage or a writer permit. Private operational details are not published.",
+  "role_directive_task": "c8b4bb31-26c9-5ea0-8a97-ef73b21aaafb",
+  "workspace_predecessors": [
+    "bf9ed070-5c98-4de9-8bac-e34da541bac1",
+    "bda35a33-f28b-469c-974a-7248a9555801"
+  ],
+  "original_analysis": {
+    "path": "evidence/formal-receipts/DeliveryReporting/history/OWNER_FEHLERANALYSE.txt",
+    "bytes": 6874,
+    "sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "order": [
+      "FA1-FA6 findings",
+      "W1-W6 work",
+      "N1-N10 independent checks"
+    ]
+  },
+  "current_defect": {
+    "source_head": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "source_tree": "bf7120b1acfe7cf909750417c8befe399779ea5b",
+    "observed_at": "2026-10-31T21:10:25.773891+00:00",
+    "policy_sha256": "46f2d5945100450c77bfff6a7bd547a9fac1fb90ee3a9878263b481225f540ed",
+    "implementation": "tools/ai_handoff.py:formal_proof_required",
+    "results": [
+      {
+        "path": "tools/qikvrt_eap_mirror_client.py",
+        "proof_required": false
+      },
+      {
+        "path": "tests/test_eap_mirror_client.py",
+        "proof_required": false
+      }
+    ]
+  },
+  "causal_repair": {
+    "changed_paths": [
+      "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
+      "tests/test_delivery_reporting_proof.py",
+      ".github/workflows/qikvrt_universal_ontology_formalization.yml"
+    ],
+    "behavior": "Either isolated actual Mirror client/source-test change now requires the original native formal workflow and matches both existing event path filters. The actual conditional REST merge evaluator blocks when that workflow is missing.",
+    "original_evaluator_fixture_before": "PROMOTABLE for either unclassified path; no live merge occurred",
+    "red_regressions": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_delivery_reporting_proof.DeliveryReportingProofTests.test_change_class_without_native_proof_run_blocks_rest_merge",
+        "tests.test_delivery_reporting_proof.DeliveryReportingProofTests.test_classification_is_closed_and_policy_has_seven_resolved_names"
+      ],
+      "started_at": "2026-10-31T21:11:24.619753+00:00",
+      "completed_at": "2026-10-31T21:11:24.720454+00:00",
+      "exit_code": 1,
+      "bytes": 3046,
+      "sha256": "9b4188589002c42c37f851f9a4e9dc6cf4954543da9ae5ffefc205099acc02e1",
+      "scope": "New regression assertions on original policy before the causal repair"
+    },
+    "green_regressions": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_delivery_reporting_proof",
+        "tests.test_qikvrt_expected_head_promotion",
+        "tests.test_zenodo_machine_proof_policy"
+      ],
+      "started_at": "2026-10-31T21:11:45.910440+00:00",
+      "completed_at": "2026-10-31T21:11:56.225231+00:00",
+      "exit_code": 0,
+      "bytes": 30614,
+      "sha256": "29918dbaa544ebf5de2e6e3dfff9d64f609f990665829fdf89ca893102cc7bb8"
+    },
+    "workflow_filter_defect": "Both existing push and pull_request path filters also omitted the actual Mirror client and its regressions, so a future client-only change could require a formal gate that never starts.",
+    "workflow_filter_red": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_delivery_reporting_proof.DeliveryReportingProofTests.test_actual_mirror_only_changes_trigger_the_required_native_workflow"
+      ],
+      "started_at": "2026-10-31T21:20:22.897283+00:00",
+      "completed_at": "2026-10-31T21:20:23.001220+00:00",
+      "exit_code": 1,
+      "bytes": 4615,
+      "sha256": "9452096c58febbbddcef2f92d64aea861df178b1df84a5447c29127072934b72"
+    },
+    "workflow_filter_green": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_delivery_reporting_proof.DeliveryReportingProofTests.test_actual_mirror_only_changes_trigger_the_required_native_workflow",
+        "tests.test_delivery_reporting_proof.DeliveryReportingProofTests.test_change_class_without_native_proof_run_blocks_rest_merge"
+      ],
+      "started_at": "2026-10-31T21:20:23.950248+00:00",
+      "completed_at": "2026-10-31T21:20:24.097150+00:00",
+      "exit_code": 0,
+      "bytes": 504,
+      "sha256": "e505e89b20796db5c5ce2fa58a34920ea3c6017b54cae3353816ee7fd447cfd4"
+    }
+  },
+  "existing_recovery_checks": {
+    "source_head": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "tests.test_qikvrt_mesh_recovery",
+      "tests.test_qikvrt_authority_transition",
+      "tests.test_qikvrt_github_authority_provider",
+      "tests.test_delivery_reporting_proof",
+      "tests.test_ai_runtime_bootloader"
+    ],
+    "started_at": "2026-10-31T21:09:25.153637+00:00",
+    "completed_at": "2026-10-31T21:10:47.621259+00:00",
+    "exit_code": 0,
+    "bytes": 52801,
+    "sha256": "163a202f76af5b34a39936d33ce6b130f12a9426e918436c58e2dc01792bb6c9"
+  },
+  "recovery_case_scope": "269 isolated local regressions, including pending effects, stale epoch, concurrent CAS, losing/old writers, separate activation readback, scheduler/idempotency retention and failed activation; not a real distributed Authority promotion.",
+  "native_readback": {
+    "origin": "https://raumzeitterminal.de",
+    "observed_at": "2026-10-31T21:05:44.309Z",
+    "http_status": 525,
+    "operator_authorized": true,
+    "ready": false,
+    "first_open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "actual_claude_ack": "UNVERIFIED",
+    "native_epoch_and_current_writer": "UNVERIFIED",
+    "effect_ack_done": false
+  },
+  "fallback_sequence": [
+    "Read current original role/control-plane epoch and retained journals; decide whether activation never completed, completed, or remains uncertain. A warning alone is no promotion trigger.",
+    "Continue source reviews and causal repairs as Codex under existing grants, preserving Claude provenance and all old duties; keep source work separate from live writer activation.",
+    "Resolve each ambiguous native/provider effect with the original bound readback and idempotency key; do not retry commit or create a second effect.",
+    "If an admitted role transition is necessary, catch up accepted head/tree, pending effects and scheduler cursors; require actual target capability and fresh epoch/revision CAS with single-writer fencing.",
+    "Use the existing takeover then separate activation/readback path only. If any binding is missing, hold native writes and continue independent authorized preparation.",
+    "A returning old writer stays fenced and rejoins through the existing Mirror path; retain the original role designation and the observed succession history."
+  ],
+  "quality_register": [
+    {
+      "id": "FA1_W2_N4_N5",
+      "status": "MODEL_IMPLEMENTED_PREDECESSOR_NATIVE_PROOF_RETAINED",
+      "evidence": "T1-T4 model/axiom audit and native run41241017095 on2eb18c6b; not transferred to this changed policy bundle"
+    },
+    {
+      "id": "FA2_W1_N3",
+      "status": "CHECKERS_RESOLVED_IN_EXISTING_POLICY",
+      "evidence": "Seven pinned original checker implementations; six external recheck programs, no independence or remote-service claim; preserve unresolved-name HOLD rule"
+    },
+    {
+      "id": "FA3_W1_N9",
+      "status": "ADDITIONAL_ACTUAL_MIRROR_CLASSIFICATION_GAP_REPRODUCED_AND_LOCALLY_REPAIRED",
+      "evidence": "Original actual merge evaluator before/after and red/green regression logs in attached archive; fresh exact-successor native formal gate remains required"
+    },
+    {
+      "id": "FA4_W3_N7_N8",
+      "status": "FINITE_BRIDGE_AND_MUTATION_CONTROLS_LOCALLY_RECHECKED",
+      "evidence": "1152 original Lean vectors stay pinned; actual receipt CLI, status mutation, local-only/403/replay/foreign-subject rejection. Universal Python refinement and R3-R5 actual adoption remain OPEN"
+    },
+    {
+      "id": "FA5_W4_N5_N6",
+      "status": "PREDECESSOR_SEVEN_CHECKER_AND_MANUSCRIPT_SUCCESS_ONLY",
+      "head": "2eb18c6b17da0c8773242879eca0dae755c65017",
+      "tree": "88208f5e4ee77f7faea34ef8f4bac9b0a12a0514",
+      "run": 41241017095,
+      "evidence": "SEVEN_CHECKER_READBACK_2EB18C6B.json; changed candidate requires fresh native original logs/receipts, no old success transfer"
+    },
+    {
+      "id": "W5_N10",
+      "status": "RECORDED_EXACT_PR658_MATERIALIZATION_RECOVERY",
+      "evidence": "Run41215514005 attempt2, requested-review41215513700 attempt2 and Batch00341215513887 attempt2 were separately recorded success. Governance/Draft/merge/domain are separate and remain unclosed"
+    },
+    {
+      "id": "FA6_ORIGINAL_CLIENT",
+      "status": "ORIGINAL_SOURCE_RECOVERED_SEPARATE_INTEGRATION_BRANCH",
+      "head": "110ad19aab36548b6fa20b84fcbbdd6556839556",
+      "evidence": "Existing bda35a33 task, exact Mirror branch and original client path. Redirect/token, input-bound receipt and parsed-URL controls are source fixes; live peer adoption remains OPEN"
+    },
+    {
+      "id": "W6_N1_N2",
+      "status": "FINAL_CANDIDATE_INTEGRITY_AND_NATIVE_CI_REQUIRED",
+      "evidence": "Regenerate original manifests deterministically; full local make test and fresh source publication readback before handoff. Exact current head CI/governance remain separate."
+    },
+    {
+      "id": "REACT_PR655_PR658",
+      "status": "INTEGRATION_AND_RUNTIME_ACCEPTANCE_OPEN",
+      "evidence": "PR6556b381778 and PR658a56b0632 were read; no current browser, admitted original adapter, signed release/rollback or productive end-to-end effect is inferred"
+    },
+    {
+      "id": "HOST_SSO_PEER_EAP",
+      "status": "OPEN",
+      "evidence": "Original host protected input, SSO process, actual Mirror network/grant, original mirror_emit/outbox, per-node ACK, domain acceptance and productive EFFECT_ACK_DONE require original fresh readbacks"
+    },
+    {
+      "id": "CONCURRENT_REAL_CLI_REPAIR",
+      "status": "SOURCE_PRESERVED_FRESH_COMPOSITE_LOCAL_TEST_REQUIRED",
+      "evidence": "7d284007 adds actual1152 CLI vector/mutation verification and execution HEAD/TREE bindings;8ad retains original native7d artifacts. Prior47 local tests do not validate the new composite."
+    }
+  ],
+  "preserved_workspace_duties": [
+    "575780ea-7582-41bd-81ee-4dcb66d06d37 ASR field-test quality",
+    "6f23e0c8-9181-4a86-84ca-71a4aad5138f three PDFs/Zenodo",
+    "13853021-2e83-4da7-99a4-ffb46e7bab91 R2: candidate-specific publication STOP remains active"
+  ],
+  "prior_receipt": {
+    "source_head": "110ad19aab36548b6fa20b84fcbbdd6556839556",
+    "original_path": "evidence/client-delivery/eap-mirror-20261031/CLIENT_CONTINUATION_RECEIPT.json",
+    "retained_path": "evidence/native-runtime-acceptance/authority-succession-20261016/PREDECESSOR_CLIENT_RECEIPT_20261031.json",
+    "bytes": 15516,
+    "sha256": "330a5956867208a37505494521a03eb66c4a8ec451b988a1d1abbd96e177f15c"
+  },
+  "archive": "evidence/native-runtime-acceptance/authority-succession-20261016/CODEX_CONTINUATION_20261031.zip",
+  "log_continuity": "Decision-bearing retained logs have commands, exits, completion boundaries and digests. Early exploratory shell outputs were not retained as raw files; a complete-session raw log is not claimed. Private native caller identity omitted.",
+  "completion_claims": {
+    "main_integration": false,
+    "native_authority_activation": false,
+    "claude_authenticated_ack": false,
+    "all_node_adoption": false,
+    "unattended_future_detection_guaranteed": false,
+    "productive_effect_ack_done": false
+  },
+  "composite_base": {
+    "head": "8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+    "tree": "134fd184f6f798752c511a98c6df00fc974c7fe2",
+    "reconciliation": "Keep new real-CLI vector/mutation and exact execution/tree binding repairs, native7d receipts, and concurrent20d cognition/site evidence. Apply only the original two path additions, actual merge-gate regression and fallback checkpoint. No competing writer overwritten."
+  },
+  "latest_predecessor_receipts": {
+    "path": "evidence/formal-receipts/DeliveryReporting/SEVEN_CHECKER_READBACK_7D284007.json",
+    "source_head": "7d284007176ed3ad1c50f1311666bc404b805b01",
+    "run": 41242088777,
+    "claim": "Retained source record, not a new execution or acceptance of this changed policy bundle."
+  },
+  "source47_full_local_run": {
+    "source_predecessor": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "command": [
+      "make",
+      "test"
+    ],
+    "started_at": "2026-10-31T21:14:32.655220+00:00",
+    "completed_at": "2026-10-31T21:19:12.787603+00:00",
+    "exit_code": 0,
+    "bytes": 448011,
+    "sha256": "9803a7ae49874c529028e8632b5784f94c861331349871447fd18adff3650949",
+    "reported_python_executions": 2278,
+    "scope": "Original47-based policy/evaluator candidate only; not final8ad composite or later workflow-filter repair."
+  },
+  "intermediate_composite_run_scope": "The first composite full suite started before discovery of the separate workflow-filter gap. Its result cannot establish full final-source acceptance; run the final full suite after all source changes are frozen.",
+  "intermediate_full_check": {
+    "log_metadata": {
+      "source_predecessor": "8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+      "command": [
+        "make",
+        "test"
+      ],
+      "started_at": "2026-10-31T21:17:48.877173+00:00",
+      "completed_at": "2026-10-31T21:22:30.239036+00:00",
+      "exit_code": 2,
+      "bytes": 448073,
+      "sha256": "32b0531dcaf502dbf67b20d6fb88185bd3aba4aa54b32f5920ee6e0c853804c8"
+    },
+    "observed_defect": "The assistant added the causally necessary workflow filter repair while the first composite full suite was running. The final manifest check correctly blocked the stale generated manifest; this run is not acceptance of any frozen final tree.",
+    "smallest_causal_repair": "Freeze all source changes, regenerate the original integrity set, then run full make test again. Preserve the failed run and its original output.",
+    "attempted_process_cancellation": "No matching process was found and none was terminated; do not claim an interruption."
+  },
+  "final_source_digests": {
+    "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json": "d9c564b144c703fbfcc4805632427ad1562c052d8c520e890fb2f6322de816ff",
+    "tests/test_delivery_reporting_proof.py": "94b45f0c77724ed0803b2c5b08a7bdbf0536390439950340546ef2fdf02b06f7",
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml": "183f15a11df0a07811ed6969ad146b703ce2411d6431f5f07d10b33d7695fb26"
+  },
+  "final_local_verification": {
+    "source_predecessor": "8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+    "command": [
+      "make",
+      "test"
+    ],
+    "started_at": "2026-10-31T21:22:56.128728+00:00",
+    "completed_at": "2026-10-31T21:27:47.565187+00:00",
+    "exit_code": 0,
+    "bytes": 447898,
+    "sha256": "e4e96bfec0ffa1eb39b345ad375453f6be0006a27336c6b32f26f05c9606a956",
+    "reported_python_test_executions": 2278,
+    "frozen_executable_input_digests_match": true
+  },
+  "retained_log_archive": {
+    "path": "evidence/native-runtime-acceptance/authority-succession-20261016/CODEX_CONTINUATION_20261031.zip",
+    "bytes": 325848,
+    "sha256": "1abc91edf26539b49b45dac8e2927551ab4afeb62e6ba8282741aa8000e8a466",
+    "verified_entries": 81,
+    "includes_intermediate_failure_and_correction": true
+  },
+  "client_receipt": {
+    "path": "evidence/native-runtime-acceptance/authority-succession-20261016/CLIENT_CONTINUATION_20261031.json",
+    "sha256": "db12269bcc3fcf4718b43702ad377b75d759321e02b1cec60de4ec99737c589d",
+    "consistency": "VALID",
+    "native_state": "BLOCK",
+    "live_effect_verification": "NOT_PERFORMED"
+  },
+  "closing_observations": {
+    "window": {
+      "id": "CODEX-HANDOFF-INTERRUPTION-20261031",
+      "completed_at": "2026-10-31T21:28:13.572Z",
+      "closed_at": "2026-10-31T21:28:15.309Z"
+    },
+    "base": {
+      "observed_at": "2026-10-31T21:28:13.929Z",
+      "data": {
+        "sha": "8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+        "node_id": "C_kwDOS-xnU9oAKDhhZDM4NTUzZmNiMzY1ZDFiMjk0MWNlYzMwYThjYWVkOTFjNDZlN2U",
+        "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+        "author": {
+          "name": "ingolf-lohmann",
+          "email": "ingolf.lohmann@web.de",
+          "date": "2026-10-31T21:15:01Z"
+        },
+        "committer": {
+          "name": "ingolf-lohmann",
+          "email": "ingolf.lohmann@web.de",
+          "date": "2026-10-31T21:15:01Z"
+        },
+        "tree": {
+          "sha": "134fd184f6f798752c511a98c6df00fc974c7fe2",
+          "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/trees/134fd184f6f798752c511a98c6df00fc974c7fe2"
+        },
+        "message": "evidence(formal): preserve exact CLI proof receipts and complete local verification\n\nRetain all seven original native receipts, logs and payloads from7d284007 run41242088777, including actual1152 CLI-vector checks and a detected real CLI mutant. Independently verify every source, execution, input and log binding. Archive native artifact2a3f8835 and the complete make test log (2278 reported Python executions, exit0). Preserve concurrent20d owner/site evidence unchanged. Regenerate and verify integrity5497/5486. This is an evidence-only successor; fresh current-head native CI remains required. Formal claims cover declared consistency with a finite implementation bridge. Main integration, cross-client adoption and productive effect are separate.",
+        "parents": [
+          {
+            "sha": "20d99e34d5eb12995d36f369706685d7fb1411ca",
+            "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/20d99e34d5eb12995d36f369706685d7fb1411ca",
+            "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/20d99e34d5eb12995d36f369706685d7fb1411ca"
+          }
+        ],
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      }
+    },
+    "native": {
+      "observed_at": "2026-10-31T21:28:15.308Z",
+      "data": {
+        "schema": "qikvrt_native_terminal_connection_v1",
+        "adapter_version": "20261025.1",
+        "mesh_id": "qik-vrt",
+        "scope": "MESH",
+        "rest_contract": {
+          "schema": "qikvrt_native_terminal_rest_contract_v1",
+          "path": "/api/mesh/terminal/native",
+          "method": "POST",
+          "scope": "MESH",
+          "mesh_id": "qik-vrt",
+          "authorization": "EXISTING_AUTHENTICATED_SITE_LOCAL_OPERATOR_AND_ADMITTED_RUNTIME",
+          "modes": {
+            "prepare": {
+              "arguments": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "payload": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "schema": {
+                        "type": "string",
+                        "const": "qikvrt_terminal_input_v1"
+                      },
+                      "scope": {
+                        "type": "string",
+                        "const": "MESH"
+                      },
+                      "mesh_id": {
+                        "type": "string",
+                        "const": "qik-vrt"
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "audio": {
+                        "type": "null"
+                      },
+                      "video": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "schema",
+                      "scope",
+                      "mesh_id",
+                      "text",
+                      "audio",
+                      "video"
+                    ]
+                  }
+                },
+                "required": [
+                  "payload"
+                ]
+              },
+              "body": "Add the exact mode field to these arguments; preserve payload bytes."
+            },
+            "commit": {
+              "arguments": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "payload": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "schema": {
+                        "type": "string",
+                        "const": "qikvrt_terminal_input_v1"
+                      },
+                      "scope": {
+                        "type": "string",
+                        "const": "MESH"
+                      },
+                      "mesh_id": {
+                        "type": "string",
+                        "const": "qik-vrt"
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "audio": {
+                        "type": "null"
+                      },
+                      "video": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "schema",
+                      "scope",
+                      "mesh_id",
+                      "text",
+                      "audio",
+                      "video"
+                    ]
+                  },
+                  "origin": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2048
+                  },
+                  "hash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "token": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{16,2048}$"
+                  }
+                },
+                "required": [
+                  "payload",
+                  "origin",
+                  "hash",
+                  "token"
+                ]
+              },
+              "body": "Add the exact mode field to these arguments; preserve payload bytes."
+            },
+            "readback": {
+              "arguments": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "payload": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "schema": {
+                        "type": "string",
+                        "const": "qikvrt_terminal_input_v1"
+                      },
+                      "scope": {
+                        "type": "string",
+                        "const": "MESH"
+                      },
+                      "mesh_id": {
+                        "type": "string",
+                        "const": "qik-vrt"
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "audio": {
+                        "type": "null"
+                      },
+                      "video": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "schema",
+                      "scope",
+                      "mesh_id",
+                      "text",
+                      "audio",
+                      "video"
+                    ]
+                  },
+                  "origin": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2048
+                  },
+                  "hash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "successor_hash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "event_id": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "payload",
+                  "origin",
+                  "hash"
+                ]
+              },
+              "body": "Add the exact mode field to these arguments; preserve payload bytes."
+            }
+          },
+          "automatic_retry": false,
+          "ambiguous_commit_next": "READBACK_SAME_PREPARED_RECORD",
+          "verification_scope": "NATIVE_TERMINAL_INPUT_ACCEPTANCE",
+          "effect_ack_done": false
+        },
+        "runtime_observations": [
+          {
+            "origin": "https://raumzeitterminal.de",
+            "status": 525,
+            "observed_at": "2026-10-31T21:28:15.253Z",
+            "mesh_scope_verified": false
+          }
+        ],
+        "native_available": false,
+        "operator_configured": true,
+        "operator_authorized": true,
+        "ready": false,
+        "open_gates": [
+          "ADMITTED_MESH_RUNTIME_ENDPOINT"
+        ],
+        "reason": "Kein Endpunkt weist den gemeinsamen Mesh-Kontext aus.",
+        "effect_ack_done": false
+      }
+    }
+  },
+  "role_task": {
+    "id": "c8b4bb31-26c9-5ea0-8a97-ef73b21aaafb",
+    "version": 2,
+    "fallback_saved_and_independently_read_back": true,
+    "claude_ack_inferred": false
+  },
+  "final_proof_bridge_verification": {
+    "source_predecessor": "8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "tests.test_delivery_reporting_proof",
+      "tests.test_qikvrt_expected_head_promotion",
+      "tests.test_zenodo_machine_proof_policy"
+    ],
+    "started_at": "2026-10-31T21:29:53.020063+00:00",
+    "completed_at": "2026-10-31T21:31:20.428011+00:00",
+    "exit_code": 0,
+    "bytes": 30899,
+    "sha256": "d3681dafcbfc7af0e79bd9de7e90bd343ffa373cf1cfec5beed856f330392877",
+    "tests": 157,
+    "actual_cli_vectors": 1152,
+    "actual_cli_mutation_detected": true,
+    "scope": "Actual final8ad-composite CLI bridge, policy/evaluator/event filters and publication-boundary regressions; no universal refinement or fresh native kernel execution inferred."
+  },
+  "post_publication_reconciliation": {
+    "source_predecessor": "9690fd6e13c8dad6f9a4e7dc95e8df8ff3036a24",
+    "concurrent_base": "3c0d55da083d29a77d7136f352dd9346aaadd530",
+    "base_tree": "163215da8855388377ca5d36e32225ca0e2b9f48",
+    "reason": "PR659 initially conflicted in generated integrity files and the shared delivery work-unit JSON after the current PR546 base advanced.",
+    "method": "Exact original3c Git blobs for ontology work program and its archive; union of its kernel_proof_continuity with this candidate repair field; original deterministic integrity regeneration. No generated hash edited.",
+    "executable_source_digests_unchanged": true,
+    "local_preparation_failure": "A bounded attempt to reconstruct the exact published Git commit from normalized REST metadata did not hash to the target and wrote no substitute. Checkout/merge then could not proceed. Original source TREE and indexed blobs remained intact; reconcile the two original trees without inventing commit bytes.",
+    "native_or_provider_ambiguous_effect": false,
+    "all_prior_records_retained": true,
+    "targeted_metadata_tests": {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_unified_world_formula_consolidation"
+      ],
+      "started_at": "2026-10-31T21:38:40.184493+00:00",
+      "completed_at": "2026-10-31T21:38:40.228058+00:00",
+      "exit_code": 0,
+      "bytes": 504,
+      "sha256": "b2b6e9cdc27086e2928d89dc5093cdbbc30fd64f57df0a6074adfb57c30eed5c"
+    },
+    "original_boot": {
+      "command": [
+        "python3",
+        "-B",
+        "tools/ai_runtime_bootloader.py",
+        "--json",
+        "--task",
+        "Reconcile PR659 source checkpoint with exact3c kernel continuity without changing tested executable inputs"
+      ],
+      "started_at": "2026-10-31T21:38:40.228255+00:00",
+      "completed_at": "2026-10-31T21:38:42.493616+00:00",
+      "exit_code": 0,
+      "bytes": 9262,
+      "sha256": "e4e72d2d29f3dee463e1caf062693ab0130f8c9fa77dd6d48090742e6fdc1f0b"
+    },
+    "unretained_raw_output_gap": "The failed bounded commit reconstruction and checkout diagnostics remain in original conversation tool output, not a separate raw file. No complete-session raw-log claim is made; the original merge error is retained in reconciliation-merge.log."
+  }
+}
