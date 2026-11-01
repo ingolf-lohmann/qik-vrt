@@ -2,8 +2,8 @@
   "authority": {
     "binding": "COMPARE_EXACT_MANIFEST_BYTES_THROUGH_INDEPENDENT_AUTHORITY_GET; not self-attested",
     "candidate_path": "docs/monitor/cognition-workspace/PROVENANCE.json",
-    "candidate_ref": "feat/static-terminal-devops-client-20261031",
-    "observed_main": "a8ec0bc8a32599e30409aca708564d4d03003119",
+    "candidate_ref": "fix/workspace-native-identity-20261101",
+    "observed_main": "5f319d41ad0522cbf9e674d06d417e2ec1f7fe0d",
     "repository": "ingolf-lohmann/qik-vrt"
   },
   "codec_sources_sha256": {
@@ -226,16 +226,16 @@
       "sha256": "e817cac3e12dde090ff3606fab01b6bb7ca9ae25ce69ef9687ebfc4f30b8ad67"
     },
     {
-      "bytes": 6697,
+      "bytes": 6692,
       "container": {
-        "bytes": 5842,
+        "bytes": 5827,
         "path": "/provenance/containers/5dbd5690655cc102900ff1784cacbd6abaa7a324fa74d69c84ed9dac5365487d.qikvrt",
-        "sha256": "5491a37510e04fdbd99542b8bd46b753247acd81126e1d6a7a827bf639028eb3"
+        "sha256": "f71908f0aa74d4a744db352a5ce01da6ea8b944ad300952aa3c7bf559f2614b4"
       },
       "kind": "selected_source",
       "path": "scripts/qikvrt-provenance.py",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "3c3eecf7d1762edaa96436e22afb03a372d0d8dcda20ba3bb226ed4285752bab"
+      "sha256": "8c5cf921591c69adbcd8ed5622bcdb5d6cc48d6977877a86f53ee50be2161aa3"
     },
     {
       "bytes": 567,
@@ -358,16 +358,16 @@
       "sha256": "1981e56f132c5a26434e7d5c1cc047a35060770a3ce3235fc3e67c581e1150c9"
     },
     {
-      "bytes": 9574,
+      "bytes": 9715,
       "container": {
-        "bytes": 6546,
+        "bytes": 6589,
         "path": "/provenance/containers/cd51f857d2d866fafcc730433f778979d17ae977b91ee5e6a3acd1a45dcd348f.qikvrt",
-        "sha256": "9967bf680d8ba816e7086e4655c2fe5b62f6ae779e669a0dd7d6ccdba887d2d7"
+        "sha256": "cd6badf17da9efb463a5d40bd70093fd323305a2a634144e8fee2664feafac10"
       },
       "kind": "selected_source",
       "path": "lib/authority-identity.ts",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "d8466f4773df71bbc7ab7cc20064bad71f55917db23a9c707b87a206bbdf63a3"
+      "sha256": "f5808d3a5801e77a99e3efc0fbf319336c77d1625b159c8b1de7987e2ef99bca"
     },
     {
       "bytes": 3529,
@@ -434,7 +434,7 @@
     "root_html": "DYNAMIC_NOT_BYTE_FROZEN",
     "watermark": "NOT_IMPLEMENTED"
   },
-  "site_source_predecessor": "87ee4f879c2ed28bfb818745a86647549b6681a2",
+  "site_source_predecessor": "a0ce7cb92cb1057ec7a804dc773cedf139068b2b",
   "standpoint": {
     "bytes": 400,
     "personal_authentication": false,

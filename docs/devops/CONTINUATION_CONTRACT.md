@@ -54,6 +54,15 @@ uses job-scoped `id-token: write`, `contents: read` and `actions: read`; it expo
 no visitor session or long-lived credential. Missing issuer/API/storage access
 is UNVERIFIED/HOLD, not an empty task list or successful adoption.
 
+Workload tokens use the explicit `X-QIKVRT-Workflow-Identity` header admitted
+by this same source contract. Standard `Authorization` remains the platform's
+identity namespace. The first actual Main run41284897131 failed HTTP403 before
+any independently observed acceptance (issue662); its original log/artifact
+remain failure evidence. Missing receiver logs do not identify the denial's
+origin. The existing client now retains request stage and allowlisted error
+code, plus boolean declared-claim comparisons labelled NOT authentication.
+Never persist the JWT, request credential, raw error message or private claims.
+
 Acceptance is keyed by task ID and exact version, binds its canonical payload
 SHA-256 and actual accepting run/HEAD/TREE/contract, and is stored transactionally
 with one journal event. Concurrent duplicates return the original receipt.
