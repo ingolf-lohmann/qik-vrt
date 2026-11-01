@@ -90,6 +90,15 @@ workflow success and the producer's own GET do not alone close that gate.
 Every receipt keeps `productive_effect_verified=false` and `effect_ack_done=false`.
 The static client release's remaining gates and productive DoD remain open.
 
+The client-side Authority GET uses the original job token and `gh api --include`
+to distinguish a denied Main ref, commit, role policy, governance policy or
+CODEOWNERS read. Its HOLD artifact retains only that fixed resource label,
+HTTP status and bounded numeric rate-limit remaining/reset and Retry-After
+headers. A generic 403 is not classified as quota exhaustion without the quota
+observation. Provider bodies, arbitrary headers and raw stderr are never copied.
+Exhaustion requires quota reset **and a fresh original readback**; this diagnostic
+does not schedule retries, admit stale Main, change roles or grant any effect.
+
 Human direction and authorization: Ingolf Lohmann. Implementation and isolated
 verification: OpenAI Codex. This source contract does not attest a new human
 inspection, Claude adoption, platform protection or productive-domain effect.

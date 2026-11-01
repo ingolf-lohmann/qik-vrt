@@ -662,6 +662,62 @@ class AuthorityReadbackTests(unittest.TestCase):
                 MODULE.read_authority_main(ROOT, previous)
         api.assert_not_called()
 
+    def test_native_http_envelopes_keep_exact_main_and_policy_readbacks(self) -> None:
+        def included(argv, **kwargs):
+            response = self.get(argv, **kwargs)
+            self.assertIn("--include", argv)
+            response.stdout = "HTTP/2.0 200 OK\nX-Ratelimit-Remaining: 41\n\n" + response.stdout
+            return response
+        with mock.patch.object(MODULE.subprocess, "run", side_effect=included):
+            value = MODULE.read_authority_main(ROOT)
+        self.assertEqual(value["main_head"], self.head)
+        self.assertEqual(value["main_tree"], self.tree)
+        self.assertEqual(len(self.calls), 6)
+
+    def test_denial_diagnostic_distinguishes_resource_and_quota_without_secrets(self) -> None:
+        resources = ["MAIN_REF", "COMMIT", "ROLE_POLICY", "GOVERNANCE_POLICY", "CODEOWNERS", "MAIN_REF"]
+        for denied_call, resource in enumerate(resources, 1):
+            self.calls = []
+            def denied(argv, **kwargs):
+                if len(self.calls) + 1 != denied_call:
+                    return self.get(argv, **kwargs)
+                self.calls.append(argv)
+                return subprocess.CompletedProcess(argv, 1,
+                    'HTTP/2.0 403 Forbidden\nX-Ratelimit-Remaining: 0\n'
+                    'X-Ratelimit-Reset: 1793523623\nRetry-After: 23\n'
+                    'Authorization: Bearer private_header\n\n{"message":"private_body"}',
+                    "private_stderr HTTP 403")
+            with self.subTest(resource=resource), mock.patch.object(MODULE.subprocess, "run", side_effect=denied):
+                with self.assertRaises(MODULE.ExecutorBlock) as caught:
+                    MODULE.read_authority_main(ROOT)
+            self.assertEqual(str(caught.exception), "AUTHORITY_READBACK_DENIED HTTP_403")
+            self.assertEqual(caught.exception.readback, {
+                "resource": resource, "http_status": 403, "reason": "HTTP_DENIAL",
+                "authentication_verified": False, "rate_limit_remaining": 0,
+                "rate_limit_reset": 1793523623, "retry_after_seconds": 23,
+                "retry_condition": "QUOTA_RESET_AND_FRESH_ORIGINAL_READBACK_REQUIRED"})
+            self.assertNotIn("private", json.dumps(caught.exception.readback))
+            self.assertEqual(len(self.calls), denied_call)
+
+    def test_403_without_valid_quota_is_not_relabelled_as_rate_limit(self) -> None:
+        for header in ("", "X-Ratelimit-Remaining: secret\n",
+                       "X-Ratelimit-Remaining: 0\nX-Ratelimit-Remaining: 1\n",
+                       "X-Ratelimit-Remaining: 9999999999999\n"):
+            response = subprocess.CompletedProcess([], 1, "HTTP/2.0 403 Forbidden\n" + header + "\n{}", "HTTP 403")
+            with self.subTest(header=header), mock.patch.object(MODULE.subprocess, "run", return_value=response):
+                with self.assertRaises(MODULE.ExecutorBlock) as caught:
+                    MODULE.read_authority_main(ROOT)
+            diagnostic = caught.exception.readback
+            self.assertNotIn("rate_limit_remaining", diagnostic)
+            self.assertEqual(diagnostic["retry_condition"], "ORIGINAL_DENIAL_CAUSE_REPAIR_REQUIRED")
+
+    def test_http_denial_cannot_be_accepted_as_successful_cli_json(self) -> None:
+        for status in (302, 403, 429, 503):
+            response = subprocess.CompletedProcess([], 0, f"HTTP/2.0 {status} Denied\n\n" + json.dumps(self.ref), "")
+            with self.subTest(status=status), mock.patch.object(MODULE.subprocess, "run", return_value=response):
+                with self.assertRaisesRegex(MODULE.ExecutorBlock, f"AUTHORITY_READBACK_DENIED HTTP_{status}"):
+                    MODULE.read_authority_main(ROOT)
+
     def test_changed_causal_binding_permits_one_fresh_read_sequence(self) -> None:
         previous = {"retry_binding_sha256": "0" * 64,
                     "first_blocker": "AUTHORITY_READBACK_DENIED HTTP_404"}
@@ -1426,6 +1482,29 @@ class WorkspaceTaskIntakeTests(unittest.TestCase):
         text = json.dumps(stored)
         for private in (self.task["description"], "signed.native.jwt", "native-request-secret"):
             self.assertNotIn(private, text)
+
+    def test_client_denial_preserves_bounded_diagnostic_without_requesting_oidc(self):
+        diagnostic = {"resource": "MAIN_REF", "http_status": 403,
+            "reason": "HTTP_DENIAL", "authentication_verified": False,
+            "rate_limit_remaining": 0, "rate_limit_reset": 1793523623,
+            "retry_condition": "QUOTA_RESET_AND_FRESH_ORIGINAL_READBACK_REQUIRED"}
+        with tempfile.TemporaryDirectory() as temp:
+            path = pathlib.Path(temp)
+            with mock.patch.dict(os.environ, self.environment), \
+                    mock.patch.object(MODULE, "load_contract", return_value=self.contract), \
+                    mock.patch.object(MODULE, "_git", side_effect=lambda root, *args: "b" * 40 if args[-1] == "HEAD^{tree}" else "a" * 40), \
+                    mock.patch.object(MODULE, "read_authority_main", side_effect=MODULE.ExecutorBlock(
+                        "AUTHORITY_READBACK_DENIED HTTP_403", readback=diagnostic)), \
+                    mock.patch.object(MODULE, "_workspace_http") as http:
+                with self.assertRaisesRegex(MODULE.ExecutorBlock, "AUTHORITY_READBACK_DENIED HTTP_403"):
+                    MODULE.workspace_task_intake(path)
+            http.assert_not_called()
+            stored = json.loads((path / "acceptance.json").read_bytes())
+        self.assertEqual(stored["authority_readback"], diagnostic)
+        self.assertEqual(stored["state"], "HOLD")
+        self.assertEqual(stored["receipts"], [])
+        self.assertFalse(stored["effect_ack_done"])
+        self.assertNotIn("native-request-secret", json.dumps(stored))
 
     def test_ambiguous_acceptance_is_not_retried_and_successor_reads_first(self):
         result, error, calls, stored = self.invoke([{"value": "signed.native.jwt"}, self.response,
