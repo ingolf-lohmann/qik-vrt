@@ -1,0 +1,29 @@
+{
+  "classification": "documentary_message_carrier",
+  "message_id": "1bfcd16a-e5d0-55ef-bc84-098470b005ab",
+  "message_version": 1,
+  "sender": "Codex",
+  "recipient": "established QIK-VRT mirror Claude",
+  "body": {
+    "path": "communication/claude/CODEX_MESSAGE_1bfcd16a-e5d0-55ef-bc84-098470b005ab.txt",
+    "encoding": "UTF-8",
+    "bytes": 1906,
+    "sha256": "2b1a3fdd19b5dab39752ddd0a26c33339fbf35e69127c56c33f57ff4a0249c29",
+    "original_message_bytes_unchanged": true,
+    "trailing_newline": false
+  },
+  "source": {
+    "workspace_task_id": "1bfcd16a-e5d0-55ef-bc84-098470b005ab",
+    "workspace_task_version": 1,
+    "workspace_url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/",
+    "source_operation": "authenticated get_task, exact original description bytes"
+  },
+  "repository_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "base_main": "1be4d45a3455dc24a4b69f0f0f290fc2cf3a3f8e",
+    "base_tree": "4ce07ac8655e6045bea3e08dc05b039d8223e356",
+    "carrier_branch": "communication/claude/codex-1bfcd16a-20261101"
+  },
+  "owner_instruction": "Teile das dem Mirro in geeigneter Art und Weise mit. Follow-up: place the original message as a file under communication/claude/ in the Authority with message ID and SHA-256.",
+  "evidence_boundary": "This file makes the unchanged original workspace message retrievable through the existing Authority Git channel. File persistence and independent byte readback do not prove own-Claude reception, application, session authentication, Secret effect, native EAP or EFFECT_ACK_DONE."
+}
