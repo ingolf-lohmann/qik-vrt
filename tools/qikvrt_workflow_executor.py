@@ -1876,6 +1876,7 @@ WORKSPACE_SAFE_DENIAL_CODES = frozenset({"INVALID_RESPONSE", "INVALID_RUN_TOKEN"
     "SOURCE_CONTRACT_UNAVAILABLE", "SOURCE_CONTRACT_BYTES_INVALID", "WORKSPACE_SOURCE_NOT_ADMITTED",
     "TASK_NOT_ADMITTED", "TASK_VERSION_NOT_ADMITTED", "TASK_VERSION_OR_BYTES_CHANGED",
     "TASK_CHANGED_OR_ACCEPTANCE_UNAVAILABLE"})
+WORKSPACE_READBACK_RESOURCES = frozenset({"OIDC_KEYS", "MAIN_REF", "COMMIT", "WORKFLOW_RUN", "SOURCE_CONTRACT"})
 
 
 class _WorkspaceNoRedirect(urllib.request.HTTPRedirectHandler):
@@ -1908,6 +1909,17 @@ def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = No
             response = json.loads(exc.read(4097))
             declared = response.get("error", {}).get("code") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
             code = declared if isinstance(declared, str) and declared in WORKSPACE_SAFE_DENIAL_CODES else "JSON_DENIAL"
+            upstream = response.get("error", {}).get("readback") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
+            if code == "AUTHORITY_READBACK_UNAVAILABLE" and isinstance(upstream, dict):
+                resource, status = upstream.get("resource"), upstream.get("status")
+                if isinstance(resource, str) and resource in WORKSPACE_READBACK_RESOURCES and type(status) is int:
+                    if upstream.get("reason") == "HTTP_DENIAL" and 100 <= status <= 599:
+                        code += "_UPSTREAM_" + resource + "_HTTP_" + str(status)
+                        remaining = upstream.get("rate_limit_remaining")
+                        if status in (403, 429) and type(remaining) is int and remaining == 0:
+                            code += "_RATE_LIMIT_EXHAUSTED"
+                    elif upstream.get("reason") == "REQUEST_FAILED" and status == 0:
+                        code += "_UPSTREAM_" + resource + "_REQUEST_FAILED"
         except (OSError, ValueError):
             pass
         # No response message, token, caller identity or task text is logged.

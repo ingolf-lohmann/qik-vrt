@@ -63,6 +63,17 @@ origin. The existing client now retains request stage and allowlisted error
 code, plus boolean declared-claim comparisons labelled NOT authentication.
 Never persist the JWT, request credential, raw error message or private claims.
 
+The actual receiver also requires runtime-level outbound-fetch controls: Workerd
+rejects `redirect: error` before sending. Receiver v14 preserves the verified
+`manual` repair and rejects every redirect. Its original Workerd regression,
+original native HOLD artifacts and independently observed public API quota denial
+are retained under the existing native-identity-repair evidence directory.
+Only fixed public source labels, numeric upstream status and explicit zero quota
+may extend the native denial boundary. Unknown fields, response messages, tokens
+and observation clocks cannot enter it. Owner-only `get_context` diagnostics do
+not grant workflow or productive authority; an exhausted REST quota remains HOLD
+until a fresh source read succeeds. A source repair never closes issue #662.
+
 Acceptance is keyed by task ID and exact version, binds its canonical payload
 SHA-256 and actual accepting run/HEAD/TREE/contract, and is stored transactionally
 with one journal event. Concurrent duplicates return the original receipt.

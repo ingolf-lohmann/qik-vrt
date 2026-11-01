@@ -1525,6 +1525,29 @@ class WorkspaceTaskIntakeTests(unittest.TestCase):
             self.assertEqual(str(caught.exception), "WORKSPACE_TASK_READ_HTTP_403_" + expected)
             self.assertNotIn("synthetic-secret", str(caught.exception))
 
+    def test_native_denial_retains_only_allowlisted_public_upstream_diagnostics(self):
+        url = MODULE.WORKSPACE_ORIGIN + "/api/v1/authority/tasks/test"
+        cases = [
+            ({"resource": "MAIN_REF", "reason": "HTTP_DENIAL", "status": 403, "rate_limit_remaining": 0}, "_UPSTREAM_MAIN_REF_HTTP_403_RATE_LIMIT_EXHAUSTED"),
+            ({"resource": "SOURCE_CONTRACT", "reason": "HTTP_DENIAL", "status": 429, "rate_limit_remaining": 0}, "_UPSTREAM_SOURCE_CONTRACT_HTTP_429_RATE_LIMIT_EXHAUSTED"),
+            ({"resource": "WORKFLOW_RUN", "reason": "HTTP_DENIAL", "status": 503, "rate_limit_remaining": 0}, "_UPSTREAM_WORKFLOW_RUN_HTTP_503"),
+            ({"resource": "MAIN_REF", "reason": "REQUEST_FAILED", "status": 0}, "_UPSTREAM_MAIN_REF_REQUEST_FAILED"),
+            ({"resource": "synthetic-secret", "reason": "HTTP_DENIAL", "status": 403}, ""),
+            ({"resource": [], "reason": "HTTP_DENIAL", "status": 403}, ""),
+            ({"resource": "MAIN_REF", "reason": "HTTP_DENIAL", "status": True}, ""),
+            ({"resource": "MAIN_REF", "reason": "HTTP_DENIAL", "status": 403, "rate_limit_remaining": False}, "_UPSTREAM_MAIN_REF_HTTP_403"),
+        ]
+        for upstream, expected in cases:
+            with self.subTest(upstream=upstream):
+                raw = json.dumps({"error": {"code": "AUTHORITY_READBACK_UNAVAILABLE", "message": "synthetic-secret", "readback": dict(upstream, private="synthetic-secret")}}).encode()
+                denial = MODULE.urllib.error.HTTPError(url, 503, "unavailable", {}, io.BytesIO(raw))
+                opener = mock.Mock(); opener.open.side_effect = denial
+                with mock.patch.object(MODULE.urllib.request, "build_opener", return_value=opener):
+                    with self.assertRaises(MODULE.ExecutorBlock) as caught:
+                        MODULE._workspace_http(url, "synthetic-secret", stage="TASK_READ")
+                self.assertEqual(str(caught.exception), "WORKSPACE_TASK_READ_HTTP_503_AUTHORITY_READBACK_UNAVAILABLE" + expected)
+                self.assertNotIn("synthetic-secret", str(caught.exception))
+
     def test_claim_diagnostics_are_boolean_and_not_authentication(self):
         claims = {"repository": MODULE.AMO_REPOSITORY, "sub": "private-value-never-exported"}
         part = base64.urlsafe_b64encode(json.dumps(claims).encode()).decode().rstrip("=")
