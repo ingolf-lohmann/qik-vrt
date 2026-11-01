@@ -11,6 +11,7 @@ import io
 import json
 import re
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -205,6 +206,26 @@ class DeliveryReportingProofTests(unittest.TestCase):
         snapshot.pop("changed_paths")
         self.assertEqual(promotion.evaluate_conditional_rest_merge(snapshot)["first_blocker"],
                          "FORMAL_CHANGE_SCOPE_UNVERIFIED")
+
+    def test_eap_mirror_client_requires_native_proof_before_rest_merge(self):
+        from tests import test_qikvrt_expected_head_promotion as promotion_fixtures
+        from tools import qikvrt_expected_head_promotion as promotion
+        path = "tools/qikvrt_eap_mirror_client.py"
+        self.assertTrue(ai_handoff.formal_proof_required([path]))
+        workflow = (ROOT / ".github/workflows/qikvrt_universal_ontology_formalization.yml").read_text()
+        # Both native event paths must cover the policy's actual EAP-client glob.
+        for event in ("pull_request", "push"):
+            trigger = re.search(r"(?ms)^  " + event + r":\n(.*?)(?=^  \S|\Z)", workflow).group(1)
+            self.assertIn('      - "tools/qikvrt_eap*.py"', trigger)
+        snapshot = promotion_fixtures.ExpectedHeadPromotionTests().bound_snapshot()
+        snapshot.update(draft=False, changed_paths=[path])
+        snapshot["review_observation"]["pr"]["changed_files"] = 1
+        snapshot["review_observation"]["reviews"][0]["user"]["login"] = "ingolf-lohmann"
+        snapshot["review_observation"]["statuses"] = [{"id": 8,
+            "context": "QIKVRT required code-owner review", "state": "success"}]
+        result = promotion.evaluate_conditional_rest_merge(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(result["first_blocker"], "REQUIRED_EXACT_HEAD_GATE_MISSING")
 
     def test_classification_is_closed_and_policy_has_seven_resolved_names(self):
         self.assertTrue(ai_handoff.formal_proof_required(["src/qikvrt_effect_ack_http_service.py"]))

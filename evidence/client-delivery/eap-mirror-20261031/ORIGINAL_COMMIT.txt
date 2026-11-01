@@ -1,0 +1,22 @@
+tree 3954495264e5e1fedbdcbac7d919189872c6810d
+parent 5a42baf45748e4407a8fa16aef287a77873e788d
+author Claude <noreply@anthropic.com> 1793463442 +0100
+committer Claude <noreply@anthropic.com> 1793463442 +0100
+
+feat(eap): Mirror client for the existing public EAP route
+
+Non-browser client for a Mirror principal on the existing S1 public
+EAP routes (runtime/self-host/EAP_HTTP.md): discovery, state, prepare,
+record and context readback, local revision-03 release verification,
+commit and receipt readback. Adds no listener, route, executor or
+credential store; the bearer comes only from an environment variable.
+Accepted text stays an observation, never a command.
+
+Tests run against the original Runtime, OwnerREST and EAP handler over
+real local HTTP with the same isolated principal fixture as
+tests/test_effect_ack_http_service.py: delivery with idempotent replay,
+wrong token/principal, tampered context, plain-HTTP remote refusal.
+Wired into make conformance. Local acceptance only, not VPS delivery.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01L7QQ89X4q6uweG4F5GB5sP
