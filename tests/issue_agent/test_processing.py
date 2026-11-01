@@ -82,6 +82,12 @@ class GitHubStub:
                 stdout = '{broken'
             else:
                 stdout = json.dumps(self.prs)
+        elif args[:2] == ["gh", "api"] and args[2].endswith("/pulls/900"):
+            stdout = json.dumps(
+                self.pr()
+                if self.mode == "stale-list-current-single"
+                else self.pr("f" * 40 if self.mode == "wrong-head" else None)
+            )
         elif args[:4] == ["gh", "api", "--method", "POST"] and args[4].endswith("/pulls"):
             payload = json.loads(Path(args[-1]).read_text())
             assert payload["draft"] is True and payload["head"] == "issue-agent/458"
@@ -235,6 +241,20 @@ class ProcessingTransactionTest(unittest.TestCase):
         receipt, stub = self.transact(configure=lambda s: setattr(s, "prs", [s.pr()]))
         self.assertEqual(receipt["handoff_status"], "REVIEW_HANDOFF_READY")
         self.assertEqual(receipt["pr_create_attempts"], 0)
+        self.assertEqual(receipt["pull_request_readback_route"], "FILTERED_LIST_EXACT")
+
+    def test_stale_filtered_list_requires_exact_single_pr_readback(self):
+        receipt, stub = self.transact(
+            "stale-list-current-single",
+            configure=lambda s: setattr(s, "prs", [s.pr("f" * 40)]),
+        )
+        self.assertEqual(receipt["handoff_status"], "REVIEW_HANDOFF_READY")
+        self.assertEqual(receipt["pull_request_readback_route"], "SINGLE_PR_AFTER_LIST_MISMATCH")
+        self.assertEqual(receipt["pull_request_list_observation"]["head_sha"], "f" * 40)
+        self.assertEqual(receipt["pull_request_single_observation"]["head_sha"], self.head)
+        self.assertEqual(receipt["pr_create_attempts"], 0)
+        self.assertFalse(any(a[:4] == ["gh", "api", "--method", "POST"]
+                             and a[4].endswith("/pulls") for a in stub.calls))
 
     def test_fresh_replay_directories_never_retry_denied_writes(self):
         stub = GitHubStub(self.head, 'denied')
@@ -289,6 +309,8 @@ class ProcessingTransactionTest(unittest.TestCase):
         self.assertEqual(receipt["failure_class"], "PR_SUBJECT_MISMATCH")
         self.assertEqual(receipt["handoff_status"], "REVIEW_HANDOFF_BLOCKED")
         self.assertEqual(len(stub.comments), 1)
+        self.assertEqual(receipt["pull_request_list_observation"]["head_sha"], "f" * 40)
+        self.assertEqual(receipt["pull_request_single_observation"]["head_sha"], "f" * 40)
 
     def test_lookup_failure_does_not_hide_issue_status(self):
         receipt, stub = self.transact("lookup-failure")
@@ -660,3 +682,4 @@ class CausalAdmissionTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
