@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QIK-VRT · Zero Administration Bootstrap</title><style>body{font:16px system-ui;background:#0b1625;color:#e9f5ff;max-width:48rem;margin:10vh auto;padding:1.5rem}a{color:#8cddff}pre{white-space:pre-wrap}</style></head>
+<body><h1>QIK-VRT · Universalterminal</h1><p id="state" role="status">Prüfe die freigegebene Client-Version …</p><pre id="detail"></pre><script>
+(async()=>{
+const state=document.getElementById("state"),detail=document.getElementById("detail");
+const fail=(code)=>{state.textContent="Client-Start gesperrt";detail.textContent=code;};
+try{
+ if(!window.crypto?.subtle)throw Error("WEBCRYPTO_REQUIRED");
+ const r=await fetch("./client-release.json",{cache:"no-store"});if(!r.ok)throw Error("RELEASE_MANIFEST_HTTP_"+r.status);
+ const m=await r.json();
+ if(m.schema!=="qikvrt.client.release.v1")throw Error("RELEASE_SCHEMA_MISMATCH");
+ for(const k of ["admission","ci","governance","integrity"])if(m[k]!=="PASSED")throw Error("RELEASE_GATE_"+k.toUpperCase()+"_"+String(m[k]));
+ if(!/^sha256:[a-f0-9]{64}$/.test(m.sha256))throw Error("RELEASE_DIGEST_INVALID");
+ if(!/^\.\/releases\/[a-f0-9]{64}\/index\.html$/.test(m.asset))throw Error("RELEASE_PATH_NOT_IMMUTABLE");
+ const asset=new URL(m.asset,location.href);if(asset.origin!==location.origin)throw Error("CROSS_ORIGIN_RELEASE");
+ const response=await fetch(asset,{cache:"no-store"});if(!response.ok)throw Error("RELEASE_ASSET_HTTP_"+response.status);
+ const bytes=await response.arrayBuffer();const digest=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))).map(x=>x.toString(16).padStart(2,"0")).join("");
+ if("sha256:"+digest!==m.sha256||!m.asset.includes("/"+digest+"/"))throw Error("RELEASE_HASH_MISMATCH");
+ state.textContent="Integrität bestätigt. Starte Client "+m.version;
+ // Immutable, content-addressed server path is required: the same bytes must be served on navigation.
+ location.replace(asset.href);
+}catch(e){fail(String(e.message||e));}
+})();</script></body></html>

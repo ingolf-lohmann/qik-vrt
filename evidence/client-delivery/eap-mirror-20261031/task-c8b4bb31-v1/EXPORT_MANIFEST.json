@@ -1,0 +1,70 @@
+{
+  "ci": {
+    "attempt": 1,
+    "conclusion": "success",
+    "head": "110ad19aab36548b6fa20b84fcbbdd6556839556",
+    "run": 41241294086,
+    "status": "completed"
+  },
+  "files": [
+    {
+      "bytes": 34445,
+      "git_blob_sha1": "d8f3f0e1f3bd6075645f664c8a2b14c71c7e4d9f",
+      "path": "CI_41241294086_JOBS.json",
+      "sha256": "0f7acde645ec4079856160918f71a64a247c7623b637b3c0c7be1a236914d3ad"
+    },
+    {
+      "bytes": 15167,
+      "git_blob_sha1": "8757235fde2f11f50703c13a43d3ff9df66507f8",
+      "path": "CI_41241294086_READBACK.json",
+      "sha256": "49307a6928151a5b5b0152ed5866ed251590ac08869e827577692d54a69b2d77"
+    },
+    {
+      "bytes": 867,
+      "git_blob_sha1": "3ad4679847a354c9625089b62f83563b453fcb21",
+      "path": "OWNER_DIRECTIVE.txt",
+      "sha256": "5e1ef131a9087e3c772fd406beb8e990f3b8ea07acf623809b955b8faaa2d360"
+    },
+    {
+      "bytes": 4029,
+      "git_blob_sha1": "edfcb8ae6758e379176101a26b604c03d8ebfc4e",
+      "path": "PREDECESSOR_bf9ed070_v4.description.txt",
+      "sha256": "a5edbe5349916c251431dc1a82cbf0eea999c16da8dacf57d52a5162c7f6193b"
+    },
+    {
+      "bytes": 4389,
+      "git_blob_sha1": "80f66cb54fc913010df2ad3afc6cf4030a66e0a8",
+      "path": "PREDECESSOR_bf9ed070_v4.json",
+      "sha256": "307bba9001582ca421fab65d46866d5a0f57deb6dd4ab2cd0cce669d7b3ed68e"
+    },
+    {
+      "bytes": 1229,
+      "git_blob_sha1": "04dd67ab1363a3b001d2aa280b2e3256a2ca8981",
+      "path": "README.md",
+      "sha256": "66514ba98d3262cddf16d4e19f339ae6077deefd91d7a1089c7545d112046424"
+    },
+    {
+      "bytes": 3698,
+      "git_blob_sha1": "598109af100a75df944bff926549fd0aa114302f",
+      "path": "TASK_c8b4bb31_v1.description.txt",
+      "sha256": "d5d69eecec29a2dca004e3f8b2e9d076184b438e5a98ba7a55774de47bcaa3a2"
+    },
+    {
+      "bytes": 4006,
+      "git_blob_sha1": "b686183df838999f230932afa2f4ee5f723cc878",
+      "path": "TASK_c8b4bb31_v1.json",
+      "sha256": "991ad63c4488afce81b631c7fb463bfc487ee4a8048184af631d4e097e15e375"
+    }
+  ],
+  "native_role_activation": "UNVERIFIED",
+  "observed_at": "2026-10-31T21:11:59.528Z",
+  "owner_directive_sha256": "5e1ef131a9087e3c772fd406beb8e990f3b8ea07acf623809b955b8faaa2d360",
+  "predecessor_capture": "RETAINED_PRIOR_AUTHENTICATED_GET_TASK_VERSION_4; EXACT_DECLARED_DESCRIPTION_HASH_MATCH",
+  "predecessor_description_sha256": "a5edbe5349916c251431dc1a82cbf0eea999c16da8dacf57d52a5162c7f6193b",
+  "receipt_state": "CLAUDE_ACK_PENDING",
+  "schema": "qikvrt_workspace_task_export_v1",
+  "signature": "NONE",
+  "source": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/mcp",
+  "task_id": "c8b4bb31-26c9-5ea0-8a97-ef73b21aaafb",
+  "task_version": 1
+}
