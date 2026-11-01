@@ -25,7 +25,7 @@ class FakeAPI(M.GitHubAPI):
         fixture = fixtures.ClosureEngineTests()
         self.pr = fixture.pr()
         self.pr.update(created_at="2026-10-01T00:00:00Z", updated_at="2026-10-01T00:00:00Z",
-                       requested_reviewers=[], merged=False)
+                       requested_reviewers=[], merged=False, changed_files=1)
         self.observed = fixture.obs(reviews=[])
         for run in self.observed["check_runs"]:
             run["head_sha"] = HEAD
@@ -149,6 +149,15 @@ class ReciprocalStepTests(unittest.TestCase):
         self.assertEqual(r["selected_action"]["tree_sha"], TREE)
         self.assertFalse(any(r["completion_claims"].values()))
         self.assertFalse(r["closure_evaluation"]["completion_claims"]["EFFECT_ACK_DONE"])
+
+    def test_incomplete_native_changed_path_inventory_cannot_merge(self):
+        api = self.approved_api()
+        api.pr["changed_files"] = 2  # The original fixture endpoint returns one.
+        with tempfile.TemporaryDirectory() as d:
+            result = self.run_step(api, d)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertIn("FORMAL_CHANGE_SCOPE_INCOMPLETE", result["first_blocker"])
+        self.assertEqual(api.mutations, [])
 
     def test_eight_false_acceptance_classes_cannot_reach_closure_merge(self):
         # The original eight #434 counterexamples, now through the real step
