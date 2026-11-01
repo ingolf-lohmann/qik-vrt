@@ -354,6 +354,7 @@
       "sha256": "a8294344966f84937c60245d16c8c9f50ed24b93cdc3d81b444be5cf9bce7e4d",
       "historical_observation_only": true
     },
-    "subsequent_versions": "SAME_ADMITTED_TASK_ID; COORDINATION_DATA_ONLY; NO_ADDITIONAL_EFFECT_AUTHORITY"
+    "subsequent_versions": "SAME_ADMITTED_TASK_ID; COORDINATION_DATA_ONLY; NO_ADDITIONAL_EFFECT_AUTHORITY",
+    "identity_header": "X-QIKVRT-Workflow-Identity"
   }
 }
