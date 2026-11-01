@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt-native-proof-import/v1",
+  "workflow_head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+  "workflow_tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+  "run": 41240001030,
+  "job": 124651745184,
+  "artifact": 13056563864,
+  "artifact_sha256": "b2e417eb94630b4c78b6674a8bf412ba17f3a33274aadd42ac8d0a485bb8b392",
+  "kernel_statuses": "7 PASS with verified original log hashes",
+  "receipt_execution_subject": "UNVERIFIED: seven receipts contain head=unavailable and tree=unavailable",
+  "cause": "git_value called with HEAD instead of rev-parse HEAD",
+  "repair": "original runner now uses actual rev-parse; missing Git identity and unavailable receipt fields fail closed",
+  "fresh_native_acceptance": "REQUIRED after repaired source is committed"
+}

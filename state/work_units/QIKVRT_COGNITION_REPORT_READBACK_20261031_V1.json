@@ -1,0 +1,108 @@
+{
+  "schema": "qikvrt-cognition-report-readback/v1",
+  "request_source": "Owner-supplied attachments in current conversation; historical report assertions retain their scope",
+  "authority_subject": {
+    "main": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "main_tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+    "pr546_head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+    "pr546_tree": "7f2253bfc8e2869b0545790a8fa8ab1975cdc471",
+    "reconciled_source_successor": {
+      "head": "7d284007176ed3ad1c50f1311666bc404b805b01",
+      "tree": "3d9d7bede3a25dac0843ba08202e5f218de7c9a6",
+      "own_authorship": false
+    }
+  },
+  "imports": [
+    {
+      "path": "incoming/qikvrt_payloads/20261031-cognition-workspace-report/QIKVRT_MAENGELBERICHT_COGNITION_WORKSPACE_20261031.md",
+      "bytes": 11145,
+      "sha256": "b6e5e8b4a1bb2146859c829adf313b831bb6c309b2dbd53a88425cde98163f82"
+    },
+    {
+      "path": "incoming/qikvrt_payloads/20261031-cognition-workspace-report/QIKVRT_MAENGELBERICHT_COGNITION_WORKSPACE_20261031.qikvrt",
+      "bytes": 8091,
+      "sha256": "c94df43a75ea38212ab13687a4a465274bb2ddb1eb91679de2c56cdae7515d41"
+    },
+    {
+      "path": "incoming/qikvrt_payloads/20261031-cognition-workspace-report/FEHLERANALYSE_BEWEISPFLICHT_CODEX.txt",
+      "bytes": 6874,
+      "sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1"
+    },
+    {
+      "path": "incoming/qikvrt_payloads/20261031-cognition-workspace-report/QIKVRT_MAENGELBERICHT_COGNITION_WORKSPACE_20261031.manifest.json",
+      "bytes": 2176,
+      "sha256": "c984f8e0f9ce43f86a9ebb9021652a9ddf5e2b9af852ef2b1ac8700a65b92199"
+    }
+  ],
+  "integrity": {
+    "manifest_report_bytes_and_sha256": "VERIFIED_LOCAL",
+    "manifest_container_bytes_and_sha256": "VERIFIED_LOCAL",
+    "original_codec_unseal": "VERIFIED_LOCAL_BYTE_IDENTICAL",
+    "personal_authentication": "NOT_ESTABLISHED"
+  },
+  "work": {
+    "website_bounded_provenance_and_claim_repair": "IMPLEMENTED_AND_LOCALLY_TESTED",
+    "website_public_delivery": {
+      "status": "DEPLOYED_VERSION_5",
+      "source_commit": "de75cef95f67178c86d9837b1a2057197ca0417b",
+      "deployment": "appgdep_6ae64e6fc9b88191a9449ce96276bf4b",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site",
+      "native_succeeded_at": "2026-10-31T20:24:38.767767+00:00",
+      "browser_observed": [
+        "root and client navigation rendered",
+        "machine page states no EAP execution channel",
+        "journal shows unauthenticated readback unconfirmed",
+        "public Herkunft page rendered"
+      ],
+      "raw_public_manifest_download": "UNVERIFIED: browser downloadMedia timed out; no byte delivery claim",
+      "screenshot": "evidence/cognition-workspace/20261031/public-herkunft.jpg"
+    },
+    "formal_proof_W1_W4": "RECONCILED: 03c665f8 already supplies original vectors, standard Nanoda literals, panic rejection and corrected historical/count fixtures. Current contribution reuses that source unchanged.",
+    "W5_old403": "CURRENT_EXACT_HEAD_NATIVE_MATERIALIZER_ATTEMPT2_SUCCESS; do not repeat unchanged retry",
+    "productive_domain": "HTTP525; ready=false; ADMITTED_MESH_RUNTIME_ENDPOINT remains open",
+    "formal_local_verification": {
+      "bridge": "PASS: 1152 original vectors plus CLI and mutation controls",
+      "nanoda": "PASS on original native export with original verified binary; empty axiom allowlist rejected",
+      "all_seven": "UNVERIFIED: original Lean startup fails locally before checks",
+      "native_successor": "Original native universal-ontology runs 41240001030 and 41239996493 completed SUCCESS on exact 03c665f8. Original receipts/logs are being independently checked; final successor CI stays separate."
+    },
+    "formal_native_03c665f8": {
+      "schema": "qikvrt-native-proof-import/v1",
+      "workflow_head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+      "workflow_tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+      "run": 41240001030,
+      "job": 124651745184,
+      "artifact": 13056563864,
+      "artifact_sha256": "b2e417eb94630b4c78b6674a8bf412ba17f3a33274aadd42ac8d0a485bb8b392",
+      "kernel_statuses": "7 PASS with verified original log hashes",
+      "receipt_execution_subject": "UNVERIFIED: seven receipts contain head=unavailable and tree=unavailable",
+      "cause": "git_value called with HEAD instead of rev-parse HEAD",
+      "repair": "original runner now uses actual rev-parse; missing Git identity and unavailable receipt fields fail closed",
+      "fresh_native_acceptance": "REQUIRED after repaired source is committed"
+    },
+    "final_source_scope": "Additive report, site and historical-evidence persistence only. Current Authority implementation, tests, policies, workflows and primary proof receipts retained unchanged.",
+    "local_full_suite": {
+      "command": "make test",
+      "exit_code": 0,
+      "log_sha256": "ea3b1f2b0ffce31d0e6d333cdd0c8fa5aa14668e42f84c64ef819dbedfda9a1c",
+      "log_gzip": "evidence/cognition-workspace/20261031/authority-reconciled-full-suite.log.gz",
+      "tested_base_head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+      "tested_index_tree": "80931a52159631025ce44ae67b70dc8578a8cb60",
+      "source_scope": "earlier isolated candidate with independently prepared metadata repair; fully preserved; runtime source later superseded by Authority2eb18c6b",
+      "current_runtime_base": "2eb18c6b17da0c8773242879eca0dae755c65017",
+      "current_runtime_diff": "EMPTY",
+      "final_head_native_acceptance": "REQUIRED; not inferred from local predecessor tests",
+      "finished_readback_utc": "2026-10-31T21:05:19.079839+00:00"
+    }
+  },
+  "limits": {
+    "signed_personal_authorship": false,
+    "invisible_watermark": false,
+    "full_dynamic_page_byte_signature": false,
+    "all_runtime_assets_manifested": false,
+    "main_integration": false,
+    "native_eap_channel": false,
+    "formal_proved": false,
+    "effect_ack_done": false
+  }
+}

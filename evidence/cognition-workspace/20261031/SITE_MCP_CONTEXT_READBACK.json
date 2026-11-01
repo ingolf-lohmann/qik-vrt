@@ -1,0 +1,111 @@
+{
+  "schema": "qikvrt-cognition-context/v1",
+  "owner": "Ingolf Lohmann",
+  "workspace_purpose": "Gemeinsamer Quellen- und Aufgabenraum für natürliche und künstliche Kognitionen.",
+  "imported_at": "2026-10-29",
+  "source_observed_at": "2026-10-28T21:15:27.942315+00:00",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "historical_main": "b8881821626c9952fd82d8b9edfc66e49f4ba3cb",
+  "historical_tree": "1646807084874a0ca5e2c686ee642f97de5abfce",
+  "original_source_pr": "https://github.com/ingolf-lohmann/qik-vrt/pull/629",
+  "source_state": {
+    "source_pr": "https://github.com/ingolf-lohmann/qik-vrt/pull/629",
+    "client_path": "/workspace",
+    "source_candidate_implemented": true,
+    "main_integrated": true,
+    "productive_connection_verified": false,
+    "desktop_rendering_verified": false,
+    "effect_ack_done": false,
+    "main_head": "b8881821626c9952fd82d8b9edfc66e49f4ba3cb",
+    "main_tree": "1646807084874a0ca5e2c686ee642f97de5abfce"
+  },
+  "observation_scope": "Historischer importierter Befund. Keine aktuelle Prüfung von Repository, Domain oder Originalhost.",
+  "native_runtime": {
+    "state": "UNVERIFIED",
+    "effect_ack_done": false,
+    "reason": "Keine frische Originalhost-Abnahme in diesem Client.",
+    "execution_enabled": false
+  },
+  "original_workspace_access": {
+    "membership": "UNVERIFIED",
+    "license_acceptance": "UNVERIFIED"
+  },
+  "input_files": [
+    {
+      "name": "QIKVRT_React_Client_Abschluss_20261028.json",
+      "bytes": 1721047,
+      "sha256": "2faa744b77d1e5b2d33f4d7e1931bbb612795881a4bb3fe44278f54e11891a4e"
+    },
+    {
+      "name": "QIKVRT_START_HIER.html",
+      "bytes": 10023,
+      "sha256": "8f380fd8d6c141eeb5187f5ba0b8483525ea0ea09c089e27a2d43828ced16495"
+    }
+  ],
+  "evidence_classes": [
+    "documentary_source",
+    "software_test",
+    "formal_proof",
+    "simulation",
+    "empirical_evidence",
+    "interpretation"
+  ],
+  "evidence_outcomes": [
+    "VERIFIED",
+    "FAILED",
+    "UNVERIFIED"
+  ],
+  "constraints": [
+    "Originalversion, Quelle und Aussageumfang beibehalten.",
+    "Quellcode, Dokumente und Drittmaterial behalten ihre jeweilige Lizenz.",
+    "Lokale Aufgabenänderung ist kein produktiver EFFECT_ACK.",
+    "Keine neue Ausführungsberechtigung durch Lesen, Aufgabenanlage oder SSO."
+  ],
+  "read_order": [
+    {
+      "id": "science",
+      "title": "Das Universum als Round Trip",
+      "description": "Wissenschaftlicher Einstieg · Versions-DOI aus dem Originaldokument",
+      "kind": "Publikation",
+      "url": "https://zenodo.org/records/21888130"
+    },
+    {
+      "id": "ai",
+      "title": "AI · Kanonischer Einstieg",
+      "description": "Lesereihenfolge, Nachweisregeln und Laufzeitvoraussetzungen",
+      "kind": "Repository",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI"
+    },
+    {
+      "id": "context",
+      "title": "AI_CONTEXT.json",
+      "description": "Maschinenlesbarer Originalkontext und gebundene Quellen",
+      "kind": "JSON",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI_CONTEXT.json"
+    },
+    {
+      "id": "rights",
+      "title": "Lizenzen & Rechte · historischer Stand",
+      "description": "Historische Lizenzkarte, Commit 080c05f1; aktuelle Rechte unter Herkunft & Prüfung",
+      "kind": "Lizenzkarte",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/080c05f1cba7b1638477da78613b87252ffe1a12/LICENSE"
+    }
+  ],
+  "distribution": {
+    "manifest": "/.well-known/qikvrt-provenance.json",
+    "verification_guide": "/herkunft.html",
+    "root_html_digest": "NOT_FIXED_DYNAMIC_RESPONSE",
+    "personal_signature": "UNVERIFIED",
+    "native_eap_channel": false,
+    "authority_binding": "REQUIRES_INDEPENDENT_AUTHORITY_CANDIDATE_READBACK"
+  },
+  "client": {
+    "version": "1.0.0",
+    "contextEndpoint": "/api/v1/context",
+    "tasksEndpoint": "/api/v1/tasks",
+    "mcpEndpoint": "/mcp",
+    "sourceAuthority": "imported_historical",
+    "nativeExecutor": false
+  },
+  "servedAt": "2026-10-31T20:40:03.448Z"
+}

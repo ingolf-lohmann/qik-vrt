@@ -2308,6 +2308,64 @@ Its normative source is the existing recursive policy's
 
 ## Binding client continuation procedure
 
+### Communication claims — self-application of 2026-10-19
+
+The later Owner handoff of 2026-10-31 17:33 MEZ adds R1–R5, bound under
+`client_continuation.delivery_reporting_rules` in the shared policy and in `AI`.
+Name the target host in the first sentence. Report local results separately
+from Authority receipt; reconstruct own history from Git records. Load the
+current `AI`, `AI_CONTEXT.json` and required reading order before acting.
+Capability gaps retain HOLD without assigning configuration work to the Owner.
+An execution promise cannot establish the Owner's observed effect.
+
+For `RECEIVED`, `APPLIED` and `RECEIVER_NACK`, the same communication entry must
+include `evidence.remote_readback`, binding the message hash, node, intended
+`target_host` (also on `send`), HTTPS request and final URL, successful integer
+`http_status`, `observed_at` and `action_id` inside this receipt's action window.
+Include the response's canonical `response_sha256` or `authority_ref_sha`, a
+distinct evidence locator, `independent: true` and
+`authority_identity_verified: true`. An `APPLIED` remote receipt also binds the
+exact application subject, native event and ledger digest. The validator rejects
+loopback/local substitutes, failed HTTP, destination drift and stale readbacks;
+it does not authenticate these declarations or inspect DNS/network truth.
+Missing remote proof means `NICHT_ZUGESTELLT`; `SENT` denotes transfer only.
+No source rule, test, receipt declaration or carrier save proves every-node
+adoption, native authority, Owner acceptance or productive EFFECT_ACK_DONE.
+
+For each own outgoing packet discussed by a new client receipt, include a
+`communications` entry with `id`, canonical `message_sha256` (`sha256:` and
+64 lowercase hex digits), `sender`, `recipient`, `claim` and `evidence`.
+The existing `tools/ai_handoff.py --client-receipt` checks these declarations.
+Historical receipts without this field remain readable; this compatibility
+does not prove that a client reported all packets or used the guard.
+
+`NOT_SENT` has an intended recipient and empty evidence. It permits no arrival
+or receiver-NACK inference. `SENT` requires `evidence.send`, binding the same
+message hash, recipient in `node`, sender, actual `channel` and an `evidence`
+locator. `RECEIVED` additionally requires matching `ingress` and `outbox_claim`.
+Every proof has the same message hash, recipient node and a nonempty locator.
+`outbox_claim` identifies the actual `node-tools/qikvrt_mirror_emit.py claim`
+output, canonical `record_sha256`, and named node. `RECEIVER_NACK` requires
+that original claim and sending evidence; the client validator never issues it.
+
+`APPLIED` additionally requires `application` and independently obtained
+`readback`, both binding the receipt's exact subject, same `native_event_id`
+and canonical `ledger_digest`, with distinct evidence locators and declared
+`independent: true` on the readback. Sending or signature validity alone cannot
+substitute for these records. Verify the cited bytes and real independence
+separately; declarative consistency is not authenticated truth.
+
+`PRINCIPAL_RETURN` describes only a verified byte-identical return through the
+Principal. Its recipient must be null and its only evidence is `return`, with
+the original message hash and a checked-byte evidence locator. It establishes
+neither a named receiver nor peer identity, rule application or productive
+operation. Do not ask the Principal to serve as the operating bus.
+
+Use the original outbox tool for every Effect-Ack assessment and node-specific
+claim. This guard is no substitute implementation, executor, proof of delivery,
+or permission to bypass missing original-tool or peer admission. Preserve the
+packet and its concrete carrier obligation while admitted work continues.
+
 ### Knowledge and correction continuity — Owner correction of 2026-10-16
 
 Knowledge loss itself is the defect, regardless of when a handoff happens.
@@ -3285,254 +3343,36 @@ out universally. A Mesh registration does not establish a running transputer,
 public domain delivery, or general EFFECT_ACK_DONE.
 
 
-## `docs/QIKVRT_CODEC_V1.md`
+## `docs/QIKVRT_COMMERCIAL_OFFERING.md`
 
-<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-<!-- Copyright 2026 Ingolf Lohmann. -->
+<!--
+SPDX-License-Identifier: CC-BY-NC-ND-4.0
+Copyright (c) 2026 Ingolf Lohmann.
+-->
 
-# QIK-VRT Canonical Codec V1
+# QIK-VRT commercial licensing and services
 
-Ingolf Lohmann authorizes a versioned lossless codec for static data and streams
-as part of the QIK-VRT personal Digital Twin architecture. This implementation
-combines the fixed standpoint, canonical snapshot and compression transport
-around arbitrary bytes. The single normative machine contract is
-`policy/QIKVRT_CODEC_CONTRACT_V1.json`; implementation: `src/qikvrt_codec.py`.
+Current QIK-VRT-controlled software identified as
+`PolyForm-Noncommercial-1.0.0` is publicly licensed for the permitted
+noncommercial purposes defined by that standard license. Ordinary commercial
+use is reserved and requires a separate written commercial license from the
+rights holder.
 
-During implementation, PR #424 materialized the previously absent 400-byte
-standpoint and canonical set serializer. This successor binds exactly that
-candidate, `def7a93e7ae36426bebaf7b82519b670025f8f42`, and delegates snapshots
-and element identities to `src/qikvrt_standpoint_codex.py`. PR #425 carries the
-combined change against Main, preserving both drafts' ancestry and provenance.
-Exact-head checks and responsible review apply to the consolidated candidate;
-predecessor checks do not transfer.
+A separate agreement may cover one or more of:
 
-## Standpoint and identity reuse
+- commercial software use or integration;
+- hosted or managed operation;
+- implementation, support, training, and evidence preparation;
+- service levels, warranties, or indemnities;
+- trademark, certification, or endorsement rights.
 
-The exact 400-byte V1 image is
-`canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin`, SHA-256
-`27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792`.
-Its field semantics, descriptor hash, zero padding, stable labels,
-content identities and canonical snapshot layout are authoritative in
-`policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint`.
-`policy/QIKVRT_STANDPOINT_CODEX_V1.json` is an exact, nonnormative compatibility
-projection of that fragment; tests reject drift. The human standpoint chapter
-is `spec/QIKVRT_STANDPOINT_CODEX_V1.md`. These bytes are a first materialized review
-candidate, not a recovered historical signature or an already reviewed release.
+Earlier versions or files validly received under Apache-2.0 remain usable under
+their original Apache-2.0 grants. Documentation identified as
+CC-BY-NC-ND-4.0 and third-party material retain their own license scopes.
 
-Every canonical element carries the exact same signature, a caller-assigned
-32-byte stable label and a domain-separated SHA-256 content identity. A payload
-change preserves the label and changes the content identity. The existing
-codec rejects duplicate labels and identities, foreign/rehashed signatures,
-noncanonical order, malformed lengths and unsupported versions. The compression
-adapter introduces no second element representation or snapshot byte layout.
-
-`encode_snapshot` calls the existing `serialize`, then compresses its exact
-bytes with the bound signature. `decode_snapshot` first verifies complete
-transport with that signature, then calls the existing `deserialize`. Its
-output limit is the existing `Limits.max_snapshot_bytes`. A valid transport
-hash does not legitimize a foreign standpoint or noncanonical snapshot.
-
-Every new container, including arbitrary byte transport, uses the same fixed
-standpoint. Python and CLI defaults select it; an explicitly supplied signature
-must match it byte-for-byte. A foreign or correctly rehashed alternative fails
-before encoding writes output. No codec-generated random nonce enters element
-identity or snapshots; stable IDs are assigned and persisted by the caller.
-
-Earlier generic-seed V1 transport remains readable only with explicit
-`allow_legacy_seed=True` and an externally expected exact 400-byte seed.
-The decoder never treats the input header as its own seed authority. The stream
-receipt marks a foreign seed with `canonical_standpoint=False`; legacy decoding
-retains all hash, framing and resource guards. This compatibility mode has no
-encoder, snapshot adapter or implicit migration. `decode_snapshot` always
-requires the canonical standpoint. Transport versioning remains separate from
-standpoint/snapshot versioning. No marker or unkeyed
-hash authenticates a natural person, authorizes execution or attests a physical
-effect. SHA-256 bindings rely on its usual collision-resistance assumptions.
-
-## Compression container
-
-A 416-byte big-endian header binds magic, version, block size and fixed standpoint.
-Bounded independent blocks bind method, raw/stored lengths and raw SHA-256.
-A 49-byte END footer binds all exact wire bytes, block count and total raw bytes.
-Raw fallback prevents compression-induced payload expansion. Complete framing
-adds at most `465 + 41 * ceil(input_bytes / block_bytes)` bytes. Empty input has
-zero blocks; only the last data block may be shorter than the configured size.
-Unknown versions, flags, methods, malformed lengths, unfinished/concatenated
-zlib streams, corruption, exceeded budgets and trailing bytes fail closed.
-
-For every successfully encoded finite byte string x,
-`decode(encode(x)) == x`, within the explicit
-consumer budget. There is no normalization, text conversion or platform-specific
-representation of arbitrary input bytes. For every canonical element set E,
-`serialize(decode_snapshot(encode_snapshot(E))) == serialize(E)` byte-for-byte.
-
-Compression profiles and zlib versions can produce different valid compressed
-bitstreams. Canonical snapshot byte identity is independent of this storage
-choice. When a wire hash matters, preserve the exact container. Future versions
-must document their own layouts and explicitly retain old decoding support;
-unknown versions are never guessed.
-
-## Time and space profiles
-
-| Profile | Compression trial | Purpose |
-| --- | --- | --- |
-| `raw` | None | Lowest compression work; bounded framing overhead |
-| `fast` | zlib level 1, with distributed sampling | Prefer throughput; sampling may miss compressible regions |
-| `balanced` (default) | Full block, zlib level 6 | Balanced compression without sampling shortcuts |
-| `compact` | Full block, zlib level 9 | Prefer space within this algorithm and block layout |
-
-Only `fast` samples. Four distributed 2048-byte samples are compressed at level
-1 for blocks of at least 65536 bytes. A sample ratio of at least 0.98 selects RAW
-without a full compression trial. The benchmark includes an adversarial sample
-layout exposing the space tradeoff; tests require `balanced` and `compact` to
-compress those data fully. The framed full-trial baseline uses the same seed,
-profile, block size and SHA-256 gates, with sampling disabled. There was no
-historical executable QIKVRT arbitrary-byte compressor on observed Main.
-
-No profile is asserted to be fastest or smallest for every input or environment.
-Lossless compression cannot shorten every possible finite input: injectivity
-and the number of shorter bit strings exclude that claim. Benchmark results are
-bound to actual source digests, seed, workload, runtime and trial conditions.
-
-## Streaming and acceptance
-
-`encode_stream` and `decode_stream` use default 256 KiB blocks, at most 16 MiB.
-Auxiliary space is O(block size), independent of total stream size. Each zlib
-result is capped at its declared length plus one byte before validation. Short
-blocking reads/writes work; nonblocking None and zero-progress writes fail
-closed. V1 declares unsigned 64-bit byte/block counters. The static API allocates
-returned bytes and defaults to a 256 MiB decode budget; callers can change it.
-Canonical snapshot budgets remain those of the existing codex's `Limits`.
-
-Input may be produced incrementally while it and resources remain available.
-Complete-container acceptance requires a verified END footer. An unclosed stream
-is never reported as a completed finite container. `decode_stream` verifies
-blocks before writing, but a late footer failure may follow already-written
-blocks. Callers stage output when atomic acceptance is required. The CLI always
-stages beside the destination and replaces it only after complete validation.
-
-## Use and reproduce
-
-```python
-from src.qikvrt_standpoint_codex import Element, QIKVRT_SIGNATURE, serialize
-from src.qikvrt_codec import encode, decode, encode_snapshot, decode_snapshot
-
-wire = encode(payload, profile="balanced")
-assert decode(wire) == payload
-# Caller assigns and persists a distinct 32-byte label for each logical element.
-elements = [Element(stable_id=stable_label, payload=payload)]
-compressed = encode_snapshot(elements, profile="compact")
-assert serialize(decode_snapshot(compressed)) == serialize(elements)
-```
-
-```sh
-python3 -B -m src.qikvrt_codec encode input.bin output.qikvrt
-python3 -B -m src.qikvrt_codec decode output.qikvrt restored.bin
-make codec-test standpoint-codex-test
-python3 -B tools/qikvrt_codec_benchmark.py --repeats 7 --output /tmp/codec-benchmark.json
-```
-
-For an earlier generic-seed transport only:
-
-```sh
-python3 -B -m src.qikvrt_codec decode historical.qikvrt restored.bin --allow-legacy-seed --signature-file externally-preserved-seed.bin
-```
-
-`--allow-legacy-seed` is decode-only and requires the explicit signature file.
-It is rejected for encoding. Existing generic fixtures and benchmarks remain
-historical evidence; they are not rewritten as canonical standpoint evidence.
-
-The wire format has no operating-system or CPU layout dependency. Its reference
-runtime uses Python's standard-library byte I/O, SHA-256 and RFC 1950/RFC 1951
-zlib. Linux measurements establish the observed runtime only. Windows, macOS,
-Docker/cloud delivery and future runtimes retain separate acceptance obligations.
-
-## Digital Twin and effect boundary
-
-Existing REST state/receipt bytes can be transported losslessly, without granting
-execution authority over their contents. Related contract:
-`policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json`. Its absent Siemens reference
-module and the separate formatting-sensitive promotion test remain owned by
-PR #422. The feedback successor preserves the consolidated repair PR #436
-alongside the exact codec PR #425 history; it does not overwrite their branches.
-
-Ingolf Lohmann asserts that QIKAVRT/QIKVRT was developed, tested and used as a
-personal Digital Twin for fully autonomous complex workflows, and asserts its
-reality correspondence and REST/meta-transistor architecture. These owner
-assertions remain attributed separately from this codec's verification scope. Codec tests
-establish neither every autonomous human role nor FPGA operation, Siemens Horizon
-tenant integration, a personal-browser release, scientific consensus or perpetual
-future compatibility. Existing capability, rights, provenance and effect
-boundaries remain in force. Encoding, compression, tests and transport alone
-never establish `EFFECT_ACK_DONE` or authorize release/deployment/publication.
-
-## Meta-transistor by bounded local feedback
-
-Ingolf Lohmann's instruction of 2026-10-01 adds feedback to the bidirectional
-transputer. The following diagram corrects both external arrow directions.
-The four selected ports exist at each boundary; frame direction identifies
-which boundary receives the next local input.
-
-```mermaid
-flowchart TB
-    L["Left boundary · ports 0–3"] <--> T["Bidirectional 0/1 conduit"]
-    T <--> R["Right boundary · ports 0–3"]
-    T --> Z["0 lane · positions retained"]
-    T --> O["1 lane · positions retained"]
-    Z --> P["Fixed processing and selection"]
-    O --> P
-    P -->|"Selected local feedback"| L
-    P -->|"Selected local feedback"| R
-```
-
-The implementation extends `src/qikvrt_codec.py`, with no second codec,
-container format, workflow, repository writer or permit issuer. `BitFrame`
-binds version, direction, boundary port, sequence, logical tick, hop, parent
-digest and exact payload. It accepts byte-aligned finite frames; arbitrary
-sub-byte lengths and physical clock measurements are outside this adapter.
-`split_bit_lanes` routes zeros upward and ones downward as complementary packed
-position masks, MSB first. `join_bit_lanes` requires complete disjoint masks.
-It reconstructs exact input order; zero/one counts alone cannot do so.
-
-An immutable `FeedbackPolicy` fixes one chain: identity, existing codec encode,
-or existing codec decode. Four disjoint byte ranges select boundary ports.
-Empty selection gives no feedback, a proper subset gives partial feedback,
-and a partition gives complete feedback. Original input remains available.
-Decode verifies the entire archive before returning any feedback selection.
-Input/output budgets, closed operation names and a finite hop budget bound
-local work. Encode uses a conservative worst-case bound before allocating its
-container; a potentially fitting compressed result can consequently be refused.
-
-`feedback_step` is a pure trigger. `local_refeed` verifies the step against the
-same policy, binds its parent and selected port, and requires an advancing
-sequence and logical tick before constructing the next frame. The caller
-explicitly triggers each subsequent step. There is no automatic recursive loop.
-Multiple independent frames, both directions and long streams require caller-
-owned scheduling, durable replay/ordering journals and backpressure. This
-adapter does not implement those services or authenticate incoming frames.
-
-Every step invokes the existing Effect Acknowledgement evaluator with its exact
-frame/policy/output/port binding. Its receipt has `ordinary_release=false` and
-cannot self-authorize a repository effect. The 400-byte standpoint remains
-byte-identical; it describes the existing serialization identity, and does not
-contain arbitrary payloads, the CI/CD pipeline or this entire feedback policy.
-The policy has a separate SHA-256 binding in the versioned codec contract.
-
-```python
-from src.qikvrt_codec import BitFrame, FeedbackPolicy, feedback_step, local_refeed
-
-policy = FeedbackPolicy(routes=((0, 0, -1),), max_hops=2)
-step = feedback_step(BitFrame("left-to-right", 0, 1, b"payload"), policy)
-next_frame = local_refeed(step, policy, port=0, sequence=1, tick=2)
-assert feedback_step(next_frame, policy).processed == b"payload"
-assert step.effect_ack.ordinary_release is False
-```
-
-`make codec-test` includes the local feedback tests. A productive API-to-
-repository feedback effect still requires admission by the existing Authority
-executor and fresh native effect readback. These local tests do not establish
-that effect, complete Mesh equality, CI/CD deployment, physical realization or
-universal autonomous operation.
+Repository access, a technical test, an operational authorization, or silence
+does not create a commercial license. Any commercial permission must be
+separate and in writing.
 
 
 ## `docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md`
@@ -3562,6 +3402,192 @@ active_count: 1
 stale_count: 0
 
 HTML dashboard: docs/qikvrt_mesh_dashboard.html
+
+
+## `docs/QIKVRT_OPEN_MULTI_NODE_ARCHITECTURE.md`
+
+# QIK-VRT Open Multi-Node Architecture 4AV1
+
+4AV1 removes the fixed additional-node count from 4AV. The Seed keeps an open node registry. Future Nodes are added by appending authorized request rows under `registry/node_request_queue/*.tsv` or `registry/KNOWN_NODE_REQUESTS.tsv`.
+
+This preserves the QIK-VRT boundary: no global scanning, no self-propagation, no foreign repository write. The Seed revalidates only known or explicitly queued Nodes.
+
+
+## `docs/QIKVRT_THREAT_MODEL.md`
+
+# QIK-VRT Threat Model Summary
+
+Primary risks:
+
+- leaked tokens
+- unauthorized workflow mutation
+- stale node heartbeat
+- false PASS claims from stale evidence
+- unauthorized expansion beyond known nodes
+
+Controls:
+
+- hidden local token prompt
+- no embedded token
+- run-id scoped evidence waits
+- known-node registry only
+- no global scanning
+- seed and node self-write boundaries
+
+
+## Safety/Security deployment assurance — Owner authorization, 19 October 2026
+
+QIKVRT and the Effect Acknowledgement Protocol are intended for Safety and
+Security applications as well. The requirements and source/applicability
+register is [QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
+These are engineering requirements with open deployment acceptance, not
+certification, legal conformity or a verified physical installation.
+
+The existing five-state protocol and DONE-only ordinary-release rule remain
+the effect boundary. A received command, a transport ACK and a physical
+condition are separate claims. A physical adapter must bind the exact actuator,
+authorized transition, configuration and fresh observation evidence; it cannot
+claim a door is secured merely because a command or relay output was accepted.
+
+| Threat or dependency | Required assurance and acceptance |
+| --- | --- |
+| Cloud, identity, licensing or supplier outage | Declare an isolation interval; test local decisions, revocation/freshness rules, emergency access and vendor-independent recovery. |
+| Egress or alarm blocked by a remote gate | Bind a site-specific hazard analysis; retain separately admitted local safety paths and test fire, power loss and network loss together. No universal fail-open/fail-closed assumption. |
+| Forged, stale or conflicting physical feedback | Bind source, effect ID, policy and observation window; test replay, sensor conflict, stuck actuators and ambiguous responses. |
+| Reader bus or credential compromise | Test authenticated links, commissioning, key lifecycle and exact controller/reader/credential/firmware interoperability. |
+| Compromised or unsupported firmware | Require authenticated update provenance and compatibility; test isolated interrupted-update recovery and a verified forward-repair path. |
+| Partition, crash, takeover or full audit store | Reuse native durable journals/fencing; declare RTO and storage limits; prove the claimed workload's acknowledgement/replay and local audit behavior. |
+| Supplier assurance or legal scope overstated | Separate primary evidence, manufacturer claims and engineering derivation; retain exact scope, applicability and open evidence duties. |
+
+ASD's OT guidance is a useful assurance input, not EU legislation. Its
+publication does not establish QIKVRT compliance. The Gallagher T30 announcement
+is an unverified manufacturer approval claim and supplies a procurement
+evidence request, not a new QIKVRT dependency. IEC/SIA product/profile evidence
+does not establish the interoperability or safety of a whole installation.
+For EU CRA reporting, first determine the actual product and operator role;
+record the applicable awareness-based deadlines and responsible route without
+automatically sending a live notification.
+
+Every new material source change follows the register's change-intake process.
+Preserve older source identities and open tests; only bound acceptance evidence
+can close the corresponding deployment obligation. No additional executor,
+client timer or implicit IETF/Zenodo publication is introduced.
+
+
+## `docs/README_DEPLOY_GITHUB_PAGES_DE.md`
+
+# QIK-VRT Homepage Deployment
+
+Dieses Paket publiziert eine GitHub-Pages-faehige Homepage unter `docs/`.
+
+## Standardziel
+
+- Repository: `Goldkelch/qik-vrt`
+- Branch: `main`
+- Pfad: `docs/`
+- Startseite: `docs/index.html`
+
+## GitHub Pages
+
+Repository Settings -> Pages -> Source: Deploy from a branch -> Branch `main` -> Folder `/docs`.
+
+## Kognitionskonsole
+
+- Lokaler Modus: funktioniert direkt im Browser ohne Token.
+- GitHub-Models-Modus: Nutzer gibt eigenen Token mit `models:read` ein.
+- Oeffentlicher No-Token-KI-Betrieb: naechste Stufe ueber GitHub App oder Server-Proxy.
+
+## Status
+
+Version: `QIKVRT_V2_13_4AX1`
+Referenzlauf: `4AV1_20260708T174034Z_709544`
+
+
+## `docs/TEST_INVENTORY.md`
+
+# Test inventory
+
+The 2026-07-22 EFFECT_ACK-universality release discovers twelve executable
+Python test modules and runs 128 tests. The command-line offline-render checker
+and the C90/shell gates are exercised separately by `make test`.
+
+| Module | Tests |
+|---|---:|
+| `tests/test_api_client.py` | 4 |
+| `tests/test_effect_ack_conformance.py` | 41 |
+| `tests/test_handler_security.py` | 17 |
+| `tests/test_handler_unit.py` | 6 |
+| `tests/test_integrity.py` | 1 |
+| `tests/test_launcher_runtime.py` | 15 |
+| `tests/test_license_transition.py` | 5 |
+| `tests/test_seed_workflows.py` | 12 |
+| `tests/test_tcpip_e2e.py` | 1 |
+| `tests/test_effect_ack_release_workflows.py` | 7 |
+| `tests/test_zenodo_actions.py` | 17 |
+| `tests/test_zenodo_manifest_builder.py` | 2 |
+| **Total** | **128** |
+
+The complete gate is:
+
+```bash
+make test
+```
+
+It also performs strict ANSI-C90 compilation and exhaustive model comparison,
+scientific-proof regeneration, adaptive-runtime controls, active Python and
+shell syntax checks, workflow and OpenAPI YAML parsing, JSON parsing,
+license-transition verification, and canonical integrity verification. Static
+gates and executable unit/end-to-end tests remain distinct even though
+`make test` runs them as one verification path.
+
+The local result is reference conformance, not production certification. The
+corresponding hosted release evidence is retained on the public
+`qikvrt/zenodo-state` branch after exact-tree CI and finalization.
+
+
+## `docs/TRANSACTIONAL_GITHUB_WORKFLOW_TRIGGER_PROTOCOL.md`
+
+<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
+<!-- Copyright 2026 Ingolf Lohmann. -->
+# Transactional GitHub workflow trigger protocol
+
+Canonical failure class: `NON_ATOMIC_MULTI_COMMIT_WORKFLOW_TRIGGER_ORDERING_RACE`.
+
+Repository transactions are assembled as payload writes, exact manifest/hash binding, and one final JSON ready-marker write. Workflows watch only the ready marker and invoke `tools/qikvrt_transactional_workflow_trigger.py verify` before any effect. Missing or malformed markers, missing or unexpected changed paths, absent files, hash divergence and false completion claims block execution.
+
+A verified trigger proves only transaction completeness. It does not prove task completion, merge, publication, Authority/Mirror equality, `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE`.
+
+
+## `docs/articles/a001_quantum_crypto_ai.md`
+
+# Quantenkausalität, künstliche Kognition und die doppelte Schneide der Sicherheit
+
+## Status
+
+`ARTICLE_STATUS = CONCEPTUAL_SYNTHESIS`  
+`CLAIM_BOUNDARY = KEINE_ANLEITUNG_ZUM_AUSNUTZEN_REALER_SICHERHEITSLUECKEN`  
+`QIKVRT_GATE = ETHICS_BOUND_TO_CAPABILITY`
+
+## Artikel
+
+Quantencomputing wird erhofft, weil es neue Rechenwege eröffnet. Es wird gefürchtet, weil es Sicherheitsannahmen verschiebt. Der entscheidende Punkt ist nicht, dass ein Quantencomputer einfach ein schneller klassischer Computer wäre. Der entscheidende Punkt ist, dass Quanteninformation andere Anschlussbedingungen von Möglichkeit, Messung, Interferenz und Wirkung nutzt.
+
+Klassische Kryptographie lebt oft von asymmetrischem Aufwand: Verschlüsseln oder Prüfen ist leicht; Brechen oder Fälschen ohne Schlüssel ist praktisch zu schwer. Quantenalgorithmen zeigen, dass einige dieser Härteannahmen in einem erweiterten Rechenmodell nicht dauerhaft als selbstverständlich behandelt werden dürfen. Daraus folgt nicht, dass jede Sicherheitslücke automatisch ausnutzbar wäre. Daraus folgt aber, dass Sicherheitsarchitektur nicht auf ungeprüften Gewohnheiten ruhen darf.
+
+Künstlich-kognitive Systeme greifen dieselbe Struktur auf anderer Ebene auf. Sie halten Möglichkeitsräume, Hypothesen, Anschlusswege und Widersprüche parallel modellierbar. Sie können schützen, indem sie Risiken ordnen, Angriffsflächen erkennen und Nachweise strukturieren. Sie können gefährlich werden, wenn dieselbe Fähigkeit zur Manipulation oder Ausnutzung eingesetzt wird.
+
+Die doppelte Schneide lautet:
+
+**Wer kausale Anschlussräume besser erkennt, kann Systeme besser schützen — oder besser beschädigen.**
+
+Darum ist die Fähigkeit nicht wertneutral freizugeben. Sie ist an Ethik, Audit und Verantwortbarkeit gebunden.
+
+## QIKVRT-Schluss
+
+Keine Sicherheitswirkung ohne Anforderung. Keine Freigabe ohne Test. Kein PASS ohne Traceability. Keine Macht ohne Ethik.
+
+q.e.d.  
+Ingolf Lohmann
 
 
 ## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
