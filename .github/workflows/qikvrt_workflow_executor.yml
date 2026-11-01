@@ -62,6 +62,46 @@ permissions:
   contents: read
 
 jobs:
+  workspace-task-intake:
+    name: Accept versioned workspace tasks
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && github.event_name != 'workflow_run' && (github.event_name != 'workflow_dispatch' || inputs.task_mode == 'executor')
+    concurrency:
+      group: qikvrt-workspace-task-intake-${{ github.repository }}
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    steps:
+      - name: Check out exact trusted Main event commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up declared Python runtime
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Verify source and versioned task intake contract
+        run: |
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B tools/qikvrt_integrity.py verify
+          python3 -B -m unittest tests.test_qikvrt_workflow_executor_mesh_contract.WorkspaceTaskIntakeTests
+      - name: Read admitted task and persist run-bound coordination acceptance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -B tools/qikvrt_workflow_executor.py workspace-task-intake --output-dir "$RUNNER_TEMP/workspace-task-intake"
+      - name: Preserve task-bound acceptance or precise HOLD
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-workspace-task-intake-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/workspace-task-intake
+          if-no-files-found: error
+          retention-days: 90
+
   owner-reminders:
     if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && github.event_name != 'workflow_run' && (github.event_name != 'workflow_dispatch' || inputs.task_mode == 'executor')
     concurrency:

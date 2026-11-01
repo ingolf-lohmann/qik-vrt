@@ -1,0 +1,74 @@
+{
+  "schema": "qikvrt_eap_mirror_url_authority_review_v1",
+  "contribution": "OpenAI Codex after Owner-supplied Claude Mirror verification report",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "branch": "fix/eap-mirror-client-integration-20261031",
+    "head": "1c314c0004032fa819392f82a5184f6acc79ff87",
+    "tree": "13fca4c27aaaede23bc774217067a785b9a62fec"
+  },
+  "reported_predecessor": {
+    "head": "423e483a09333144e79090f7c20f821439474be6",
+    "tree": "6e6b95e324aa88b4a15ac25f00962524d5dbda8c"
+  },
+  "blob_equivalence_423_to_1c": {
+    "client": "900c21f388201088d1ed45314a96c1a97afccfb1",
+    "tests": "020c95e602e2d6b20a4d129b25b57ef3eb687b6c",
+    "equal": true
+  },
+  "pr546_initial": {
+    "head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+    "tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+    "comparison": {
+      "status": "diverged",
+      "ahead_by": 4,
+      "behind_by": 3,
+      "merge_base": "e37667b641b5b58f9e7094e15e235e29ad191f58"
+    }
+  },
+  "pr546_later": {
+    "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+    "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+    "draft": true,
+    "merged": false,
+    "reference_updated_by_this_run": false
+  },
+  "main": {
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+    "reference_updated_by_this_run": false
+  },
+  "native": {
+    "schema": "qikvrt_native_terminal_connection_v1",
+    "adapter_version": "20261025.1",
+    "native_available": false,
+    "operator_authorized": true,
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "runtime_observations": [
+      {
+        "origin": "https://raumzeitterminal.de",
+        "status": 525,
+        "observed_at": "2026-10-31T20:52:02.348Z",
+        "mesh_scope_verified": false
+      }
+    ],
+    "effect_ack_done": false
+  },
+  "mirror_side_network_and_host_grant": {
+    "state": "UNVERIFIED_FROM_THIS_RUNTIME",
+    "reported_principal": "mirror:claude",
+    "local_fixture_principal": "claude:mirror",
+    "claim": "The original client accepts an explicit principal. A fixture principal is no proof of the protected production grant; require exact actual host binding and fresh Mirror-side live receipt."
+  },
+  "limits": {
+    "loopback_tests_are_live_host_receipts": false,
+    "source_checkout_is_main_integration": false,
+    "initial_collection_preflight_retroactively_proved": false,
+    "actual_publication_route": "PLANNED_AUTHENTICATED_REST_CONNECTOR_ONLY",
+    "effect_ack_done": false
+  },
+  "next_action": "Finish evidence/integrity finalization; advance only the existing isolated carrier with expected-head/non-force lease and independent ref/commit/tree readback. Reconcile against the then-current PR546 with its original complete proof/native/governance gates. Retain actual Mirror network, protected host grant and runtime admission, and live-host receipt as open."
+}
