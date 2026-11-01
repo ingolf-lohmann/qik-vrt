@@ -1,0 +1,58 @@
+{
+  "schema": "qikvrt-source-and-issue-closure-readback/v1",
+  "issue": {
+    "number": 665,
+    "state": "closed",
+    "state_reason": "completed",
+    "closed_at": "2026-11-01T10:26:21Z",
+    "body_equal": true,
+    "observed_at": "2026-11-01T10:28:13.719Z"
+  },
+  "repository": {
+    "head": "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+    "tree": "7739ea3a26300d8016e3c07992be632fc46d6b65",
+    "ref": "main",
+    "observed_at": "2026-11-01T10:28:13.720Z"
+  },
+  "merge": {
+    "sha": "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+    "tree": "7739ea3a26300d8016e3c07992be632fc46d6b65",
+    "parents": [
+      "768fd06415e0620dda89b1f5778db90788037e45",
+      "d16b9b8d574559b5decd7e2eb45473ad8f415fad"
+    ],
+    "main_equals_merge": true,
+    "pr": 666,
+    "merged": true
+  },
+  "delivery": {
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "runtime_observations": [
+      {
+        "origin": "https://raumzeitterminal.de",
+        "status": 525,
+        "observed_at": "2026-11-01T10:28:13.642Z",
+        "mesh_scope_verified": false
+      }
+    ],
+    "read_observed_at": "2026-11-01T10:28:13.720Z"
+  },
+  "native_intake_runs": [
+    {
+      "id": 41297200232,
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "action_window": {
+    "completed_at": "2026-11-01T10:26:22.437Z",
+    "closed_at": "2026-11-01T10:28:13.732Z"
+  },
+  "productive_effect_verified": false,
+  "effect_ack_done": false
+}

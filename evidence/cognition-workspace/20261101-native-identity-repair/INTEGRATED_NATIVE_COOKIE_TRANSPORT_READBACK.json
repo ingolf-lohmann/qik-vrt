@@ -1,0 +1,72 @@
+{
+  "schema": "qikvrt-integrated-native-cookie-transport-readback/v1",
+  "observed_at": "2026-11-01T10:25:17.397Z",
+  "state": "CREDENTIAL_TRANSPORT_REPAIR_VERIFIED",
+  "issue": 665,
+  "source_pull_request": 666,
+  "main_head": "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+  "main_tree": "7739ea3a26300d8016e3c07992be632fc46d6b65",
+  "site": {
+    "version": 16,
+    "source": "5fe510044042dab4211d5bd06f7c87e2daae318b"
+  },
+  "native_run": {
+    "id": 41297200232,
+    "event": "push",
+    "attempt": 1,
+    "job": 124820412875,
+    "conclusion": "failure",
+    "intake_state": "HOLD",
+    "first_boundary": "WORKSPACE_TASK_READBACK_HTTP_503_AUTHORITY_READBACK_UNAVAILABLE_UPSTREAM_MAIN_REF_HTTP_403_RATE_LIMIT_EXHAUSTED"
+  },
+  "original_artifact": {
+    "id": 13080131427,
+    "bytes": 1083,
+    "sha256": "8f9cf04c070b0ca9c66daf7b4214340ee5a687afb086f658dc9a279be009f3f8",
+    "downloaded_and_verified": true
+  },
+  "production_log_safe_projection": [
+    {
+      "timestamp": 1793528557877,
+      "observed_at": "2026-11-01T10:22:37.877Z",
+      "path": "/api/v1/authority/tasks/REDACTED",
+      "method": "GET",
+      "status": 503,
+      "outcome": "ok",
+      "cookie_present": true,
+      "cookie_redacted": true,
+      "legacy_credential_header_present": false,
+      "native_intake_user_agent": true,
+      "request_url_redacted": true
+    },
+    {
+      "timestamp": 1793528557415,
+      "observed_at": "2026-11-01T10:22:37.415Z",
+      "path": "/api/v1/authority/tasks/REDACTED",
+      "method": "GET",
+      "status": 200,
+      "outcome": "ok",
+      "cookie_present": true,
+      "cookie_redacted": true,
+      "legacy_credential_header_present": false,
+      "native_intake_user_agent": true,
+      "request_url_redacted": true
+    }
+  ],
+  "correlation_limit": "Provider redacts task path/URL and credential. Native job/run source binding, native intake User-Agent, request stage and provider timestamps correlate this successful GET and the following503; log fields do not independently reveal the token claims or task ID.",
+  "checks": {
+    "actual_native_cookie_delivery_reached_authenticated_task_read": true,
+    "cookie_redacted_in_both_observed_native_invocations": true,
+    "legacy_credential_header_absent_in_both": true,
+    "no_raw_credential_exported": true
+  },
+  "remaining_boundary": {
+    "scope": "The second task readback in this native attempt; upstream MAIN_REF response only",
+    "reason": "HTTP403 with explicit exhausted quota",
+    "global_recovery_inferred": false,
+    "root_triggered_unchanged_retry": false
+  },
+  "acceptance_scope": "Original version8 accepting actor remains run41292736229 atcd05/tree9138; later observer HOLD does not create/reassign or revoke its stored receipt.",
+  "productive_effect_verified": false,
+  "effect_ack_done": false
+}

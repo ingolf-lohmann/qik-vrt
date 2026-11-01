@@ -1,0 +1,43 @@
+{
+  "schema": "qikvrt-independent-current-task-readback/v1",
+  "observed_at": "2026-11-01T10:25:17.117638+00:00",
+  "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+  "task_version": 8,
+  "task_status": "open",
+  "task_sha256": "84d282e3acc90706f7944c3db579451c0eb58aa8ed7e1486f897c465edae42dd",
+  "canonical_payload_bytes": 4391,
+  "fresh_authenticated_mcp_receipt_equals_original_native_artifact": true,
+  "independent_canonical_task_digest_matches": true,
+  "original_receipt": {
+    "accepted_at": "2026-11-01T09:21:06.203Z",
+    "authority": {
+      "contract_sha256": "685954ad57c5b70ef5ae60fa96543c61de61b8a7f96ecf208799b40a46451a18",
+      "event": "schedule",
+      "head": "cd05ca02206455b78816f187c1ef06243f595f1e",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "run_attempt": 1,
+      "run_id": 41292736229,
+      "scope": "VERSIONED_TASK_COORDINATION_ONLY",
+      "tree": "9138e7685fa6b2c219ddf0d2055951cd1bc3533f",
+      "work_items": [
+        {
+          "id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+          "min_version": 1
+        }
+      ],
+      "workflow": ".github/workflows/qikvrt_workflow_executor.yml",
+      "workflow_sha": "cd05ca02206455b78816f187c1ef06243f595f1e"
+    },
+    "effect_ack_done": false,
+    "id": "b50951b4-1194-431b-aa43-d81d262a19d3:8",
+    "independent_readback_required": true,
+    "productive_effect_verified": false,
+    "schema": "qikvrt-workspace-task-acceptance/v1",
+    "state": "WORKFLOW_ACCEPTED",
+    "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+    "task_sha256": "84d282e3acc90706f7944c3db579451c0eb58aa8ed7e1486f897c465edae42dd",
+    "task_version": 8
+  },
+  "effect_ack_done": false,
+  "productive_effect_verified": false
+}
