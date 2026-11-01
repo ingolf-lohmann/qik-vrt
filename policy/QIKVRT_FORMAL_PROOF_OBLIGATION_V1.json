@@ -13,6 +13,7 @@
     ],
     "eap_clients": [
       "src/qikvrt_effect_ack*.py",
+      "tools/qikvrt_eap*.py",
       "tools/qikvrt_mirror*.py",
       "node-tools/qikvrt_mirror*.py"
     ],

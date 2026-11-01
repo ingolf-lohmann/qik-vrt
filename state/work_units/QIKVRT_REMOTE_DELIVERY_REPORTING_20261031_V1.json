@@ -87,7 +87,6 @@
     "merge_attempted": false,
     "open_gates": [
       "Draft transition",
-      "Fresh exact-head required evidence-materialization success after its HTTP403 GET failure",
       "Exact-head native governance/technical disposition",
       "Current Main, platform and competing-writer reobservation"
     ],
@@ -103,10 +102,18 @@
       "run_id": 41215514005,
       "attempt": 2,
       "job_id": 124601748625,
-      "state_at_readback": "in_progress",
+      "state_at_readback": "completed_success",
       "preflight": "success",
       "merge_attempted": false,
-      "duplicate_dispatch_allowed": false
+      "duplicate_dispatch_allowed": false,
+      "closing_evidence": {
+        "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+        "run": 41215514005,
+        "attempt": 2,
+        "job": 124601748625,
+        "conclusion": "success",
+        "original_log_sha256": "3ea5d879e2c9b199ada275c12c8223712a214450982601f0329fa1183921ef6f"
+      }
     },
     "rerun_causal_evidence": "The same Git-Data archive preflight succeeded in native job124598246404 with unchanged workflow/journal code and same repository token carrier; complete inventory showed no equivalent active exact-head run before the single rerun."
   },
@@ -114,7 +121,7 @@
     {
       "id": "PR658_INTEGRATION",
       "state": "OPEN",
-      "next_action": "Read back existing materializer run41215514005 attempt2; do not duplicate dispatch. Its preflight now succeeds but complete native gate, other applicable failures, exact native governance, Draft transition and eventual merge readback remain separate."
+      "next_action": "W5 materializer41215514005 attempt2 is independently verified SUCCESS at a56b0632. Require current native governance, Draft transition, platform/competing-writer gates and eventual merge readback separately; do not rerun successful materialization unchanged."
     },
     {
       "id": "ORIGINAL_MIRROR_CLIENT",
@@ -463,5 +470,65 @@
     "native_delivery_readback": "evidence/native-runtime-acceptance/QIKVRT_DELIVERY_REPORTING_7D284007_NATIVE_CONNECTION.json",
     "checkpoint_scope": "Original7d checker receipts retained exactly; evidence-only successor does not inherit CI success; fresh current-head native checks remain required.",
     "adopted_evidence_only_parent": "20d99e34d5eb12995d36f369706685d7fb1411ca"
+  },
+  "eap_client_scope_repair_20261101": {
+    "source_predecessor": {
+      "head": "3c0d55da083d29a77d7136f352dd9346aaadd530",
+      "tree": "163215da8855388377ca5d36e32225ca0e2b9f48"
+    },
+    "owner_request_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "evidence_archive": "evidence/formal-receipts/DeliveryReporting/history/EAP_CLIENT_SCOPE_AUDIT_20261101.zip",
+    "archive_sha256": "681f8c019f49658c73309a4ee62c0050f814f3e337be6d4f3d160626f1dd21a2",
+    "observed_hole": {
+      "path": "tools/qikvrt_eap_mirror_client.py",
+      "original_formal_proof_required": false
+    },
+    "causal_repair": "Extend existing eap_clients glob and both native event filters; test the original REST merge evaluator with this path and require REQUIRED_EXACT_HEAD_GATE_MISSING without native proof. No new executor or EAP-client import.",
+    "local_validation": {
+      "make_test_exit_code": 0,
+      "reported_python_executions": 2278,
+      "targeted_tests": 169,
+      "targeted_exit_code": 0,
+      "actual_cli_vectors": 1152,
+      "actual_status_mutant_detected": true,
+      "original_policy_hole_mutant_detected": true
+    },
+    "tested_source_sha256": {
+      "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json": "ea96e81b86c3c17399ab1341cc4427fbacbf581b985a6fbdbd4b793783fcc125",
+      ".github/workflows/qikvrt_universal_ontology_formalization.yml": "29e69f392d902d3eb9f0874ee5b08d376049c46e666cdc10735b383d90435134",
+      "tests/test_delivery_reporting_proof.py": "7cc8e13ff412b790bd8451f618058ca48f1945c8c16d0139fc59f418aa4080e6"
+    },
+    "native_predecessor": {
+      "formal": 41243958004,
+      "general_ci": 41243958210,
+      "materialization": 41243957915,
+      "all_completed_success": true,
+      "acceptance_transferred_to_successor": false
+    },
+    "W5": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "run": 41215514005,
+      "attempt": 2,
+      "job": 124601748625,
+      "conclusion": "success",
+      "original_log_sha256": "3ea5d879e2c9b199ada275c12c8223712a214450982601f0329fa1183921ef6f"
+    },
+    "N3": {
+      "state": "HOLD_LITERAL_ADVERTISED_REF_CRITERION",
+      "all_names_resolved": true,
+      "exact_source_objects_confirmed": true,
+      "pins_changed": false,
+      "replacement_checkers_used": false,
+      "next_action": "Independent Mirror/Owner disposition of literal advertised-ref criterion. Do not infer acceptance from exact object existence."
+    },
+    "open_obligations_retained": true,
+    "fresh_exact_successor_seven_checker_and_ci_readback": "REQUIRED",
+    "mirror_N1_N10_acceptance_asserted": false,
+    "main_integration": false,
+    "productive_effect_ack_done": false,
+    "contributions": {
+      "human": "Ingolf Lohmann supplied the three-part Claude Mirror analysis and existing continuation authorization.",
+      "artificial_cognitive": "Codex independently read originals, detected and repaired EAP scope hole, ran regressions/full suite and preserved source/log bindings."
+    }
   }
 }
