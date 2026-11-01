@@ -22,5 +22,6 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ github.token }}
           prompt: ${{ !startsWith(github.event_name, 'issue') && 'Bearbeite jedes offene Issue, dessen Text oder Kommentar @claude enthaelt und noch keine Antwort von dir hat, nach seinem Text. Ist nichts offen, beende sofort.' || '' }}
