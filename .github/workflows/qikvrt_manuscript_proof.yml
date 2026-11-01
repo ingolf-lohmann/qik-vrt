@@ -360,7 +360,18 @@ jobs:
       - name: Audit every completed manuscript proof constant
         run: python3 scripts/audit_completion_axioms.py
       - name: Build additive storage module before project-wide proof audit
-        run: lake build QIKVRTEffectAck.StorageIntegrity
+        run: |
+          lake build QIKVRTEffectAck.StorageIntegrity
+          lake -d delivery-reporting build QIKVRTDeliveryReporting
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, shutil
+          source = Path('delivery-reporting/.lake/build/lib/lean/QIKVRTEffectAck/DeliveryReporting.olean')
+          target = Path('.lake/build/lib/lean/QIKVRTEffectAck/DeliveryReporting.olean')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          shutil.copyfile(source, target)
+          assert hashlib.sha256(source.read_bytes()).digest() == hashlib.sha256(target.read_bytes()).digest()
+          PY
       - name: Reject project proof escapes
         run: python3 scripts/audit_proof_escapes.py
       - name: Verify completed proof-object manifest is current
