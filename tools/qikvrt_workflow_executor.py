@@ -56,6 +56,10 @@ AMO_RUN_HISTORY_BUDGET = 1600
 class ExecutorBlock(RuntimeError):
     """A fail-closed executor or continuity validation error."""
 
+    def __init__(self, message: str, *, readback: Mapping[str, Any] | None = None):
+        super().__init__(message)
+        self.readback = dict(readback) if readback is not None else None
+
 
 def resolve_repository_roles(policy: Mapping[str, Any]) -> dict[str, str]:
     """Resolve the existing normative policy; projections cannot assign roles."""
@@ -221,18 +225,56 @@ def read_authority_main(root: Path = ROOT, previous: Mapping[str, Any] | None = 
     def get(endpoint: str) -> Mapping[str, Any]:
         try:
             response = subprocess.run(
-                ["gh", "api", "--hostname", "github.com", "--method", "GET", endpoint],
+                ["gh", "api", "--hostname", "github.com", "--method", "GET", "--include", endpoint],
                 cwd=root, capture_output=True, text=True, check=False, timeout=30,
             )
         except (OSError, subprocess.TimeoutExpired) as exc:
             raise ExecutorBlock("AUTHORITY_READBACK_TRANSPORT_UNAVAILABLE") from exc
-        if response.returncode:
+        # gh --include returns status/headers before JSON even for a denial.
+        # Retain only fixed resource labels and bounded numeric quota fields;
+        # never persist provider bodies, arbitrary headers, stderr or tokens.
+        body = response.stdout
+        headers: dict[str, str] = {}
+        http_status = 0
+        if body.startswith("HTTP/"):
+            header_block, separator, body = body.partition("\n\n")
+            lines = header_block.splitlines()
+            status_line = re.fullmatch(r"HTTP/[0-9.]+ ([1-5][0-9]{2})(?: [^\r\n]*)?", lines[0])
+            if not separator or not status_line:
+                raise ExecutorBlock("AUTHORITY_READBACK_INVALID_HTTP_ENVELOPE")
+            http_status = int(status_line[1])
+            for line in lines[1:]:
+                name, colon, value = line.partition(":")
+                if colon and name.casefold() in {"x-ratelimit-remaining", "x-ratelimit-reset", "retry-after"}:
+                    key = name.casefold()
+                    # Duplicate quota headers are ambiguous, not trustworthy.
+                    headers[key] = value.strip() if key not in headers else "INVALID"
+        if response.returncode or (http_status and http_status != 200):
             # Preserve the failure class only, never arbitrary response bodies or tokens.
             status = re.search(r"HTTP (\d{3})", response.stderr)
-            detail = f"HTTP_{status.group(1)}" if status else f"CLI_EXIT_{response.returncode}"
-            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}")
+            status_code = http_status or (int(status[1]) if status else 0)
+            detail = f"HTTP_{status_code}" if status_code else f"CLI_EXIT_{response.returncode}"
+            resource = ("MAIN_REF" if endpoint.endswith("/git/ref/heads/main") else
+                        "COMMIT" if "/git/commits/" in endpoint else
+                        "ROLE_POLICY" if "/contents/" + ROLE_POLICY_PATH + "?" in endpoint else
+                        "GOVERNANCE_POLICY" if "/contents/" + GOVERNANCE_POLICY_PATH + "?" in endpoint else
+                        "CODEOWNERS")
+            diagnostic: dict[str, Any] = {"resource": resource, "http_status": status_code,
+                "reason": "HTTP_DENIAL" if status_code else "CLI_FAILURE",
+                "authentication_verified": False}
+            for header, field in (("x-ratelimit-remaining", "rate_limit_remaining"),
+                                  ("x-ratelimit-reset", "rate_limit_reset"),
+                                  ("retry-after", "retry_after_seconds")):
+                value = headers.get(header, "")
+                if re.fullmatch(r"[0-9]{1,12}", value):
+                    diagnostic[field] = int(value)
+            diagnostic["retry_condition"] = (
+                "QUOTA_RESET_AND_FRESH_ORIGINAL_READBACK_REQUIRED"
+                if diagnostic.get("rate_limit_remaining") == 0 or status_code == 429 else
+                "ORIGINAL_DENIAL_CAUSE_REPAIR_REQUIRED")
+            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}", readback=diagnostic)
         try:
-            return _mapping(json.loads(response.stdout), "Authority GET response")
+            return _mapping(json.loads(body), "Authority GET response")
         except json.JSONDecodeError as exc:
             raise ExecutorBlock("AUTHORITY_READBACK_INVALID_JSON") from exc
 
@@ -1876,6 +1918,7 @@ WORKSPACE_SAFE_DENIAL_CODES = frozenset({"INVALID_RESPONSE", "INVALID_RUN_TOKEN"
     "SOURCE_CONTRACT_UNAVAILABLE", "SOURCE_CONTRACT_BYTES_INVALID", "WORKSPACE_SOURCE_NOT_ADMITTED",
     "TASK_NOT_ADMITTED", "TASK_VERSION_NOT_ADMITTED", "TASK_VERSION_OR_BYTES_CHANGED",
     "TASK_CHANGED_OR_ACCEPTANCE_UNAVAILABLE"})
+WORKSPACE_READBACK_RESOURCES = frozenset({"OIDC_KEYS", "MAIN_REF", "COMMIT", "WORKFLOW_RUN", "SOURCE_CONTRACT"})
 
 
 class _WorkspaceNoRedirect(urllib.request.HTTPRedirectHandler):
@@ -1908,6 +1951,17 @@ def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = No
             response = json.loads(exc.read(4097))
             declared = response.get("error", {}).get("code") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
             code = declared if isinstance(declared, str) and declared in WORKSPACE_SAFE_DENIAL_CODES else "JSON_DENIAL"
+            upstream = response.get("error", {}).get("readback") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
+            if code == "AUTHORITY_READBACK_UNAVAILABLE" and isinstance(upstream, dict):
+                resource, status = upstream.get("resource"), upstream.get("status")
+                if isinstance(resource, str) and resource in WORKSPACE_READBACK_RESOURCES and type(status) is int:
+                    if upstream.get("reason") == "HTTP_DENIAL" and 100 <= status <= 599:
+                        code += "_UPSTREAM_" + resource + "_HTTP_" + str(status)
+                        remaining = upstream.get("rate_limit_remaining")
+                        if status in (403, 429) and type(remaining) is int and remaining == 0:
+                            code += "_RATE_LIMIT_EXHAUSTED"
+                    elif upstream.get("reason") == "REQUEST_FAILED" and status == 0:
+                        code += "_UPSTREAM_" + resource + "_REQUEST_FAILED"
         except (OSError, ValueError):
             pass
         # No response message, token, caller identity or task text is logged.
@@ -2049,6 +2103,8 @@ def workspace_task_intake(directory: Path, root: Path = ROOT) -> dict[str, Any]:
         return value
     except (ExecutorBlock, KeyError, ValueError, OSError) as exc:
         value["first_boundary"] = str(exc) if isinstance(exc, ExecutorBlock) else "WORKSPACE_CHECKER_UNAVAILABLE"
+        if isinstance(exc, ExecutorBlock) and exc.readback is not None:
+            value["authority_readback"] = exc.readback
         raise ExecutorBlock(value["first_boundary"]) from None
     finally:
         amo_write(directory, "acceptance.json", canonical_json_bytes(value))

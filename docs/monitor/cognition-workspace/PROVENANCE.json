@@ -3,7 +3,7 @@
     "binding": "COMPARE_EXACT_MANIFEST_BYTES_THROUGH_INDEPENDENT_AUTHORITY_GET; not self-attested",
     "candidate_path": "docs/monitor/cognition-workspace/PROVENANCE.json",
     "candidate_ref": "fix/workspace-native-identity-20261101",
-    "observed_main": "5f319d41ad0522cbf9e674d06d417e2ec1f7fe0d",
+    "observed_main": "90024a24ad56f7f28011202e2a1ab03b0d9b9a34",
     "repository": "ingolf-lohmann/qik-vrt"
   },
   "codec_sources_sha256": {
@@ -228,14 +228,14 @@
     {
       "bytes": 6692,
       "container": {
-        "bytes": 5827,
+        "bytes": 5825,
         "path": "/provenance/containers/5dbd5690655cc102900ff1784cacbd6abaa7a324fa74d69c84ed9dac5365487d.qikvrt",
-        "sha256": "f71908f0aa74d4a744db352a5ce01da6ea8b944ad300952aa3c7bf559f2614b4"
+        "sha256": "1467f04d6c06a303e43a634c5ec2026996bc3d30f315427a16e8dff38b178d2d"
       },
       "kind": "selected_source",
       "path": "scripts/qikvrt-provenance.py",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "8c5cf921591c69adbcd8ed5622bcdb5d6cc48d6977877a86f53ee50be2161aa3"
+      "sha256": "720c2a1bd77373bc4dbe1e5ed89899170acc15650c9a92f97000750a4f512c1c"
     },
     {
       "bytes": 567,
@@ -322,16 +322,16 @@
       "sha256": "5155f23a2b4f85afec7150ec4309d45ffbd34f203378f72903d344b336f8c97b"
     },
     {
-      "bytes": 5132,
+      "bytes": 5485,
       "container": {
-        "bytes": 4880,
+        "bytes": 5001,
         "path": "/provenance/containers/bb5cdc2b0ff00e705a616138bc60834b633358a9fc7cdaf7e30e874710520b7e.qikvrt",
-        "sha256": "038fc8f5b7e71fa8eea0ca1da971f93f5a4e3ddde19abfe866c2f272639bff9b"
+        "sha256": "33d242fe94a93f73d7b9959f5cf15b466cfd8c06439d406bb2d1553282f382ec"
       },
       "kind": "selected_source",
       "path": "app/mcp/route.ts",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "21248a72e7e9701702620683e2d5411f6af69ff26c6b219f93f785215c0c80f7"
+      "sha256": "29d3a927d67df1d423209e27899f12e0a6c0ab8052e90cdc6ffbd1ad1eea429a"
     },
     {
       "bytes": 1932,
@@ -358,16 +358,16 @@
       "sha256": "1981e56f132c5a26434e7d5c1cc047a35060770a3ce3235fc3e67c581e1150c9"
     },
     {
-      "bytes": 9715,
+      "bytes": 11660,
       "container": {
-        "bytes": 6589,
+        "bytes": 7302,
         "path": "/provenance/containers/cd51f857d2d866fafcc730433f778979d17ae977b91ee5e6a3acd1a45dcd348f.qikvrt",
-        "sha256": "cd6badf17da9efb463a5d40bd70093fd323305a2a634144e8fee2664feafac10"
+        "sha256": "19d6806c9244bc10e5020ae3eec3b269b31e7cbcd3e30d2d85b6c69ae017f3e5"
       },
       "kind": "selected_source",
       "path": "lib/authority-identity.ts",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "f5808d3a5801e77a99e3efc0fbf319336c77d1625b159c8b1de7987e2ef99bca"
+      "sha256": "c4198a00b15dee72e92b212ad17b4a9dfe16a39b88982aba9b0ee54838c2c086"
     },
     {
       "bytes": 3529,
@@ -382,28 +382,28 @@
       "sha256": "8e3e2d53bcf814068ef2496bd18f40fbef933d6359696736361f2efab5d92fc6"
     },
     {
-      "bytes": 567,
+      "bytes": 624,
       "container": {
-        "bytes": 3556,
+        "bytes": 3587,
         "path": "/provenance/containers/ee182270c053e9857bc00d2a64537be4b4c69c5c154652688b81d9182f1cca09.qikvrt",
-        "sha256": "d8c3cd55d5b2c381b672d104273c2b6c599a9b325e3d01a20cffe48acd3d05d4"
+        "sha256": "0e0994daa22b719bd742a6d9d3440d134f500c84847b8fc3891795c9ee93a94c"
       },
       "kind": "selected_source",
       "path": "app/api/v1/authority/tasks/[id]/route.ts",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "be5e334681ada4705d3c7246efc7ca604226a00ea04eb9b969905fce13137464"
+      "sha256": "8dbacf9d11647b6a5dd5c23b2979c54981d1beefe7433edc8347ec3194ec3d35"
     },
     {
-      "bytes": 555,
+      "bytes": 612,
       "container": {
-        "bytes": 3539,
+        "bytes": 3562,
         "path": "/provenance/containers/8ff651402c3f71b3ef5bd83b8a3b01ec05f42360eabd4a73df16cb4a4e6d7042.qikvrt",
-        "sha256": "50202419a81d11a5c65df9bb7e4bf7b1372a69ef43f10878d20913306645263f"
+        "sha256": "e6ed01ef91892cc6127275bf13eb39673de1fd7f66fe67bce06dc5f0c00f8778"
       },
       "kind": "selected_source",
       "path": "app/api/v1/authority/acceptances/route.ts",
       "payload_license": "PolyForm-Noncommercial-1.0.0",
-      "sha256": "1669de34414dcaccc8342f723eaa0a107ce99402ab616267b964eee24383d0f9"
+      "sha256": "c099317e369d875cb5691bb50cef6702cfe4772640a7983efcc5ca030a4855a9"
     },
     {
       "bytes": 233,
@@ -434,7 +434,7 @@
     "root_html": "DYNAMIC_NOT_BYTE_FROZEN",
     "watermark": "NOT_IMPLEMENTED"
   },
-  "site_source_predecessor": "a0ce7cb92cb1057ec7a804dc773cedf139068b2b",
+  "site_source_predecessor": "e101f90fda5488d10651efb0decea47bcee9e885",
   "standpoint": {
     "bytes": 400,
     "personal_authentication": false,
