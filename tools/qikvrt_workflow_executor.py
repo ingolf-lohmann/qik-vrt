@@ -1909,6 +1909,7 @@ def amo_progress(directory: Path, receipt: Mapping[str, Any]) -> None:
 
 
 WORKSPACE_ORIGIN = "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
+WORKSPACE_IDENTITY_COOKIE = "__Host-QIKVRT-Workflow-Identity"
 WORKSPACE_FIELDS = ("id", "title", "description", "status", "priority", "cognition",
                     "version", "visibility", "createdAt", "updatedAt")
 WORKSPACE_SAFE_DENIAL_CODES = frozenset({"INVALID_RESPONSE", "INVALID_RUN_TOKEN", "RUN_TOKEN_REQUIRED",
@@ -1933,8 +1934,10 @@ def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = No
                "User-Agent": "QIKVRT-Authority-workspace-intake/1"}
     # Sites owns the standard Authorization namespace. The service token is
     # independently verified by our original Worker, not a visitor credential.
-    identity_header = "X-QIKVRT-Workflow-Identity" if urllib.parse.urlsplit(url).netloc == urllib.parse.urlsplit(WORKSPACE_ORIGIN).netloc else "Authorization"
-    headers[identity_header] = "Bearer " + token
+    if urllib.parse.urlsplit(url).netloc == urllib.parse.urlsplit(WORKSPACE_ORIGIN).netloc:
+        headers["Cookie"] = WORKSPACE_IDENTITY_COOKIE + "=" + token
+    else:
+        headers["Authorization"] = "Bearer " + token
     request = urllib.request.Request(url, data=data, method="GET" if data is None else "POST", headers=headers)
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _WorkspaceNoRedirect())
     try:
@@ -2044,6 +2047,8 @@ def workspace_task_intake(directory: Path, root: Path = ROOT) -> dict[str, Any]:
         if (admission.get("schema") != "qikvrt-workspace-task-intake/v1"
                 or admission.get("enabled") is not True or admission.get("origin") != WORKSPACE_ORIGIN
                 or admission.get("audience") != WORKSPACE_ORIGIN + "/api/v1/authority"
+                or admission.get("identity_header") != "Cookie"
+                or admission.get("identity_cookie") != WORKSPACE_IDENTITY_COOKIE
                 or admission.get("workflow") != AMO_NATIVE_WORKFLOW
                 or admission.get("scope") != "VERSIONED_TASK_COORDINATION_ONLY"
                 or admission.get("productive_effect_authorized") is not False

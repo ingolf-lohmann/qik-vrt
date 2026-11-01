@@ -1,0 +1,55 @@
+{
+  "schema": "qikvrt-evidence-correction/v1",
+  "id": "WORKSPACE-ATTEMPT-INVENTORY-CORRECTION-20261101",
+  "corrects": {
+    "archive": "evidence/cognition-workspace/20261101-native-identity-repair/UPSTREAM_READBACK_REPAIR.zip",
+    "archive_sha256": "d8a9cee8557f2eee1584d0f36978a01e2ba2669213b2df8bb4a06d711bb69e52",
+    "member": "MANIFEST.json",
+    "pointer": "/no_third_native_retry_at_archive_creation",
+    "previous_value": true
+  },
+  "disposition": "SUPERSEDED_FOR_GLOBAL_ATTEMPT_INVENTORY",
+  "cause": "The archive creator checked its own calls without first reconciling the other work rings. The unqualified global negative claim is incorrect.",
+  "corrected_scope": "This client initiated only the causal retry producing attempt2. Four original run attempts existed before archive creation; attempts3/4 were independently discovered later. Native logs do not identify another client's natural-person or model identity.",
+  "original_run": 41288481084,
+  "actual_attempts": [
+    {
+      "attempt": 1,
+      "job": 124794574178,
+      "artifact": 13076062578,
+      "sha256": "66f07dcdcb9d0bb95d5233f03cf8cd73b7ebcf6739c466674e5c8088f137f006",
+      "bytes": 1011,
+      "boundary": "WORKSPACE_TASK_READ_HTTP_503_AUTHORITY_READBACK_UNAVAILABLE"
+    },
+    {
+      "attempt": 2,
+      "job": 124796831997,
+      "artifact": 13076532082,
+      "sha256": "3d01c60365e518c61873c261686aede503b13194ff737018f3696afd87786eda",
+      "bytes": 1011,
+      "boundary": "WORKSPACE_TASK_READ_HTTP_503_AUTHORITY_READBACK_UNAVAILABLE"
+    },
+    {
+      "attempt": 3,
+      "job": 124799185155,
+      "artifact": 13076464036,
+      "sha256": "9d3fe0be2c8c46dd0e047961ec37674f564ac4943d6660a11d3090b5abdd5fa2",
+      "bytes": 835,
+      "boundary": "AUTHORITY_READBACK_DENIED HTTP_403"
+    },
+    {
+      "attempt": 4,
+      "job": 124800134960,
+      "artifact": 13076703548,
+      "sha256": "4148c829fac5fce7b692089edb29435b949ab9aba13f1a5ffdf31ffc4ced0544",
+      "bytes": 835,
+      "boundary": "AUTHORITY_READBACK_DENIED HTTP_403"
+    }
+  ],
+  "all_four_original_zips_independently_downloaded_and_digest_verified": true,
+  "receipts_in_these_artifacts": [],
+  "client_403_cause": "UNVERIFIED: do not attribute it to the independently sampled receiver quota",
+  "receiver_quota_scope": "Each observation is for that response and egress route, not global availability. A provider reset time alone does not prove restoration.",
+  "original_archive_retained_byte_identical": true,
+  "effect_ack_done": false
+}

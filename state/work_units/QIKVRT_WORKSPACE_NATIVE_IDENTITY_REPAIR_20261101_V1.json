@@ -178,6 +178,187 @@
       "sha256": "5087b9b88f453dee7f0c4fe597d808655bbe13be3ea8dd3fac876916e6ca5d00"
     },
     "evidence_archive": "evidence/cognition-workspace/20261101-native-identity-repair/UPSTREAM_READBACK_REPAIR.zip",
-    "archive_sha256": "d8a9cee8557f2eee1584d0f36978a01e2ba2669213b2df8bb4a06d711bb69e52"
+    "archive_sha256": "d8a9cee8557f2eee1584d0f36978a01e2ba2669213b2df8bb4a06d711bb69e52",
+    "global_attempt_inventory_is_current": false
+  },
+  "evidence_corrections": [
+    {
+      "id": "WORKSPACE-ATTEMPT-INVENTORY-CORRECTION-20261101",
+      "path": "evidence/cognition-workspace/20261101-native-identity-repair/ATTEMPT_INVENTORY_CORRECTION.json",
+      "corrects_archive_sha256": "d8a9cee8557f2eee1584d0f36978a01e2ba2669213b2df8bb4a06d711bb69e52",
+      "additional_originals_archive": "evidence/cognition-workspace/20261101-native-identity-repair/ADDITIONAL_NATIVE_ATTEMPTS.zip",
+      "archive_sha256": "6bdd0ccccb3b42f364d03225dfbc370b09b432556a55e10f27c6f58d218b0229",
+      "scope": "Historical unqualified no-third claim superseded; original archive and original four HOLD ZIPs retained byte-identical."
+    }
+  ],
+  "credential_transport_repair": {
+    "schema": "qikvrt-workload-credential-transport-repair/v1",
+    "issue": 665,
+    "owner": "Ingolf Lohmann",
+    "artificial_contribution": "OpenAI Codex; original repository/client contributions retained",
+    "base_main": "7f571c85ee830054158eae1731e31ed12814150c",
+    "site_source": "5fe510044042dab4211d5bd06f7c87e2daae318b",
+    "site_version": 16,
+    "scope": "Same GitHub OIDC credential and authorization guards; only explicit source-admitted Cookie transport. No browser credential setting, new session provider, grant or productive effect.",
+    "actual_observation": "Original custom credential header appeared in JWT form without redaction. Only header names and boolean classifications were inspected/exported; no credential values in this archive. Standard Cookie fields are redacted in the observed original logging surface.",
+    "transport": {
+      "identity_header": "Cookie",
+      "identity_cookie": "__Host-QIKVRT-Workflow-Identity",
+      "legacy_header_rejected": true,
+      "duplicate_cookie_rejected": true,
+      "native_old_contract_rejected_before_oidc": true,
+      "credential_forwarding_to_upstreams_rejected_by_actual_workerd_test": true
+    },
+    "synthetic_live_probe": {
+      "status": 401,
+      "body": {
+        "error": {
+          "code": "OIDC_KEY_UNVERIFIED"
+        }
+      },
+      "observed_at": "2026-11-01T09:38:25.688574+00:00",
+      "site_source": "48dea2f9b9c872a4d392749d20880b1a51e86173",
+      "scope": "Synthetic wrong-key marker only; no actual workload credential or task read"
+    },
+    "log_projection": [
+      {
+        "timestamp": 1793525905670,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525756588,
+        "status": 404,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525744202,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525737808,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      },
+      {
+        "timestamp": 1793525732337,
+        "status": 401,
+        "method": "GET",
+        "cookie_present": true,
+        "cookie_redacted": true,
+        "legacy_credential_header_present": false
+      }
+    ],
+    "source_v15_v16_authentication_blob_identical": true,
+    "acceptance_gate": "Independent version8 coordination acceptance matched original native artifact; this does not close the new real-cookie native-path verification for issue665.",
+    "review_race": {
+      "review": 5727356120,
+      "decision": "REVOKE",
+      "submitted_at": "2026-11-01T09:20:43Z",
+      "failure_status_created_at": "2026-11-01T09:21:08Z",
+      "merge": "7f571c85ee830054158eae1731e31ed12814150c",
+      "merged_at": "2026-11-01T09:21:12Z",
+      "other_client_final_preflight": "UNVERIFIED",
+      "native_platform_enforcement_inferred": false
+    },
+    "tests": {
+      "controller_module": 92,
+      "identity_crypto_workerd": 43,
+      "storage": 18,
+      "workspace": 45,
+      "typescript": true,
+      "compiled_production_smoke": true
+    },
+    "original_logs_retained": true,
+    "all_session_output_captured": false,
+    "new_actual_workload_cookie_run_verified": false,
+    "effect_ack_done": false,
+    "productive_effect_verified": false,
+    "files": [
+      {
+        "path": "cookie-transport-controller.log",
+        "bytes": 98,
+        "sha256": "00d15a7468a29f685a44537c2d57cc21666abf3a73626ebd4f81851dd47ed095"
+      },
+      {
+        "path": "cookie-transport-identity.log",
+        "bytes": 5712,
+        "sha256": "5e97e876864eac8d3901ee4266a0f87527b84d38f37817928e59527e55fb0bd9"
+      },
+      {
+        "path": "cookie-transport-storage.log",
+        "bytes": 1310,
+        "sha256": "cd00f26490ff4b9e5e84318aea57f07ae32cfd688f3ba4a69c794770296533fb"
+      },
+      {
+        "path": "cookie-transport-workspace.log",
+        "bytes": 2778,
+        "sha256": "a650dec516773a75ed952e0d767138bd976095100caca8bb474403b5023dda1c"
+      },
+      {
+        "path": "cookie-final-provenance-tests.log",
+        "bytes": 136,
+        "sha256": "d9190060551ade9548333ffc4eec8d7bcdc626f6295a9da6235d80e4188d38b8"
+      },
+      {
+        "path": "cookie-final-smoke.log",
+        "bytes": 561,
+        "sha256": "d612dedd2013a6256e863bf5bffdcd10e458400554cfd23aeb746335ef59c82c"
+      },
+      {
+        "path": "COOKIE_TRANSPORT_BEFORE_DEPLOY_NEGATIVE.json",
+        "bytes": 242,
+        "sha256": "6f7623572991c026d082d5746f496f16fce73c1aaae9ece6789fc124c1bb6ef0"
+      },
+      {
+        "path": "COOKIE_TRANSPORT_AFTER_DEPLOY_NEGATIVE.json",
+        "bytes": 298,
+        "sha256": "c0fa50d54200e8c038099bdeb4701a4c7697b068964e7bd80073383eaf28286a"
+      },
+      {
+        "path": "COOKIE_METADATA_PROJECTION.json",
+        "bytes": 371,
+        "sha256": "e7826c886109c18fdf3ca1dedb9db5a29ff2b422381397d84fc66a4e2a0d2725"
+      },
+      {
+        "path": "COOKIE_AFTER_METADATA_PROJECTION.json",
+        "bytes": 922,
+        "sha256": "772d758bfd05d4e007f0e4acf90f2918aeab8502849e46f0bea20d3c59a178be"
+      },
+      {
+        "path": "original-version8-workflow-acceptance.zip",
+        "bytes": 1613,
+        "sha256": "6cfc541d800ccb782a5f6910ad29356e923ee1fcce10f395faf023af776cff4e"
+      },
+      {
+        "path": "INDEPENDENT_VERSION8_ACCEPTANCE_READBACK.json",
+        "bytes": 2488,
+        "sha256": "93f5d65933da07b3e6476431cb0b96757dfa1c23f3343a6304e17a78c2e63331"
+      }
+    ],
+    "site_patch_sha256": "6305e6f9abc0600ef96decb403228a3ac7a13eeb6cf9720dc76b609a19800ae8",
+    "evidence_archive": "evidence/cognition-workspace/20261101-native-identity-repair/CREDENTIAL_TRANSPORT_REPAIR.zip",
+    "archive_sha256": "0366aa4eeaab5fd3f97eea5deaee394ca03815e28231e8e7763407efb464974d"
+  },
+  "independent_version8_acceptance": {
+    "evidence_path": "evidence/cognition-workspace/20261101-native-identity-repair/INDEPENDENT_VERSION8_ACCEPTANCE_READBACK.json",
+    "task_version": 8,
+    "task_sha256": "84d282e3acc90706f7944c3db579451c0eb58aa8ed7e1486f897c465edae42dd",
+    "run_id": 41292736229,
+    "scope": "VERSIONED_TASK_COORDINATION_ONLY",
+    "effect_ack_done": false
   }
 }
