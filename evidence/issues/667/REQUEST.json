@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "Owner authorizes implementing the previously agreed GitHub quota reduction on 2026-11-01. Preserve local-Git-first, original MeshWorkCache/outboxes and Authority-only external persistence. Main f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3 / TREE7739ea3a26300d8016e3c07992be632fc46d6b65. Existing original MeshWorkCache 36 tests independently pass; 32 local updates produce one authenticated loopback proposal transfer (102440 bytes versus 2850829 for 32 transfers), not deployed peer acceptance.\n\nConcrete receiver defect: Site16/source5fe510044042dab4211d5bd06f7c87e2daae318b makes six upstream reads for every admission, repeats immutable commit/source and public-key bytes, and does not persist a shared quota stop across resource paths or isolate restarts. Native Main run41297200232/1 reached a separate MAIN_REF HTTP403 quota0 boundary. No native rerun is justified by unchanged inputs.\n\nBounded repair/closure criteria: existing receiver transport stores only bounded public immutable/key JSON and numeric quota boundaries in its existing D1; no new token/scope/executor or credential forwarding; fresh before/after Main and executing-run checks remain mandatory. Independent real Workerd/D1 negative controls and original signature/task/CAS tests, exact deployed source/provenance and fresh owner readback must show an enforced quota stop with request_attempted=false when active. Preserve historical task-v8 acceptance and productive EFFECT_ACK_DONE=false. This issue concerns the receiver transport defect; live native peer aggregation, authenticated GitHub service binding, original host activation and global rate compliance remain distinct open duties.",
+  "created_at": "2026-11-01T10:50:30Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/667",
+  "issue_number": 667,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Receiver quota boundary must persist and reuse immutable GitHub read sources",
+  "updated_at": "2026-11-01T10:50:30Z"
+}
