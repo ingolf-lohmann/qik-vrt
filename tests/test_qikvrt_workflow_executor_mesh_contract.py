@@ -1371,5 +1371,131 @@ class AMOMetadataPagingTests(unittest.TestCase):
             list(MODULE._amo_run_pages(read, "runs", "INCOMPLETE"))
 
 
+class WorkspaceTaskIntakeTests(unittest.TestCase):
+    """Isolated source/run fixtures; never a claim of productive admission."""
+
+    def setUp(self):
+        self.task = {"id": "b50951b4-1194-431b-aa43-d81d262a19d3", "title": "Prüfung äöü",
+            "description": "Private task prose must stay out of public artifacts", "status": "open",
+            "priority": "high", "cognition": "artificial", "version": 1, "visibility": "shared",
+            "createdAt": "2026-11-01T00:00:00.000Z", "updatedAt": "2026-11-01T00:00:00.000Z"}
+        self.binding = {"id": self.task["id"], "version": 1, "sha256": MODULE.workspace_task_digest(self.task)}
+        self.contract = copy.deepcopy(MODULE.load_contract(ROOT))
+        self.contract["workspace_task_intake"]["work_items"] = [{"id": self.task["id"], "min_version": 1}]
+        self.pin = hashlib.sha256(CONTRACT.read_bytes()).hexdigest()
+        self.identity = {"repository": MODULE.AMO_REPOSITORY, "run_id": 71, "run_attempt": 1,
+            "head": "a" * 40, "tree": "b" * 40, "workflow": MODULE.AMO_NATIVE_WORKFLOW,
+            "workflow_sha": "a" * 40, "contract_sha256": self.pin, "scope": "VERSIONED_TASK_COORDINATION_ONLY"}
+        self.receipt = {"schema": "qikvrt-workspace-task-acceptance/v1", "task_id": self.task["id"],
+            "task_version": 1, "task_sha256": self.binding["sha256"], "state": "WORKFLOW_ACCEPTED",
+            "authority": self.identity, "independent_readback_required": True,
+            "productive_effect_verified": False, "effect_ack_done": False}
+        self.response = {"task": self.task, "task_sha256": self.binding["sha256"], "workflowAcceptance": None}
+        self.environment = {"GITHUB_EVENT_NAME": "push", "GITHUB_REPOSITORY": MODULE.AMO_REPOSITORY,
+            "GITHUB_REF": "refs/heads/main", "GITHUB_SHA": "a" * 40, "GITHUB_RUN_ID": "71",
+            "GITHUB_WORKFLOW_REF": MODULE.AMO_REPOSITORY + "/" + MODULE.AMO_NATIVE_WORKFLOW + "@refs/heads/main",
+            "ACTIONS_ID_TOKEN_REQUEST_URL": "https://run-actions-1.actions.githubusercontent.com/token?api-version=1",
+            "ACTIONS_ID_TOKEN_REQUEST_TOKEN": "native-request-secret"}
+
+    def invoke(self, replies, **changes):
+        with tempfile.TemporaryDirectory() as temp:
+            path = pathlib.Path(temp)
+            with mock.patch.dict(os.environ, {**self.environment, **changes}), \
+                    mock.patch.object(MODULE, "load_contract", return_value=self.contract), \
+                    mock.patch.object(MODULE, "_git", side_effect=lambda root, *args: "b" * 40 if args[-1] == "HEAD^{tree}" else "a" * 40), \
+                    mock.patch.object(MODULE, "read_authority_main", return_value={"main_head": "a" * 40, "main_tree": "b" * 40}), \
+                    mock.patch.object(MODULE, "_workspace_http", side_effect=replies) as http:
+                try:
+                    result = MODULE.workspace_task_intake(path)
+                    failure = None
+                except MODULE.ExecutorBlock as exc:
+                    result, failure = None, str(exc)
+                stored = json.loads((path / "acceptance.json").read_bytes())
+                return result, failure, http.call_args_list, stored
+
+    def test_native_coordination_acceptance_reads_actual_task_then_persists_then_reads(self):
+        result, failure, calls, stored = self.invoke([{"value": "signed.native.jwt"}, self.response,
+            {"receipt": self.receipt}, {**self.response, "workflowAcceptance": self.receipt}])
+        self.assertIsNone(failure)
+        self.assertEqual(len(calls), 4)
+        self.assertEqual(calls[2].args[2]["task_id"], self.task["id"])
+        self.assertEqual(calls[2].args[2]["task_version"], 1)
+        self.assertEqual(result["receipts"], [self.receipt])
+        self.assertTrue(result["independent_readback_required"])
+        self.assertFalse(result["effect_ack_done"])
+        text = json.dumps(stored)
+        for private in (self.task["description"], "signed.native.jwt", "native-request-secret"):
+            self.assertNotIn(private, text)
+
+    def test_ambiguous_acceptance_is_not_retried_and_successor_reads_first(self):
+        result, error, calls, stored = self.invoke([{"value": "signed.native.jwt"}, self.response,
+            MODULE.ExecutorBlock("WORKSPACE_READBACK_UNAVAILABLE")])
+        self.assertIsNone(result); self.assertEqual(len(calls), 3)
+        self.assertEqual(stored["state"], "HOLD")
+        self.assertEqual(error, "WORKSPACE_READBACK_UNAVAILABLE")
+        result, error, calls, stored = self.invoke([{"value": "signed.native.jwt"},
+            {**self.response, "workflowAcceptance": self.receipt},
+            {**self.response, "workflowAcceptance": self.receipt}], GITHUB_RUN_ID="72")
+        self.assertIsNone(error)
+        self.assertEqual(len(calls), 3)
+        self.assertTrue(all(len(call.args) == 2 for call in calls))
+        self.assertEqual(result["receipts"][0]["authority"]["run_id"], 71)
+        self.assertEqual(result["observer_run_id"], 72)
+
+    def test_changed_task_and_failed_checker_cannot_become_success(self):
+        cases = [{**self.response, "task": {**self.task, "version": 2}},
+                 {**self.response, "task": {**self.task, "description": "Changed bytes"}},
+                 {**self.response, "task": {**self.task, "visibility": "private"}}]
+        for changed in cases:
+            with self.subTest(changed=changed):
+                result, error, calls, stored = self.invoke([{"value": "signed.native.jwt"}, changed])
+                self.assertIsNone(result); self.assertEqual(len(calls), 2)
+                self.assertEqual(stored["state"], "HOLD")
+        result, error, calls, stored = self.invoke([{"value": "signed.native.jwt"}, self.response,
+            {"receipt": self.receipt}, {**self.response, "workflowAcceptance": None}])
+        self.assertIsNone(result); self.assertEqual(stored["state"], "HOLD")
+
+    def test_replay_wrong_source_and_productive_claims_rejected(self):
+        for change in ({"task_version": 2}, {"task_sha256": "f" * 64}, {"effect_ack_done": True},
+                       {"productive_effect_verified": True}, {"independent_readback_required": False},
+                       {"authority": {**self.identity, "workflow": "foreign.yml"}},
+                       {"authority": {**self.identity, "repository": "foreign/repo"}},
+                       {"authority": {**self.identity, "head": "unavailable"}},
+                       {"authority": {**self.identity, "scope": "EXECUTE_ANY_PROSE"}}):
+            with self.subTest(change=change), self.assertRaises(MODULE.ExecutorBlock):
+                MODULE.validate_workspace_acceptance({**self.receipt, **change}, self.task, self.binding, self.pin)
+
+    def test_fresh_later_version_gets_its_own_receipt(self):
+        later = {**self.task, "version": 4, "description": "Admitted editor continuation, still data only"}
+        pin = MODULE.workspace_task_digest(later)
+        receipt = {**self.receipt, "task_version": 4, "task_sha256": pin}
+        response = {"task": later, "task_sha256": pin, "workflowAcceptance": None}
+        result, error, calls, stored = self.invoke([{"value": "signed.native.jwt"}, response,
+            {"receipt": receipt}, {**response, "workflowAcceptance": receipt}])
+        self.assertIsNone(error)
+        self.assertEqual(calls[2].args[2]["task_version"], 4)
+        self.assertEqual(result["receipts"][0]["task_sha256"], pin)
+        self.assertFalse(stored["effect_ack_done"])
+
+    def test_wrong_native_context_is_rejected_before_any_network(self):
+        for changes in ({"GITHUB_REF": "refs/heads/foreign"}, {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+                        {"ACTIONS_ID_TOKEN_REQUEST_TOKEN": ""}, {"ACTIONS_ID_TOKEN_REQUEST_URL": "https://foreign.test/token"}):
+            with self.subTest(changes=changes):
+                result, error, calls, stored = self.invoke([], **changes)
+                self.assertIsNone(result); self.assertEqual(calls, [])
+                self.assertEqual(stored["state"], "HOLD")
+
+    def test_existing_workflow_is_reused_with_job_scoped_identity_permission(self):
+        source = EXECUTOR_WORKFLOW.read_text()
+        job = source.split("  workspace-task-intake:", 1)[1].split("  owner-reminders:", 1)[0]
+        self.assertIn("id-token: write", job)
+        self.assertIn("contents: read", job)
+        self.assertIn("actions: read", job)
+        self.assertNotIn("contents: write", job)
+        self.assertNotIn("actions: write", job)
+        self.assertIn("workspace-task-intake --output-dir", job)
+        self.assertNotIn("secrets.", job)
+
+
 if __name__ == "__main__":
     unittest.main()

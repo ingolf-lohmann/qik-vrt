@@ -34,3 +34,42 @@ Ein Gate ist nur `PASSED`, wenn sein eigener unveränderlicher Nachweis vorliegt
 - Die Bridge liefert derzeit `503 ORIGINAL_TERMINAL_TRANSPUTER_ADAPTER_NOT_ADMITTED` für Mutationen. Das ist korrektes Fail-Closed-Verhalten, aber keine fertige Auftragseinreichung.
 
 **Autoritative Aktualität:** Live-Zustand immer aus GitHub-/Native-Readbacks, niemals aus dieser Momentaufnahme ableiten.
+# Versioned common-workspace intake — 1 November 2026
+
+The existing `QIKVRT workflow executor` consumes only task IDs admitted in
+`state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json#/workspace_task_intake`.
+It reads the task's current version and complete canonical UTF-8 payload from
+the established common workspace. The source permit is coordination only;
+task prose, subsequent editor updates and a receipt grant no productive rights.
+The original native Terminal/Transputer and all separately admitted effect
+workflows retain their existing boundaries. No scheduler is added.
+
+The existing Site exposes `GET /api/v1/authority/tasks/{id}` and
+`POST /api/v1/authority/acceptances`. Its service identity is a short-lived
+GitHub Actions RS256 OIDC token with the exact Site audience, repository ID,
+Owner ID, Main ref, workflow path, workflow SHA, run ID and attempt. The Site
+independently reads executing-run metadata and current Main/commit/tree, verifies
+the exact source-contract bytes and reobserves Main before admission. This
+uses job-scoped `id-token: write`, `contents: read` and `actions: read`; it exports
+no visitor session or long-lived credential. Missing issuer/API/storage access
+is UNVERIFIED/HOLD, not an empty task list or successful adoption.
+
+Acceptance is keyed by task ID and exact version, binds its canonical payload
+SHA-256 and actual accepting run/HEAD/TREE/contract, and is stored transactionally
+with one journal event. Concurrent duplicates return the original receipt.
+A version change between reading and acceptance is rejected. A later version
+requires a fresh read and its own receipt; the old record remains historical.
+After an uncertain POST, a successor reads the task first. Tokens and original
+task text do not enter public workflow artifacts or this repository.
+
+The original authenticated MCP `get_task` returns `workflowAcceptance` only for
+the currently read task version. An independent member must read that stored
+receipt and cross-check the actual GitHub run and original artifact before
+claiming the handover gate closed. Local tests, Site publication, source merge,
+workflow success and the producer's own GET do not alone close that gate.
+Every receipt keeps `productive_effect_verified=false` and `effect_ack_done=false`.
+The static client release's remaining gates and productive DoD remain open.
+
+Human direction and authorization: Ingolf Lohmann. Implementation and isolated
+verification: OpenAI Codex. This source contract does not attest a new human
+inspection, Claude adoption, platform protection or productive-domain effect.

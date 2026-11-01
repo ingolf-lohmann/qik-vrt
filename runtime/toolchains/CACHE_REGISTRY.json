@@ -1167,6 +1167,26 @@
         "Required command availability before provisioning; source-bound archive hash/size and executable self-tests; isolated positive/negative shell regressions."
       ],
       "version": "zstd-decode-v1"
+    },
+    "lean-external-checkers": {
+      "version": "4.35.0",
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "runtime/toolchains/cache/lean-4.35.0-linux.tar.zst: official SHA-256 7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d; fresh extraction"
+      ],
+      "profiles": [
+        "formal-delivery"
+      ],
+      "provider": "Lean official v4.35.0 distribution; upstream source pins in formal proof obligation policy",
+      "trusted_save": false,
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "verification": [
+        "Archive size 594481375 and official release API SHA-256 before extraction; lean --githash must equal eb6cafb7290e8bd5f2937522d8d804f58f02bafc; six checker commands over one fresh source-bound export; missing executable or checker failure is HOLD, never replacement."
+      ]
     }
   },
   "coverage_authority": "runtime/toolchains/CACHE_COVERAGE.json",
