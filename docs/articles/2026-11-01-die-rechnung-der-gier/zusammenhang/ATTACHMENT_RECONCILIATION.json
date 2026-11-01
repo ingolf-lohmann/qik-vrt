@@ -1,0 +1,155 @@
+{
+  "schema": "qikvrt_provided_sources_reconciliation_v1",
+  "scope": "ARGUMENT_SPECIFIC_READING_AND_OFFLINE_INTERNAL_CONSISTENCY_CHECKS",
+  "all_ten_original_files_unchanged": true,
+  "raw_attachments_published": false,
+  "files": [
+    {
+      "id": "A01",
+      "name": "Preserve-reflexive-feedback-and-verify-recursive-Mesh-recovery-by-ingolf-lohmann.pdf",
+      "provided_filename": "01-Preserve-reflexive-feedback-and-verify-recursive-Mesh-recovery-by-ingolf-lohmann.pdf",
+      "bytes": 396037,
+      "sha256": "cdda2ad16489a49a2a8a1ad57b4fced6fbece1695f97e25770d9cbdcf2d1b93a",
+      "pages": 32,
+      "review_scope": "Seite 1, Seitenübersicht sowie argumentrelevante Auditstellen S. 28-30; keine aktuelle Code-/PR-Abnahme.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A02",
+      "name": "QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.pdf",
+      "provided_filename": "02-QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.pdf",
+      "bytes": 127288,
+      "sha256": "e3a7189f12731593c965a4a46f53b75bc5c94500f0e4292522a0b2de20df9f07",
+      "pages": 11,
+      "review_scope": "Vollständiger extrahierter Artikel, S. 1-11; besonders S. 3-8 und 10-11.",
+      "public_archive_verified_by_this_check": false,
+      "existing_repository_copy": {
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.pdf",
+        "sha256": "e3a7189f12731593c965a4a46f53b75bc5c94500f0e4292522a0b2de20df9f07",
+        "byte_identical": true,
+        "checked_on_commit": "f0365a2577bfe26957efac516c38b594001dab92"
+      }
+    },
+    {
+      "id": "A03",
+      "name": "qikvrt-devops-workflow-observations.jsonl",
+      "provided_filename": "03-qikvrt-devops-workflow-observations.jsonl",
+      "bytes": 105261,
+      "sha256": "6de522fdd8ec0ac86f0d245a691326f0ed9924371554a676de124e93991eb771",
+      "review_scope": "Alle 127 JSONL-Zeilen geparst; alle Projektionsdigests nachgerechnet; negative Mutation geprüft.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A04",
+      "name": "devops.html",
+      "provided_filename": "04-devops.html",
+      "bytes": 156462,
+      "sha256": "6d43e51f2666c4222ce09ae438a309329f99d0aa871cb80f0c769e1b1ab69a0b",
+      "review_scope": "Gesamter sichtbarer Text und eingebetteter JSON-Datenbestand; 127 Laufidentitäten/Felder mit JSONL abgeglichen. Skripte nicht ausgeführt.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A05",
+      "name": "QIKVRT_Softwaremodernisierung.pdf",
+      "provided_filename": "05-QIKVRT_Softwaremodernisierung.pdf",
+      "bytes": 135942,
+      "sha256": "068f0b31248eb801e32d24be4960b258d3630ff244ab94389773c02d8783b541",
+      "pages": 16,
+      "review_scope": "Seitenübersicht und argumentbezogene Stellen, insbesondere S. 1, 7 und 10-14; keine erneute Ausführung historischer Softwareprüfungen.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A06",
+      "name": "Der-Sinn-und-Zweck-bleibt-erhalten-q.e.d.-Ingolf-Lohmann.txt",
+      "provided_filename": "06-Der-Sinn-und-Zweck-bleibt-erhalten-q.e.d.-Ingolf-Lohmann.txt",
+      "bytes": 33786,
+      "sha256": "a58052f17668f707a46cae3cf93aaf8dc1f3e5772e09d35a6f3cba8ee521802f",
+      "review_scope": "Anfang, Schluss und argumentbezogene Abschnitte 24-29 sowie Passagen zur Zustandsfortsetzung; keine neue Prüfung zitierter Meta-Analysen.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A07",
+      "name": "Generelle-Onboarding-Methodik-fu-r-ku-nstliche-Kognition-q.e.d.-Ingolf-Lohmann.txt",
+      "provided_filename": "07-Generelle-Onboarding-Methodik-fu-r-ku-nstliche-Kognition-q.e.d.-Ingolf-Lohmann.txt",
+      "bytes": 29969,
+      "sha256": "90b81bacf9e2b5f0207c949744e4e4c438bdd206dd087f7a95cae43108120ab5",
+      "review_scope": "Argumentbezogene Stellen zu Scope, Identität, Freigabe und Wiederaufnahme, insbesondere Anfang und Abschnitte 9-10; kein Anbieter-Onboarding ausgeführt.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A08",
+      "name": "Das-habe-ich-gemacht-q.e.d.-Ingolf-Lohmann.txt",
+      "provided_filename": "08-Das-habe-ich-gemacht-q.e.d.-Ingolf-Lohmann.txt",
+      "bytes": 46484,
+      "sha256": "5c0441aefc0337f4ff89fb51257d6ac6a6817eca22e1274965a5417eac46c52f",
+      "review_scope": "Argumentbezogene Stellen zu Verantwortlichkeit, technischem Gedächtnis und Abstufung logischer/physischer Messungen; keine Reproduktion genannter Hardwarewerte.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A09",
+      "name": "Der-entscheidende-technologische-Vorteil-q.e.d..txt",
+      "provided_filename": "09-Der-entscheidende-technologische-Vorteil-q.e.d..txt",
+      "bytes": 9227,
+      "sha256": "6001ecd56dde4f195075c874e100e0d997fcfe454d01b070731c1c331cae999b",
+      "review_scope": "Vollständiger Text zur Bindung von Identität, Berechtigung, Gegenstand, Entscheidung, Ausführung und Wirkung.",
+      "public_archive_verified_by_this_check": false
+    },
+    {
+      "id": "A10",
+      "name": "QIKVRT_Modernisierung_Fliesstext.txt",
+      "provided_filename": "10-QIKVRT_Modernisierung_Fliesstext.txt",
+      "bytes": 39929,
+      "sha256": "b1edff533174b482466ab30ef195dbe95558e597968ea99a716f88e3bcc05872",
+      "review_scope": "Anfang, Quellen-/Archivierungsvermerk und Abgleich der thematischen Rolle als Fließtext-Begleiter zur Modernisierungsdarstellung; kein unabhängiger zweiter Ausführungsnachweis.",
+      "public_archive_verified_by_this_check": false
+    }
+  ],
+  "devops_check": {
+    "scope": "OFFLINE_UPLOADED_DOCUMENTS_NOT_CURRENT_SERVICE_STATE",
+    "rows": 127,
+    "digest_matches": 127,
+    "digest_algorithm": "SHA-256 over UTF-8 canonical sorted-key JSON excluding projection_sha256; matches existing devops-client test convention",
+    "mutation_detected": true,
+    "status_counts": {
+      "success": 81,
+      "failure": 2,
+      "cancelled": 39,
+      "skipped": 5
+    },
+    "observed_at": [
+      "2026-10-27T11:55:44.021Z"
+    ],
+    "captured_at": "2026-10-27T12:25:19.056Z",
+    "wire_bytes_verified": false,
+    "productive_effect_verified": false,
+    "html_row_identities_match": true,
+    "html_projection_fields_compared": {
+      "run_head": "sha",
+      "workflow_name": "name",
+      "event": "event",
+      "status": "status",
+      "conclusion": "conclusion",
+      "source_updated_at": "updated_at",
+      "started_at": "started_at",
+      "source_url": "url"
+    },
+    "html_run_count": 127,
+    "hash_check_scope": "Export projection bytes only; not source authentication or original GitHub response bytes.",
+    "raw_comparison": {
+      "literal_differences": 254,
+      "by_field": {
+        "source_updated_at": 127,
+        "started_at": 127
+      },
+      "cause": "JSONL .000Z and HTML Z encode the same timestamps; equality of instants tested separately from byte equality."
+    },
+    "normalized_projection_mismatches": [],
+    "all_compared_semantic_fields_match": true
+  },
+  "document_correction": "Explain persistent self-continuity, purpose-preserving modernization and identity/authority/subject/effect binding. Keep broad Owner definition distinct from the richer functional criteria in A02.",
+  "new_kernel_theorems": 0,
+  "runtime_tests_reexecuted": false,
+  "phenomenal_consciousness_verified": false,
+  "abiogenesis_verified": false,
+  "reconciliation_correction": "The uploaded A02 paper was already preserved byte-identically in the existing repository corpus. Its role in the current explanatory article is now restored; this is reuse of an existing result, not a new independent publication."
+}

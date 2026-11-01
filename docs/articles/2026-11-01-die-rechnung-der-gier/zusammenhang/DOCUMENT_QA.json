@@ -1,25 +1,25 @@
 {
   "schema": "qikvrt_document_qa_v1",
-  "pdf_pages": 8,
-  "verified_paragraphs": 106,
+  "pdf_pages": 11,
+  "verified_paragraphs": 132,
   "missing_paragraphs": 0,
   "all_source_urls_visible_and_clickable": true,
   "source_count": 13,
   "embedded_files": [
     {
       "name": "PROSA_ARTIKEL_DE.md",
-      "bytes": 20551,
-      "sha256": "70f3530e8836898b0fd603a7c92ff1f54965298d42938ca98946fbb5bfeac5da"
+      "bytes": 25040,
+      "sha256": "c2000b21506c227cac8df3171b35e64ab3abe9b843cd72f45f4d3d926b8598c1"
     },
     {
       "name": "VORLESEFASSUNG_DE.txt",
-      "bytes": 17749,
-      "sha256": "85a291c883fa03d73af34c408792b2bf9819a61d2d67f3c95adbfdb6338057b2"
+      "bytes": 21586,
+      "sha256": "4d63485c888af85912ec12bf85c89b424e49c4163f07b60b945bd4223e7c1a22"
     },
     {
       "name": "WISSENSCHAFTLICHE_FASSUNG_DE.md",
-      "bytes": 23088,
-      "sha256": "ffbc9f7e8ee943f06565d15b63dbfc49eee04aee6da1e739b35bd2d7cf39fde3"
+      "bytes": 32547,
+      "sha256": "ce77ae6cfef546accf3256c129fbd2897fe661d39f1dc225efc807a477b221ed"
     },
     {
       "name": "SOURCES.json",
@@ -30,6 +30,11 @@
       "name": "OWNER_DEFINITION.json",
       "bytes": 504,
       "sha256": "9be2f531c6b29e8d55104313c0d2b87a22be541e332165065b580e88281c4fca"
+    },
+    {
+      "name": "ATTACHMENT_RECONCILIATION.json",
+      "bytes": 7908,
+      "sha256": "57ac69d94896e3710883bec514811f2d4563cd65eda620f0ca0faec83e45a7c3"
     },
     {
       "name": "ZeroOneObservation.lean",
@@ -63,16 +68,25 @@
     }
   ],
   "embedded_bytes_match": true,
-  "pdf_sha256": "67ba5b29b5cdfe75624d42095c03de6bda4cf2326d0ee709a02b87d30c4895dd",
+  "pdf_sha256": "d21140c19d1b10acb04ff671e104809072850869ed2447debf586576870dee8c",
   "proof_source_sha256": "032d4b45515e6a8d968d8097a3a7cb004663bff3d2105cfda63e159464d5e795",
   "proof_scope_unchanged": true,
   "new_lean_theorems_claimed": 0,
+  "provided_documents": 10,
+  "raw_provided_files_embedded": false,
   "source_classification": "WORKING_PAPER_NEW_COMPANION_PROOF_NOT_YET_ZENODO_ARCHIVED",
   "owner_definition_preserved": true,
-  "visual_review": "PASS_ALL_8_PAGES",
-  "visual_findings": "No clipping, overlap, missing glyphs or substantially empty internal page; visible source URLs and equation/theorem lines inspected.",
+  "visual_review": "PASS_ALL_11_PAGES",
+  "visual_findings": "All pages inspected after final re-render; no clipping, overlap, missing glyphs or detached final attachment note.",
   "prose_body_matches_read_aloud_text": true,
+  "uploaded_originals_unchanged": true,
+  "review_scope": "Argument-specific source reconciliation; no new current-platform or historical runtime replay claim.",
   "files": [
+    {
+      "path": "ATTACHMENT_RECONCILIATION.json",
+      "bytes": 7908,
+      "sha256": "57ac69d94896e3710883bec514811f2d4563cd65eda620f0ca0faec83e45a7c3"
+    },
     {
       "path": "OWNER_DEFINITION.json",
       "bytes": 504,
@@ -80,8 +94,8 @@
     },
     {
       "path": "PROSA_ARTIKEL_DE.md",
-      "bytes": 20551,
-      "sha256": "70f3530e8836898b0fd603a7c92ff1f54965298d42938ca98946fbb5bfeac5da"
+      "bytes": 25040,
+      "sha256": "c2000b21506c227cac8df3171b35e64ab3abe9b843cd72f45f4d3d926b8598c1"
     },
     {
       "path": "SOURCES.json",
@@ -90,18 +104,18 @@
     },
     {
       "path": "VORLESEFASSUNG_DE.txt",
-      "bytes": 17749,
-      "sha256": "85a291c883fa03d73af34c408792b2bf9819a61d2d67f3c95adbfdb6338057b2"
+      "bytes": 21586,
+      "sha256": "4d63485c888af85912ec12bf85c89b424e49c4163f07b60b945bd4223e7c1a22"
     },
     {
       "path": "WISSENSCHAFTLICHE_FASSUNG_DE.md",
-      "bytes": 23088,
-      "sha256": "ffbc9f7e8ee943f06565d15b63dbfc49eee04aee6da1e739b35bd2d7cf39fde3"
+      "bytes": 32547,
+      "sha256": "ce77ae6cfef546accf3256c129fbd2897fe661d39f1dc225efc807a477b221ed"
     },
     {
       "path": "Wissenschaftliche_Fassung.pdf",
-      "bytes": 244434,
-      "sha256": "67ba5b29b5cdfe75624d42095c03de6bda4cf2326d0ee709a02b87d30c4895dd"
+      "bytes": 279518,
+      "sha256": "d21140c19d1b10acb04ff671e104809072850869ed2447debf586576870dee8c"
     }
   ]
 }
