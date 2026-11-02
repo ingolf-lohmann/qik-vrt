@@ -599,6 +599,98 @@ def validate_client_knowledge(receipt: dict[str, Any], predecessor: dict[str, An
                 fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
 
 
+WORK_EFFECTS = frozenset({"JOURNAL_WRITE", "SOURCE_CHANGE", "ARTIFACT_INSTALLATION",
+                          "DATA_READBACK", "RUNTIME_EFFECT"})
+
+
+def work_completion_verdict(report: dict[str, Any]) -> str:
+    """Check declared goal/effect correspondence, never evidence authenticity.
+
+    The same finite predicate is checked by the existing Lean vector bridge.
+    A relayed report remains evidence of that report, not this client's readback.
+    """
+    fields = {"requiredTarget", "observedTarget", "requiredEffect", "observedEffect",
+              "origin", "checker", "requiredSha256", "observedSha256", "fromCache",
+              "completedUtc", "observedUtc", "closedUtc"}
+    if (not isinstance(report, dict) or set(report) != fields
+        or any(not isinstance(report[k], str) for k in fields
+               - {"fromCache", "completedUtc", "observedUtc", "closedUtc"})
+        or any(type(report[k]) is not int or report[k] < 0
+               for k in ("completedUtc", "observedUtc", "closedUtc"))
+        or type(report["fromCache"]) is not bool
+        or not report["requiredTarget"]
+        or report["requiredEffect"] not in WORK_EFFECTS
+        or report["observedEffect"] not in WORK_EFFECTS):
+        return "reject"
+    expected = report["requiredSha256"]
+    if ((expected and not re.fullmatch(r"[0-9a-f]{64}", expected))
+        or (report["requiredEffect"] == "ARTIFACT_INSTALLATION" and not expected)):
+        return "reject"
+    return "accept" if (
+        report["requiredTarget"] == report["observedTarget"]
+        and report["requiredEffect"] == report["observedEffect"]
+        and report["origin"] == "DIRECT_TOOL_READBACK"
+        and report["checker"] == "VERIFIED"
+        and report["completedUtc"] < report["observedUtc"] <= report["closedUtc"]
+        and (not expected or expected == report["observedSha256"])
+        and (report["requiredEffect"] != "DATA_READBACK" or report["fromCache"] is False)
+    ) else "reject"
+
+
+def client_administrative_action(action: dict[str, Any]) -> bool:
+    """Recognize the actual workspace journal route in declared action metadata."""
+    if not isinstance(action, dict):
+        return False
+    tool = str(action.get("tool", ""))
+    operation = str(action.get("operation", ""))
+    return (tool.endswith(("qik_vrt_kognitiver_arbeitsraum_create_task",
+                           "qik_vrt_kognitiver_arbeitsraum_update_task"))
+            or operation in {"create_task", "update_task", "createTask", "updateTask"})
+
+
+def validate_work_verification(task: dict[str, Any], receipt: dict[str, Any]) -> None:
+    acceptance = require(task, "acceptance", dict)
+    verification = require(task, "verification", dict)
+    if (set(acceptance) != {"target", "effect", "artifact_sha256"}
+        or any(not isinstance(verification.get(k), str) or not verification[k].strip()
+               for k in ("action_id", "observer", "source"))):
+        fail("CLIENT_WORK_VERIFICATION_BINDING_INVALID")
+    attempts = [a for a in receipt.get("attempts", [])
+                if isinstance(a, dict) and isinstance(a.get("action_window"), dict)
+                and a["action_window"].get("id") == verification["action_id"]]
+    if len(attempts) != 1:
+        fail("CLIENT_WORK_VERIFICATION_ACTION_MISSING")
+    attempt = attempts[0]
+    action = require(attempt, "action", dict)
+    if (not validate_client_action(action, receipt["subject"])
+        or action.get("target") != acceptance.get("target")):
+        fail("CLIENT_WORK_VERIFICATION_ACTION_TARGET_DRIFT")
+    if (client_administrative_action(action)
+        and verification.get("effect") != "JOURNAL_WRITE"):
+        fail("CLIENT_JOURNAL_WRITE_RELABELLED_AS_REPAIR")
+    window = attempt["action_window"]
+    validate_client_readback(attempt.get("readback"), receipt["subject"], window)
+    epoch = dt.datetime(1970, 1, 1, tzinfo=dt.timezone.utc)
+
+    def micros(value: Any) -> int:
+        delta = client_time(value, "CLIENT_WORK_VERIFICATION_TIME_INVALID") - epoch
+        return (delta.days * 86400 + delta.seconds) * 1000000 + delta.microseconds
+
+    report = {"requiredTarget": acceptance.get("target"),
+              "observedTarget": verification.get("target"),
+              "requiredEffect": acceptance.get("effect"),
+              "observedEffect": verification.get("effect"),
+              "requiredSha256": acceptance.get("artifact_sha256"),
+              "observedSha256": verification.get("artifact_sha256"),
+              "origin": verification.get("origin"), "checker": verification.get("checker"),
+              "fromCache": verification.get("fromCache"),
+              "completedUtc": micros(window.get("completed_at")),
+              "observedUtc": micros(verification.get("observed_at")),
+              "closedUtc": micros(window.get("closed_at"))}
+    if work_completion_verdict(report) != "accept":
+        fail("CLIENT_WORK_VERIFICATION_REJECTED")
+
+
 def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | None = None) -> None:
     """An observed predecessor's open duties are work for its successor.
 
@@ -610,6 +702,13 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
     if previous is None and "work" not in receipt:
         return
     work = require(receipt, "work", list)
+    metadata_only = receipt.get("schema") == "qikvrt-api-client-work/1"
+    if metadata_only and (receipt.get("state") != "CONTINUE"
+                          or receipt.get("ordinary_release", False) is not False
+                          or receipt.get("effect_state", "EFFECT_ACK_CONTINUE") != "EFFECT_ACK_CONTINUE"):
+        fail("CLIENT_METADATA_CHECKPOINT_CLAIM_INFLATED")
+    historical = {t.get("id"): t for t in predecessor.get("work", [])
+                  if isinstance(t, dict) and isinstance(t.get("id"), str)} if predecessor else {}
     tasks: dict[str, dict[str, Any]] = {}
     for task in work:
         if not isinstance(task, dict):
@@ -617,11 +716,21 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
         identifier = task.get("id")
         if not isinstance(identifier, str) or not identifier.strip() or identifier in tasks:
             fail("CLIENT_WORK_ID_INVALID")
-        if task.get("state") not in ("OPEN", "VERIFIED"):
+        if task.get("state") not in (("OPEN", "RECORDED", "VERIFIED") if metadata_only
+                                     else ("OPEN", "VERIFIED")):
             fail("CLIENT_WORK_STATE_INVALID")
-        if task["state"] == "VERIFIED":
+        if task["state"] in ("VERIFIED", "RECORDED"):
             if not isinstance(task.get("evidence"), str) or not task["evidence"].strip():
                 fail("CLIENT_WORK_CLOSED_WITHOUT_EVIDENCE")
+            prior = historical.get(identifier)
+            # Carry an identical historical result without promoting it to a
+            # fresh check. New closures always need goal-bound direct evidence.
+            # The separate API work schema records transport/repository metadata,
+            # never task completion. Legacy VERIFIED metadata stays readable;
+            # current producers write RECORDED and full receipts cannot import
+            # that state as a verified task or a productive effect.
+            if not metadata_only and not (prior == task and prior.get("state") == "VERIFIED"):
+                validate_work_verification(task, receipt)
         elif not isinstance(task.get("next_action"), str) or not task["next_action"].strip():
             fail("CLIENT_OPEN_WORK_WITHOUT_SUCCESSOR")
         tasks[identifier] = task
@@ -642,6 +751,22 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
                 fail("CLIENT_PREVIOUS_WORK_INVALID")
             if task["state"] == "OPEN" and task.get("id") not in tasks:
                 fail("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+            current = tasks.get(task.get("id"))
+            if (current is not None and "acceptance" in task
+                and current.get("acceptance") != task["acceptance"]):
+                fail("CLIENT_PREDECESSOR_ACCEPTANCE_CHANGED")
+        prior_attempts = predecessor.get("attempts", [])
+        if not isinstance(prior_attempts, list):
+            fail("CLIENT_PREVIOUS_ATTEMPTS_INVALID")
+        if (not metadata_only and receipt.get("state") == "CONTINUE"
+            and any(client_administrative_action(a.get("action", {}))
+                    for a in receipt.get("attempts", []) if isinstance(a, dict))
+            and any(client_administrative_action(a.get("action", {}))
+                    for a in prior_attempts if isinstance(a, dict))
+            and not any(t["state"] == "VERIFIED" and t != historical.get(t["id"])
+                        and t.get("acceptance", {}).get("effect") != "JOURNAL_WRITE"
+                        for t in work)):
+            fail("CLIENT_ADMINISTRATIVE_CONTINUATION_LOOP")
     if receipt.get("state") == "DONE" and any(task["state"] == "OPEN" for task in work):
         fail("CLIENT_DONE_WITH_OPEN_WORK")
 

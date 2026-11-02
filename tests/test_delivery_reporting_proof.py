@@ -34,7 +34,7 @@ class DeliveryReportingProofTests(unittest.TestCase):
             ai_handoff.require_formal_command_success(result.returncode, result.stdout)
         ai_handoff.require_formal_command_success(0, "ordinary check completed\n")
 
-    def vectors(self):
+    def all_vectors(self):
         policy = ai_handoff.formal_policy()
         path = ROOT / policy["vectors_path"]
         self.assertTrue(path.is_file(), "HOLD: original Lean-generated vectors missing")
@@ -43,6 +43,41 @@ class DeliveryReportingProofTests(unittest.TestCase):
         values = json.loads(raw)
         self.assertTrue(values, "zero vectors must fail closed")
         return values
+
+    def vectors(self):
+        return [v for v in self.all_vectors() if "workCompletion" not in v]
+
+    def test_goal_completion_bridge_exercises_original_receipt_validator(self):
+        vectors = [v for v in self.all_vectors() if "workCompletion" in v]
+        self.assertEqual(len(vectors), 272)
+        for index, vector in enumerate(vectors):
+            report = vector["workCompletion"]
+            self.assertEqual(ai_handoff.work_completion_verdict(report), vector["verdict"])
+            case = self.fixture()
+            task = case.work_verification()
+            task["acceptance"].update(target=report["requiredTarget"],
+                effect=report["requiredEffect"], artifact_sha256=report["requiredSha256"])
+            task["verification"].update(target=report["observedTarget"],
+                effect=report["observedEffect"], artifact_sha256=report["observedSha256"],
+                origin=report["origin"], checker=report["checker"], fromCache=report["fromCache"],
+                observed_at=("2026-10-11T10:00:00Z" if report["observedUtc"] == 1
+                             else "2026-10-11T10:00:02Z"))
+            try:
+                with contextlib.redirect_stderr(io.StringIO()):
+                    result = "accept" if case.check() == "CONTINUE" else "reject"
+            except SystemExit:
+                result = "reject"
+            self.assertEqual(result, vector["verdict"], index)
+        print("WORK_COMPLETION_RECEIPT_VECTORS_CHECKED=" + str(len(vectors)))
+
+    def test_relay_origin_mutation_is_detected_by_work_vectors(self):
+        source = (ROOT / "tools/ai_handoff.py").read_text()
+        original = 'and report["origin"] == "DIRECT_TOOL_READBACK"'
+        self.assertEqual(source.count(original), 1)
+        scope = {"__file__": str(ROOT / "tools/ai_handoff.py"), "__name__": "work_mutant"}
+        exec(compile(source.replace(original, "and True", 1), "work-origin-mutant", "exec"), scope)
+        self.assertTrue(any(scope["work_completion_verdict"](v["workCompletion"]) != v["verdict"]
+                            for v in self.all_vectors() if "workCompletion" in v))
 
     def fixture(self):
         case = client_fixtures.ClientContinuationRegressionTests()
