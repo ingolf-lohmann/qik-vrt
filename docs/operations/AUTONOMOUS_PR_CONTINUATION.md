@@ -20,7 +20,7 @@ A draft pull request is eligible only when its body contains the exact marker:
 <!-- qikvrt-autonomous-self-heal:enabled -->
 ```
 
-The scheduled worker processes at most one eligible pull request per run. The
+The transition-driven worker processes at most one eligible pull request per run. The
 head repository must equal the executing repository, the head must still equal
 the immediately reobserved SHA, and history rewriting is forbidden.
 
@@ -602,3 +602,63 @@ all unresolved duties. Do not close unresolved work or infer branch-deletion
 authority merely to satisfy this condition. The existing exact-head test, review,
 conditional-merge and separate host/domain acceptance boundaries still apply.
 Saving this rule proves neither runtime enforcement nor adoption by other clients.
+
+
+## Repository continuation and status-only ChatGPT — Owner 2026-10-31
+
+The existing hourly ChatGPT task only reads and reports status. Its previous
+contracts remain inactive historical data; it cannot execute work or write a
+checkpoint. The repository workflows have no cron triggers. Source changes and
+original CI/review completion events activate existing consumers. No synthetic
+heartbeat, empty commit, polling timer or replacement executor drives progress.
+
+The missing consumer edge is repaired in the existing promotion workflow:
+`tools/qikvrt_pr_closure_engine.py workflow-prepare` restores the last original
+immutable intent and resolves it by independent reads before selecting any new
+action. The complete live inventory is retained and inspected until an admitted
+successor is found or the complete census has no admitted effect. The triggering
+exact head orders inspection without becoming an admission. Preparation writes no repository effect. The fixed original Actions
+artifact is uploaded before `workflow-apply`; the consumer checks its original
+run/attempt, trusted Main source, complete ZIP inventory and byte digest, then
+reobserves the original gates and identities before one native REST merge.
+The installation token is bound to the actual original workflow run, rather
+than the user-only `/user` API. No new credential or runtime is introduced.
+
+A lost ACK, corrupt or expired archive, stale checker source, missing readback
+or changed producer holds writes. A completed predecessor is independently
+recovered; its original artifact and digest remain linked in `PREDECESSOR.json`.
+The 90-day provider artifact retention is an explicit evidence boundary; it is
+not indefinite archival or proof against privileged deletion. A lost archive
+must never reset an unresolved attempt. Repeated calls in the same attempt are
+also fenced locally. The generic existing native-host path retains its original
+create-only, fsync journal semantics.
+
+The fixed hosted consumer only merges an already qualified current candidate.
+Branch repairs stay in the existing draft/self-heal workers. It cannot replace
+missing PR-event executions with a manual run's success, mark a Draft ready,
+remove an adverse review, or infer a protected SSO binding. Optional skipped
+checks remain non-adverse under the existing exact execution evaluator; required
+source gates still require successful original jobs and steps.
+
+After a verified merge the same run freezes and persists a request for the
+existing CI workflow, rechecks the changed Main ref, and dispatches once. Its
+original completion event feeds the existing review/closure consumers. A failed
+or ambiguous dispatch stays visible with its saved request and actual response;
+no timer or blind redispatch repairs it. Each run is finite; work resumes only
+on a real state transition. In a quiet system, unavailable event delivery cannot
+be independently detected without another observation. No global liveness or
+all-task completion theorem is asserted by this source repair.
+
+PR #646's two supplied analyses are predecessor evidence, bound by archive
+SHA-256 in the existing contract. TEMDD completion now wakes the original review
+executor. The original runtime admission, original SSO/material-source readback,
+five protected host inputs, authenticated host identity, package/restart/toggle,
+exact-domain RT-01..07 acceptance, functioning mirrors and public Zenodo bytes/DOI
+remain open with separate acceptance. Repository merges never imply productive
+`EFFECT_ACK_DONE`.
+
+The existing native governance publisher reuses its complete current inventory
+when an original completion has no PR selector. This replaces the old timer
+repair of that observation gap; each selected PR still receives fresh identity,
+review, rule and exact-head checks. A partial candidate scan cannot declare
+quiescence while an admitted later successor remains uninspected.

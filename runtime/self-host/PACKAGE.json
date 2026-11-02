@@ -194,7 +194,12 @@
     "tools/qikvrt_workflow_executor.py",
     "tools/qikvrt_zenodo_actions.py",
     "tools/qikvrt_zenodo_machine_proof.py",
-    "tools/qikvrt_zenodo_publish.py"
+    "tools/qikvrt_zenodo_publish.py",
+    "include/qikvrt/effect_ack.h",
+    "runtime/self-host/LINUX_PACKAGES.md",
+    "src/effect_ack_core.c",
+    "tools/qikvrt_debian.py",
+    "runtime/self-host/DEBIAN_PACKAGES.json"
   ],
   "monolithic_store": "SQLITE_CARRIER_AND_EXISTING_NATIVE_LEDGER",
   "native_terminal_daemon_included": true,
@@ -215,7 +220,7 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "rest_bootstrap": {
     "schema": "qikvrt-packaged-rest-bootstrap/v1",
     "entrypoint": [

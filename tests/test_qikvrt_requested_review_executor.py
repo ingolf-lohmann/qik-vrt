@@ -6,6 +6,7 @@ import importlib.util
 import pathlib
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -311,6 +312,39 @@ class RequestedReviewExecutorTests(unittest.TestCase):
         plan = MODULE.technical_update_plan(self.snapshot(), [], [], "fixture-review")
         self.exercise_actual_publication(plan, 1, ambiguous="applied")
         self.exercise_actual_publication(plan, 1, ambiguous="unapplied")
+
+
+class NativeReviewBindingShellTests(unittest.TestCase):
+    def script(self):
+        value = (ROOT / '.github/workflows/qikvrt_requested_review_contract.yml').read_text()
+        step = value.split('      - name: Verify event, recovery, identity and promotion bindings\n', 1)[1]
+        body = step.split('        run: |\n', 1)[1].split('\n      - ', 1)[0]
+        return textwrap.dedent(body)
+
+    def test_actual_native_binding_step_passes_without_timer(self):
+        result = subprocess.run(['bash', '-euo', 'pipefail', '-c', self.script()],
+                                cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_actual_native_binding_step_rejects_timer_and_recovers_after_removal(self):
+        script = self.script()
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            for path in set(re.findall(r'(?:\.github/workflows|tools)/[A-Za-z0-9_./-]+\.(?:yml|py)', script)):
+                target = root / path; target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / path).read_bytes())
+            target = root / '.github/workflows/qikvrt_requested_review_executor.yml'
+            original = target.read_text()
+            for timer in ('  schedule:\n', '    - cron: "*/5 * * * *"\n'):
+                target.write_text(original + '\n' + timer)
+                failed = subprocess.run(['bash', '-euo', 'pipefail', '-c', script],
+                                        cwd=root, capture_output=True, text=True)
+                self.assertNotEqual(failed.returncode, 0)
+                self.assertIn('REVIEW_TIMER_CONTINUATION_FORBIDDEN', failed.stderr)
+            target.write_text(original)
+            recovered = subprocess.run(['bash', '-euo', 'pipefail', '-c', script],
+                                       cwd=root, capture_output=True, text=True)
+            self.assertEqual(recovered.returncode, 0, recovered.stderr)
 
 
 if __name__ == "__main__":

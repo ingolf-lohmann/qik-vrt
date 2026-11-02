@@ -132,7 +132,7 @@
       "repository": "ingolf-lohmann/qik-vrt",
       "requires_native_main_protection": true,
       "schema": "qikvrt-owner-amo-request/v1",
-      "statement": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt daf\u00fcr, dass sie es von nun an fortw\u00e4hrend tut.",
+      "statement": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
       "unchanged_failed_effect": "NOOP",
       "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
       "workflow": "qikvrt_ci.yml"
@@ -153,7 +153,7 @@
     "repository": "ingolf-lohmann/qik-vrt",
     "requires_successful_exact_subject_test": true,
     "schema": "qikvrt-owner-tested-ci-handoff/v1",
-    "statement": "Ja, genau daf\u00fcr ist die Continuous Integration Continuous Development Pipeline in der Linux-Distribution ja gedacht, diesen Teil zu \u00fcbernehmen. Freigabe erteilt.",
+    "statement": "Ja, genau dafür ist die Continuous Integration Continuous Development Pipeline in der Linux-Distribution ja gedacht, diesen Teil zu übernehmen. Freigabe erteilt.",
     "unchanged_failed_effect": "NOOP",
     "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
     "workflow": ".github/workflows/qikvrt_ci.yml"
@@ -264,7 +264,7 @@
       "QIKVRT workflow executor",
       "QIKVRT live status watch"
     ],
-    "platform_minimum_schedule": "GITHUB_ACTIONS_FIVE_MINUTES",
+    "platform_minimum_schedule": "NONE_STATE_TRANSITIONS_ONLY",
     "prevention_states": [
       "PREEMPTIVE_HOLD_COMPETING_WRITERS",
       "PREEMPTIVE_HOLD_STALE_WRITER_LEASE",
@@ -299,7 +299,8 @@
     ],
     "work_unit_path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
     "workflow_path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
-    "writer_lease_seconds": 1200
+    "writer_lease_seconds": 1200,
+    "observation_cadence_scope": "FRESHNESS_BUDGET_ON_OBSERVATION_NOT_AN_ACTIVATION_TIMER"
   },
   "schema": "qikvrt_workflow_executor_mesh_contract_v1",
   "workflow_inventory": {
