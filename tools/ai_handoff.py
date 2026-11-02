@@ -1642,8 +1642,13 @@ def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> in
         command([lake, "build", policy["lean_lib"]], external, external_log)
         command([lake, "env", "lean", audit], external, external_log)
         ext_axioms = inventory(external_log)
+        # lean4lean expands string literals to these original constructors.
+        # Literal syntax hides that dependency from the exporter's ordinary
+        # source traversal. Include their real definitions in the single
+        # common export consumed and checked by all six external kernels.
         command([lake, "env", str(external_root / "bin/leanexport"), policy["module"],
-                 "--", *policy["theorems"]], external, external_log, export)
+                 "--", *policy["theorems"], "Char.ofNat", "String.ofList"],
+                external, external_log, export)
         if not export.is_file() or not export.stat().st_size:
             raise RuntimeError("empty original export")
     except RuntimeError as exc:

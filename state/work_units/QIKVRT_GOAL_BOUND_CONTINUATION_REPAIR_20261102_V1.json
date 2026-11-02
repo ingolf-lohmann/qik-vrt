@@ -85,5 +85,14 @@
     "observed": "ASCII-byte predicate regenerated the exact 1424 pinned vectors; own kernel added Quot.sound while external inventories contained only propext. lean4lean correctly remained UNVERIFIED after original importer error unknown constant Char.ofNat. Neither failed acceptance was waived.",
     "causal_repair": "Represent hash text as scalar-code lists in the mathematical model; keep original string input/output conversion in the finite vector bridge, outside the theorem dependency graph. Explicit ASCII character bounds retain the Char.ofNat definition needed by the real importer. Full 64-character lowercase hexadecimal validation is unchanged.",
     "acceptance": "REQUIRES_NEW_NATIVE_RUN; all seven checker commands, equal inventories and byte-identical generated vectors remain required."
+  },
+  "formal_literal_export_diagnostic": {
+    "exact_candidate": "d42c701c958b619f331b861356714e1fec90fb67",
+    "native_run": 41454983743,
+    "artifact_id": 13146860783,
+    "artifact_sha256": "03b4a9819c027e5aa7d11b1e71058602611bb9f507480c22db43a395127426ce",
+    "observed": "All seven axiom inventories now match; own kernel and five external kernels PASS. lean4lean remains UNVERIFIED: original kernel error unknown constant String.ofList while importing a workEffects string literal. This is not a proof acceptance or an axiom discrepancy.",
+    "causal_repair": "Export original Char.ofNat and String.ofList definitions explicitly alongside T1-T10 so literal expansion has its actual source definitions; send the same complete export to all six external kernels, preserving strict acceptance.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; no checker is skipped or relabelled."
   }
 }
