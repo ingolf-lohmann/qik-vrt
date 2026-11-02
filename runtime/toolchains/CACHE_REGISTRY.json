@@ -1188,6 +1188,28 @@
       "verification": [
         "Archive size 594481375 and official release API SHA-256 before extraction; lean --githash must equal eb6cafb7290e8bd5f2937522d8d804f58f02bafc; six checker commands over one fresh source-bound export; missing executable or checker failure is HOLD, never replacement."
       ]
+    },
+    "dpkg": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tools/qikvrt_debian.py",
+        "tests/test_self_host_debian.py",
+        "runtime/self-host/LINUX_PACKAGES.md",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "existing-native-linux-runner:distribution dpkg binaries"
+      ],
+      "profiles": [
+        "linux-packages"
+      ],
+      "provider": "Debian/Ubuntu distribution-provided dpkg and dpkg-deb; original implementation not redistributed",
+      "trusted_save": false,
+      "verification": [
+        "Independent dpkg-deb field/archive readback; real isolated-root dpkg install, upgrade, removal and purge; actual original installed S1 start/restart; missing checker fails instead of skipping."
+      ],
+      "version": "debian-2.0-root-lifecycle-v1"
     }
   },
   "coverage_authority": "runtime/toolchains/CACHE_COVERAGE.json",
