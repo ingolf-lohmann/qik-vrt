@@ -104,5 +104,14 @@
     "source_analysis": "Pinned lean4lean Replay sets hasStrings before replaying implicit literal dependencies; an ordering gap is inferred, not an independently reproduced library fix. No checker binary, version, admission or acceptance condition is changed.",
     "causal_repair": "Use scalar-code lists for every work text field and explicit Nat-list constants for effects/origin/checker. Keep real string encoding/decoding in the finite generator/adapter bridge. The mathematical predicate no longer needs implicit String literal expansion; all 1424 original vector bytes must stay identical.",
     "acceptance": "REQUIRES_NEW_NATIVE_RUN; no checker skipped and no result transfer."
+  },
+  "formal_inventory_observed": {
+    "exact_candidate": "0ea44d05e867ac21862a1fddb52a7593da8504d9",
+    "native_run": 41456792312,
+    "artifact_id": 13147856048,
+    "artifact_sha256": "31e03f4129d6a33763cda4695610eb0375c7d7aff0fd8573ce498fcc061c13b3",
+    "observed": "All seven original checker commands PASS. All ten theorem axiom inventories are identical across all seven; T5-T10 each use Quot.sound and propext. Each original log and replay payload hash was independently recomputed from the downloaded archive. The 1424 generated vector bytes remain exact.",
+    "correction": "Pin expected_axioms to the unanimous actually observed inventory. The allowlist, equal-inventory test, replay payload equality, exact-subject checks and seven mandatory passing checker commands are unchanged.",
+    "acceptance": "Native acceptance for this metadata successor still requires a fresh exact-candidate run; no productive effect or universal implementation proof inferred."
   }
 }
