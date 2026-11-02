@@ -129,7 +129,7 @@ jobs:
             )"
             if test -n "$previous_artifact"; then
               gh api "repos/$REPOSITORY/actions/artifacts/$previous_artifact/zip" \
-                > "$root/previous-receipt.zip" || true
+                > "$root/previous-receipt.zip"
               unzip -p "$root/previous-receipt.zip" authority-role-readback.json \
                 > "$root/previous-authority-readback.json" 2>/dev/null || true
               unzip -p "$root/previous-receipt.zip" reflexive-watchdog-receipt.json \
