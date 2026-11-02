@@ -247,7 +247,7 @@ self-host-test: tool-cache-contract temdd-event-ledger-test
 linux-packages-test: tool-cache-contract
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_debian
 
-test: linux-packages-test
+self-host-test: linux-packages-test
 
 .PHONY: origin-adapter-test origin-adapter-browser-test
 origin-adapter-test: tool-cache-contract

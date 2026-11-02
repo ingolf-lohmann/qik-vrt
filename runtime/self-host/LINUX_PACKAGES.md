@@ -138,7 +138,10 @@ No destructive package-maintenance script is supplied.
 
 ## Acceptance and boundaries
 
-`make linux-packages-test` is part of the existing `make test` path. It requires
+`make linux-packages-test` is part of the existing S1 `self-host-test` target,
+which the current CI runs together with `make test`. Its native dependency is
+scoped to that Linux installation lane; generic portable tests do not acquire
+a dpkg dependency. The native package target requires
 real `dpkg-deb` and `dpkg`; an unavailable checker fails, never skips. Cases
 cover byte-identical builds; complete disjoint module ownership; exact native
 metadata/dependencies; wrong seal, changed/extra/symlink source; unsafe output;
