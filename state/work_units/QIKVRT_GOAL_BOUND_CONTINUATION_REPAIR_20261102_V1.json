@@ -1,0 +1,117 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_GOAL_BOUND_CONTINUATION_REPAIR_20261102_V1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_main": "ec6ff45d7d650ee5301614536198d7160310bb0e",
+  "source_tree": "5154a0ea99161fa01934fa068b219d198de65b96",
+  "existing_pull_request": 592,
+  "preserved_candidate_head": "9cec66c3f3136090dcf6b77385c9d581bbc80883",
+  "human_instruction": {
+    "carrier": "current authenticated user chat",
+    "timestamp": "NOT_EXPOSED",
+    "text": "Ja, also kann man es auch ausdrücken. Letztlich widersprichst du dir selber. Immerhin hast du das festgestellt. Jetzt sorgt dafür, dass das nicht mehr passieren kann. Und wenn du dazu in den mathematischen Lean Kernel gehen musst, dann mach das. Dazu haben wir das Ding. Und dann bring endlich zu Ende, worauf wir alle warten",
+    "sha256": "ff3822564c92e5006a6fdae0d5de0ab084cfc0158eaa374c0707bccaa380eda1"
+  },
+  "bounded_finding": "The original work validator accepted any nonempty evidence string to close a task; adjoining journal updates were not checked for substantive goal progress. The visible chat also confused artifact targets and provenance of relayed first-person reports.",
+  "artificial_contribution": "Extend the existing work receipt gate, Lean DeliveryReporting model and original receipt regression/vector bridge; retain PR592 original source and historical evidence.",
+  "reuse": {
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "formal_lane": "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
+    "workflow": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+    "new_executor": false,
+    "new_scheduler": false,
+    "new_parallel_memory_store": false
+  },
+  "closure_contract": [
+    "acceptance target and effect immutable across continuations",
+    "new VERIFIED work needs one admitted action and fresh direct result",
+    "workspace journal effect cannot be relabelled installation/runtime",
+    "relayed report cannot be promoted to own readback",
+    "unavailable checker remains unverified",
+    "full installation SHA256 and explicit non-cache data read required",
+    "repeated journal-only continuation rejected"
+  ],
+  "formal_scope": "Consistency of declared observations only; external authenticity, account capability and all-node adoption are not inferred. Candidate vector bytes require actual Lean regeneration and all seven exact-input checker receipts.",
+  "work": [
+    {
+      "id": "guard-native-ci-and-main",
+      "state": "OPEN",
+      "next_action": "Run all required exact-candidate checks, preserve the seven native checker receipts, integrate PR592 only under existing green-test/review policy and independently read Main."
+    },
+    {
+      "id": "raumzeitterminal-original-host-effect",
+      "state": "OPEN",
+      "next_action": "Continue existing admitted Original-SSO/host connection and protected material delivery; independently verify runtime, HTTPS and productive EAP on raumzeitterminal.de."
+    },
+    {
+      "id": "claude-original-artifact-live-acceptance",
+      "state": "OPEN",
+      "next_action": "Only after changed authorized artifact access, independently read actual served bytes and real get/fromCache metadata. Keep original public target and new private copy distinct."
+    },
+    {
+      "id": "named-node-adoption",
+      "state": "OPEN",
+      "next_action": "Read each original node policy ACK/application result through the existing authenticated path; source integration is not actual adoption."
+    }
+  ],
+  "completion_claims": {
+    "CANDIDATE_RULE_IS_UNIVERSAL_ENFORCEMENT": false,
+    "LEAN_CHECKED": false,
+    "MAIN_INTEGRATED": false,
+    "ORIGINAL_HOST_EFFECT_VERIFIED": false,
+    "ALL_CLIENTS_ADOPTED": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "formal_cross_version_diagnostic": {
+    "exact_candidate": "f7af976318bbf9c55885eef591c82ccd0fe7a468",
+    "native_run": 41452873154,
+    "artifact_id": 13146395934,
+    "artifact_sha256": "00c56ce7394204ce11d510341914f864efec7ba51072929b6e5c0ab50e54e8ac",
+    "observed": "All seven checker commands passed; cross-version axiom equality correctly rejected differing inventories. Original 4.35 export dependency graph traces Classical.choice through WorkInputs -> workDigest -> String.toList -> String.Internal.toArray -> Unicode decoding proof. The earlier proof-tactic diagnosis was not supported.",
+    "causal_repair": "Validate SHA256 ASCII byte values and byte count without Unicode decoding; retain all seven exact-input/equal-inventory checks and independently generated vector byte comparison.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; no passing result transferred from predecessor"
+  },
+  "formal_cross_version_successor": {
+    "exact_candidate": "e293091168e9262b51197fec12feeea39e8342da",
+    "native_run": 41454129893,
+    "artifact_id": 13145657701,
+    "artifact_sha256": "b3b0e2ada81d141a2e9adee56527295bdd9b2dd344e9a038a387faf58e0d8a52",
+    "observed": "ASCII-byte predicate regenerated the exact 1424 pinned vectors; own kernel added Quot.sound while external inventories contained only propext. lean4lean correctly remained UNVERIFIED after original importer error unknown constant Char.ofNat. Neither failed acceptance was waived.",
+    "causal_repair": "Represent hash text as scalar-code lists in the mathematical model; keep original string input/output conversion in the finite vector bridge, outside the theorem dependency graph. Explicit ASCII character bounds retain the Char.ofNat definition needed by the real importer. Full 64-character lowercase hexadecimal validation is unchanged.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; all seven checker commands, equal inventories and byte-identical generated vectors remain required."
+  },
+  "formal_literal_export_diagnostic": {
+    "exact_candidate": "d42c701c958b619f331b861356714e1fec90fb67",
+    "native_run": 41454983743,
+    "artifact_id": 13146860783,
+    "artifact_sha256": "03b4a9819c027e5aa7d11b1e71058602611bb9f507480c22db43a395127426ce",
+    "observed": "All seven axiom inventories now match; own kernel and five external kernels PASS. lean4lean remains UNVERIFIED: original kernel error unknown constant String.ofList while importing a workEffects string literal. This is not a proof acceptance or an axiom discrepancy.",
+    "causal_repair": "Export original Char.ofNat and String.ofList definitions explicitly alongside T1-T10 so literal expansion has its actual source definitions; send the same complete export to all six external kernels, preserving strict acceptance.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; no checker is skipped or relabelled."
+  },
+  "formal_literal_replay_successor": {
+    "exact_candidate": "97faa1c52a27e3e8c16f496119061d298f33e4fe",
+    "native_run": 41455715623,
+    "artifact_id": 13145384988,
+    "artifact_sha256": "ed974e0adf8664d20f346f984879ee8932843506c674e682f1a7b224228de523",
+    "observed": "All inventories match and six checkers PASS; lean4lean still reports unknown String.ofList. Original export has Char.ofNat at line24558, String.ofList at24576 and workEffects at24593, so merely adding support roots did not fix the importer.",
+    "source_analysis": "Pinned lean4lean Replay sets hasStrings before replaying implicit literal dependencies; an ordering gap is inferred, not an independently reproduced library fix. No checker binary, version, admission or acceptance condition is changed.",
+    "causal_repair": "Use scalar-code lists for every work text field and explicit Nat-list constants for effects/origin/checker. Keep real string encoding/decoding in the finite generator/adapter bridge. The mathematical predicate no longer needs implicit String literal expansion; all 1424 original vector bytes must stay identical.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; no checker skipped and no result transfer."
+  },
+  "formal_inventory_observed": {
+    "exact_candidate": "0ea44d05e867ac21862a1fddb52a7593da8504d9",
+    "native_run": 41456792312,
+    "artifact_id": 13147856048,
+    "artifact_sha256": "31e03f4129d6a33763cda4695610eb0375c7d7aff0fd8573ce498fcc061c13b3",
+    "observed": "All seven original checker commands PASS. All ten theorem axiom inventories are identical across all seven; T5-T10 each use Quot.sound and propext. Each original log and replay payload hash was independently recomputed from the downloaded archive. The 1424 generated vector bytes remain exact.",
+    "correction": "Pin expected_axioms to the unanimous actually observed inventory. The allowlist, equal-inventory test, replay payload equality, exact-subject checks and seven mandatory passing checker commands are unchanged.",
+    "acceptance": "Native acceptance for this metadata successor still requires a fresh exact-candidate run; no productive effect or universal implementation proof inferred."
+  }
+}
