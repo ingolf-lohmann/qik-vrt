@@ -49,7 +49,7 @@ class DeliveryReportingProofTests(unittest.TestCase):
 
     def test_goal_completion_bridge_exercises_original_receipt_validator(self):
         vectors = [v for v in self.all_vectors() if "workCompletion" in v]
-        self.assertEqual(len(vectors), 256)
+        self.assertEqual(len(vectors), 272)
         for index, vector in enumerate(vectors):
             report = vector["workCompletion"]
             self.assertEqual(ai_handoff.work_completion_verdict(report), vector["verdict"])

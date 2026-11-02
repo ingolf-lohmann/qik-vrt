@@ -123,7 +123,11 @@ def workEffects : List String := ["JOURNAL_WRITE", "SOURCE_CHANGE",
   "ARTIFACT_INSTALLATION", "DATA_READBACK", "RUNTIME_EFFECT"]
 
 def workDigest (s : String) : Bool :=
-  s.length == 64 && s.toList.all (fun c => "0123456789abcdef".toList.contains c)
+  -- SHA-256 text is ASCII. Inspect encoded bytes rather than invoking the
+  -- version-dependent Unicode decoder and its proof dependencies.
+  let bytes := s.toUTF8.data.toList
+  bytes.length == 64 && bytes.all (fun b =>
+    (48 ≤ b.toNat && b.toNat ≤ 57) || (97 ≤ b.toNat && b.toNat ≤ 102))
 
 def WorkInputs (r : WorkReport) : Prop :=
   r.requiredTarget ≠ "" ∧ r.requiredEffect ∈ workEffects ∧

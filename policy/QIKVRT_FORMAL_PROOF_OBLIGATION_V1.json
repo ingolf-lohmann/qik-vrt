@@ -419,7 +419,7 @@
     }
   ],
   "vectors_path": "evidence/formal-receipts/DeliveryReporting/vectors.json",
-  "vectors_sha256": "be7cdda860f3228a34262ff3f776dd19d56a2f1a83a5f1e09763eaf201ef1a13",
+  "vectors_sha256": "1d727a23e0847df220b71829df2dcbbb49c9c05313f5b19e6f3611c251332325",
   "native_check_name": "QIKVRT formal proof obligation (7/7)",
   "native_check_app_id": 15368,
   "native_workflow_name": "QIK-VRT universal ontology finite-model verification",
@@ -443,12 +443,24 @@
       "propext"
     ],
     "QIKVRT.DeliveryReporting.T4": [],
-    "QIKVRT.DeliveryReporting.T5": [],
-    "QIKVRT.DeliveryReporting.T6": [],
-    "QIKVRT.DeliveryReporting.T7": [],
-    "QIKVRT.DeliveryReporting.T8": [],
-    "QIKVRT.DeliveryReporting.T9": [],
-    "QIKVRT.DeliveryReporting.T10": []
+    "QIKVRT.DeliveryReporting.T5": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T6": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T7": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T8": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T9": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T10": [
+      "propext"
+    ]
   },
   "bundle_source_build": {
     "source": "https://github.com/leanprover/lean4",

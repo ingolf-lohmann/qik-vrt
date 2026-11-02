@@ -67,5 +67,14 @@
     "ORIGINAL_HOST_EFFECT_VERIFIED": false,
     "ALL_CLIENTS_ADOPTED": false,
     "EFFECT_ACK_DONE": false
+  },
+  "formal_cross_version_diagnostic": {
+    "exact_candidate": "f7af976318bbf9c55885eef591c82ccd0fe7a468",
+    "native_run": 41452873154,
+    "artifact_id": 13146395934,
+    "artifact_sha256": "00c56ce7394204ce11d510341914f864efec7ba51072929b6e5c0ab50e54e8ac",
+    "observed": "All seven checker commands passed; cross-version axiom equality correctly rejected differing inventories. Original 4.35 export dependency graph traces Classical.choice through WorkInputs -> workDigest -> String.toList -> String.Internal.toArray -> Unicode decoding proof. The earlier proof-tactic diagnosis was not supported.",
+    "causal_repair": "Validate SHA256 ASCII byte values and byte count without Unicode decoding; retain all seven exact-input/equal-inventory checks and independently generated vector byte comparison.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; no passing result transferred from predecessor"
   }
 }

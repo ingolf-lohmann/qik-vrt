@@ -54,4 +54,26 @@ def main : IO Unit := do
                     "5555555555555555555555555555555555555555555555555555555555555555",
                     digest, cached, 1, utc, 3⟩
                   vectors := vectors.push (workVectorJson r)
+  -- ASCII boundaries, lengths, Unicode and a 64-byte non-ASCII value.
+  for digest in ["0000000000000000000000000000000000000000000000000000000000000000",
+      "9999999999999999999999999999999999999999999999999999999999999999",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "////////////////////////////////////////////////////////////////",
+      "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::",
+      "````````````````````````````````````````````````````````````````",
+      "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５５",
+      "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+      "555555555555555555555555555555555555555555555555555555555555555",
+      "55555555555555555555555555555555555555555555555555555555555555555",
+      "",
+      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "555555555555555555555555555555555555555555555555555555555555555\n"] do
+    let r : WorkReport := ⟨"https://artifact.example/leitstand",
+      "https://artifact.example/leitstand", "ARTIFACT_INSTALLATION",
+      "ARTIFACT_INSTALLATION", "DIRECT_TOOL_READBACK", "VERIFIED",
+      digest, digest, false, 1, 2, 3⟩
+    vectors := vectors.push (workVectorJson r)
   IO.println (Json.compress (Json.arr vectors))
