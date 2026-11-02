@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "At Authority Main `1d8e17e9c19356062d89c37f6881c6fac467ecf5` / tree `3eb6ef10b9ada5bd0c8976839b1a739ca344ac69`, the existing reflexive watchdog fetches the first 100 exact-head runs and then makes one jobs GET for every returned run without checking `total_count` or a request budget. The authorized quota repair in workspace tasks `a63ec5b1-8d42-4f64-a5a2-95a250e5b7df` and `c9ebfc7e-53c6-4ca4-bf17-2c3991acb58a` remains missing in this source.\n\nThe existing workflow body reproduces excessive/incomplete collection for 21 runs, a 100-of-101 run page and a 3-of-4 run page in isolated REST fixtures. A prepared correction extends the existing controller and workflow; 26 targeted tests pass, and the same three cases fail against the original workflow.\n\nBounded source acceptance:\n- Validate a complete, exact-head run inventory before any per-run jobs GET.\n- Admit at most 20 job requests, with zero job requests when incomplete or over budget; retain HOLD and UNKNOWN progress instead of sampling success.\n- Stop on HTTP 403 without an automatic retry.\n- Exercise the actual workflow body for blocked cases, the normal 0/3/20-run cases, and denials; run full make test and integrity validation.\n\nClosing this issue means this source repair has been integrated and verified. Live push, PR459's unresolved tree publication, the original Mirror tool, original SSO/host input delivery, raumzeitterminal.de TLS and productive EFFECT_ACK_DONE remain separate open duties. No new executor or timer is requested.\n\nHuman requirements and authorization: Ingolf Lohmann. Analysis, source correction and isolated verification: OpenAI Codex.",
+  "created_at": "2026-11-02T16:22:09Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/674",
+  "issue_number": 674,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Bound watchdog per-run job reads before incomplete or over-budget observation",
+  "updated_at": "2026-11-02T16:22:09Z"
+}
