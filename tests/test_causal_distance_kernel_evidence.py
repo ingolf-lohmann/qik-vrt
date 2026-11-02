@@ -23,6 +23,18 @@ class EvidenceMutationControls(unittest.TestCase):
             target = self.root / raw
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(evidence.ROOT / raw, target)
+        # This mutation fixture exercises the frozen publication plan. The
+        # independent delivery library was appended later to the live project.
+        # Recover only the exact original prefix and verify every bound identity;
+        # never rehash the historical plan to bless a different configuration.
+        config = "formalization/QIKVRT_Formalization_v2.0/lakefile.toml"
+        path = self.root / config
+        original = path.read_bytes().partition(
+            b'\n[[lean_lib]]\nname = "QIKVRTDeliveryReporting"'
+        )[0]
+        path.write_bytes(original)
+        self.assertEqual(evidence.original.identity(path, self.root),
+                         self.plan["source_bindings"][config])
 
     def reject_before_execution(self, expected):
         (self.root / evidence.PLAN).write_text(json.dumps(self.plan))

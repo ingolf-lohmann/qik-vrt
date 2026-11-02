@@ -93,6 +93,41 @@ def freeze_subject(root: Path, receipt: dict) -> None:
     receipt["branch_readback_verified"] = True
 
 
+def _pr_subject_observation(pr: dict) -> dict:
+    """Return only bounded identity fields needed to diagnose a PR mismatch."""
+    head = pr.get("head") if isinstance(pr.get("head"), dict) else {}
+    base = pr.get("base") if isinstance(pr.get("base"), dict) else {}
+    head_repo = head.get("repo") if isinstance(head.get("repo"), dict) else {}
+    base_repo = base.get("repo") if isinstance(base.get("repo"), dict) else {}
+    return {
+        "number": pr.get("number"),
+        "state": pr.get("state"),
+        "html_url": pr.get("html_url"),
+        "base_ref": base.get("ref"),
+        "base_repo": base_repo.get("full_name"),
+        "head_ref": head.get("ref"),
+        "head_repo": head_repo.get("full_name"),
+        "head_sha": head.get("sha"),
+    }
+
+
+def _exact_pr_subject(pr: dict, receipt: dict) -> bool:
+    repo = receipt["repository"]
+    number = pr.get("number")
+    return (
+        not isinstance(number, bool)
+        and isinstance(number, int)
+        and number > 0
+        and pr.get("state") == "open"
+        and pr.get("html_url") == f"https://github.com/{repo}/pull/{number}"
+        and pr.get("base", {}).get("ref") == "main"
+        and pr.get("base", {}).get("repo", {}).get("full_name") == repo
+        and pr.get("head", {}).get("ref") == receipt["branch"]
+        and pr.get("head", {}).get("repo", {}).get("full_name") == repo
+        and pr.get("head", {}).get("sha") == receipt["commit"]
+    )
+
+
 def read_pr(root: Path, receipt: dict) -> dict | None:
     repo = receipt["repository"]
     head = quote(repo.split("/")[0] + ":" + receipt["branch"], safe="")
@@ -113,19 +148,32 @@ def read_pr(root: Path, receipt: dict) -> dict | None:
     number = pr.get("number")
     if isinstance(number, bool) or not isinstance(number, int) or number <= 0:
         raise HandoffError("PR_IDENTITY_INVALID")
-    if (pr.get("state") != "open" or pr.get("html_url") != f"https://github.com/{repo}/pull/{number}"
-        or pr.get("base", {}).get("ref") != "main"
-        or pr.get("base", {}).get("repo", {}).get("full_name") != repo
-        or pr.get("head", {}).get("ref") != receipt["branch"]
-        or pr.get("head", {}).get("repo", {}).get("full_name") != repo
-        or pr.get("head", {}).get("sha") != receipt["commit"]):
-        raise HandoffError("PR_SUBJECT_MISMATCH")
+    receipt["pull_request_list_observation"] = _pr_subject_observation(pr)
+    if not _exact_pr_subject(pr, receipt):
+        # A filtered collection can lag the authoritative item representation.
+        # Re-read this exact numeric identity once; this is strictly read-only
+        # and does not transfer trust from the collection response.
+        single = json.loads(checked(
+            ["gh", "api", f"repos/{repo}/pulls/{number}"],
+            root, "PR_SINGLE_READBACK_UNAVAILABLE",
+        ))
+        if not isinstance(single, dict):
+            raise HandoffError("PR_SINGLE_RESPONSE_INVALID")
+        receipt["pull_request_single_observation"] = _pr_subject_observation(single)
+        if not _exact_pr_subject(single, receipt):
+            raise HandoffError("PR_SUBJECT_MISMATCH")
+        pr = single
+        receipt["pull_request_readback_route"] = "SINGLE_PR_AFTER_LIST_MISMATCH"
+    else:
+        receipt["pull_request_readback_route"] = "FILTERED_LIST_EXACT"
     return {"number": number, "url": pr["html_url"], "head": pr["head"]["sha"], "draft": pr.get("draft")}
 
 
 def review_handoff(root: Path, output: Path, receipt: dict) -> None:
     pr = read_pr(root, receipt)
     if pr is None:
+        if receipt.get('readback_only'):
+            raise HandoffError('PR_CREATE_RETRY_REQUIRES_NEW_CAPABILITY_EVIDENCE')
         if receipt['pr_create_attempts']:
             raise HandoffError('PR_CREATE_RETRY_REQUIRES_NEW_CAPABILITY_EVIDENCE')
         body = output / "PR_BODY.md"
@@ -223,6 +271,8 @@ def notify_issue(root: Path, output: Path, receipt: dict) -> None:
         return matches[0]['html_url'] if matches else None
     url = existing_comment()
     if url is None:
+        if receipt.get('readback_only'):
+            raise HandoffError('ISSUE_NOTIFICATION_READBACK_REQUIRED')
         if receipt['issue_comment_attempts']:
             raise HandoffError('ISSUE_NOTIFICATION_RETRY_REQUIRES_NEW_CAPABILITY_EVIDENCE')
         receipt['issue_comment_attempts'] = 1
@@ -256,7 +306,8 @@ def notify_issue(root: Path, output: Path, receipt: dict) -> None:
 
 
 def handoff(*, root: Path, output: Path, repository: str, issue_number: int,
-            commit: str, tree: str, source_commit: str, run_id: str, run_attempt: str) -> dict:
+            commit: str, tree: str, source_commit: str, run_id: str, run_attempt: str,
+            readback_only: bool = False) -> dict:
     if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository)
         or isinstance(issue_number, bool) or issue_number <= 0
         or any(not re.fullmatch(r"[0-9a-f]{40}", value) for value in (commit, tree, source_commit))
@@ -284,6 +335,7 @@ def handoff(*, root: Path, output: Path, repository: str, issue_number: int,
         "artifacts": [], "branch_readback_verified": False,
         "processing_status": "UNVERIFIED", "handoff_status": "REVIEW_HANDOFF_BLOCKED",
         "notification_status": "NOT_ATTEMPTED", "pr_create_attempts": 0, "issue_comment_attempts": 0,
+        "readback_only": readback_only,
         "automatic_merge": False, "automatic_issue_close": False, "EFFECT_ACK_DONE": False,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -321,10 +373,13 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--run-attempt", required=True)
     parser.add_argument("--output-directory", required=True, type=Path)
+    parser.add_argument("--readback-only", action="store_true",
+                        help="Observe an unchanged handoff without any PR or comment write.")
     args = parser.parse_args()
     receipt = handoff(root=Path.cwd(), output=args.output_directory, repository=args.repository,
                       issue_number=args.issue_number, commit=args.commit, tree=args.tree,
-                      source_commit=args.source_commit, run_id=args.run_id, run_attempt=args.run_attempt)
+                      source_commit=args.source_commit, run_id=args.run_id, run_attempt=args.run_attempt,
+                      readback_only=args.readback_only)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with Path(summary).open("a", encoding="utf-8") as stream:
@@ -337,3 +392,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

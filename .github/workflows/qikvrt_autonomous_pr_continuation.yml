@@ -198,10 +198,37 @@ jobs:
           python3 -B "$RUNNER_TEMP/qikvrt-pr-controller.py" pr-fixtures
           make test
           candidate_head="$(git rev-parse --verify HEAD^{commit})"
+          # BEGIN tested-successor checkpoint
+          test "$candidate_head" = "$(git rev-parse --verify HEAD^{commit})"
+          git diff --quiet
+          git diff --cached --quiet
+          checkpoint_dir="$RUNNER_TEMP/qikvrt-pr-successor-checkpoint"
+          test ! -e "$checkpoint_dir"
+          mkdir "$checkpoint_dir"
+          git bundle create "$checkpoint_dir/candidate.bundle" HEAD "^$EXPECTED_HEAD" "^$OBSERVED_BASE"
+          git bundle verify "$checkpoint_dir/candidate.bundle" > "$checkpoint_dir/bundle-verify.log" 2>&1
+          printf '%s\n' "$candidate_head" > "$checkpoint_dir/candidate-head.txt"
+          git rev-parse --verify HEAD^{tree} > "$checkpoint_dir/candidate-tree.txt"
+          git cat-file commit "$candidate_head" > "$checkpoint_dir/candidate-commit.raw"
+          cp "$RUNNER_TEMP/qikvrt-pr-selection.json" "$checkpoint_dir/selection.json"
+          (
+            cd "$checkpoint_dir"
+            sha256sum candidate.bundle candidate-head.txt candidate-tree.txt candidate-commit.raw selection.json bundle-verify.log > SHA256SUMS
+          )
+          # END tested-successor checkpoint
           live_head_before_push="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
           test "$live_head_before_push" = "$EXPECTED_HEAD"
           python3 -B "$RUNNER_TEMP/qikvrt-pr-controller.py" pr-publish \
             --selection "$RUNNER_TEMP/qikvrt-pr-selection.json" --sha "$candidate_head"
+
+      - name: Retain tested successor after publication failure
+        if: always() && steps.select.outputs.found == 'true' && steps.select.outputs.resume_handoff != 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # existing repository pin
+        with:
+          name: qikvrt-pr-successor-checkpoint-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-pr-successor-checkpoint/
+          if-no-files-found: ignore
+          retention-days: 30
 
       - name: Confirm no eligible work is a strict NOOP
         if: steps.select.outputs.found != 'true'

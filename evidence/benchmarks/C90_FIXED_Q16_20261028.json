@@ -1,0 +1,67 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "binary_sha256": "57f6a56ab279a543bbc0e707acd164b1384300f298250cfab2011d9364d95461",
+  "c90_cpu_seconds": [
+    0.007042,
+    0.008681,
+    0.010656,
+    0.006089,
+    0.007272
+  ],
+  "c90_median_seconds": 0.007272,
+  "checksums": [
+    3281973571,
+    3281973571,
+    3281973571,
+    3281973571,
+    3281973571
+  ],
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "compiler_command": [
+    "cc"
+  ],
+  "effect_ack_done": false,
+  "flags": [
+    "-O2",
+    "-std=c90",
+    "-pedantic-errors",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ],
+  "iterations": 1000000,
+  "machine": "x86_64",
+  "not_measured": [
+    "energy",
+    "Nvidia GPU",
+    "codec throughput",
+    "whole runtime",
+    "Meta-Transistor hardware",
+    "physical causality"
+  ],
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "python_cpu_seconds": [
+    0.931892148,
+    0.980634013,
+    0.946595044,
+    0.920013769,
+    0.808835231
+  ],
+  "python_median_seconds": 0.931892148,
+  "python_over_c90_ratio": 128.14798514851486,
+  "repeats": 5,
+  "schema": "qikvrt-c90-q16-cpu-benchmark/v1",
+  "scope": "SCALAR_CPU_CHECKED_Q16_MULTIPLY_THEN_ADD",
+  "source_sha256": {
+    "include/qikvrt/fixed_q16.h": "5fa4ecca2859a02ec45b88e1dd123782bc16a558c68a9d439bbae9783212e55e",
+    "src/fixed_q16.c": "acbbc0abcb00bce89427c8114e0844d54cfc16ce1bd3ce0bccd6b209b57e1e17",
+    "src/qikvrt_fixed_q16.py": "250c1854cca39edb58a8a0acd8a4567529cd2eb7b5402d5b6877db80588c3c06",
+    "tools/qikvrt_c90_benchmark.c": "9a445cd046d2c11c55aa60123f3a388d9a738cd72dab9a67538aafcb61290ed6",
+    "tools/qikvrt_c90_benchmark.py": "1d14de87db6cc5df3852818ea381b1ce0be0bdbc782a926cdd14b387b28f3639"
+  },
+  "timing": "process CPU time inside each workload; excludes compile/startup/I-O"
+}

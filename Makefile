@@ -2,6 +2,8 @@
 # Copyright 2026 Ingolf Lohmann.
 
 PYTHON ?= python3
+# unittest durations are available from Python 3.12; retain older runtimes.
+UNITTEST_TIMING ?= $(shell $(PYTHON) -c "import sys; print('--durations=20' if sys.version_info >= (3, 12) else '')")
 CC ?= cc
 EFFECT_ACK_C90_CFLAGS ?= -std=c90 -pedantic -Wall -Wextra -Werror
 
@@ -96,10 +98,10 @@ unit:
 	$(PYTHON) tests/test_handler_unit.py
 
 conformance:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service tests.test_eap_mirror_client
 
 security:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns tests.test_qikvrt_ionos_web
 
 license:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_license_transition
@@ -120,7 +122,7 @@ run-api:
 	@test -n "$(QIKVRT_API_TOKEN_EXPIRES_UTC)" || (echo "BLOCK: set QIKVRT_API_TOKEN_EXPIRES_UTC" >&2; exit 2)
 	@test -n "$(QIKVRT_ALLOWED_REPOSITORY)" || (echo "BLOCK: set QIKVRT_ALLOWED_REPOSITORY=owner/repo" >&2; exit 2)
 	@test -n "$(QIKVRT_API_PRINCIPAL)" || (echo "BLOCK: set QIKVRT_API_PRINCIPAL" >&2; exit 2)
-	PYTHONNOUSERSITE=1 $(PYTHON) -S src/qikvrt_github_api_shim.py
+	PYTHONNOUSERSITE=1 $(PYTHON) $(if $(filter 1,$(QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED) $(QIKVRT_PUBLICATION_REST_ENABLED)),-B,-S) src/qikvrt_github_api_shim.py
 
 .PHONY: mcp-conformance-test
 mcp-conformance-test:
@@ -142,6 +144,9 @@ clean:
 
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_production_environment
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_publication_rest
+	node tests/test_production_environment_ui.cjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_auth
@@ -190,6 +195,12 @@ digital-twin-sso-test:
 
 test: digital-twin-sso-test
 
+.PHONY: digital-twin-rest-test
+digital-twin-rest-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v $(UNITTEST_TIMING) tests.test_qikvrt_digital_twin_rest
+
+test: digital-twin-rest-test
+
 .PHONY: public-qa-test
 public-qa-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_public_qa_server tests.test_public_question_entrypoint
@@ -205,6 +216,7 @@ test: editorial-navigation-test
 
 .PHONY: repository-monitor-test self-host-test
 repository-monitor-test:
+	node --test docs/monitor/workspace.test.mjs
 	node docs/monitor/observer.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
@@ -220,14 +232,22 @@ test: temdd-event-ledger-test
 endif
 
 self-host-test: tool-cache-contract temdd-event-ledger-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_publication
 	node --test docs/monitor/mesh-file.test.mjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_provider
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_static tests.test_static_delivery_rest
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_temdd
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_eap
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_migration
 	node --check docs/monitor/self-host.mjs
 	node --check tools/qikvrt_mesh_monitor_readback.mjs
+
+.PHONY: linux-packages-test
+linux-packages-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_debian
+
+self-host-test: linux-packages-test
 
 .PHONY: origin-adapter-test origin-adapter-browser-test
 origin-adapter-test: tool-cache-contract
@@ -255,3 +275,37 @@ personal-retrieval-test:
 	node tests/test_qikvrt_personal_retrieval_ui.cjs
 
 test: personal-retrieval-test
+
+# Portable C90 companion to the Python runtime.
+C90_OUTPUT_DIR ?= .qikvrt/cache/c90
+
+.PHONY: c90 fixed-q16-compile fixed-q16-test benchmark-c90 c90-assembly
+c90: effect-ack-core-test fixed-q16-test
+
+fixed-q16-compile:
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -Iinclude -fsyntax-only src/fixed_q16.c tests/test_fixed_q16.c tools/qikvrt_c90_benchmark.c
+
+fixed-q16-test: fixed-q16-compile
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tests/test_fixed_q16.py
+
+benchmark-c90:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 CC="$(CC)" $(PYTHON) -B tools/qikvrt_c90_benchmark.py
+
+c90-assembly:
+	mkdir -p "$(C90_OUTPUT_DIR)"
+	$(CC) $(EFFECT_ACK_C90_CFLAGS) -pedantic-errors -O2 -Iinclude -S src/fixed_q16.c -o "$(C90_OUTPUT_DIR)/fixed_q16.s"
+
+compile: fixed-q16-compile
+test: fixed-q16-test
+
+.PHONY: mesh-recovery-test
+mesh-recovery-test: digital-twin-rest-test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v $(UNITTEST_TIMING) tests.test_qikvrt_codec tests.test_qikvrt_feedback tests.test_qikvrt_standpoint_codex tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider tests.test_qikvrt_pr_closure_engine tests.test_qikvrt_merge_priority tests.test_reciprocal_closure_step tests.test_reciprocal_devops_closure
+
+test: mesh-recovery-test
+
+.PHONY: native-archive-test
+native-archive-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
+
+test: native-archive-test

@@ -1,0 +1,245 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_SIEMENS_REFERENCE_RESTORE_20261019_V1",
+  "created_at_utc": "2026-10-19T12:27:46.696109+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_main": {
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "predecessor": {
+    "library_file_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "version": 12,
+    "client_receipt_sha256": "2c5e9af3bd847b88500478d6cc7b402d90cf66fbc27d944a833d80777c941719",
+    "all_open_work_and_knowledge_preserved_in_separate_client_receipt": true,
+    "writer_admission_transferred": false
+  },
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "contribution": "Direct task: restore only missing Siemens reference integration components through existing QIK-VRT path; test current source; distinguish reference, integration and productive Siemens compatibility."
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "system_family": "OpenAI Codex",
+    "model_build": "UNAVAILABLE",
+    "contribution": "Exact-source comparison, original source reuse, test extension and make integration, independent HTTP readback, evidence preservation and bounded Siemens interface gap analysis."
+  },
+  "reuse": {
+    "pull_request": 422,
+    "head": "630fd695791da71185077fb442e0f090a8fbcb13",
+    "observed_status": "OPEN_UNMERGED_NON_MERGEABLE",
+    "reference_model_git_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+    "reference_model_unchanged": true,
+    "associated_test_baseline_git_blob": "feed8edbd89b9295139d508fc916381ddb5c9aa5",
+    "unrelated_promotion_or_ruleset_test_changes_imported": false,
+    "competing_model_implementation_created": false,
+    "original_rest_contract_changed": false,
+    "original_sso_remote_exposure_guard_changed": false
+  },
+  "repair": {
+    "baseline": "ModuleNotFoundError for src.qikvrt_siemens_reference_integration on exact current Main",
+    "delta": "Restore exact PR422 model; reuse its deterministic fixtures/readback negatives; add independent GET/hash, stale/replay/no-mutation/schema/range/prepare-state tests; include existing REST suite in make test."
+  },
+  "source_files": [
+    {
+      "path": "src/qikvrt_siemens_reference_integration.py",
+      "bytes": 3082,
+      "sha256": "fb6595a2221fac4f0acb3100fbf5167a36c619583974a3f487b56ccbf73290c5",
+      "git_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2"
+    },
+    {
+      "path": "tests/test_qikvrt_digital_twin_rest.py",
+      "bytes": 5050,
+      "sha256": "435d9eeb870429fe3b9e6be3213a12ebfdb934e77316ffa95cc573690cb6d7b9",
+      "git_blob": "4ac9c85180e23ff52d713330df979606dacbf13b"
+    },
+    {
+      "path": "src/qikvrt_digital_twin_rest.py",
+      "bytes": 4154,
+      "sha256": "5d9d9adee51df6f6ea46c2ada0006c01bbe7adc2f4b1ef51072751b322dc712c",
+      "git_blob": "269090c5072eb5d483c5ad444d09724756195eac"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 17287,
+      "sha256": "036f85a4b9bd5d3875e1e4143241f322884b5725ad41d3a5798e3ce5ae0e834f",
+      "git_blob": "8f62d61bce57d56f7fc4046c4a6312c1898230aa"
+    }
+  ],
+  "verification": {
+    "digital_twin_rest_tests": {
+      "executed": 8,
+      "passed": 8,
+      "scope": "Real loopback HTTP and exact deterministic reference model, no vendor transport"
+    },
+    "sso_boundary_tests": {
+      "executed": 3,
+      "passed": 3
+    },
+    "separate_http_client": {
+      "passed": true,
+      "scope": "Independent client process, original handler, version7->8, receipt GET, independently recomputed SHA256, replay409, no physical effect"
+    },
+    "native_non_socket_regressions": {
+      "executed": 69,
+      "passed": 69
+    },
+    "broader_native_regressions": {
+      "executed": 137,
+      "passed": 104,
+      "errors": 33,
+      "explicit_unix_socket_eperm": 32,
+      "cli_empty_response_json_error": 1,
+      "state": "NOT_PASS",
+      "guards_weakened_or_sockets_mocked": false
+    },
+    "make_compile": "PASS",
+    "full_make_test": "Fresh frozen-subject result must be read from the attached execution/CI evidence; no full-suite PASS asserted by this pre-integration record.",
+    "predecessor_evidence_transfer": false
+  },
+  "native_use": {
+    "original_runtime": "src/qikvrt_temdd_event_ledger.py",
+    "original_terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "original_source_binding": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "input_contract": "qikvrt_terminal_input_v1 through original _durable_input",
+    "source": "transputer",
+    "epoch": "528ec5718d3f4262bb7845231f574359",
+    "native_event": "528ec5718d3f4262bb7845231f574359:1",
+    "native_event_digest": "372fd2ab66c91877525b8f6b2863b2241a8008de60212aca13d751d3b48c8351",
+    "route": "ORIGINAL_IN_PROCESS_API",
+    "independent_original_terminal_readback": true,
+    "socket_route": "HOLD_EPERM",
+    "productive_host_acceptance": false,
+    "copied_journals_appended": false,
+    "outbox_source": "node-tools/qikvrt_mirror_emit.py unavailable in observed Main; predecessor HOLD with original-node source carrier preserved",
+    "new_outbox_assessment_created": false,
+    "peer_delivery_or_adoption_claimed": false
+  },
+  "evidence": [
+    {
+      "path": "evidence/siemens-reference-restore-20261019/DIGITAL_TWIN_BASELINE.log",
+      "bytes": 1239,
+      "sha256": "99e2c43f2b27062777e60c92e75f3b11aa8566e0e6f8e11a30499bbbefe457ae"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/DIGITAL_TWIN_REST_TESTS.log",
+      "bytes": 1741,
+      "sha256": "9661e5418a0528d0eedbece0cc0d354aaa46bc9bc0f0292fc4a39b487a8a3b3d"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/NATIVE_REGRESSIONS.log",
+      "bytes": 66089,
+      "sha256": "c281ab25155c275e1ceda1ca807802ee1ab3301131f852d0292d7a1ca7629bf3"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/NATIVE_NON_SOCKET_REGRESSIONS.log",
+      "bytes": 12975,
+      "sha256": "0e4c1156e0e54af45b96ea1b22975bdb8f6558d88121dc1530c9b301937aafb6"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/INDEPENDENT_REFERENCE_HTTP.json",
+      "bytes": 2796,
+      "sha256": "6effc8af70a92c0a218327ebe9458bdff05a14fe56bf5dbc6080eda4e20bbd14"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/COMPILE.log",
+      "bytes": 2895,
+      "sha256": "326fd2428cf0cccd581140f3125e65024a6d6a17473aa6e3e0c6198f424dfa8e"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/OWNER_INPUT_EVENT.json",
+      "bytes": 1373,
+      "sha256": "1b6fac656620dc6f07b0ea2e4e5b2d3186c7da59a3d00f54105f108ea6a3d464"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/OWNER_INPUT_NATIVE_RECEIPT.json",
+      "bytes": 1682,
+      "sha256": "c225ed819500d53ed7a2c29c3ba52fc76e4f99f564f41add313e81fe2ca246c1"
+    },
+    {
+      "path": "evidence/siemens-reference-restore-20261019/OWNER_INPUT_COLD_READBACK.json",
+      "bytes": 1849,
+      "sha256": "f6bee4eb2b06fe3b2865aef25f8f64c6b65a5fb28606a1125e2520c2b16a22d5"
+    }
+  ],
+  "live_acceptance_obligations": "docs/operations/SIEMENS_DIGITAL_TWIN_REFERENCE_ACCEPTANCE.md",
+  "status_boundaries": {
+    "reference_source_restored": true,
+    "local_reference_http_integration_verified": true,
+    "authority_main_integrated": "NOT_YET_OBSERVED",
+    "vendor_tenant_contacted": false,
+    "productive_siemens_compatibility": false,
+    "human_role_model_verified": false,
+    "physical_effect": false,
+    "global_effect_ack_done": false,
+    "exact_domain_delivery": "OPEN; public monitor observed HTTP525 at 2026-10-19T12:26:31.718Z"
+  },
+  "next_action": "Admit the smallest Main-based source candidate through the existing reviewed PR/CI path; independently read exact source and native checks, then promote only under existing governance. Continue real Siemens acceptance only with actual protected target/role/API bindings.",
+  "history_preserving_reconciliations": [
+    {
+      "observed_at_utc": "2026-10-29T14:54:14.899896+00:00",
+      "requested_by": "Ingolf Lohmann; direct PR627 conflict-repair instruction, 2026-10-29",
+      "implemented_by": "OpenAI Codex",
+      "predecessor_head": "f3c8fa8b82343fd700879ac58f2fc6e171f1cadd",
+      "merged_main": "dafe3c15c42dd228642698167043d7677eb0c92f",
+      "merge_base": "6d3e7d31c56352b3334a225b061f403a83efd2ac",
+      "ordered_parents": [
+        "f3c8fa8b82343fd700879ac58f2fc6e171f1cadd",
+        "dafe3c15c42dd228642698167043d7677eb0c92f"
+      ],
+      "conflicted_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "resolution": "Reuse tools/qikvrt_integrity.py generate on the merged source set; retain both Siemens REST and C90 make targets. No hand-edited digest.",
+      "siemens_reference_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+      "siemens_reference_unchanged": true,
+      "validation_commands": [
+        "python3 -B tools/qikvrt_integrity.py verify",
+        "make test"
+      ],
+      "validation_results": "Require fresh local results and native CI on the resulting successor; historical CI is not transferred.",
+      "review_state": "COMMENTED on predecessor only; no independent GitHub APPROVED inferred",
+      "repository_scope_only": true,
+      "host_domain_runtime_production_acceptance_inferred": false
+    },
+    {
+      "observed_at_utc": "2026-10-29T15:10:33.191161+00:00",
+      "requested_by": "Ingolf Lohmann; same PR627 conflict-repair task, 2026-10-29",
+      "implemented_by": "OpenAI Codex",
+      "predecessor_head": "f2dc1b92e9b527cb67e49e367f8cebc1bc19730c",
+      "merged_main": "9b2d505ad7e185e0aa94a240d2215d7e7154d530",
+      "merge_base": "dafe3c15c42dd228642698167043d7677eb0c92f",
+      "ordered_parents": [
+        "f2dc1b92e9b527cb67e49e367f8cebc1bc19730c",
+        "9b2d505ad7e185e0aa94a240d2215d7e7154d530"
+      ],
+      "cause": "Main advanced through PR463 while predecessor native CI was running. Reconcile the new Main; preserve predecessor results as historical exact-subject evidence.",
+      "conflicted_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "resolution": "Deterministic regeneration using the existing integrity generator. Automatic Makefile merge retains Siemens REST, C90 and the new Main publication REST regression target.",
+      "predecessor_native_test_evidence": {
+        "run_id": 40896917541,
+        "job_id": 123528450590,
+        "tested_head": "f2dc1b92e9b527cb67e49e367f8cebc1bc19730c",
+        "tested_tree": "174ba6f8915f78ca185731b044030c065f644193",
+        "test_log_sha256": "007600d1acab93f0b0b70977cc297a0546898b2dbe65b92b924d4bf18a76673d",
+        "transferred_to_successor": false
+      },
+      "siemens_reference_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+      "repository_scope_only": true,
+      "host_domain_runtime_production_acceptance_inferred": false
+    }
+  ]
+}

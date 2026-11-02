@@ -114,3 +114,7 @@ unimplemented. Runtime credentials and browser authentication state are never
 committed or placed in the transcript SQLite store. Source availability, test
 doubles, RSA controls and restored transcripts do not establish external
 authentication, provider retention readback or a Firefox product run.
+
+## Local codec boundary restored from PR #437
+
+The QIKVRT standpoint codec serializes, decodes and verifies bytes locally without an external model or account. `policy/QIKVRT_STANDPOINT_CODEX_V1.json` defines that scope. An optional external adapter retains the existing authenticated service and personal capability boundaries when enabled. Local codec success supplies no authentication, native personal admission or delivery evidence. Historical contribution disclosures remain unchanged.

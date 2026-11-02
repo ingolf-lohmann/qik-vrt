@@ -156,5 +156,77 @@
       "human_contribution": "Conditional merge authorization and manual predecessor merge — Ingolf Lohmann.",
       "artificial_cognitive_contribution": "Readback, scoped operational binding and persistence — OpenAI Codex."
     }
+  },
+  "graphql_fallback_decision": {
+    "schema": "qikvrt-owner-graphql-fallback/v1",
+    "state": "ACTIVE",
+    "owner": "Ingolf Lohmann",
+    "date": "2026-10-29",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_instruction": {
+      "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "text": "Graf QL ist in der Form wie es jetzt vorliegt die Garantie dafür, dass das Repository nicht zum Stillstand kommt, solange es noch unerledigte Arbeit hat. Das ist der immerwährende Fallback. Und jetzt bilden wir das in einer REST-API ab, die dafür sorgt, dass der GraphQL Baum sich selbstständig optimieren kann anhand der erfolgreichen Durchläufe des Continuous Integration, Continuous Development, Continuous Operation Workflows",
+      "sha256": "895af5d62f83b689eead5af092fedd94770e2d5732c41009a95965749f76d0d4"
+    },
+    "rest_primary": true,
+    "fallback_must_be_retained": true,
+    "allowed_operations": [
+      "markPullRequestReadyForReview"
+    ],
+    "fallback_endpoint": "https://api.github.com/graphql",
+    "learning": "SUCCESSFUL_ORIGINAL_CI_CD_CO_RUNS; ORDER_INDEPENDENT_SIBLINGS_ONLY",
+    "no_gate_removal": true,
+    "ambiguous_effect_requires_readback": true,
+    "arbitrary_graphql_document": false,
+    "production_acceptance_inferred": false
+  },
+  "conditional_pull_request_creation_decision": {
+    "schema": "qikvrt-owner-conditional-pull-request-creation/v1",
+    "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+    "state": "ACTIVE",
+    "effective_date": "2026-10-29",
+    "owner": {
+      "name": "Ingolf Lohmann",
+      "role": "Product Owner",
+      "github_login": "ingolf-lohmann",
+      "github_id": 294949349
+    },
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_instruction": {
+      "source_kind": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "context_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/636",
+      "text": "Freigabe erteilt zum selbstständigen Anlegen neuer Pull Requests, sofern sie mindestens einen anderen Pull Request oder einen anderen Issue oder einen anderen Branch schließen. Product Owner Ingolf Lohmann",
+      "sha256": "4b91eb9020f6243cf57066b51676637cb9d3923172f5d9afa30f64735f1ac8dd"
+    },
+    "authorizes": {
+      "autonomous_new_pull_request_creation": true,
+      "repeated_owner_authorization_required": false
+    },
+    "closure_condition": {
+      "minimum_other_targets": 1,
+      "allowed_target_types": [
+        "PULL_REQUEST",
+        "ISSUE",
+        "BRANCH"
+      ],
+      "target_must_differ_from_new_pull_request": true,
+      "before_creation": "Identify the existing target, its current exact subject, the concrete work this candidate completes or fully supersedes, and the supported closure path.",
+      "completion": "Independently read back the actual target closure or completed branch integration after the admitted repository effect.",
+      "mere_reference_or_closing_keyword_is_completion": false,
+      "unresolved_work_may_be_hidden_or_discarded": false,
+      "branch_deletion_is_implicitly_authorized": false
+    },
+    "continuation": {
+      "reuse_existing_candidate_when_sufficient": true,
+      "preserve_original_discussion_history_and_open_duties": true,
+      "new_candidate_tests_require_fresh_exact_head_evidence": true,
+      "existing_conditional_merge_decision_remains_separate": true,
+      "runtime_host_domain_acceptance_inferred": false,
+      "productive_effect_ack_done_inferred": false
+    },
+    "attribution": {
+      "human_contribution": "Conditional autonomous Pull Request creation authorization — Ingolf Lohmann.",
+      "artificial_cognitive_contribution": "Scoped persistence and binding to the existing continuation contract — OpenAI Codex."
+    }
   }
 }

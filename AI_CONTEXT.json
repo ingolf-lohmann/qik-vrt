@@ -174,7 +174,11 @@
     "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
     "docs/publications/2026-08-07-universum-als-round-trip/README.md",
     "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
-    "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json"
+    "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+    "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+    "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+    "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
   ],
   "session_protocol": {
     "startup": [
@@ -302,9 +306,65 @@
     "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
     "json_pointer": "/conditional_merge_decision",
     "decision_id": "OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
-    "source_sha256": "1c99f92090e68fce949267cc81a92ddc3631f566081b4ce8029ee2a7acc33926",
+    "source_sha256": "380e5e6a1585672b928c67f30536a6a85d7a04ee7d5519a42162f684de2ee22f",
     "github_route": "REST_API_ONLY",
     "scope": "CONFLICT_FREE_GREEN_TEST_REPOSITORY_MERGE_AND_AUTONOMOUS_CONTINUATION",
     "merge_is_runtime_acceptance": false
+  },
+  "github_continuation_fallback": {
+    "owner_decision": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json#/graphql_fallback_decision",
+    "decision_sha256": "f0220e4bef4e5884f744835d6a9885158045d9f31b387ea63c5325e6c86ccc8c",
+    "default_route": "REST_API_ONLY",
+    "fallback_route": "GRAPHQL_FALLBACK",
+    "always_retained": true,
+    "learn_from": "ORIGINAL_SUCCESSFUL_CI_CD_CO_RUNS",
+    "ordinary_release_inferred": false
+  },
+  "owner_pull_request_creation": {
+    "source": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "json_pointer": "/conditional_pull_request_creation_decision",
+    "decision_id": "OWNER-PR-CREATION-WITH-OTHER-CLOSURE-20261029",
+    "decision_sha256": "1304b2dd882e19afd22c863d95612c9b20a3ff40532616ca689086fed926697c",
+    "minimum_other_closure_targets": 1,
+    "reuse_existing_candidate_when_sufficient": true,
+    "closure_requires_independent_readback": true,
+    "rule_save_is_runtime_enforcement": false
+  },
+  "standpoint_codex": {
+    "machine_contract": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "specification": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+    "implementation": "src/qikvrt_standpoint_codex.py",
+    "acceptance_command": "make standpoint-codex-test",
+    "signature_bytes": 400,
+    "signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "external_model_required": false,
+    "historical_provenance_rewritten": false,
+    "signature_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "signature_git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+    "codec_contract": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+    "provenance_state": "FIRST_CANONICAL_MATERIALIZATION_NOT_RECOVERED_OWNER_SEED",
+    "source_commit": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+    "source_pull_request": 424,
+    "review_carrier": 437,
+    "github_account_recovery_capability": false,
+    "historical_owner_seed_recovery": "OPEN_UNBOUND"
+  },
+  "full_node_recovery": {
+    "acceptance_test": "tests/test_qikvrt_mesh_recovery.py",
+    "authority_transition_adapter": "tools/qikvrt_authority_transition.py",
+    "authority_transition_effect_scope": "LOCAL_CONTROL_PLANE_AND_GATED_EFFECT_LEDGER",
+    "authority_transition_test": "tests/test_qikvrt_authority_transition.py",
+    "full_node_admission_requires_all_policy_predicates": true,
+    "human_contract": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+    "implementation": "tools/qikvrt_mesh_recovery.py",
+    "offline_restore_is_live_authority_promotion": false,
+    "permanent_lineage_root": "Goldkelch/qik-vrt",
+    "policy": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+  },
+  "delivery_reporting_rules": {
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/delivery_reporting_rules",
+    "rule_id": "QIKVRT_REMOTE_DELIVERY_REPORTING_R1_R5_20261031",
+    "all_nodes_adopted": false,
+    "productive_effect_inferred": false
   }
 }
