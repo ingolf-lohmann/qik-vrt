@@ -1,5 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.12.0
+# S1 standalone node package, version 1.15.0
+
+The additive [native Debian/Ubuntu package distribution](LINUX_PACKAGES.md)
+splits this same sealed export into EAP, Terminal/Transputer, Web, runtime and
+server packages. It retains the original exact-host admission and supervisor;
+package configuration alone does not start or admit a productive server.
 
 Every current and future repository node, including Authority and Mirror, must
 implement and run both the universal Transputer and the universal Terminal.
