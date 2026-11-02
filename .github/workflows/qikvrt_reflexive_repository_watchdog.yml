@@ -153,12 +153,14 @@ jobs:
           gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" \
             > "$root/current-runs.json"
 
-          # The analyzer considers every returned run. Fetch the matching jobs for
-          # every one of those runs so missing observation data is never confused
-          # with a genuine terminal zero-job execution.
-          mapfile -t run_ids < <(
-            jq -r '.workflow_runs[].id' "$root/current-runs.json"
-          )
+          # Admit the complete page before any per-run GET. A truncated inventory
+          # or more than 20 job requests is HOLD, never a sampled success.
+          observation_stage=JOBS_BUDGET_PREFLIGHT
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
+            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" --json \
+            > "$root/job-readback-budget.json"
+          jq -r '.run_ids[]' "$root/job-readback-budget.json" > "$root/job-readback-run-ids.txt"
+          mapfile -t run_ids < "$root/job-readback-run-ids.txt"
           for run_id in "${run_ids[@]}"; do
             observation_stage=JOBS_READBACK
             gh api "repos/$REPOSITORY/actions/runs/$run_id/jobs?per_page=100" \

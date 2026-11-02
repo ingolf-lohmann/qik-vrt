@@ -493,7 +493,8 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertIn("QIKVRT repository evidence materialization", workflow)
         self.assertIn("observed-authority-main-head.txt", workflow)
         self.assertIn("gatewatch-receipt.json", workflow)
-        self.assertIn("jq -r '.workflow_runs[].id'", workflow)
+        self.assertIn("job-readback-budget", workflow)
+        self.assertIn("jq -r '.run_ids[]'", workflow)
         self.assertIn("select(.id != $current)", workflow)
         self.assertIn("--previous-readback", workflow)
         self.assertIn(".semantic_fingerprint", workflow)
@@ -608,6 +609,119 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
         )
         self.assertFalse(receipt["expected_head_matches_checkout"])
         self.assertFalse(receipt["completion_claims"]["EFFECT_ACK_DONE"])
+
+
+class JobReadbackBudgetTests(unittest.TestCase):
+    @staticmethod
+    def page(count: int, *, total: int | None = None) -> dict:
+        return {"total_count": count if total is None else total,
+                "workflow_runs": [{"id": i + 1, "head_sha": HEAD} for i in range(count)]}
+
+    def test_incomplete_over_budget_and_invalid_pages_never_admit_job_reads(self):
+        cases = [
+            (self.page(21), "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"),
+            (self.page(100, total=101), "RUN_INVENTORY_INCOMPLETE"),
+            (self.page(3, total=4), "RUN_INVENTORY_INCOMPLETE"),
+            ({**self.page(1), "truncated": True}, "RUN_INVENTORY_INCOMPLETE"),
+            ({**self.page(1), "total_count": True}, "RUN_INVENTORY_INVALID"),
+            ({"workflow_runs": []}, "RUN_INVENTORY_INVALID"),
+            ({"total_count": 1, "workflow_runs": [{"id": True, "head_sha": HEAD}]},
+             "RUN_INVENTORY_INVALID"),
+            ({"total_count": 1, "workflow_runs": [{"id": 1, "head_sha": TREE}]},
+             "RUN_INVENTORY_INVALID"),
+            ({"total_count": 2, "workflow_runs": [{"id": 1, "head_sha": HEAD}] * 2},
+             "RUN_INVENTORY_INVALID"),
+        ]
+        for page, blocker in cases:
+            with self.subTest(blocker=blocker, page=page):
+                result = MODULE.job_readback_budget(page, expected_head=HEAD)
+                self.assertEqual(result["state"], "HOLD")
+                self.assertEqual(result["first_blocker"], blocker)
+                self.assertEqual(result["run_ids"], [])
+                self.assertFalse(result["effect_ack_done"])
+
+    def test_complete_pages_include_zero_and_the_exact_budget_boundary(self):
+        for count in (0, 1, 20):
+            with self.subTest(count=count):
+                result = MODULE.job_readback_budget(self.page(count), expected_head=HEAD)
+                self.assertEqual(result["state"], "READY")
+                self.assertEqual(result["run_ids"], list(range(1, count + 1)))
+
+    def collect(self, page: dict, *, deny: str = "", checker_missing: bool = False) -> tuple:
+        """Run the real workflow collection body against an isolated REST fixture."""
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = pathlib.Path(temporary.name)
+        (root / "bin").mkdir()
+        (root / "tools").mkdir()
+        observation = root / "observation"
+        (observation / "jobs").mkdir(parents=True)
+        (root / "runs.json").write_text(json.dumps(page), encoding="utf-8")
+        shutil.copyfile(ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
+                        root / "tools/qikvrt_reflexive_repository_watchdog.py")
+        if checker_missing:
+            (root / "tools/qikvrt_reflexive_repository_watchdog.py").unlink()
+        stub = root / "bin/gh"
+        stub.write_text(textwrap.dedent(f"""\
+            #!{sys.executable}
+            import json, os, pathlib, sys
+            root = pathlib.Path(os.environ['FIXTURE_ROOT'])
+            path = sys.argv[-1]
+            kind = 'jobs' if '/jobs?' in path else 'runs'
+            with (root / 'requests.jsonl').open('a') as log:
+                log.write(json.dumps({{'kind': kind, 'path': path}}) + '\\n')
+            if os.environ['DENY'] == kind:
+                print('gh: API rate limit exceeded (HTTP 403)', file=sys.stderr)
+                raise SystemExit(1)
+            print('{{"total_count":0,"jobs":[]}}' if kind == 'jobs'
+                  else (root / 'runs.json').read_text())
+            """), encoding="utf-8")
+        stub.chmod(0o700)
+        body = ReflexiveObservationFailureTests.step_body(
+            "Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")
+        body = body[body.index("observation_stage=RUNS_READBACK"):]
+        environment = {**os.environ, "PATH": str(root / "bin") + os.pathsep + os.environ["PATH"],
+                       "root": str(observation), "FIXTURE_ROOT": str(root), "DENY": deny,
+                       "EXPECTED_HEAD": HEAD, "REPOSITORY": "example/qik-vrt"}
+        result = subprocess.run(["bash", "-c", "set -euo pipefail\n" + body], cwd=root,
+                                env=environment, capture_output=True, text=True, timeout=15)
+        requests = [json.loads(line) for line in (root / "requests.jsonl").read_text().splitlines()]
+        plan_path = observation / "job-readback-budget.json"
+        plan_bytes = plan_path.read_text() if plan_path.exists() else ""
+        plan = json.loads(plan_bytes) if plan_bytes.strip() else None
+        return result, requests, plan
+
+    def test_real_workflow_sends_zero_job_gets_for_21_runs_or_incomplete_100_run_page(self):
+        for page in (self.page(21), self.page(100, total=101), self.page(3, total=4)):
+            with self.subTest(total=page["total_count"]):
+                result, requests, plan = self.collect(page)
+                self.assertNotEqual(result.returncode, 0, result.stderr)
+                self.assertEqual([r["kind"] for r in requests], ["runs"])
+                self.assertEqual(plan["state"], "HOLD")
+
+    def test_real_workflow_reads_every_job_for_a_complete_admitted_page(self):
+        for count in (0, 3, 20):
+            with self.subTest(count=count):
+                result, requests, plan = self.collect(self.page(count))
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(len([r for r in requests if r["kind"] == "jobs"]), count)
+                self.assertEqual(plan["state"], "READY")
+
+    def test_http_403_stops_collection_without_an_automatic_retry(self):
+        for denied, expected_job_gets in (("runs", 0), ("jobs", 1)):
+            with self.subTest(denied=denied):
+                result, requests, _ = self.collect(self.page(3), deny=denied)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("HTTP 403", result.stderr)
+                self.assertEqual(len([r for r in requests if r["kind"] == "runs"]), 1)
+                self.assertEqual(len([r for r in requests if r["kind"] == "jobs"]), expected_job_gets)
+
+    def test_unavailable_budget_checker_cannot_start_job_reads(self):
+        result, requests, plan = self.collect(self.page(3), checker_missing=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("can't open file", result.stderr)
+        self.assertEqual([r["kind"] for r in requests], ["runs"])
+        self.assertIsNone(plan)
 
 
 if __name__ == "__main__":
