@@ -114,8 +114,8 @@
     "statistical_or_failure_independence_claimed": false,
     "productive_effect_inferred": false,
     "work_completion": "T5-T10: declared effect/target/origin/checker/time/cache rejection; full-hash adapter and inherited-target/stall checks exercised by original receipt regressions",
-    "hash_representation": "Hash text is a list of scalar codes in the model; the original-string vector bridge uses Char.toNat. Exactly 64 ASCII lowercase hexadecimal codes are required. This avoids version-dependent UTF8 storage/decoding proof dependencies without relaxing the predicate.",
-    "external_literal_support": "The one common 4.35 export includes original Char.ofNat and String.ofList definitions needed for lean4lean string-literal expansion; all six external kernels still check the same complete input, and theorem axiom inventories must remain identical to the own kernel."
+    "hash_representation": "All work text fields are scalar-code lists in the model; original string conversion is confined to the finite bridge using Char.toNat. Hashes require exactly 64 ASCII lowercase hexadecimal codes. String storage/decoder and literal-replay dependencies are outside the theorem graph.",
+    "external_literal_support": "No string literals in WorkReport predicates; effects, origin and checker use explicit scalar-code constants. The same complete theorem export and strict equal axiom inventory are still checked by all six external kernels."
   },
   "archives": {
     "own": {

@@ -94,5 +94,15 @@
     "observed": "All seven axiom inventories now match; own kernel and five external kernels PASS. lean4lean remains UNVERIFIED: original kernel error unknown constant String.ofList while importing a workEffects string literal. This is not a proof acceptance or an axiom discrepancy.",
     "causal_repair": "Export original Char.ofNat and String.ofList definitions explicitly alongside T1-T10 so literal expansion has its actual source definitions; send the same complete export to all six external kernels, preserving strict acceptance.",
     "acceptance": "REQUIRES_NEW_NATIVE_RUN; no checker is skipped or relabelled."
+  },
+  "formal_literal_replay_successor": {
+    "exact_candidate": "97faa1c52a27e3e8c16f496119061d298f33e4fe",
+    "native_run": 41455715623,
+    "artifact_id": 13145384988,
+    "artifact_sha256": "ed974e0adf8664d20f346f984879ee8932843506c674e682f1a7b224228de523",
+    "observed": "All inventories match and six checkers PASS; lean4lean still reports unknown String.ofList. Original export has Char.ofNat at line24558, String.ofList at24576 and workEffects at24593, so merely adding support roots did not fix the importer.",
+    "source_analysis": "Pinned lean4lean Replay sets hasStrings before replaying implicit literal dependencies; an ordering gap is inferred, not an independently reproduced library fix. No checker binary, version, admission or acceptance condition is changed.",
+    "causal_repair": "Use scalar-code lists for every work text field and explicit Nat-list constants for effects/origin/checker. Keep real string encoding/decoding in the finite generator/adapter bridge. The mathematical predicate no longer needs implicit String literal expansion; all 1424 original vector bytes must stay identical.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; no checker skipped and no result transfer."
   }
 }

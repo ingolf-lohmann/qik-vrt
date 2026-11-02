@@ -18,17 +18,17 @@ def vectorJson (r : Report) : Json := Json.mkObj [
   ("provenanceBound", toJson r.provenanceBound),
   ("verdict", toJson (if QIKVRT.DeliveryReporting.decide r = .accept then "accept" else "reject"))]
 
-def digestCodes (text : String) : List Nat := text.toList.map Char.toNat
+def workCodes (text : String) : List Nat := text.toList.map Char.toNat
 
-def digestText (codes : List Nat) : String := String.mk (codes.map Char.ofNat)
+def workText (codes : List Nat) : String := String.mk (codes.map Char.ofNat)
 
 def workVectorJson (r : WorkReport) : Json := Json.mkObj [
   ("workCompletion", Json.mkObj [
-    ("requiredTarget", toJson r.requiredTarget), ("observedTarget", toJson r.observedTarget),
-    ("requiredEffect", toJson r.requiredEffect), ("observedEffect", toJson r.observedEffect),
-    ("origin", toJson r.origin), ("checker", toJson r.checker),
-    ("requiredSha256", toJson (digestText r.requiredSha256)),
-    ("observedSha256", toJson (digestText r.observedSha256)),
+    ("requiredTarget", toJson (workText r.requiredTarget)), ("observedTarget", toJson (workText r.observedTarget)),
+    ("requiredEffect", toJson (workText r.requiredEffect)), ("observedEffect", toJson (workText r.observedEffect)),
+    ("origin", toJson (workText r.origin)), ("checker", toJson (workText r.checker)),
+    ("requiredSha256", toJson (workText r.requiredSha256)),
+    ("observedSha256", toJson (workText r.observedSha256)),
     ("fromCache", toJson r.fromCache), ("completedUtc", toJson r.completedUtc),
     ("observedUtc", toJson r.observedUtc), ("closedUtc", toJson r.closedUtc)]),
   ("verdict", toJson (if workDecide r = .accept then "accept" else "reject"))]
@@ -54,10 +54,10 @@ def main : IO Unit := do
             for utc in [1, 2] do
               for digest in ["5555555555555555555555555555555555555555555555555555555555555555", "507abcf7..."] do
                 for cached in [false, true] do
-                  let r : WorkReport := ⟨"https://artifact.example/leitstand", target,
-                    effect, observedEffect, origin, checker,
-                    digestCodes "5555555555555555555555555555555555555555555555555555555555555555",
-                    digestCodes digest, cached, 1, utc, 3⟩
+                  let r : WorkReport := ⟨workCodes "https://artifact.example/leitstand", workCodes target,
+                    workCodes effect, workCodes observedEffect, workCodes origin, workCodes checker,
+                    workCodes "5555555555555555555555555555555555555555555555555555555555555555",
+                    workCodes digest, cached, 1, utc, 3⟩
                   vectors := vectors.push (workVectorJson r)
   -- ASCII boundaries, lengths, Unicode and a 64-byte non-ASCII value.
   for digest in ["0000000000000000000000000000000000000000000000000000000000000000",
@@ -76,9 +76,9 @@ def main : IO Unit := do
       "",
       "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
       "555555555555555555555555555555555555555555555555555555555555555\n"] do
-    let r : WorkReport := ⟨"https://artifact.example/leitstand",
-      "https://artifact.example/leitstand", "ARTIFACT_INSTALLATION",
-      "ARTIFACT_INSTALLATION", "DIRECT_TOOL_READBACK", "VERIFIED",
-      digestCodes digest, digestCodes digest, false, 1, 2, 3⟩
+    let r : WorkReport := ⟨workCodes "https://artifact.example/leitstand",
+      workCodes "https://artifact.example/leitstand", workCodes "ARTIFACT_INSTALLATION",
+      workCodes "ARTIFACT_INSTALLATION", workCodes "DIRECT_TOOL_READBACK", workCodes "VERIFIED",
+      workCodes digest, workCodes digest, false, 1, 2, 3⟩
     vectors := vectors.push (workVectorJson r)
   IO.println (Json.compress (Json.arr vectors))
