@@ -311,7 +311,8 @@ jobs:
           pin="$(python3 -c 'import json; print(json.load(open(".qikvrt/linux-package-build/S1.json"))["manifest_sha256"])')"
           python3 -B tools/qikvrt_debian.py build \
             --root "$PWD/.qikvrt/linux-package-build/s1" --manifest-sha256 "$pin" \
-            --output "$PWD/.qikvrt/linux-package-build/debs"
+            --output "$PWD/.qikvrt/linux-package-build/debs" \
+            --revision "$((GITHUB_RUN_NUMBER * 1000 + GITHUB_RUN_ATTEMPT))"
 
       - name: Preserve source-bound native Debian packages
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

@@ -59,6 +59,12 @@ integer. The full source HEAD/TREE and source-seal pin remain in
 `DEBIAN_BUNDLE.json`. No credential, token, configuration or live database is
 selected outside the original allowlisted source export.
 
+The existing CI supplies a monotonically increasing packaging revision from
+`GITHUB_RUN_NUMBER * 1000 + GITHUB_RUN_ATTEMPT`, so an ordinary newer build
+sorts after its predecessor in APT even when its Git hash sorts earlier.
+Other trusted release callers must likewise advance `--revision`; a source
+hash alone is not a chronological package-version sequence.
+
 Debian 2.0 archives have deterministic ar/tar/gzip metadata. Repeated builds of
 the same sealed input and packaging revision are byte-identical. The existing
 CI's full test job builds these packages only after its final tested subject

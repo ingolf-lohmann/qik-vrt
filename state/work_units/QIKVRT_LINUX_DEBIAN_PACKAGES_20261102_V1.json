@@ -51,10 +51,11 @@
     "qikvrt-runtime",
     "qikvrt-server"
   ],
+  "packaging_revision": "Existing CI uses1000*GITHUB_RUN_NUMBER+GITHUB_RUN_ATTEMPT; same-version source hashes alone do not define update chronology.",
   "predecessor_head": "c6b41be686e284b2907b30fa5e7874a04e363274",
   "predecessor_tree": "104141560dc2c71ac0d717cbae02d31443304a42",
   "remaining": [
-    "Final consolidated local tests/integrity, independent remote source readback, native exact-head CI/review/Main integration",
+    "Native exact-head CI/review/Main integration after source branch/PR handoff; current final record and CI revision receive targeted validation and integrity",
     "Trusted versioned distribution/download readback; no unsigned APT repository",
     "Fresh exact IONOS OS/runtime/identity and protected original host connection",
     "Original candidate-bound private config/admission, exact systemd units and native service/data/restart readback",
@@ -71,16 +72,21 @@
   "source_repository": "ingolf-lohmann/qik-vrt",
   "task": "Package QIK-VRT and Effect Acknowledgement Protocol for unattended installation into an existing Linux on the existing IONOS VPS",
   "validation": {
-    "consolidated_targeted_gate": "make linux-packages-test:10 tests PASS before final CLI/index controls; final frozen run pending",
+    "build_result": "Five actual .deb archives for ee67dfaf; independent original deb-verify validated199 source files and all archive/index hashes. Prepared object not yet a published ref.",
+    "built_prepared_source_bundle_sha256": "1227db8ac9d40f376b761bb15e1941a2207bfcfa8cb0fc7c085502e850264de7",
+    "consolidated_targeted_gate": "10 package tests included in successful full make test",
     "consolidated_targeted_log_sha256": "f88876b06386442f0271b3cc449874a5d7dfe76e76e5a21cd695eb099f17753a",
-    "full_make_test": "PENDING_FINAL_CONSOLIDATED_FROZEN_RUN",
-    "full_make_test_log_sha256": "2b2145ab9a6f667658bf20723b991ebd4457fe2229142a09d04d4788e2056227",
-    "native_exact_head_ci": "NOT_YET_OBSERVED",
-    "python_test_executions": 2330,
+    "full_make_test": "PASS_ON_FROZEN_CONSOLIDATED_IMPLEMENTATION_BEFORE_CI_REVISION_AND_THIS_VALIDATION_RECORD",
+    "full_make_test_log_sha256": "0a3a954fcb53f76a8943c921396b834d8706d34a14cc6808330c474f25e8a6d5",
+    "native_exact_head_ci": "PENDING_AFTER_BRANCH_HANDOFF",
+    "prepared_remote_source_commit": "ee67dfaf167c5d94caf43ccab2890a55053743e2",
+    "python_test_executions": 2331,
     "python_test_suites": 44,
     "targeted_gate": "make linux-packages-test",
     "targeted_log_sha256": "5f4a3ac970c7ba1c5e944b9a28aad382817488bbe2b4623abf462bb9ddb9c75b",
-    "targeted_result": "PASS:9 tests; real dpkg lifecycle and original REST commit/native SQLite readback/restart; all stopped state bytes preserved"
+    "targeted_result": "PASS:9 tests; real dpkg lifecycle and original REST commit/native SQLite readback/restart; all stopped state bytes preserved",
+    "tested_frozen_tree": "393677bf2f891040616eeea1978d5d38d6029ea3",
+    "tested_worktree_git_head": "c6b41be686e284b2907b30fa5e7874a04e363274"
   },
   "work_unit_id": "QIKVRT_LINUX_DEBIAN_PACKAGES_20261102_V1"
 }
