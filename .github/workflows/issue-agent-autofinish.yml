@@ -3,8 +3,9 @@
 name: Issue agent auto-finish
 
 on:
-  schedule:
-    - cron: '*/15 * * * *'
+  workflow_run:
+    workflows: ["QIKVRT CI", "QIKVRT requested review executor"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       issue_number:
