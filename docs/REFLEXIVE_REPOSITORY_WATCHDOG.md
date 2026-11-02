@@ -1,6 +1,6 @@
 # Reflexive repository Gatewatch and pre-deadlock admission
 
-The adaptive repository monitor is extended by a read-only watchdog that observes its own repository instance every five minutes and at relevant workflow transitions. Its purpose is not to wait for a deadlock and then diagnose it. It models writer leases, runner pressure, exact-head execution evidence, and unchanged progress topology early enough to issue a deterministic `HOLD` before a second writer or replacement writer is admitted.
+The adaptive repository monitor is extended by a read-only watchdog that observes its own repository instance at relevant source and workflow transitions. Its purpose is not to wait for a deadlock and then diagnose it. It models writer leases, runner pressure, exact-head execution evidence, and unchanged progress topology early enough to issue a deterministic `HOLD` before a second writer or replacement writer is admitted.
 
 ## Operational model
 
@@ -20,7 +20,7 @@ The first deterministic response is admission control, not destructive recovery:
 
 ## Continuous exact-head Gatewatch
 
-Every scheduled or event-driven observation materializes an artifact-only
+Every state-transition observation materializes an artifact-only
 `reflexive-watchdog-receipt.json` and the identically bound
 `gatewatch-receipt.json`. Both records contain the literal observed head and
 tree, a trusted-workflow matrix, node-liveness observations, and the prior
@@ -58,7 +58,7 @@ coalesced only when a later exact-head receipt remains within that bound;
 otherwise it is a deterministic observation-cadence `HOLD`, not a claim of
 pipeline quiescence.
 
-The workflow remains five-minute, exact-head-bound, and read-only. It fetches
+The workflow remains transition-driven, exact-head-bound, and read-only. It fetches
 the current Authority head only for comparison, materializes Action artifacts
 only, and never writes a repository liveness record, dispatches a productive
 workflow, or treats its own terminality as gate success.
@@ -85,8 +85,9 @@ The watchdog observes the workflows that create and verify repository state,
 while its own executions are classified as observers rather than productive
 writers. Main's 26 October delivery repair uses completion notifications and
 `cancel-in-progress: false` so a new lifecycle notification does not cancel
-the active observation. The existing five-minute schedule remains, including
-readback of unfinished runs and unchanged heads. The analyzer still evaluates
+the active observation. The later Owner correction of 31 October removes the five-minute schedule.
+Readback of unfinished runs and unchanged heads occurs on actual state
+transitions; freshness budgets remain checks, not activation timers. The analyzer still evaluates
 every returned run and its jobs; no liveness, missing-evidence or stale-progress
 criterion is removed. This source configuration change does not establish a
 completed public-host observation or global deadlock freedom.
@@ -125,3 +126,8 @@ A successful role readback still sets `native_activation_verified=false`:
 executed native candidate gates, trusted-Main adoption, native enforcement and
 independent current-head Code Owner approval remain separately required. No
 predecessor test or availability observation substitutes for those effects.
+
+
+No observation proves that the observer will receive another event. A quiet
+system with a lost event needs an independent observation before an observer
+failure can be detected; no timer-free global liveness guarantee is claimed.

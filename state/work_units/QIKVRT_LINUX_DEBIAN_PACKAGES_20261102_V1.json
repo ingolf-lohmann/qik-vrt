@@ -1,0 +1,92 @@
+{
+  "authorization": "Direct Owner instruction 2026-11-02, Freigabe erteilt; shared task6244413b-40c6-4d10-bd16-c9c5acb03370",
+  "consolidation": {
+    "native_issue_branch": "issue-agent/672",
+    "native_issue_head": "711e9d5798e6ce2825ce3c724a8df3e9f402d268",
+    "old_evidence_status": "Historical BLOCK records unchanged; no claim that their original handler executed this new implementation.",
+    "parallel_branch": "codex/linux-debian-packages-v1",
+    "parallel_head": "175d3f520c99b0d799426fd9843e1590af4448cb",
+    "source_decision": "Continue existing tools/qikvrt_debian.py and original deb-pack/deb-verify entrypoints; supersede the two-package-only candidate with five exact-bound modules and retain both predecessor histories. Six native intake evidence files retained byte-exact."
+  },
+  "contributions": {
+    "artificial": "OpenAI Codex: package adapter, tests, integration and documentation",
+    "human": "Ingolf Lohmann: task, architecture, ownership and authorization",
+    "original_sources": "Existing per-file attributions/licenses retained; generated source is not attributed retroactively to the Owner"
+  },
+  "corrections_preserved": [
+    "Initial action metadata failed CLIENT_SUBJECT_INVALID; ref GET was erroneously made before guard success. Subsequent external actions used corrected valid exact-bound guard; no mutation under failed guard.",
+    "Exact REST-restored Git blobs require repository checkout line-ending filters to match its worktree-byte integrity carrier; restoring original checkout representations made boot integrity PASS.",
+    "Initial POSIX PAX tar headers were rejected by real dpkg; GNU tar long-name headers repaired archive installation.",
+    "Local native start with private AF_UNIX ingress denied by sandbox; original existing HTTP/SQLite profile executed with unix_ingress=false. Unix path remains the separate native S1 acceptance duty.",
+    "The first full run was invalidated when its lifecycle test was strengthened during execution. Only the subsequent unchanged frozen full run may be accepted.",
+    "Shared task CAS version1 rejected because another session had persisted the genuine two-package source candidate175d3f52 at version2. Fresh task read and version2 CAS preserved both results at version3; consolidation supersedes the parallel implementation instead of creating duplicate adapters."
+  ],
+  "effect_boundaries": {
+    "apt_repository_published": false,
+    "effect_ack_done": false,
+    "existing_private_config_or_ledger_modified": false,
+    "ionos_installed": false,
+    "new_executor_or_scheduler": false,
+    "package_configuration_starts_service": false,
+    "package_creation_is_host_admission": false,
+    "public_domain_accepted": false
+  },
+  "issue": 672,
+  "log_scope": "Ordered validation logs retained locally; earlier exploratory tool output was not all retained. No complete raw-session log claim.",
+  "new_adapter_necessity": "Original S1 export and OCI delivery have no native distro package split; existing exporter and admission remain unchanged.",
+  "observed_host_boundary": {
+    "exact_host": "raumzeitterminal.de",
+    "native_available": false,
+    "observation_not_verified_vps_os": true,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "ready": false,
+    "source": "Original Raumzeitterminal observe2026-11-02T04:05:49Z",
+    "status": 525
+  },
+  "owner": "Ingolf Lohmann",
+  "packages": [
+    "qikvrt-eap",
+    "qikvrt-terminal",
+    "qikvrt-web",
+    "qikvrt-runtime",
+    "qikvrt-server"
+  ],
+  "packaging_revision": "Existing CI uses1000*GITHUB_RUN_NUMBER+GITHUB_RUN_ATTEMPT; same-version source hashes alone do not define update chronology.",
+  "predecessor_head": "c6b41be686e284b2907b30fa5e7874a04e363274",
+  "predecessor_tree": "104141560dc2c71ac0d717cbae02d31443304a42",
+  "remaining": [
+    "Native exact-head CI/review/Main integration after source branch/PR handoff; current final record and CI revision receive targeted validation and integrity",
+    "Trusted versioned distribution/download readback; no unsigned APT repository",
+    "Fresh exact IONOS OS/runtime/identity and protected original host connection",
+    "Original candidate-bound private config/admission, exact systemd units and native service/data/restart readback",
+    "Fresh application/TLS/Effect-Ack readback at raumzeitterminal.de; retain prior R2 publication stop and independent work-ring duties"
+  ],
+  "reuse": [
+    "tools/qikvrt_self_host.py:freeze/verify/supervisor/run-admitted",
+    "runtime/self-host/PACKAGE.json",
+    "original EAP/Universal Terminal/Transputer/React carriers",
+    "existing Makefile test gate and qikvrt_ci test job"
+  ],
+  "schema": "qikvrt-work-unit/v1",
+  "scope": "Debian/Ubuntu native TEMDD source distribution; Linux/Python3.12/Node24/systemd252 contract. No universal distro or RPM support claimed.",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "task": "Package QIK-VRT and Effect Acknowledgement Protocol for unattended installation into an existing Linux on the existing IONOS VPS",
+  "validation": {
+    "build_result": "Five actual .deb archives for ee67dfaf; independent original deb-verify validated199 source files and all archive/index hashes. Prepared object not yet a published ref.",
+    "built_prepared_source_bundle_sha256": "1227db8ac9d40f376b761bb15e1941a2207bfcfa8cb0fc7c085502e850264de7",
+    "consolidated_targeted_gate": "10 package tests included in successful full make test",
+    "consolidated_targeted_log_sha256": "f88876b06386442f0271b3cc449874a5d7dfe76e76e5a21cd695eb099f17753a",
+    "full_make_test": "PASS_ON_FROZEN_CONSOLIDATED_IMPLEMENTATION_BEFORE_CI_REVISION_AND_THIS_VALIDATION_RECORD",
+    "full_make_test_log_sha256": "0a3a954fcb53f76a8943c921396b834d8706d34a14cc6808330c474f25e8a6d5",
+    "native_exact_head_ci": "PENDING_AFTER_BRANCH_HANDOFF",
+    "prepared_remote_source_commit": "ee67dfaf167c5d94caf43ccab2890a55053743e2",
+    "python_test_executions": 2331,
+    "python_test_suites": 44,
+    "targeted_gate": "make linux-packages-test",
+    "targeted_log_sha256": "5f4a3ac970c7ba1c5e944b9a28aad382817488bbe2b4623abf462bb9ddb9c75b",
+    "targeted_result": "PASS:9 tests; real dpkg lifecycle and original REST commit/native SQLite readback/restart; all stopped state bytes preserved",
+    "tested_frozen_tree": "393677bf2f891040616eeea1978d5d38d6029ea3",
+    "tested_worktree_git_head": "c6b41be686e284b2907b30fa5e7874a04e363274"
+  },
+  "work_unit_id": "QIKVRT_LINUX_DEBIAN_PACKAGES_20261102_V1"
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "qikvrt-evidence-recovery-kernel-receipt/v1",
+  "checked_at": "2026-10-30T17:27:39.063360+00:00",
+  "source_sha256": "57ae5d5251bd2cb6e62e509d9cac2774ee4f527ed1126372d3d096ac8091f4af",
+  "theorems": 16,
+  "axiom_free": 11,
+  "two_fresh_objects_equal": true,
+  "olean_sha256": "88a59f862cda0ab0f8e4d812ae025bd9b6e445ad9b53a8e29762528ae6c87bb2",
+  "toolchain": "Lean 4.19.0",
+  "lean_binary_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+  "compatibility": "Existing APP_PATH_COMPAT.c used for process executable-path discovery; no kernel/library replacement",
+  "commands": [
+    {
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "QIKVRTEffectAck/EvidenceRecoveryAxiomAudit.lean"
+      ],
+      "exit_code": 0,
+      "log": "AXIOM_AUDIT.txt"
+    },
+    {
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "QIKVRTEffectAck/EvidenceRecovery.lean",
+        "-o",
+        "/dev/shm/qikvrt-architecture-proof-20261030/evidence-recovery-a.olean"
+      ],
+      "exit_code": 0,
+      "log": "KERNEL_a.txt"
+    },
+    {
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "QIKVRTEffectAck/EvidenceRecovery.lean",
+        "-o",
+        "/dev/shm/qikvrt-architecture-proof-20261030/evidence-recovery-b.olean"
+      ],
+      "exit_code": 0,
+      "log": "KERNEL_b.txt"
+    },
+    {
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "/workspace/scratch/521855650fbb/qik-vrt/docs/proofs/evidence-recovery-2026-10-30/negative/FalseAgreementIsTruth.lean"
+      ],
+      "exit_code": 1,
+      "log": "FalseAgreementIsTruth.txt"
+    },
+    {
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "/workspace/scratch/521855650fbb/qik-vrt/docs/proofs/evidence-recovery-2026-10-30/negative/FalseMissingEntryAccepted.lean"
+      ],
+      "exit_code": 1,
+      "log": "FalseMissingEntryAccepted.txt"
+    },
+    {
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "/workspace/scratch/521855650fbb/qik-vrt/docs/proofs/evidence-recovery-2026-10-30/negative/FalseReplayAddsMember.lean"
+      ],
+      "exit_code": 1,
+      "log": "FalseReplayAddsMember.txt"
+    }
+  ],
+  "negative_controls_rejected": 3,
+  "live_transfer_or_publication_verified": false,
+  "native_ci_for_this_revision": "NOT_YET_OBSERVED"
+}

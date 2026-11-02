@@ -243,6 +243,12 @@ self-host-test: tool-cache-contract temdd-event-ledger-test
 	node --check docs/monitor/self-host.mjs
 	node --check tools/qikvrt_mesh_monitor_readback.mjs
 
+.PHONY: linux-packages-test
+linux-packages-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_debian
+
+self-host-test: linux-packages-test
+
 .PHONY: origin-adapter-test origin-adapter-browser-test
 origin-adapter-test: tool-cache-contract
 	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" $(PYTHON) -B -m unittest -v tests.test_self_host_temdd.OriginExportTests

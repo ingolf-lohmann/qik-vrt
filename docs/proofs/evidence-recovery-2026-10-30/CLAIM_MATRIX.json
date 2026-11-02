@@ -1,0 +1,146 @@
+{
+  "schema": "qikvrt-evidence-recovery-claims/v1",
+  "formal_claims": [
+    {
+      "id": "ER-001",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.collect_eq_of_faithful",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-002",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.collect_exists_of_available",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-003",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.recovered_publication_inputs",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-004",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.deterministic_preparation_equal",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-005",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.missing_required_entry_aborts",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-006",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.faithful_transitive",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-007",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.faithful_restrict",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-008",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.codec_recovery_exact",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-009",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.join_retains_left",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-010",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.join_retains_right",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-011",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.shared_grows_with_both",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-012",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.justified_join",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-013",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.join_replay_idempotent",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-014",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.shared_new_member",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-015",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.shared_membership_needs_justification",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    },
+    {
+      "id": "ER-016",
+      "theorem": "QIKVRT.EvidenceRecovery.V1.concrete_collection_witness",
+      "status": "KERNEL_CHECKED_MODEL_THEOREM",
+      "axioms": [],
+      "scope": "Declared finite archive collection, codec law or evidence-view definitions; concrete source/target and justification premises remain explicit."
+    }
+  ],
+  "reported_effect": {
+    "source": "Current direct Owner statement, Ingolf Lohmann, 2026-10-30",
+    "claim": "All materials needed for Zenodo recovered from Goldkelch",
+    "status": "OWNER_REPORTED_SUCCESS",
+    "independent_source_target_readback": "OPEN_NOT_PRESENT_IN_THIS_CLIENT",
+    "supersedes_as_owner_report": "Earlier inaccessible Goldkelch paths remain historical, not disproof of a later recovery."
+  },
+  "excluded_claims": [
+    "Concrete Goldkelch recovery independently verified",
+    "Zenodo credentials delivered or published",
+    "Website production accepted",
+    "Arbitrary agreement implies truth",
+    "Physical sphere size or quantum uncertainty derived"
+  ]
+}
