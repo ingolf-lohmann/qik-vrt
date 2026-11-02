@@ -326,7 +326,7 @@ def preserve_attempt_evidence(root: Path, record: dict, raw: bytes) -> None:
     if not isinstance(identifier, str) or not identifier.strip():
         identifier = "legacy-durable-attempt:" + source_digest
     task = {"id": "api:" + record["subject_key"],
-            "state": "VERIFIED" if record["status"] == "completed" else "OPEN",
+            "state": "RECORDED" if record["status"] == "completed" else "OPEN",
             "evidence": completion_evidence(record) if record["status"] == "completed" else "",
             "next_action": "Resolve the preserved original attempt before any further effect"}
     checkpoint = {"schema": WORK_SCHEMA, "execution_id": identifier,
@@ -364,13 +364,13 @@ def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
                   and isinstance(repo.get("tree"), str) and SHA1_HEX.fullmatch(repo["tree"])
                   and "error_category" not in repo)
     current = [
-        {"id": "api:" + subject_key, "state": "VERIFIED" if record["status"] == "completed" else "OPEN",
+        {"id": "api:" + subject_key, "state": "RECORDED" if record["status"] == "completed" else "OPEN",
          "repository": repository, "ref": args.ref, "operation": args.operation,
          "artifact_id": args.artifact_id, "state_file": subject_key + ".json",
          "evidence": completion_evidence(record) if record["status"] == "completed" else "",
          "next_action": "Resolve " + args.operation + " for " + repository + "@" + args.ref
                         + " artifact " + args.artifact_id + " using recorded subject " + subject_key},
-        {"id": "repository:" + repository + "@" + args.ref, "state": "VERIFIED" if repo_valid else "OPEN",
+        {"id": "repository:" + repository + "@" + args.ref, "state": "RECORDED" if repo_valid else "OPEN",
          "evidence": digest(repo) if repo_valid else "",
          "next_action": "Obtain fresh bound-ref HEAD/TREE through " + repo["source"]},
         {"id": "delivery:" + domain, "state": "OPEN", "evidence": "",
@@ -380,7 +380,8 @@ def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
     successor = {"schema": WORK_SCHEMA, "execution_id": action_id, "state": "CONTINUE",
                  "work": list(work.values()), "action_window": closure["action_window"],
                  "readback": closure["readback"], "effect_state": "EFFECT_ACK_CONTINUE",
-                 "ordinary_release": False, "attempt_record": record}
+                 "ordinary_release": False, "attempt_record": record,
+                 "verification_scope": "TRANSPORT_AND_REPOSITORY_METADATA_NOT_TASK_COMPLETION"}
     if previous:
         successor["previous_run"] = {"execution_id": previous["execution_id"],
                                      "open_work": [task["id"] for task in previous["work"] if task["state"] == "OPEN"]}
