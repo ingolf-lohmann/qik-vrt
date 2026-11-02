@@ -111,8 +111,8 @@ structure WorkReport where
   observedEffect : String
   origin : String
   checker : String
-  requiredSha256 : String
-  observedSha256 : String
+  requiredSha256 : List Nat
+  observedSha256 : List Nat
   fromCache : Bool
   completedUtc : Nat
   observedUtc : Nat
@@ -122,18 +122,17 @@ structure WorkReport where
 def workEffects : List String := ["JOURNAL_WRITE", "SOURCE_CHANGE",
   "ARTIFACT_INSTALLATION", "DATA_READBACK", "RUNTIME_EFFECT"]
 
-def workDigest (s : String) : Bool :=
-  -- SHA-256 text is ASCII. Inspect encoded bytes rather than invoking the
-  -- version-dependent Unicode decoder and its proof dependencies.
-  let bytes := s.toUTF8.data.toList
-  bytes.length == 64 && bytes.all (fun b =>
-    (48 ≤ b.toNat && b.toNat ≤ 57) || (97 ≤ b.toNat && b.toNat ≤ 102))
+def workDigest (codes : List Nat) : Bool :=
+  -- Model text as scalar codes, independent of either Lean version's String
+  -- storage. The vector bridge maps original strings with Char.toNat.
+  codes.length == 64 && codes.all (fun c =>
+    ('0'.toNat ≤ c && c ≤ '9'.toNat) || ('a'.toNat ≤ c && c ≤ 'f'.toNat))
 
 def WorkInputs (r : WorkReport) : Prop :=
   r.requiredTarget ≠ "" ∧ r.requiredEffect ∈ workEffects ∧
   r.observedEffect ∈ workEffects ∧
-  (r.requiredSha256 = "" ∨ workDigest r.requiredSha256 = true) ∧
-  (r.requiredEffect ≠ "ARTIFACT_INSTALLATION" ∨ r.requiredSha256 ≠ "")
+  (r.requiredSha256 = [] ∨ workDigest r.requiredSha256 = true) ∧
+  (r.requiredEffect ≠ "ARTIFACT_INSTALLATION" ∨ r.requiredSha256 ≠ [])
 
 instance (r : WorkReport) : Decidable (WorkInputs r) := by
   unfold WorkInputs
@@ -144,7 +143,7 @@ def WorkAdmissible (r : WorkReport) : Prop :=
   r.requiredEffect = r.observedEffect ∧ r.origin = "DIRECT_TOOL_READBACK" ∧
   r.checker = "VERIFIED" ∧
   (r.completedUtc < r.observedUtc ∧ r.observedUtc ≤ r.closedUtc) ∧
-  (r.requiredSha256 = "" ∨ r.requiredSha256 = r.observedSha256) ∧
+  (r.requiredSha256 = [] ∨ r.requiredSha256 = r.observedSha256) ∧
   (r.requiredEffect ≠ "DATA_READBACK" ∨ r.fromCache = false)
 
 instance (r : WorkReport) : Decidable (WorkAdmissible r) := by

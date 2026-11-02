@@ -76,5 +76,14 @@
     "observed": "All seven checker commands passed; cross-version axiom equality correctly rejected differing inventories. Original 4.35 export dependency graph traces Classical.choice through WorkInputs -> workDigest -> String.toList -> String.Internal.toArray -> Unicode decoding proof. The earlier proof-tactic diagnosis was not supported.",
     "causal_repair": "Validate SHA256 ASCII byte values and byte count without Unicode decoding; retain all seven exact-input/equal-inventory checks and independently generated vector byte comparison.",
     "acceptance": "REQUIRES_NEW_NATIVE_RUN; no passing result transferred from predecessor"
+  },
+  "formal_cross_version_successor": {
+    "exact_candidate": "e293091168e9262b51197fec12feeea39e8342da",
+    "native_run": 41454129893,
+    "artifact_id": 13145657701,
+    "artifact_sha256": "b3b0e2ada81d141a2e9adee56527295bdd9b2dd344e9a038a387faf58e0d8a52",
+    "observed": "ASCII-byte predicate regenerated the exact 1424 pinned vectors; own kernel added Quot.sound while external inventories contained only propext. lean4lean correctly remained UNVERIFIED after original importer error unknown constant Char.ofNat. Neither failed acceptance was waived.",
+    "causal_repair": "Represent hash text as scalar-code lists in the mathematical model; keep original string input/output conversion in the finite vector bridge, outside the theorem dependency graph. Explicit ASCII character bounds retain the Char.ofNat definition needed by the real importer. Full 64-character lowercase hexadecimal validation is unchanged.",
+    "acceptance": "REQUIRES_NEW_NATIVE_RUN; all seven checker commands, equal inventories and byte-identical generated vectors remain required."
   }
 }

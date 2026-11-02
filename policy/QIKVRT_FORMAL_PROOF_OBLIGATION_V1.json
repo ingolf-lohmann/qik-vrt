@@ -113,7 +113,8 @@
     "checkers_are_remote_services": false,
     "statistical_or_failure_independence_claimed": false,
     "productive_effect_inferred": false,
-    "work_completion": "T5-T10: declared effect/target/origin/checker/time/cache rejection; full-hash adapter and inherited-target/stall checks exercised by original receipt regressions"
+    "work_completion": "T5-T10: declared effect/target/origin/checker/time/cache rejection; full-hash adapter and inherited-target/stall checks exercised by original receipt regressions",
+    "hash_representation": "Hash text is a list of scalar codes in the model; the original-string vector bridge uses Char.toNat. Exactly 64 ASCII lowercase hexadecimal codes are required. This avoids version-dependent UTF8 storage/decoding proof dependencies without relaxing the predicate."
   },
   "archives": {
     "own": {

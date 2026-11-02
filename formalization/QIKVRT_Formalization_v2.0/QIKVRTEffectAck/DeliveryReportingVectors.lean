@@ -18,12 +18,17 @@ def vectorJson (r : Report) : Json := Json.mkObj [
   ("provenanceBound", toJson r.provenanceBound),
   ("verdict", toJson (if QIKVRT.DeliveryReporting.decide r = .accept then "accept" else "reject"))]
 
+def digestCodes (text : String) : List Nat := text.toList.map Char.toNat
+
+def digestText (codes : List Nat) : String := String.mk (codes.map Char.ofNat)
+
 def workVectorJson (r : WorkReport) : Json := Json.mkObj [
   ("workCompletion", Json.mkObj [
     ("requiredTarget", toJson r.requiredTarget), ("observedTarget", toJson r.observedTarget),
     ("requiredEffect", toJson r.requiredEffect), ("observedEffect", toJson r.observedEffect),
     ("origin", toJson r.origin), ("checker", toJson r.checker),
-    ("requiredSha256", toJson r.requiredSha256), ("observedSha256", toJson r.observedSha256),
+    ("requiredSha256", toJson (digestText r.requiredSha256)),
+    ("observedSha256", toJson (digestText r.observedSha256)),
     ("fromCache", toJson r.fromCache), ("completedUtc", toJson r.completedUtc),
     ("observedUtc", toJson r.observedUtc), ("closedUtc", toJson r.closedUtc)]),
   ("verdict", toJson (if workDecide r = .accept then "accept" else "reject"))]
@@ -51,8 +56,8 @@ def main : IO Unit := do
                 for cached in [false, true] do
                   let r : WorkReport := ⟨"https://artifact.example/leitstand", target,
                     effect, observedEffect, origin, checker,
-                    "5555555555555555555555555555555555555555555555555555555555555555",
-                    digest, cached, 1, utc, 3⟩
+                    digestCodes "5555555555555555555555555555555555555555555555555555555555555555",
+                    digestCodes digest, cached, 1, utc, 3⟩
                   vectors := vectors.push (workVectorJson r)
   -- ASCII boundaries, lengths, Unicode and a 64-byte non-ASCII value.
   for digest in ["0000000000000000000000000000000000000000000000000000000000000000",
@@ -74,6 +79,6 @@ def main : IO Unit := do
     let r : WorkReport := ⟨"https://artifact.example/leitstand",
       "https://artifact.example/leitstand", "ARTIFACT_INSTALLATION",
       "ARTIFACT_INSTALLATION", "DIRECT_TOOL_READBACK", "VERIFIED",
-      digest, digest, false, 1, 2, 3⟩
+      digestCodes digest, digestCodes digest, false, 1, 2, 3⟩
     vectors := vectors.push (workVectorJson r)
   IO.println (Json.compress (Json.arr vectors))
