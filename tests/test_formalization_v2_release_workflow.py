@@ -308,6 +308,10 @@ class FormalizationAlpha2ReleaseTests(unittest.TestCase):
                 "QIKVRT_Formalization_v2.0-alpha.1.zip",
                 "QIKVRTFormalization/Process/ConnectabilitySimulation.lean",
                 "QIKVRTFormalization/Process/OperationalContinuation.lean",
+                "QIKVRTEffectAck/CausalDistance.lean",
+                "QIKVRTEffectAck/CausalDistanceTemporalBridge.lean",
+                "QIKVRTEffectAck/CausalDistanceBoundaryChecks.lean",
+                "QIKVRTEffectAck/CausalDistanceAxiomAudit.lean",
             )
             for name in names:
                 self.assertFalse(

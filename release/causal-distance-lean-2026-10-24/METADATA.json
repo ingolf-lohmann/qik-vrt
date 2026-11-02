@@ -1,0 +1,42 @@
+{
+  "title": "Kausale Distanz im doppelkanonischen QIKVRT-Speicher: Lean-Beweisführung, Fachartikel und Prosabegleiter",
+  "upload_type": "publication",
+  "publication_type": "workingpaper",
+  "description": "<p>Eigenständige Anschlussarbeit zu DOI 10.5281/zenodo.21711193. Enthält Fachartikel, ausführlichen Prosabegleiter und reine Vorlesefassung sowie die bis zum bestehenden Lean-4.19.0-/Std-Kern angeschlossene Kausalmetrik und Protokollbrücke.</p><p>36 neue kernelgeprüfte Theoreme mit exakten Axiomabhängigkeiten, vier negativen Lean-Kontrollen, vier Mutationstests und reproduzierbarem Quellpaket. Die ursprünglichen 61 lokalen Tests und sechs Tests der lesenden Framework-Erweiterung bleiben getrennte Nachweisscopes. Die Quelle ist nach vollständigem Repository-Test auf Main integriert.</p><p>Die mathematischen und protokollbezogenen Aussagen gelten für das deklarierte Modell. Keine Behauptung einer universellen physikalischen Kausalmetrik, biologischer Kognition, physikalischer Rückwärtswirkung oder eines vollständig produktiv abgenommenen persönlichen Digital Twin.</p>",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf",
+      "affiliation": "Independent Researcher; QIKVRT"
+    }
+  ],
+  "version": "2.0.0-lean",
+  "publication_date": "2026-10-24",
+  "access_right": "open",
+  "license": "cc-by-nc-nd-4.0",
+  "language": "deu",
+  "prereserve_doi": true,
+  "keywords": [
+    "QIKVRT",
+    "causal distance",
+    "canonical temporal memory",
+    "Effect Acknowledgement",
+    "provenance",
+    "personal digital twin",
+    "Lean 4",
+    "formal verification",
+    "extended quasi-metric"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21711193",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21888130",
+      "relation": "references",
+      "scheme": "doi"
+    }
+  ],
+  "notes": "Idee, Begriffsarbeit, Architektur und wissenschaftliche Verantwortung: Ingolf Lohmann. Formalisierung, Textausarbeitung, Programmierung und technische Prüfungen mit Codex im autorisierten Auftrag. Keine unabhängige Begutachtung behauptet. Die historischen Veröffentlichungen und der frühere Artikelkandidat bleiben unverändert."
+}

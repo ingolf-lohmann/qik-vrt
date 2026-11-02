@@ -1,0 +1,83 @@
+{
+  "schema": "qikvrt-eap-http-vps-react-work-unit/v1",
+  "work_unit_id": "QIKVRT_EAP_HTTP_VPS_REACT_20261027_V1",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "source_predecessor_head": "33c84790d48a97c130c9d711d02ec2ff28206aba",
+  "source_predecessor_tree": "7c240aeb42f96c207d5cfb65afb27eea9c1de6bc",
+  "predecessor_work_unit": "state/work_units/QIKVRT_IONOS_NATIVE_TERMINAL_FIRST_20261025_V1.json",
+  "all_predecessor_obligations_preserved": true,
+  "human_contribution": {
+    "principal": "Ingolf Lohmann",
+    "requirement": "Implement the Effect Acknowledgement HTTP daemon on the existing Linux VPS and build a matching React client from the supplied DevOps HTML.",
+    "existing_authorization_retained": true,
+    "repeated_owner_permission_required": false
+  },
+  "artificial_cognitive_contribution": {
+    "system": "OpenAI Codex",
+    "scope": "Closed revision-03 wire adapter, original OwnerREST/ledger HTTP gate, sealed S1 integration, React DevOps client, original-engine and cold-export regression tests."
+  },
+  "input_artifact": {
+    "name": "devops.html",
+    "bytes": 156462,
+    "sha256": "6d43e51f2666c4222ce09ae438a309329f99d0aa871cb80f0c769e1b1ab69a0b",
+    "capture_at": "2026-10-27T12:25:19.056Z",
+    "capture_is_historical": true,
+    "preserved_projection_run_count": 127
+  },
+  "protocol": {
+    "author": "Ingolf Lohmann",
+    "core": "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03",
+    "publication_class": "EXPERIMENTAL_INTERNET_DRAFT_NOT_RFC",
+    "http_mapping": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml",
+    "http_mapping_publication_verified": false,
+    "protected_effect": "ORIGINAL_OWNER_REST_DURABLE_TERMINAL_INPUT",
+    "terminal_text_is_executable_command": false,
+    "broader_effect_completion_inferred": false
+  },
+  "reuse": {
+    "daemon": "tools/qikvrt_self_host.py native_carrier and original OwnerREST",
+    "ledger": "src/qikvrt_temdd_event_ledger.py original Runtime and SQLite",
+    "http_listener": "docs/monitor/self-host.mjs original monitor",
+    "package": "runtime/self-host/PACKAGE.json version 1.13.0",
+    "supervisor": "Existing admitted systemd supervisor",
+    "react": "runtime/self-host/REACT_LOCK.json production runtime, unchanged bytes",
+    "remote_carrier": "Existing protected mTLS Docker host binding and production CI job",
+    "new_provider_executor_scheduler_or_credential_store": false
+  },
+  "activation_contract": "runtime/self-host/EAP_HTTP.md",
+  "local_validation": {
+    "original_core_wire_and_service_command": "python3 -B -m unittest discover -s tests -p test_effect_ack*.py -v",
+    "original_core_tests_passed": 41,
+    "wire_tests_passed": 14,
+    "service_tests_passed": 9,
+    "cold_export_command": "python3 -B -S -m unittest -v tests.test_self_host_eap",
+    "cold_export_tests_passed": 3,
+    "http_contract_tests_passed": 4,
+    "browser_verifier": "tests/test_devops_client.mjs uses actual service context and original React runtime",
+    "browser_presentation": "Rendered React, historical 127-run capture, search, pagination and 390px layout verified in managed local preview; absent backend visibly fails closed.",
+    "exported_path": "Actual sealed Git-free S1 export, Python -S, real Node monitor proxy, original Owner guard, SQLite commit/readback, abrupt process restart and single-effect replay",
+    "negative_controls": ["changed input/principal/token/hash", "expired preparation and source drift", "forged DONE and policy", "missing permission", "duplicate JSON/security headers", "wrong origin", "alternate Unix ingress", "missing Owner grants"],
+    "additional_legacy_suite_limit": "23 unchanged AF_UNIX fixture cases fail at socket creation with local PermissionError(1); no skip or runtime downgrade added. A separately missing original schema/XML dependency was recovered byte-exact and the four HTTP contract tests then pass. Native repository CI remains required.",
+    "full_local_make_test_claimed": false,
+    "vps_execution_inferred_from_local_tests": false
+  },
+  "integrity_preparation": {
+    "method": "Incremental projection of the exact predecessor manifest and Git tree, using original classification and content-tree hash functions",
+    "predecessor_manifest_sha256": "14e23917b57d07c5c2083cfa315fce0a8ccf788651ec42f011307c2e09f7a596",
+    "full_native_regeneration_and_verification_required": true,
+    "full_local_repository_scan_claimed": false
+  },
+  "initial_state": "IMPLEMENTED_LOCALLY_VERIFIED_PENDING_NATIVE_CI_AND_ORIGINAL_HOST_BINDING",
+  "open_work": [
+    {"id": "EXACT_SOURCE_NATIVE_CI", "state": "OPEN", "next_action": "Run the unchanged original full repository and S1 smoke gates on the persisted exact candidate; repair actual failures."},
+    {"id": "PROTECTED_MAIN_INTEGRATION", "state": "OPEN", "next_action": "Use the existing exact-source governance and integration path; do not infer a successor review from PR617."},
+    {"id": "IONOS_ORIGINAL_HOST_BINDING", "state": "OPEN", "next_action": "Reuse the existing admitted private host/configuration/storage binding; the inspected native connection reports ready=false with ADMITTED_MESH_RUNTIME_ENDPOINT open. No prepare/commit is retried while unchanged."},
+    {"id": "VPS_EAP_RUNTIME_ACCEPTANCE", "state": "OPEN", "next_action": "Install and admit the exact sealed candidate through the existing VPS carrier; verify native HTTP prepare/commit/independent receipt and restart on that server."},
+    {"id": "EXACT_DOMAIN_REACT_ACCEPTANCE", "state": "OPEN", "next_action": "Verify HTTPS, exact runtime source pins, /devops assets and useful end-to-end EAP behavior at raumzeitterminal.de."},
+    {"id": "NATIVE_PEER_AND_OUTBOX_ACCEPTANCE", "state": "OPEN", "next_action": "Retain the original Principal-free native journals, writer admission, named-peer request/ACK/reply and NOT_SENT mirror-outbox duties; this source change proves no peer adoption."}
+  ],
+  "host_binding_verified": false,
+  "vps_installed": false,
+  "public_production_verified": false,
+  "effect_ack_done": false
+}

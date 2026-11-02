@@ -28,6 +28,36 @@ VERIFIER = ROOT / ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
 
 
 class AutonomousPRContinuationTests(unittest.TestCase):
+    def test_actual_qce_shell_preserves_package_inventory_with_space_in_runner_temp(self):
+        # This exercises output placement; Lean/kernel acceptance is separate.
+        workflow = VERIFIER.read_text()
+        block = workflow.split('      - name: Re-execute QCE finite formal model when present', 1)[1]
+        block = block.split('      - name:', 1)[0].split('        run: |', 1)[1]
+        shell = '\n'.join(line[10:] for line in block.splitlines() if line)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            package = root / 'package'; package.mkdir()
+            runner = root / 'runner temp'; runner.mkdir()
+            executables = root / 'bin'; executables.mkdir()
+            for name in ('lake', 'lean'):
+                path = executables / name
+                path.write_text('#!/bin/sh\nexit 0\n'); path.chmod(0o755)
+            (package / 'verify_qce_package.py').write_text(
+                'import pathlib,sys\n'
+                'pathlib.Path(sys.argv[sys.argv.index("--axiom-output")+1]).write_text("audit")\n'
+                'print("{}")\n')
+            before = sorted(p.name for p in package.iterdir())
+            environment = dict(os.environ, PATH=str(executables)+os.pathsep+os.environ['PATH'], RUNNER_TEMP=str(runner))
+            patched = subprocess.run(['bash', '-c', shell], cwd=package, env=environment, capture_output=True, text=True)
+            self.assertEqual(patched.returncode, 0, patched.stderr)
+            self.assertEqual(sorted(p.name for p in package.iterdir()), before)
+            self.assertEqual(sorted(p.name for p in runner.iterdir()), ['qce-autonomous-axiom-output.txt', 'qce-autonomous-verification.json'])
+            historical = shell.replace('"$RUNNER_TEMP/qce-autonomous-axiom-output.txt"', 'qce-autonomous-axiom-output.txt').replace('"$RUNNER_TEMP/qce-autonomous-verification.json"', 'qce-autonomous-verification.json')
+            control = subprocess.run(['bash', '-c', historical], cwd=package, env=environment, capture_output=True, text=True)
+            self.assertEqual(control.returncode, 0, control.stderr)
+            self.assertNotEqual(sorted(p.name for p in package.iterdir()), before)
+
+
     def test_contract_is_opt_in_same_repo_draft_and_one_at_a_time(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         value = contract["pull_request_continuation"]
@@ -603,13 +633,14 @@ class GitDataREST(MemoryREST):
             return commit_metadata(self.root, path.split('/')[-1])
         if method == 'GET' and path.startswith('git/trees/'):
             sha = path.split('/')[-1].split('?')[0]
-            records = git_bytes(self.root, 'ls-tree', '-r', '-t', '-z', sha).split(b'\0')
+            options = ('-r', '-t') if '?recursive=1' in path else ()
+            records = git_bytes(self.root, 'ls-tree', *options, '-z', sha).split(b'\0')
             entries = []
             for record in records:
                 if not record: continue
                 info, name = record.split(b'\t', 1); mode, kind, identity = info.decode().split()
                 entries.append({'path': name.decode(), 'mode': mode, 'type': kind, 'sha': identity})
-            return {'tree': entries, 'truncated': False}
+            return {'sha': sha, 'tree': entries, 'truncated': False}
         if method == 'GET' and path.startswith('git/blobs/'):
             raw = git_bytes(self.root, 'cat-file', 'blob', path.split('/')[-1])
             return {'content': base64.b64encode(raw).decode(), 'encoding': 'base64'}
@@ -650,6 +681,9 @@ class RESTTransportRegressionTests(unittest.TestCase):
         self.root = pathlib.Path(self.directory.name) / 'source'; self.root.mkdir()
         git_bytes(self.root, 'init', '-b', 'main')
         git_bytes(self.root, 'config', 'user.name', 'test'); git_bytes(self.root, 'config', 'user.email', 'test@example.invalid')
+        # The REST fixture serves unsigned commit objects; a machine-wide
+        # commit.gpgsign=true would add a gpgsig header it cannot reproduce.
+        git_bytes(self.root, 'config', 'commit.gpgsign', 'false')
         (self.root / 'file.cmd').write_bytes(b'first\nsecond\n')
         (self.root / 'nested').mkdir(); (self.root / 'nested/run.sh').write_text('#!/bin/sh\nexit 0\n')
         (self.root / 'nested/run.sh').chmod(0o755)
@@ -765,6 +799,174 @@ class RESTTransportRegressionTests(unittest.TestCase):
             controller.export_rest_successor(api, self.root, plan, candidate)
         self.assertEqual(api.prs[0]['head']['sha'], self.initial)
         self.assertFalse(any(method == 'PATCH' for method, _, _ in api.posts))
+
+    def ambiguous_tree_export(self, readback='matching', failure='502'):
+        git_bytes(self.root, 'reset', '--hard', self.initial)
+        (self.root / 'file.cmd').write_text('candidate\n')
+        candidate = self.commit('candidate')
+        api = GitDataREST(self.root, self.initial, self.initial)
+        plan = self.plan(api)
+        original = api.call
+        reads = []
+        def call(method, path, payload=None):
+            if method == 'POST' and path == 'git/trees':
+                original(method, path, payload)
+                if failure == 'timeout':
+                    raise subprocess.TimeoutExpired(['gh', 'api'], 120)
+                raise controller.SelfHealBlock(f'REST POST git/trees: {failure}; no automatic retry')
+            if method == 'GET' and path.startswith('git/trees/'):
+                reads.append(path)
+                if readback == 'missing':
+                    raise controller.SelfHealBlock('REST GET ' + path + ': 404; no automatic retry')
+                result = original(method, path, payload)
+                if readback == 'corrupt':
+                    result['tree'][0]['sha'] = 'f' * 40
+                elif readback == 'truncated':
+                    result['truncated'] = True
+                return result
+            return original(method, path, payload)
+        api.call = call
+        return api, plan, candidate, reads
+
+    def test_accepted_tree_with_lost_502_response_continues_after_exact_readback(self):
+        api, plan, candidate, reads = self.ambiguous_tree_export()
+        controller.export_rest_successor(api, self.root, plan, candidate)
+        self.assertEqual(api.prs[0]['head']['sha'], candidate)
+        tree = git_bytes(self.root, 'rev-parse', candidate + '^{tree}').decode().strip()
+        self.assertEqual(reads, ['git/trees/' + tree])
+        self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
+        self.assertEqual(sum(method == 'PATCH' for method, _, _ in api.posts), 1)
+
+    def test_tree_transport_timeout_uses_one_readback_without_another_post(self):
+        api, plan, candidate, reads = self.ambiguous_tree_export(failure='timeout')
+        controller.export_rest_successor(api, self.root, plan, candidate)
+        self.assertEqual(api.prs[0]['head']['sha'], candidate)
+        self.assertEqual(len(reads), 1)
+        self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
+
+    def test_unresolved_tree_response_preserves_head_and_never_reposts(self):
+        for response in ('missing', 'corrupt', 'truncated'):
+            with self.subTest(response=response):
+                api, plan, candidate, reads = self.ambiguous_tree_export(readback=response)
+                with self.assertRaisesRegex(controller.SelfHealBlock, 'tree creation unresolved'):
+                    controller.export_rest_successor(api, self.root, plan, candidate)
+                self.assertEqual(api.prs[0]['head']['sha'], self.initial)
+                self.assertEqual(len(reads), 1)
+                self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
+                self.assertFalse(any(path == 'git/commits' or method == 'PATCH'
+                                     for method, path, _ in api.posts))
+
+    def test_tree_permission_denial_is_not_reclassified_as_an_ambiguous_ack(self):
+        api, plan, candidate, reads = self.ambiguous_tree_export(failure='403')
+        with self.assertRaisesRegex(controller.SelfHealBlock, ': 403;'):
+            controller.export_rest_successor(api, self.root, plan, candidate)
+        self.assertEqual(reads, [])
+        self.assertEqual(api.prs[0]['head']['sha'], self.initial)
+
+
+class SuccessorCheckpointTests(unittest.TestCase):
+    """The original failed exporter must not destroy a tested local successor."""
+
+    def checkpoint_script(self):
+        source = CONTINUATION.read_text(encoding='utf-8')
+        start = '          # BEGIN tested-successor checkpoint\n'
+        end = '          # END tested-successor checkpoint\n'
+        self.assertIn(start, source, 'tested native work has no pre-publication checkpoint')
+        self.assertLess(source.index(start), source.index(' pr-publish '))
+        return textwrap.dedent(source.split(start, 1)[1].split(end, 1)[0])
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.parent = pathlib.Path(self.temp.name)
+        self.root = self.parent / 'source'; self.root.mkdir()
+        git_bytes(self.root, 'init', '-b', 'main')
+        git_bytes(self.root, 'config', 'user.name', 'test')
+        git_bytes(self.root, 'config', 'user.email', 'test@example.invalid')
+        (self.root / 'original.txt').write_bytes(b'original\n')
+        self.commit('initial')
+        self.initial = git_bytes(self.root, 'rev-parse', 'HEAD').decode().strip()
+        (self.root / 'main.txt').write_bytes(b'current main\n')
+        self.main = self.commit('main addition')
+        git_bytes(self.root, 'checkout', '-b', 'work', self.initial)
+        (self.root / 'draft.bin').write_bytes(b'original\x00draft\xff\r\n')
+        self.draft = self.commit('original draft')
+        self.known = self.parent / 'known-parents.bundle'
+        git_bytes(self.root, 'bundle', 'create', str(self.known), 'main', 'work')
+        git_bytes(self.root, 'merge', '--no-ff', '-m', 'bounded main merge', 'main')
+        (self.root / 'generated.txt').write_bytes(b'tested repair\n')
+        self.candidate = self.commit('bounded repair')
+        self.raw_commit = git_bytes(self.root, 'cat-file', 'commit', self.candidate)
+        self.tree = git_bytes(self.root, 'rev-parse', 'HEAD^{tree}').decode().strip()
+        (self.root / 'untracked-private-input.txt').write_bytes(b'not a repository source')
+        self.runtime = self.parent / 'runtime'; self.runtime.mkdir()
+        (self.runtime / 'qikvrt-pr-selection.json').write_text(json.dumps({
+            'base_sha': self.main, 'selected': {'head_sha': self.draft, 'pull_request': 459}
+        }))
+        self.env = dict(os.environ, RUNNER_TEMP=str(self.runtime),
+                        EXPECTED_HEAD=self.draft, OBSERVED_BASE=self.main,
+                        candidate_head=self.candidate)
+
+    def commit(self, message):
+        git_bytes(self.root, 'add', '.')
+        git_bytes(self.root, 'commit', '-m', message)
+        return git_bytes(self.root, 'rev-parse', 'HEAD').decode().strip()
+
+    def run_checkpoint(self, suffix=''):
+        return subprocess.run(['bash', '-euo', 'pipefail'],
+            input=self.checkpoint_script() + suffix, cwd=self.root, env=self.env,
+            text=True, capture_output=True, timeout=30)
+
+    def assert_recovery_after_source_loss(self):
+        result = self.run_checkpoint('\nexit 2 # subsequent publication failed\n')
+        self.assertEqual(result.returncode, 2, result.stderr)
+        checkpoint = self.runtime / 'qikvrt-pr-successor-checkpoint'
+        import hashlib
+        for line in (checkpoint / 'SHA256SUMS').read_text().splitlines():
+            digest, name = line.split('  ', 1)
+            self.assertEqual(hashlib.sha256((checkpoint / name).read_bytes()).hexdigest(), digest)
+        self.assertEqual((checkpoint / 'candidate-head.txt').read_text().strip(), self.candidate)
+        self.assertEqual((checkpoint / 'candidate-tree.txt').read_text().strip(), self.tree)
+        shutil.rmtree(self.root)
+        restored = self.parent / 'restored'; restored.mkdir()
+        git_bytes(restored, 'init')
+        git_bytes(restored, '-c', 'protocol.allow=never', 'bundle', 'unbundle', str(self.known))
+        git_bytes(restored, '-c', 'protocol.allow=never', 'bundle', 'unbundle', str(checkpoint / 'candidate.bundle'))
+        self.assertEqual(git_bytes(restored, 'cat-file', 'commit', self.candidate), self.raw_commit)
+        self.assertEqual(git_bytes(restored, 'rev-parse', self.candidate + '^{tree}').decode().strip(), self.tree)
+        self.assertEqual(git_bytes(restored, 'show', self.candidate + ':draft.bin'), b'original\x00draft\xff\r\n')
+        self.assertNotIn(b'untracked-private-input', git_bytes(restored, 'ls-tree', '-r', self.candidate))
+
+    def test_checkpoint_recovers_original_successor_after_runner_source_is_lost(self):
+        self.assert_recovery_after_source_loss()
+
+    def test_shallow_rest_checkout_retains_the_exact_successor_and_parents(self):
+        (self.root / '.git/shallow').write_text(self.main + '\n' + self.draft + '\n' + self.initial + '\n')
+        self.assert_recovery_after_source_loss()
+
+    def test_failed_checkpoint_stops_before_any_publication(self):
+        (self.runtime / 'qikvrt-pr-successor-checkpoint').mkdir()
+        marker = self.parent / 'publication-attempt'
+        result = self.run_checkpoint('\nprintf POST > ' + str(marker) + '\n')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse(marker.exists())
+
+    def test_changed_tracked_bytes_are_not_checkpointed_as_the_tested_subject(self):
+        (self.root / 'generated.txt').write_bytes(b'not the tested repair\n')
+        result = self.run_checkpoint()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.runtime / 'qikvrt-pr-successor-checkpoint/candidate.bundle').exists())
+
+    def test_failed_native_job_still_uploads_only_the_checkpoint_directory(self):
+        source = CONTINUATION.read_text(encoding='utf-8')
+        marker = '      - name: Retain tested successor after publication failure\n'
+        self.assertIn(marker, source)
+        step = source.split(marker, 1)[1].split('\n      - name:', 1)[0]
+        self.assertIn('if: always()', step)
+        self.assertIn('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a', step)
+        self.assertIn('path: ${{ runner.temp }}/qikvrt-pr-successor-checkpoint/', step)
+        self.assertIn('if-no-files-found: ignore', step)
+        self.assertNotIn('path: ${{ github.workspace }}', step)
 
 
 if __name__ == "__main__":

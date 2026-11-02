@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt_native_job_original_log_binding_v1",
+  "run_id": 41215514005,
+  "attempt": 2,
+  "job_id": 124601748625,
+  "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+  "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+  "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124601748625/logs",
+  "log_bytes": 846175,
+  "log_sha256": "3ea5d879e2c9b199ada275c12c8223712a214450982601f0329fa1183921ef6f",
+  "archive_sha256": "f4984b6e16c2d696c64ae63eef09bf5541bce52f4b62c0aaa5835b65fc6da088",
+  "conclusion_from_native_readback": "success",
+  "scope": "Repository evidence materialization only; no merge, runtime or productive effect"
+}

@@ -11,6 +11,8 @@ as a successful gate.  The narrowly authorised Action wrapper performs the
 single REST dispatch only after this controller has produced a candidate.
 The separate authority-readback command performs bounded, authenticated GETs;
 it never substitutes a Mirror response or candidate policy for active Main.
+The workspace-task-intake command reads the expressly admitted workspace and
+records version-bound coordination acceptance; it cannot execute task prose.
 """
 
 from __future__ import annotations
@@ -25,6 +27,8 @@ import re
 import subprocess
 import sys
 import urllib.parse
+import urllib.request
+import urllib.error
 import zipfile
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -51,6 +55,10 @@ AMO_RUN_HISTORY_BUDGET = 1600
 
 class ExecutorBlock(RuntimeError):
     """A fail-closed executor or continuity validation error."""
+
+    def __init__(self, message: str, *, readback: Mapping[str, Any] | None = None):
+        super().__init__(message)
+        self.readback = dict(readback) if readback is not None else None
 
 
 def resolve_repository_roles(policy: Mapping[str, Any]) -> dict[str, str]:
@@ -217,18 +225,56 @@ def read_authority_main(root: Path = ROOT, previous: Mapping[str, Any] | None = 
     def get(endpoint: str) -> Mapping[str, Any]:
         try:
             response = subprocess.run(
-                ["gh", "api", "--hostname", "github.com", "--method", "GET", endpoint],
+                ["gh", "api", "--hostname", "github.com", "--method", "GET", "--include", endpoint],
                 cwd=root, capture_output=True, text=True, check=False, timeout=30,
             )
         except (OSError, subprocess.TimeoutExpired) as exc:
             raise ExecutorBlock("AUTHORITY_READBACK_TRANSPORT_UNAVAILABLE") from exc
-        if response.returncode:
+        # gh --include returns status/headers before JSON even for a denial.
+        # Retain only fixed resource labels and bounded numeric quota fields;
+        # never persist provider bodies, arbitrary headers, stderr or tokens.
+        body = response.stdout
+        headers: dict[str, str] = {}
+        http_status = 0
+        if body.startswith("HTTP/"):
+            header_block, separator, body = body.partition("\n\n")
+            lines = header_block.splitlines()
+            status_line = re.fullmatch(r"HTTP/[0-9.]+ ([1-5][0-9]{2})(?: [^\r\n]*)?", lines[0])
+            if not separator or not status_line:
+                raise ExecutorBlock("AUTHORITY_READBACK_INVALID_HTTP_ENVELOPE")
+            http_status = int(status_line[1])
+            for line in lines[1:]:
+                name, colon, value = line.partition(":")
+                if colon and name.casefold() in {"x-ratelimit-remaining", "x-ratelimit-reset", "retry-after"}:
+                    key = name.casefold()
+                    # Duplicate quota headers are ambiguous, not trustworthy.
+                    headers[key] = value.strip() if key not in headers else "INVALID"
+        if response.returncode or (http_status and http_status != 200):
             # Preserve the failure class only, never arbitrary response bodies or tokens.
             status = re.search(r"HTTP (\d{3})", response.stderr)
-            detail = f"HTTP_{status.group(1)}" if status else f"CLI_EXIT_{response.returncode}"
-            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}")
+            status_code = http_status or (int(status[1]) if status else 0)
+            detail = f"HTTP_{status_code}" if status_code else f"CLI_EXIT_{response.returncode}"
+            resource = ("MAIN_REF" if endpoint.endswith("/git/ref/heads/main") else
+                        "COMMIT" if "/git/commits/" in endpoint else
+                        "ROLE_POLICY" if "/contents/" + ROLE_POLICY_PATH + "?" in endpoint else
+                        "GOVERNANCE_POLICY" if "/contents/" + GOVERNANCE_POLICY_PATH + "?" in endpoint else
+                        "CODEOWNERS")
+            diagnostic: dict[str, Any] = {"resource": resource, "http_status": status_code,
+                "reason": "HTTP_DENIAL" if status_code else "CLI_FAILURE",
+                "authentication_verified": False}
+            for header, field in (("x-ratelimit-remaining", "rate_limit_remaining"),
+                                  ("x-ratelimit-reset", "rate_limit_reset"),
+                                  ("retry-after", "retry_after_seconds")):
+                value = headers.get(header, "")
+                if re.fullmatch(r"[0-9]{1,12}", value):
+                    diagnostic[field] = int(value)
+            diagnostic["retry_condition"] = (
+                "QUOTA_RESET_AND_FRESH_ORIGINAL_READBACK_REQUIRED"
+                if diagnostic.get("rate_limit_remaining") == 0 or status_code == 429 else
+                "ORIGINAL_DENIAL_CAUSE_REPAIR_REQUIRED")
+            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}", readback=diagnostic)
         try:
-            return _mapping(json.loads(response.stdout), "Authority GET response")
+            return _mapping(json.loads(body), "Authority GET response")
         except json.JSONDecodeError as exc:
             raise ExecutorBlock("AUTHORITY_READBACK_INVALID_JSON") from exc
 
@@ -1449,6 +1495,192 @@ def amo_event(root: Path, context: Mapping[str, Any]) -> dict[str, Any] | None:
         raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
 
 
+CONTINUATION_WORKFLOWS = {
+    ".github/workflows/qikvrt_ci.yml": "CI",
+    ".github/workflows/qikvrt_temdd.yml": "CD",
+    ".github/workflows/qikvrt_workflow_executor_watchdog.yml": "CO",
+}
+
+
+def github_tested_subject_matches(run: Mapping[str, Any], tested: Any) -> bool:
+    return (isinstance(tested, Mapping)
+        and set(tested) == {"schema", "repository", "run_id", "run_attempt", "head_sha", "tree_sha"}
+        and tested.get("schema") == "qikvrt-ci-tested-subject/v1"
+        and tested.get("repository") == AMO_REPOSITORY
+        and type(tested.get("run_id")) is int and tested["run_id"] == run.get("id")
+        and type(tested.get("run_attempt")) is int and tested["run_attempt"] == run.get("run_attempt")
+        and all(SHA_RE.fullmatch(str(tested.get(k, ""))) for k in ("head_sha", "tree_sha")))
+
+
+def github_source_test_succeeded(jobs: Sequence[Mapping[str, Any]]) -> bool:
+    tests = [job for job in jobs if job.get("name") == "test"]
+    return (len(tests) == 1 and tests[0].get("status") == "completed"
+            and tests[0].get("conclusion") == "success")
+
+
+HOST_INPUT_JOB = "Original Linux host identity and admitted deployment via mutual TLS REST"
+HOST_INPUT_BINDINGS = {"QIKVRT_HOST_BINDING", "QIKVRT_HOST_BINDING_SHA256",
+                       "QIKVRT_HOST_CA", "QIKVRT_HOST_CERT", "QIKVRT_HOST_KEY"}
+
+
+def github_host_handoff(root: Path, run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]],
+                        tested: Mapping[str, Any] | None) -> dict[str, Any]:
+    """Read the original non-secret job-input witness, never the protected store.
+
+    A failed or unavailable checker cannot establish missing target bindings.
+    Even a valid presence witness proves neither secret values nor host identity.
+    The next operation is the existing native SSO GET, not a retry or a write.
+    """
+    value = {"schema": "qikvrt-protected-host-completion-feedback/v1", "state": "UNVERIFIED",
+        "scope": "JOB_INPUT_PRESENCE_ONLY", "target_failure_detected": False,
+        "job_credential_delivery_verified": False, "host_identity_verified": False,
+        "retry_original_failed_job": False, "effect_ack_done": False}
+    matched = [job for job in jobs if job.get("name") == HOST_INPUT_JOB]
+    if len(matched) != 1:
+        return value
+    job = matched[0]
+    if job.get("status") == "completed" and job.get("conclusion") == "skipped":
+        return dict(value, state="NOT_EXECUTED")
+    if (run.get("path") != AMO_CI_WORKFLOW or run.get("head_branch") != "main"
+            or job.get("status") != "completed" or not github_source_test_succeeded(jobs)
+            or not github_tested_subject_matches(run, tested)
+            or tested["head_sha"] != run.get("head_sha")):
+        return value
+    value.update(run_id=run["id"], run_attempt=run["run_attempt"], job_id=job["id"],
+                 source_head=tested["head_sha"], source_tree=tested["tree_sha"])
+    try:
+        name = "qikvrt-s1-host-start-" + tested["head_sha"]
+        original = amo_artifact(root, run["id"], name,
+            {"host-material-delivery.json", "host-identity.json", "host-start.json"})
+        if original is None or "host-material-delivery.json" not in original:
+            return value
+        raw = original["host-material-delivery.json"]
+        receipt = _amo_object(raw)
+        expected = {"schema": "qikvrt-protected-host-input-delivery/v1",
+            "repository": AMO_REPOSITORY, "environment": "qikvrt-production",
+            "scope": "JOB_INPUT_PRESENCE_ONLY", "source_head": tested["head_sha"],
+            "source_tree": tested["tree_sha"], "job_credential_delivery_verified": False,
+            "host_identity_verified": False, "effect_ack_done": False}
+        bindings = receipt.get("bindings")
+        if (set(receipt) != set(expected) | {"bindings", "state"}
+                or any(type(receipt.get(key)) is not type(want) or receipt[key] != want
+                       for key, want in expected.items())
+                or not isinstance(bindings, dict) or set(bindings) != HOST_INPUT_BINDINGS
+                or any(type(present) is not bool for present in bindings.values())):
+            return value
+        missing = sorted(key for key, present in bindings.items() if not present)
+        state = "HOLD_PROTECTED_INPUT_DELIVERY" if missing else "PROTECTED_INPUTS_PRESENT"
+        if receipt.get("state") != state:
+            return value
+        value.update(state=state, target_failure_detected=bool(missing), missing_bindings=missing,
+            artifact_name=name, receipt_sha256=sha256_bytes(raw))
+        if missing:
+            value["next_required_readback"] = {"route": "ORIGINAL_NATIVE_SSO_REST", "method": "GET",
+                "operation": "productionEnvironmentReadback",
+                "path": "/repos/ingolf-lohmann/qik-vrt/qikvrt/production-environment",
+                "query": {"schema": "qikvrt-production-environment-rest/v1",
+                          "request_id": f"host-input-{run['id']}-{run['run_attempt']}"}}
+            value["retry_condition"] = "ORIGINAL_BOUND_METADATA_READBACK_AND_JOB_INPUT_REPAIR_REQUIRED"
+    except Exception:
+        # Supplementary observation must retain the original provider failure.
+        # Do not forward checker errors, paths, private fields or exception text.
+        return value
+    return value
+
+
+def continuation_graph(run: Mapping[str, Any], jobs: Sequence[Mapping[str, Any]],
+                       tested_subject: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    """Adapt sibling priority from successful original jobs, retaining all gates.
+
+    This is the QIK-VRT continuation graph, not a modification of GitHub's
+    schema. Durations guide order only; they never transfer gate acceptance.
+    Callers must independently read the original run and complete job inventory.
+    """
+    from datetime import datetime
+    if (run.get("path") not in CONTINUATION_WORKFLOWS
+            or type(run.get("id")) is not int or run["id"] <= 0
+            or type(run.get("run_attempt")) is not int or run["run_attempt"] <= 0
+            or not SHA_RE.fullmatch(str(run.get("head_sha", "")))
+            or run.get("repository", {}).get("full_name") != AMO_REPOSITORY
+            or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
+            or not 0 < len(jobs) < 100
+            or any(type(j.get("id")) is not int or j["id"] <= 0 for j in jobs)
+            or len({j["id"] for j in jobs}) != len(jobs)):
+        raise ExecutorBlock("CONTINUATION_ORIGINAL_RUN_AND_JOBS_REQUIRED")
+    succeeded = run.get("status") == "completed" and run.get("conclusion") == "success"
+    timings = []
+    for job in jobs:
+        if (not isinstance(job.get("name"), str) or not 0 < len(job["name"]) <= 200
+                or job.get("status") != "completed"):
+            succeeded = False
+        if job.get("conclusion") not in {"success", "skipped"}:
+            succeeded = False
+        if job.get("conclusion") == "success":
+            try:
+                start = datetime.fromisoformat(job["started_at"].replace("Z", "+00:00"))
+                end = datetime.fromisoformat(job["completed_at"].replace("Z", "+00:00"))
+                seconds = (end - start).total_seconds()
+                if start.tzinfo is None or end.tzinfo is None or not 0 <= seconds <= 86400:
+                    raise ValueError("invalid job duration")
+                timings.append({"job_id": job["id"], "name": job["name"], "seconds": seconds})
+            except (KeyError, TypeError, ValueError, AttributeError):
+                pass  # Unknown timing is never a synthetic zero-cost success.
+    timings = sorted(timings, key=lambda j: (-j["seconds"], j["job_id"])) if succeeded else []
+    parallel_ci = {"offline_browser (chromium)", "offline_browser (webkit)",
+                   "Linux S1 native terminal production and smoke"}
+    sibling_priority = ([j for j in timings if j["name"] in parallel_ci]
+                        if run["path"] == AMO_CI_WORKFLOW else [])
+    ordered_children = [j["name"] for j in sibling_priority]
+    ordered_children += sorted(parallel_ci - set(ordered_children))
+    required = {"test", "offline_browser (chromium)", "offline_browser (webkit)",
+                "Linux S1 native terminal production and smoke"}
+    accepted = {j.get("name") for j in jobs if j.get("conclusion") == "success"}
+    bound = github_tested_subject_matches(run, tested_subject)
+    return {"schema": "qikvrt-continuation-graph/v1", "run_id": run["id"],
+            "event_head_sha": run["head_sha"],
+            "head_sha": tested_subject["head_sha"] if bound else run["head_sha"],
+            "tree_sha": tested_subject["tree_sha"] if bound else None,
+            "workflow_stage": CONTINUATION_WORKFLOWS[run["path"]],
+            "provider_metadata_sha256": sha256_bytes(canonical_json_bytes({"run": run, "jobs": jobs})),
+            "tested_subject": dict(tested_subject) if bound else None,
+            "source_tests_verified": bool(bound and run["path"] == AMO_CI_WORKFLOW
+                                          and github_source_test_succeeded(jobs)),
+            "ci_verified": bool(bound and succeeded and run["path"] == AMO_CI_WORKFLOW and required <= accepted),
+            "success_learning": succeeded, "successful_job_timings": timings,
+            "sibling_priority": sibling_priority, "sibling_dependency": "test",
+            "skipped_jobs": [j["id"] for j in jobs if j.get("conclusion") == "skipped"],
+            "nodes": [{"id": "source", "requires": []},
+                      {"id": "review", "requires": ["source"]},
+                      {"id": "ci", "requires": ["source"], "mandatory_root": "test",
+                       "independent_children": ordered_children},
+                      {"id": "graphql-fallback", "requires": ["review", "ci"],
+                       "operation": "markPullRequestReadyForReview", "never_prune": True},
+                      {"id": "rest-merge", "requires": ["graphql-fallback"],
+                       "fresh_expected_head_admission_required": True}],
+            "learning_scope": "ORDER_INDEPENDENT_CI_SIBLINGS_ONLY; NEVER_SKIP_GATES",
+            "graph_source_mutation": False, "effect_ack_done": False}
+
+
+def continuation_frontier(graph: Mapping[str, Any], pr: Mapping[str, Any],
+                          review: Mapping[str, Any]) -> dict[str, Any]:
+    """Advance the retained graph from fresh source/review/CI/readiness evidence.
+
+    A merge frontier requests the existing fresh merge admission; it never
+    grants or executes a merge. Unknown or failed gates keep their branches.
+    """
+    value = json.loads(json.dumps(graph))
+    admitted = graph.get("ci_verified") is True and review.get("gate_state") == "success"
+    states = {"source": "VERIFIED", "review": "VERIFIED" if review.get("gate_state") == "success" else "OPEN",
+              "ci": "VERIFIED" if graph.get("ci_verified") else "OPEN",
+              "graphql-fallback": "VERIFIED" if pr.get("draft") is False else "READY" if admitted else "WAITING",
+              "rest-merge": "RECHECK_REQUIRED" if admitted and pr.get("draft") is False else "WAITING"}
+    for node in value["nodes"]:
+        node["state"] = states[node["id"]]
+    value["frontier"] = [n["id"] for n in value["nodes"] if n["state"] in {"READY", "RECHECK_REQUIRED"}]
+    value["merge_admission_inferred"] = False
+    return value
+
+
 def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
     """Read CI completion diagnostics without executing code from the triggering run."""
     context = amo_context()
@@ -1467,14 +1699,34 @@ def github_completion_feedback(root: Path = ROOT) -> dict[str, Any]:
         run = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}")
         if (run.get("repository", {}).get("full_name") != AMO_REPOSITORY
                 or run.get("head_repository", {}).get("full_name") != AMO_REPOSITORY
-                or run.get("path") not in {AMO_CI_WORKFLOW, ".github/workflows/qikvrt_workflow_executor_watchdog.yml"}
+                or run.get("path") not in CONTINUATION_WORKFLOWS
                 or run.get("status") != "completed"
                 or any(run.get(k) != source.get(k) for k in ("id", "head_sha", "conclusion", "run_attempt", "event"))):
             raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_MISMATCH")
         jobs = _amo_get(root, f"repos/{AMO_REPOSITORY}/actions/runs/{run_id}/jobs?per_page=100")
         if jobs.get("total_count") != len(jobs.get("jobs", [])):
             raise ExecutorBlock("AMO_TARGET_JOB_INVENTORY_INCOMPLETE")
-        return github_failure_feedback(root, amo_feedback(run, jobs["jobs"]))
+        feedback = github_failure_feedback(root, amo_feedback(run, jobs["jobs"]))
+        tested = None
+        try:
+            if run.get("path") == AMO_CI_WORKFLOW and github_source_test_succeeded(jobs["jobs"]):
+                artifact = amo_artifact(root, run_id,
+                    f"qikvrt-ci-tested-subject-{run_id}-{run['run_attempt']}", {"TESTED_SUBJECT.json"})
+                if artifact is not None:
+                    tested = _amo_object(artifact["TESTED_SUBJECT.json"])
+                    if not github_tested_subject_matches(run, tested):
+                        tested = None
+            feedback["continuation_graph"] = continuation_graph(run, jobs["jobs"], tested)
+        except Exception:
+            # A failed learner must not erase the original provider outcome.
+            tested = None
+            feedback["continuation_graph"] = {"schema": "qikvrt-continuation-graph/v1",
+                "state": "UNVERIFIED", "ci_verified": False, "success_learning": False,
+                "source_tests_verified": False,
+                "fallback_retained": True, "sibling_priority": [], "effect_ack_done": False}
+        if any(job.get("name") == HOST_INPUT_JOB for job in jobs["jobs"]):
+            feedback["protected_host_handoff"] = github_host_handoff(root, run, jobs["jobs"], tested)
+        return feedback
     except (OSError, KeyError, TypeError):
         raise ExecutorBlock("AMO_GITHUB_COMPLETION_EVENT_UNVERIFIED") from None
 
@@ -1656,9 +1908,225 @@ def amo_progress(directory: Path, receipt: Mapping[str, Any]) -> None:
             stream.write(human + "\n")
 
 
+WORKSPACE_ORIGIN = "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
+WORKSPACE_IDENTITY_COOKIE = "__Host-QIKVRT-Workflow-Identity"
+WORKSPACE_FIELDS = ("id", "title", "description", "status", "priority", "cognition",
+                    "version", "visibility", "createdAt", "updatedAt")
+WORKSPACE_SAFE_DENIAL_CODES = frozenset({"INVALID_RESPONSE", "INVALID_RUN_TOKEN", "RUN_TOKEN_REQUIRED",
+    "AUTHORITY_READBACK_UNAVAILABLE", "AUTHORITY_READBACK_TOO_LARGE", "AUTHORITY_READBACK_INVALID",
+    "OIDC_KEYS_UNAVAILABLE", "OIDC_KEY_UNVERIFIED", "INVALID_RUN_SIGNATURE", "WRONG_RUN_IDENTITY",
+    "STALE_RUN_TOKEN", "MAIN_CHANGED", "INVALID_MAIN_SUBJECT", "RUN_NOT_EXECUTING",
+    "SOURCE_CONTRACT_UNAVAILABLE", "SOURCE_CONTRACT_BYTES_INVALID", "WORKSPACE_SOURCE_NOT_ADMITTED",
+    "TASK_NOT_ADMITTED", "TASK_VERSION_NOT_ADMITTED", "TASK_VERSION_OR_BYTES_CHANGED",
+    "TASK_CHANGED_OR_ACCEPTANCE_UNAVAILABLE"})
+WORKSPACE_READBACK_RESOURCES = frozenset({"OIDC_KEYS", "MAIN_REF", "COMMIT", "WORKFLOW_RUN", "SOURCE_CONTRACT"})
+
+
+class _WorkspaceNoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ExecutorBlock("WORKSPACE_REDIRECT_FORBIDDEN")
+
+
+def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = None, *, stage: str = "REQUEST") -> dict[str, Any]:
+    """A single bounded request. Tokens and task text never enter output files."""
+    data = None if payload is None else canonical_json_bytes(payload)
+    headers = {"Accept": "application/json", "Content-Type": "application/json", "Cache-Control": "no-store",
+               "User-Agent": "QIKVRT-Authority-workspace-intake/1"}
+    # Sites owns the standard Authorization namespace. The service token is
+    # independently verified by our original Worker, not a visitor credential.
+    if urllib.parse.urlsplit(url).netloc == urllib.parse.urlsplit(WORKSPACE_ORIGIN).netloc:
+        headers["Cookie"] = WORKSPACE_IDENTITY_COOKIE + "=" + token
+    else:
+        headers["Authorization"] = "Bearer " + token
+    request = urllib.request.Request(url, data=data, method="GET" if data is None else "POST", headers=headers)
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _WorkspaceNoRedirect())
+    try:
+        with opener.open(request, timeout=30) as response:
+            if response.geturl() != url or response.status not in (200, 201):
+                raise ExecutorBlock("WORKSPACE_RESPONSE_IDENTITY_INVALID")
+            raw = response.read(65537)
+            if len(raw) > 65536:
+                raise ExecutorBlock("WORKSPACE_RESPONSE_TOO_LARGE")
+        return dict(_mapping(json.loads(raw), "workspace response"))
+    except urllib.error.HTTPError as exc:
+        code = "NON_JSON_DENIAL"
+        try:
+            response = json.loads(exc.read(4097))
+            declared = response.get("error", {}).get("code") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
+            code = declared if isinstance(declared, str) and declared in WORKSPACE_SAFE_DENIAL_CODES else "JSON_DENIAL"
+            upstream = response.get("error", {}).get("readback") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
+            if code == "AUTHORITY_READBACK_UNAVAILABLE" and isinstance(upstream, dict):
+                resource, status = upstream.get("resource"), upstream.get("status")
+                if isinstance(resource, str) and resource in WORKSPACE_READBACK_RESOURCES and type(status) is int:
+                    if upstream.get("reason") == "HTTP_DENIAL" and 100 <= status <= 599:
+                        code += "_UPSTREAM_" + resource + "_HTTP_" + str(status)
+                        remaining = upstream.get("rate_limit_remaining")
+                        if status in (403, 429) and type(remaining) is int and remaining == 0:
+                            code += "_RATE_LIMIT_EXHAUSTED"
+                    elif upstream.get("reason") == "REQUEST_FAILED" and status == 0:
+                        code += "_UPSTREAM_" + resource + "_REQUEST_FAILED"
+        except (OSError, ValueError):
+            pass
+        # No response message, token, caller identity or task text is logged.
+        raise ExecutorBlock("WORKSPACE_" + stage + "_HTTP_" + str(exc.code) + "_" + code) from None
+    except (OSError, ValueError) as exc:
+        raise ExecutorBlock("WORKSPACE_READBACK_UNAVAILABLE") from exc
+
+
+def workspace_task_digest(task: Mapping[str, Any]) -> str:
+    if (set(task) != set(WORKSPACE_FIELDS) or task.get("visibility") != "shared"
+            or type(task.get("version")) is not int or task["version"] < 1):
+        raise ExecutorBlock("WORKSPACE_TASK_SCHEMA_INVALID")
+    return sha256_bytes(json.dumps(dict(task), sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode())
+
+
+def workspace_declared_claim_diagnostics(token: str, env: Mapping[str, str]) -> dict[str, Any]:
+    """Untrusted declared-claim comparisons only, never signature/auth proof."""
+    value: dict[str, Any] = {"schema": "qikvrt-workspace-declared-claim-diagnostics/v1", "authentication_verified": False}
+    try:
+        encoded = token.split(".")[1]
+        claims = json.loads(base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4)))
+        if not isinstance(claims, dict):
+            raise ValueError("declared claims are not an object")
+        expected = {"iss": "https://token.actions.githubusercontent.com", "aud": WORKSPACE_ORIGIN + "/api/v1/authority",
+            "sub": "repo:" + AMO_REPOSITORY + ":ref:refs/heads/main", "repository": AMO_REPOSITORY,
+            "repository_id": "1273784147", "repository_owner_id": "294949349", "ref": "refs/heads/main",
+            "sha": env["GITHUB_SHA"], "workflow_sha": env["GITHUB_SHA"],
+            "workflow_ref": AMO_REPOSITORY + "/" + AMO_NATIVE_WORKFLOW + "@refs/heads/main",
+            "run_id": env["GITHUB_RUN_ID"], "run_attempt": env.get("GITHUB_RUN_ATTEMPT", "1"),
+            "event_name": env["GITHUB_EVENT_NAME"]}
+        value["matches"] = {key: claims.get(key) == expected_value for key, expected_value in expected.items()}
+    except (ValueError, KeyError, IndexError, TypeError):
+        value["state"] = "DECLARED_CLAIMS_UNAVAILABLE"
+    return value
+
+
+def validate_workspace_acceptance(receipt: Mapping[str, Any], task: Mapping[str, Any],
+                                  binding: Mapping[str, Any], contract_hash: str) -> dict[str, Any]:
+    """Validate the stored receipt; this is not an independent-effect claim."""
+    authority = _mapping(receipt.get("authority"), "workspace accepting Authority")
+    if (receipt.get("schema") != "qikvrt-workspace-task-acceptance/v1"
+            or receipt.get("state") != "WORKFLOW_ACCEPTED"
+            or receipt.get("task_id") != binding["id"]
+            or receipt.get("task_version") != binding["version"]
+            or receipt.get("task_sha256") != binding["sha256"]
+            or workspace_task_digest(task) != binding["sha256"]
+            or authority.get("repository") != AMO_REPOSITORY
+            or authority.get("workflow") != AMO_NATIVE_WORKFLOW
+            or authority.get("scope") != "VERSIONED_TASK_COORDINATION_ONLY"
+            or authority.get("workflow_sha") != authority.get("head")
+            or not SHA_RE.fullmatch(str(authority.get("head")))
+            or not SHA_RE.fullmatch(str(authority.get("tree")))
+            or not re.fullmatch(r"[a-f0-9]{64}", str(authority.get("contract_sha256")))
+            or type(authority.get("run_id")) is not int or authority["run_id"] <= 0
+            or type(authority.get("run_attempt")) is not int or authority["run_attempt"] <= 0
+            or receipt.get("independent_readback_required") is not True
+            or receipt.get("productive_effect_verified") is not False
+            or receipt.get("effect_ack_done") is not False):
+        raise ExecutorBlock("WORKSPACE_ACCEPTANCE_INVALID")
+    # A prior run remains the original accepting actor. Never reattribute it.
+    if authority["run_id"] == int(os.environ.get("GITHUB_RUN_ID", "0")) and authority["contract_sha256"] != contract_hash:
+        raise ExecutorBlock("WORKSPACE_CONTRACT_CHANGED")
+    return dict(receipt)
+
+
+def workspace_task_intake(directory: Path, root: Path = ROOT) -> dict[str, Any]:
+    """Read the admitted workspace task, record coordination acceptance, read it back.
+
+    This extends the existing executor. It executes no task prose, dispatch,
+    repository write, productive operation or external publication.
+    """
+    value: dict[str, Any] = {"schema": "qikvrt-workspace-task-intake-run/v1", "state": "HOLD",
+        "receipts": [], "productive_effect_verified": False, "effect_ack_done": False}
+    try:
+        contract = load_contract(root)
+        admission = _mapping(contract.get("workspace_task_intake"), "workspace task admission")
+        event = os.environ.get("GITHUB_EVENT_NAME")
+        head = _git(root, "rev-parse", "HEAD").strip()
+        tree = _git(root, "rev-parse", "HEAD^{tree}").strip()
+        if (admission.get("schema") != "qikvrt-workspace-task-intake/v1"
+                or admission.get("enabled") is not True or admission.get("origin") != WORKSPACE_ORIGIN
+                or admission.get("audience") != WORKSPACE_ORIGIN + "/api/v1/authority"
+                or admission.get("identity_header") != "Cookie"
+                or admission.get("identity_cookie") != WORKSPACE_IDENTITY_COOKIE
+                or admission.get("workflow") != AMO_NATIVE_WORKFLOW
+                or admission.get("scope") != "VERSIONED_TASK_COORDINATION_ONLY"
+                or admission.get("productive_effect_authorized") is not False
+                or admission.get("effect_ack_done") is not False
+                or event not in admission.get("allowed_events", [])
+                or os.environ.get("GITHUB_REPOSITORY") != AMO_REPOSITORY
+                or os.environ.get("GITHUB_REF") != "refs/heads/main"
+                or os.environ.get("GITHUB_SHA") != head
+                or os.environ.get("GITHUB_WORKFLOW_REF") != AMO_REPOSITORY + "/" + AMO_NATIVE_WORKFLOW + "@refs/heads/main"
+                or not SHA_RE.fullmatch(head) or not SHA_RE.fullmatch(tree)):
+            raise ExecutorBlock("WORKSPACE_NATIVE_MAIN_ADMISSION_REQUIRED")
+        current = read_authority_main(root)
+        if current["main_head"] != head or current["main_tree"] != tree:
+            raise ExecutorBlock("WORKSPACE_MAIN_CHANGED")
+        token_url = os.environ.get("ACTIONS_ID_TOKEN_REQUEST_URL", "")
+        parsed = urllib.parse.urlsplit(token_url)
+        token_secret = os.environ.get("ACTIONS_ID_TOKEN_REQUEST_TOKEN", "")
+        if (parsed.scheme != "https" or not (parsed.hostname or "").endswith(".actions.githubusercontent.com")
+                or parsed.username or parsed.password or parsed.fragment or not token_secret):
+            raise ExecutorBlock("WORKSPACE_NATIVE_OIDC_DELIVERY_REQUIRED")
+        query = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+        query = [(k, v) for k, v in query if k != "audience"] + [("audience", admission["audience"])]
+        token_url = urllib.parse.urlunsplit(parsed._replace(query=urllib.parse.urlencode(query)))
+        token = _workspace_http(token_url, token_secret, stage="OIDC_TOKEN").get("value")
+        if not isinstance(token, str) or len(token.split(".")) != 3:
+            raise ExecutorBlock("WORKSPACE_NATIVE_OIDC_UNVERIFIED")
+        value["declared_claim_diagnostics"] = workspace_declared_claim_diagnostics(token, os.environ)
+        items = admission.get("work_items")
+        if not isinstance(items, list) or not 1 <= len(items) <= 32:
+            raise ExecutorBlock("WORKSPACE_WORK_ITEMS_INVALID")
+        contract_hash = sha256_bytes((root / CONTRACT_RELATIVE_PATH).read_bytes())
+        for source in items:
+            if (not isinstance(source, dict) or not re.fullmatch(r"[a-f0-9-]{36}", str(source.get("id")))
+                    or type(source.get("min_version")) is not int or source["min_version"] < 1):
+                raise ExecutorBlock("WORKSPACE_WORK_ITEMS_INVALID")
+            url = WORKSPACE_ORIGIN + "/api/v1/authority/tasks/" + source["id"]
+            initial = _workspace_http(url, token, stage="TASK_READ")
+            task = _mapping(initial.get("task"), "workspace task")
+            digest = workspace_task_digest(task)
+            if (task.get("id") != source["id"] or task["version"] < source["min_version"]
+                    or initial.get("task_sha256") != digest):
+                raise ExecutorBlock("WORKSPACE_TASK_VERSION_OR_BYTES_CHANGED")
+            binding = {"id": task["id"], "version": task["version"], "sha256": digest}
+            if initial.get("workflowAcceptance") is None:
+                # An uncertain response is never retried. A successor GETs the
+                # task first and preserves the original version-bound receipt.
+                _workspace_http(WORKSPACE_ORIGIN + "/api/v1/authority/acceptances", token,
+                    {"schema": "qikvrt-workspace-task-accept/v1", "task_id": binding["id"],
+                     "task_version": binding["version"], "task_sha256": binding["sha256"]}, stage="TASK_ACCEPT")
+            readback = _workspace_http(url, token, stage="TASK_READBACK")
+            receipt = validate_workspace_acceptance(_mapping(readback.get("workflowAcceptance"), "stored workspace acceptance"),
+                _mapping(readback.get("task"), "task readback"), binding, contract_hash)
+            value["receipts"].append(receipt)
+        value.update(state="WORKFLOW_ACCEPTANCE_STORED_READBACK_PENDING_INDEPENDENT_CHECK",
+            head=head, tree=tree, observer_run_id=int(os.environ["GITHUB_RUN_ID"]),
+            independent_readback_required=True)
+        return value
+    except (ExecutorBlock, KeyError, ValueError, OSError) as exc:
+        value["first_boundary"] = str(exc) if isinstance(exc, ExecutorBlock) else "WORKSPACE_CHECKER_UNAVAILABLE"
+        if isinstance(exc, ExecutorBlock) and exc.readback is not None:
+            value["authority_readback"] = exc.readback
+        raise ExecutorBlock(value["first_boundary"]) from None
+    finally:
+        amo_write(directory, "acceptance.json", canonical_json_bytes(value))
+        amo_write(directory, "AI_PROGRESS.json", canonical_json_bytes({
+            "schema": "qikvrt-workspace-task-intake-progress/v1", "state": value["state"],
+            "first_boundary": value.get("first_boundary"),
+            "accepted_versions": [{"task_id": r["task_id"], "version": r["task_version"]} for r in value["receipts"]],
+            "productive_effect_verified": False, "effect_ack_done": False}))
+        amo_write(directory, "AI_STATUS.md", ("# Workspace task intake\n\nState: " + value["state"]
+            + "\n\nIndependent receipt readback and productive effects remain separate.\n").encode())
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    intake = subcommands.add_parser("workspace-task-intake")
+    intake.add_argument("--output-dir", type=Path, required=True)
     for name in ("amo-plan", "amo-pre-dispatch", "amo-record"):
         amo = subcommands.add_parser(name)
         amo.add_argument("--output-dir", type=Path, required=True)
@@ -1698,11 +2166,17 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "github-completion-feedback":
+        if arguments.command == "workspace-task-intake":
+            value = workspace_task_intake(arguments.output_dir)
+            print("WORKSPACE_TASK_INTAKE=" + value["state"])
+            return 0
+        elif arguments.command == "github-completion-feedback":
             value = github_completion_feedback()
             amo_write(arguments.output_dir, "GITHUB_RUN_FEEDBACK.json", canonical_json_bytes(value))
             print("GITHUB_ORIGINAL_CONCLUSION=" + str(value["conclusion"]))
             print("GITHUB_ABORT_REASON=" + value["reason"])
+            if "protected_host_handoff" in value:
+                print("GITHUB_HOST_HANDOFF_STATE=" + value["protected_host_handoff"]["state"])
             return 0
         elif arguments.command == "amo-plan":
             value = amo_live_plan()

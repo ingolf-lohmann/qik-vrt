@@ -1,0 +1,10 @@
+{
+  "schema": "qikvrt_lean_publication_cold_restore_check_v1",
+  "returncode": 0,
+  "stdout": "ZENODO_MACHINE_PROOF_STATE=verified\nZENODO_MACHINE_PROOF_SHA256=8adce48052a5ca641912e2a7735d170fd2df277c228afc100898a8539bf0b9c3\nZENODO_MACHINE_PROOF_GIT_BLOB=e40748a90ff945f80b9940707ecbfc06241fc586\nZENODO_MACHINE_PROOF_CLAIMS=56\n",
+  "stderr": "",
+  "files": 56,
+  "independent_temporary_directory": true,
+  "exact_upload_fileset_checked": true,
+  "new_kernel_execution_claimed": false
+}

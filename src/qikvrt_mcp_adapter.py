@@ -29,7 +29,7 @@ from qikvrt_effect_ack import (
 )
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from qikvrt_api_client import github_json_get
+from qikvrt_api_client import github_commit_identity_get, github_json_get
 
 VERSIONS = ("2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
@@ -117,6 +117,9 @@ class ReadFailure(ValueError):
 
 
 def _get(config: dict, path: str) -> dict:
+    if path.startswith("commits/"):
+        return github_commit_identity_get(config["repository"], path[len("commits/"):],
+            token=os.environ.get("QIKVRT_MCP_GITHUB_READ_TOKEN", ""))
     return github_json_get(config["repository"], path, token=os.environ.get("QIKVRT_MCP_GITHUB_READ_TOKEN", ""))
 
 
@@ -127,6 +130,7 @@ def _head(config: dict) -> dict:
     if not isinstance(head, str) or not SHA1.fullmatch(head) or not isinstance(tree, str) or not SHA1.fullmatch(tree):
         raise ReadFailure("INVALID_REPOSITORY_BINDING", isolate=True)
     return {"repository": config["repository"], "ref": config["ref"], "head": head, "tree": tree,
+            **({"ref_resolution": source["ref_resolution"]} if "ref_resolution" in source else {}),
             "source_url": source["url"], "response_sha256": source["response_sha256"], "observed_at": utc_now()}
 
 

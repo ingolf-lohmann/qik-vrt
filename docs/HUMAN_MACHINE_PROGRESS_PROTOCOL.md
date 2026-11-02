@@ -1,6 +1,64 @@
 # QIK-VRT Human–Machine Progress Protocol
 
+## Later Owner GraphQL fallback decision — 29 October 2026
+
+GraphQL remains the standing admitted continuation fallback. REST stays primary;
+the shared client guard accepts `GRAPHQL_FALLBACK` only against the exact pinned
+Owner decision and fixed operation, with no prior ambiguous REST effect. See
+`client_continuation.github_fallback` in the existing policy and
+`graphql_fallback_decision` in the existing autonomous continuation delegation.
+Do not request this authorization again. Successful original CI/CD/CO feedback
+can reorder independent verification branches while retaining every gate and
+the fallback. Readiness, merge and productive host/domain acceptance remain
+distinct and require their own fresh readbacks.
+
+## Owner decisions before tool selection — 26 October 2026
+
+All current and future QIK-VRT artificial-cognitive clients load the shared
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json` contract at
+`client_continuation.tool_selection` before selecting or invoking an external
+service. The existing handoff validator also checks one proposed action:
+
+```sh
+python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>
+```
+
+Use the same non-secret action shape as `next_actions`: exact `subject`, `route`,
+`service`, `operation`, `method`, actual `tool` and `endpoint` when applicable,
+observed operation/repository/method, evidence and the existing authorization,
+safety, determinism, capability, authentication, permission and admission flags.
+The read-only command reports `CLIENT_ROUTE_POLICY_SHA256` and the declared
+READY/HOLD state; it never invokes a provider. Bind that current digest as
+`route_policy_sha256` when carrying the action forward; a supplied stale digest
+is rejected. `--client-action` and `--client-receipt` are mutually exclusive.
+
+Railway is DISCONNECTED under the Owner's reaffirmed decision. The guard rejects
+direct provider discovery, authentication, reads, writes and recovery, including
+GET/read-only and zero-effect recorded reads. It checks the actual declared
+service/provider, tool prefix and endpoint hostname before capability/transport
+selection. Tool availability, a new session, generic authorization or an
+unavailable permitted route does not reactivate a disconnected provider. Only a
+later explicit Owner instruction can revise the shared policy. Preserved old
+artifacts remain readable through their actual admitted owner storage.
+
+The same check covers proposed actions, transition plans and client receipts.
+It checks declared metadata, not the truth of a client assertion. A saved policy
+or a passing fixture does not prove use by another client, native enforcement,
+external platform control or a runtime effect. Require exact-policy ACK and
+independent readback for each node before claiming adoption. Historical records
+remain immutable; current evaluation never transfers their former route grant.
+
 ## Purpose
+
+The Owner's authorization of 26 October 2026 requires every client to execute
+known, admitted deterministic repairs autonomously without asking the same
+permission or requiring a preliminary notification. The existing
+`client_continuation.blocking_repair_priority.known_error_authorization` rule
+uses the original transition preparation and blocking-repair journal. Correct
+the causal prerequisite, verify the affected exact-subject path, and report
+the verified result. Missing capability or an unknown cause remains a concrete
+prerequisite to recover. Authorization never substitutes for credential binding,
+admission or effect readback, and never permits an unchanged failed retry.
 
 During repository, build, verification, publication, deployment, or GitHub Actions work, every artificial-cognitive client MUST behave like a visible engineering client rather than a conversational black box.
 
@@ -65,6 +123,64 @@ Its normative source is the existing recursive policy's
 
 ## Binding client continuation procedure
 
+### Communication claims — self-application of 2026-10-19
+
+The later Owner handoff of 2026-10-31 17:33 MEZ adds R1–R5, bound under
+`client_continuation.delivery_reporting_rules` in the shared policy and in `AI`.
+Name the target host in the first sentence. Report local results separately
+from Authority receipt; reconstruct own history from Git records. Load the
+current `AI`, `AI_CONTEXT.json` and required reading order before acting.
+Capability gaps retain HOLD without assigning configuration work to the Owner.
+An execution promise cannot establish the Owner's observed effect.
+
+For `RECEIVED`, `APPLIED` and `RECEIVER_NACK`, the same communication entry must
+include `evidence.remote_readback`, binding the message hash, node, intended
+`target_host` (also on `send`), HTTPS request and final URL, successful integer
+`http_status`, `observed_at` and `action_id` inside this receipt's action window.
+Include the response's canonical `response_sha256` or `authority_ref_sha`, a
+distinct evidence locator, `independent: true` and
+`authority_identity_verified: true`. An `APPLIED` remote receipt also binds the
+exact application subject, native event and ledger digest. The validator rejects
+loopback/local substitutes, failed HTTP, destination drift and stale readbacks;
+it does not authenticate these declarations or inspect DNS/network truth.
+Missing remote proof means `NICHT_ZUGESTELLT`; `SENT` denotes transfer only.
+No source rule, test, receipt declaration or carrier save proves every-node
+adoption, native authority, Owner acceptance or productive EFFECT_ACK_DONE.
+
+For each own outgoing packet discussed by a new client receipt, include a
+`communications` entry with `id`, canonical `message_sha256` (`sha256:` and
+64 lowercase hex digits), `sender`, `recipient`, `claim` and `evidence`.
+The existing `tools/ai_handoff.py --client-receipt` checks these declarations.
+Historical receipts without this field remain readable; this compatibility
+does not prove that a client reported all packets or used the guard.
+
+`NOT_SENT` has an intended recipient and empty evidence. It permits no arrival
+or receiver-NACK inference. `SENT` requires `evidence.send`, binding the same
+message hash, recipient in `node`, sender, actual `channel` and an `evidence`
+locator. `RECEIVED` additionally requires matching `ingress` and `outbox_claim`.
+Every proof has the same message hash, recipient node and a nonempty locator.
+`outbox_claim` identifies the actual `node-tools/qikvrt_mirror_emit.py claim`
+output, canonical `record_sha256`, and named node. `RECEIVER_NACK` requires
+that original claim and sending evidence; the client validator never issues it.
+
+`APPLIED` additionally requires `application` and independently obtained
+`readback`, both binding the receipt's exact subject, same `native_event_id`
+and canonical `ledger_digest`, with distinct evidence locators and declared
+`independent: true` on the readback. Sending or signature validity alone cannot
+substitute for these records. Verify the cited bytes and real independence
+separately; declarative consistency is not authenticated truth.
+
+`PRINCIPAL_RETURN` describes only a verified byte-identical return through the
+Principal. Its recipient must be null and its only evidence is `return`, with
+the original message hash and a checked-byte evidence locator. It establishes
+neither a named receiver nor peer identity, rule application or productive
+operation. Do not ask the Principal to serve as the operating bus.
+
+Use the original outbox tool for every Effect-Ack assessment and node-specific
+claim. This guard is no substitute implementation, executor, proof of delivery,
+or permission to bypass missing original-tool or peer admission. Preserve the
+packet and its concrete carrier obligation while admitted work continues.
+
 ### Recognized correction persistence — Owner correction of 2026-10-23
 
 Owner-adopted working rule:
@@ -101,6 +217,41 @@ The bounded source and remaining duties are retained in
 The machine binding extends the existing policy's
 `client_continuation.knowledge_continuity.recognized_correction_persistence`;
 it introduces no replacement executor, timer or memory store.
+
+### Executable goal-bound closure and stalled journal continuation
+
+New `work[].state=VERIFIED` closures require a structured `acceptance` with the
+original `target`, required `effect` and `artifact_sha256`, plus `verification`
+bound to exactly one original attempt by `action_id`. That attempt must carry
+the admitted action, matching target and fresh action-bound readback. The
+verification names its observer and source, distinguishes `DIRECT_TOOL_READBACK`
+from relayed reports, and preserves an unavailable checker as unverified.
+
+The required effect is one of JOURNAL_WRITE, SOURCE_CHANGE,
+ARTIFACT_INSTALLATION, DATA_READBACK or RUNTIME_EFFECT. Saving a workspace task
+cannot close an installation or runtime obligation. Installation requires the
+complete lower-case SHA-256 of the intended bytes and matching observed bytes.
+A fresh data read requires explicit boolean `fromCache=false`.
+
+A carried acceptance target cannot silently become a different private copy.
+Unchanged historical verified records remain historical; retaining them does
+not establish a new check. Two adjoining journal-only continuations without
+new verified substantive work are rejected as
+`CLIENT_ADMINISTRATIVE_CONTINUATION_LOOP` by the existing receipt gate. The
+executor must perform the admitted repair or retain the actual external HOLD.
+
+The separate API-client work checkpoint now uses `RECORDED` for transport
+acknowledgments and repository observations. Its scope is explicitly metadata,
+not completed work. Legacy checkpoint `VERIFIED` labels remain readable only
+in that metadata schema; a full continuation receipt cannot import them as
+verified repair evidence or claim DONE from a metadata checkpoint.
+
+The existing Lean DeliveryReporting model, seven-checker lane and differential
+vectors cover declared goal/effect, target, origin, checker, chronology, hash
+and cache consistency. They do not authenticate remote observations, enforce
+an external chat platform, supply account access or prove universal adoption.
+Integration, deployment, actual named-node use and product acceptance each
+retain their own independent effect/readback obligation.
 
 ### Knowledge and correction continuity — Owner correction of 2026-10-16
 

@@ -12,11 +12,17 @@ const { mergeWithWordOverlap } = require("./merge.cjs");
 process.umask(0o077);
 
 const SAMPLE_RATE = 16000;
-const MODEL_FILES = [
-  "base-encoder.int8.onnx",
-  "base-decoder.int8.onnx",
-  "base-tokens.txt",
-];
+// "base" stays the default; "small" is the pinned comparison model for the
+// offline field test (larger, slower, more accurate on German speech).
+const MODELS = Object.freeze({
+  base: Object.freeze({ manifestDir: "whisper-base-int8", prefix: "base", defaultDir: "model" }),
+  small: Object.freeze({ manifestDir: "whisper-small-int8", prefix: "small", defaultDir: "model-small" }),
+});
+
+function modelFiles(model) {
+  const { prefix } = MODELS[model];
+  return [`${prefix}-encoder.int8.onnx`, `${prefix}-decoder.int8.onnx`, `${prefix}-tokens.txt`];
+}
 
 function usage() {
   return `Usage:
@@ -24,6 +30,7 @@ function usage() {
 
 Options:
   --language CODE       Whisper language code (default: de)
+  --model NAME          Pinned model: base (default) or small
   --model-dir DIR       Directory containing the three model files
   --chunk-seconds N     Segment length below the 30 s engine limit (default: 28)
   --overlap-seconds N   Segment overlap (default: 1.5)
@@ -36,6 +43,7 @@ Options:
 function parseArgs(argv) {
   const options = {
     language: "de",
+    model: "base",
     chunkSeconds: 28,
     overlapSeconds: 1.5,
     threads: 4,
@@ -49,6 +57,7 @@ function parseArgs(argv) {
     else if (arg === "--input") options.input = argv[++index];
     else if (arg === "--output-dir") options.outputDir = argv[++index];
     else if (arg === "--language") options.language = argv[++index];
+    else if (arg === "--model") options.model = argv[++index];
     else if (arg === "--model-dir") options.modelDir = argv[++index];
     else if (arg === "--chunk-seconds") options.chunkSeconds = Number(argv[++index]);
     else if (arg === "--overlap-seconds") options.overlapSeconds = Number(argv[++index]);
@@ -74,14 +83,14 @@ function safeStem(filename) {
   return safe || "audio";
 }
 
-function loadManifest(toolRoot) {
-  const manifestPath = path.join(toolRoot, "models", "whisper-base-int8", "MODEL.json");
+function loadManifest(toolRoot, model) {
+  const manifestPath = path.join(toolRoot, "models", MODELS[model].manifestDir, "MODEL.json");
   return { manifestPath, manifest: JSON.parse(fs.readFileSync(manifestPath, "utf8")) };
 }
 
-function verifyModel(modelDir, manifest) {
+function verifyModel(modelDir, manifest, model) {
   const expected = new Map(manifest.files.map((item) => [item.name, item]));
-  return MODEL_FILES.map((name) => {
+  return modelFiles(model).map((name) => {
     const file = path.join(modelDir, name);
     if (!fs.statSync(file).isFile()) throw new Error(`Model file is not regular: ${name}`);
     const bytes = fs.statSync(file).size;
@@ -115,19 +124,21 @@ function main() {
   if (!Number.isInteger(options.threads) || options.threads < 1) {
     throw new Error("--threads must be a positive integer");
   }
+  if (!Object.hasOwn(MODELS, options.model)) throw new Error("--model must be base or small");
 
   const toolRoot = path.resolve(__dirname, "..");
   const dataHome = process.env.XDG_DATA_HOME || path.join(os.homedir(), ".local", "share");
   const modelDir = path.resolve(
-    options.modelDir || process.env.QIKVRT_AUDIO_MODEL_DIR || path.join(dataHome, "transcribe-audio-offline", "model"),
+    options.modelDir || process.env.QIKVRT_AUDIO_MODEL_DIR || path.join(dataHome, "transcribe-audio-offline", MODELS[options.model].defaultDir),
   );
   const input = path.resolve(options.input);
   const outputDir = path.resolve(options.outputDir);
   if (!fs.statSync(input).isFile()) throw new Error("Input is not a regular file");
 
   const sourceHashBefore = sha256(input);
-  const { manifestPath, manifest } = loadManifest(toolRoot);
-  const verifiedModel = verifyModel(modelDir, manifest);
+  const { manifestPath, manifest } = loadManifest(toolRoot, options.model);
+  const verifiedModel = verifyModel(modelDir, manifest, options.model);
+  const [encoderFile, decoderFile, tokensFile] = modelFiles(options.model);
   const durationSeconds = Number(firstLine("ffprobe", [
     "-v", "error", "-show_entries", "format=duration", "-of", "default=nokey=1:noprint_wrappers=1", input,
   ]));
@@ -154,12 +165,12 @@ function main() {
       featConfig: { sampleRate: SAMPLE_RATE, featureDim: 80 },
       modelConfig: {
         whisper: {
-          encoder: path.join(modelDir, "base-encoder.int8.onnx"),
-          decoder: path.join(modelDir, "base-decoder.int8.onnx"),
+          encoder: path.join(modelDir, encoderFile),
+          decoder: path.join(modelDir, decoderFile),
           tailPaddings: 1000,
           language: options.language,
         },
-        tokens: path.join(modelDir, "base-tokens.txt"),
+        tokens: path.join(modelDir, tokensFile),
         numThreads: options.threads,
         provider: "cpu",
       },

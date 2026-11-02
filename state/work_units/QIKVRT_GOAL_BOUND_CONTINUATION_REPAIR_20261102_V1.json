@@ -1,0 +1,71 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_GOAL_BOUND_CONTINUATION_REPAIR_20261102_V1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_main": "ec6ff45d7d650ee5301614536198d7160310bb0e",
+  "source_tree": "5154a0ea99161fa01934fa068b219d198de65b96",
+  "existing_pull_request": 592,
+  "preserved_candidate_head": "9cec66c3f3136090dcf6b77385c9d581bbc80883",
+  "human_instruction": {
+    "carrier": "current authenticated user chat",
+    "timestamp": "NOT_EXPOSED",
+    "text": "Ja, also kann man es auch ausdrücken. Letztlich widersprichst du dir selber. Immerhin hast du das festgestellt. Jetzt sorgt dafür, dass das nicht mehr passieren kann. Und wenn du dazu in den mathematischen Lean Kernel gehen musst, dann mach das. Dazu haben wir das Ding. Und dann bring endlich zu Ende, worauf wir alle warten",
+    "sha256": "ff3822564c92e5006a6fdae0d5de0ab084cfc0158eaa374c0707bccaa380eda1"
+  },
+  "bounded_finding": "The original work validator accepted any nonempty evidence string to close a task; adjoining journal updates were not checked for substantive goal progress. The visible chat also confused artifact targets and provenance of relayed first-person reports.",
+  "artificial_contribution": "Extend the existing work receipt gate, Lean DeliveryReporting model and original receipt regression/vector bridge; retain PR592 original source and historical evidence.",
+  "reuse": {
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "formal_lane": "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json",
+    "workflow": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+    "new_executor": false,
+    "new_scheduler": false,
+    "new_parallel_memory_store": false
+  },
+  "closure_contract": [
+    "acceptance target and effect immutable across continuations",
+    "new VERIFIED work needs one admitted action and fresh direct result",
+    "workspace journal effect cannot be relabelled installation/runtime",
+    "relayed report cannot be promoted to own readback",
+    "unavailable checker remains unverified",
+    "full installation SHA256 and explicit non-cache data read required",
+    "repeated journal-only continuation rejected"
+  ],
+  "formal_scope": "Consistency of declared observations only; external authenticity, account capability and all-node adoption are not inferred. Candidate vector bytes require actual Lean regeneration and all seven exact-input checker receipts.",
+  "work": [
+    {
+      "id": "guard-native-ci-and-main",
+      "state": "OPEN",
+      "next_action": "Run all required exact-candidate checks, preserve the seven native checker receipts, integrate PR592 only under existing green-test/review policy and independently read Main."
+    },
+    {
+      "id": "raumzeitterminal-original-host-effect",
+      "state": "OPEN",
+      "next_action": "Continue existing admitted Original-SSO/host connection and protected material delivery; independently verify runtime, HTTPS and productive EAP on raumzeitterminal.de."
+    },
+    {
+      "id": "claude-original-artifact-live-acceptance",
+      "state": "OPEN",
+      "next_action": "Only after changed authorized artifact access, independently read actual served bytes and real get/fromCache metadata. Keep original public target and new private copy distinct."
+    },
+    {
+      "id": "named-node-adoption",
+      "state": "OPEN",
+      "next_action": "Read each original node policy ACK/application result through the existing authenticated path; source integration is not actual adoption."
+    }
+  ],
+  "completion_claims": {
+    "CANDIDATE_RULE_IS_UNIVERSAL_ENFORCEMENT": false,
+    "LEAN_CHECKED": false,
+    "MAIN_INTEGRATED": false,
+    "ORIGINAL_HOST_EFFECT_VERIFIED": false,
+    "ALL_CLIENTS_ADOPTED": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

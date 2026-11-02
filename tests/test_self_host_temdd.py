@@ -50,6 +50,26 @@ def recovery_evidence(instance, name, snapshot_receipt, native_events, monitor_e
 
 
 class SourceRecoveryTests(unittest.TestCase):
+    def test_streaming_repair_preserves_original_recovery_and_prior_bindings(self):
+        current = json.loads((ROOT/'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json').read_bytes())
+        transition = current['context_memory_streaming_20261024']
+        previous_raw = (ROOT/transition['previous_receipt_path']).read_bytes()
+        self.assertEqual(hashlib.sha256(previous_raw).hexdigest(), transition['previous_receipt_sha256'])
+        self.assertEqual(hashlib.sha1(b'blob '+str(len(previous_raw)).encode()+b'\0'+previous_raw).hexdigest(),
+                         transition['previous_receipt_git_blob'])
+        previous = json.loads(previous_raw)
+        self.assertEqual(previous['historical_receipt_sha256'], current['historical_receipt_sha256'])
+        self.assertFalse(transition['predecessor_pass_transferred'])
+        self.assertFalse(transition['production_host_admitted'])
+        prior = {e['restored_path']: e for e in previous['changed_originals']}
+        selected = transition['preserved_previous_successor_bindings']
+        self.assertEqual({e['restored_path'] for e in selected},
+                         {'src/qikvrt_temdd_event_ledger.py', 'tests/test_temdd_event_ledger.py'})
+        for entry in selected:
+            self.assertEqual(entry, prior[entry['restored_path']])
+        # The old source and prior recovery transitions remain independently readable.
+        self.assertEqual(previous['temdd_explicit_subject_20261018'], current['temdd_explicit_subject_20261018'])
+
     def test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy(self):
         raw = b'<!doctype html><title>actual local noVNC asset fixture</title>'
         class Handler(BaseHTTPRequestHandler):

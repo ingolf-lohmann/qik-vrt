@@ -1,0 +1,52 @@
+name: Mini-Internet evidence admission
+on:
+  pull_request:
+    paths:
+      - 'tests/mini_internet/**'
+      - '.github/workflows/mini-internet-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evidence-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Verify positive and negative controls
+        run: python -m unittest discover -s tests/mini_internet -p 'test_*.py' -v
+      - name: Compile native C90 reducer
+        run: cc -std=c90 -pedantic -Wall -Wextra -Werror -O2 tests/mini_internet/c90/authority.c -o tests/mini_internet/c90/authority
+      - name: Test native C90 reducer
+        run: python -m unittest discover -s tests/mini_internet/c90 -p 'test.py' -v
+      - name: Compile independent C90 mathematical verifier
+        run: cc -std=c90 -pedantic -Wall -Wextra -Werror -O2 tests/mini_internet/c90/c90_math_verifier.c -o /tmp/qikvrt-c90-math-verifier
+      - name: C90 mathematical verifier positive and negative controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          /tmp/qikvrt-c90-math-verifier --selftest
+          printf '3\n1 2 0\n2 0 1\n2 0 1\n1 2 0\n' > /tmp/qikvrt-valid.cert
+          /tmp/qikvrt-c90-math-verifier /tmp/qikvrt-valid.cert
+          printf '3\n1 2 0\n0 0 1\n2 0 1\n1 2 0\n' > /tmp/qikvrt-invalid.cert
+          if /tmp/qikvrt-c90-math-verifier /tmp/qikvrt-invalid.cert; then
+            echo 'FAIL: invalid certificate admitted'
+            exit 1
+          fi
+          echo 'PASS: invalid certificate rejected'
+      - name: Verify reviewed React 19 release verifier source bytes
+        run: |
+          echo 'c4ef9e0691271cf5278bdb5f325e189113b3f28de981c1ca56574ce7ab080627  tests/mini_internet/web/app.jsx' | sha256sum --check --strict
+      - name: Execute signed React release verifier under Node WebCrypto
+        run: node tests/mini_internet/web/release_contract.test.cjs
+      - name: Explicit scope
+        run: |
+          echo 'This gate checks ZIP integrity and negative controls only.'
+          echo 'It does not execute 33 network tests or authorize production EAP effects.'

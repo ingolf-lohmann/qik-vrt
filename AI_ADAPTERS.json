@@ -16,7 +16,8 @@
     {"system":"Aider","path":".aider.conf.yml","mode":"native-config"},
     {"system":"Amazon Q Developer","path":".amazonq/rules/qikvrt-ai-entry.md","mode":"native"},
     {"system":"JetBrains Junie","path":".junie/guidelines.md","mode":"native"},
-    {"system":"Kiro","path":".kiro/steering/qikvrt-ai-entry.md","mode":"native"}
+    {"system":"Kiro","path":".kiro/steering/qikvrt-ai-entry.md","mode":"native"},
+    {"system":"Web-reading and text-only chat cognitions (any provider)","path":"AI_ONBOARDING.md","mode":"url-readable"}
   ],
   "rule": "Adapter files are compatibility shims only. AI, AI_CONTEXT.json, and AGENTS.md remain authoritative."
 }

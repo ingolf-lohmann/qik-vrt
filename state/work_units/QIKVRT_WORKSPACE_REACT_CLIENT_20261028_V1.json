@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_WORKSPACE_REACT_CLIENT_20261028_V1",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "6df6eead739c01410bdfc4bb7148fa69f36c537b",
+    "tree": "4b414b1a1b8c36aa57019f38d3093627b2e599f7"
+  },
+  "requirements_and_supplied_text": "Ingolf Lohmann",
+  "implementation_contribution": "OpenAI Codex",
+  "task": "Convert Owner-supplied QIKVRT_START_HIER.html into the connected existing Trusted Mesh React client.",
+  "original": {
+    "path": "docs/monitor/workspace-original.html",
+    "sha256": "8f380fd8d6c141eeb5187f5ba0b8483525ea0ea09c089e27a2d43828ced16495",
+    "byte_exact_preserved": true
+  },
+  "implementation": {
+    "path": "/workspace",
+    "carrier": "EXISTING_SEALED_S1_SELF_HOST",
+    "react_lock": "runtime/self-host/REACT_LOCK.json",
+    "native_component": "EXISTING_DEVOPS_NATIVE_TERMINAL",
+    "native_protocol": "EXISTING_EAP_HTTP_PREPARE_RECORD_CONTEXT_COMMIT_RECEIPT",
+    "source_binding": "RUNTIME_NODE_SNAPSHOT_NATIVE_SUBJECT_HEAD_TREE_VERSION_EPOCH_DIGEST_ORIGINAL_EVENTS",
+    "client_timers": false,
+    "replacement_executor": false,
+    "new_service": false,
+    "workspace_access_granted": false,
+    "license_acceptance_record_created": false
+  },
+  "bounded_validation": {
+    "workspace_negative_and_recovery_cases": 18,
+    "cold_export_original_eap_tests": 3,
+    "live_client_adapter": "Actual served client bytes against real cold-export S1 runtime/node/activity/EAP routes; not a desktop browser.",
+    "cold_start_order_correction": "Activity observation precedes dependent independent node checkpoint.",
+    "visual_rendering": "UNVERIFIED: exact pinned Chromium installer received truncated CDN archives. No alternate browser or downgrade.",
+    "af_unix_scope": "Separate wider native Unix-socket cases blocked locally: bounded AF_UNIX bind probe returns PermissionError errno 1. Original EAP HTTP path with admitted unix_ingress=false passes without replacing a socket.",
+    "full_make_test": "Required on final regenerated candidate; exact remote CI readback remains separate."
+  },
+  "files": {
+    "docs/monitor/WORKSPACE.md": "3fe9634c811af587727bdab266e35aac9b707ff1b18064db9f8d05d9f0aff135",
+    "docs/monitor/devops-react.js": "cda788970ef7784fc49b5c70ab028eacedabf15e6989d80a21dafafb5dec65de",
+    "docs/monitor/mesh-react.js": "59453c06f117d10881057cd7d1b16244ee39e157fdecddca592ca6db3daec5c0",
+    "docs/monitor/self-host.mjs": "b660f27c89cde9dfb1fded7129340529766447a1a8571d937cce92bf7646dfd7",
+    "docs/monitor/workspace.html": "3e8eba2e35fe7041f84e45ac959685e20bb3a281e6734d66e6d96659b36baab7",
+    "docs/monitor/workspace-react.js": "d670da2a17e533cc525798e221c3fa04c7281a039a7d9069da38e370a4f64172",
+    "docs/monitor/workspace-client.js": "086f7b38568fbdd548919e7e440debb8ea2d220770f42df7fd8b627e6a256be6",
+    "docs/monitor/workspace.css": "2278a1edf1e234ea806a9db06bf60a780fdc1f7351c3750753ae85d7d65a9693",
+    "docs/monitor/workspace-access.json": "a675bb8a721e35c36d70380a8b5544b7ed642293942b8060b75363f8d0df95bc",
+    "docs/monitor/workspace-original.html": "8f380fd8d6c141eeb5187f5ba0b8483525ea0ea09c089e27a2d43828ced16495",
+    "docs/monitor/workspace.test.mjs": "b7a8ef3fc95bd6aeb7fd97f9104e3f22628e9cd96582b3b7a4bfe7deecbd4fea",
+    "runtime/self-host/PACKAGE.json": "8f68646ed2f3ea74341d40b2be596dd59686ab8dc9631533865c1e783281eb98",
+    "tests/test_self_host_eap.py": "b909a5865d100b82726a2ec1558d2987ccc863dce4b137212714cbb7fcaca5d9",
+    "tests/test_workspace_live_client.mjs": "9dd3d713a64e43ad14080687e9857db0de7980ba24818f1ebb9975719b0183a8",
+    "Makefile": "812839d5f04b35981fd8ff1206b55a175200c6a8ce6034ee8cec8679db31c3dd"
+  },
+  "open_obligations": [
+    "ACTUAL_WORKSPACE_MEMBER_SSO_BINDING",
+    "BOUND_EXPLICIT_LICENSE_ACCEPTANCE_AND_ACCESS_READBACK",
+    "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "PRODUCTIVE_EXACT_DOMAIN_TLS_AND_APPLICATION_READBACK",
+    "ORIGINAL_MIRROR_OUTBOX_AND_AUTHENTICATED_PEER_BINDING",
+    "DESKTOP_BROWSER_RENDERING_WITNESS",
+    "EXACT_HEAD_PLATFORM_TEST_AND_INTEGRATION_READBACK"
+  ],
+  "runtime_observation": {
+    "operator_configured": true,
+    "operator_authorized": true,
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "target": "https://raumzeitterminal.de/",
+    "http_status": 525,
+    "scope": "Existing native connection observation; no productive acceptance inferred."
+  },
+  "predecessor": {
+    "library_identity": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "version": 48,
+    "original_archive_modified": false,
+    "original_journals": "READ_ONLY",
+    "original_emitter": "Not present in current source or predecessor archive; no replacement emitted assessment."
+  },
+  "effect_ack_done": false,
+  "ordinary_release": false
+}

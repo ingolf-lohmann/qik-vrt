@@ -82,7 +82,7 @@
     const runs = repos.flatMap(repo => [...(repo.running?.runs || []), ...(repo.waiting?.runs || []), ...(repo.recent?.runs || [])])
       .filter((run,index,all) => all.findIndex(other => other.id === run.id && other.repository === run.repository) === index);
     return h(React.Fragment,null,
-      h('header',null,h('strong',null,'QIK-VRT'),h('nav',null,h('a',{href:'/mesh'},'Mesh'),h('a',{href:'/node'},'Repository-Node'),h('a',{href:'/AI/'},'Universales Terminal'))),
+      h('header',null,h('strong',null,'QIK-VRT'),h('nav',null,h('a',{href:'/workspace'},'Workspace'),h('a',{href:'/mesh'},'Mesh'),h('a',{href:'/node'},'Repository-Node'),h('a',{href:'/AI/'},'Universales Terminal'))),
       h('main',{id:'main'},h('p',{className:'sub'},'Universales Raumzeit-Terminal'),
         h('h1',null,scope === 'mesh' ? 'Das Mesh im aktuellen Nachweisstand' : repository || 'Repository-Node'),
         h('div',{className:'meta'},h('p',null,'Stream: ',transport,' · Datenstand: ',date(observed), age !== null ? ' · Alter: '+age+' s' : ''),h('button',{onClick:()=>refresh.current()},'Readback erneuern')),

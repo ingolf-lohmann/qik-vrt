@@ -11,14 +11,21 @@ files. Runtime installation and task effects remain separate, explicit actions.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
+import stat
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+SIGNATURE_PATH = "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
+CODEC_CONTRACT_PATH = "policy/QIKVRT_CODEC_CONTRACT_V1.json"
 CORPUS_PATH = ROOT / "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json"
 ADAPTATION_POLICY_PATH = ROOT / "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json"
 ADAPTATION_MATRIX_PATH = ROOT / "state/interface_adaptation/EVALUATION_MATRIX.json"
@@ -65,7 +72,7 @@ def git_value(*args: str) -> str:
 def load_json_object(path: Path, label: str) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise BootBlock(f"{label} is unreadable: {exc}") from exc
     if not isinstance(value, dict):
         raise BootBlock(f"{label} must contain an object")
@@ -74,6 +81,131 @@ def load_json_object(path: Path, label: str) -> dict[str, Any]:
 
 def load_context() -> dict[str, Any]:
     return load_json_object(ROOT / "AI_CONTEXT.json", "AI_CONTEXT.json")
+
+
+def inspect_mirror_outbox_source(root: Path = ROOT) -> dict[str, Any]:
+    """Observe the declared dependency; never run or replace its assessment."""
+    policy_path = "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+    result: dict[str, Any] = {
+        "scope": "LOCAL_SOURCE_PRESENCE_ONLY_NOT_EAP_ASSESSMENT",
+        "policy_path": policy_path,
+        "source_state": "UNVERIFIED",
+        "reason": "MIRROR_OUTBOX_POLICY_UNVERIFIED",
+        "original_source_verified": False,
+        "writer_admission_verified": False,
+        "assessment_performed": False,
+    }
+    try:
+        raw = (root / policy_path).read_bytes()
+        policy = json.loads(raw)
+        contract = policy["client_continuation"]["native_session_use"]["mirror_outbox"]
+        tool = contract["tool"]
+        if (contract.get("assessment_outside_original_tool") != "FORBIDDEN"
+                or contract.get("replacement_implementation_or_invented_cli") != "FORBIDDEN"
+                or contract.get("unavailable_tool")
+                != "RECOVER_ORIGINAL_SOURCE_AND_BINDING_OR_RETAIN_NAMED_CARRIER_HOLD"
+                or not isinstance(tool, str)
+                or not re.fullmatch(r"[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*", tool)
+                or any(part in ("", ".", "..") for part in tool.split("/"))):
+            return result
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return result
+    result.update(policy_sha256=hashlib.sha256(raw).hexdigest(), tool=tool,
+                  reason="MIRROR_OUTBOX_SOURCE_UNVERIFIED")
+    path = root
+    parts = tool.split("/")
+    for index, part in enumerate(parts):
+        path = path / part
+        try:
+            mode = path.lstat().st_mode
+        except FileNotFoundError:
+            return dict(result, source_state="MISSING",
+                        reason="ORIGINAL_MIRROR_OUTBOX_SOURCE_MISSING")
+        except OSError:
+            return result
+        if stat.S_ISLNK(mode):
+            return dict(result, reason="MIRROR_OUTBOX_SOURCE_SYMLINK_UNVERIFIED")
+        if index < len(parts) - 1 and not stat.S_ISDIR(mode):
+            return result
+    if stat.S_ISREG(mode):
+        result.update(source_state="PRESENT_UNVERIFIED",
+                      reason="ORIGINAL_MIRROR_OUTBOX_SOURCE_AND_WRITER_BINDING_REQUIRED")
+    return result
+
+
+def load_standpoint(context: dict[str, Any], root: Path = ROOT) -> dict[str, Any]:
+    """Resolve one local, byte-bound standpoint without searching or executing it."""
+    from src.qikvrt_standpoint_codex import (
+        CodexError, SIGNATURE_BYTES, SIGNATURE_SHA256, validate_signature,
+    )
+
+    binding = context.get("standpoint_codex")
+    if not isinstance(binding, dict):
+        raise BootBlock("400-byte standpoint: AI_CONTEXT.json lacks its binding")
+    expected = {
+        "signature_path": SIGNATURE_PATH,
+        "codec_contract": CODEC_CONTRACT_PATH,
+        "signature_bytes": SIGNATURE_BYTES,
+        "signature_sha256": SIGNATURE_SHA256,
+        "historical_provenance_rewritten": False,
+    }
+    if any(type(binding.get(key)) is not type(value) or binding.get(key) != value
+           for key, value in expected.items()):
+        raise BootBlock("400-byte standpoint: context binding differs from canonical V1")
+
+    contract = load_json_object(root / CODEC_CONTRACT_PATH, CODEC_CONTRACT_PATH)
+    standpoint = contract.get("standpoint")
+    if not isinstance(standpoint, dict):
+        raise BootBlock("400-byte standpoint: codec contract lacks its standpoint")
+    signature = standpoint.get("signature")
+    if not isinstance(signature, dict) or any(
+        type(signature.get(key)) is not type(value) or signature.get(key) != value
+        for key, value in {
+            "path": SIGNATURE_PATH, "bytes": SIGNATURE_BYTES,
+            "sha256": SIGNATURE_SHA256,
+        }.items()
+    ):
+        raise BootBlock("400-byte standpoint: codec contract signature binding drift")
+    semantic_source = standpoint.get("semantic_source")
+    if (not isinstance(semantic_source, dict)
+            or semantic_source.get("recovered_historical_400_byte_image") is not False
+            or semantic_source.get("binding")
+            != "FIRST_CANONICAL_BYTE_MATERIALIZATION_OF_DECLARED_INVARIANTS"):
+        raise BootBlock("400-byte standpoint: historical provenance claim drift")
+
+    path = root / SIGNATURE_PATH
+    if path.is_symlink() or path.parent.is_symlink():
+        raise BootBlock("400-byte standpoint: canonical signature must not be a symlink")
+    if not path.is_file():
+        raise BootBlock(f"400-byte standpoint: canonical signature is missing: {SIGNATURE_PATH}")
+    try:
+        with path.open("rb") as stream:
+            data = stream.read(SIGNATURE_BYTES + 1)
+    except OSError as exc:
+        raise BootBlock(f"400-byte standpoint: cannot read {SIGNATURE_PATH}: {exc}") from exc
+    if len(data) != SIGNATURE_BYTES:
+        raise BootBlock(f"400-byte standpoint: {SIGNATURE_PATH} must contain exactly 400 bytes")
+    digest = hashlib.sha256(data).hexdigest()
+    blob = hashlib.sha1(b"blob 400\0" + data).hexdigest()
+    if digest != SIGNATURE_SHA256 or blob != binding.get("signature_git_blob_sha1"):
+        raise BootBlock("400-byte standpoint: canonical signature byte identity mismatch")
+    try:
+        validate_signature(data)
+    except CodexError as exc:
+        raise BootBlock(f"400-byte standpoint: invalid canonical signature: {exc}") from exc
+    return {
+        "state": "VERIFIED_LOCAL_BYTES",
+        "path": SIGNATURE_PATH,
+        "bytes": len(data),
+        "sha256": digest,
+        "git_blob_sha1": blob,
+        "codec_contract": CODEC_CONTRACT_PATH,
+        "policy_status": contract.get("status"),
+        "semantic_source": semantic_source,
+        "recovered_historical_owner_seed": False,
+        "github_authentication_or_account_recovery": False,
+        "main_adoption_or_external_effect_verified": False,
+    }
 
 
 def load_bootstrap_corpus() -> dict[str, Any]:
@@ -183,9 +315,11 @@ def main() -> int:
             "load supplied bootstrap knowledge corpus with epistemic boundaries",
             "load adaptive human-machine interface cache and evaluation contracts",
             "verify repository identity and Git ref",
+            "resolve and verify exact local 400-byte standpoint and its provenance",
             "verify handoff and required repository evidence",
             "verify integrity authorities",
             "verify declared tool/cache contracts",
+            "observe the declared original Mirror outbox source without assessment",
             "check runtime profile without hidden installation",
             "hand control to the authorized task executor using fastest verified reusable path",
             "measure reusable interaction and runtime evidence",
@@ -221,6 +355,17 @@ def main() -> int:
         report["repository"] = git_value("config", "--get", "remote.origin.url")
         report["git_ref"] = git_value("rev-parse", "--abbrev-ref", "HEAD")
         report["git_commit"] = git_value("rev-parse", "HEAD")
+        report["standpoint"] = load_standpoint(context)
+        report["gates"].append(
+            {
+                "name": "400 byte standpoint",
+                "command": ["internal", SIGNATURE_PATH],
+                "exit_code": 0,
+                "stdout": f"bytes=400 sha256={report['standpoint']['sha256']}",
+                "stderr": "",
+                "state": "PASS",
+            }
+        )
 
         report["gates"].append(
             {
@@ -240,6 +385,17 @@ def main() -> int:
                 "stdout": f"mode={adaptation_policy.get('adaptation_mode')} matrix_rows={len(adaptation_matrix.get('rows', []))}",
                 "stderr": "",
                 "state": "PASS",
+            }
+        )
+        report["mirror_outbox_source"] = inspect_mirror_outbox_source(ROOT)
+        report["gates"].append(
+            {
+                "name": "original mirror outbox source",
+                "command": ["internal", "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"],
+                "exit_code": 20,
+                "stdout": report["mirror_outbox_source"]["reason"],
+                "stderr": "",
+                "state": "CONTINUE",
             }
         )
         report["gates"].append(
@@ -278,9 +434,9 @@ def main() -> int:
         has_continue = any(gate["state"] == "CONTINUE" for gate in report["gates"])
         report["state"] = "CONTINUE" if has_continue else "PASS"
         report["next_action"] = (
-            "Install explicitly accepted missing runtime components, then rerun the bootloader."
-            if has_continue
-            else "Execute the authorized task using the fastest previously verified path; record comparable performance evidence and persist only reviewed improvements."
+            "Recover and verify the declared original Mirror outbox source and writer binding "
+            "before outbox assessment. Continue other separately admitted work; install missing "
+            "runtime components only through their reviewed paths."
         )
     except BootBlock as exc:
         report["state"] = "BLOCK"
@@ -294,6 +450,12 @@ def main() -> int:
         print(f"REPOSITORY={report.get('repository', 'unavailable')}")
         print(f"GIT_REF={report.get('git_ref', 'unavailable')}")
         print(f"GIT_COMMIT={report.get('git_commit', 'unavailable')}")
+        standpoint_report = report.get("standpoint", {})
+        if standpoint_report:
+            print(f"STANDPOINT_PATH={standpoint_report['path']}")
+            print(f"STANDPOINT_BYTES={standpoint_report['bytes']}")
+            print(f"STANDPOINT_SHA256={standpoint_report['sha256']}")
+            print("STANDPOINT_HISTORICAL_OWNER_SEED_RECOVERED=false")
         corpus_report = report.get("knowledge_corpus", {})
         if corpus_report:
             print(f"KNOWLEDGE_CORPUS_ARTIFACTS={corpus_report.get('artifact_count', 0)}")
@@ -303,6 +465,11 @@ def main() -> int:
             print(f"INTERFACE_ADAPTATION_MODE={adaptation_report.get('mode', 'unavailable')}")
             print(f"INTERFACE_ADAPTATION_MATRIX_ROWS={adaptation_report.get('matrix_rows', 0)}")
             print(f"INTERFACE_ADAPTATION_ROUTING={adaptation_report.get('routing', 'unavailable')}")
+        outbox_source = report.get("mirror_outbox_source", {})
+        if outbox_source:
+            print(f"MIRROR_OUTBOX_SOURCE={outbox_source.get('tool', 'unverified')}")
+            print(f"MIRROR_OUTBOX_SOURCE_STATE={outbox_source['source_state']}")
+            print(f"MIRROR_OUTBOX_SOURCE_REASON={outbox_source['reason']}")
         for gate in report["gates"]:
             print(f"GATE_{gate['name'].upper().replace(' ', '_')}={gate['state']}")
         if "blocker" in report:

@@ -60,13 +60,19 @@ WORKDIR /source
 ARG QIKVRT_SOURCE_HEAD
 ARG QIKVRT_SOURCE_TREE
 COPY . /source
-RUN python3 -B tools/qikvrt_self_host.py pack --root /source \
+ARG QIKVRT_TERMINAL_PROFILE=firefox
+RUN case "$QIKVRT_TERMINAL_PROFILE" in \
+      temdd) set -- ;; \
+      firefox) set -- --browser-assets-root /usr/share/novnc --firefox-package firefox ;; \
+      *) exit 1 ;; \
+    esac \
+    && python3 -B tools/qikvrt_self_host.py pack --root /source \
       --expected-head "$QIKVRT_SOURCE_HEAD" --expected-tree "$QIKVRT_SOURCE_TREE" \
-      --browser-assets-root /usr/share/novnc --firefox-package firefox --output /out/package > /out-build-receipt.json \
+      "$@" --output /out/package > /out-build-receipt.json \
     && python3 -B tools/qikvrt_self_host.py verify --root /out/package \
       --manifest-sha256 "$(python3 -c 'import json; print(json.load(open("/out-build-receipt.json"))["manifest_sha256"])')"
 
-FROM ${QIKVRT_PRODUCTION_IMAGE} AS production
+FROM ${QIKVRT_PRODUCTION_IMAGE} AS native-terminal-runtime
 ARG QIKVRT_SOURCE_HEAD
 ARG QIKVRT_SOURCE_TREE
 LABEL org.opencontainers.image.source="https://github.com/ingolf-lohmann/qik-vrt" \
@@ -75,8 +81,6 @@ LABEL org.opencontainers.image.source="https://github.com/ingolf-lohmann/qik-vrt
       org.opencontainers.image.licenses="PolyForm-Noncommercial-1.0.0" \
       de.qikvrt.source-tree="$QIKVRT_SOURCE_TREE"
 COPY --from=package-builder --chown=10001:10001 /out/package /opt/qikvrt
-COPY --from=qikvrt-signed-extension /standard.xpi /usr/lib/firefox/distribution/extensions/qikvrt-ai-terminal@goldkelch.local.xpi
-ENV QIKVRT_FIREFOX_BINARY=/usr/lib/firefox/firefox
 WORKDIR /opt/qikvrt
 USER 10001:10001
 EXPOSE 8080
@@ -85,3 +89,14 @@ HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=3 \
 ENTRYPOINT ["python3", "/opt/qikvrt/tools/qikvrt_self_host.py", "run", "--root", "/opt/qikvrt"]
 # Missing private configuration/manifest pin is deliberately not an admitted run.
 CMD ["--help"]
+
+# First delivery uses the existing native TEMDD profile. No browser is started
+# or admitted by this target; its package and private host config must agree.
+FROM native-terminal-runtime AS production-terminal
+LABEL de.qikvrt.terminal-profile="temdd"
+
+# The later browser delivery retains the original mandatory signed-XPI route.
+FROM native-terminal-runtime AS production
+COPY --from=qikvrt-signed-extension /standard.xpi /usr/lib/firefox/distribution/extensions/qikvrt-ai-terminal@goldkelch.local.xpi
+ENV QIKVRT_FIREFOX_BINARY=/usr/lib/firefox/firefox
+LABEL de.qikvrt.terminal-profile="firefox"

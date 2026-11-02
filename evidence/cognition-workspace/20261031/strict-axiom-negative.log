@@ -1,0 +1,6 @@
+{"command": ["/workspace/scratch/9058c439c984/formal-toolchains/lean-4.35.0-linux/bin/nanoda_bin", "/workspace/scratch/022670758995/session-evidence/nanoda-causal-control/strict-axiom-negative.json"], "export_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33"}
+Error: export file declares unpermitted axiom "propext"
+
+run with `-h` or `--help` for help
+
+EXIT_CODE=1

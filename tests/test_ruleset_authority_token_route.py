@@ -282,13 +282,15 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             exec(compile(python_step(WORKFLOW, 'Conditional canonical projection with exact readback'), str(WORKFLOW), 'exec'), namespace)
         return created, namespace, calls
 
-    def run_gate(self):
+    def run_gate(self, **overrides):
         calls = []
         pr = {'number': 641, 'state': 'open', 'base': {'ref': 'main', 'sha': self.base}, 'head': {'sha': self.head}, 'user': {'login': 'integration-author'}}
 
         def read(args, *, text):
             self.assertEqual(args[:2], ['gh', 'api'])
             path = args[-1]
+            if path == f'repos/{self.repository}/pulls?state=open&base=main&per_page=100':
+                return json.dumps([[pr]])
             if path == f'repos/{self.repository}/pulls/641':
                 return json.dumps(pr)
             if path == f'repos/{self.repository}/rules/branches/main':
@@ -306,6 +308,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             'LEGACY_STATUS_CONTEXT': env_value(self.gate, 'LEGACY_STATUS_CONTEXT'),
             'GITHUB_SERVER_URL': 'https://github.com',
             'GITHUB_RUN_ID': '123',
+            **overrides,
         }
         with tempfile.TemporaryDirectory() as directory:
             env['GITHUB_STEP_SUMMARY'] = str(Path(directory) / 'summary')
@@ -321,6 +324,11 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             published.append(fields)
         self.assertEqual({item['context'] for item in published}, {self.context,self.legacy})
         return published
+
+    def test_original_completion_without_pr_selector_reobserves_inventory_and_retains_failure(self):
+        statuses = self.run_gate(REQUESTED_PR='', EVENT_NAME='workflow_run', EVENT_PRS='[]')
+        self.assertEqual({s['context'] for s in statuses}, {self.context, self.legacy})
+        self.assertTrue(all(s['state'] == 'failure' for s in statuses))
 
     def run_promotion_snapshot(self, statuses, *, native_satisfied=False, author_login='integration-author', reviewer_login='ingolf-lohmann'):
         gates = required_gates(self.promotion)
@@ -404,6 +412,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             self.assertIn('-f context="$STATUS_CONTEXT"', block)
 
     def test_executor_generates_canonical_waiting_and_disposition_status(self):
+        from tools.qikvrt_requested_review_executor import technical_update_plan
         source = self.executor.read_text()
         for step, disposition, expected_state in [
             ('Persist precise waiting state', 'WAIT', 'pending'),
@@ -413,7 +422,24 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             with self.subTest(disposition=disposition), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 decision = root / 'qikvrt-review-decision.json'
-                decision.write_text(json.dumps({'detail': 'fixture-only', 'reviewed_scope': ['fixture.txt']}))
+                snapshot = {
+                    'repository': self.repository, 'pr_number': 641,
+                    'current_main_sha': 'a' * 40,
+                    'base_sha': ('d' if disposition == 'COMMENT_WITH_BLOCKER' else 'a') * 40,
+                    'head_sha': self.head, 'observed_head_sha': self.head,
+                    'tree_sha': 'c' * 40, 'draft': False,
+                    'requested_reviewers': [], 'requested_team_reviewers': [],
+                    'review_route': 'QIKVRT_NATIVE', 'changed_paths': ['fixture.txt'],
+                    'required_gates': ['fixture-gate'], 'workflow_runs': [{
+                        'name': 'fixture-gate', 'run_number': 1,
+                        'status': 'in_progress' if disposition == 'WAIT' else 'completed',
+                        'conclusion': None if disposition == 'WAIT' else 'success',
+                    }],
+                }
+                plan = technical_update_plan(snapshot, [], [], 'fixture-only')
+                self.assertEqual(plan['decision']['state'], disposition)
+                decision.write_text(json.dumps(plan['decision']))
+                (root / 'qikvrt-review-plan.json').write_text(json.dumps(plan))
                 gh = root / 'gh'
                 gh.write_text(
                     f'#!{sys.executable}\n'
@@ -451,6 +477,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
                     self.assertEqual(len(review_calls), 1)
                     self.assertIn('event=COMMENT', review_calls[0])
                 self.assertIn(f'state={expected_state}', statuses[0])
+                self.assertIn('description=' + plan['status_description'], statuses[0])
 
     def test_policy_and_exact_head_contract_bind_every_consumer(self):
         policy = json.loads(POLICY.read_text())['review_executor']

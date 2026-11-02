@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+# Optional Authority SSO environment; explicit operator provisioning only.
+# Reuse the existing Personal authentication runtime and ecosystem wheel cache.
+-r requirements-personal-auth-50.0.2.txt
+PyNaCl==1.6.2

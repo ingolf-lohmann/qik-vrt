@@ -72,6 +72,27 @@ def jobs(*run_ids: int) -> dict[str, object]:
 
 
 class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
+    def test_restored_observer_uses_current_roles_and_rejects_historical_authority(self):
+        import copy
+        contract = MODULE.load_contract()
+        self.assertEqual(MODULE.authority_repository_binding(contract), 'ingolf-lohmann/qik-vrt')
+        old = copy.deepcopy(contract)
+        old['authority']['repository'] = 'Goldkelch/qik-vrt'
+        with self.assertRaises(MODULE.ReflexiveWatchdogBlock):
+            MODULE.authority_repository_binding(old)
+        unavailable = {'schema': 'qikvrt_authority_readback_v1', 'repository': 'ingolf-lohmann/qik-vrt',
+            'endpoint': 'repos/ingolf-lohmann/qik-vrt/git/ref/heads/main', 'method': 'GET',
+            'state': 'AUTHORITY_UNAVAILABLE', 'http_status': 403, 'exit_code': 1, 'head_sha': None,
+            'disposition': 'HOLD', 'cause': 'UNESTABLISHED',
+            'capability_blocker': 'AUTHORITY_MAIN_READ_CAPABILITY_UNAVAILABLE',
+            'authority_destroyed': False, 'takeover_allowed': False,
+            'writer_admission_allowed': False, 'effect_ack_done': False}
+        self.assertEqual(MODULE.validate_authority_observation(unavailable, contract)['state'], 'AUTHORITY_UNAVAILABLE')
+        unavailable['takeover_allowed'] = True
+        with self.assertRaises(MODULE.ReflexiveWatchdogBlock):
+            MODULE.validate_authority_observation(unavailable, contract)
+
+
     def setUp(self) -> None:
         self.fixture_directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.fixture_directory.cleanup)
@@ -453,12 +474,17 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertFalse(value["baseline"]["same_head_and_tree"])
         self.assertEqual(value["state"], "QUIESCENT_OBSERVATION")
 
-    def test_workflow_is_five_minute_reflexive_and_read_only(self) -> None:
+    def test_workflow_is_transition_driven_reflexive_and_read_only(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn('cron: "*/5 * * * *"', workflow)
+        self.assertNotIn('  schedule:', workflow)
         self.assertIn("workflow_run:", workflow)
-        self.assertIn("types: [requested, in_progress, completed]", workflow)
-        self.assertIn("cancel-in-progress: true", workflow)
+        # Main #610 serializes observations instead of cancelling the active
+        # read on each lifecycle notification. Provider completion transitions
+        # replace timer activation; liveness checks still run on observation.
+        self.assertIn("types: [completed]", workflow)
+        self.assertNotIn("types: [requested, in_progress, completed]", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+        self.assertNotIn("cancel-in-progress: true", workflow)
         self.assertIn("actions: read", workflow)
         self.assertIn("contents: read", workflow)
         self.assertIn("qikvrt_reflexive_repository_watchdog.py", workflow)
