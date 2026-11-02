@@ -18,8 +18,11 @@ unsafe def main : IO Unit := do
     declarations := declarations.insert name info
   let checked ← baseline.replay declarations
   for name in [`QIKVRT.DeliveryReporting.T1, `QIKVRT.DeliveryReporting.T2,
-      `QIKVRT.DeliveryReporting.T3, `QIKVRT.DeliveryReporting.T4] do
+      `QIKVRT.DeliveryReporting.T3, `QIKVRT.DeliveryReporting.T4,
+      `QIKVRT.DeliveryReporting.T5, `QIKVRT.DeliveryReporting.T6,
+      `QIKVRT.DeliveryReporting.T7, `QIKVRT.DeliveryReporting.T8,
+      `QIKVRT.DeliveryReporting.T9, `QIKVRT.DeliveryReporting.T10] do
     unless checked.contains name do
       throw (IO.userError s!"missing replayed theorem {name}")
-  IO.println s!"DELIVERY_OLEAN_REPLAY_PASS declarations={declarations.size} theorems=4"
+  IO.println s!"DELIVERY_OLEAN_REPLAY_PASS declarations={declarations.size} theorems=10"
   region.free

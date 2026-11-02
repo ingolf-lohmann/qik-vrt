@@ -724,7 +724,118 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.receipt["work"][0]["state"] = "VERIFIED"
         self.rejected("CLIENT_WORK_CLOSED_WITHOUT_EVIDENCE")
         self.receipt["work"][0]["evidence"] = "fixture:exact-subject-closing-readback"
+        self.rejected("field 'acceptance'")
+        self.work_verification(self.receipt["work"][0])
         self.assertEqual(self.check(), "CONTINUE")
+
+    def work_verification(self, task=None):
+        """Synthetic original-path observation; never real installation evidence."""
+        if task is None:
+            task = {"id": "repair-leitstand", "state": "VERIFIED",
+                    "evidence": "fixture:actual-target-readback"}
+            self.receipt["work"] = [task]
+        target = "https://artifact.example/leitstand"
+        task["acceptance"] = {"target": target, "effect": "ARTIFACT_INSTALLATION",
+                              "artifact_sha256": "5" * 64}
+        task["verification"] = {"action_id": "fixture:action-1",
+            "observer": "fixture:direct-tool-observer", "source": "fixture:response-bytes",
+            "origin": "DIRECT_TOOL_READBACK", "target": target,
+            "effect": "ARTIFACT_INSTALLATION", "artifact_sha256": "5" * 64,
+            "checker": "VERIFIED", "fromCache": False,
+            "observed_at": "2026-10-11T10:00:02Z"}
+        action = copy.deepcopy(self.receipt["next_actions"][0])
+        action.update(target=target, service="artifact", operation="install-artifact",
+                      observed_operation="install-artifact", tool="fixture.install_artifact")
+        self.receipt["attempts"] = [{"effect_count": 1, "ambiguous_effect": False,
+            "readback_before_effect": True, "action": action,
+            "current": {key: str(index) * 64 for index, key in enumerate(
+                ("subject", "error", "cause", "capability"), 1)},
+            "action_window": copy.deepcopy(self.receipt["action_window"]),
+            "readback": copy.deepcopy(self.receipt["readback"])}]
+        return task
+
+    def test_journal_receipt_cannot_close_an_artifact_installation(self):
+        task = self.work_verification()
+        task["verification"]["effect"] = "JOURNAL_WRITE"
+        self.rejected("CLIENT_WORK_VERIFICATION_REJECTED")
+        task["verification"]["effect"] = "ARTIFACT_INSTALLATION"
+        self.receipt["attempts"][0]["action"].update(
+            operation="update_task", observed_operation="update_task")
+        self.rejected("CLIENT_JOURNAL_WRITE_RELABELLED_AS_REPAIR")
+
+    def test_other_artifact_and_relayed_report_cannot_close_original_goal(self):
+        for changed in ({"target": "https://artifact.example/private-copy"},
+                        {"origin": "RELAYED_REPORT"}, {"origin": "OWNER_READBACK"},
+                        {"checker": "UNAVAILABLE"}, {"checker": "FAILED"},
+                        {"artifact_sha256": "507abcf7..."},
+                        {"observed_at": "2026-10-11T09:59:59Z"}):
+            with self.subTest(changed=changed):
+                self.setUp()
+                task = self.work_verification()
+                task["verification"].update(changed)
+                self.rejected("CLIENT_WORK_VERIFICATION_REJECTED")
+
+    def test_action_target_and_full_installation_hash_are_required(self):
+        task = self.work_verification()
+        self.receipt["attempts"][0]["action"]["target"] += "-other"
+        self.rejected("CLIENT_WORK_VERIFICATION_ACTION_TARGET_DRIFT")
+        self.receipt["attempts"][0]["action"]["target"] = task["acceptance"]["target"]
+        task["acceptance"]["artifact_sha256"] = ""
+        task["verification"]["artifact_sha256"] = ""
+        self.rejected("CLIENT_WORK_VERIFICATION_REJECTED")
+
+    def test_data_readback_needs_explicit_false_cache_metadata(self):
+        task = self.work_verification()
+        task["acceptance"]["effect"] = task["verification"]["effect"] = "DATA_READBACK"
+        self.assertEqual(self.check(), "CONTINUE")
+        for value in (True, None, 0, "false"):
+            with self.subTest(fromCache=value):
+                task["verification"]["fromCache"] = value
+                self.rejected("CLIENT_WORK_VERIFICATION_REJECTED")
+
+    def test_inherited_acceptance_cannot_silently_switch_to_private_copy(self):
+        self.inherited_work()
+        task = self.receipt["work"][0]
+        task["acceptance"] = {"target": "https://artifact.example/original",
+                              "effect": "ARTIFACT_INSTALLATION", "artifact_sha256": "5" * 64}
+        predecessor = {"work": copy.deepcopy(self.receipt["work"])}
+        task["acceptance"]["target"] = "https://artifact.example/private-copy"
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            self.handoff.validate_client_work(self.receipt, predecessor)
+
+    def test_metadata_checkpoint_cannot_promote_transport_to_completed_work(self):
+        metadata = {"schema": "qikvrt-api-client-work/1", "state": "CONTINUE",
+                    "work": [{"id": "api:fixture", "state": "RECORDED", "evidence": "5" * 64}]}
+        self.handoff.validate_client_work(metadata)
+        metadata["work"][0]["state"] = "VERIFIED"
+        self.handoff.validate_client_work(metadata)
+        self.receipt["work"] = copy.deepcopy(metadata["work"])
+        self.rejected("field 'acceptance'")
+        metadata["state"] = "DONE"
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            self.handoff.validate_client_work(metadata)
+
+    def test_repeated_journal_activity_does_not_admit_another_continuation(self):
+        self.inherited_work()
+        task = self.receipt["work"][0]
+        self.work_verification(task)
+        task.update(state="OPEN", next_action="fixture:install-original")
+        del task["verification"]
+        self.receipt["attempts"][0]["action"].update(
+            operation="update_task", observed_operation="update_task")
+        predecessor = copy.deepcopy(self.receipt)
+        predecessor.pop("previous_run")
+        predecessor["execution_id"] = "fixture:previous-run"
+        with tempfile.NamedTemporaryFile("w", suffix=".json", prefix=".client-predecessor-",
+                                         dir=ROOT, delete=False) as stream:
+            json.dump(predecessor, stream)
+            path = pathlib.Path(stream.name)
+        try:
+            self.receipt["previous_run"].update(receipt_path=str(path.relative_to(ROOT)),
+                receipt_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+            self.rejected("CLIENT_ADMINISTRATIVE_CONTINUATION_LOOP")
+        finally:
+            path.unlink()
 
     def test_open_predecessor_work_rejects_done_even_with_a_delivery_fixture(self) -> None:
         self.inherited_work()

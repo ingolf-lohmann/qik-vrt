@@ -44,7 +44,13 @@
     "QIKVRT.DeliveryReporting.T1",
     "QIKVRT.DeliveryReporting.T2",
     "QIKVRT.DeliveryReporting.T3",
-    "QIKVRT.DeliveryReporting.T4"
+    "QIKVRT.DeliveryReporting.T4",
+    "QIKVRT.DeliveryReporting.T5",
+    "QIKVRT.DeliveryReporting.T6",
+    "QIKVRT.DeliveryReporting.T7",
+    "QIKVRT.DeliveryReporting.T8",
+    "QIKVRT.DeliveryReporting.T9",
+    "QIKVRT.DeliveryReporting.T10"
   ],
   "source_files": [
     "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReporting.lean",
@@ -65,7 +71,10 @@
     "runtime/toolchains/CACHE_COVERAGE.json",
     "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lakefile.toml",
     "formalization/QIKVRT_Formalization_v2.0/delivery-reporting/lean-toolchain",
-    ".github/workflows/qikvrt_manuscript_proof.yml"
+    ".github/workflows/qikvrt_manuscript_proof.yml",
+    "tests/test_ai_runtime_bootloader.py",
+    "scripts/qikvrt_api_client.py",
+    "tests/test_api_client.py"
   ],
   "receipt_required": [
     "checker",
@@ -103,7 +112,10 @@
     "external_recheck": "Identical Lean source rebuilt with 4.35.0 and replayed as one common export; not a replay of 4.19.0 oleans",
     "checkers_are_remote_services": false,
     "statistical_or_failure_independence_claimed": false,
-    "productive_effect_inferred": false
+    "productive_effect_inferred": false,
+    "work_completion": "T5-T10: declared effect/target/origin/checker/time/cache rejection; full-hash adapter and inherited-target/stall checks exercised by original receipt regressions",
+    "hash_representation": "All work text fields are scalar-code lists in the model; original string conversion is confined to the finite bridge using Char.toNat. Hashes require exactly 64 ASCII lowercase hexadecimal codes. String storage/decoder and literal-replay dependencies are outside the theorem graph.",
+    "external_literal_support": "No string literals in WorkReport predicates; effects, origin and checker use explicit scalar-code constants. The same complete theorem export and strict equal axiom inventory are still checked by all six external kernels."
   },
   "archives": {
     "own": {
@@ -144,7 +156,13 @@
           "QIKVRT.DeliveryReporting.T1",
           "QIKVRT.DeliveryReporting.T2",
           "QIKVRT.DeliveryReporting.T3",
-          "QIKVRT.DeliveryReporting.T4"
+          "QIKVRT.DeliveryReporting.T4",
+          "QIKVRT.DeliveryReporting.T5",
+          "QIKVRT.DeliveryReporting.T6",
+          "QIKVRT.DeliveryReporting.T7",
+          "QIKVRT.DeliveryReporting.T8",
+          "QIKVRT.DeliveryReporting.T9",
+          "QIKVRT.DeliveryReporting.T10"
         ],
         "axiom_allowlist": [
           "propext",
@@ -183,7 +201,13 @@
           "QIKVRT.DeliveryReporting.T1",
           "QIKVRT.DeliveryReporting.T2",
           "QIKVRT.DeliveryReporting.T3",
-          "QIKVRT.DeliveryReporting.T4"
+          "QIKVRT.DeliveryReporting.T4",
+          "QIKVRT.DeliveryReporting.T5",
+          "QIKVRT.DeliveryReporting.T6",
+          "QIKVRT.DeliveryReporting.T7",
+          "QIKVRT.DeliveryReporting.T8",
+          "QIKVRT.DeliveryReporting.T9",
+          "QIKVRT.DeliveryReporting.T10"
         ],
         "axiom_allowlist": [
           "propext",
@@ -220,7 +244,13 @@
           "QIKVRT.DeliveryReporting.T1",
           "QIKVRT.DeliveryReporting.T2",
           "QIKVRT.DeliveryReporting.T3",
-          "QIKVRT.DeliveryReporting.T4"
+          "QIKVRT.DeliveryReporting.T4",
+          "QIKVRT.DeliveryReporting.T5",
+          "QIKVRT.DeliveryReporting.T6",
+          "QIKVRT.DeliveryReporting.T7",
+          "QIKVRT.DeliveryReporting.T8",
+          "QIKVRT.DeliveryReporting.T9",
+          "QIKVRT.DeliveryReporting.T10"
         ],
         "axiom_allowlist": [
           "propext",
@@ -252,7 +282,13 @@
           "QIKVRT.DeliveryReporting.T1",
           "QIKVRT.DeliveryReporting.T2",
           "QIKVRT.DeliveryReporting.T3",
-          "QIKVRT.DeliveryReporting.T4"
+          "QIKVRT.DeliveryReporting.T4",
+          "QIKVRT.DeliveryReporting.T5",
+          "QIKVRT.DeliveryReporting.T6",
+          "QIKVRT.DeliveryReporting.T7",
+          "QIKVRT.DeliveryReporting.T8",
+          "QIKVRT.DeliveryReporting.T9",
+          "QIKVRT.DeliveryReporting.T10"
         ],
         "axiom_allowlist": [
           "propext",
@@ -283,7 +319,13 @@
           "QIKVRT.DeliveryReporting.T1",
           "QIKVRT.DeliveryReporting.T2",
           "QIKVRT.DeliveryReporting.T3",
-          "QIKVRT.DeliveryReporting.T4"
+          "QIKVRT.DeliveryReporting.T4",
+          "QIKVRT.DeliveryReporting.T5",
+          "QIKVRT.DeliveryReporting.T6",
+          "QIKVRT.DeliveryReporting.T7",
+          "QIKVRT.DeliveryReporting.T8",
+          "QIKVRT.DeliveryReporting.T9",
+          "QIKVRT.DeliveryReporting.T10"
         ],
         "axiom_allowlist": [
           "propext",
@@ -315,7 +357,13 @@
           "QIKVRT.DeliveryReporting.T1",
           "QIKVRT.DeliveryReporting.T2",
           "QIKVRT.DeliveryReporting.T3",
-          "QIKVRT.DeliveryReporting.T4"
+          "QIKVRT.DeliveryReporting.T4",
+          "QIKVRT.DeliveryReporting.T5",
+          "QIKVRT.DeliveryReporting.T6",
+          "QIKVRT.DeliveryReporting.T7",
+          "QIKVRT.DeliveryReporting.T8",
+          "QIKVRT.DeliveryReporting.T9",
+          "QIKVRT.DeliveryReporting.T10"
         ],
         "axiom_allowlist": [
           "propext",
@@ -350,7 +398,13 @@
           "QIKVRT.DeliveryReporting.T1",
           "QIKVRT.DeliveryReporting.T2",
           "QIKVRT.DeliveryReporting.T3",
-          "QIKVRT.DeliveryReporting.T4"
+          "QIKVRT.DeliveryReporting.T4",
+          "QIKVRT.DeliveryReporting.T5",
+          "QIKVRT.DeliveryReporting.T6",
+          "QIKVRT.DeliveryReporting.T7",
+          "QIKVRT.DeliveryReporting.T8",
+          "QIKVRT.DeliveryReporting.T9",
+          "QIKVRT.DeliveryReporting.T10"
         ],
         "axiom_allowlist": [
           "propext",
@@ -367,7 +421,7 @@
     }
   ],
   "vectors_path": "evidence/formal-receipts/DeliveryReporting/vectors.json",
-  "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+  "vectors_sha256": "1d727a23e0847df220b71829df2dcbbb49c9c05313f5b19e6f3611c251332325",
   "native_check_name": "QIKVRT formal proof obligation (7/7)",
   "native_check_app_id": 15368,
   "native_workflow_name": "QIK-VRT universal ontology finite-model verification",
@@ -390,7 +444,31 @@
       "Quot.sound",
       "propext"
     ],
-    "QIKVRT.DeliveryReporting.T4": []
+    "QIKVRT.DeliveryReporting.T4": [],
+    "QIKVRT.DeliveryReporting.T5": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T6": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T7": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T8": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T9": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T10": [
+      "Quot.sound",
+      "propext"
+    ]
   },
   "bundle_source_build": {
     "source": "https://github.com/leanprover/lean4",
