@@ -154,58 +154,37 @@ def workDecide (r : WorkReport) : Verdict :=
 theorem T5 (r : WorkReport) (different : r.requiredEffect ≠ r.observedEffect) :
     workDecide r = .reject := by
   unfold workDecide
-  split
-  · rename_i h
-    exact False.elim (different h.2.2.1)
-  · rfl
+  exact if_neg (fun h : WorkAdmissible r => different h.2.2.1)
 
 /-- A new private copy is not readback of a different original target. -/
 theorem T6 (r : WorkReport) (different : r.requiredTarget ≠ r.observedTarget) :
     workDecide r = .reject := by
   unfold workDecide
-  split
-  · rename_i h
-    exact False.elim (different h.2.1)
-  · rfl
+  exact if_neg (fun h : WorkAdmissible r => different h.2.1)
 
 /-- Forwarding a report cannot turn it into this observer's direct readback. -/
 theorem T7 (r : WorkReport) (reported : r.origin ≠ "DIRECT_TOOL_READBACK") :
     workDecide r = .reject := by
   unfold workDecide
-  split
-  · rename_i h
-    exact False.elim (reported h.2.2.2.1)
-  · rfl
+  exact if_neg (fun h : WorkAdmissible r => reported h.2.2.2.1)
 
 /-- An unavailable or failed checker cannot establish completion. -/
 theorem T8 (r : WorkReport) (unverified : r.checker ≠ "VERIFIED") :
     workDecide r = .reject := by
   unfold workDecide
-  split
-  · rename_i h
-    exact False.elim (unverified h.2.2.2.2.1)
-  · rfl
+  exact if_neg (fun h : WorkAdmissible r => unverified h.2.2.2.2.1)
 
 /-- Replayed observation time does not establish useful new progress. -/
 theorem T9 (r : WorkReport) (stale : r.observedUtc ≤ r.completedUtc) :
     workDecide r = .reject := by
   unfold workDecide
-  split
-  · rename_i h
-    rcases h with ⟨_, _, _, _, _, ⟨fresh, _⟩, _, _⟩
-    exact False.elim (Nat.not_lt_of_ge stale fresh)
-  · rfl
+  exact if_neg (fun h : WorkAdmissible r => Nat.not_lt_of_ge stale h.2.2.2.2.2.1.1)
 
 /-- A fresh data read requires explicit non-cache metadata. -/
 theorem T10 (r : WorkReport) (dataRead : r.requiredEffect = "DATA_READBACK")
     (cached : r.fromCache ≠ false) : workDecide r = .reject := by
   unfold workDecide
-  split
-  · rename_i h
-    rcases h with ⟨_, _, _, _, _, _, _, direct⟩
-    rcases direct with other | noncache
-    · exact False.elim (other dataRead)
-    · exact False.elim (cached noncache)
-  · rfl
+  exact if_neg (fun h : WorkAdmissible r =>
+    Or.elim h.2.2.2.2.2.2.2 (fun other => other dataRead) cached)
 
 end QIKVRT.DeliveryReporting
