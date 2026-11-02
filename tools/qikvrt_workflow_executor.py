@@ -11,6 +11,8 @@ as a successful gate.  The narrowly authorised Action wrapper performs the
 single REST dispatch only after this controller has produced a candidate.
 The separate authority-readback command performs bounded, authenticated GETs;
 it never substitutes a Mirror response or candidate policy for active Main.
+The workspace-task-intake command reads the expressly admitted workspace and
+records version-bound coordination acceptance; it cannot execute task prose.
 """
 
 from __future__ import annotations
@@ -25,6 +27,8 @@ import re
 import subprocess
 import sys
 import urllib.parse
+import urllib.request
+import urllib.error
 import zipfile
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -51,6 +55,10 @@ AMO_RUN_HISTORY_BUDGET = 1600
 
 class ExecutorBlock(RuntimeError):
     """A fail-closed executor or continuity validation error."""
+
+    def __init__(self, message: str, *, readback: Mapping[str, Any] | None = None):
+        super().__init__(message)
+        self.readback = dict(readback) if readback is not None else None
 
 
 def resolve_repository_roles(policy: Mapping[str, Any]) -> dict[str, str]:
@@ -217,18 +225,56 @@ def read_authority_main(root: Path = ROOT, previous: Mapping[str, Any] | None = 
     def get(endpoint: str) -> Mapping[str, Any]:
         try:
             response = subprocess.run(
-                ["gh", "api", "--hostname", "github.com", "--method", "GET", endpoint],
+                ["gh", "api", "--hostname", "github.com", "--method", "GET", "--include", endpoint],
                 cwd=root, capture_output=True, text=True, check=False, timeout=30,
             )
         except (OSError, subprocess.TimeoutExpired) as exc:
             raise ExecutorBlock("AUTHORITY_READBACK_TRANSPORT_UNAVAILABLE") from exc
-        if response.returncode:
+        # gh --include returns status/headers before JSON even for a denial.
+        # Retain only fixed resource labels and bounded numeric quota fields;
+        # never persist provider bodies, arbitrary headers, stderr or tokens.
+        body = response.stdout
+        headers: dict[str, str] = {}
+        http_status = 0
+        if body.startswith("HTTP/"):
+            header_block, separator, body = body.partition("\n\n")
+            lines = header_block.splitlines()
+            status_line = re.fullmatch(r"HTTP/[0-9.]+ ([1-5][0-9]{2})(?: [^\r\n]*)?", lines[0])
+            if not separator or not status_line:
+                raise ExecutorBlock("AUTHORITY_READBACK_INVALID_HTTP_ENVELOPE")
+            http_status = int(status_line[1])
+            for line in lines[1:]:
+                name, colon, value = line.partition(":")
+                if colon and name.casefold() in {"x-ratelimit-remaining", "x-ratelimit-reset", "retry-after"}:
+                    key = name.casefold()
+                    # Duplicate quota headers are ambiguous, not trustworthy.
+                    headers[key] = value.strip() if key not in headers else "INVALID"
+        if response.returncode or (http_status and http_status != 200):
             # Preserve the failure class only, never arbitrary response bodies or tokens.
             status = re.search(r"HTTP (\d{3})", response.stderr)
-            detail = f"HTTP_{status.group(1)}" if status else f"CLI_EXIT_{response.returncode}"
-            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}")
+            status_code = http_status or (int(status[1]) if status else 0)
+            detail = f"HTTP_{status_code}" if status_code else f"CLI_EXIT_{response.returncode}"
+            resource = ("MAIN_REF" if endpoint.endswith("/git/ref/heads/main") else
+                        "COMMIT" if "/git/commits/" in endpoint else
+                        "ROLE_POLICY" if "/contents/" + ROLE_POLICY_PATH + "?" in endpoint else
+                        "GOVERNANCE_POLICY" if "/contents/" + GOVERNANCE_POLICY_PATH + "?" in endpoint else
+                        "CODEOWNERS")
+            diagnostic: dict[str, Any] = {"resource": resource, "http_status": status_code,
+                "reason": "HTTP_DENIAL" if status_code else "CLI_FAILURE",
+                "authentication_verified": False}
+            for header, field in (("x-ratelimit-remaining", "rate_limit_remaining"),
+                                  ("x-ratelimit-reset", "rate_limit_reset"),
+                                  ("retry-after", "retry_after_seconds")):
+                value = headers.get(header, "")
+                if re.fullmatch(r"[0-9]{1,12}", value):
+                    diagnostic[field] = int(value)
+            diagnostic["retry_condition"] = (
+                "QUOTA_RESET_AND_FRESH_ORIGINAL_READBACK_REQUIRED"
+                if diagnostic.get("rate_limit_remaining") == 0 or status_code == 429 else
+                "ORIGINAL_DENIAL_CAUSE_REPAIR_REQUIRED")
+            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}", readback=diagnostic)
         try:
-            return _mapping(json.loads(response.stdout), "Authority GET response")
+            return _mapping(json.loads(body), "Authority GET response")
         except json.JSONDecodeError as exc:
             raise ExecutorBlock("AUTHORITY_READBACK_INVALID_JSON") from exc
 
@@ -1862,9 +1908,225 @@ def amo_progress(directory: Path, receipt: Mapping[str, Any]) -> None:
             stream.write(human + "\n")
 
 
+WORKSPACE_ORIGIN = "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
+WORKSPACE_IDENTITY_COOKIE = "__Host-QIKVRT-Workflow-Identity"
+WORKSPACE_FIELDS = ("id", "title", "description", "status", "priority", "cognition",
+                    "version", "visibility", "createdAt", "updatedAt")
+WORKSPACE_SAFE_DENIAL_CODES = frozenset({"INVALID_RESPONSE", "INVALID_RUN_TOKEN", "RUN_TOKEN_REQUIRED",
+    "AUTHORITY_READBACK_UNAVAILABLE", "AUTHORITY_READBACK_TOO_LARGE", "AUTHORITY_READBACK_INVALID",
+    "OIDC_KEYS_UNAVAILABLE", "OIDC_KEY_UNVERIFIED", "INVALID_RUN_SIGNATURE", "WRONG_RUN_IDENTITY",
+    "STALE_RUN_TOKEN", "MAIN_CHANGED", "INVALID_MAIN_SUBJECT", "RUN_NOT_EXECUTING",
+    "SOURCE_CONTRACT_UNAVAILABLE", "SOURCE_CONTRACT_BYTES_INVALID", "WORKSPACE_SOURCE_NOT_ADMITTED",
+    "TASK_NOT_ADMITTED", "TASK_VERSION_NOT_ADMITTED", "TASK_VERSION_OR_BYTES_CHANGED",
+    "TASK_CHANGED_OR_ACCEPTANCE_UNAVAILABLE"})
+WORKSPACE_READBACK_RESOURCES = frozenset({"OIDC_KEYS", "MAIN_REF", "COMMIT", "WORKFLOW_RUN", "SOURCE_CONTRACT"})
+
+
+class _WorkspaceNoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ExecutorBlock("WORKSPACE_REDIRECT_FORBIDDEN")
+
+
+def _workspace_http(url: str, token: str, payload: Mapping[str, Any] | None = None, *, stage: str = "REQUEST") -> dict[str, Any]:
+    """A single bounded request. Tokens and task text never enter output files."""
+    data = None if payload is None else canonical_json_bytes(payload)
+    headers = {"Accept": "application/json", "Content-Type": "application/json", "Cache-Control": "no-store",
+               "User-Agent": "QIKVRT-Authority-workspace-intake/1"}
+    # Sites owns the standard Authorization namespace. The service token is
+    # independently verified by our original Worker, not a visitor credential.
+    if urllib.parse.urlsplit(url).netloc == urllib.parse.urlsplit(WORKSPACE_ORIGIN).netloc:
+        headers["Cookie"] = WORKSPACE_IDENTITY_COOKIE + "=" + token
+    else:
+        headers["Authorization"] = "Bearer " + token
+    request = urllib.request.Request(url, data=data, method="GET" if data is None else "POST", headers=headers)
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _WorkspaceNoRedirect())
+    try:
+        with opener.open(request, timeout=30) as response:
+            if response.geturl() != url or response.status not in (200, 201):
+                raise ExecutorBlock("WORKSPACE_RESPONSE_IDENTITY_INVALID")
+            raw = response.read(65537)
+            if len(raw) > 65536:
+                raise ExecutorBlock("WORKSPACE_RESPONSE_TOO_LARGE")
+        return dict(_mapping(json.loads(raw), "workspace response"))
+    except urllib.error.HTTPError as exc:
+        code = "NON_JSON_DENIAL"
+        try:
+            response = json.loads(exc.read(4097))
+            declared = response.get("error", {}).get("code") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
+            code = declared if isinstance(declared, str) and declared in WORKSPACE_SAFE_DENIAL_CODES else "JSON_DENIAL"
+            upstream = response.get("error", {}).get("readback") if isinstance(response, dict) and isinstance(response.get("error"), dict) else None
+            if code == "AUTHORITY_READBACK_UNAVAILABLE" and isinstance(upstream, dict):
+                resource, status = upstream.get("resource"), upstream.get("status")
+                if isinstance(resource, str) and resource in WORKSPACE_READBACK_RESOURCES and type(status) is int:
+                    if upstream.get("reason") == "HTTP_DENIAL" and 100 <= status <= 599:
+                        code += "_UPSTREAM_" + resource + "_HTTP_" + str(status)
+                        remaining = upstream.get("rate_limit_remaining")
+                        if status in (403, 429) and type(remaining) is int and remaining == 0:
+                            code += "_RATE_LIMIT_EXHAUSTED"
+                    elif upstream.get("reason") == "REQUEST_FAILED" and status == 0:
+                        code += "_UPSTREAM_" + resource + "_REQUEST_FAILED"
+        except (OSError, ValueError):
+            pass
+        # No response message, token, caller identity or task text is logged.
+        raise ExecutorBlock("WORKSPACE_" + stage + "_HTTP_" + str(exc.code) + "_" + code) from None
+    except (OSError, ValueError) as exc:
+        raise ExecutorBlock("WORKSPACE_READBACK_UNAVAILABLE") from exc
+
+
+def workspace_task_digest(task: Mapping[str, Any]) -> str:
+    if (set(task) != set(WORKSPACE_FIELDS) or task.get("visibility") != "shared"
+            or type(task.get("version")) is not int or task["version"] < 1):
+        raise ExecutorBlock("WORKSPACE_TASK_SCHEMA_INVALID")
+    return sha256_bytes(json.dumps(dict(task), sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode())
+
+
+def workspace_declared_claim_diagnostics(token: str, env: Mapping[str, str]) -> dict[str, Any]:
+    """Untrusted declared-claim comparisons only, never signature/auth proof."""
+    value: dict[str, Any] = {"schema": "qikvrt-workspace-declared-claim-diagnostics/v1", "authentication_verified": False}
+    try:
+        encoded = token.split(".")[1]
+        claims = json.loads(base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4)))
+        if not isinstance(claims, dict):
+            raise ValueError("declared claims are not an object")
+        expected = {"iss": "https://token.actions.githubusercontent.com", "aud": WORKSPACE_ORIGIN + "/api/v1/authority",
+            "sub": "repo:" + AMO_REPOSITORY + ":ref:refs/heads/main", "repository": AMO_REPOSITORY,
+            "repository_id": "1273784147", "repository_owner_id": "294949349", "ref": "refs/heads/main",
+            "sha": env["GITHUB_SHA"], "workflow_sha": env["GITHUB_SHA"],
+            "workflow_ref": AMO_REPOSITORY + "/" + AMO_NATIVE_WORKFLOW + "@refs/heads/main",
+            "run_id": env["GITHUB_RUN_ID"], "run_attempt": env.get("GITHUB_RUN_ATTEMPT", "1"),
+            "event_name": env["GITHUB_EVENT_NAME"]}
+        value["matches"] = {key: claims.get(key) == expected_value for key, expected_value in expected.items()}
+    except (ValueError, KeyError, IndexError, TypeError):
+        value["state"] = "DECLARED_CLAIMS_UNAVAILABLE"
+    return value
+
+
+def validate_workspace_acceptance(receipt: Mapping[str, Any], task: Mapping[str, Any],
+                                  binding: Mapping[str, Any], contract_hash: str) -> dict[str, Any]:
+    """Validate the stored receipt; this is not an independent-effect claim."""
+    authority = _mapping(receipt.get("authority"), "workspace accepting Authority")
+    if (receipt.get("schema") != "qikvrt-workspace-task-acceptance/v1"
+            or receipt.get("state") != "WORKFLOW_ACCEPTED"
+            or receipt.get("task_id") != binding["id"]
+            or receipt.get("task_version") != binding["version"]
+            or receipt.get("task_sha256") != binding["sha256"]
+            or workspace_task_digest(task) != binding["sha256"]
+            or authority.get("repository") != AMO_REPOSITORY
+            or authority.get("workflow") != AMO_NATIVE_WORKFLOW
+            or authority.get("scope") != "VERSIONED_TASK_COORDINATION_ONLY"
+            or authority.get("workflow_sha") != authority.get("head")
+            or not SHA_RE.fullmatch(str(authority.get("head")))
+            or not SHA_RE.fullmatch(str(authority.get("tree")))
+            or not re.fullmatch(r"[a-f0-9]{64}", str(authority.get("contract_sha256")))
+            or type(authority.get("run_id")) is not int or authority["run_id"] <= 0
+            or type(authority.get("run_attempt")) is not int or authority["run_attempt"] <= 0
+            or receipt.get("independent_readback_required") is not True
+            or receipt.get("productive_effect_verified") is not False
+            or receipt.get("effect_ack_done") is not False):
+        raise ExecutorBlock("WORKSPACE_ACCEPTANCE_INVALID")
+    # A prior run remains the original accepting actor. Never reattribute it.
+    if authority["run_id"] == int(os.environ.get("GITHUB_RUN_ID", "0")) and authority["contract_sha256"] != contract_hash:
+        raise ExecutorBlock("WORKSPACE_CONTRACT_CHANGED")
+    return dict(receipt)
+
+
+def workspace_task_intake(directory: Path, root: Path = ROOT) -> dict[str, Any]:
+    """Read the admitted workspace task, record coordination acceptance, read it back.
+
+    This extends the existing executor. It executes no task prose, dispatch,
+    repository write, productive operation or external publication.
+    """
+    value: dict[str, Any] = {"schema": "qikvrt-workspace-task-intake-run/v1", "state": "HOLD",
+        "receipts": [], "productive_effect_verified": False, "effect_ack_done": False}
+    try:
+        contract = load_contract(root)
+        admission = _mapping(contract.get("workspace_task_intake"), "workspace task admission")
+        event = os.environ.get("GITHUB_EVENT_NAME")
+        head = _git(root, "rev-parse", "HEAD").strip()
+        tree = _git(root, "rev-parse", "HEAD^{tree}").strip()
+        if (admission.get("schema") != "qikvrt-workspace-task-intake/v1"
+                or admission.get("enabled") is not True or admission.get("origin") != WORKSPACE_ORIGIN
+                or admission.get("audience") != WORKSPACE_ORIGIN + "/api/v1/authority"
+                or admission.get("identity_header") != "Cookie"
+                or admission.get("identity_cookie") != WORKSPACE_IDENTITY_COOKIE
+                or admission.get("workflow") != AMO_NATIVE_WORKFLOW
+                or admission.get("scope") != "VERSIONED_TASK_COORDINATION_ONLY"
+                or admission.get("productive_effect_authorized") is not False
+                or admission.get("effect_ack_done") is not False
+                or event not in admission.get("allowed_events", [])
+                or os.environ.get("GITHUB_REPOSITORY") != AMO_REPOSITORY
+                or os.environ.get("GITHUB_REF") != "refs/heads/main"
+                or os.environ.get("GITHUB_SHA") != head
+                or os.environ.get("GITHUB_WORKFLOW_REF") != AMO_REPOSITORY + "/" + AMO_NATIVE_WORKFLOW + "@refs/heads/main"
+                or not SHA_RE.fullmatch(head) or not SHA_RE.fullmatch(tree)):
+            raise ExecutorBlock("WORKSPACE_NATIVE_MAIN_ADMISSION_REQUIRED")
+        current = read_authority_main(root)
+        if current["main_head"] != head or current["main_tree"] != tree:
+            raise ExecutorBlock("WORKSPACE_MAIN_CHANGED")
+        token_url = os.environ.get("ACTIONS_ID_TOKEN_REQUEST_URL", "")
+        parsed = urllib.parse.urlsplit(token_url)
+        token_secret = os.environ.get("ACTIONS_ID_TOKEN_REQUEST_TOKEN", "")
+        if (parsed.scheme != "https" or not (parsed.hostname or "").endswith(".actions.githubusercontent.com")
+                or parsed.username or parsed.password or parsed.fragment or not token_secret):
+            raise ExecutorBlock("WORKSPACE_NATIVE_OIDC_DELIVERY_REQUIRED")
+        query = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+        query = [(k, v) for k, v in query if k != "audience"] + [("audience", admission["audience"])]
+        token_url = urllib.parse.urlunsplit(parsed._replace(query=urllib.parse.urlencode(query)))
+        token = _workspace_http(token_url, token_secret, stage="OIDC_TOKEN").get("value")
+        if not isinstance(token, str) or len(token.split(".")) != 3:
+            raise ExecutorBlock("WORKSPACE_NATIVE_OIDC_UNVERIFIED")
+        value["declared_claim_diagnostics"] = workspace_declared_claim_diagnostics(token, os.environ)
+        items = admission.get("work_items")
+        if not isinstance(items, list) or not 1 <= len(items) <= 32:
+            raise ExecutorBlock("WORKSPACE_WORK_ITEMS_INVALID")
+        contract_hash = sha256_bytes((root / CONTRACT_RELATIVE_PATH).read_bytes())
+        for source in items:
+            if (not isinstance(source, dict) or not re.fullmatch(r"[a-f0-9-]{36}", str(source.get("id")))
+                    or type(source.get("min_version")) is not int or source["min_version"] < 1):
+                raise ExecutorBlock("WORKSPACE_WORK_ITEMS_INVALID")
+            url = WORKSPACE_ORIGIN + "/api/v1/authority/tasks/" + source["id"]
+            initial = _workspace_http(url, token, stage="TASK_READ")
+            task = _mapping(initial.get("task"), "workspace task")
+            digest = workspace_task_digest(task)
+            if (task.get("id") != source["id"] or task["version"] < source["min_version"]
+                    or initial.get("task_sha256") != digest):
+                raise ExecutorBlock("WORKSPACE_TASK_VERSION_OR_BYTES_CHANGED")
+            binding = {"id": task["id"], "version": task["version"], "sha256": digest}
+            if initial.get("workflowAcceptance") is None:
+                # An uncertain response is never retried. A successor GETs the
+                # task first and preserves the original version-bound receipt.
+                _workspace_http(WORKSPACE_ORIGIN + "/api/v1/authority/acceptances", token,
+                    {"schema": "qikvrt-workspace-task-accept/v1", "task_id": binding["id"],
+                     "task_version": binding["version"], "task_sha256": binding["sha256"]}, stage="TASK_ACCEPT")
+            readback = _workspace_http(url, token, stage="TASK_READBACK")
+            receipt = validate_workspace_acceptance(_mapping(readback.get("workflowAcceptance"), "stored workspace acceptance"),
+                _mapping(readback.get("task"), "task readback"), binding, contract_hash)
+            value["receipts"].append(receipt)
+        value.update(state="WORKFLOW_ACCEPTANCE_STORED_READBACK_PENDING_INDEPENDENT_CHECK",
+            head=head, tree=tree, observer_run_id=int(os.environ["GITHUB_RUN_ID"]),
+            independent_readback_required=True)
+        return value
+    except (ExecutorBlock, KeyError, ValueError, OSError) as exc:
+        value["first_boundary"] = str(exc) if isinstance(exc, ExecutorBlock) else "WORKSPACE_CHECKER_UNAVAILABLE"
+        if isinstance(exc, ExecutorBlock) and exc.readback is not None:
+            value["authority_readback"] = exc.readback
+        raise ExecutorBlock(value["first_boundary"]) from None
+    finally:
+        amo_write(directory, "acceptance.json", canonical_json_bytes(value))
+        amo_write(directory, "AI_PROGRESS.json", canonical_json_bytes({
+            "schema": "qikvrt-workspace-task-intake-progress/v1", "state": value["state"],
+            "first_boundary": value.get("first_boundary"),
+            "accepted_versions": [{"task_id": r["task_id"], "version": r["task_version"]} for r in value["receipts"]],
+            "productive_effect_verified": False, "effect_ack_done": False}))
+        amo_write(directory, "AI_STATUS.md", ("# Workspace task intake\n\nState: " + value["state"]
+            + "\n\nIndependent receipt readback and productive effects remain separate.\n").encode())
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    intake = subcommands.add_parser("workspace-task-intake")
+    intake.add_argument("--output-dir", type=Path, required=True)
     for name in ("amo-plan", "amo-pre-dispatch", "amo-record"):
         amo = subcommands.add_parser(name)
         amo.add_argument("--output-dir", type=Path, required=True)
@@ -1904,7 +2166,11 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "github-completion-feedback":
+        if arguments.command == "workspace-task-intake":
+            value = workspace_task_intake(arguments.output_dir)
+            print("WORKSPACE_TASK_INTAKE=" + value["state"])
+            return 0
+        elif arguments.command == "github-completion-feedback":
             value = github_completion_feedback()
             amo_write(arguments.output_dir, "GITHUB_RUN_FEEDBACK.json", canonical_json_bytes(value))
             print("GITHUB_ORIGINAL_CONCLUSION=" + str(value["conclusion"]))

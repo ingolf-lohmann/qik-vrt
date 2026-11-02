@@ -61,6 +61,8 @@ jobs:
               raise SystemExit('HOLD: ISSUE_FINISH_REQUIRES_CANONICAL_AUTHORITY')
           api = GitHubREST(repository)
           owner = resolve_required_code_owner(repository)
+          current_main_sha = api.call('GET', 'commits/main')['sha']
+          promotion_marker = '<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->'
           requested = os.environ.get('REQUESTED_ISSUE', '').strip()
           if requested and (not requested.isdecimal() or int(requested) < 1):
               raise SystemExit('HOLD: INVALID_ISSUE_NUMBER')
@@ -72,8 +74,23 @@ jobs:
                   continue
               reviews = api.pages(f"pulls/{pr['number']}/reviews?per_page=100")
               gate = evaluate_required_review(pr, rules, reviews, required_code_owner=owner)
+              comments = api.pages(f"issues/{pr['number']}/comments?per_page=100")
+              marker_present = promotion_marker in (pr.get('body') or '') or any(
+                  promotion_marker in (comment.get('body') or '') for comment in comments)
+              base_sha = (pr.get('base') or {}).get('sha')
+              if base_sha != current_main_sha:
+                  promotion_execution = 'BLOCKED_BASE_DRIFT'
+              elif not marker_present:
+                  promotion_execution = 'BLOCKED_PROMOTION_MARKER_MISSING'
+              elif gate.get('gate_state') != 'success':
+                  promotion_execution = 'BLOCKED_REVIEW_GATE'
+              else:
+                  promotion_execution = 'SEPARATE_REQUIRED_PATH'
               candidates.append({'pr_number': pr['number'], 'head_sha': pr['head']['sha'],
-                                 'native_review_gate': gate, 'promotion_execution': 'SEPARATE_REQUIRED_PATH'})
+                                 'base_sha': base_sha, 'current_main_sha': current_main_sha,
+                                 'promotion_marker_present': marker_present,
+                                 'native_review_gate': gate,
+                                 'promotion_execution': promotion_execution})
           print(json.dumps({'schema': 'qikvrt_issue_autofinish_governance_handoff_v1',
                             'repository': repository, 'role_policy_path': 'policy/CANONICAL_UPSTREAM_REMOTE_V1.json',
                             'state': 'GOVERNED_PROMOTION_REQUIRED' if candidates else 'NO_ELIGIBLE_ISSUE_PR',

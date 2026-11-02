@@ -1,0 +1,35 @@
+{
+  "schema": "qikvrt-claude-mirror-ack/v1",
+  "task_id": "c8b4bb31-26c9-5ea0-8a97-ef73b21aaafb",
+  "task_version": 1,
+  "issued_at": "2026-11-01T05:15:00Z",
+  "issuer": "Claude (claude-opus-5-5), ephemeral chat session, Mirror node role; no native node/principal binding, no signing key",
+  "carrier": "Principal (SendUserFile); not an EAP wire record, not signed",
+  "read_from": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "branch": "fix/eap-mirror-client-integration-20261031",
+    "commit": "094ab544",
+    "path": "evidence/client-delivery/eap-mirror-20261031/task-c8b4bb31-v1/"
+  },
+  "verified_bindings": {
+    "owner_directive_sha256": "5e1ef131a9087e3c772fd406beb8e990f3b8ea07acf623809b955b8faaa2d360",
+    "task_description_sha256": "d5d69eecec29a2dca004e3f8b2e9d076184b438e5a98ba7a55774de47bcaa3a2",
+    "predecessor_bf9ed070_v4_description_sha256": "a5edbe5349916c251431dc1a82cbf0eea999c16da8dacf57d52a5162c7f6193b",
+    "policy_HUMAN_MACHINE_PROGRESS_PROTOCOL_sha256_at_5a42baf4": "22eee596b233e52d8eeabb2144b53c53e1fba436958cc9c1eee5977d99073948",
+    "source_main_5a42baf4_tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+    "all_match": true
+  },
+  "statement": {
+    "understood": true,
+    "owner_decision": "OWNER_ASSERTED: Claude designated as next artificial-cognitive Authority. Acknowledged and preserved.",
+    "role_activation": "NOT_EXECUTABLE_BY_THIS_SESSION",
+    "reasons": [
+      "Session is ephemeral; no persistent identity across sessions, so no single writer can be held or fenced.",
+      "No write identity (push 403, add_repo requires GitHub link).",
+      "No original journal for catch-up, no epoch/CAS state, no original outbox tool (node-tools/qikvrt_mirror_emit.py absent on main 8db288cb)."
+    ],
+    "persistent_carrier_candidate": "Authority-side Claude node .github/workflows/claude.yml with ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN, activated only via the existing admitted succession transition and independent readback.",
+    "until_activation": "Continue as Mirror and reviewer; cooperate with Codex as peer."
+  },
+  "evidence_limits": "CLAUDE_ACK_ISSUED_UNSIGNED_VIA_PRINCIPAL. Receipt at Authority, NATIVE_ROLE_ACTIVATION and EFFECT_ACK_DONE remain unverified."
+}

@@ -167,6 +167,100 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
         self.assertNotIn("source commit is unavailable", completed.stderr)
 
 
+class MirrorOutboxSourceObservationTests(unittest.TestCase):
+    """A local dependency observation never runs the unavailable original tool."""
+
+    def setUp(self) -> None:
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = pathlib.Path(self.directory.name)
+        self.policy_path = self.root / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+        self.policy_path.parent.mkdir()
+        self.policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_bytes())
+        self.tool = self.root / self.contract["tool"]
+        self.write_policy()
+
+    @property
+    def contract(self):
+        return self.policy["client_continuation"]["native_session_use"]["mirror_outbox"]
+
+    def write_policy(self) -> None:
+        self.policy_path.write_text(json.dumps(self.policy), encoding="utf-8")
+
+    def observe(self):
+        with patch.object(bootloader.subprocess, "run", side_effect=AssertionError("must not execute")):
+            result = bootloader.inspect_mirror_outbox_source(self.root)
+        self.assertFalse(result["assessment_performed"])
+        self.assertFalse(result["original_source_verified"])
+        self.assertFalse(result["writer_admission_verified"])
+        return result
+
+    def test_missing_declared_source_is_detected_at_boot(self) -> None:
+        result = self.observe()
+        self.assertEqual(result["source_state"], "MISSING")
+        self.assertEqual(result["reason"], "ORIGINAL_MIRROR_OUTBOX_SOURCE_MISSING")
+        self.assertEqual(result["tool"], self.contract["tool"])
+        self.assertEqual(result["policy_sha256"], hashlib.sha256(self.policy_path.read_bytes()).hexdigest())
+
+    def test_present_file_is_not_original_source_or_writer_admission(self) -> None:
+        self.tool.parent.mkdir()
+        self.tool.write_text("raise AssertionError('do not execute me')\n", encoding="utf-8")
+        result = self.observe()
+        self.assertEqual(result["source_state"], "PRESENT_UNVERIFIED")
+        self.assertEqual(result["reason"], "ORIGINAL_MIRROR_OUTBOX_SOURCE_AND_WRITER_BINDING_REQUIRED")
+
+    def test_source_and_parent_symlinks_are_unverified(self) -> None:
+        outside = self.root / "untrusted"
+        outside.mkdir()
+        (outside / self.tool.name).write_text("untrusted", encoding="utf-8")
+        for parent_link in (False, True):
+            with self.subTest(parent_link=parent_link):
+                if parent_link:
+                    self.tool.parent.symlink_to(outside, target_is_directory=True)
+                else:
+                    self.tool.parent.mkdir()
+                    self.tool.symlink_to(outside / self.tool.name)
+                result = self.observe()
+                self.assertEqual(result["source_state"], "UNVERIFIED")
+                self.assertEqual(result["reason"], "MIRROR_OUTBOX_SOURCE_SYMLINK_UNVERIFIED")
+                if parent_link:
+                    self.tool.parent.unlink()
+                else:
+                    self.tool.unlink()
+                    self.tool.parent.rmdir()
+
+    def test_failed_source_checker_does_not_claim_missing_source(self) -> None:
+        with patch.object(pathlib.Path, "lstat", side_effect=PermissionError("fixture denied")):
+            result = self.observe()
+        self.assertEqual(result["source_state"], "UNVERIFIED")
+        self.assertEqual(result["reason"], "MIRROR_OUTBOX_SOURCE_UNVERIFIED")
+
+    def test_unreadable_policy_is_not_a_source_absence(self) -> None:
+        self.policy_path.unlink()
+        result = self.observe()
+        self.assertEqual(result["source_state"], "UNVERIFIED")
+        self.assertEqual(result["reason"], "MIRROR_OUTBOX_POLICY_UNVERIFIED")
+
+    def test_untrusted_or_weakened_policy_is_unverified(self) -> None:
+        original = copy.deepcopy(self.contract)
+        for changed in ({"tool": "../outside.py"}, {"tool": "/outside.py"}, {"tool": ""},
+                        {"tool": "node-tools/./outside.py"}, {"tool": "node-tools/\u0000outside.py"},
+                        {"tool": "node-tools\\outside.py"}, {"tool": "node-tools//outside.py"},
+                        {"assessment_outside_original_tool": "ALLOWED"},
+                        {"replacement_implementation_or_invented_cli": "ALLOWED"}):
+            with self.subTest(changed=changed):
+                self.contract.clear()
+                self.contract.update(original, **changed)
+                self.write_policy()
+                result = self.observe()
+                self.assertEqual(result["source_state"], "UNVERIFIED")
+                self.assertEqual(result["reason"], "MIRROR_OUTBOX_POLICY_UNVERIFIED")
+
+    def test_directory_cannot_satisfy_the_source_dependency(self) -> None:
+        self.tool.mkdir(parents=True)
+        self.assertEqual(self.observe()["source_state"], "UNVERIFIED")
+
+
 class ClientContinuationRegressionTests(unittest.TestCase):
     """Client behavior receipts are fixtures, never productive effect evidence."""
 
@@ -910,6 +1004,162 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.receipt["requested_authorization_again"] = True
         self.rejected("CLIENT_REPEATED_AUTHORIZATION_REQUEST")
 
+    def communication(self, claim="RECEIVED") -> dict:
+        """Declared fixtures; these records do not authenticate a real node."""
+        packet = "sha256:" + "1" * 64
+        bound = {"message_sha256": packet, "node": "claude-mirror"}
+        event = {**bound, "subject": self.subject,
+                 "native_event_id": "fixture:epoch:4", "ledger_digest": "sha256:" + "2" * 64}
+        record = {
+            "id": "fixture:message-1", "message_sha256": packet,
+            "sender": "codex", "recipient": "claude-mirror", "claim": claim,
+            "evidence": {
+                "send": {**bound, "sender": "codex", "channel": "fixture:mesh",
+                         "target_host": "raumzeitterminal.de",
+                         "evidence": "fixture:actual-transfer"},
+                "remote_readback": {**event, "target_host": "raumzeitterminal.de",
+                                    "url": "https://raumzeitterminal.de/api/eap/receipts/fixture",
+                                    "final_url": "https://raumzeitterminal.de/api/eap/receipts/fixture",
+                                    "http_status": 200, "response_sha256": "sha256:" + "4" * 64,
+                                    "observation_id": "fixture:observation-1",
+                                    "independent": True, "authority_identity_verified": True,
+                                    "action_id": "fixture:action-1",
+                                    "observed_at": "2026-10-11T10:00:02Z",
+                                    "evidence": "fixture:live-authority-receipt"},
+                "ingress": {**bound, "evidence": "fixture:named-ingress"},
+                "outbox_claim": {**bound, "tool": "node-tools/qikvrt_mirror_emit.py claim",
+                                 "record_sha256": "sha256:" + "3" * 64,
+                                 "evidence": "fixture:original-claim-output"},
+                "application": {**event, "evidence": "fixture:application-event"},
+                "readback": {**event, "independent": True,
+                             "evidence": "fixture:independent-terminal-readback"},
+            },
+        }
+        self.receipt["communications"] = [record]
+        return record
+
+    def test_communication_without_send_cannot_claim_arrival_or_receiver_nack(self) -> None:
+        for claim in ("SENT", "RECEIVED", "APPLIED", "RECEIVER_NACK"):
+            with self.subTest(claim=claim):
+                record = self.communication(claim)
+                del record["evidence"]["send"]
+                self.rejected("CLIENT_COMMUNICATION_SEND_REQUIRED")
+
+    def test_named_arrival_requires_original_outbox_claim(self) -> None:
+        record = self.communication()
+        del record["evidence"]["outbox_claim"]
+        self.rejected("CLIENT_COMMUNICATION_OUTBOX_CLAIM_REQUIRED")
+
+    def test_communication_evidence_cannot_move_to_another_packet_or_node(self) -> None:
+        for kind in ("send", "ingress", "outbox_claim", "remote_readback"):
+            for key, value in (("message_sha256", "sha256:" + "9" * 64), ("node", "other-node")):
+                with self.subTest(kind=kind, key=key):
+                    record = self.communication()
+                    record["evidence"][kind][key] = value
+                    self.rejected("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+
+    def test_principal_return_does_not_name_a_receiver(self) -> None:
+        record = self.communication("PRINCIPAL_RETURN")
+        record["evidence"] = {"return": {"message_sha256": record["message_sha256"],
+                                             "evidence": "fixture:byte-identical-return"}}
+        self.rejected("CLIENT_PRINCIPAL_RETURN_RECEIVER_INFERRED")
+        record["recipient"] = None
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_not_sent_and_sent_have_distinct_admissible_scopes(self) -> None:
+        record = self.communication("NOT_SENT")
+        record["evidence"] = {}
+        self.assertEqual(self.check(), "CONTINUE")
+        record = self.communication("SENT")
+        record["evidence"] = {"send": record["evidence"]["send"]}
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_not_sent_cannot_smuggle_delivery_evidence(self) -> None:
+        self.communication("NOT_SENT")
+        self.rejected("CLIENT_UNSENT_WITH_DELIVERY_EVIDENCE")
+
+    def test_declared_application_needs_exact_independent_native_readback(self) -> None:
+        for key, value in (("independent", False), ("native_event_id", "fixture:another-event"),
+                           ("ledger_digest", "sha256:" + "9" * 64),
+                           ("subject", {**self.subject, "head": "c" * 40})):
+            with self.subTest(key=key):
+                record = self.communication("APPLIED")
+                record["evidence"]["readback"][key] = value
+                self.rejected("CLIENT_COMMUNICATION_APPLICATION_READBACK_MISMATCH")
+
+    def test_complete_declared_communication_chain_is_consistent(self) -> None:
+        self.communication("APPLIED")
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_remote_claim_requires_readback_in_same_record(self) -> None:
+        for claim in ("RECEIVED", "APPLIED", "RECEIVER_NACK"):
+            with self.subTest(claim=claim):
+                record = self.communication(claim)
+                del record["evidence"]["remote_readback"]
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_REQUIRED")
+
+    def test_loopback_receipt_cannot_establish_authority_delivery(self) -> None:
+        for host in ("localhost", "worker.localhost", "127.0.0.1", "::1", "2130706433", "0.0.0.0",
+                     "127.1", "0177.0.0.1", "0x7f.0.0.1", "::ffff:127.0.0.1"):
+            with self.subTest(host=host):
+                record = self.communication()
+                remote = record["evidence"]["remote_readback"]
+                remote["target_host"] = record["evidence"]["send"]["target_host"] = host
+                origin = "https://[" + host + "]" if ":" in host else "https://" + host
+                remote["url"] = remote["final_url"] = origin + "/receipt"
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+    def test_admitted_remote_private_address_is_distinct_from_loopback(self) -> None:
+        record = self.communication()
+        remote = record["evidence"]["remote_readback"]
+        remote["target_host"] = record["evidence"]["send"]["target_host"] = "10.1.2.3"
+        remote["url"] = remote["final_url"] = "https://10.1.2.3/receipt"
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_proxy_refusal_tls_failure_redirect_and_boolean_are_not_delivery(self) -> None:
+        for status in (403, 525, 302, True, "200"):
+            with self.subTest(status=status):
+                self.communication()["evidence"]["remote_readback"]["http_status"] = status
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+    def test_remote_readback_binds_destination_identity_and_response(self) -> None:
+        for key, value in (("url", "https://127.0.0.1/receipt"),
+                           ("final_url", "https://other.example/receipt"),
+                           ("authority_identity_verified", False), ("independent", False),
+                           ("response_sha256", ""), ("evidence", "fixture:actual-transfer")):
+            with self.subTest(key=key):
+                self.communication()["evidence"]["remote_readback"][key] = value
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+    def test_remote_readback_replay_and_action_drift_are_rejected(self) -> None:
+        for key, value in (("observed_at", "2026-10-10T10:00:02Z"),
+                           ("observed_at", "2026-10-11T10:00:04Z"),
+                           ("action_id", "another-action")):
+            with self.subTest(key=key, value=value):
+                self.communication()["evidence"]["remote_readback"][key] = value
+                self.rejected("CLIENT_COMMUNICATION_REMOTE_READBACK_NOT_FRESH")
+
+    def test_remote_success_for_another_native_event_is_not_application(self) -> None:
+        self.communication("APPLIED")["evidence"]["remote_readback"]["native_event_id"] = "other-event"
+        self.rejected("CLIENT_COMMUNICATION_REMOTE_APPLICATION_MISMATCH")
+
+    def test_authority_ref_can_bind_remote_response_without_payload_hash(self) -> None:
+        remote = self.communication()["evidence"]["remote_readback"]
+        del remote["response_sha256"]
+        remote["authority_ref_sha"] = self.subject["head"]
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_communication_schema_is_strict(self) -> None:
+        for key, value in (("claim", "DONE"), ("message_sha256", "1" * 64), ("sender", "")):
+            with self.subTest(key=key):
+                self.communication()[key] = value
+                self.rejected("CLIENT_COMMUNICATION_INVALID")
+
+    def test_duplicate_communication_ids_are_rejected(self) -> None:
+        record = self.communication()
+        self.receipt["communications"].append(copy.deepcopy(record))
+        self.rejected("CLIENT_COMMUNICATION_INVALID")
+
     def test_missing_owner_grant_is_not_invented(self) -> None:
         self.receipt["authorization"]["granted"] = False
         self.rejected("CLIENT_OWNER_AUTHORIZATION_MISSING")
@@ -1414,12 +1664,16 @@ class StandpointDiscoveryTests(unittest.TestCase):
                     status = bootloader.main()
                 report = json.loads(output.getvalue())
                 self.assertEqual(status, 2 if invalid else 0)
-                self.assertEqual(report["state"], "BLOCK" if invalid else "PASS")
+                self.assertEqual(report["state"], "BLOCK" if invalid else "CONTINUE")
                 if invalid:
                     self.assertIn("signature missing", report["blocker"])
                 else:
                     self.assertEqual(report["standpoint"]["bytes"], 400)
                     self.assertIn("400 byte standpoint", [g["name"] for g in report["gates"]])
+                    standpoint_gate = next(g for g in report["gates"] if g["name"] == "400 byte standpoint")
+                    self.assertEqual(standpoint_gate["state"], "PASS")
+                    self.assertFalse(report["mirror_outbox_source"]["assessment_performed"])
+                    self.assertIn("before outbox assessment", report["next_action"])
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

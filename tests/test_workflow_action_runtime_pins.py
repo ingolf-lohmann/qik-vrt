@@ -13,11 +13,13 @@ every job that can run on the Authority; Goldkelch-only historical release jobs
 """
 from __future__ import annotations
 
+import ast
 import json
 import re
 import subprocess
 import sys
 import unittest
+from types import SimpleNamespace
 
 from pathlib import Path
 
@@ -31,10 +33,11 @@ RETIRED = {
 }
 SETUP_PYTHON = "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0"
 SETUP_PYTHON_RETIRED = "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
-EXPECTED_SETUP_PYTHON_ACTIVE = 57
+# Retain PR655's workspace intake and PR646's promotion consumer Python setup.
+EXPECTED_SETUP_PYTHON_ACTIVE = 59
 EXPECTED_SETUP_PYTHON_HISTORICAL = 10
 # Exact sites at main 9763b2c8; a new site must be added here deliberately.
-EXPECTED_SETUP_NODE = 18
+EXPECTED_SETUP_NODE = 19
 EXPECTED_CACHE_SAVE = 5
 CACHED_SETUP_NODE = 5
 
@@ -157,6 +160,31 @@ def steps(text: str, needle: str) -> list[tuple[str, dict[str, str]]]:
 class WorkflowActionRuntimePins(unittest.TestCase):
     def setUp(self) -> None:
         self.texts = {path.name: path.read_text(encoding="utf-8") for path in WORKFLOWS}
+
+    def test_backlog_resume_keeps_issue_and_successful_ci_ingress(self) -> None:
+        workflow = self.texts["issue-agent-backlog-resume.yml"]
+        condition = str(job_policies(workflow)["resume"]["if"])
+        # Evaluate this workflow's bounded Boolean condition, not a general
+        # GitHub expression language. Calls and other Python syntax are rejected.
+        expression = ast.parse(condition.replace("||", " or ").replace("&&", " and "), mode="eval")
+        allowed = (ast.Expression, ast.BoolOp, ast.Or, ast.And, ast.Compare,
+                   ast.Eq, ast.NotEq, ast.Attribute, ast.Name, ast.Load, ast.Constant)
+        self.assertTrue(all(isinstance(node, allowed) for node in ast.walk(expression)))
+        code = compile(expression, "backlog-resume job condition", "eval")
+        for event, conclusion, expected in (
+            ("issues", "", True),
+            ("workflow_dispatch", "", True),
+            ("workflow_run", "success", True),
+            ("workflow_run", "failure", False),
+            ("workflow_run", "cancelled", False),
+            ("pull_request", "", False),
+        ):
+            with self.subTest(event=event, conclusion=conclusion):
+                github = SimpleNamespace(event_name=event, event=SimpleNamespace(
+                    workflow_run=SimpleNamespace(conclusion=conclusion)))
+                self.assertEqual(eval(code, {"__builtins__": {}}, {"github": github}), expected)
+        self.assertIn("  issues:\n    types: [opened, edited, reopened, labeled]", workflow)
+        self.assertIn('    workflows: ["QIKVRT CI"]', workflow)
 
     def test_no_active_workflow_uses_a_retired_node20_pin(self) -> None:
         for name, text in self.texts.items():

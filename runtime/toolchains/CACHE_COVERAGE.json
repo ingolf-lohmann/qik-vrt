@@ -38,6 +38,12 @@
     },
     {
       "cache_class": "runner-image-layer",
+      "component": "dpkg",
+      "provider": "Debian/Ubuntu distribution-provided dpkg and dpkg-deb; original implementation not redistributed",
+      "version": "debian-2.0-root-lifecycle-v1"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "ffmpeg",
       "provider": "pinned GitHub-hosted runner image",
       "version": "reported-version"
@@ -89,6 +95,12 @@
       "component": "lean",
       "provider": "official leanprover/lean4 release+actions/cache; leanprover/lean-action for other formal lanes",
       "version": "4.19.0"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "lean-external-checkers",
+      "provider": "Lean official v4.35.0 distribution; upstream source pins in formal proof obligation policy",
+      "version": "4.35.0"
     },
     {
       "cache_class": "hosted-toolcache",
@@ -267,10 +279,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 44,
-  "declared_components": 44,
-  "lock_sha256": "0c51ecbba5d73967a977c9323a952314de92ce9b16c1b74e32e80d19d6c8fbd7",
-  "registry_sha256": "01fe7675fd5347f6b95943a8c9a67d1b34fe41c03d21fdd518e35182bc59593c",
+  "covered_components": 46,
+  "declared_components": 46,
+  "lock_sha256": "acdad306c1ba5e8982e2e17910223e20c8740e172ab96935db212f63063c1418",
+  "registry_sha256": "1cde18dada820d8874a7713888489c40272c31a2cc98024d027556f9dd478325",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

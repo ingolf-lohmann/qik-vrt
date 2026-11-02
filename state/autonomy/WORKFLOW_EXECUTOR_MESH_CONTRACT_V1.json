@@ -317,5 +317,46 @@
       "BLOB_CHANGE"
     ],
     "root": ".github/workflows"
+  },
+  "workspace_task_intake": {
+    "schema": "qikvrt-workspace-task-intake/v1",
+    "enabled": true,
+    "origin": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site",
+    "audience": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/api/v1/authority",
+    "workflow": ".github/workflows/qikvrt_workflow_executor.yml",
+    "scope": "VERSIONED_TASK_COORDINATION_ONLY",
+    "service_identity": "GITHUB_ACTIONS_OIDC_RS256",
+    "allowed_events": [
+      "push",
+      "workflow_dispatch",
+      "schedule"
+    ],
+    "owner": "Ingolf Lohmann",
+    "authorization_source": "DIRECT_OWNER_INSTRUCTION_2026-11-01_CURRENT_SESSION",
+    "statement": "Der n\u00e4chste technische Schritt ist deshalb die Integration des bestehenden gemeinsamen Arbeitsraums als zugelassene Ereignisquelle der Authority-Workflows, mit versionierter Aufgabenannahme und unabh\u00e4ngigem Readback. Das muss innerhalb der Repository-Regeln implementiert und gepr\u00fcft werden.",
+    "work_items": [
+      {
+        "id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+        "min_version": 1
+      }
+    ],
+    "task_text_is_executable_authority": false,
+    "task_text_in_public_artifacts": false,
+    "productive_effect_authorized": false,
+    "effect_ack_done": false,
+    "ambiguous_acceptance": "READBACK_BEFORE_ANY_SUCCESSOR_WRITE",
+    "task_or_version_change": "FRESH_VERSION_AND_DIGEST_REQUIRED; HOLD_IF_CHANGED_BETWEEN_READ_AND_ACCEPT",
+    "independent_acceptance_readback_required": true,
+    "existing_schedules_changed": false,
+    "new_executor_created": false,
+    "initial_observation": {
+      "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+      "version": 1,
+      "sha256": "a8294344966f84937c60245d16c8c9f50ed24b93cdc3d81b444be5cf9bce7e4d",
+      "historical_observation_only": true
+    },
+    "subsequent_versions": "SAME_ADMITTED_TASK_ID; COORDINATION_DATA_ONLY; NO_ADDITIONAL_EFFECT_AUTHORITY",
+    "identity_header": "Cookie",
+    "identity_cookie": "__Host-QIKVRT-Workflow-Identity"
   }
 }

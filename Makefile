@@ -98,7 +98,7 @@ unit:
 	$(PYTHON) tests/test_handler_unit.py
 
 conformance:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service tests.test_eap_mirror_client
 
 security:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns tests.test_qikvrt_ionos_web
@@ -242,6 +242,12 @@ self-host-test: tool-cache-contract temdd-event-ledger-test
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_migration
 	node --check docs/monitor/self-host.mjs
 	node --check tools/qikvrt_mesh_monitor_readback.mjs
+
+.PHONY: linux-packages-test
+linux-packages-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_debian
+
+self-host-test: linux-packages-test
 
 .PHONY: origin-adapter-test origin-adapter-browser-test
 origin-adapter-test: tool-cache-contract

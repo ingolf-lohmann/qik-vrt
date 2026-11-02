@@ -470,3 +470,40 @@ sealed-box ciphertext; wrong version, invalid key, unavailable runtime and lost
 HTTP acknowledgement keep the handoff closed. Package rollback means disabling
 the opt-in Authority environment route and retaining its protected original
 journal; no prior secret is reconstructed, exported or silently overwritten.
+
+## Delivery reporting external rechecks — 31 October 2026
+
+The existing Lean 4.19.0 toolchain remains unchanged. Six separate external
+rechecks use the official Lean 4.35.0 Linux distribution (594481375 bytes,
+SHA-256 7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d).
+This digest comes from the official release API and matches an independent
+download. The source commits, exact commands, license provenance, original
+logs and failure/recovery rules are bound in
+policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json and
+evidence/formal-receipts/DeliveryReporting/README.md. Fresh isolated extraction,
+Lean githash validation and actual checker execution remain mandatory; a cached
+archive or source identity does not prove a check. Only verified archives may be
+reused; credentials and unverified executable caches remain excluded.
+
+## Debian package readback and lifecycle — 2 November 2026
+
+The additive native Linux package adapter writes Debian 2.0 ar/tar/gzip using
+the already declared Python standard library. It redistributes no dpkg binary.
+Independent readback uses the Debian/Ubuntu runner's distribution-provided
+`dpkg-deb` and `dpkg` under behavioral contract
+`debian-2.0-root-lifecycle-v1`. Both must exist; missing capability fails the
+Linux acceptance lane instead of silently skipping it. Exact source and
+archive digests, repeated byte-identical builds, native metadata/extraction and
+isolated-root install/upgrade/remove/purge are checked by
+`tests/test_self_host_debian.py`. Native lifecycle tests never target `/`.
+Disposable test roots model external distro-package metadata while executing
+the real runtime checks; native dpkg rejects mixed QIK-VRT versions without
+dependency overrides. Production uses the ordinary trusted APT resolver. State/candidate corruption
+holds admission. Rollback retains the original active S1 runtime and ledger;
+packages do not change its supervisor or publish a new active pointer.
+
+Format and interface authority: Debian `deb(5)`, `deb-control(5)`,
+`dpkg-deb(1)` and `dpkg(1)` distributed with the native system packages.
+The upstream license remains GPL-2.0-or-later; package implementation retains
+its own repository license and third-party notices. No credentials or mutable
+authentication enter a package or tool cache.

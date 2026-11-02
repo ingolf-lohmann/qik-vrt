@@ -294,6 +294,34 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+      - name: Build native Debian modules from the exact accepted S1 source
+        env:
+          TESTED_HEAD: ${{ steps.tested_subject.outputs.head }}
+          TESTED_TREE: ${{ steps.tested_subject.outputs.tree }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TESTED_HEAD"
+          test "$(git rev-parse HEAD^{tree})" = "$TESTED_TREE"
+          git diff --quiet HEAD --
+          mkdir -p .qikvrt/linux-package-build
+          python3 -B tools/qikvrt_self_host.py pack --root "$PWD" \
+            --expected-head "$TESTED_HEAD" --expected-tree "$TESTED_TREE" \
+            --output "$PWD/.qikvrt/linux-package-build/s1" > .qikvrt/linux-package-build/S1.json
+          pin="$(python3 -c 'import json; print(json.load(open(".qikvrt/linux-package-build/S1.json"))["manifest_sha256"])')"
+          python3 -B tools/qikvrt_debian.py build \
+            --root "$PWD/.qikvrt/linux-package-build/s1" --manifest-sha256 "$pin" \
+            --output "$PWD/.qikvrt/linux-package-build/debs" \
+            --revision "$((GITHUB_RUN_NUMBER * 1000 + GITHUB_RUN_ATTEMPT))"
+
+      - name: Preserve source-bound native Debian packages
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-linux-debian-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/linux-package-build/debs/*
+          if-no-files-found: error
+          retention-days: 30
+
   offline_browser:
     needs: test
     # Reuse the frozen native offline suite for the derived Site32 client.
