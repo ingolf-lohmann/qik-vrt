@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.12.0
+# S1 standalone node package, version 1.15.0
 
 Every current and future repository node, including Authority and Mirror, must
 implement and run both the universal Transputer and the universal Terminal.
@@ -36,6 +36,38 @@ current S1 native terminal/Transputer remains a single-node carrier; live
 multi-node effect replication, write fencing and transparent recovery are open
 implementation/host-acceptance work. The neuronal description is an architecture
 analogy governed by the existing evidence/adaptation policy.
+
+## Native Debian package-manager carriers
+
+An already frozen and independently verified S1 export can be split into two
+disjoint native Debian packages without reading a credential or changing a
+host:
+
+```sh
+python3 -B tools/qikvrt_self_host.py deb-pack \
+  --root /private/exact-s1-package \
+  --manifest-sha256 <independent-MANIFEST.json-sha256> \
+  --output /private/create-only-debian-bundle
+```
+
+`qikvrt-eap` contains the four existing Effect Acknowledgement Protocol Python
+carriers. `qikvrt` contains the remaining sealed S1 node/server export and an
+exact-version launcher, and depends on the same-version EAP package, Python
+3.12 or newer and Node.js 24 or newer. The partition covers every frozen source
+file exactly once. Both archives and `DEBIAN_BUNDLE.json` are deterministic and
+content-addressed. A separate process verifies the bundle with:
+
+```sh
+python3 -B tools/qikvrt_self_host.py deb-verify \
+  --root /private/create-only-debian-bundle \
+  --debian-bundle-sha256 <independent-DEBIAN_BUNDLE.json-sha256>
+```
+
+Package construction and verification do not install, configure, enable or
+start a service. The existing private host configuration, exact runtime binary
+checks, systemd admission, protected deployment environment and public HTTPS
+readback remain mandatory. Consequently neither operation reports host
+admission, productive Effect-Ack completion or VPS delivery.
 
 ## Existing S1 host and stopped-container recovery
 

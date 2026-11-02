@@ -3951,7 +3951,7 @@ def publication_supervisor(request_path, request_pin, unit_name):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "mesh-rule-confirm", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
+    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "portable-restore", "verify", "deb-pack", "deb-verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "mesh-cache-check", "mesh-rule-confirm", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state", "transfer-local-writer",
         "publication-check", "publication-resume", "publication-supervisor",
         "container-tool-prepare", "container-context", "container-carrier", "container-carrier-archive-check", "container-artifact-split", "container-artifact-join", "container-oci-check", "container-smoke", "container-production-gate", "container-host-identity", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
@@ -3969,6 +3969,7 @@ def main():
     parser.add_argument("--amo-state", type=Path, help="existing outside-repository owner-only non-secret attempt journal")
     parser.add_argument("--amo-previous-state", type=Path, help="original private attempt journal from the preceding native signing run")
     parser.add_argument("--manifest-sha256")
+    parser.add_argument("--debian-bundle-sha256", help="independently obtained DEBIAN_BUNDLE.json pin")
     parser.add_argument("--image-sha256", help="independently obtained canonical SQLite image pin")
     parser.add_argument("--transport-sha256", help="independently obtained derived QIKMESH1 export pin")
     parser.add_argument("--delivery", type=Path, help="existing verified runtime delivery directory")
@@ -4117,6 +4118,15 @@ def main():
         elif args.operation == "verify":
             verify(args.root, args.manifest_sha256)
             result = {"state": "EXACT_PACKAGE_RUNTIME_VERIFIED", "effect_ack_done": False}
+        elif args.operation in {"deb-pack", "deb-verify"}:
+            import importlib
+            sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+            debian = importlib.import_module("tools.qikvrt_debian")
+            if args.operation == "deb-pack":
+                if not args.output: raise ValueError("CREATE_ONLY_DEBIAN_OUTPUT_REQUIRED")
+                result = debian.build(args.root, args.manifest_sha256, args.output, verify)
+            else:
+                result = debian.verify(args.root, args.debian_bundle_sha256)
         elif args.operation == "monolith-pack":
             result = pack_monolith(args.root.resolve(), args.manifest_sha256, args.output)
         elif args.operation == "monolith-verify":

@@ -114,6 +114,7 @@
     "runtime/self-host/CAPTURE_REQUEST.example.json",
     "runtime/self-host/CONFIG.example.json",
     "runtime/self-host/CONTAINER_CARRIER.json",
+    "runtime/self-host/DEBIAN_PACKAGES.json",
     "runtime/self-host/Dockerfile",
     "runtime/self-host/EAP_HTTP.md",
     "runtime/self-host/HOST_ADMISSION.example.json",
@@ -180,6 +181,7 @@
     "tools/ai_handoff.py",
     "tools/qikvrt_authority_credentials.py",
     "tools/qikvrt_authority_transition.py",
+    "tools/qikvrt_debian.py",
     "tools/qikvrt_integrity.py",
     "tools/qikvrt_ionos_dns.py",
     "tools/qikvrt_mesh_monitor_readback.mjs",
@@ -215,7 +217,7 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "rest_bootstrap": {
     "schema": "qikvrt-packaged-rest-bootstrap/v1",
     "entrypoint": [

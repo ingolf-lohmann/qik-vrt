@@ -1,0 +1,33 @@
+{
+  "activation": "EXPLICIT_EXISTING_HOST_ADMISSION_REQUIRED",
+  "credentials_included": false,
+  "packages": [
+    {
+      "architecture": "all",
+      "depends": [
+        "python3 (>= 3.12)"
+      ],
+      "description": "QIK-VRT Effect Acknowledgement Protocol carriers",
+      "name": "qikvrt-eap",
+      "source_files": [
+        "src/qikvrt_effect_ack.py",
+        "src/qikvrt_effect_ack_http_service.py",
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "src/qikvrt_effect_ack_wire.py"
+      ]
+    },
+    {
+      "architecture": "native",
+      "depends": [
+        "qikvrt-eap (= ${version})",
+        "python3 (>= 3.12)",
+        "nodejs (>= 24)"
+      ],
+      "description": "QIK-VRT sealed S1 node and server runtime",
+      "name": "qikvrt",
+      "source_files": []
+    }
+  ],
+  "schema": "qikvrt-debian-package-layout/v1",
+  "service_auto_start": false
+}
