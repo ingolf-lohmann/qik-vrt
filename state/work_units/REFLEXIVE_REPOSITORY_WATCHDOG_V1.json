@@ -59,6 +59,48 @@
     "zenodo": false,
     "ietf": false
   },
+  "job_readback_budget_repair_20261102": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "base_head": "1d8e17e9c19356062d89c37f6881c6fac467ecf5",
+    "base_tree": "3eb6ef10b9ada5bd0c8976839b1a739ca344ac69",
+    "source_issue": "https://github.com/ingolf-lohmann/qik-vrt/issues/674",
+    "authorization": "Existing Owner quota-repair authorization and current resume(); instruction; no repeated grant required",
+    "predecessor_tasks": [
+      "a63ec5b1-8d42-4f64-a5a2-95a250e5b7df",
+      "c9ebfc7e-53c6-4ca4-bf17-2c3991acb58a",
+      "f3a3c21e-7b8d-4c0f-9d26-50a8d3f176aa"
+    ],
+    "requirements": {
+      "complete_exact_head_page_before_job_get": true,
+      "maximum_per_run_job_requests": 20,
+      "incomplete_or_over_budget_page": "HOLD_WITH_ZERO_JOB_GETS",
+      "http_403_or_checker_failure": "STOP_WITHOUT_AUTOMATIC_RETRY",
+      "new_scheduler_or_executor": false
+    },
+    "local_verification": {
+      "targeted_tests": 27,
+      "targeted_result": "PASS",
+      "original_workflow_regression_cases_detected": 3,
+      "original_workflow_cases": ["21_RUNS", "100_OF_101_RUNS", "3_OF_4_RUNS"],
+      "isolated_fixture_is_live_provider_acceptance": false,
+      "full_suite_command": "make test",
+      "integrity_command": "python3 -B tools/qikvrt_integrity.py verify",
+      "initial_full_suite": "FINAL_INTEGRITY_FAILURE_AFTER_CLIENT_ADDED_A_TEST_DURING_THE_RUN",
+      "causal_correction": "FREEZE_COMPLETE_CANDIDATE_REGENERATE_INTEGRITY_AND_RERUN_FULL_SUITE"
+    },
+    "attribution": {
+      "requirements_and_authorization": "Ingolf Lohmann",
+      "implementation_and_isolated_verification": "OpenAI Codex"
+    },
+    "retained_open_duties": [
+      "PR459_UNRESOLVED_TREE_POST_READBACK_ONLY",
+      "LIVE_EVENT_DELIVERY",
+      "ORIGINAL_MIRROR_OUTBOX_SOURCE",
+      "ORIGINAL_SSO_AND_PROTECTED_HOST_INPUT_DELIVERY",
+      "RAUMZEITTERMINAL_DE_HTTPS_AND_NATIVE_RUNTIME_ACCEPTANCE"
+    ],
+    "effect_ack_done": false
+  },
   "completion_claims": {
     "PASS": false,
     "FINAL_PASS": false,
