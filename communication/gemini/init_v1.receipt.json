@@ -1,0 +1,49 @@
+{
+  "schema": "qikvrt_external_feedback_ingress_v1",
+  "date": "2026-11-02",
+  "source": "OWNER_RELAYED_JSON_LABELLED_GEMINI",
+  "read_method": "JSON code-fence content in Owner message; UTF-8; LF; one final LF",
+  "receiver_observed_at": "2026-11-02T16:57:57.184344Z",
+  "source_path": "communication/gemini/init_v1.json",
+  "source_bytes": 737,
+  "source_sha256": "6c9d2da26ea35e59e5f5d9989add5bf555bdac289ea6a2882dcc6a255ec4863a",
+  "source_claimed_sha256": "8f4c9b2e1a7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c10",
+  "source_claimed_observed_at": "2026-11-02T17:56:00Z",
+  "source_claimed_status": "CHANNEL_INITIALIZED",
+  "validation": {
+    "json_syntax": "VALID",
+    "embedded_digest_shape": "VALID_64_LOWERCASE_HEX",
+    "embedded_digest_matches_received_file": false,
+    "received_file_without_final_lf_sha256": "411639ab51e247ab173c2dbb18b4cf505aef633b7370637e046c67113fe6c7f2",
+    "embedded_digest_matches_received_file_without_final_lf": false,
+    "embedded_digest_scope": "UNSPECIFIED",
+    "source_observed_at_later_than_receiver_observation": true,
+    "source_time_corrected": false,
+    "remote_source_bytes_independently_retrieved": false,
+    "gemini_sender_identity_authenticated": false,
+    "channel_initialization": "UNVERIFIED",
+    "disposition": "DOCUMENTARY_ARCHIVE_ONLY"
+  },
+  "independent_authority_result": {
+    "base_commit": "9d50fce23d6cc91b77f6d954f37c63e4394b07eb",
+    "base_tree": "e63e2d865f3ea75f00c47eb2942e7c085961f1af",
+    "persistence": "REQUIRES_INDEPENDENT_READBACK_OF_ENCLOSING_COMMIT_AND_TREE"
+  },
+  "precedent": "evidence/receipts/gemini-manifest-feedback-20261022.json",
+  "verified_connection_scope": "OWNER_TO_CODEX_DOCUMENTARY_EXPORT",
+  "native_live_peer_request_ack_application_reply": "NOT_OBSERVED",
+  "monitor_ingress_acceptance": "NOT_OBSERVED",
+  "payload_text_executed": false,
+  "effect_ack_done": false,
+  "remaining_duties": [
+    "Source must define commitment scope and byte serialization; the detached receiver digest binds only the archived received file.",
+    "Resolve the source observation timestamp without silently rewriting the original.",
+    "Obtain authenticated Gemini and monitor ingress/ACK readbacks bound to these exact bytes before claiming channel initialization."
+  ],
+  "attribution": {
+    "research_owner": "Ingolf Lohmann",
+    "submitted_source": "Relayed by Owner; labelled Gemini; origin not independently authenticated",
+    "receiver_analysis": "OpenAI Codex"
+  },
+  "log_boundary": "This receipt preserves findings, not a complete raw tool-log archive."
+}
