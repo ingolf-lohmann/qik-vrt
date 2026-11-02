@@ -1263,7 +1263,7 @@ class ApiClientEndOfActionConformanceTests(unittest.TestCase):
         work = json.loads((Path(self.state_dir) / "CONTINUATION.data").read_text())
         api = [task for task in work["work"] if task["id"].startswith("api:")]
         self.assertEqual(len(api), 1)
-        self.assertEqual(api[0]["state"], "VERIFIED")
+        self.assertEqual(api[0]["state"], "RECORDED")
         self.assertTrue(api[0]["evidence"])
         self.assertEqual(work["effect_state"], "EFFECT_ACK_CONTINUE")
 
@@ -1677,7 +1677,7 @@ print(json.dumps({"exit": result, "posts": sum(r.get_method() == "POST" for r in
             self.invoke_actual_client("--artifact-id", "successor-subject")
         second = self.continuation_work()
         task = next(task for task in second["work"] if task["id"] == identifier)
-        self.assertEqual(task["state"], "VERIFIED")
+        self.assertEqual(task["state"], "RECORDED")
         self.assertTrue(task["evidence"])
         self.assertIn(identifier, second["previous_run"]["open_work"])
 

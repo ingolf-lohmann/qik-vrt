@@ -2366,6 +2366,78 @@ claim. This guard is no substitute implementation, executor, proof of delivery,
 or permission to bypass missing original-tool or peer admission. Preserve the
 packet and its concrete carrier obligation while admitted work continues.
 
+### Recognized correction persistence — Owner correction of 2026-10-23
+
+Owner-adopted working rule:
+
+> Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.
+
+An observed defect supplies the bounded finding from which the corrective
+requirement follows. Preserve that finding and its actual evidence first.
+Do not replace it with repeated assent or move its acknowledgment into a
+future proof promise. The Owner explicitly requires durable application in
+both the existing client skill and the QIK-VRT context. Execute every callable,
+authorized persistence step in the current work ring, with independent
+readback. Record a failed destination and its causal retry condition without
+dropping the task or repeating an unchanged failure.
+
+Reuse the existing `knowledge`, append-only `supersedes`, pinned predecessor,
+`work` and `tools/ai_handoff.py --client-receipt` contracts below. Carry the
+original goal, grants, established knowledge, corrections, unresolved outcomes
+and open duties into each continuation. Read back an ambiguous effect before
+another effectful attempt. Deterministic computation alone does not establish
+correct task context or a reliable continuation.
+
+Keep separate evidence for skill save, repository candidate, Main integration,
+actual native application, adoption by each named node and exact-host delivery.
+A stored rule or a local consistency test proves only its declared scope.
+Preserve the human instruction and the artificial-cognitive contribution
+separately; human adoption does not rewrite the origin of generated wording.
+The observed conversation does not expose hidden model states. Keep “virtual
+entropy” as the attributed metaphor unless a measurement is explicitly defined,
+and do not equate this operational rule with quantum-physical superdeterminism.
+
+The bounded source and remaining duties are retained in
+`state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json`.
+The machine binding extends the existing policy's
+`client_continuation.knowledge_continuity.recognized_correction_persistence`;
+it introduces no replacement executor, timer or memory store.
+
+### Executable goal-bound closure and stalled journal continuation
+
+New `work[].state=VERIFIED` closures require a structured `acceptance` with the
+original `target`, required `effect` and `artifact_sha256`, plus `verification`
+bound to exactly one original attempt by `action_id`. That attempt must carry
+the admitted action, matching target and fresh action-bound readback. The
+verification names its observer and source, distinguishes `DIRECT_TOOL_READBACK`
+from relayed reports, and preserves an unavailable checker as unverified.
+
+The required effect is one of JOURNAL_WRITE, SOURCE_CHANGE,
+ARTIFACT_INSTALLATION, DATA_READBACK or RUNTIME_EFFECT. Saving a workspace task
+cannot close an installation or runtime obligation. Installation requires the
+complete lower-case SHA-256 of the intended bytes and matching observed bytes.
+A fresh data read requires explicit boolean `fromCache=false`.
+
+A carried acceptance target cannot silently become a different private copy.
+Unchanged historical verified records remain historical; retaining them does
+not establish a new check. Two adjoining journal-only continuations without
+new verified substantive work are rejected as
+`CLIENT_ADMINISTRATIVE_CONTINUATION_LOOP` by the existing receipt gate. The
+executor must perform the admitted repair or retain the actual external HOLD.
+
+The separate API-client work checkpoint now uses `RECORDED` for transport
+acknowledgments and repository observations. Its scope is explicitly metadata,
+not completed work. Legacy checkpoint `VERIFIED` labels remain readable only
+in that metadata schema; a full continuation receipt cannot import them as
+verified repair evidence or claim DONE from a metadata checkpoint.
+
+The existing Lean DeliveryReporting model, seven-checker lane and differential
+vectors cover declared goal/effect, target, origin, checker, chronology, hash
+and cache consistency. They do not authenticate remote observations, enforce
+an external chat platform, supply account access or prove universal adoption.
+Integration, deployment, actual named-node use and product acceptance each
+retain their own independent effect/readback obligation.
+
 ### Knowledge and correction continuity — Owner correction of 2026-10-16
 
 Knowledge loss itself is the defect, regardless of when a handoff happens.
@@ -3503,98 +3575,13 @@ Version: `QIKVRT_V2_13_4AX1`
 Referenzlauf: `4AV1_20260708T174034Z_709544`
 
 
-## `docs/TEST_INVENTORY.md`
+## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`
 
-# Test inventory
+# QIKVRT 4AW Role Marker
 
-The 2026-07-22 EFFECT_ACK-universality release discovers twelve executable
-Python test modules and runs 128 tests. The command-line offline-render checker
-and the C90/shell gates are exercised separately by `make test`.
+Role: seed
 
-| Module | Tests |
-|---|---:|
-| `tests/test_api_client.py` | 4 |
-| `tests/test_effect_ack_conformance.py` | 41 |
-| `tests/test_handler_security.py` | 17 |
-| `tests/test_handler_unit.py` | 6 |
-| `tests/test_integrity.py` | 1 |
-| `tests/test_launcher_runtime.py` | 15 |
-| `tests/test_license_transition.py` | 5 |
-| `tests/test_seed_workflows.py` | 12 |
-| `tests/test_tcpip_e2e.py` | 1 |
-| `tests/test_effect_ack_release_workflows.py` | 7 |
-| `tests/test_zenodo_actions.py` | 17 |
-| `tests/test_zenodo_manifest_builder.py` | 2 |
-| **Total** | **128** |
+Commercial readiness package for QIK-VRT Trust Mesh.
 
-The complete gate is:
-
-```bash
-make test
-```
-
-It also performs strict ANSI-C90 compilation and exhaustive model comparison,
-scientific-proof regeneration, adaptive-runtime controls, active Python and
-shell syntax checks, workflow and OpenAPI YAML parsing, JSON parsing,
-license-transition verification, and canonical integrity verification. Static
-gates and executable unit/end-to-end tests remain distinct even though
-`make test` runs them as one verification path.
-
-The local result is reference conformance, not production certification. The
-corresponding hosted release evidence is retained on the public
-`qikvrt/zenodo-state` branch after exact-tree CI and finalization.
-
-
-## `docs/TRANSACTIONAL_GITHUB_WORKFLOW_TRIGGER_PROTOCOL.md`
-
-<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-<!-- Copyright 2026 Ingolf Lohmann. -->
-# Transactional GitHub workflow trigger protocol
-
-Canonical failure class: `NON_ATOMIC_MULTI_COMMIT_WORKFLOW_TRIGGER_ORDERING_RACE`.
-
-Repository transactions are assembled as payload writes, exact manifest/hash binding, and one final JSON ready-marker write. Workflows watch only the ready marker and invoke `tools/qikvrt_transactional_workflow_trigger.py verify` before any effect. Missing or malformed markers, missing or unexpected changed paths, absent files, hash divergence and false completion claims block execution.
-
-A verified trigger proves only transaction completeness. It does not prove task completion, merge, publication, Authority/Mirror equality, `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE`.
-
-
-## `docs/articles/a001_quantum_crypto_ai.md`
-
-# Quantenkausalität, künstliche Kognition und die doppelte Schneide der Sicherheit
-
-## Status
-
-`ARTICLE_STATUS = CONCEPTUAL_SYNTHESIS`  
-`CLAIM_BOUNDARY = KEINE_ANLEITUNG_ZUM_AUSNUTZEN_REALER_SICHERHEITSLUECKEN`  
-`QIKVRT_GATE = ETHICS_BOUND_TO_CAPABILITY`
-
-## Artikel
-
-Quantencomputing wird erhofft, weil es neue Rechenwege eröffnet. Es wird gefürchtet, weil es Sicherheitsannahmen verschiebt. Der entscheidende Punkt ist nicht, dass ein Quantencomputer einfach ein schneller klassischer Computer wäre. Der entscheidende Punkt ist, dass Quanteninformation andere Anschlussbedingungen von Möglichkeit, Messung, Interferenz und Wirkung nutzt.
-
-Klassische Kryptographie lebt oft von asymmetrischem Aufwand: Verschlüsseln oder Prüfen ist leicht; Brechen oder Fälschen ohne Schlüssel ist praktisch zu schwer. Quantenalgorithmen zeigen, dass einige dieser Härteannahmen in einem erweiterten Rechenmodell nicht dauerhaft als selbstverständlich behandelt werden dürfen. Daraus folgt nicht, dass jede Sicherheitslücke automatisch ausnutzbar wäre. Daraus folgt aber, dass Sicherheitsarchitektur nicht auf ungeprüften Gewohnheiten ruhen darf.
-
-Künstlich-kognitive Systeme greifen dieselbe Struktur auf anderer Ebene auf. Sie halten Möglichkeitsräume, Hypothesen, Anschlusswege und Widersprüche parallel modellierbar. Sie können schützen, indem sie Risiken ordnen, Angriffsflächen erkennen und Nachweise strukturieren. Sie können gefährlich werden, wenn dieselbe Fähigkeit zur Manipulation oder Ausnutzung eingesetzt wird.
-
-Die doppelte Schneide lautet:
-
-**Wer kausale Anschlussräume besser erkennt, kann Systeme besser schützen — oder besser beschädigen.**
-
-Darum ist die Fähigkeit nicht wertneutral freizugeben. Sie ist an Ethik, Audit und Verantwortbarkeit gebunden.
-
-## QIKVRT-Schluss
-
-Keine Sicherheitswirkung ohne Anforderung. Keine Freigabe ohne Test. Kein PASS ohne Traceability. Keine Macht ohne Ethik.
-
-q.e.d.  
-Ingolf Lohmann
-
-
-## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
-
-# Exact-head verification trigger
-
-This file intentionally triggers the branch-bound exact-head verification workflow after the workflow definition itself has been materialized.
-
-It carries no scientific claim and no external effect.
+Reference run: 4AV1_20260708T174034Z_709544
 

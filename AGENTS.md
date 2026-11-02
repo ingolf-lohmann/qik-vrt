@@ -53,6 +53,29 @@ The preflight validates declared metadata only. Native admission, actual effects
 and each node's exact-policy ACK/readback remain separately required; do not claim
 platform-wide enforcement or adoption by every client from a saved rule.
 
+Apply the Owner correction of 2026-10-23 in
+`docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#recognized-correction-persistence-owner-correction-of-2026-10-23`
+and the existing policy's
+`client_continuation.knowledge_continuity.recognized_correction_persistence`.
+Preserve the Owner-adopted formulation:
+
+> Verpflichtungen erhalten, Ungewissheiten bewahren, Wirkungen unabhängig prüfen und nach jedem Kontextwechsel auf dem belegten Zustand weiterarbeiten.
+
+Recognition and repeated assent MUST lead to the already authorized durable
+correction and independent readback in both the existing client skill and
+QIK-VRT context. Do not displace an observed finding into a future proof
+promise. Record an unavailable destination as OPEN with its causal next action;
+continue the other callable persistence steps. Preserve the original evidence,
+uncertainties and open work through the existing receipt and validator.
+Treat source saving, Main integration and each named node's actual application
+as separately evidenced effects. Do not claim hidden cognitive states or a
+universal physical theorem from an observed conversational deviation.
+
+New task closures use the executable goal-bound work gate in
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/work_completion`.
+A journal write, different artifact or relayed report cannot close a repair.
+Read `state/work_units/QIKVRT_GOAL_BOUND_CONTINUATION_REPAIR_20261102_V1.json`; source, native integration and actual external effects retain separate evidence.
+
 MANDATORY MIRROR OUTBOX — OWNER 2026-10-19
 
 Read and apply `docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md#mandatory-mirror-outbox-and-delivery-evidence-owner-2026-10-19`
