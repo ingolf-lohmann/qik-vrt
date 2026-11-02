@@ -81,7 +81,11 @@
       "targeted_tests": 27,
       "targeted_result": "PASS",
       "original_workflow_regression_cases_detected": 3,
-      "original_workflow_cases": ["21_RUNS", "100_OF_101_RUNS", "3_OF_4_RUNS"],
+      "original_workflow_cases": [
+        "21_RUNS",
+        "100_OF_101_RUNS",
+        "3_OF_4_RUNS"
+      ],
       "isolated_fixture_is_live_provider_acceptance": false,
       "full_suite_command": "make test",
       "integrity_command": "python3 -B tools/qikvrt_integrity.py verify",
@@ -99,7 +103,22 @@
       "ORIGINAL_SSO_AND_PROTECTED_HOST_INPUT_DELIVERY",
       "RAUMZEITTERMINAL_DE_HTTPS_AND_NATIVE_RUNTIME_ACCEPTANCE"
     ],
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "prior_artifact_http403_correction": {
+      "predecessor_head": "93a531b51aa577457fce2f8bef0565648a241238",
+      "predecessor_tree": "e63e2d865f3ea75f00c47eb2942e7c085961f1af",
+      "finding": "The prior artifact ZIP GET used || true; the real whole observation body returned0 and issued3 job GETs after HTTP403.",
+      "correction": "Let the existing ERR trap stop at BASELINE_READBACK before current runs or jobs.",
+      "regression": "Actual complete observation body with prior-artifact403; one expected test failure on the predecessor, successor target suite28 tests PASS.",
+      "fresh_successor_native_checks_required": true,
+      "predecessor_ci_accepts_successor": false,
+      "client_gate_failure": {
+        "preflight": "CLIENT_GITHUB_ROUTE_FORBIDDEN",
+        "operation": "convertPullRequestToDraft",
+        "effect": "Draft transition nevertheless called and independently read back. This was a client orchestration violation, not valid gate admission.",
+        "repair": "No repetition or policy relaxation; subsequent effectful calls require a successful preflight exit before invocation. Restore ready state only through the already admitted markPullRequestReadyForReview fallback after publishing and checking the successor."
+      }
+    }
   },
   "completion_claims": {
     "PASS": false,

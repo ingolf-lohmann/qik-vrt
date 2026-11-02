@@ -647,14 +647,16 @@ class JobReadbackBudgetTests(unittest.TestCase):
                 self.assertEqual(result["state"], "READY")
                 self.assertEqual(result["run_ids"], list(range(1, count + 1)))
 
-    def collect(self, page: dict, *, deny: str = "", checker_missing: bool = False) -> tuple:
+    def collect(self, page: dict, *, deny: str = "", checker_missing: bool = False,
+                full_observation: bool = False) -> tuple:
         """Run the real workflow collection body against an isolated REST fixture."""
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = pathlib.Path(temporary.name)
         (root / "bin").mkdir()
         (root / "tools").mkdir()
-        observation = root / "observation"
+        observation = root / (".qikvrt/reflexive-repository-watchdog"
+                              if full_observation else "observation")
         (observation / "jobs").mkdir(parents=True)
         (root / "runs.json").write_text(json.dumps(page), encoding="utf-8")
         shutil.copyfile(ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
@@ -666,23 +668,46 @@ class JobReadbackBudgetTests(unittest.TestCase):
             #!{sys.executable}
             import json, os, pathlib, sys
             root = pathlib.Path(os.environ['FIXTURE_ROOT'])
-            path = sys.argv[-1]
-            kind = 'jobs' if '/jobs?' in path else 'runs'
+            path = sys.argv[2]
+            if '/git/ref/' in path:
+                kind = 'subject'
+            elif '/workflows/' in path:
+                kind = 'baseline-runs'
+            elif '/runs/900/artifacts?' in path:
+                kind = 'baseline-artifacts'
+            elif '/artifacts/901/zip' in path:
+                kind = 'baseline-zip'
+            else:
+                kind = 'jobs' if '/jobs?' in path else 'runs'
             with (root / 'requests.jsonl').open('a') as log:
                 log.write(json.dumps({{'kind': kind, 'path': path}}) + '\\n')
             if os.environ['DENY'] == kind:
                 print('gh: API rate limit exceeded (HTTP 403)', file=sys.stderr)
                 raise SystemExit(1)
-            print('{{"total_count":0,"jobs":[]}}' if kind == 'jobs'
-                  else (root / 'runs.json').read_text())
+            responses = {{'subject': '{HEAD}',
+                         'baseline-runs': '{{"workflow_runs":[{{"id":900}}]}}',
+                         'baseline-artifacts': '{{"artifacts":[{{"id":901,"name":"qikvrt-reflexive-repository-watchdog-previous"}}]}}',
+                         'jobs': '{{"total_count":0,"jobs":[]}}'}}
+            print(responses.get(kind, (root / 'runs.json').read_text()))
             """), encoding="utf-8")
         stub.chmod(0o700)
         body = ReflexiveObservationFailureTests.step_body(
             "Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")
-        body = body[body.index("observation_stage=RUNS_READBACK"):]
+        if full_observation:
+            git_stub = root / "bin/git"
+            git_stub.write_text(f"#!{sys.executable}\nimport sys\n"
+                                f"print('{TREE}' if 'tree' in sys.argv[-1] else '{HEAD}')\n",
+                                encoding="utf-8")
+            git_stub.chmod(0o700)
+            (root / "tools/qikvrt_workflow_executor.py").write_text(
+                f"import json; print(json.dumps({{'main_head': '{HEAD}'}}))\n",
+                encoding="utf-8")
+        else:
+            body = body[body.index("observation_stage=RUNS_READBACK"):]
         environment = {**os.environ, "PATH": str(root / "bin") + os.pathsep + os.environ["PATH"],
                        "root": str(observation), "FIXTURE_ROOT": str(root), "DENY": deny,
-                       "EXPECTED_HEAD": HEAD, "REPOSITORY": "example/qik-vrt"}
+                       "EXPECTED_HEAD": HEAD, "REPOSITORY": "example/qik-vrt",
+                       "EVENT_NAME": "push", "EVENT_PR": "", "CURRENT_RUN_ID": "10"}
         result = subprocess.run(["bash", "-c", "set -euo pipefail\n" + body], cwd=root,
                                 env=environment, capture_output=True, text=True, timeout=15)
         requests = [json.loads(line) for line in (root / "requests.jsonl").read_text().splitlines()]
@@ -715,6 +740,15 @@ class JobReadbackBudgetTests(unittest.TestCase):
                 self.assertIn("HTTP 403", result.stderr)
                 self.assertEqual(len([r for r in requests if r["kind"] == "runs"]), 1)
                 self.assertEqual(len([r for r in requests if r["kind"] == "jobs"]), expected_job_gets)
+
+    def test_prior_artifact_http_403_stops_before_runs_and_jobs(self):
+        result, requests, plan = self.collect(
+            self.page(3), deny="baseline-zip", full_observation=True)
+        self.assertNotEqual(result.returncode, 0, result.stderr)
+        self.assertIn("HTTP 403", result.stderr)
+        self.assertEqual([r["kind"] for r in requests],
+                         ["subject", "baseline-runs", "baseline-artifacts", "baseline-zip"])
+        self.assertIsNone(plan)
 
     def test_unavailable_budget_checker_cannot_start_job_reads(self):
         result, requests, plan = self.collect(self.page(3), checker_missing=True)
