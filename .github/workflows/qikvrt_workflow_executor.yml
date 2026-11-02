@@ -26,12 +26,6 @@ on:
         description: Independent SHA-256 of the exact existing private binding bytes
         type: string
         default: ""
-  schedule:
-    - cron: "23 * * * *"
-    - cron: "30 8 * * *"
-      timezone: "Europe/Paris"
-    - cron: "0 10-20/2 6 10 *"
-      timezone: "Europe/Paris"
   workflow_run:
     workflows: ["QIKVRT CI", "QIKVRT productive TEMDD S1 carrier", "QIKVRT workflow executor watchdog"]
     types: [completed]

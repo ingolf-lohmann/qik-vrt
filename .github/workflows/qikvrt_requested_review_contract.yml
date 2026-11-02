@@ -108,7 +108,11 @@ jobs:
         run: |
           set -euo pipefail
           grep -F 'review_requested' .github/workflows/qikvrt_requested_review_executor.yml
-          grep -F '*/5 * * * *' .github/workflows/qikvrt_requested_review_executor.yml
+          if grep -Eq '^[[:space:]]*(-[[:space:]]*)?(schedule|cron):' .github/workflows/qikvrt_requested_review_executor.yml; then
+            echo 'REVIEW_TIMER_CONTINUATION_FORBIDDEN' >&2
+            exit 1
+          fi
+          grep -F 'QIKVRT productive TEMDD S1 carrier' .github/workflows/qikvrt_requested_review_executor.yml
           grep -F 'workflow_run:' .github/workflows/qikvrt_requested_review_executor.yml
           grep -F 'independent Code-Owner approval: **not implied**' .github/workflows/qikvrt_requested_review_executor.yml
           grep -F 'permissions: {}' .github/workflows/qikvrt_code_owner_review_observer.yml

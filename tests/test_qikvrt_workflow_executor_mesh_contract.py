@@ -522,6 +522,11 @@ class RepositoryRoleResolutionTests(unittest.TestCase):
         self.assertIn("validate_role_projections()", workflow)
         self.assertIn("evaluate_required_review", workflow)
         self.assertIn("qikvrt_expected_head_promotion.yml", workflow)
+        self.assertIn("current_main_sha = api.call('GET', 'commits/main')['sha']", workflow)
+        self.assertIn("BLOCKED_BASE_DRIFT", workflow)
+        self.assertIn("BLOCKED_PROMOTION_MARKER_MISSING", workflow)
+        self.assertIn("BLOCKED_REVIEW_GATE", workflow)
+        self.assertIn("promotion_marker_present", workflow)
         for forbidden in ("AUTHORITY_REPOSITORY:", "MIRROR_REPOSITORY:", "gh pr merge",
                           "git push", "--force", "gh issue close", "QIKVRT_MESH_TOKEN"):
             self.assertNotIn(forbidden, workflow)

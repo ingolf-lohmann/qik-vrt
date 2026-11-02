@@ -14,6 +14,7 @@ import argparse
 import hashlib
 import json
 import re
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -80,6 +81,56 @@ def load_json_object(path: Path, label: str) -> dict[str, Any]:
 
 def load_context() -> dict[str, Any]:
     return load_json_object(ROOT / "AI_CONTEXT.json", "AI_CONTEXT.json")
+
+
+def inspect_mirror_outbox_source(root: Path = ROOT) -> dict[str, Any]:
+    """Observe the declared dependency; never run or replace its assessment."""
+    policy_path = "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+    result: dict[str, Any] = {
+        "scope": "LOCAL_SOURCE_PRESENCE_ONLY_NOT_EAP_ASSESSMENT",
+        "policy_path": policy_path,
+        "source_state": "UNVERIFIED",
+        "reason": "MIRROR_OUTBOX_POLICY_UNVERIFIED",
+        "original_source_verified": False,
+        "writer_admission_verified": False,
+        "assessment_performed": False,
+    }
+    try:
+        raw = (root / policy_path).read_bytes()
+        policy = json.loads(raw)
+        contract = policy["client_continuation"]["native_session_use"]["mirror_outbox"]
+        tool = contract["tool"]
+        if (contract.get("assessment_outside_original_tool") != "FORBIDDEN"
+                or contract.get("replacement_implementation_or_invented_cli") != "FORBIDDEN"
+                or contract.get("unavailable_tool")
+                != "RECOVER_ORIGINAL_SOURCE_AND_BINDING_OR_RETAIN_NAMED_CARRIER_HOLD"
+                or not isinstance(tool, str)
+                or not re.fullmatch(r"[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*", tool)
+                or any(part in ("", ".", "..") for part in tool.split("/"))):
+            return result
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return result
+    result.update(policy_sha256=hashlib.sha256(raw).hexdigest(), tool=tool,
+                  reason="MIRROR_OUTBOX_SOURCE_UNVERIFIED")
+    path = root
+    parts = tool.split("/")
+    for index, part in enumerate(parts):
+        path = path / part
+        try:
+            mode = path.lstat().st_mode
+        except FileNotFoundError:
+            return dict(result, source_state="MISSING",
+                        reason="ORIGINAL_MIRROR_OUTBOX_SOURCE_MISSING")
+        except OSError:
+            return result
+        if stat.S_ISLNK(mode):
+            return dict(result, reason="MIRROR_OUTBOX_SOURCE_SYMLINK_UNVERIFIED")
+        if index < len(parts) - 1 and not stat.S_ISDIR(mode):
+            return result
+    if stat.S_ISREG(mode):
+        result.update(source_state="PRESENT_UNVERIFIED",
+                      reason="ORIGINAL_MIRROR_OUTBOX_SOURCE_AND_WRITER_BINDING_REQUIRED")
+    return result
 
 
 def load_standpoint(context: dict[str, Any], root: Path = ROOT) -> dict[str, Any]:
@@ -268,6 +319,7 @@ def main() -> int:
             "verify handoff and required repository evidence",
             "verify integrity authorities",
             "verify declared tool/cache contracts",
+            "observe the declared original Mirror outbox source without assessment",
             "check runtime profile without hidden installation",
             "hand control to the authorized task executor using fastest verified reusable path",
             "measure reusable interaction and runtime evidence",
@@ -335,6 +387,17 @@ def main() -> int:
                 "state": "PASS",
             }
         )
+        report["mirror_outbox_source"] = inspect_mirror_outbox_source(ROOT)
+        report["gates"].append(
+            {
+                "name": "original mirror outbox source",
+                "command": ["internal", "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"],
+                "exit_code": 20,
+                "stdout": report["mirror_outbox_source"]["reason"],
+                "stderr": "",
+                "state": "CONTINUE",
+            }
+        )
         report["gates"].append(
             run_gate("AI handoff", [sys.executable, "-B", "tools/ai_handoff.py"])
         )
@@ -371,9 +434,9 @@ def main() -> int:
         has_continue = any(gate["state"] == "CONTINUE" for gate in report["gates"])
         report["state"] = "CONTINUE" if has_continue else "PASS"
         report["next_action"] = (
-            "Install explicitly accepted missing runtime components, then rerun the bootloader."
-            if has_continue
-            else "Execute the authorized task using the fastest previously verified path; record comparable performance evidence and persist only reviewed improvements."
+            "Recover and verify the declared original Mirror outbox source and writer binding "
+            "before outbox assessment. Continue other separately admitted work; install missing "
+            "runtime components only through their reviewed paths."
         )
     except BootBlock as exc:
         report["state"] = "BLOCK"
@@ -402,6 +465,11 @@ def main() -> int:
             print(f"INTERFACE_ADAPTATION_MODE={adaptation_report.get('mode', 'unavailable')}")
             print(f"INTERFACE_ADAPTATION_MATRIX_ROWS={adaptation_report.get('matrix_rows', 0)}")
             print(f"INTERFACE_ADAPTATION_ROUTING={adaptation_report.get('routing', 'unavailable')}")
+        outbox_source = report.get("mirror_outbox_source", {})
+        if outbox_source:
+            print(f"MIRROR_OUTBOX_SOURCE={outbox_source.get('tool', 'unverified')}")
+            print(f"MIRROR_OUTBOX_SOURCE_STATE={outbox_source['source_state']}")
+            print(f"MIRROR_OUTBOX_SOURCE_REASON={outbox_source['reason']}")
         for gate in report["gates"]:
             print(f"GATE_{gate['name'].upper().replace(' ', '_')}={gate['state']}")
         if "blocker" in report:
