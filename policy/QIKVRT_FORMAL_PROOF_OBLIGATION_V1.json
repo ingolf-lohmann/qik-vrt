@@ -443,12 +443,24 @@
       "propext"
     ],
     "QIKVRT.DeliveryReporting.T4": [],
-    "QIKVRT.DeliveryReporting.T5": [],
-    "QIKVRT.DeliveryReporting.T6": [],
-    "QIKVRT.DeliveryReporting.T7": [],
-    "QIKVRT.DeliveryReporting.T8": [],
-    "QIKVRT.DeliveryReporting.T9": [],
-    "QIKVRT.DeliveryReporting.T10": []
+    "QIKVRT.DeliveryReporting.T5": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T6": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T7": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T8": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T9": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T10": [
+      "propext"
+    ]
   },
   "bundle_source_build": {
     "source": "https://github.com/leanprover/lean4",
