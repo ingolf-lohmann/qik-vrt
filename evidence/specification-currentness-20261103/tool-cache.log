@@ -1,0 +1,2 @@
+COMMAND ["python3", "-B", "tools/qikvrt_tool_cache.py", "verify"]
+PASS: 46/46 declared tools have cache strategies (100%)
