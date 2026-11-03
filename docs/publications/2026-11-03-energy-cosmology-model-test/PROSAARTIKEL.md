@@ -48,6 +48,20 @@ Absichtliche Fehler gehören dazu: Dreht man das Vorzeichen der Photonengleichun
 
 Der kontrollierte Nachweis lautet deshalb: Das vorbereitete Rechenpaket beschreibt eine konkret ausgeführte, reproduzierbare Modellprüfung. Die erfolgreiche Prüfung aller Kontrollen bestätigt ihre angegebenen Recheneigenschaften. Ein neuer physikalischer Messbefund oder eine allgemein gültige Weltformel ist damit nicht festgestellt.
 
+## Ein Beweis, der sich erneut prüfen lässt
+
+Zu der Rechnung gehört jetzt ein eigenständig aufgebautes Beweispaket. Darin prüft der Lean-Kern acht Sätze über reelle Energiegrößen. Dazu zählen die Positivität von Planckmasse, Planckzeit und Planckenergie sowie die Identität: Planckzeit mal Planckenergie ergibt die reduzierte Planckkonstante. Diese Gleichheit folgt aus den verwendeten Definitionen und positiven Eingaben.
+
+Ein weiterer Satz verbindet Information und ein verfügbares Arbeitsbudget: Wenn das Löschen mindestens einen positiven Arbeitsbetrag je Informationseinheit benötigt und die eingesetzte Arbeit das verfügbare Budget nicht übersteigt, ergibt sich eine obere Grenze für die Informationseinheiten. Der Beweis garantiert diese Folgerung. Die physikalische Annahme über den Löschprozess und die tatsächlich bereitgestellte Arbeit müssen dabei stimmen.
+
+Der neue Verbraucher bindet die Originalquellen mit Prüfsummen und die Bibliotheksabhängigkeiten mit festen Ständen. Alle acht Sätze wurden darin erneut geprüft. Acht zusätzliche Bindungen verbinden die ausformulierten Aussagen mit ihren Beweisen; die Zahl der ursprünglichen Sätze bleibt acht. Vier absichtlich falsche Aussagen werden abgewiesen. Fehlt der Compiler oder wurde die Quelle verändert, meldet der Prüfer ausdrücklich, dass keine verlässliche Prüfung vorliegt.
+
+## Die Bedingungen können sich mit dem Universum ändern
+
+Eine definierte Energieäquivalenz lässt sich unter den angegebenen Bedingungen konstruieren. Daraus entsteht eine präzise Frage an die Physik: Unter welchen realen Prozessbedingungen und in welcher Entwicklungsphase des Universums ist die Konstruktion anwendbar? Die mathematische Identität und ihre physikalische Anwendung besitzen unterschiedliche Voraussetzungen.
+
+Die Modellrechnung legt ihre Parameter fest. Sie untersucht noch keine neue astronomische Messreihe. Eine heute belegte physikalische Anwendung wäre deshalb nicht automatisch ein Beleg für jede frühere oder spätere kosmische Epoche. Welche Übertragung möglich ist, muss jeweils geprüft werden. So bleibt Ingolf Lohmanns Hinweis auf die Entwicklung des Universums Bestandteil der Forschungsfrage, ohne eine ungeprüfte Epochenbehauptung als Ergebnis auszugeben.
+
 ## Erkenntnisse erhalten, auch wenn sich ihre Bewertung ändert
 
 Hier liegt der praktische Nutzen der von Ingolf Lohmann entwickelten QIK-VRT-Persistenzidee: Eine weitere Sitzung soll die Ausgangsfrage, die Quellen, die Rechnung und ihre Grenzen schnell wiederfinden. Dafür enthält das Paket einen Einstieg, eine Aussagenmatrix, die vollständigen Eingaben, Rohdaten, Ausführungsbelege und Prüfsummen. Frühere Formalquellen werden als Vorgänger mitgeführt.

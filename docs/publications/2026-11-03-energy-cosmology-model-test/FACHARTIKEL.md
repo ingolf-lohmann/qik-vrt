@@ -97,6 +97,35 @@ Die früheren sechs Lean-Quellen bleiben als eigener Vorgänger erhalten. Ihr Bu
 
 Ein weiterführendes Forschungsprogramm benötigt einen präzisen Geltungsanspruch: Welche Energie soll invariant sein, welche Größen werden unabhängig gemessen, und welche Vorhersage unterscheidet das vorgeschlagene Modell von den bekannten Beziehungen? Für eine Behauptung emergenter Lorentz-Geometrie wäre zusätzlich eine Herleitung der Metrik aus einem andersartigen Ausgangsmodell einschließlich eines überprüfbaren Grenzübergangs nötig. Für eine experimentelle Kopplung von Gravitation und Informationslöschung wären ein realer Prozess, Kalibrierung, Verlustbilanz und unabhängige Messungen erforderlich.
 
+## 8a. Neuer formaler Nachweis über reellen Energiegrößen
+
+Die vorliegende Revision ergänzt die Modellprüfung um eine separat gelockte Lean-4.19.0-Formalisierung über ℝ. Die ursprünglichen Dateien PlanckRealEnergyDomain.lean und RealErasureBudget.lean sind bytegleich zum Kernel-Paket vom 3. November 2026 erhalten. Die acht ursprünglichen Sätze wurden im neuen Lake-Verbraucher erneut kompiliert. Zusätzlich wurden acht explizite Statement/_checked-Bindungen geprüft; diese Bindungen sind keine acht weiteren unabhängigen Forschungssätze.
+
+Die Eingaben ℏ, G und c sind strikt positive reelle Zahlen. Die definierten Größen lauten m_P = √(ℏc/G), t_P = √(ℏG/c⁵) und E_P = m_Pc². Der Kern prüft folgende Aussagen unter diesen Voraussetzungen:
+
+| Claim | Aussage | Voraussetzung | Nachweis |
+|---|---|---|---|
+| PRE-T01 | m_P > 0 | Positive Eingaben | Lean-Kern |
+| PRE-T02 | t_P > 0 | Positive Eingaben | Lean-Kern |
+| PRE-T03 | E_P > 0 | Positive Eingaben | Lean-Kern |
+| PRE-T04 | t_P E_P = ℏ | Genannte Definitionen | Lean-Kern |
+| PRE-T05 | E_P = ℏ/t_P | t_P > 0 | Lean-Kern |
+| REB-T01 | I ≤ E/cost | cost > 0; cost I ≤ W ≤ E | Lean-Kern |
+| REB-T02 | 0 ≤ ΔE/E_P < 1 | 0 ≤ ΔE < E_P | Lean-Kern |
+| REB-T03 | I ≤ E_P/cost | cost > 0; cost I ≤ W ≤ E_P | Lean-Kern |
+
+Jeder Originalsatz und jede Bindung erhielt einen separaten Axiomaudit. Die gefundenen Standardaxiome sind propext, Classical.choice und Quot.sound. Neue Projektaxiome oder Beweisplatzhalter wurden nicht eingeführt. Vier absichtlich falsche Aussagen werden mit semantischen Lean-Diagnosen zurückgewiesen. Eine beschädigte Quellenbindung und ein fehlender Compiler führen im Prüfer ausdrücklich zum Zustand UNVERIFIED; sie werden weder als bewiesener Satz noch als widerlegtes physikalisches Modell ausgegeben.
+
+Die Abhängigkeit mathlib ist der im bestehenden Batch-01B-Plan vorgesehene Stand c44e0c8ee63ca166450922a373c7409c5d26b00b. Der vollständige Git-Dateibaum des Originalarchivs stimmt mit dem unabhängig gelesenen Baum fdf252e589fb338709bf537ba48ce79a78cbe5e9 überein. Lake hat einen eigenen Pfad-Lock für das hashgebundene Originalarchiv und acht exakte transitive Git-Revisionen erzeugt. Die 6816 Originaldateien werden vor der Prüfung gegen ihr Quellenmanifest geprüft. Das bisherige Std-only-Paket wurde nicht verändert. Die Quellenarchivbindung wird nicht als erfolgreicher Git-Abruf oder als wiedergewonnenes Git-Commitobjekt bezeichnet.
+
+Mit cost = k_B T ln(2) wird REB-T01 unter den geeigneten thermodynamischen Prozessannahmen zu einer Landauer-artigen Informationsschranke. Der Lean-Beweis zeigt die algebraische Folgerung aus der vorausgesetzten unteren Arbeitsgrenze und dem verfügbaren Arbeitsbudget. Die physikalische Bedeutung von cost, die Zuführung nutzbarer Arbeit und ihre SI-Kalibrierung benötigen eigene Belege. Die vierte Planckidentität folgt aus den Definitionen; sie ist dadurch kein zusätzlicher Messbefund und keine Herleitung der Raumzeit aus Speicheroperationen.
+
+## 8b. Zeitlicher und physikalischer Geltungsbereich
+
+Eine definierte Energieäquivalenz ist unter den genannten mathematischen Bedingungen konstruierbar. Der algebraische Satz gilt für alle Eingaben seines expliziten Definitionsbereichs. Seine physikalische Anwendung ist an den untersuchten Prozess, die verwendeten Näherungen, Einheiten, Energiedefinitionen und eine bestimmte kosmische Epoche gebunden. Die vorliegende Modellrechnung verwendet festgelegte Parameter; sie schätzt diese nicht aus neu ausgewerteten Beobachtungsdaten.
+
+Aus einer Übertragbarkeit unter heute geprüften Prozessbedingungen folgt keine Gültigkeit in jeder Phase des Universums. Ebenso folgt daraus keine Unmöglichkeit in früheren oder späteren Phasen. Eine entsprechende Epochenbehauptung benötigt eine konkrete Modellfamilie und unabhängige empirische Daten. Die neue formale Prüfung ergänzt die Nachvollziehbarkeit des algebraischen Kerns; sie ersetzt diese physikalische Untersuchung nicht.
+
 ## 9. Reproduktion und Persistenz
 
 Ausführung: python3 -B run_experiment.py --output results. Der Prozess muss Exit 0 liefern. RESULTS.json enthält jeden Kontrollnamen, die Parameter, Toleranzen, Grenzen und den Quell-SHA-256. closed_mixed_trajectory.csv enthält 801 Zustände einschließlich des Anfangszustands. Die Ausführungsverzeichnisse erhalten stdout, stderr und Prozessbelege beider Iterationen. Die erste Ergebnisdatei wurde nach Wiederverwendung ihres Pfads aus dem erhaltenen ersten Quelltext bytegleich reproduziert; dieser Vorgang ist als neue Reproduktion gekennzeichnet.

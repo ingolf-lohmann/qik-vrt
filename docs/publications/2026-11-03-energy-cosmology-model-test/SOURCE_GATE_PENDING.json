@@ -1,14 +1,16 @@
 {
   "schema": "qikvrt_source_gate_pending_v1",
-  "observed_at": "2026-11-03T06:37:41.646704+00:00",
+  "observed_at": "2026-11-03T08:30:50.733015+00:00",
   "rule": "skill://user/6ac348c7f798819193d2081ecc9e7602/qikvrt-check-publication-sources/SKILL.md",
   "required_script": "scripts/check_sources.py",
-  "original_script_read": "failed to read skill resource",
+  "original_script_read": "skills.read for the exact scripts/check_sources.py resource failed: failed to read skill resource",
   "executor_skill_search": "all four pages exhausted; matching skill/script not exposed in executor catalog or local skill tree",
   "original_gate_executed": false,
   "original_gate_state": "PENDING",
   "own_repository_source_zenodo_archive": "NOT_PUBLISHED",
   "manual_inspection": "MANUAL_SOURCE_INSPECTION.json",
   "no_substitute_gate_claim": true,
-  "next_action": "Recover the original bundled source gate through the existing skill/source path; execute against all final formats and retain its original receipt. Publish and byte-verify the exact research source before claiming publication completion."
+  "next_action": "Recover the original bundled source gate through the existing skill/source path; execute against all final formats and retain its original receipt. Publish and byte-verify the exact research source before claiming publication completion.",
+  "revision": 3,
+  "original_skill_instructions_read": true
 }

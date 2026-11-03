@@ -1,25 +1,29 @@
 {
-  "schema": "qikvrt_document_qa_v1",
   "documents": [
     {
-      "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
-      "pages": 5,
-      "bytes": 326534,
-      "attachments_byte_verified": 3,
-      "page_images_rendered": true,
-      "visual_review": "all final pages inspected; no clipping or empty last page"
+      "file": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
+      "pages": 7,
+      "bytes": 359646,
+      "sha256": "d6bfa63e6b348d3630db3602332f5057f4de991593fb7fd2ec92b05419719f93",
+      "source_attachments_byte_equal": 9,
+      "visible_clickable_source_urls": 4
     },
     {
-      "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
-      "pages": 4,
-      "bytes": 91030,
-      "attachments_byte_verified": 3,
-      "page_images_rendered": true,
-      "visual_review": "all four pages inspected; final source appendix on separate page; no clipping"
+      "file": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
+      "pages": 5,
+      "bytes": 119265,
+      "sha256": "73527b183b10ec6c2855ff24b3bd9046e8be8a7c8b20929d983e2db8e6044006",
+      "source_attachments_byte_equal": 9,
+      "visible_clickable_source_urls": 4
     }
   ],
-  "numeric_source": "results/RESULTS.json",
-  "new_physics_claim": false,
-  "source_visibility_manual": "MANUAL_SOURCE_INSPECTION.json",
-  "original_source_gate": "SOURCE_GATE_PENDING.json"
+  "original_source_gate": "SCRIPT_UNAVAILABLE_PENDING",
+  "publication_complete": false,
+  "visual_review": {
+    "all_pages_inspected": true,
+    "technical_pages": 7,
+    "prose_pages": 5,
+    "clipping_or_overlap_observed": false,
+    "reference_pages_inspected": true
+  }
 }

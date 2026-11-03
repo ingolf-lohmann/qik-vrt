@@ -1,38 +1,32 @@
-# Energieäquivalenz und dynamische Raumzeit - Einstieg
+# Energieäquivalenz, dynamische Raumzeit und reeller Energiekern - Revision 3
 
-Stand: 3. November 2026. Auftrag und Fragestellung: Ingolf Lohmann; Implementierung, Rechnung und Ausarbeitung: OpenAI Codex.
+Fragestellung und Auftrag: Ingolf Lohmann. Berechnung, Implementierung und Ausarbeitung: OpenAI Codex. Stand 03.11.2026.
 
-## Sofort wiederfinden
+## Einstieg
 
-1. ENTRY_INDEX.json: Einstieg, Ergebnis, Originalquellen und Aufgaben-IDs.
-2. FACHARTIKEL.md / QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf: wissenschaftliche Arbeitsfassung, fünf Seiten.
-3. PROSAARTIKEL.md / QIKVRT_Virtuelles_Universum_Prosa.pdf: allgemein verständliche Arbeitsfassung, vier Seiten einschließlich eigenem Quellenanhang.
-4. CLAIM_MATRIX.json: jede Aussage mit Nachweis und Grenze.
-5. run_experiment.py, results/RESULTS.json und results/closed_mixed_trajectory.csv: neue Ausführung, 48/48 Kontrollen.
-6. prior_sources/: die sechs bytegleich wiedergewonnenen ursprünglichen Lean-Dateien.
-7. production_evidence/: separat geprüfter Original-Debian-Pfad und tatsächliche Hostgrenze.
-8. REVISION_2.json und SOURCE_GATE_PENDING.json: dokumentierte Ergänzung der Quellenanzeige und weiterhin offene Publikationsprüfung. Die wissenschaftliche PDF und die numerischen Ergebnisse bleiben bytegleich zum Vorgänger.
+- `FACHARTIKEL.md` bzw. `QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf`: sieben Seiten mit den ursprünglichen Modellresultaten und dem neuen formalen Nachweis.
+- `PROSAARTIKEL.md` bzw. `QIKVRT_Virtuelles_Universum_Prosa.pdf`: fünf Seiten mit allgemein verständlicher Einordnung und zeitlichem Geltungsbereich.
+- `CLAIM_MATRIX.json`: mathematische, numerische, bedingte und offene Aussagen.
+- `../../../formalization/QIKVRT_RealEnergy_v1/README.md`: separates Lake-Paket, acht ursprüngliche Sätze, acht Statement/_checked-Bindungen und genaue Reproduktion.
 
-## Ergebnis und Reproduktion
+Die PDFs enthalten neun bytegleich eingebettete Quellen bzw. Prüfnachweise. Alle zwölf Seiten wurden gerendert und visuell geprüft. Die vier externen Quellenadressen sind sichtbar und anklickbar. Der originale zusätzlich vorgeschriebene Quellenprüfer ist als Skript weiterhin nicht abrufbar; dessen PASS wird durch diese eigene Sichtprüfung nicht ersetzt.
 
-    python3 -B run_experiment.py --output results
+## Erhaltene Modellrechnung
 
-Python 3.12 oder neuer, nur Standardbibliothek; Exit 0 ist erforderlich. Vier FLRW-Modelle, 800 Schritte je Hauptlauf, drei analytische Lösungen, zwei ODE-Formulierungen, Koordinatenkontrolle, Konvergenz und Negativkontrollen. Die komplette Haupttrajektorie enthält 801 Zustände. stdout/stderr und beide Quelliterationsstände bleiben erhalten. Die erste Ergebnisdatei wurde nach Pfadwiederverwendung aus dem erhaltenen ersten Quelltext bytegleich reproduziert und als Reproduktion protokolliert.
+`python3 -B run_experiment.py --output results` reproduziert das konkrete FLRW-Modell. Der bestehende, unveränderte Lauf prüft 48 Kontrollen mit 800 Hauptschritten: analytische Vergleichslösungen, zwei ODE-Formulierungen, Zeitkoordinatenänderung, Konvergenz, Druck-Arbeit-Relation, Rotverschiebung und absichtliche Fehler. `results/RESULTS.json` und die CSV enthalten die unveränderten Zahlen. Die Originalausgaben beider Iterationen bleiben unter `execution/` erhalten. Diese neue formale Ergänzung wird nicht rückwirkend als ein neuer damaliger Lauf bezeichnet.
 
-Die universelle Posteridentität ist unter den üblichen Bedeutungen nicht bestätigt. Eine bedingte Gleichheit durch Parameterdefinitionen ist konstruiert. Eine dynamische virtuelle FLRW-Geometrie wurde tatsächlich gerechnet. Die Gesamtgröße ist die Materialenergie des vollständigen kompakten räumlichen Schnitts; keine beobachterunabhängige globale Gravitationsenergie wird behauptet. Innere physikalische Raumzeitentstehung, neue Messungen und wissenschaftliche Neuheit sind nicht nachgewiesen.
+Die Materialenergie des gewählten geschlossenen Modells ist eine explizite schnittabhängige Größe. Die Metrik und die Parameter werden vorausgesetzt. Die Rechnung belegt keine physikalische Raumzeitentstehung und enthält keine neu geschätzten astronomischen Parameter.
 
-## Vorherige Ergebnisse und fehlende Belege
+## Neue Ergänzung
 
-Quellencheckpoint: 9a6a3f9d-967b-5bb2-a065-20261102e002, Version 1. Der decodierte Quellen-JSON hatte 5151 Bytes und SHA-256 a9a11d2a9dddd8b577f905a445659048a1e2e7177ffe264e1e1dbec1a60fc95e. Das ursprüngliche Hauptmodul hat SHA-256 8c0ff578be57f0b18435189d711f11e94990e434fb31f9e00f1666ad0ddc1a23. Historische Lean-Erfolge sind dokumentierte Vorgängerberichte; hier wurde kein neuer Lean-Kernel gestartet. Das alte Vollarchiv und seine kompletten Rohlogs bleiben offen. Die neuen Läufe ersetzen diese historische Lücke nicht.
+Die acht reellen PRE-/REB-Sätze sind in einem tatsächlich von Lake gelockten eigenen Verbraucher erneut geprüft. Die Axiommap ist vollständig. Die falschen mathematischen Aussagen werden zurückgewiesen; Quellen- und Compilerfehler führen zu UNVERIFIED. Die drei Prüferselbsttests stehen im Paket.
 
-## Ablage und Wirkungsgrenzen
+Die beiden Artikel behandeln jetzt ausdrücklich den zeitlichen Geltungsbereich: Eine mathematisch definierte Äquivalenz hat angegebene Prämissen. Ihre physikalische Anwendung auf eine bestimmte kosmische Epoche verlangt zusätzliche Belege. Weder universelle Gültigkeit noch eine zeitlich andere Unmöglichkeit wird unterstellt.
 
-Vorgesehener Repositorypfad: docs/publications/2026-11-03-energy-cosmology-model-test. Ausgangs-Main 40fa8eb1a6b413801ba8554dca35f915d54316c7, Tree cd81338b400104452a666873d1fe6c02e996b3a3. Arbeitsauftrag d385b867-360a-5794-8428-2df4b90c53fb; Nachprüfung edc3fb2e-4ac3-5d42-8bd9-1aab83406801. Die spätere Fernrücklesung bindet den tatsächlichen Kandidatencommit außerhalb dieses selbstreferenzfreien Inhalts.
+## Offene Wirkungsschritte
 
-Quellenpersistenz ist keine Main-Integration, Zenodo-Veröffentlichung oder produktive IONOS-/EAP-Abnahme. Die Zenodo-Arbeitsfassung beansprucht weder DOI noch Publikation; der Ownerauftrag nennt eine Bestätigung der Gleichung als Voraussetzung, die in dieser allgemeinen Form nicht vorliegt. Der separate R2-Stopp bleibt unberührt. Die fünf Original-Debian-Pakete und 199 Quellen sind am exakten Main geprüft, aber nicht auf einem Host installiert. Der Original-SSO-/Hostanschluss bleibt konkret offen; es werden keine Ersatzschlüssel oder neuen Identitäten erzeugt.
+Native Exact-HEAD-CI, sieben unabhängige Checker, technische Review-/Main-Aufnahme, das originale Quellen-/Archivgate und eine bytegenau öffentlich verifizierte Zenodo-Veröffentlichung sind offen. Die Änderung der Forschungsfassung ist in `../../../CHANGE_NOTICE.md` dokumentiert. Die bestehende allgemeine Ownerfreigabe bleibt erhalten; dieser Entwurf erzeugt keinen neuen DOI und ersetzt keine kandidatengebundene Publikationsentscheidung.
 
-## Lizenz und Attribution
+Originalhost-/SSO-, Domain-, Installations-/Restart-/Persistenz-, Mirror-, R2- und Publisher-/Quota-Pflichten bleiben erhalten. Die jüngste unabhängige Domain-Beobachtung zeigt HTTP 525. `EFFECT_ACK_DONE` bleibt unbestätigt. Das alte vollständige November-2-Rohlogarchiv ist eine gesonderte Pflicht; die vorhandenen damaligen Quellen und die neu gesicherten Kernelbelege werden nicht als dieses verlorene Vollarchiv ausgegeben.
 
-Neue Artikeltexte und Metadaten: CC-BY-NC-ND-4.0. run_experiment.py: PolyForm-Noncommercial-1.0.0. render_articles.py übernimmt den Apache-2.0-Renderer des bestehenden QIK-VRT-Pfads und erweitert ihn um Tabelle, Grafik und Quellenanhänge. Originale Lean-Dateien werden unverändert und mit ihrer im Vorgänger dokumentierten Provenienz erhalten. Die neue Rechnung weist keine wissenschaftliche Neuheit aus.
-
-Der erste Remote-Stand ist ein Forschungsarchiv-Kandidat mit [skip ci], um die bekannte selectorlose workflow_run-Publisher-Kaskade nicht neu zu starten. Die nativen Gesamtprüfungen dieses Kandidaten bleiben ausdrücklich offen; daraus wird keine Merge- oder Produktionszulassung abgeleitet. ARCHIVE_MODE.json bindet diese Entscheidung.
+Die neue Fassung verändert keine frühere Beobachtung. Quellenarchivierung, Repositorykandidat, Main-Aufnahme, Veröffentlichung und produktive Wirkung sind eigene Nachweisgegenstände.

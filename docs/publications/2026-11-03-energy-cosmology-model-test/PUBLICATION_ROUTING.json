@@ -1,48 +1,6 @@
 {
   "schema": "qikvrt_publication_routing_manifest_v1",
-  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v2",
-  "title": "Energieäquivalenz und dynamische Raumzeit: reproduzierbare Modellprüfung",
-  "author": "Ingolf Lohmann",
-  "repository_scope": {
-    "authority": "ingolf-lohmann/qik-vrt"
-  },
-  "artifacts": [
-    {
-      "path": "FACHARTIKEL.md",
-      "bytes": 14539,
-      "sha256": "f3951cb0d78db01d37da778722cda28e98837aa87ff2292f77c166d9d378a993"
-    },
-    {
-      "path": "PROSAARTIKEL.md",
-      "bytes": 8922,
-      "sha256": "22ab19a49f398d14a7f19f24fc8642177e1e4bc645397aaf45484dd759e584e3"
-    },
-    {
-      "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
-      "bytes": 326534,
-      "sha256": "f8fba47921768f10f1c8cd033dc0f13dd1fc29260ae18a0cdb79b47fd6f3b53c"
-    },
-    {
-      "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
-      "bytes": 91030,
-      "sha256": "c9c13cc334339dd9d305f4dc29d5d82021843bfd282c6f4f02734856757a4e17"
-    },
-    {
-      "path": "run_experiment.py",
-      "bytes": 11575,
-      "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
-    },
-    {
-      "path": "results/RESULTS.json",
-      "bytes": 15250,
-      "sha256": "290f27a1940d951088b1e57adb107a80da710c283574f130372a515c93608006"
-    },
-    {
-      "path": "CLAIM_MATRIX.json",
-      "bytes": 3537,
-      "sha256": "6292df49f9da4c24d08d75b7e48cbf59bcca3d0d4a89380ea9074652835de790"
-    }
-  ],
+  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v3",
   "routes": {
     "repository": {
       "disposition": "RESEARCH_CANDIDATE",
@@ -50,19 +8,10 @@
     },
     "zenodo": {
       "disposition": "DRAFT_NOT_PUBLISHED",
-      "effect_gate": "ORIGINAL_V2_EXACT_ARTIFACT_AND_SCIENTIFIC_SCOPE_GATES",
-      "upload_type": "publication",
-      "publication_type": "article"
-    },
-    "ietf": {
-      "disposition": "NOT_A_PROTOCOL_SPECIFICATION"
+      "effect_gate": "ORIGINAL_V2_EXACT_ARTIFACT_AND_SCIENTIFIC_SCOPE_GATES"
     }
   },
-  "automation": {
-    "classifier": "tools/qikvrt_publication_router.py",
-    "workflow": ".github/workflows/qikvrt_publication_router.yml",
-    "external_effects_default": "DENY"
-  },
+  "native_CI": "NOT_EXECUTED",
   "release_claims": {
     "PASS": false,
     "FINAL_PASS": false,

@@ -80,7 +80,7 @@ def make(source,target):
     text=(ROOT/source).read_text();text=re.sub(r'<!--.*?-->','',text,flags=re.S)
     blocks=re.split(r'\n\s*\n',text.strip());story=[]
     for block in blocks:
-        if block == '## Quellenanhang':
+        if block in ('## Quellenanhang', '## Quellen'):
             story.append(PageBreak())
         if block.startswith('ABBILDUNG: '):
             story.append(Image(str(ROOT/block.removeprefix('ABBILDUNG: ')),width=A4[0]-100,height=(A4[0]-100)*6.2/9.5))
@@ -103,7 +103,7 @@ def make(source,target):
         title=blocks[0].removeprefix('# '),author='Ingolf Lohmann (Fragestellung); OpenAI Codex (Ausarbeitung)')
     doc.build(story,onFirstPage=footer,onLaterPages=footer,canvasmaker=lambda *a,**k:Canvas(*a,**(k|{'invariant':1})))
     reader=PdfReader(dest);writer=PdfWriter();writer.clone_document_from_reader(reader)
-    for name in [source,'run_experiment.py','results/RESULTS.json']:
+    for name in [source,'run_experiment.py','results/RESULTS.json','formal_evidence/SOURCE_LOCK.json','formal_evidence/THEOREM_INVENTORY.json','formal_evidence/RECEIPT.json','formal_evidence/PlanckRealEnergyDomain.lean','formal_evidence/RealErasureBudget.lean','formal_evidence/RealEnergyStatements.lean']:
         writer.add_attachment(Path(name).name,(ROOT/name).read_bytes())
     with dest.open('wb') as f:writer.write(f)
     print(target,'pages',len(PdfReader(dest).pages),'bytes',dest.stat().st_size)

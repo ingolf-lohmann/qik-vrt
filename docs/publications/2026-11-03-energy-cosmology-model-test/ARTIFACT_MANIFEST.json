@@ -1,6 +1,10 @@
 {
-  "schema": "qikvrt_research_artifact_manifest_v1",
-  "scope": "This research package only; no global repository, publication or host acceptance.",
+  "schema": "qikvrt-research-scoped-manifest/v3",
+  "revision": 3,
+  "self_excluded": [
+    "ARTIFACT_MANIFEST.json",
+    "SHA256SUMS.txt"
+  ],
   "files": [
     {
       "path": "ARCHIVE_MODE.json",
@@ -14,8 +18,8 @@
     },
     {
       "path": "CLAIM_MATRIX.json",
-      "bytes": 3537,
-      "sha256": "6292df49f9da4c24d08d75b7e48cbf59bcca3d0d4a89380ea9074652835de790"
+      "bytes": 9335,
+      "sha256": "d221fcfc51cfa615966d59e1e0f4a4b19b9ed5deb7b00edbfe9c2a60ed8bf61f"
     },
     {
       "path": "CONTINUATION_SOURCE_RECONCILIATION.json",
@@ -24,23 +28,23 @@
     },
     {
       "path": "DOCUMENT_QA.json",
-      "bytes": 809,
-      "sha256": "355065f5bd648e518ccc54a784f26468e3bf05bff4713b6aec2bd0a8ba95ad2a"
+      "bytes": 859,
+      "sha256": "25669865f7d144e382c1ff7da9fb99716be96cf9874a3773a13c5a77e5875ce3"
     },
     {
       "path": "ENTRY_INDEX.json",
-      "bytes": 1057,
-      "sha256": "eee2f22186de686d021b725c96750c234b3ba9ad319ccfb134badf2c91134226"
+      "bytes": 423,
+      "sha256": "4c823edac3aceca2fb7de40c2a983c7a2fdc29deb0531eda1985c7527980278d"
     },
     {
       "path": "FACHARTIKEL.md",
-      "bytes": 14539,
-      "sha256": "f3951cb0d78db01d37da778722cda28e98837aa87ff2292f77c166d9d378a993"
+      "bytes": 18567,
+      "sha256": "0beb67b09ba077e5cf0d96a6b5bfb8ebf1889d74c535653f2f1ab44a200d35cf"
     },
     {
       "path": "KERNEL_PROOF_PLAN.json",
-      "bytes": 551,
-      "sha256": "170231430ed05e742cb52635003003bf755ed7bfa294ce69e72877040a9360d7"
+      "bytes": 981,
+      "sha256": "49e0029a89b4da7862d5004c5fd360569e588f454a06625fac0e3ddb281ce8c9"
     },
     {
       "path": "MANUAL_SOURCE_INSPECTION.json",
@@ -54,28 +58,28 @@
     },
     {
       "path": "PROSAARTIKEL.md",
-      "bytes": 8922,
-      "sha256": "22ab19a49f398d14a7f19f24fc8642177e1e4bc645397aaf45484dd759e584e3"
+      "bytes": 11202,
+      "sha256": "3c6d9f4a57e8b2795d98b002db89fbeb8f7ca4a9541debae44361ab0b8e9610a"
     },
     {
       "path": "PUBLICATION_ROUTING.json",
-      "bytes": 2190,
-      "sha256": "f2bd182738d40782965be3c4ab342ae3915fc29397070e5cc44a0394277ac605"
+      "bytes": 565,
+      "sha256": "c5cfe1b317dbd304e0db3c605721b396d9a85fa2dd94cf3eddd4bb5d284c4f9f"
     },
     {
       "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
-      "bytes": 326534,
-      "sha256": "f8fba47921768f10f1c8cd033dc0f13dd1fc29260ae18a0cdb79b47fd6f3b53c"
+      "bytes": 359646,
+      "sha256": "d6bfa63e6b348d3630db3602332f5057f4de991593fb7fd2ec92b05419719f93"
     },
     {
       "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
-      "bytes": 91030,
-      "sha256": "c9c13cc334339dd9d305f4dc29d5d82021843bfd282c6f4f02734856757a4e17"
+      "bytes": 119265,
+      "sha256": "73527b183b10ec6c2855ff24b3bd9046e8be8a7c8b20929d983e2db8e6044006"
     },
     {
       "path": "README.md",
-      "bytes": 4599,
-      "sha256": "f8985f7ce4e03237558240e1842365aff93ef800c9c4d0965b2f4cdc96f303c4"
+      "bytes": 3769,
+      "sha256": "31088a078e5630b3b9c7bf81f7022878e4de2fdcedd31c142d2b587b44c34b5c"
     },
     {
       "path": "REVISION_2.json",
@@ -83,9 +87,14 @@
       "sha256": "d58b598d5878cb7ed593392529250ca9966f1021099fda3500e44663365cdae7"
     },
     {
+      "path": "REVISION_3.json",
+      "bytes": 556,
+      "sha256": "be29aae107ff6b6e72551e53edd0092906f6245ba854b51b7a6ecd8925e880c6"
+    },
+    {
       "path": "SOURCE_GATE_PENDING.json",
-      "bytes": 920,
-      "sha256": "dca20750fa2bb9378f274fbc89016d0008b4c757c8367a227a3d0b1d3ee311d6"
+      "bytes": 1049,
+      "sha256": "dab78421d05d3729e24dd66508617e0811fa240c3866e08e3fc9a7e0a7d9489d"
     },
     {
       "path": "SOURCE_MANIFEST.json",
@@ -99,8 +108,8 @@
     },
     {
       "path": "ZENODO_CANDIDATE.json",
-      "bytes": 1252,
-      "sha256": "d260dee9b312076035e3ba2ccf44c4dfba1d44f286297a79cff30821f48ecbe8"
+      "bytes": 1319,
+      "sha256": "acf7de0b06d93108b63ce6657948e6902e6fcb2c29a738faae2f1d5b7f72bb9e"
     },
     {
       "path": "execution/ITERATION_1_RECOVERY.json",
@@ -203,6 +212,36 @@
       "sha256": "5d1a8463efb72f25a28831e86688fcf950763f0e62a4c65074a644d222521aee"
     },
     {
+      "path": "formal_evidence/PlanckRealEnergyDomain.lean",
+      "bytes": 3467,
+      "sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce"
+    },
+    {
+      "path": "formal_evidence/RECEIPT.json",
+      "bytes": 7236,
+      "sha256": "13d4a8533549c8d3993e349de7da1044bc65f7ef9fe3f2107dc10bae53fff3eb"
+    },
+    {
+      "path": "formal_evidence/RealEnergyStatements.lean",
+      "bytes": 1889,
+      "sha256": "3fd5220b2bb3808e5b6def6ca7eae0e16df2693c068355addc9698056543e1cf"
+    },
+    {
+      "path": "formal_evidence/RealErasureBudget.lean",
+      "bytes": 1533,
+      "sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63"
+    },
+    {
+      "path": "formal_evidence/SOURCE_LOCK.json",
+      "bytes": 2781,
+      "sha256": "0c2361374ebb90777422aeca7e45c60a5183967012acaf25eeabb22399a3c821"
+    },
+    {
+      "path": "formal_evidence/THEOREM_INVENTORY.json",
+      "bytes": 5379,
+      "sha256": "2e29bdcaa2ed87c1de01c2f27f88f3574e0b739b56ec7e706b80ec6cb75c8c30"
+    },
+    {
       "path": "package_bundle.py",
       "bytes": 2052,
       "sha256": "3e54f628a9519fb363a9a5fccc86c0f40b757f5ecbebb8e445319c11078c5bcb"
@@ -269,8 +308,8 @@
     },
     {
       "path": "render_articles.py",
-      "bytes": 7358,
-      "sha256": "09f310c070eeae86a91392bcde71b0b170cd9c774f42c24ccd88c10d1dcea464"
+      "bytes": 7612,
+      "sha256": "74d37a399b3075c706a4a6dab2d4f613bd8b2c7a6b82fa2f63e500f395fe076d"
     },
     {
       "path": "results/RESULTS.json",
@@ -292,7 +331,5 @@
       "bytes": 11575,
       "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
     }
-  ],
-  "file_count": 58,
-  "effect_ack_done": false
+  ]
 }

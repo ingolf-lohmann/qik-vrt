@@ -1,0 +1,12 @@
+{
+  "schema": "qikvrt-original-service-binding-observation/v1",
+  "observed_at": "2026-11-03T08:26:04.547726+00:00",
+  "original_registered_service": "http://127.0.0.1:8766",
+  "connection": "ConnectionRefusedError: [Errno 111] Connection refused",
+  "local_session_bus_binding_present": false,
+  "scope": "This execution container only; no inference that protected remote credentials are absent.",
+  "original_identity_replaced": false,
+  "credentials_exported": false,
+  "native_prepare_or_commit_attempted": false,
+  "next": "Attach the registered original PersonalAuth/OSSecretStore process and actual host-material consumer; then independently read productionEnvironmentReadback before any restore/install."
+}

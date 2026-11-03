@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_zenodo_candidate_v1",
-  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v1",
-  "title": "Energieäquivalenz und dynamische Raumzeit: reproduzierbare Modellprüfung",
+  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v3",
+  "title": "Energie\u00e4quivalenz und dynamische Raumzeit: reproduzierbare Modellpr\u00fcfung",
   "creators": [
     {
       "name": "Lohmann, Ingolf"
@@ -23,7 +23,7 @@
     "Landauer principle"
   ],
   "status": "DRAFT_NOT_PUBLISHED",
-  "authorization": "Owner research/publication instruction recorded; universal-proof condition not met. No claim of exact-artifact publication acceptance.",
+  "authorization": "Standing Owner research/publication authorization retained. Corrected final candidate and exact upload decision remain separate under the original v2 contract. No production mutation performed.",
   "publication_preconditions": [
     "Actual scientific scope reviewed: conditional model test, no confirmed universal law.",
     "Repository candidate promoted under applicable exact-head gates.",
@@ -33,5 +33,5 @@
   "zenodo_mutation_performed": false,
   "doi": null,
   "source_gate": "PENDING_ORIGINAL_SCRIPT_AND_PUBLIC_BYTE_VERIFIED_ARCHIVE",
-  "revision": 2
+  "revision": 3
 }
