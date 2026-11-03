@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "Owner-authorized repair, Ingolf Lohmann, 3 November 2026.\n\nAt Main 40fa8eb1a6b413801ba8554dca35f915d54316c7 the live ai_handoff.py --client-action path admits mutations without an explicit specification basis and does not require fresh complete author/version inventories for currentness assertions. The pure evaluator still names Draft-01 while the closed wire adapter/profile names Draft-03; the normative decision kernel is unchanged, so that label alone is not evidence of algorithm drift. The publication index also identifies an unresolved HTTP-01 archive companion; it must not be silently adopted or treated as an EAP core successor.\n\nAcceptance: extend the existing live preflight, preserve read-only recovery and historical receipt validation, require exact-subject historical basis or fresh reviewed primary inventories for current claims, reject missing/stale/cached/truncated/unreviewed/wrong-revision/substituted evidence, and run failure-injection plus existing regression checks. Bind source acceptance to exact-head native CI and Main integration. All-client adoption, source authentication, external completeness and productive runtime acceptance remain separately evidenced duties; closing this bounded source defect must not claim universal zero recurrence.\n\nPrepared candidate: fix/specification-currentness-preflight-20261103, HEAD 83be272a7d4e3f2e48bde9d7a4d784dc6fcbd4d6 / TREE 92f59000c3d65fce86933253030fca525539a581. Local 214 targeted tests and 46/46 tool-cache declarations pass. Full native CI and independent full-tree regeneration are pending.",
+  "created_at": "2026-11-03T09:13:37Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/677",
+  "issue_number": 677,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Require explicit specification basis before live mutations and currentness claims",
+  "updated_at": "2026-11-03T09:13:37Z"
+}
