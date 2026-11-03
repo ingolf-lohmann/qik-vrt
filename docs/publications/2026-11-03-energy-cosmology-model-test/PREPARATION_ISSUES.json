@@ -1,0 +1,62 @@
+{
+  "schema": "qikvrt_preparation_issue_log_v1",
+  "issues": [
+    {
+      "operation": "snapshot materialization",
+      "result": "PROCESS_NOT_STARTED",
+      "error": "Argument list too long",
+      "repair": "bounded 16000-character chunks; source hashes checked"
+    },
+    {
+      "operation": "reused local preflight files",
+      "result": "SOURCE_BINDING_MISMATCH",
+      "error": "one appended LF changed four Git blobs",
+      "repair": "copied into own snapshot; removed one LF only after exact Main blob match; original files untouched"
+    },
+    {
+      "operation": "large global manifest",
+      "result": "FETCH_UNAVAILABLE",
+      "error": "contents route rejected large file",
+      "repair": "existing Git blob route returned complete manifest"
+    },
+    {
+      "operation": "first result JSON retention",
+      "result": "PATH_REUSED_BY_ITERATION_2",
+      "repair": "original stdout and source retained; replay reproduced original result SHA256; explicitly labelled as replay"
+    },
+    {
+      "operation": "freeze script construction",
+      "result": "NOT_EXECUTED",
+      "error": "ReferenceError: prefix is not defined in fresh isolate",
+      "repair": "bound explicit repository prefix before construction"
+    },
+    {
+      "operation": "initial external bootstrap reads",
+      "result": "PREFLIGHT_ORDER_GAP",
+      "scope": "read-only source and capability discovery before exact local preflight was recovered",
+      "repair": "exact original checker and policy recovered; all forward reads/writes use its admitted route; no early repository or host mutation"
+    },
+    {
+      "operation": "candidate text transfer",
+      "result": "BYTE_MISMATCH_DETECTED_BEFORE_REMOTE_WRITE",
+      "error": "read_text translated original CSV CRLF to LF",
+      "repair": "Read exact bytes then decode UTF-8; original CSV files unchanged; SHA256 and Git blob guard rechecked."
+    }
+  ],
+  "revision_2_additional_observations": [
+    {
+      "issue": "Prosa source appendix absent",
+      "repair": "Four explicit locators added; old missing-source regression and corrected text/PDF links checked."
+    },
+    {
+      "issue": "Original source gate script not retrievable",
+      "repair": "Original gate remains PENDING; manual URI checks explicitly separate."
+    },
+    {
+      "issue": "One partially materialized original candidate AI file detected by archived hash mismatch",
+      "observed_bytes": 28031,
+      "expected_bytes": 31969,
+      "repair": "Rewritten from retained exact REST source; all22 archived contract hashes now match. No execution or policy acceptance before exact match; cause of incomplete local materialization not established."
+    }
+  ]
+}

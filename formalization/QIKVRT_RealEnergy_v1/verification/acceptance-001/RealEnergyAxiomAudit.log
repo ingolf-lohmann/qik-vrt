@@ -1,0 +1,12 @@
+'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -433,6 +433,49 @@ Python und C90. Zahlenvertrag, native Assembly-Ausgabe und Messgrenzen stehen in
 
 
 
+## `README_REAL_ENERGY_COMPLETION.md`
+
+# QIK-VRT RealEnergy: geprüfter Forschungs- und Verbraucherkandidat
+
+Stand: 03.11.2026. Auftrag: Ingolf Lohmann, bestehender Arbeitsring de5f082b. Ausarbeitung und Prüfung: OpenAI Codex.
+
+## Ergebnis
+
+Das separate Lake-Paket ist tatsächlich gelockt und gebaut. Acht ursprüngliche Sätze über reelle Energiegrößen wurden erneut kernelgeprüft; acht zusätzliche Aussage-/Beweis-Bindungen und beide vollständigen Axiomaudits wurden geprüft. Vier falsche mathematische Aussagen wurden verworfen. Drei Prüferselbsttests unterscheiden gültige Quellen von veränderten Quellen und einem fehlenden Compiler. Das ursprüngliche Std-only-Paket bleibt unverändert.
+
+Die Fachfassung hat sieben, die Prosafassung fünf Seiten. Beide enthalten den neuen formalen Nachweis und den zeitlichen Geltungsbereich. Alle zwölf Seiten wurden visuell geprüft; je neun Quellen bzw. Nachweise sind bytegleich eingebettet. Die bestehende FLRW-Rechnung mit 48 Kontrollen, Quellcode und ursprünglichen Rohlogs ist erhalten.
+
+## Lesen und ausführen
+
+1. `docs/publications/2026-11-03-energy-cosmology-model-test/README.md`
+2. Fachartikel/PDF, Prosa/PDF und `CLAIM_MATRIX.json` im selben Verzeichnis
+3. `formalization/QIKVRT_RealEnergy_v1/README.md`
+4. `formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/RECEIPT.json`
+5. `evidence/real-energy-20261103/` und `CHANGE_NOTICE.md`
+
+Das eigene Paket rekonstruiert mathlib aus dem unveränderten, hashgebundenen Originalarchiv. Der vollständige Original-Dateibaum und die acht transitiven Git-Revisionen sind gebunden. `vendor/` und `.lake/` werden rekonstruiert und nicht als Quellenpayload verteilt. Die Bootstrap-Prüfung lief sowohl mit vorhandenem Quellbaum als auch in einem frischen Verzeichnis erfolgreich.
+
+Der bestehende Manuskript-Workflow enthält den additiven Verbraucher. Native Läufe 41616011235 (Head 7a67d924) und 41616823386 (Head c71f0699) waren erfolgreich; der zweite emittierte zusätzlich den vollständigen Originalprüferbeleg in sein Joblog. Acht ursprüngliche Sätze und acht gesonderte Aussagebindungen wurden dort geprüft, vier falsche Aussagen verworfen. Das unveränderte Prüferfeld `native_CI=NOT_EXECUTED` beschreibt den lokalen Prüfer selbst; die zusätzliche Publikationsbindung dokumentiert den unabhängig zurückgelesenen erfolgreichen nativen Lauf. Keine ZIP-Artefakt-Bytegleichheit wird aus der Rekonstruktion des JSON-Standardausgabestroms abgeleitet.
+
+PR679 integriert den Forschungszweig. Der Konflikt mit Main b1952c6c wurde durch einen Commit mit beiden geordneten Eltern gelöst. Vollständige CI und Review bleiben gesonderte Voraussetzungen. Ein separater Review-Automat erhielt HTTP403; dieses Ergebnis wird nicht als fachliche Ablehnung oder fehlende Owner-Freigabe umgedeutet.
+
+Das neue Quellenarchiv und der v2-Publikationsumschlag liegen unter `source_archive/`. Der originale v2-Prüfer bestätigt elf Aussagen, dreizehn Belegartefakte und den geschlossenen Satz von sechzehn Upload-Dateien. Der Quellenkandidat wurde mit exakten Downloadlinks an den Owner zurückgegeben. Die allgemeine Publikationsfreigabe ist erhalten; für diesen neu zurückgegebenen Archivkandidaten ist noch kein späteres kanonisches Upload-Ereignis verzeichnet. Der Publisher wurde lokal bis zu genau diesem fehlenden Ereignis geprüft und führte keine Produktionsmutation aus.
+
+## Offen
+
+Vollständige CI, unabhängige Checker, Review-/Main-Aufnahme, die spätere bytegebundene Archivfreigabe und die tatsächliche Veröffentlichung sind offen. Der ursprüngliche Quellenprüfer wurde unverändert aus der vorhandenen Versionshistorie zurückgewonnen und ausgeführt. Die vier externen Quellen bestehen die Prüfung in allen fünf Text-/PDF-Formaten. Das vollständige Gate bleibt bis zur eigenen öffentlichen Quellenarchivierung auf FAIL; dies wird nicht durch einen Teil-PASS ersetzt.
+
+Die Originalhost-/SSO-Bindung ist hier nicht verfügbar. Der registrierte Originaldienst unter 127.0.0.1:8766 ist aus diesem Ausführungscontainer nicht erreichbar; daraus wird kein Fehlen geschützter Eingaben beim entfernten Dienst abgeleitet. Eine frische, unabhängig bytegeprüfte Beobachtung von raumzeitterminal.de liefert HTTP 525. Installation, Neustart/Persistenz, HTTPS und produktiver EAP-Effekt werden nicht behauptet. Alle früheren Publisher-/Quota-, Mirror-, R2- und November-2-Archivpflichten bleiben erhalten.
+
+`EFFECT_ACK_DONE` ist unbestätigt. Dieses Paket schließt den konkret beschriebenen lokalen Verbrauchernachweis und die neue Entwurfsfassung, nicht die vollständige Produktivierung oder wissenschaftliche Veröffentlichung.
+
+## Integrität
+
+`BUNDLE_MANIFEST.json` bindet den scoped Payload. Die globalen drei Integritätsausgaben und die beiden scoped Integritätsdateien selbst sind zur Vermeidung von Selbstreferenzen aus diesem Payloadmanifest ausgeschlossen. `REPOSITORY_FILE_MANIFEST.json`, dessen abgesetzter SHA-256 und `SHA256SUMS.txt` werden aus der exakt gelesenen unveränderten Basis und den tatsächlichen Kandidatenbytes inkrementell materialisiert. Das ist keine Behauptung eines vollständigen lokalen Main-Testlaufs.
+
+`python3 package_completion.py` erstellt das reproduzierbare ZIP außerhalb dieses Verzeichnisses. Die ursprünglichen hochgeladenen ZIP-Bytes sind unter den Belegen erhalten. Code- und Textlizenzen, Ursprungszuordnung und die eigenen Lizenzen aller Drittkomponenten bleiben bestehen.
+
+
 ## `docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md`
 
 <!--
@@ -3412,92 +3455,6 @@ Status: `PASS_REQUESTED_BY_OWNER_INSTALLER`
 The Seed reads only authorized known Node entries. The Seed writes only to the Seed repository. Nodes write only to their own Node repository. No global scanning, no self propagation, and no remote mutation without authorization are part of this audit surface.
 
 
-## `docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md`
-
-# QIK-VRT Autonomous Mesh Operations
-
-4AV1 adds lifecycle hardening: renewal, heartbeat expiry, Seed status aggregation, Seed audit export, and a human readable dashboard.
-
-Core boundary: every repository writes only to itself. The Seed reads only authorized known Node URLs listed in `registry/KNOWN_NODE_REQUESTS.tsv`.
-
-# Seed identity and acceptance repair (2026-10-09)
-
-The node handshake, current registration request, Seed allowlist and executing
-Seed repository must describe the same identity. The lifecycle generator runs
-`tools/qikvrt_seed_common.py config-check` before writing health or renewal
-files. Changing only a repository label or URL is not a completed migration.
-
-The current request and handshake use `ingolf-lohmann/qik-vrt` as Seed. The
-previous Goldkelch acknowledgement is retained under `previous_acceptance`;
-the new identity starts as `PENDING_SEED_ACCEPTANCE`. Historical registry
-entries, aggregates and ledger records are preserved until fresh execution
-produces successor evidence. No July acceptance is relabelled as an October
-acceptance by another Seed.
-
-The existing acceptance workflow validates the current request, maintains
-and revalidates its output, and reuses the lifecycle Git Data publisher to
-create a reviewed Draft. That path requires native Code Owner enforcement,
-checks current Main before writes, permits only generated registry/evidence
-paths and the full integrity trio, creates a candidate ref without force,
-and reads back its exact commit/tree/PR. Artifacts and Drafts are not Main
-publication. Generated pending acknowledgement remains CONTINUE.
-
-After reviewed Seed output is published on Main, the existing node lifecycle
-workflow executes `tools/qikvrt_seed_common.py acknowledge`. This performs
-bounded GETs of the Seed Main ref, index and node entry at that exact commit,
-then reads the ref again. It rejects wrong identities, legacy schemas,
-duplicate node entries, a mismatched request hash, stale/future observations
-and ref drift before changing the acknowledgement. The resulting v2 record
-binds the accepted entry/index hashes and the actual acceptance run. Seed
-maintenance checks the acknowledgement against its current accepted entry;
-an invented status string does not activate a node.
-
-Lifecycle telemetry uses the existing `qikvrt/node-lifecycle` transport and
-separate reviewed persistence. It never pushes Main directly. Source and
-historical evidence remain digest-bound in the unchanged integrity generator;
-scheduled observations no longer invalidate Main by an unreviewed write.
-The regression suite includes stale/copy/repoint/drift controls, proof-hash
-and acceptance-run mismatch, no-write governance failures, replay, exact-tree
-Draft readback, unrelated-path rejection and ambiguous-response handling.
-
-These controls protect the tested execution paths. Privileged manual changes,
-future defects, provider outages and missing review/admission cannot be ruled
-out universally. A Mesh registration does not establish a running transputer,
-public domain delivery, or general EFFECT_ACK_DONE.
-
-
-## `docs/QIKVRT_COMMERCIAL_OFFERING.md`
-
-<!--
-SPDX-License-Identifier: CC-BY-NC-ND-4.0
-Copyright (c) 2026 Ingolf Lohmann.
--->
-
-# QIK-VRT commercial licensing and services
-
-Current QIK-VRT-controlled software identified as
-`PolyForm-Noncommercial-1.0.0` is publicly licensed for the permitted
-noncommercial purposes defined by that standard license. Ordinary commercial
-use is reserved and requires a separate written commercial license from the
-rights holder.
-
-A separate agreement may cover one or more of:
-
-- commercial software use or integration;
-- hosted or managed operation;
-- implementation, support, training, and evidence preparation;
-- service levels, warranties, or indemnities;
-- trademark, certification, or endorsement rights.
-
-Earlier versions or files validly received under Apache-2.0 remain usable under
-their original Apache-2.0 grants. Documentation identified as
-CC-BY-NC-ND-4.0 and third-party material retain their own license scopes.
-
-Repository access, a technical test, an operational authorization, or silence
-does not create a commercial license. Any commercial permission must be
-separate and in writing.
-
-
 ## `docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md`
 
 # QIK-VRT GitHub App Target Blueprint
@@ -3527,49 +3484,13 @@ stale_count: 0
 HTML dashboard: docs/qikvrt_mesh_dashboard.html
 
 
-## `docs/QIKVRT_OPEN_MULTI_NODE_ARCHITECTURE.md`
+## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`
 
-# QIK-VRT Open Multi-Node Architecture 4AV1
+# QIKVRT 4AW Role Marker
 
-4AV1 removes the fixed additional-node count from 4AV. The Seed keeps an open node registry. Future Nodes are added by appending authorized request rows under `registry/node_request_queue/*.tsv` or `registry/KNOWN_NODE_REQUESTS.tsv`.
+Role: seed
 
-This preserves the QIK-VRT boundary: no global scanning, no self-propagation, no foreign repository write. The Seed revalidates only known or explicitly queued Nodes.
+Commercial readiness package for QIK-VRT Trust Mesh.
 
-
-## `docs/README_DEPLOY_GITHUB_PAGES_DE.md`
-
-# QIK-VRT Homepage Deployment
-
-Dieses Paket publiziert eine GitHub-Pages-faehige Homepage unter `docs/`.
-
-## Standardziel
-
-- Repository: `Goldkelch/qik-vrt`
-- Branch: `main`
-- Pfad: `docs/`
-- Startseite: `docs/index.html`
-
-## GitHub Pages
-
-Repository Settings -> Pages -> Source: Deploy from a branch -> Branch `main` -> Folder `/docs`.
-
-## Kognitionskonsole
-
-- Lokaler Modus: funktioniert direkt im Browser ohne Token.
-- GitHub-Models-Modus: Nutzer gibt eigenen Token mit `models:read` ein.
-- Oeffentlicher No-Token-KI-Betrieb: naechste Stufe ueber GitHub App oder Server-Proxy.
-
-## Status
-
-Version: `QIKVRT_V2_13_4AX1`
-Referenzlauf: `4AV1_20260708T174034Z_709544`
-
-
-## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
-
-# Exact-head verification trigger
-
-This file intentionally triggers the branch-bound exact-head verification workflow after the workflow definition itself has been materialized.
-
-It carries no scientific claim and no external effect.
+Reference run: 4AV1_20260708T174034Z_709544
 

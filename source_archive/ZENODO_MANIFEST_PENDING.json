@@ -1,0 +1,123 @@
+{
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "state": "publish",
+  "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "c71f0699e2e9feb22ce4a4d1d1ab860eae6de62c",
+  "metadata": {
+    "title": "QIK-VRT: Quellen, reelle Energieschicht und numerisches FLRW-Modell",
+    "upload_type": "dataset",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "description": "Reproduzierbare Quellen und ursprüngliche Prüfprotokolle zu acht bedingten reellen Energiesätzen mit acht Aussagebindungen, vier falschen Kontrollaussagen und einem ausdrücklich vorgegebenen numerischen FLRW-Modell. Keine neuen physikalischen Messdaten und kein Nachweis emergenter physikalischer Raumzeit. Begleitarchiv zu Ein virtuelles Universum auf dem Prüfstand. Code: PolyForm Noncommercial 1.0.0; Texte: CC BY-NC-ND 4.0; Drittkomponenten behalten ihre eigenen Lizenzen.",
+    "access_right": "open",
+    "license": "cc-by-nc-nd-4.0",
+    "prereserve_doi": true,
+    "language": "deu",
+    "keywords": [
+      "QIK-VRT",
+      "Lean",
+      "reproducibility",
+      "FLRW",
+      "energy accounting"
+    ],
+    "version": "2026-11-03"
+  },
+  "files": [
+    {
+      "path": "source_archive/README.txt",
+      "name": "README.txt",
+      "git_blob_sha": "c6d1ea0e5fae7fc4383bace52078b55164af606b"
+    },
+    {
+      "path": "source_archive/QIKVRT_Quellen_und_Modell_20261103.zip",
+      "name": "QIKVRT_Quellen_und_Modell_20261103.zip",
+      "git_blob_sha": "eacf692c5d5875da9ee2530df7c8f5b849876007"
+    },
+    {
+      "path": "source_archive/CLAIM_MATRIX.json",
+      "name": "CLAIM_MATRIX.json",
+      "git_blob_sha": "1a07e4580b929cb39bb60aa5ea4792310d986eca"
+    },
+    {
+      "path": "source_archive/KERNEL_RECEIPT.json",
+      "name": "KERNEL_RECEIPT.json",
+      "git_blob_sha": "9985595aca4ee8615fad00b7f2d91c61dc01ad14"
+    },
+    {
+      "path": "source_archive/NATIVE_RECEIPT_STDOUT.json",
+      "name": "NATIVE_RECEIPT_STDOUT.json",
+      "git_blob_sha": "065289cdcf98e5cc3e414b9bf0f892b6c891cb8b"
+    },
+    {
+      "path": "evidence/real-energy-20261103/native_run_41616823386.log",
+      "name": "native_run_41616823386.log",
+      "git_blob_sha": "8b6a9b8ef3065b693cae271aa3b4ea578c51c646"
+    },
+    {
+      "path": "evidence/real-energy-20261103/NATIVE_RUN_41616823386.json",
+      "name": "NATIVE_RUN_41616823386.json",
+      "git_blob_sha": "9993ae5b62b1c9aa6d86b4a26c61c6784a4f54be"
+    },
+    {
+      "path": "source_archive/SOURCE_FILES.json",
+      "name": "SOURCE_FILES.json",
+      "git_blob_sha": "f9e5f0ca45ad9a0b0e38c270ccd2152f95ca1d92"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/results/RESULTS.json",
+      "name": "RESULTS.json",
+      "git_blob_sha": "31273c5d23ec3b3b8f311070c0a87e57eac627a9"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/RUN-002.json",
+      "name": "RUN-002.json",
+      "git_blob_sha": "26994946483ae4e88a6318cc7f3dcdba80ea81ab"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/run_experiment.py",
+      "name": "run_experiment.py",
+      "git_blob_sha": "8dce573ee3c9f82d0e2d77128fc4f1eec4880296"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean",
+      "name": "PlanckRealEnergyDomain.lean",
+      "git_blob_sha": "afab4e05435f26ca0d8f5440a3ca47f5210b1fac"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealErasureBudget.lean",
+      "name": "RealErasureBudget.lean",
+      "git_blob_sha": "209681e2ffd8272e2480fed7aa75334f69933831"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean",
+      "name": "RealEnergyStatements.lean",
+      "git_blob_sha": "e870bf8b7f9b555da6995f6c9a7c9bf471c7a34c"
+    },
+    {
+      "path": "source_archive/PREPUBLICATION_RETURN_RECEIPT.json",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "git_blob_sha": "9f984bf5068c018e2657dd33cf0dda83712acdc6"
+    },
+    {
+      "path": "source_archive/MACHINE_PROOF_BUNDLE.json",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "git_blob_sha": "792d21e71d59a774d373826a79cacff992dd5afc"
+    }
+  ],
+  "evidence_path": "source_archive/zenodo-publication.json",
+  "machine_proof": {
+    "path": "source_archive/MACHINE_PROOF_BUNDLE.json",
+    "git_blob_sha": "792d21e71d59a774d373826a79cacff992dd5afc",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "owner_authorization": {
+    "path": "source_archive/OWNER_AUTHORIZATION_PENDING.json",
+    "bytes": 6851,
+    "sha256": "207c973cbc0cf25939ab13760682f17ad5365a0aa437d849f55be5ca5e915401",
+    "git_blob_sha": "f29d48f650a69ef3cf490f4e449fcc06eddd5916"
+  }
+}

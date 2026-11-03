@@ -1,0 +1,19 @@
+{
+  "schema": "qikvrt_research_archive_mode_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "branch": "publication/energy-cosmology-20261103",
+  "intent": "Durable research candidate and source checkpoint only.",
+  "baseline_head": "40fa8eb1a6b413801ba8554dca35f915d54316c7",
+  "baseline_tree": "cd81338b400104452a666873d1fe6c02e996b3a3",
+  "workflow_inventory": {
+    "exact_head": "40fa8eb1a6b413801ba8554dca35f915d54316c7",
+    "files_checked": 89,
+    "create_event_count": 0,
+    "quoted_on_workflow_also_inspected": true
+  },
+  "commit_instruction": "[skip ci]",
+  "reason": "Known selectorless workflow_run review publisher remains an open causal quota issue; archive must not start that run fanout.",
+  "native_full_CI": "NOT_RUN_FOR_THIS_CANDIDATE",
+  "merge_or_production_admission": false,
+  "resume_native_verification": "After original publisher d2a4c871 is repaired and exact-head CI is safely admitted. No skip instruction may establish green native acceptance."
+}
