@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt_document_qa_v1",
+  "documents": [
+    {
+      "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
+      "pages": 5,
+      "bytes": 326534,
+      "attachments_byte_verified": 3,
+      "page_images_rendered": true,
+      "visual_review": "all final pages inspected; no clipping or empty last page"
+    },
+    {
+      "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
+      "pages": 3,
+      "bytes": 86300,
+      "attachments_byte_verified": 3,
+      "page_images_rendered": true,
+      "visual_review": "all final pages inspected; no clipping or empty last page"
+    }
+  ],
+  "numeric_source": "results/RESULTS.json",
+  "new_physics_claim": false
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "qikvrt_zenodo_candidate_v1",
+  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v1",
+  "title": "Energieäquivalenz und dynamische Raumzeit: reproduzierbare Modellprüfung",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "OpenAI Codex",
+      "type": "Other"
+    }
+  ],
+  "language": "deu",
+  "license": "cc-by-nc-nd-4.0",
+  "keywords": [
+    "QIK-VRT",
+    "FLRW",
+    "energy accounting",
+    "reproducibility",
+    "Landauer principle"
+  ],
+  "status": "DRAFT_NOT_PUBLISHED",
+  "authorization": "Owner research/publication instruction recorded; universal-proof condition not met. No claim of exact-artifact publication acceptance.",
+  "publication_preconditions": [
+    "Actual scientific scope reviewed: conditional model test, no confirmed universal law.",
+    "Repository candidate promoted under applicable exact-head gates.",
+    "Existing v2 publication manifest and authorization bound to final file hashes.",
+    "Original protected zenodo-production publisher admitted and actual public bytes read back."
+  ],
+  "zenodo_mutation_performed": false,
+  "doi": null
+}

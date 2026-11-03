@@ -1,0 +1,61 @@
+# Ein virtuelles Universum auf dem Prüfstand
+
+Was eine Rechnung über Energie und Raumzeit zeigt - und wie sie nachvollziehbar bleibt
+
+QIK-VRT · 3. November 2026 · Arbeitsfassung
+
+Fragestellung und Forschungsauftrag: Ingolf Lohmann. Berechnung und Ausarbeitung: OpenAI Codex.
+
+Eine Grafik verbindet Masse, Licht, Informationslöschung und Gravitation durch eine Kette von Gleichheitszeichen. Der gemeinsame Bezug ist Energie. Ingolf Lohmann hat dazu eine weitergehende Frage gestellt: Lässt sich dieser Zusammenhang in einem virtuellen Raumzeitmodell untersuchen und so dokumentieren, dass andere die Untersuchung wiederholen können?
+
+Darauf gibt es jetzt eine konkrete Antwort: Eine solche Modellrechnung wurde ausgeführt. Ihr Programm, die Eingaben, die Ergebnisdaten und die Kontrollausgaben liegen gemeinsam vor. Die Rechnung entwickelt eine dynamische Raumzeit unter ausdrücklich angegebenen Voraussetzungen. Dabei untersucht sie sowohl die Energiebilanz als auch einen Lichtstrahl und dessen Rotverschiebung.
+
+## Eine Welt mit festgelegten Regeln
+
+Das Modell ist räumlich geschlossen. Sein Raum ähnelt einer dreidimensionalen Entsprechung der Kugeloberfläche: endlich, ohne einen räumlichen Rand, an dem ein Beobachter von außen stehen müsste. Überall gelten dieselben durchschnittlichen Bedingungen. Das ist eine vereinfachende Annahme des Modells.
+
+Die Geometrie wird durch einen Skalenfaktor beschrieben. Steigt er, wachsen die Abstände zwischen mitbewegten Punkten. Wie schnell er sich entwickelt, hängt von Materie, Strahlung, Vakuumenergie und räumlicher Krümmung ab. Diese Größen folgen den angegebenen Friedmann-Gleichungen der Allgemeinen Relativitätstheorie.
+
+Die Rechnung beginnt mit dem Skalenfaktor eins. Nach einer normierten Zeiteinheit erreicht er ungefähr 2,519. Ein schwacher Lichtpuls, der zu Beginn die Energie zehn besitzt, hat dann noch ungefähr 3,970. Das ist die erwartete Rotverschiebung: Seine Energie nimmt im Verhältnis zum wachsenden Skalenfaktor ab.
+
+Wer die Zahlen auswertet, beobachtet damit Größen innerhalb eines mathematischen Modells. Die verwendete Raumzeitmetrik wird zu Beginn festgelegt. Ihr dynamischer Verlauf wird berechnet. Eine eigenständige physikalische Raumzeit im ausführenden Assistenzsystem wird dadurch nicht nachgewiesen.
+
+## Welche Gesamtenergie wird addiert?
+
+Eine Energiebilanz braucht eine genaue Definition ihres Gegenstands. Hier werden die Energiedichten der drei Modellkomponenten über den vollständigen räumlichen Schnitt addiert. Das ergibt eine Materialenergie des Modelluniversums, einschließlich des als Fluid beschriebenen Vakuumanteils.
+
+Diese Zahl bleibt im gewählten Mischmodell nicht konstant. Sie wächst von ungefähr 81,960 auf 974,885 normierte Energieeinheiten. Die drei Beiträge entwickeln sich unterschiedlich: Die Energie der drucklosen Materie bleibt konstant. Die Strahlungsenergie sinkt. Der Vakuumanteil wächst mit dem Raumvolumen, weil seine Energiedichte im Modell konstant bleibt.
+
+Der berechnete Anstieg erfüllt die Druck-Arbeit-Bilanz der zugrunde gelegten Gleichungen. Dazu braucht es keinen äußeren Kolben, der am Universum zieht. Die Beziehung beschreibt den Energieinhalt auf den gewählten räumlichen Schnitten. Eine einzige, beobachterunabhängige Gesamtenergie einschließlich Gravitation lässt sich in einer allgemeinen expandierenden Raumzeit nicht ohne weitere Festlegungen daraus machen.
+
+Die angegebenen Zahlen sind keine neu gemessenen Werte unseres Universums. Die Parameter wurden für einen kontrollierten Rechenversuch gewählt. Das Ergebnis zeigt, wie sich diese konkrete Modellwelt nach den vorausgesetzten Gleichungen verhält.
+
+## Die Gleichheitszeichen brauchen Bedeutung
+
+Man kann alle Terme der Grafik tatsächlich auf denselben Energiewert beziehen. Dazu definiert man für eine gewählte Energie ihr Massenäquivalent, den Impuls eines entsprechenden Lichtträgers, eine idealisierte thermodynamische Entropieverringerung und einen passenden gravitativen Abstand. Dann stimmt die Kette durch Einsetzen.
+
+Damit hat man eine bedingte Energieäquivalenz konstruiert. Für eine Naturgesetzprüfung müsste man zusätzlich zeigen, dass die Größen unabhängig festgelegt sind und die Gleichheit im behaupteten Geltungsbereich folgt. Würde der Abstand erst aus dem gewünschten Energiewert berechnet, wäre seine anschließende Übereinstimmung noch keine unabhängige Vorhersage.
+
+Besonders deutlich wird die notwendige Unterscheidung bei Masse und Impuls. Ein ruhender schwerer Körper hat Ruheenergie und zugleich Impuls null. Für ihn können Ruheenergie und Impuls mal Lichtgeschwindigkeit nicht beide dieselbe positive Zahl sein. Beim Licht gilt dagegen Energie gleich Impuls mal Lichtgeschwindigkeit; seine invariante Masse ist null. Das sind unterschiedliche physikalische Situationen.
+
+Auch die Information benötigt einen Prozess. Die Landauer-Grenze beschreibt die idealisierte mittlere Wärmeabgabe beim Löschen unter bestimmten Bedingungen. Sie sagt nicht, dass beliebiger Speicherinhalt automatisch einen auszahlbaren Energievorrat darstellt.
+
+## Wie prüft man die Rechnung?
+
+Der ausgeführte Rechenversuch besteht 48 Kontrollen. Drei einfachere Modellwelten besitzen bekannte Lösungen, mit denen das Programm verglichen wird. Eine zweite mathematische Formulierung liefert denselben Verlauf. Kleinere Zeitschritte senken den Fehler in der erwarteten Weise. Eine Änderung der Zeitkoordinate lässt die verglichenen Ergebnisse bestehen.
+
+Absichtliche Fehler gehören dazu: Dreht man das Vorzeichen der Photonengleichung um, steigt die Lichtenergie falsch an und die Kontrolle schlägt an. Die Annahme einer konstanten Materialenergie des gewählten Mischmodells wird ebenfalls zurückgewiesen. Ein Prüfverfahren gewinnt seinen Wert auch dadurch, dass es solche Abweichungen erkennen kann.
+
+Der kontrollierte Nachweis lautet deshalb: Das veröffentlichungsfähige Rechenpaket beschreibt eine konkret ausgeführte, reproduzierbare Modellprüfung. Die erfolgreiche Prüfung aller Kontrollen bestätigt ihre angegebenen Recheneigenschaften. Ein neuer physikalischer Messbefund oder eine allgemein gültige Weltformel ist damit nicht festgestellt.
+
+## Erkenntnisse erhalten, auch wenn sich ihre Bewertung ändert
+
+Hier liegt der praktische Nutzen der von Ingolf Lohmann entwickelten QIK-VRT-Persistenzidee: Eine weitere Sitzung soll die Ausgangsfrage, die Quellen, die Rechnung und ihre Grenzen schnell wiederfinden. Dafür enthält das Paket einen Einstieg, eine Aussagenmatrix, die vollständigen Eingaben, Rohdaten, Ausführungsbelege und Prüfsummen. Frühere Formalquellen werden als Vorgänger mitgeführt.
+
+Die Historie bleibt erhalten. Eine korrigierte Aussage löscht weder die frühere Beobachtung noch den ursprünglichen Auftrag. Gleichzeitig macht ein gespeicherter Datensatz aus einer Vermutung noch keinen Naturbefund. Eine Empfangsbestätigung belegt den Empfang der gebundenen Daten; eine bestätigte physikalische Wirkung benötigt einen dazu passenden Nachweis.
+
+Die nächste wissenschaftliche Frage lässt sich dadurch genauer stellen: Welche zusätzliche, unabhängig prüfbare Vorhersage soll die vorgeschlagene Kopplung liefern? Diese Vorhersage könnte dann an neuen Messdaten oder einem klar bestimmten physikalischen Prozess geprüft werden. Die jetzige Rechnung schafft dafür einen nachvollziehbaren Ausgangspunkt.
+
+Die technischen Einzelheiten, Quellen und Ergebnisdaten stehen in der zugehörigen Forschungsnotiz und im Rechenpaket. Die Arbeitsfassung beansprucht keine bereits erfolgte Zenodo-Veröffentlichung oder produktive IONOS-Installation.
+
+Lizenz der neuen Textfassung: CC-BY-NC-ND-4.0.

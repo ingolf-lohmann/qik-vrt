@@ -1,0 +1,79 @@
+{
+  "schema": "qikvrt_cosmology_model_claim_matrix_v1",
+  "date": "2026-11-03",
+  "claims": [
+    {
+      "claim_id": "EC-001",
+      "classification": "MATHEMATICAL_ARGUMENT_NOT_KERNEL_CHECKED",
+      "statement": "With invariant mass, the proposed positive same-system identity E=m0*c^2=p*c contradicts the energy-momentum relation.",
+      "evidence_refs": [
+        "FACHARTIKEL.md#1",
+        "results/RESULTS.json#checks"
+      ],
+      "scope": "Standard relativistic definitions; no statement about all alternative definitions."
+    },
+    {
+      "claim_id": "EC-002",
+      "classification": "CONDITIONAL_MATHEMATICAL_ARGUMENT_AND_NUMERICAL_TEST",
+      "statement": "An energy-equivalent mass, a massless carrier momentum, entropy reduction and a selected Newtonian distance can share a chosen energy value by explicit definitions.",
+      "evidence_refs": [
+        "FACHARTIKEL.md#2",
+        "results/RESULTS.json#constructed_equalities"
+      ],
+      "scope": "Distinct defined quantities; erasure reversibility and physical converters are not verified. Four examples also satisfy a necessary weak-field bound."
+    },
+    {
+      "claim_id": "EC-003",
+      "classification": "NUMERICAL_MODEL_TEST",
+      "statement": "The assumed closed FLRW model has a well-defined whole-slice material-energy integral and satisfies its integrated pressure-work relation.",
+      "evidence_refs": [
+        "run_experiment.py",
+        "results/RESULTS.json",
+        "results/closed_mixed_trajectory.csv",
+        "execution/RUN-002.json"
+      ],
+      "scope": "Illustrative parameters, normalized units, comoving slicing. Not global gravitational energy or observed Universe parameters."
+    },
+    {
+      "claim_id": "EC-004",
+      "classification": "CONDITIONAL_MATHEMATICAL_ARGUMENT_AND_NUMERICAL_TEST",
+      "statement": "If usable packet work is eta*E_gamma and both photon energy and bath temperature scale as 1/a, the Landauer-based bit ceiling is constant.",
+      "evidence_refs": [
+        "FACHARTIKEL.md#7",
+        "results/RESULTS.json"
+      ],
+      "scope": "Usable work and thermodynamic premises assumed; no erasure device or converter implemented."
+    },
+    {
+      "claim_id": "EC-005",
+      "classification": "NUMERICAL_MODEL_TEST",
+      "statement": "A dynamic numerical FLRW geometry, radial light path and photon redshift were computed and checked against controls.",
+      "evidence_refs": [
+        "results/RESULTS.json",
+        "results/closed_mixed_trajectory.csv"
+      ],
+      "scope": "Metric ansatz supplied at input; no emergence of Lorentz geometry from a nongeometric model."
+    },
+    {
+      "claim_id": "EC-006",
+      "classification": "NOT_DEMONSTRATED",
+      "statement": "The computation establishes an independently physical spacetime emerging inside the assistant.",
+      "evidence_refs": [
+        "results/RESULTS.json#internal_spacetime_emergence_demonstrated"
+      ],
+      "scope": "No such measurement or derivation was performed."
+    },
+    {
+      "claim_id": "EC-007",
+      "classification": "HISTORICAL_JOURNAL_REPORT_WITH_RECOVERED_SOURCES",
+      "statement": "Earlier work reports 14 Lean statements, 5 negative statements, and separate integer-budget checks.",
+      "evidence_refs": [
+        "prior_sources/",
+        "README.md"
+      ],
+      "scope": "Six sources recovered with exact prior hashes. No new kernel run; full historical raw logs not recovered."
+    }
+  ],
+  "new_empirical_evidence": false,
+  "scientific_novelty": "NOT_ESTABLISHED"
+}

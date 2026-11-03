@@ -1,0 +1,11 @@
+{
+  "schema": "qikvrt_cosmology_kernel_proof_plan_v1",
+  "current_new_kernel_status": "NOT_RUN",
+  "prior_original_module_sha256": "8c0ff578be57f0b18435189d711f11e94990e434fb31f9e00f1666ad0ddc1a23",
+  "remaining": [
+    "Formalize explicit positive real parameterization without conflating invariant and energy-equivalent mass.",
+    "Bind continuity and energy-integral theorems to declared fluid/metric assumptions.",
+    "Keep numerical solver verification and physical correspondence distinct."
+  ],
+  "physical_claim_from_type_checking": false
+}

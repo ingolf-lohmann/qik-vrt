@@ -1,0 +1,24 @@
+{
+  "schema": "qikvrt_research_entry_index_v1",
+  "research_id": "energy-cosmology-model-test-20261103",
+  "first_read": "README.md",
+  "technical_article": "FACHARTIKEL.md",
+  "plain_language_article": "PROSAARTIKEL.md",
+  "claim_matrix": "CLAIM_MATRIX.json",
+  "executable": "run_experiment.py",
+  "result": "results/RESULTS.json",
+  "reproduce": "python3 -B run_experiment.py --output results",
+  "source_sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac",
+  "checks": {
+    "passed": 48,
+    "total": 48
+  },
+  "baseline_authority": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "40fa8eb1a6b413801ba8554dca35f915d54316c7",
+    "tree": "cd81338b400104452a666873d1fe6c02e996b3a3"
+  },
+  "owner_work_record": "d385b867-360a-5794-8428-2df4b90c53fb",
+  "prior_source_checkpoint": "9a6a3f9d-967b-5bb2-a065-20261102e002",
+  "prior_audit": "edc3fb2e-4ac3-5d42-8bd9-1aab83406801"
+}

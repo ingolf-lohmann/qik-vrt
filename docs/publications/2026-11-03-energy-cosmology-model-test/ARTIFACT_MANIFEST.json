@@ -1,0 +1,268 @@
+{
+  "schema": "qikvrt_research_artifact_manifest_v1",
+  "scope": "This research package only; no global repository, publication or host acceptance.",
+  "files": [
+    {
+      "path": "ARCHIVE_MODE.json",
+      "bytes": 981,
+      "sha256": "cd52795825d6af4cc87e0a2235e203601fe5ba22db5fb2a38591ccf113782d28"
+    },
+    {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 3537,
+      "sha256": "6292df49f9da4c24d08d75b7e48cbf59bcca3d0d4a89380ea9074652835de790"
+    },
+    {
+      "path": "DOCUMENT_QA.json",
+      "bytes": 672,
+      "sha256": "697f55734dc26d8744409bc47cef1341b0694733759bc512a0e6d2a301e7baf0"
+    },
+    {
+      "path": "ENTRY_INDEX.json",
+      "bytes": 914,
+      "sha256": "04246ece674ee53a89811eee939c30235a3c3eb6c5885ea42c18809e965ec7ad"
+    },
+    {
+      "path": "FACHARTIKEL.md",
+      "bytes": 14539,
+      "sha256": "f3951cb0d78db01d37da778722cda28e98837aa87ff2292f77c166d9d378a993"
+    },
+    {
+      "path": "KERNEL_PROOF_PLAN.json",
+      "bytes": 551,
+      "sha256": "170231430ed05e742cb52635003003bf755ed7bfa294ce69e72877040a9360d7"
+    },
+    {
+      "path": "PREPARATION_ISSUES.json",
+      "bytes": 1916,
+      "sha256": "b41deb2818ee4965202ea443f389d93bba661379ac72731bfd719d6e0a83e40d"
+    },
+    {
+      "path": "PROSAARTIKEL.md",
+      "bytes": 7695,
+      "sha256": "1f38190732614a894d5ef29f04a1b3fa20984e20289797d7845c13b6e0e2ca86"
+    },
+    {
+      "path": "PUBLICATION_ROUTING.json",
+      "bytes": 2190,
+      "sha256": "3e8d5556ebfe4b09cb33d1c7fc9c4ce95952bdfc9cfed7c9a130d266324a5707"
+    },
+    {
+      "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
+      "bytes": 326534,
+      "sha256": "f8fba47921768f10f1c8cd033dc0f13dd1fc29260ae18a0cdb79b47fd6f3b53c"
+    },
+    {
+      "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
+      "bytes": 86300,
+      "sha256": "30fc885b9451ed2c08071fcb0cc8a0036af15bcdaa19a213bd1f5b174bce9568"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4333,
+      "sha256": "ff7c4f7512c31e5f26cf2a84efd491e6efeac91da94b4c54f753cc500be99c45"
+    },
+    {
+      "path": "WORKFLOW_TRIGGER_INVENTORY.json",
+      "bytes": 24455,
+      "sha256": "2c79f3c8507f802d879d3c679cfa42845f4630c2ce255b940738519758e74eb7"
+    },
+    {
+      "path": "ZENODO_CANDIDATE.json",
+      "bytes": 1158,
+      "sha256": "00121ebf69a862894792367fe066c9f88d172cecb1ba3f0c234a4add0b9266c3"
+    },
+    {
+      "path": "execution/ITERATION_1_RECOVERY.json",
+      "bytes": 371,
+      "sha256": "51d9eb7f704cbc824ec1362cdf89f1abc90f64f5c39a4c1c4852b71701ba2df0"
+    },
+    {
+      "path": "execution/QIKVRT_Energie_Raumzeit_Forschungsnotiz-render.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/QIKVRT_Energie_Raumzeit_Forschungsnotiz-render.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/QIKVRT_Virtuelles_Universum_Prosa-render.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/QIKVRT_Virtuelles_Universum_Prosa-render.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/RUN-002.json",
+      "bytes": 841,
+      "sha256": "6a464eff781877407a7fe3508e1f8010d10b883a6e68bc0026e23f2213030f99"
+    },
+    {
+      "path": "execution/RUN.json",
+      "bytes": 678,
+      "sha256": "097e515fdbbe6483346cf446cdfe4eeab673e180f4127cb8c6666aa2291a6f15"
+    },
+    {
+      "path": "execution/iteration-1-replay.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/iteration-1-replay.stdout",
+      "bytes": 896,
+      "sha256": "ec42341060ef79e88d5ed55e6c58c991b42a752fd68be12fa89096c8b0323b25"
+    },
+    {
+      "path": "execution/render-002.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/render-002.stdout",
+      "bytes": 123,
+      "sha256": "42e9084ca5c1c36ba2280cfc18e45305430c83d1e92d38985f64c7e31f08b5df"
+    },
+    {
+      "path": "execution/render.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/render.stdout",
+      "bytes": 123,
+      "sha256": "5bf4be737100d392b77e1307f94d391e35b17be79b40992a85564bf25e61b686"
+    },
+    {
+      "path": "execution/reproduced-iteration-1/RESULTS.json",
+      "bytes": 14149,
+      "sha256": "3a7551b924d3545dee31c3a1c7dcb2ff5ed07ed9a0a7c1ac1c33ee0d610a623e"
+    },
+    {
+      "path": "execution/reproduced-iteration-1/closed_mixed_trajectory.csv",
+      "bytes": 143244,
+      "sha256": "f757df1df19b6e93ac532130f538cabd90e59ed7fc9bf383b3f763763be0c37f"
+    },
+    {
+      "path": "execution/run-002.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/run-002.stdout",
+      "bytes": 896,
+      "sha256": "ea11f347753056439293d792341d26ff25bd00b2834c96242d3f937d469c1e42"
+    },
+    {
+      "path": "execution/run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/run.stdout",
+      "bytes": 896,
+      "sha256": "ec42341060ef79e88d5ed55e6c58c991b42a752fd68be12fa89096c8b0323b25"
+    },
+    {
+      "path": "execution/source-iteration-1.py",
+      "bytes": 11269,
+      "sha256": "5d1a8463efb72f25a28831e86688fcf950763f0e62a4c65074a644d222521aee"
+    },
+    {
+      "path": "package_bundle.py",
+      "bytes": 2049,
+      "sha256": "211af0bec736b2f30920f37f66f6e07e36c76d00f256670e6ad41d04a0785b18"
+    },
+    {
+      "path": "prior_sources/proof/IterativeEvidence.lean",
+      "bytes": 4210,
+      "sha256": "8c0ff578be57f0b18435189d711f11e94990e434fb31f9e00f1666ad0ddc1a23"
+    },
+    {
+      "path": "prior_sources/proof/negative/false_checker_success.lean",
+      "bytes": 108,
+      "sha256": "445e46f61062670df07daac763da414521fbd1e7068095891f1fe94a0cbc0956"
+    },
+    {
+      "path": "prior_sources/proof/negative/false_monotone_knowledge.lean",
+      "bytes": 128,
+      "sha256": "771458c2cf65b3355941be6980c2de95218a91eda9664acb7349b4fd3ff0ed38"
+    },
+    {
+      "path": "prior_sources/proof/negative/false_stale_success.lean",
+      "bytes": 99,
+      "sha256": "ea96a03266ffb3a06c630d3b7dd8b321461c98f4fc52d22a0241d02a380dd47e"
+    },
+    {
+      "path": "prior_sources/proof/negative/false_unconditional_budget.lean",
+      "bytes": 92,
+      "sha256": "a4439573d60a76eec3f0b2936c2c9a8f2fcef6aebb1f3c36f6bbb58a778d7211"
+    },
+    {
+      "path": "prior_sources/proof/negative/false_universal_energy.lean",
+      "bytes": 98,
+      "sha256": "4d606c0ee67ef788dd55de1dd21d4b7b2db0841e225c280d5e4bda3a0b6e92d7"
+    },
+    {
+      "path": "production_evidence/DOWNLOAD_RECEIPT.json",
+      "bytes": 469,
+      "sha256": "00ca47d042cb91efbe8cde773f04e48cdc42b754549b8b22b1d3bfa7522ae1a6"
+    },
+    {
+      "path": "production_evidence/HOST_BOUNDARY.json",
+      "bytes": 1248,
+      "sha256": "3f8f1b5b8a447e974280e678d7e23ed8903b133e8b9fd6b4fef88fce24d69cc8"
+    },
+    {
+      "path": "production_evidence/ORIGINAL_VERIFIER_RECEIPT.json",
+      "bytes": 818,
+      "sha256": "4e2fd6fc4f9fc3c2317c4b3e149d3a64ac1c2c9cd05fbe5ccc69c0ea9874ee33"
+    },
+    {
+      "path": "production_evidence/SOURCE_BYTE_VERIFICATION.json",
+      "bytes": 437,
+      "sha256": "cf643418f8c12fc4167aa2ef46b611ea5a618c3e8ac3dcfeab3663fdfdcad06d"
+    },
+    {
+      "path": "production_evidence/original-verify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "production_evidence/original-verify.stdout",
+      "bytes": 325,
+      "sha256": "fae3c440b2b231af1fd4ac45723a117c544d7642db609a4644af88e3ae624a2c"
+    },
+    {
+      "path": "render_articles.py",
+      "bytes": 7269,
+      "sha256": "858bc6c2aee7e68f9c975ac4a0b8ec9c4f89b06753a0d0cf750092a4a31a47b0"
+    },
+    {
+      "path": "results/RESULTS.json",
+      "bytes": 15250,
+      "sha256": "290f27a1940d951088b1e57adb107a80da710c283574f130372a515c93608006"
+    },
+    {
+      "path": "results/closed_mixed_trajectory.csv",
+      "bytes": 143244,
+      "sha256": "f757df1df19b6e93ac532130f538cabd90e59ed7fc9bf383b3f763763be0c37f"
+    },
+    {
+      "path": "results/model_overview.png",
+      "bytes": 215551,
+      "sha256": "08f854776d250d1179795282a46545cee44265aefcce2e9692f4136d11e618b5"
+    },
+    {
+      "path": "run_experiment.py",
+      "bytes": 11575,
+      "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
+    }
+  ],
+  "file_count": 52,
+  "effect_ack_done": false
+}
