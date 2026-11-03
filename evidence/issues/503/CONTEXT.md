@@ -2822,6 +2822,57 @@ Main integration, live Mirror ACK/reply, productive host acceptance and other-cl
 adoption. Preserve every predecessor obligation and original journal.
 
 
+## Specification currentness preflight — Owner correction 2026-11-03
+
+Before every new external action, use the existing
+`python3 -B tools/ai_handoff.py --client-action <action.json>` live preflight.
+It now rejects mutations without an explicit `specification_use` classification.
+Read-only retrieval may use `DISCOVERY_ONLY`; it permits no currentness claim.
+`HISTORICAL_EXACT` requires an empty `specification_claims` array and an explicit
+`specification_basis` with the exact action subject and a nonempty reason. This
+supports repairs against a frozen source without asserting newest-spec adoption.
+The basis must declare `scope=SOURCE_REPAIR_ONLY`. This mode is limited to
+exact-repository source-control/issue/PR routes or the existing private journal.
+Runtime effects, deployments, dispatches and other services cannot use it.
+
+For an assertion that specifications are current or completely considered, use
+`CURRENT`, list their stable IDs in `specification_claims`, and bind a
+`specification_review` object with schema `qikvrt-specification-review/v1`, the
+same subject and claims, integer UTC observation/expiry seconds and at most one
+hour of validity. Its three `channels` are `ietf`, `zenodo`, and `authority`.
+Each channel binds `locator`, `author_id`, integer `observed_utc`, `from_cache=false`,
+`truncated=false`, explicit `next=null`, integer `total`, and the complete `items`
+array. `verification` must be `DIRECT_PRIMARY_READBACK`. Retrieve all pages and
+validate the actual author identity before making that declaration.
+
+Each item has a unique stable `id`, `disposition` (`APPLY` or `NOT_APPLICABLE`),
+a substantive `reason`, and a bounded repository-relative `source_path` plus
+its exact original-byte `sha256`. Applicable items also bind `family`,
+`selected_revision` and `latest_revision`; the latter two must agree within the
+same work. Explicitly unresolved companions block a CURRENT claim. Later dates
+and companion revision numbers never silently replace a different core work.
+Failed discovery stays OPEN; use the retrieval/repair route to restore evidence.
+Never infer complete coverage from a first page, search hits or a remembered index.
+
+The existing gate validates the supplied bindings and bytes; it does not perform
+network discovery, authenticate the source, establish external completeness,
+prove semantic conformance or intercept calls made outside this preflight.
+Historical receipt validation retains its original semantics and is not a live
+permission route. New live actions must run the live CLI even after receipt PASS.
+Source integration, protected CI, caller adoption and actual productive effects
+require their own independently observed evidence. No universal zero-failure or
+all-node adoption claim follows from this guard. Run its failure-injection tests
+through the existing `make ai-runtime-contract` target.
+
+The pure EAP evaluator retains its historical Draft-01 provenance label and exact
+bytes, which the published scientific proof report binds. That label alone is
+not evidence of algorithm drift. The current closed wire adapter is explicitly
+Draft-03; its conformance suite compares the published revision's fields. Do not
+rewrite a frozen proof-bearing source merely to relabel its revision. Companion
+HTTP-01 remains an unresolved archive candidate until original bytes and changes
+are reviewed; it is not a replacement core revision.
+
+
 ## `docs/HUMAN_MACHINE_PROGRESS_STANDARD.md`
 
 # QIK-VRT Human–Machine Progress Standard
@@ -3485,67 +3536,6 @@ HTML dashboard: docs/qikvrt_mesh_dashboard.html
 This preserves the QIK-VRT boundary: no global scanning, no self-propagation, no foreign repository write. The Seed revalidates only known or explicitly queued Nodes.
 
 
-## `docs/QIKVRT_THREAT_MODEL.md`
-
-# QIK-VRT Threat Model Summary
-
-Primary risks:
-
-- leaked tokens
-- unauthorized workflow mutation
-- stale node heartbeat
-- false PASS claims from stale evidence
-- unauthorized expansion beyond known nodes
-
-Controls:
-
-- hidden local token prompt
-- no embedded token
-- run-id scoped evidence waits
-- known-node registry only
-- no global scanning
-- seed and node self-write boundaries
-
-
-## Safety/Security deployment assurance — Owner authorization, 19 October 2026
-
-QIKVRT and the Effect Acknowledgement Protocol are intended for Safety and
-Security applications as well. The requirements and source/applicability
-register is [QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1](../state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json).
-These are engineering requirements with open deployment acceptance, not
-certification, legal conformity or a verified physical installation.
-
-The existing five-state protocol and DONE-only ordinary-release rule remain
-the effect boundary. A received command, a transport ACK and a physical
-condition are separate claims. A physical adapter must bind the exact actuator,
-authorized transition, configuration and fresh observation evidence; it cannot
-claim a door is secured merely because a command or relay output was accepted.
-
-| Threat or dependency | Required assurance and acceptance |
-| --- | --- |
-| Cloud, identity, licensing or supplier outage | Declare an isolation interval; test local decisions, revocation/freshness rules, emergency access and vendor-independent recovery. |
-| Egress or alarm blocked by a remote gate | Bind a site-specific hazard analysis; retain separately admitted local safety paths and test fire, power loss and network loss together. No universal fail-open/fail-closed assumption. |
-| Forged, stale or conflicting physical feedback | Bind source, effect ID, policy and observation window; test replay, sensor conflict, stuck actuators and ambiguous responses. |
-| Reader bus or credential compromise | Test authenticated links, commissioning, key lifecycle and exact controller/reader/credential/firmware interoperability. |
-| Compromised or unsupported firmware | Require authenticated update provenance and compatibility; test isolated interrupted-update recovery and a verified forward-repair path. |
-| Partition, crash, takeover or full audit store | Reuse native durable journals/fencing; declare RTO and storage limits; prove the claimed workload's acknowledgement/replay and local audit behavior. |
-| Supplier assurance or legal scope overstated | Separate primary evidence, manufacturer claims and engineering derivation; retain exact scope, applicability and open evidence duties. |
-
-ASD's OT guidance is a useful assurance input, not EU legislation. Its
-publication does not establish QIKVRT compliance. The Gallagher T30 announcement
-is an unverified manufacturer approval claim and supplies a procurement
-evidence request, not a new QIKVRT dependency. IEC/SIA product/profile evidence
-does not establish the interoperability or safety of a whole installation.
-For EU CRA reporting, first determine the actual product and operator role;
-record the applicable awareness-based deadlines and responsible route without
-automatically sending a live notification.
-
-Every new material source change follows the register's change-intake process.
-Preserve older source identities and open tests; only bound acceptance evidence
-can close the corresponding deployment obligation. No additional executor,
-client timer or implicit IETF/Zenodo publication is introduced.
-
-
 ## `docs/README_DEPLOY_GITHUB_PAGES_DE.md`
 
 # QIK-VRT Homepage Deployment
@@ -3575,13 +3565,11 @@ Version: `QIKVRT_V2_13_4AX1`
 Referenzlauf: `4AV1_20260708T174034Z_709544`
 
 
-## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`
+## `docs/publications/2026-08-06-qce-superdeterminism-boundary/VERIFICATION_TRIGGER.md`
 
-# QIKVRT 4AW Role Marker
+# Exact-head verification trigger
 
-Role: seed
+This file intentionally triggers the branch-bound exact-head verification workflow after the workflow definition itself has been materialized.
 
-Commercial readiness package for QIK-VRT Trust Mesh.
-
-Reference run: 4AV1_20260708T174034Z_709544
+It carries no scientific claim and no external effect.
 

@@ -622,3 +622,13 @@ disabled. An immutable original intent precedes each admitted merge. Unknown
 effects permit readback only; missing verification is UNVERIFIED. Native
 source integration, unattended execution, runtime/SSO admission, host/domain
 acceptance and Zenodo publication each require their own fresh evidence.
+
+SPECIFICATION CURRENTNESS — OWNER CORRECTION 2026-11-03
+
+Before new external actions run the existing ai_handoff.py --client-action
+live preflight. Mutations require explicit DISCOVERY_ONLY/HISTORICAL_EXACT/
+CURRENT classification; DISCOVERY_ONLY is GET-only. Currentness assertions
+require fresh complete author inventories, exact source bytes and reviewed
+revisions through client_continuation.specification_review. Follow the contract
+in docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md. Historical receipt validation is
+not fresh live admission. This source rule proves no all-node enforcement.
