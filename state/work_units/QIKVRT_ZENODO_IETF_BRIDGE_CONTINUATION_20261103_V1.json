@@ -1,0 +1,77 @@
+{
+  "schema": "qikvrt-work-unit/v1",
+  "id": "QIKVRT_ZENODO_IETF_BRIDGE_CONTINUATION_20261103_V1",
+  "owner": "Ingolf Lohmann",
+  "implementation": "OpenAI Codex",
+  "basis": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "main": "6af367872a7de123e0bd1b341dbc7820002dd87b",
+    "tree": "7fc84c4cb17c4d3b3f7c9fd7a522f9dec8bf6cea"
+  },
+  "owner_instruction": {
+    "source": "authenticated_current_chat",
+    "utf8_bytes": 915,
+    "sha256": "42e9337bc59a70f3c0146885ef0c4dc6b4a70490f0333c328676e957cbf48d9c",
+    "scope": [
+      "repair_existing_Zenodo_credential_delivery",
+      "persist_and_publish_IETF_supplement",
+      "apply_accepted_contracts_to_existing_repository",
+      "use_existing_Mega_ST_bridge_for_IONOS_deployment"
+    ],
+    "authorization_retained": true,
+    "authorization_is_execution_evidence": false
+  },
+  "predecessors": [
+    {
+      "id": "7de55d50-f3e9-561b-930f-b3fc1ca9573c",
+      "version": 21
+    },
+    {
+      "id": "26a7ab30-111d-5501-8250-7b67c83707da",
+      "version": 6
+    },
+    {
+      "id": "03c93430-ee62-4223-a21c-6518d3442d93",
+      "version": 2
+    },
+    {
+      "id": "63ea72f9-d541-45ef-b0a7-ba51234703e5",
+      "version": 2
+    }
+  ],
+  "change": {
+    "source_recovery": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.xml",
+    "provenance": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.PROVENANCE.json",
+    "index": "docs/publications/index.json",
+    "existing_http00_adapter_retained": true
+  },
+  "observed_boundaries": [
+    {
+      "id": "ZENODO_ACCESS",
+      "state": "OPEN",
+      "evidence": "Original run 41637836620 attempt1 remains FAILURE; requested-zenodo maps secrets.ZENODO_ACCESS_TOKEN in zenodo-production. Registered original SSO/private request/provider-reference bindings are not attached in this execution context.",
+      "next_action": "Reconnect the registered original process and protected credential provisioner; inspect current Main, consumption and provider state, then resume the same original publisher."
+    },
+    {
+      "id": "IETF_SUBMISSION",
+      "state": "OPEN",
+      "evidence": "https://datatracker.ietf.org/submit/ states submission closure after 2026-11-02T23:59Z and reopening after 2026-11-14T23:59-08:00.",
+      "next_action": "After reopening, resolve exact candidate and first-submission revision admission; validate/render and use original submission path, then independently read back posting."
+    },
+    {
+      "id": "MEGA_ST_IONOS",
+      "state": "OPEN",
+      "evidence": "Native connection observed 2026-11-03T18:31:57.919Z: ready=false, ADMITTED_MESH_RUNTIME_ENDPOINT, raumzeitterminal.de HTTP525. No registered VM control endpoint observed here.",
+      "next_action": "Attach existing original host/VM control route; read actual VM state, then original deployment and independent service/restart/HTTPS/EAP readbacks."
+    }
+  ],
+  "boundaries": {
+    "source_only": true,
+    "new_publisher_or_executor": false,
+    "credentials_copied": false,
+    "runtime_deployed": false,
+    "ietf_submitted": false,
+    "zenodo_published": false,
+    "effect_ack_done": false
+  }
+}

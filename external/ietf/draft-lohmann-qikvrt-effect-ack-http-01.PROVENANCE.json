@@ -1,0 +1,46 @@
+{
+  "schema": "qikvrt-archived-ietf-source/v1",
+  "document": "draft-lohmann-qikvrt-effect-ack-http-01",
+  "source": {
+    "record_id": 21983644,
+    "doi": "10.5281/zenodo.21983644",
+    "record_url": "https://zenodo.org/records/21983644",
+    "file_url": "https://zenodo.org/api/records/21983644/files/draft-lohmann-qikvrt-effect-ack-http-01.xml/content",
+    "record_metadata_sha256": "ab7d37e16548f046d107c4ddacca0efc7ed6b79921766d6e2f7ee3ec6636402d",
+    "license": "CC-BY-4.0",
+    "creator": "Lohmann, Ingolf"
+  },
+  "artifact": {
+    "path": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.xml",
+    "bytes": 10307,
+    "sha256": "11fd502eeec40a017fab27572cb8e4cd59b6d0e1e4c68769aabe5a435dc34ac2",
+    "zenodo_checksum": "md5:5080bf4af4a07af8e07298801f1b6dc2",
+    "byte_preserved": true
+  },
+  "observation": {
+    "operation": "GET original HTTP01 XML",
+    "url": "https://zenodo.org/api/records/21983644/files/draft-lohmann-qikvrt-effect-ack-http-01.xml/content",
+    "observed_at": "2026-11-03T18:43:32.157943+00:00",
+    "status": 200,
+    "bytes": 10307,
+    "sha256": "11fd502eeec40a017fab27572cb8e4cd59b6d0e1e4c68769aabe5a435dc34ac2",
+    "md5": "5080bf4af4a07af8e07298801f1b6dc2",
+    "date": "Tue, 03 Nov 2026 18:43:36 GMT",
+    "age": null
+  },
+  "disposition": {
+    "repository_source_recovery": true,
+    "ietf_publication": "NOT_ESTABLISHED",
+    "runtime_adoption": "NOT_PERFORMED",
+    "wire_contract_change": false,
+    "effect_ack_done": false
+  },
+  "same_name_variant": {
+    "bytes": 15433,
+    "sha256": "52af75d0485ec2211411370c3aaecd8139059ea0421ca796357768d9d7361ed2",
+    "source_class": "historical_owner_file_materialization",
+    "relation": "DIFFERENT_BYTES_SAME_DOCUMENT_NAME",
+    "selected_for_this_recovery": false,
+    "boundary": "Neither filename equality nor size establishes equivalence, recency or replacement."
+  }
+}
