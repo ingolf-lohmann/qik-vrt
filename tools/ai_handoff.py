@@ -179,6 +179,104 @@ def github_graphql_fallback_allowed(action: dict[str, Any], policy: dict[str, An
         return False
 
 
+def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
+                               *, now: int | None = None) -> None:
+    """Live-preflight evidence contract, not authentication or source discovery.
+
+    Historical receipt validation remains historical. A live mutation must
+    explicitly choose an exact historical basis or a freshly reviewed inventory.
+    No clock, hash or caller declaration proves external inventory completeness.
+    """
+    claims = action.get("specification_claims", [])
+    if not isinstance(claims, list) or any(not isinstance(c, str) or not c for c in claims):
+        fail("SPECIFICATION_CLAIMS_INVALID")
+    use = action.get("specification_use")
+    if use is None and action.get("method") == "GET" and not claims:
+        use = "DISCOVERY_ONLY"
+    if use == "DISCOVERY_ONLY":
+        if action.get("method") != "GET" or claims:
+            fail("SPECIFICATION_DISCOVERY_CANNOT_RELEASE_OR_CLAIM_CURRENTNESS")
+        return
+    if use == "HISTORICAL_EXACT":
+        basis = action.get("specification_basis")
+        if (claims or not isinstance(basis, dict) or basis.get("subject") != subject
+                or not isinstance(basis.get("reason"), str) or not basis["reason"].strip()):
+            fail("SPECIFICATION_HISTORICAL_BASIS_INVALID")
+        return
+    if use != "CURRENT" or not claims or len(set(claims)) != len(claims):
+        fail("SPECIFICATION_USE_REQUIRED")
+    review = action.get("specification_review")
+    if (not isinstance(review, dict) or review.get("schema") != "qikvrt-specification-review/v1"
+            or review.get("subject") != subject or review.get("claims") != claims):
+        fail("SPECIFICATION_REVIEW_BINDING_INVALID")
+    clock = int(dt.datetime.now(dt.timezone.utc).timestamp()) if now is None else now
+    observed, expires = review.get("observed_utc"), review.get("valid_until_utc")
+    if (type(observed) is not int or type(expires) is not int
+            or not 0 <= observed <= clock < expires <= observed + 3600):
+        fail("SPECIFICATION_REVIEW_STALE_OR_FUTURE")
+    channels = review.get("channels")
+    if not isinstance(channels, list) or len(channels) != 3:
+        fail("SPECIFICATION_CHANNELS_INCOMPLETE")
+    names = set()
+    seen_documents = set()
+    for channel in channels:
+        if not isinstance(channel, dict):
+            fail("SPECIFICATION_CHANNEL_INVALID")
+        name = channel.get("name")
+        if name not in {"ietf", "zenodo", "authority"} or name in names:
+            fail("SPECIFICATION_CHANNEL_IDENTITY_INVALID")
+        names.add(name)
+        items = channel.get("items")
+        if (channel.get("from_cache") is not False or channel.get("truncated") is not False
+                or channel.get("next") is not None or "next" not in channel
+                or channel.get("verification") != "DIRECT_PRIMARY_READBACK"
+                or type(channel.get("total")) is not int or not isinstance(items, list)
+                or channel["total"] != len(items) or not items
+                or not isinstance(channel.get("author_id"), str) or not channel["author_id"]
+                or not isinstance(channel.get("locator"), str) or not channel["locator"]):
+            fail("SPECIFICATION_INVENTORY_INCOMPLETE_OR_UNVERIFIED")
+        stamp = channel.get("observed_utc")
+        if type(stamp) is not int or not observed <= stamp <= clock:
+            fail("SPECIFICATION_CHANNEL_STALE_OR_FUTURE")
+        ids = set()
+        for item in items:
+            if not isinstance(item, dict):
+                fail("SPECIFICATION_ITEM_INVALID")
+            identifier = item.get("id")
+            if not isinstance(identifier, str) or not identifier or identifier in ids:
+                fail("SPECIFICATION_ITEM_IDENTITY_INVALID")
+            ids.add(identifier)
+            if item.get("disposition") not in {"APPLY", "NOT_APPLICABLE"}:
+                fail("SPECIFICATION_ITEM_REVIEW_OPEN")
+            if not isinstance(item.get("reason"), str) or not item["reason"].strip():
+                fail("SPECIFICATION_ITEM_REASON_REQUIRED")
+            relative = item.get("source_path")
+            if (not isinstance(relative, str) or not relative or Path(relative).is_absolute()
+                    or ".." in Path(relative).parts):
+                fail("SPECIFICATION_SOURCE_PATH_INVALID")
+            path = ROOT / relative
+            try:
+                if (path.is_symlink() or not path.is_file()
+                        or not path.resolve().is_relative_to(ROOT.resolve())
+                        or path.stat().st_size > 8 * 1024 * 1024):
+                    fail("SPECIFICATION_SOURCE_UNAVAILABLE")
+                raw = path.read_bytes()
+            except (OSError, RuntimeError):
+                fail("SPECIFICATION_SOURCE_UNVERIFIED")
+            if not raw or hashlib.sha256(raw).hexdigest() != item.get("sha256"):
+                fail("SPECIFICATION_SOURCE_HASH_MISMATCH")
+            if item["disposition"] == "APPLY":
+                # Compare within the named work only. A companion is never -04.
+                if (not isinstance(item.get("family"), str) or not item["family"]
+                        or not isinstance(item.get("selected_revision"), str)
+                        or not item["selected_revision"]
+                        or item["selected_revision"] != item.get("latest_revision")):
+                    fail("SPECIFICATION_SELECTED_REVISION_NOT_CURRENT")
+                seen_documents.add(identifier)
+    if not set(claims).issubset(seen_documents):
+        fail("SPECIFICATION_CLAIM_NOT_REVIEWED")
+
+
 def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> bool:
     if not isinstance(action, dict) or action.get("subject") != subject:
         fail("CLIENT_ACTION_SUBJECT_DRIFT")
@@ -1697,6 +1795,8 @@ def main() -> int:
                        for key in ("head", "tree"))
                 or not isinstance(subject.get("ref"), str) or not subject["ref"].strip()):
             fail("CLIENT_SUBJECT_INVALID")
+        validate_client_tool_selection(action)
+        validate_specification_use(action, subject)
         ready = validate_client_action(action, subject)
         print("CLIENT_ACTION_CONSISTENCY=VALID")
         print("CLIENT_ROUTE_POLICY_SHA256=" + validate_client_tool_selection(action))

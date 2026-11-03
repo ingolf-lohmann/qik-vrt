@@ -520,3 +520,43 @@ disabled. An immutable original intent precedes each admitted merge. Unknown
 effects permit readback only; missing verification is UNVERIFIED. Native
 source integration, unattended execution, runtime/SSO admission, host/domain
 acceptance and Zenodo publication each require their own fresh evidence.
+
+
+## Specification currentness preflight — Owner correction 2026-11-03
+
+Before every new external action, use the existing
+`python3 -B tools/ai_handoff.py --client-action <action.json>` live preflight.
+It now rejects mutations without an explicit `specification_use` classification.
+Read-only retrieval may use `DISCOVERY_ONLY`; it permits no currentness claim.
+`HISTORICAL_EXACT` requires an empty `specification_claims` array and an explicit
+`specification_basis` with the exact action subject and a nonempty reason. This
+supports repairs against a frozen source without asserting newest-spec adoption.
+
+For an assertion that specifications are current or completely considered, use
+`CURRENT`, list their stable IDs in `specification_claims`, and bind a
+`specification_review` object with schema `qikvrt-specification-review/v1`, the
+same subject and claims, integer UTC observation/expiry seconds and at most one
+hour of validity. Its three `channels` are `ietf`, `zenodo`, and `authority`.
+Each channel binds `locator`, `author_id`, integer `observed_utc`, `from_cache=false`,
+`truncated=false`, explicit `next=null`, integer `total`, and the complete `items`
+array. `verification` must be `DIRECT_PRIMARY_READBACK`. Retrieve all pages and
+validate the actual author identity before making that declaration.
+
+Each item has a unique stable `id`, `disposition` (`APPLY` or `NOT_APPLICABLE`),
+a substantive `reason`, and a bounded repository-relative `source_path` plus
+its exact original-byte `sha256`. Applicable items also bind `family`,
+`selected_revision` and `latest_revision`; the latter two must agree within the
+same work. Explicitly unresolved companions block a CURRENT claim. Later dates
+and companion revision numbers never silently replace a different core work.
+Failed discovery stays OPEN; use the retrieval/repair route to restore evidence.
+Never infer complete coverage from a first page, search hits or a remembered index.
+
+The existing gate validates the supplied bindings and bytes; it does not perform
+network discovery, authenticate the source, establish external completeness,
+prove semantic conformance or intercept calls made outside this preflight.
+Historical receipt validation retains its original semantics and is not a live
+permission route. New live actions must run the live CLI even after receipt PASS.
+Source integration, protected CI, caller adoption and actual productive effects
+require their own independently observed evidence. No universal zero-failure or
+all-node adoption claim follows from this guard. Run its failure-injection tests
+through the existing `make ai-runtime-contract` target.

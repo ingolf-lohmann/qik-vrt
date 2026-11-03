@@ -421,6 +421,10 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.assertNotIn("CLIENT_DECLARED_ACTION=READY", completed.stdout)
 
     def test_client_action_cli_checks_allowed_route_without_executing_it(self) -> None:
+        self.receipt["next_actions"][0].update(
+            specification_use="HISTORICAL_EXACT", specification_claims=[],
+            specification_basis={"subject": self.subject,
+                                 "reason": "fixture:repair exact frozen source; no currentness claim"})
         with tempfile.TemporaryDirectory() as temporary:
             path = pathlib.Path(temporary) / "action.json"
             path.write_text(json.dumps(self.receipt["next_actions"][0]), encoding="utf-8")

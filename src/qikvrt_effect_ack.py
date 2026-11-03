@@ -4,7 +4,9 @@
 """QIK-VRT EFFECT_ACK reference state machine.
 
 This module implements the five-state effect acknowledgement gate described by
-``draft-lohmann-qikvrt-effect-ack-01``.  It deliberately has no network, file
+``draft-lohmann-qikvrt-effect-ack-03`` (the normative decision kernel is
+unchanged from revision -01; the closed wire adapter is a separate module).
+It deliberately has no network, file
 system, subprocess, or user-interface side effects. The synchronous workload
 is bounded by configured input limits and guarded by a cooperative deadline.
 
