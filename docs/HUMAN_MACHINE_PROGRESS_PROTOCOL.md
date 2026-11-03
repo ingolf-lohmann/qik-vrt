@@ -675,3 +675,11 @@ Source integration, protected CI, caller adoption and actual productive effects
 require their own independently observed evidence. No universal zero-failure or
 all-node adoption claim follows from this guard. Run its failure-injection tests
 through the existing `make ai-runtime-contract` target.
+
+The pure EAP evaluator retains its historical Draft-01 provenance label and exact
+bytes, which the published scientific proof report binds. That label alone is
+not evidence of algorithm drift. The current closed wire adapter is explicitly
+Draft-03; its conformance suite compares the published revision's fields. Do not
+rewrite a frozen proof-bearing source merely to relabel its revision. Companion
+HTTP-01 remains an unresolved archive candidate until original bytes and changes
+are reviewed; it is not a replacement core revision.

@@ -50,7 +50,16 @@
   "scope": "Live --client-action preflight; historical receipt validation is not fresh admission",
   "full_startup": "BLOCK_IN_PARTIAL_SOURCE_COPY: missing historical PUBLIC_ARCHIVE_RECOVERY_RECEIPT.json",
   "full_make_test": "NOT_RUN_IN_PARTIAL_COPY",
-  "native_ci": "UNVERIFIED",
+  "native_ci": {
+    "predecessor_head": "83be272a7d4e3f2e48bde9d7a4d784dc6fcbd4d6",
+    "run": 41609205392,
+    "job": 125826556310,
+    "integrity": "PASS:5717 entries/5706 immutable",
+    "c90_checks": 7864387,
+    "scientific_bundle": "FAIL: revised engine comment changed exact frozen proof input",
+    "causal_correction": "restore exact original engine bytes; explain historical label in current contract instead",
+    "current_head_acceptance": "UNVERIFIED"
+  },
   "seven_checkers": "UNVERIFIED",
   "main_integration": false,
   "all_node_adoption": "UNVERIFIED",
@@ -61,5 +70,6 @@
     "No interception of external clients bypassing the existing live preflight.",
     "Early diagnostic tool output was truncated and some exploratory logs overwritten; final checks above retain complete stdout/stderr.",
     "No universal zero-recurrence claim."
-  ]
+  ],
+  "historical_engine_bytes_preserved": true
 }
