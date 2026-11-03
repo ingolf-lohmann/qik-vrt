@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_zenodo_candidate_v1",
   "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v3",
-  "title": "Energie\u00e4quivalenz und dynamische Raumzeit: reproduzierbare Modellpr\u00fcfung",
+  "title": "Energieäquivalenz und dynamische Raumzeit: reproduzierbare Modellprüfung",
   "creators": [
     {
       "name": "Lohmann, Ingolf"
@@ -32,6 +32,11 @@
   ],
   "zenodo_mutation_performed": false,
   "doi": null,
-  "source_gate": "PENDING_ORIGINAL_SCRIPT_AND_PUBLIC_BYTE_VERIFIED_ARCHIVE",
-  "revision": 3
+  "source_gate": "ORIGINAL_GATE_EXECUTED_OWN_PUBLIC_BYTE_VERIFIED_ARCHIVE_PENDING",
+  "revision": 3,
+  "native_manuscript_proof": {
+    "head": "c71f0699e2e9feb22ce4a4d1d1ab860eae6de62c",
+    "run_id": 41616823386,
+    "conclusion": "success"
+  }
 }
