@@ -9,7 +9,7 @@ Fragestellung und Auftrag: Ingolf Lohmann. Berechnung, Implementierung und Ausar
 - `CLAIM_MATRIX.json`: mathematische, numerische, bedingte und offene Aussagen.
 - `../../../formalization/QIKVRT_RealEnergy_v1/README.md`: separates Lake-Paket, acht ursprüngliche Sätze, acht Statement/_checked-Bindungen und genaue Reproduktion.
 
-Die PDFs enthalten neun bytegleich eingebettete Quellen bzw. Prüfnachweise. Alle zwölf Seiten wurden gerendert und visuell geprüft. Die vier externen Quellenadressen sind sichtbar und anklickbar. Der originale zusätzlich vorgeschriebene Quellenprüfer ist als Skript weiterhin nicht abrufbar; dessen PASS wird durch diese eigene Sichtprüfung nicht ersetzt.
+Die PDFs enthalten neun bytegleich eingebettete Quellen bzw. Prüfnachweise. Alle zwölf Seiten wurden gerendert und visuell geprüft. Die vier externen Quellenadressen sind sichtbar und anklickbar. Der originale Quellenprüfer wurde unverändert aus der bestehenden Versionshistorie zurückgewonnen und ausgeführt. Die vier externen Quellen bestehen die Prüfung in allen fünf Formaten. Das vollständige Gate wartet auf die eigene öffentliche Quellenarchivierung.
 
 ## Erhaltene Modellrechnung
 

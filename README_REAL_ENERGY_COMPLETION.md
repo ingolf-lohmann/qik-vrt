@@ -22,7 +22,7 @@ Der bestehende Manuskript-Workflow wurde um einen additiven Verbraucher ergänzt
 
 ## Offen
 
-Native Exact-HEAD-CI, unabhängige Checker, Review-/Main-Aufnahme, der originale zusätzliche Quellenprüfer, die kandidatengebundene Zenodo-Freigabe und tatsächliche Veröffentlichung sind offen. Die Originalanleitung der Quellenprüfung ist wieder lesbar; das dazugehörige `scripts/check_sources.py` ist weiterhin nicht abrufbar. Eigene Layout-/Quellenprüfungen werden nicht als dessen PASS ausgegeben.
+Native Exact-HEAD-CI, unabhängige Checker, Review-/Main-Aufnahme, der originale zusätzliche Quellenprüfer, die kandidatengebundene Zenodo-Freigabe und tatsächliche Veröffentlichung sind offen. Der ursprüngliche Quellenprüfer wurde unverändert aus der vorhandenen Versionshistorie zurückgewonnen und ausgeführt. Die vier externen Quellen bestehen die Prüfung in allen fünf Text-/PDF-Formaten. Das vollständige Gate bleibt bis zur eigenen öffentlichen Quellenarchivierung auf FAIL; dies wird nicht durch einen Teil-PASS ersetzt.
 
 Die Originalhost-/SSO-Bindung ist hier nicht verfügbar. Der registrierte Originaldienst unter 127.0.0.1:8766 ist aus diesem Ausführungscontainer nicht erreichbar; daraus wird kein Fehlen geschützter Eingaben beim entfernten Dienst abgeleitet. Eine frische, unabhängig bytegeprüfte Beobachtung von raumzeitterminal.de liefert HTTP 525. Installation, Neustart/Persistenz, HTTPS und produktiver EAP-Effekt werden nicht behauptet. Alle früheren Publisher-/Quota-, Mirror-, R2- und November-2-Archivpflichten bleiben erhalten.
 

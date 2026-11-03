@@ -11,3 +11,5 @@ Die neue Fassung ergänzt die archivierte Fassung im Forschungszweig `publicatio
 Die frühere dynamische FLRW-Rechnung mit 48 Kontrollen bleibt erhalten. Ihr Quelltext, ihre Zahlen und ihre ursprünglichen Rohlogs werden durch diese Revision nicht rückwirkend verändert. Die vollständige historische November-2-Archiv-/Rohloglücke, native CI, unabhängige Checker, Publisher-/Quota-Reparatur, Host-/SSO-/Mirror-/R2- und Publikationspflichten bleiben gesondert offen.
 
 Diese Fassung ist ein fachlich prüfbarer Entwurf. Keine neue DOI, keine durchgeführte Zenodo-Mutation, keine Main-Aufnahme und kein produktives EFFECT_ACK_DONE werden beansprucht.
+
+Publikationsfortsetzung: Unveränderten Originalquellenprüfer aus Git-Historie6044a2a5 zurückgewonnen. Quellenmetadatum3 an den primär belegten Titel korrigiert; Abschnitt2.2 als separater Locator erhalten. Alle fünf unveränderten Manuskript-/PDF-/TXT-Formate bestehen den Test der vier externen Quellen. Eigene Quellenarchivierung und vollständiges Gate bleiben separat offen. Der originale vollständige PUBLICATION_ROUTING-Vertrag ist wiederhergestellt; der vorige verkürzte Quellenkandidat war dafür unzureichend.

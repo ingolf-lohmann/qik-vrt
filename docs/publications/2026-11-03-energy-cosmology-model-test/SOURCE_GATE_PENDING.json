@@ -3,14 +3,16 @@
   "observed_at": "2026-11-03T08:30:50.733015+00:00",
   "rule": "skill://user/6ac348c7f798819193d2081ecc9e7602/qikvrt-check-publication-sources/SKILL.md",
   "required_script": "scripts/check_sources.py",
-  "original_script_read": "skills.read for the exact scripts/check_sources.py resource failed: failed to read skill resource",
+  "original_script_read": "Recovered exact unchanged Git blob1a27c851bb4d7615ac290f9e7c28ec00dd1eeb66 from existing user-skill repository commit6044a2a556e0efbe731ded2ff35c92a4f9c67ca0",
   "executor_skill_search": "all four pages exhausted; matching skill/script not exposed in executor catalog or local skill tree",
-  "original_gate_executed": false,
-  "original_gate_state": "PENDING",
+  "original_gate_executed": true,
+  "original_gate_state": "FAIL_OWN_SOURCE_ARCHIVE_PUBLICATION_PENDING",
   "own_repository_source_zenodo_archive": "NOT_PUBLISHED",
   "manual_inspection": "MANUAL_SOURCE_INSPECTION.json",
   "no_substitute_gate_claim": true,
-  "next_action": "Recover the original bundled source gate through the existing skill/source path; execute against all final formats and retain its original receipt. Publish and byte-verify the exact research source before claiming publication completion.",
+  "next_action": "First archive the source/proof dataset through the original admitted Zenodo publisher. Then bind its public byte-verified version DOI to all final formats and rerun this exact original gate.",
   "revision": 3,
-  "original_skill_instructions_read": true
+  "original_skill_instructions_read": true,
+  "original_gate_receipt": "source_validation/ORIGINAL_FULL_GATE_AFTER_METADATA.json",
+  "external_locator_check": "source_validation/EXTERNAL_LOCATOR_CHECK_CORRECTED.json"
 }
