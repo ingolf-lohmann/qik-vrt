@@ -540,7 +540,8 @@ class HostWorkflowIdentity(unittest.TestCase):
 
     def run_workflow(self, *, variant='valid', enabled='false', published='skipped'):
         root = Path(__file__).resolve().parents[1]
-        script = textwrap.dedent(self.job().split('        run: |\n', 1)[1].split('\n      - uses:', 1)[0])
+        host_step = self.job().split('        id: host\n', 1)[1].split('\n      - ', 1)[0]
+        script = textwrap.dedent(host_step.split('        run: |\n', 1)[1])
         with tempfile.TemporaryDirectory() as directory:
             fixture = Path(directory); (fixture / 'tools').mkdir()
             (fixture / 'tools/qikvrt_self_host_container.py').write_bytes(Path(c.__file__).read_bytes())
@@ -659,7 +660,10 @@ else:raise RuntimeError('unexpected fixture operation')
 
     def test_identity_evidence_is_retained_and_cannot_start_public_acceptance(self):
         artifact = self.job().split('      - uses: actions/upload-artifact@', 1)[1]
-        self.assertIn('if: always()', artifact)
+        self.assertIn(
+            "if: ${{ always() && (steps.host.outcome == 'success' || steps.host.outcome == 'failure') }}",
+            artifact,
+        )
         self.assertIn('/host-identity.json', artifact)
         self.assertIn('/host-material-delivery.json', artifact)
         self.assertNotIn('qikvrt-host-auth', artifact)
