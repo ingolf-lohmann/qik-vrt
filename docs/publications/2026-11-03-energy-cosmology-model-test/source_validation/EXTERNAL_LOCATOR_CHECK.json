@@ -1,0 +1,50 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "FAIL",
+  "source_count": 4,
+  "manifest_sha256": "b665782d59cdf858957e01006eb77d3f5c235eac39ea67c265795f710d6567f5",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/473d0727640b/completion/docs/publications/2026-11-03-energy-cosmology-model-test/FACHARTIKEL.md",
+      "sha256": "0beb67b09ba077e5cf0d96a6b5bfb8ebf1889d74c535653f2f1ab44a200d35cf",
+      "pages": null,
+      "status": "FAIL",
+      "errors": [
+        "SOURCE_3:TITLE_NOT_VISIBLE"
+      ]
+    },
+    {
+      "path": "/workspace/scratch/473d0727640b/completion/docs/publications/2026-11-03-energy-cosmology-model-test/PROSAARTIKEL.md",
+      "sha256": "3c6d9f4a57e8b2795d98b002db89fbeb8f7ca4a9541debae44361ab0b8e9610a",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/473d0727640b/completion/docs/publications/2026-11-03-energy-cosmology-model-test/QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
+      "sha256": "d6bfa63e6b348d3630db3602332f5057f4de991593fb7fd2ec92b05419719f93",
+      "pages": 7,
+      "status": "FAIL",
+      "errors": [
+        "SOURCE_3:TITLE_NOT_VISIBLE"
+      ]
+    },
+    {
+      "path": "/workspace/scratch/473d0727640b/completion/docs/publications/2026-11-03-energy-cosmology-model-test/QIKVRT_Virtuelles_Universum_Prosa.pdf",
+      "sha256": "73527b183b10ec6c2855ff24b3bd9046e8be8a7c8b20929d983e2db8e6044006",
+      "pages": 5,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/473d0727640b/Ein_virtuelles_Universum_auf_dem_Pruefstand.txt",
+      "sha256": "f6d34fb6063e040c2ec43a10a6374a60b711516047d43cf4ca68bb61d3e56c15",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

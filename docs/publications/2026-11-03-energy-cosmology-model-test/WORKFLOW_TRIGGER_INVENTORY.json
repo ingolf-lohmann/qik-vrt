@@ -1,0 +1,893 @@
+{
+  "baseline_head": "40fa8eb1a6b413801ba8554dca35f915d54316c7",
+  "total": 89,
+  "inventory_complete": true,
+  "create_events": 0,
+  "files": [
+    {
+      "path": "workflows/claude.yml",
+      "events": [
+        "workflow_dispatch",
+        "repository_dispatch",
+        "issue_comment",
+        "issues"
+      ],
+      "create_event": false,
+      "expected_blob": "c5537d1b6b5359427cfa405e77bd4598e804fa2e",
+      "bytes_expected": 885
+    },
+    {
+      "path": "workflows/deterministic-workflow-dispatch.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "2ae44f1ac2e1ac124f08891aeb26e0829ca97114",
+      "bytes_expected": 830
+    },
+    {
+      "path": "workflows/issue-agent-autofinish.yml",
+      "events": [
+        "workflow_run",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "be36163d6d92bc9b5490200f8549acfca620089e",
+      "bytes_expected": 5474
+    },
+    {
+      "path": "workflows/issue-agent-backlog-resume.yml",
+      "events": [
+        "issues",
+        "workflow_run",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "030e1a7ef164f9f5cc3d10237358e08e99c718b2",
+      "bytes_expected": 4749
+    },
+    {
+      "path": "workflows/issue-autonomous-processing.yml",
+      "events": [
+        "issues",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "f6f3a9faed6db2e4e5fd7fbef304181ef40ab6cb",
+      "bytes_expected": 15435
+    },
+    {
+      "path": "workflows/mini-internet-evidence.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "e2e4755ad71bfe7737b78ab1aeb21eb1f54f48bd",
+      "bytes_expected": 2500
+    },
+    {
+      "path": "workflows/pr653-integrity-repair.yml",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "bd5ec2b8f2f67f9484e29860612c0d21820cebff",
+      "bytes_expected": 1267
+    },
+    {
+      "path": "workflows/publish_ontology_difference_article_zenodo_v3.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "b57666e98272bc60bdc03af2b51301fc257f2002",
+      "bytes_expected": 6811
+    },
+    {
+      "path": "workflows/qikvrt_adaptive_runtime.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "9ec1d56f272969c615c03acff996b10dd8f50c9b",
+      "bytes_expected": 25038
+    },
+    {
+      "path": "workflows/qikvrt_audio_request.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "e6c2bea80b8cb29acbde4e3b7f6435364adb4a20",
+      "bytes_expected": 9788
+    },
+    {
+      "path": "workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "events": [
+        "repository_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "0e15a48c54c103e441cd838c3748dc69701d1ce4",
+      "bytes_expected": 5211
+    },
+    {
+      "path": "workflows/qikvrt_autonomous_pr_continuation.yml",
+      "events": [
+        "workflow_dispatch",
+        "workflow_run",
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "ae245e5cb47294694f829785d227d37c324f7270",
+      "bytes_expected": 11553
+    },
+    {
+      "path": "workflows/qikvrt_autonomous_self_heal.yml",
+      "events": [
+        "workflow_dispatch",
+        "push",
+        "workflow_run",
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "436467c8d35e62720fdb88edfc45b0941bfac6f2",
+      "bytes_expected": 6999
+    },
+    {
+      "path": "workflows/qikvrt_batch003_remaining_archive_probe.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "5b778302839c55b05459fef994b1723b2b639974",
+      "bytes_expected": 3199
+    },
+    {
+      "path": "workflows/qikvrt_batch003_remaining_disposition.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "5cfba6ff3a7bac266a42e31f8ebcc03170504b49",
+      "bytes_expected": 8185
+    },
+    {
+      "path": "workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "39e4a949c64f35cdadcfff2acae1301daac45b38",
+      "bytes_expected": 3048
+    },
+    {
+      "path": "workflows/qikvrt_batch04_integrity.yml",
+      "events": [
+        "workflow_run",
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "84c253cc851a4ac810b75a99966b90f346717001",
+      "bytes_expected": 23132
+    },
+    {
+      "path": "workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "e4c66aa0d71c09873c0e902aba10783edf967c5b",
+      "bytes_expected": 8380
+    },
+    {
+      "path": "workflows/qikvrt_ci.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "e47515dd100540c06bab8237b7a8700a54971815",
+      "bytes_expected": 113014
+    },
+    {
+      "path": "workflows/qikvrt_code_owner_review_observer.yml",
+      "events": [
+        "pull_request",
+        "pull_request_review"
+      ],
+      "create_event": false,
+      "expected_blob": "efd13271fec4584ec1f6057b743a2b6c5aaf3057",
+      "bytes_expected": 1749
+    },
+    {
+      "path": "workflows/qikvrt_collective_review.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "a49382b8a16aa1756f6bdbffff08d7ce8dbbe24d",
+      "bytes_expected": 11115
+    },
+    {
+      "path": "workflows/qikvrt_combined_batch_002_promotion_head.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "350403b2d0190a6761e3d5946d0b77c089f6973f",
+      "bytes_expected": 2557
+    },
+    {
+      "path": "workflows/qikvrt_corpus_closure_overlay.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "f5a1d3c8ea7514b6c8f8e990aeaa226107a5fd48",
+      "bytes_expected": 1181
+    },
+    {
+      "path": "workflows/qikvrt_corpus_status_temporal_precedence.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "e45672b8e08f3ab164777b01ecb5404555db98e5",
+      "bytes_expected": 1259
+    },
+    {
+      "path": "workflows/qikvrt_effect_ack_finalize.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "8efb1037b882dd84a0d055b6b98de5b582e13bb4",
+      "bytes_expected": 47465
+    },
+    {
+      "path": "workflows/qikvrt_effect_ack_http_terminal.yml",
+      "events": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "a35dae2f3a52232c13de625f8002cc9f6708f5e1",
+      "bytes_expected": 27581
+    },
+    {
+      "path": "workflows/qikvrt_escape_stages_integrity.yml",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "c8fd85d4c59085e9c09161c3f71e7c240c58207a",
+      "bytes_expected": 1282
+    },
+    {
+      "path": "workflows/qikvrt_expected_head_promotion.yml",
+      "events": [
+        "workflow_dispatch",
+        "push",
+        "workflow_run"
+      ],
+      "create_event": false,
+      "expected_blob": "dba5993429f4fe39cf5295cf6b7b59bc22ddb087",
+      "bytes_expected": 22452
+    },
+    {
+      "path": "workflows/qikvrt_formalization_and_audio.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "c6870aefcef347c9bb7aab5f0206a1bf17f8de54",
+      "bytes_expected": 3796
+    },
+    {
+      "path": "workflows/qikvrt_formalization_v2_alpha3_publish.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "61559dd8b9e0f82967fd2e36f58f0344ce26e157",
+      "bytes_expected": 11895,
+      "quoted_on": true
+    },
+    {
+      "path": "workflows/qikvrt_formalization_v2_inspect.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "442f9ef19a346ba2a00ff818c1e3c41914eb1652",
+      "bytes_expected": 14977
+    },
+    {
+      "path": "workflows/qikvrt_formalization_v2_inventory.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "a1a30e1b00c7858d4d3870e5b828e437d78c618c",
+      "bytes_expected": 16820
+    },
+    {
+      "path": "workflows/qikvrt_formalization_v2_zenodo.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "6e47b377d4a7153cfba0ec5bbdfee001dfd89efb",
+      "bytes_expected": 25381
+    },
+    {
+      "path": "workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "967b1ec1c47a5ec2ed0747cb1da5dbdea9bef02d",
+      "bytes_expected": 34800
+    },
+    {
+      "path": "workflows/qikvrt_global_completion.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "c724fefe53307f188a176906d52827032b7ea99c",
+      "bytes_expected": 9007
+    },
+    {
+      "path": "workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "3b9396f4b6415baff047526bd6ecb193f606863e",
+      "bytes_expected": 12539
+    },
+    {
+      "path": "workflows/qikvrt_ionos_dns.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "28c76eb066223335213b1507639953dd748bfb49",
+      "bytes_expected": 3723
+    },
+    {
+      "path": "workflows/qikvrt_ionos_dns_bootstrap.yml",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "dcc9c97605342ee9aab88533e71e587d4ff4d176",
+      "bytes_expected": 4233
+    },
+    {
+      "path": "workflows/qikvrt_live_authority_mirror_ab.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "050c9f0f56fccbf8010d0922f38496f7d0d19027",
+      "bytes_expected": 3390
+    },
+    {
+      "path": "workflows/qikvrt_live_status_watch.yml",
+      "events": [
+        "pull_request",
+        "issue_comment",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "6c90f7c8ab9cb5ed7160338e56016b7a7a650650",
+      "bytes_expected": 11028
+    },
+    {
+      "path": "workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "e217ad3287bdf8c43d80a8b5b1d2efa5dafafcfa",
+      "bytes_expected": 8852
+    },
+    {
+      "path": "workflows/qikvrt_manuscript_proof.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "edcd02a36c478a5cdda76e698a9a7b8ae1113b43",
+      "bytes_expected": 25769
+    },
+    {
+      "path": "workflows/qikvrt_measurement_derived_dimensions.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "639ae4ee243a796abb25deafc3b9f7b53736fcf0",
+      "bytes_expected": 8190
+    },
+    {
+      "path": "workflows/qikvrt_measurement_independence_formalization.yml",
+      "events": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "37eddbe54fe8e3fd8604bbdacc34d7d14dc8f1a1",
+      "bytes_expected": 5002
+    },
+    {
+      "path": "workflows/qikvrt_mesh_api.yml",
+      "events": [
+        "workflow_dispatch",
+        "repository_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "7b38260082e98046b0f8da5009104b25ce255e31",
+      "bytes_expected": 4890
+    },
+    {
+      "path": "workflows/qikvrt_mesh_authority_edge.yml",
+      "events": [
+        "repository_dispatch",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "406f4204e0402acaed16af3ce235ff7837ca5eae",
+      "bytes_expected": 3474
+    },
+    {
+      "path": "workflows/qikvrt_mirror_node_lifecycle.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "9bd31e0127c30c47ecb89d4dc4800705a144e61d",
+      "bytes_expected": 13333
+    },
+    {
+      "path": "workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "7eb73d96035101810e2f78cabd02cf99dad04773",
+      "bytes_expected": 10959
+    },
+    {
+      "path": "workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "037f551e73e62d4b3f4336c014ca8288c5ba8828",
+      "bytes_expected": 11875
+    },
+    {
+      "path": "workflows/qikvrt_physics_bridge_integrity.yml",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "776f821cfbb182aebb46415b4d89557a9ffe9004",
+      "bytes_expected": 1313
+    },
+    {
+      "path": "workflows/qikvrt_pr18_integrity_repair.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "ef191995ff628bbfa86e5074f9948ca27bac3912",
+      "bytes_expected": 1438
+    },
+    {
+      "path": "workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "23364bf7eaaa33b93bb17041788c3a63acbdcf31",
+      "bytes_expected": 1629
+    },
+    {
+      "path": "workflows/qikvrt_proof_persistence_integrity.yml",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "4052c2acd95cdb032a2ccd109e3143665520887f",
+      "bytes_expected": 1203
+    },
+    {
+      "path": "workflows/qikvrt_public_qa_ci.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "8d5656ab4b98a1b03f390878ef5bb6207251e77d",
+      "bytes_expected": 1444
+    },
+    {
+      "path": "workflows/qikvrt_publication_router.yml",
+      "events": [
+        "workflow_dispatch",
+        "push",
+        "workflow_run",
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "89da56ca0a8239acac817e3377dd79833b966211",
+      "bytes_expected": 13408
+    },
+    {
+      "path": "workflows/qikvrt_qce_c_measurement_binding.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "99f044608d0c3cd3a70ddb0d1f6d6b4d9095cc23",
+      "bytes_expected": 11627
+    },
+    {
+      "path": "workflows/qikvrt_qce_candidate.yml",
+      "events": [
+        "pull_request",
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "de1a291dfa752125a8870fabb6f2ffc4f2397cb3",
+      "bytes_expected": 3932
+    },
+    {
+      "path": "workflows/qikvrt_qce_causal_axis_bridge.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "7a9687cd66ca9855148068e55fbe8f335391e11e",
+      "bytes_expected": 10591
+    },
+    {
+      "path": "workflows/qikvrt_qce_causal_axis_selection.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "fb427b7dbc9f2f22a706cc3e15bcbd4f86884cc0",
+      "bytes_expected": 12648
+    },
+    {
+      "path": "workflows/qikvrt_qce_now_serialization.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "2a5cb99b152fea1b0fa67c99c3ba4cd069434c06",
+      "bytes_expected": 9671
+    },
+    {
+      "path": "workflows/qikvrt_qce_null_calibration_ratio.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "53e5197f50e383c4a9e053e541760911e5486528",
+      "bytes_expected": 11110
+    },
+    {
+      "path": "workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "events": [
+        "workflow_dispatch",
+        "workflow_run",
+        "push",
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "6d587bac527239d8cea0cbb360568b6aebea3e49",
+      "bytes_expected": 11946
+    },
+    {
+      "path": "workflows/qikvrt_repository_mesh_sync_tag.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "71960e5f76f91ccee155c578473d276c27a04203",
+      "bytes_expected": 12677
+    },
+    {
+      "path": "workflows/qikvrt_requested_review_contract.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "a8f4aa8af3da861bf030838d5ad5dc95b90b4ace",
+      "bytes_expected": 6771
+    },
+    {
+      "path": "workflows/qikvrt_requested_review_executor.yml",
+      "events": [
+        "pull_request",
+        "workflow_run",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "ffa3df06a8bf58f96e4818f2cc9edc1273b907d7",
+      "bytes_expected": 15109
+    },
+    {
+      "path": "workflows/qikvrt_required_review_gate.yml",
+      "events": [
+        "workflow_run",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "aa5d0a73e0f799c8574b8ac24f2fce35a5f3a2a2",
+      "bytes_expected": 5342
+    },
+    {
+      "path": "workflows/qikvrt_round_trip_final_byte_freeze.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "ea49531e4e413f5b7314206e93e0153c77f3669c",
+      "bytes_expected": 3797
+    },
+    {
+      "path": "workflows/qikvrt_round_trip_prepublication_return.yml",
+      "events": [
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "d5d6a352cfd72a53f2ccb59132012e75bbcdc1db",
+      "bytes_expected": 7124
+    },
+    {
+      "path": "workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "058021b79662bba06cbb92d6f1e47b6192e123c5",
+      "bytes_expected": 3743
+    },
+    {
+      "path": "workflows/qikvrt_round_trip_zenodo_publish.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "42388fda524f56286cb145c295ba5d5aa48d441a",
+      "bytes_expected": 17785
+    },
+    {
+      "path": "workflows/qikvrt_ruleset_authority_dispatch_bridge.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "cd37493298cb4f07f4f4ae76a5dcfe3011117d7f",
+      "bytes_expected": 5474
+    },
+    {
+      "path": "workflows/qikvrt_seed_dashboard_publish.yml",
+      "events": [
+        "workflow_dispatch",
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "8e4e947aaf3361b38ff96365da1b6fdb281a0e23",
+      "bytes_expected": 3551
+    },
+    {
+      "path": "workflows/qikvrt_seed_mesh_audit_export.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "383cab74e952f254c5bae7b478f575d37395b517",
+      "bytes_expected": 2235
+    },
+    {
+      "path": "workflows/qikvrt_seed_mesh_maintenance.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "d302329b28dc63da02c8bb2dd659a1cbf584a46e",
+      "bytes_expected": 1919
+    },
+    {
+      "path": "workflows/qikvrt_seed_node_revalidation.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "d57fa07e462e13618d8bd46f8ddf5879bb3c9b6c",
+      "bytes_expected": 1936
+    },
+    {
+      "path": "workflows/qikvrt_seed_registry_acceptance.yml",
+      "events": [
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "d2996a06c83d9ce4a1dee5b8c0a90609383e1ed7",
+      "bytes_expected": 2780
+    },
+    {
+      "path": "workflows/qikvrt_seed_registry_acceptance_dispatch_bridge.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "72f7905b392b055575f6c8fca156476a2508e9eb",
+      "bytes_expected": 4325
+    },
+    {
+      "path": "workflows/qikvrt_status_report_finalize.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "37e1f38786e7094cccb50163cdf87fb67687bf20",
+      "bytes_expected": 39440
+    },
+    {
+      "path": "workflows/qikvrt_status_report_reserve.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "4cf3187e0a4d55d9c105723a4140ea11e4aa68b8",
+      "bytes_expected": 35672
+    },
+    {
+      "path": "workflows/qikvrt_survival_connectability_zenodo_publish.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "ecd668bea4522ebd40aff589b341651fec0d448d",
+      "bytes_expected": 8294
+    },
+    {
+      "path": "workflows/qikvrt_temdd.yml",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "6ebdb156e0f8397e89f0707f3ab8977f6c94be56",
+      "bytes_expected": 3115
+    },
+    {
+      "path": "workflows/qikvrt_universal_ontology_formalization.yml",
+      "events": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "6a87cec3ef754fea5fdeb801b0aa18961e2691a2",
+      "bytes_expected": 18979
+    },
+    {
+      "path": "workflows/qikvrt_universal_ontology_shell_fallback.yml",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "1906dd22d7b0a5c11f476dd6befedac26e900454",
+      "bytes_expected": 6381
+    },
+    {
+      "path": "workflows/qikvrt_versioned_corrected_candidates.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "7f4e536da8cdabdecc04f6eef03256521cc7f3e7",
+      "bytes_expected": 4436
+    },
+    {
+      "path": "workflows/qikvrt_vrtcore_h3_e1_recovery.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "9b318e1f0c0949f39d7dc82aaa9e4857e9678c86",
+      "bytes_expected": 7724
+    },
+    {
+      "path": "workflows/qikvrt_workflow_executor.yml",
+      "events": [
+        "workflow_dispatch",
+        "workflow_run",
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "f6ba8f8fd804ef40a7a816868560505924ed7736",
+      "bytes_expected": 23921
+    },
+    {
+      "path": "workflows/qikvrt_workflow_executor_watchdog.yml",
+      "events": [
+        "workflow_dispatch",
+        "pull_request"
+      ],
+      "create_event": false,
+      "expected_blob": "ea3354934b02b812c7c666f7d6d969142656218c",
+      "bytes_expected": 3601
+    },
+    {
+      "path": "workflows/qikvrt_zenodo_reserve.yml",
+      "events": [
+        "push"
+      ],
+      "create_event": false,
+      "expected_blob": "0f3749b0a951764007841f2a4b6cc364d4bafe2e",
+      "bytes_expected": 28054
+    },
+    {
+      "path": "workflows/static-terminal-release-proof.yml",
+      "events": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "create_event": false,
+      "expected_blob": "409ce542fecf77ff8c67784bed54d98a77580550",
+      "bytes_expected": 1298
+    }
+  ]
+}

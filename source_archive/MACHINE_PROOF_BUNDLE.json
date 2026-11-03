@@ -1,0 +1,324 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2",
+  "policy": {
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+    "version": "2.0.0",
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "publication_id": "qikvrt-real-energy-model-source-20261103",
+  "candidate": {
+    "primary_document_path": "source_archive/README.txt",
+    "files": [
+      {
+        "path": "source_archive/README.txt",
+        "bytes": 2658,
+        "sha256": "603fdf993cbc3af72b0aafea2059e447faff61d7077ef346b8c582bbfa53a880",
+        "git_blob_sha1": "c6d1ea0e5fae7fc4383bace52078b55164af606b",
+        "name": "README.txt",
+        "role": "PRIMARY"
+      },
+      {
+        "path": "source_archive/QIKVRT_Quellen_und_Modell_20261103.zip",
+        "bytes": 458670,
+        "sha256": "8c3b464c0d4a0315ab3fca30254964a926c066d76134c485c2798a4d339e8667",
+        "git_blob_sha1": "eacf692c5d5875da9ee2530df7c8f5b849876007",
+        "name": "QIKVRT_Quellen_und_Modell_20261103.zip",
+        "role": "SUPPLEMENT"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "claim_id": "PRE-T01",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean#PRE_T01_planckMass_pos",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#PRE_T01_Statement"
+      ]
+    },
+    {
+      "claim_id": "PRE-T02",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean#PRE_T02_planckTime_pos",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#PRE_T02_Statement"
+      ]
+    },
+    {
+      "claim_id": "PRE-T03",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean#PRE_T03_planckEnergy_pos",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#PRE_T03_Statement"
+      ]
+    },
+    {
+      "claim_id": "PRE-T04",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean#PRE_T04_planckTime_mul_planckEnergy",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#PRE_T04_Statement"
+      ]
+    },
+    {
+      "claim_id": "PRE-T05",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean#PRE_T05_planckEnergy_eq_hbar_div_planckTime",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#PRE_T05_Statement"
+      ]
+    },
+    {
+      "claim_id": "REB-T01",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in RealErasureBudget.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/RealErasureBudget.lean#REB_T01_real_bit_bound",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#REB_T01_Statement"
+      ]
+    },
+    {
+      "claim_id": "REB-T02",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in RealErasureBudget.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/RealErasureBudget.lean#REB_T02_gap_normalized",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#REB_T02_Statement"
+      ]
+    },
+    {
+      "claim_id": "REB-T03",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "scope": "Exactly the premise-dependent proposition in RealErasureBudget.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "source_archive/KERNEL_RECEIPT.json#QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget"
+      ],
+      "evidence_refs": [
+        "source_archive/NATIVE_RECEIPT_STDOUT.json#core_theorems"
+      ],
+      "source_refs": [
+        "formalization/QIKVRT_RealEnergy_v1/RealErasureBudget.lean#REB_T03_planck_budget",
+        "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean#REB_T03_Statement"
+      ]
+    },
+    {
+      "claim_id": "SRC-001",
+      "statement": "The original source archive binds 47 original payload files by path, byte count and SHA-256.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "The frozen source archive only; no claim of a complete author corpus.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "source_archive/SOURCE_FILES.json#files"
+      ]
+    },
+    {
+      "claim_id": "MODEL-001",
+      "statement": "The preserved numerical FLRW computation reports 48 successful model controls.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Observed computation of an assumed numerical model with illustrative parameters, not an astronomical or laboratory observation.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "docs/publications/2026-11-03-energy-cosmology-model-test/results/RESULTS.json#checks",
+        "docs/publications/2026-11-03-energy-cosmology-model-test/execution/RUN-002.json#exit_code"
+      ],
+      "source_refs": [
+        "docs/publications/2026-11-03-energy-cosmology-model-test/run_experiment.py#main"
+      ]
+    },
+    {
+      "claim_id": "OPEN-001",
+      "statement": "Independent physical spacetime emergence and universal physical validity are not established.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "No new physical measurement, converter or nongeometric derivation is supplied.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "source_archive/CLAIM_MATRIX.json",
+      "sha256": "ba662a42542c45827a6224d0ca6bbb50d9ca09b69a5680df85a552bea7a424b8",
+      "git_blob_sha1": "1a07e4580b929cb39bb60aa5ea4792310d986eca",
+      "kind": "CLAIM_MATRIX"
+    },
+    {
+      "path": "source_archive/KERNEL_RECEIPT.json",
+      "sha256": "ad3257308dd22b0186fe91584877bd18b42013b3366d16f3f0990c31b4a8b680",
+      "git_blob_sha1": "9985595aca4ee8615fad00b7f2d91c61dc01ad14",
+      "kind": "KERNEL_RECEIPT"
+    },
+    {
+      "path": "source_archive/NATIVE_RECEIPT_STDOUT.json",
+      "sha256": "2e284a60af4b495851b783a008a927c9446e9b0fb128b15096cb79bdf7ca0c5e",
+      "git_blob_sha1": "065289cdcf98e5cc3e414b9bf0f892b6c891cb8b",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "evidence/real-energy-20261103/native_run_41616823386.log",
+      "sha256": "e877045ede09821add5ad80c959c13474772ff4cc2e5611a94f0bd5acf53dab4",
+      "git_blob_sha1": "8b6a9b8ef3065b693cae271aa3b4ea578c51c646",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "evidence/real-energy-20261103/NATIVE_RUN_41616823386.json",
+      "sha256": "2c1ff28ea2948bcaad4f8f1c817cdecd8cf9c767cf52e4d0d14176806a7318cd",
+      "git_blob_sha1": "9993ae5b62b1c9aa6d86b4a26c61c6784a4f54be",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "source_archive/SOURCE_FILES.json",
+      "sha256": "a7cd276f2c98be3d2681ee63e01bc4414161b977d809314876d774aad339f426",
+      "git_blob_sha1": "f9e5f0ca45ad9a0b0e38c270ccd2152f95ca1d92",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/results/RESULTS.json",
+      "sha256": "290f27a1940d951088b1e57adb107a80da710c283574f130372a515c93608006",
+      "git_blob_sha1": "31273c5d23ec3b3b8f311070c0a87e57eac627a9",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/RUN-002.json",
+      "sha256": "6a464eff781877407a7fe3508e1f8010d10b883a6e68bc0026e23f2213030f99",
+      "git_blob_sha1": "26994946483ae4e88a6318cc7f3dcdba80ea81ab",
+      "kind": "EVIDENCE"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/run_experiment.py",
+      "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac",
+      "git_blob_sha1": "8dce573ee3c9f82d0e2d77128fc4f1eec4880296",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean",
+      "sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+      "git_blob_sha1": "afab4e05435f26ca0d8f5440a3ca47f5210b1fac",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealErasureBudget.lean",
+      "sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63",
+      "git_blob_sha1": "209681e2ffd8272e2480fed7aa75334f69933831",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean",
+      "sha256": "3fd5220b2bb3808e5b6def6ca7eae0e16df2693c068355addc9698056543e1cf",
+      "git_blob_sha1": "e870bf8b7f9b555da6995f6c9a7c9bf471c7a34c",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "source_archive/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "b3d45886ec4d931086f7195789ba5fe261c58a089ecd39fd99572d57e18aa5fd",
+      "git_blob_sha1": "9f984bf5068c018e2657dd33cf0dda83712acdc6",
+      "kind": "RETURN_RECEIPT"
+    }
+  ],
+  "prepublication_return": {
+    "content_changed": false,
+    "candidate_returned_to_owner": true,
+    "receipt_path": "source_archive/PREPUBLICATION_RETURN_RECEIPT.json",
+    "change_notice_path": null
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "completion_claims": {
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  }
+}
