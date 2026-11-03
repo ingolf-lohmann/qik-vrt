@@ -64,9 +64,30 @@ class SpecificationReview(unittest.TestCase):
                 self.check(action)
 
     def test_exact_historical_repair_is_not_a_currentness_claim(self):
-        self.check(dict(method='POST', specification_use='HISTORICAL_EXACT',
+        self.check(dict(method='POST', service='github',
+                        endpoint='https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/trees',
+                        specification_use='HISTORICAL_EXACT',
                         specification_claims=[], specification_basis=dict(
-                            subject=self.subject, reason='repair frozen source only')))
+                            subject=self.subject, scope='SOURCE_REPAIR_ONLY',
+                            reason='repair frozen source only')))
+
+    def test_historical_label_cannot_bypass_currentness_for_productive_effect(self):
+        for endpoint in ('https://raumzeitterminal.de/api/eap/effect',
+                         'https://api.github.com/repos/other/repo/git/trees',
+                         'https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/workflows/deploy/dispatches',
+                         'https://api.github.com.evil.example/repos/ingolf-lohmann/qik-vrt/git/trees'):
+            a = dict(method='POST', service='github', endpoint=endpoint,
+                     specification_use='HISTORICAL_EXACT', specification_claims=[],
+                     specification_basis=dict(subject=self.subject, scope='SOURCE_REPAIR_ONLY', reason='fixture'))
+            with self.subTest(endpoint=endpoint), self.assertRaises(SystemExit):
+                self.check(a)
+
+    def test_existing_private_journal_route_can_retain_repair_evidence(self):
+        self.check(dict(method='POST', service='workspace',
+                        tool='qik_vrt_kognitiver_arbeitsraum_update_task',
+                        endpoint='https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/mcp',
+                        specification_use='HISTORICAL_EXACT', specification_claims=[],
+                        specification_basis=dict(subject=self.subject, scope='SOURCE_REPAIR_ONLY', reason='journal')))
 
     def test_review_missing_wrong_subject_or_claim_blocks(self):
         for key, value in [('subject', {}), ('claims', ['other']), ('schema', 'unknown')]:

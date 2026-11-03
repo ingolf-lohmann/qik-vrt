@@ -39,10 +39,24 @@
       "log": "evidence/specification-currentness-20261103/tool-cache.log",
       "bytes": 122,
       "sha256": "06165a7d3606e20879c4703194e14d9971f5dd489c8507996679693bbe8d2b61"
+    },
+    {
+      "name": "specification-negative-controls-source-repair-scope",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/specification-negative-controls-source-repair-scope.log",
+      "bytes": 5227,
+      "sha256": "90e00de0aafe918fc1a644f36c9c1b1e409fcd935ef270fa502f639840f57834"
+    },
+    {
+      "name": "client-continuation-source-repair-scope",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/client-continuation-source-repair-scope.log",
+      "bytes": 396,
+      "sha256": "d86721f84362ebaac986f748a9bbbe64b677c970f4815edc72b4672816ecd116"
     }
   ],
   "test_counts": {
-    "specification": 16,
+    "specification": 18,
     "client_continuation": 143,
     "effect_ack_core": 41,
     "effect_ack_wire": 14
@@ -58,7 +72,8 @@
     "c90_checks": 7864387,
     "scientific_bundle": "FAIL: revised engine comment changed exact frozen proof input",
     "causal_correction": "restore exact original engine bytes; explain historical label in current contract instead",
-    "current_head_acceptance": "UNVERIFIED"
+    "current_head_acceptance": "UNVERIFIED",
+    "previous_scope_head": "9b328fb682cfc42bb2e687e2ed419016486a928d"
   },
   "seven_checkers": "UNVERIFIED",
   "main_integration": false,
@@ -71,5 +86,6 @@
     "Early diagnostic tool output was truncated and some exploratory logs overwritten; final checks above retain complete stdout/stderr.",
     "No universal zero-recurrence claim."
   ],
-  "historical_engine_bytes_preserved": true
+  "historical_engine_bytes_preserved": true,
+  "historical_exception": "SOURCE_REPAIR_ONLY: exact repository source-control/issue/PR or existing private journal; no runtime, deployment, dispatch, release or other provider"
 }

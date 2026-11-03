@@ -531,6 +531,9 @@ Read-only retrieval may use `DISCOVERY_ONLY`; it permits no currentness claim.
 `HISTORICAL_EXACT` requires an empty `specification_claims` array and an explicit
 `specification_basis` with the exact action subject and a nonempty reason. This
 supports repairs against a frozen source without asserting newest-spec adoption.
+The basis must declare `scope=SOURCE_REPAIR_ONLY`. This mode is limited to
+exact-repository source-control/issue/PR routes or the existing private journal.
+Runtime effects, deployments, dispatches and other services cannot use it.
 
 For an assertion that specifications are current or completely considered, use
 `CURRENT`, list their stable IDs in `specification_claims`, and bind a

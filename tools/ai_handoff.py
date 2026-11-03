@@ -200,8 +200,29 @@ def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
     if use == "HISTORICAL_EXACT":
         basis = action.get("specification_basis")
         if (claims or not isinstance(basis, dict) or basis.get("subject") != subject
+                or basis.get("scope") != "SOURCE_REPAIR_ONLY"
                 or not isinstance(basis.get("reason"), str) or not basis["reason"].strip()):
             fail("SPECIFICATION_HISTORICAL_BASIS_INVALID")
+        try:
+            endpoint = urlsplit(str(action.get("endpoint", "")))
+        except ValueError:
+            fail("SPECIFICATION_HISTORICAL_ROUTE_INVALID")
+        repository = re.escape(str(subject.get("repository", "")))
+        source_route = (
+            action.get("service") == "github" and endpoint.netloc == "api.github.com"
+            and re.fullmatch(
+                rf"/repos/{repository}/(?:git/(?:blobs|trees|commits|refs(?:/heads/[^%]+)?)"
+                r"|issues(?:/\d+(?:/comments)?)?|pulls(?:/\d+(?:/(?:reviews|merge))?)?)",
+                endpoint.path) is not None)
+        journal_route = (
+            endpoint.netloc == "qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
+            and (endpoint.path == "/mcp" or re.fullmatch(r"/api/v1/tasks(?:/[a-z0-9-]+)?", endpoint.path))
+            and str(action.get("tool", "")).endswith((
+                "qik_vrt_kognitiver_arbeitsraum_create_task",
+                "qik_vrt_kognitiver_arbeitsraum_update_task")))
+        if (endpoint.scheme != "https" or endpoint.query or endpoint.fragment
+                or ".." in endpoint.path.split("/") or not (source_route or journal_route)):
+            fail("SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED")
         return
     if use != "CURRENT" or not claims or len(set(claims)) != len(claims):
         fail("SPECIFICATION_USE_REQUIRED")

@@ -424,7 +424,10 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.receipt["next_actions"][0].update(
             specification_use="HISTORICAL_EXACT", specification_claims=[],
             specification_basis={"subject": self.subject,
+                                 "scope": "SOURCE_REPAIR_ONLY",
                                  "reason": "fixture:repair exact frozen source; no currentness claim"})
+        self.receipt["next_actions"][0]["endpoint"] = (
+            "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/refs/heads/fixture")
         with tempfile.TemporaryDirectory() as temporary:
             path = pathlib.Path(temporary) / "action.json"
             path.write_text(json.dumps(self.receipt["next_actions"][0]), encoding="utf-8")
