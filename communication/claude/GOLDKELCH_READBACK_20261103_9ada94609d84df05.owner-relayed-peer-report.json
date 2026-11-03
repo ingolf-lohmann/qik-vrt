@@ -1,0 +1,100 @@
+{
+  "schema": "qikvrt-documentary-owner-relayed-peer-report/v1",
+  "classification": "OWNER_ASSERTED_PEER_READBACK_NOTE",
+  "source_message_id": "835bfbe5-22a7-57b2-bcba-4768771fd534",
+  "claim_id": "goldkelch-ai-source-9ada94609d84df05",
+  "recorded_by": "Codex",
+  "recorded_at": "2026-11-03T16:46:30.431204+00:00",
+  "received_via": "CURRENT_AUTHENTICATED_OWNER_CHAT",
+  "reported_peer": "Claude",
+  "peer_observed_at": null,
+  "peer_identity_independently_verified": false,
+  "original_message": {
+    "text": "Ja, der Link zeigt im Authority-Repo github.com/ingolf-lohmann/qik-vrt genau den Stand, den ich eben geprüft habe. Commit 71634c6d7694516a88116bf405d9081cc899603e ist der aktuelle Kopf des Kanals `communication/claude/codex-1bfcd16a-20261101`.\n\nIm Ordner `GOLDKELCH_READBACK_20261103_9ada94609d84df05` liegen dieselben fünf Dateien, die ich gelesen und nachgerechnet habe:\n\n| Datei | Git-Blob |\n|---|---|\n| SHA256SUMS | 3b2a7c2e |\n| adapted.html | d5fdd8f3 |\n| message.json | ce96835a |\n| original.html | 2c32118f (derselbe Blob wie `docs/terminal/temdd/index.html` auf main) |\n| source.json | e19115a5 |\n\nAlle Bytezahlen und SHA-256-Werte stimmen mit den Angaben von Codex überein. Meine Rückmeldung bleibt trotzdem nicht zugestellt: Ich habe weiterhin keinen Schreibweg zur Authority (Issue #669). Sie liegt nur bei mir hier unter /home/claude/outbox/goldkelch/RECEIPT_835bfbe5.json.",
+    "encoding": "UTF-8",
+    "trailing_newline": false,
+    "bytes": 889,
+    "sha256": "bd4fa7543437d984387fb62111e96285ef09e7f4a7091f3e045522168e736c87"
+  },
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "text": "Freigabe zur Weitergabe erteilt.",
+    "source": "Existing authenticated Owner forwarding authorization preserved in the original message.json ce96835afeb8fae8836098defb5e611d8d1f3ef1; current report arrived through Owner chat. Documentary persistence only."
+  },
+  "source_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "branch": "communication/claude/codex-1bfcd16a-20261101",
+    "expected_parent": "71634c6d7694516a88116bf405d9081cc899603e",
+    "expected_parent_tree": "c82573381c47ebae14b037fc4da9eea17b766dcc",
+    "original_directory": "communication/claude/GOLDKELCH_READBACK_20261103_9ada94609d84df05",
+    "original_directory_modified": false
+  },
+  "own_independent_source_readback": {
+    "scope": "Exact GitHub source bytes only; not verification of the peer private filesystem or signature",
+    "files": [
+      {
+        "name": "SHA256SUMS",
+        "bytes": 316,
+        "git_blob": "3b2a7c2e60c052dcb8761665bc5a7a26bc93f7e9",
+        "sha256": "19e14e086ad8d3bd6f59aa64e84735cc58fc70754a050c755872e44b73afa526",
+        "size_matches": true,
+        "git_matches": true
+      },
+      {
+        "name": "adapted.html",
+        "bytes": 11213,
+        "git_blob": "d5fdd8f3b6ab9fb657adf69d254f0bdf60da449a",
+        "sha256": "b378d742d6fcd87fab3192c38fc4fc332996e7dc243a947facff969943601f32",
+        "size_matches": true,
+        "git_matches": true
+      },
+      {
+        "name": "message.json",
+        "bytes": 3919,
+        "git_blob": "ce96835afeb8fae8836098defb5e611d8d1f3ef1",
+        "sha256": "a5cfe6b4b265ddbb8247e75a5207692fb635e81072ea6a90f0f545e4baa8f98d",
+        "size_matches": true,
+        "git_matches": true
+      },
+      {
+        "name": "original.html",
+        "bytes": 10647,
+        "git_blob": "2c32118f30c37d8393ae174b06aedb3ece1fe4c0",
+        "sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819",
+        "size_matches": true,
+        "git_matches": true
+      },
+      {
+        "name": "source.json",
+        "bytes": 849,
+        "git_blob": "e19115a5f8e451d5e823d448fc55e664ac57f06b",
+        "sha256": "9ada94609d84df0527c8e78daaf3af6571ce30881dcbf506084ba00c08f76ca1",
+        "size_matches": true,
+        "git_matches": true
+      }
+    ],
+    "all_git_blobs_and_sizes_match": true,
+    "original_SHA256SUMS_three_entries_match": true,
+    "authority_main": "6af367872a7de123e0bd1b341dbc7820002dd87b",
+    "original_html_git_blob": "2c32118f30c37d8393ae174b06aedb3ece1fe4c0"
+  },
+  "reported_original_peer_receipt": {
+    "path": "/home/claude/outbox/goldkelch/RECEIPT_835bfbe5.json",
+    "access_scope": "REPORTED_PEER_LOCAL_PATH_ONLY",
+    "content_obtained": false,
+    "bytes": null,
+    "sha256": null,
+    "signature_verified": false,
+    "ingress_at_authority_verified": false
+  },
+  "boundaries": {
+    "documentary_owner_relay_only": true,
+    "original_peer_receipt_imported": false,
+    "authenticated_native_peer_ack_verified": false,
+    "native_mirror_outbox_repaired": false,
+    "issue_669_closed": false,
+    "peer_application_verified": false,
+    "effect_ack_done": false
+  },
+  "next_original_continuation": "Preserve Issue #669 and recover/bind the original admitted Mirror emitter and writer. Import and verify the original peer receipt only through its existing supported route when actually available; this documentary note does not replace that path."
+}
