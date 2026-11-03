@@ -1,0 +1,13 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "FAIL",
+  "source_count": 5,
+  "manifest_sha256": "d9c67846f4caa2485b9c52a57b64149ac7a42ca5b21c843ca0adc6a1e7965375",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [
+    "SOURCE_5:EXACT_LOCATOR_REQUIRED",
+    "SOURCE_5:ARCHIVE_PUBLICATION_PENDING"
+  ],
+  "artifacts": []
+}

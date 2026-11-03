@@ -1,0 +1,30 @@
+{
+  "schema": "qikvrt_continuation_source_reconciliation_v1",
+  "observed_at": "2026-11-03T06:37:41.646704+00:00",
+  "archive_name": "QIKVRT_Autostart_20261020_v48.zip",
+  "archive_version": 48,
+  "archive_bytes": 77585441,
+  "archive_sha256": "bb11f25da1db86582730522897554cd2ebfff86ece41b6ac216e4704c5a845c1",
+  "members": 2498,
+  "predecessor_receipt": {
+    "path": "session-mesh-harmonization-20261020/CLIENT_CONTINUATION.json",
+    "bytes": 591685,
+    "sha256": "42993db6cc88acbddc6bff9744afc4d25d86035a351e0e2d448212cd0bc0bce5",
+    "schema": "qikvrt-client-continuation/2",
+    "work_records": 350,
+    "knowledge_records": 379
+  },
+  "originals_read_only": true,
+  "historical_writer_admission_transferred": false,
+  "original_rules_contract_sha256": "730fdccda5cfbd5d5913cdc3598e0a8cb1236bf4f74dd3d2277f57e813e4cc6b",
+  "original_candidate_rule_source_bindings_recovered": 22,
+  "fresh_pr557_readback": {
+    "state": "open",
+    "merged": false,
+    "head": "82dc341c498c0046fa2e5ef15d5735eb95adbd21"
+  },
+  "main_validator_schema_observed": "qikvrt-client-continuation/1",
+  "candidate_validator_schema": "qikvrt-client-continuation/2",
+  "integration_gap_not_erased": true,
+  "current_capability_boundary": "The recovered historical handoff preserves obligations but supplies no current admitted private IONOS process or Zenodo publisher. No original journal opened for writing."
+}
