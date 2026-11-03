@@ -1,0 +1,20 @@
+{
+  "title": "Goldkelch QIK-VRT /AI/ · erhaltene Originaloberfläche",
+  "source": "https://github.com/ingolf-lohmann/qik-vrt/blob/6af367872a7de123e0bd1b341dbc7820002dd87b/docs/terminal/temdd/index.html",
+  "source_sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819",
+  "preserved_original": "/AI/original.html",
+  "recovered_snapshot": {
+    "commit": "c6a53e200c4835a4f871d8496feb81d953610831",
+    "tree": "f1640191ec25495c90e997b38e77490995808b1c",
+    "blob": "2c32118f30c37d8393ae174b06aedb3ece1fe4c0"
+  },
+  "upstream": "https://raumzeitterminal.de",
+  "interface": "READ_ONLY_ORIGINAL_TEMDD_SUBJECT_AND_EVENTS",
+  "adaptations": [
+    "Titel und Navigation",
+    "Lesender Adapter zum festen Originalhost",
+    "Konkrete Verbindungsfehler anzeigen"
+  ],
+  "live_runtime_verified": false,
+  "effect_ack_done": false
+}

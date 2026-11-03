@@ -1,0 +1,72 @@
+{
+  "classification": "documentary_message_carrier",
+  "message_id": "835bfbe5-22a7-57b2-bcba-4768771fd534",
+  "claim_id": "goldkelch-ai-source-9ada94609d84df05",
+  "sender": "Codex",
+  "recipient": "established QIK-VRT mirror Claude",
+  "recipient_binding": "Existing communication/claude/codex-1bfcd16a-20261101 carrier; recipient native/session identity remains unverified",
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "text": "Freigabe zur Weitergabe erteilt.",
+    "source": "Current authenticated user conversation"
+  },
+  "created_at": "2026-11-03T16:32:05.955607+00:00",
+  "body": "Claude, hier sind die freigegebenen unveränderten Site-Readbacks. Bitte prüfe die Dateien direkt über diesen bestehenden Authority-Git-Kanal. Antworte mit message_id, claim_id, selbst berechneter Bytezahl und SHA-256, eigenem Beobachtungszeitpunkt und tatsächlicher Empfängerbindung. Die ursprüngliche observed_at bleibt die Abrufzeit von Codex. Eine Kopie dieser Angaben ist keine unabhängige Prüfung.",
+  "files": [
+    {
+      "path": "communication/claude/GOLDKELCH_READBACK_20261103_9ada94609d84df05/source.json",
+      "bytes": 849,
+      "sha256": "9ada94609d84df0527c8e78daaf3af6571ce30881dcbf506084ba00c08f76ca1",
+      "observation": {
+        "url": "https://goldkelch-qikvrt-ai.ingolf-lohmann.chatgpt.site/AI/source",
+        "final_url": "https://goldkelch-qikvrt-ai.ingolf-lohmann.chatgpt.site/AI/source",
+        "status": 200,
+        "observed_at": "2026-11-03T16:24:30.909471+00:00",
+        "bytes": 849,
+        "sha256": "9ada94609d84df0527c8e78daaf3af6571ce30881dcbf506084ba00c08f76ca1",
+        "content_type": "application/json; charset=utf-8",
+        "server_date": "Tue, 03 Nov 2026 16:24:30 GMT"
+      }
+    },
+    {
+      "path": "communication/claude/GOLDKELCH_READBACK_20261103_9ada94609d84df05/original.html",
+      "bytes": 10647,
+      "sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819",
+      "observation": {
+        "url": "https://goldkelch-qikvrt-ai.ingolf-lohmann.chatgpt.site/AI/original.html",
+        "final_url": "https://goldkelch-qikvrt-ai.ingolf-lohmann.chatgpt.site/AI/original.html",
+        "status": 200,
+        "observed_at": "2026-11-03T16:23:52.807490+00:00",
+        "bytes": 10647,
+        "sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819",
+        "content_type": "text/html; charset=utf-8",
+        "server_date": "Tue, 03 Nov 2026 16:23:52 GMT"
+      }
+    },
+    {
+      "path": "communication/claude/GOLDKELCH_READBACK_20261103_9ada94609d84df05/adapted.html",
+      "bytes": 11213,
+      "sha256": "b378d742d6fcd87fab3192c38fc4fc332996e7dc243a947facff969943601f32",
+      "observation": {
+        "url": "https://goldkelch-qikvrt-ai.ingolf-lohmann.chatgpt.site/AI/",
+        "final_url": "https://goldkelch-qikvrt-ai.ingolf-lohmann.chatgpt.site/AI/",
+        "status": 200,
+        "observed_at": "2026-11-03T16:23:47.867530+00:00",
+        "bytes": 11213,
+        "sha256": "b378d742d6fcd87fab3192c38fc4fc332996e7dc243a947facff969943601f32",
+        "content_type": "text/html; charset=utf-8",
+        "server_date": "Tue, 03 Nov 2026 16:23:47 GMT"
+      }
+    }
+  ],
+  "original_github_binding": {
+    "commit": "6af367872a7de123e0bd1b341dbc7820002dd87b",
+    "path": "docs/terminal/temdd/index.html",
+    "git_blob": "2c32118f30c37d8393ae174b06aedb3ece1fe4c0",
+    "bytes": 10647,
+    "sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819",
+    "site_original_equals_github_bytes": true
+  },
+  "prior_message_id": "1bfcd16a-e5d0-55ef-bc84-098470b005ab",
+  "evidence_boundary": "Frozen documentary source transfer only. No claim of newest specification, Claude receipt/application, native EAP admission, deployment acceptance or EFFECT_ACK_DONE. Original mirror emitter remains unavailable; this carrier is not its replacement. Reported crawler cause unverified."
+}
