@@ -11,13 +11,15 @@
     },
     {
       "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
-      "pages": 3,
-      "bytes": 86300,
+      "pages": 4,
+      "bytes": 91030,
       "attachments_byte_verified": 3,
       "page_images_rendered": true,
-      "visual_review": "all final pages inspected; no clipping or empty last page"
+      "visual_review": "all four pages inspected; final source appendix on separate page; no clipping"
     }
   ],
   "numeric_source": "results/RESULTS.json",
-  "new_physics_claim": false
+  "new_physics_claim": false,
+  "source_visibility_manual": "MANUAL_SOURCE_INSPECTION.json",
+  "original_source_gate": "SOURCE_GATE_PENDING.json"
 }

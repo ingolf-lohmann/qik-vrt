@@ -46,7 +46,7 @@ Der ausgeführte Rechenversuch besteht 48 Kontrollen. Drei einfachere Modellwelt
 
 Absichtliche Fehler gehören dazu: Dreht man das Vorzeichen der Photonengleichung um, steigt die Lichtenergie falsch an und die Kontrolle schlägt an. Die Annahme einer konstanten Materialenergie des gewählten Mischmodells wird ebenfalls zurückgewiesen. Ein Prüfverfahren gewinnt seinen Wert auch dadurch, dass es solche Abweichungen erkennen kann.
 
-Der kontrollierte Nachweis lautet deshalb: Das veröffentlichungsfähige Rechenpaket beschreibt eine konkret ausgeführte, reproduzierbare Modellprüfung. Die erfolgreiche Prüfung aller Kontrollen bestätigt ihre angegebenen Recheneigenschaften. Ein neuer physikalischer Messbefund oder eine allgemein gültige Weltformel ist damit nicht festgestellt.
+Der kontrollierte Nachweis lautet deshalb: Das vorbereitete Rechenpaket beschreibt eine konkret ausgeführte, reproduzierbare Modellprüfung. Die erfolgreiche Prüfung aller Kontrollen bestätigt ihre angegebenen Recheneigenschaften. Ein neuer physikalischer Messbefund oder eine allgemein gültige Weltformel ist damit nicht festgestellt.
 
 ## Erkenntnisse erhalten, auch wenn sich ihre Bewertung ändert
 
@@ -59,3 +59,15 @@ Die nächste wissenschaftliche Frage lässt sich dadurch genauer stellen: Welche
 Die technischen Einzelheiten, Quellen und Ergebnisdaten stehen in der zugehörigen Forschungsnotiz und im Rechenpaket. Die Arbeitsfassung beansprucht keine bereits erfolgte Zenodo-Veröffentlichung oder produktive IONOS-Installation.
 
 Lizenz der neuen Textfassung: CC-BY-NC-ND-4.0.
+
+## Quellenanhang
+
+Robert F. Mudde: Classical Mechanics & Special Relativity for Starters, Kapitel 20, TU Delft. Grundlage für die Unterscheidung von Ruheenergie und Lichtimpuls. https://interactivetextbooks.tudelft.nl/classical-mechanics-and-special-relativity/content/ChXX0_FourMomentum.html
+
+Y. Jun, M. Gavrilov und J. Bechhoefer: High-Precision Test of Landauer's Principle in a Feedback Trap. Physical Review Letters 113, 190601 (2014). Experimenteller Bezug zur Wärmeabgabe bei einem festgelegten Löschprozess. DOI: https://doi.org/10.1103/PhysRevLett.113.190601
+
+M. Trodden und S. M. Carroll: TASI Lectures: Introduction to Cosmology, Abschnitt 2.2. Grundlage für die verwendeten Friedmann- und Kontinuitätsgleichungen. https://ned.ipac.caltech.edu/level5/Sept03/Trodden/Trodden2_2.html
+
+Ingolf Lohmann: Charta einer maschinenprüfbaren Wissenschaft. Methodischer Bezug für Quellenbindung und Nachweisklassifikation. DOI: https://doi.org/10.5281/zenodo.21515074
+
+Die eigene Rechnung ist im beigefügten run_experiment.py und in RESULTS.json dokumentiert. Ihre öffentliche Zenodo-Archivierung ist noch offen. Diese Folgefassung ergänzt die fehlenden Quellenangaben; sie beansprucht keinen abgeschlossenen Publikationsprozess.

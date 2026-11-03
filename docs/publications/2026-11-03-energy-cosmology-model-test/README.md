@@ -6,11 +6,12 @@ Stand: 3. November 2026. Auftrag und Fragestellung: Ingolf Lohmann; Implementier
 
 1. ENTRY_INDEX.json: Einstieg, Ergebnis, Originalquellen und Aufgaben-IDs.
 2. FACHARTIKEL.md / QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf: wissenschaftliche Arbeitsfassung, fünf Seiten.
-3. PROSAARTIKEL.md / QIKVRT_Virtuelles_Universum_Prosa.pdf: allgemein verständliche Arbeitsfassung, drei Seiten.
+3. PROSAARTIKEL.md / QIKVRT_Virtuelles_Universum_Prosa.pdf: allgemein verständliche Arbeitsfassung, vier Seiten einschließlich eigenem Quellenanhang.
 4. CLAIM_MATRIX.json: jede Aussage mit Nachweis und Grenze.
 5. run_experiment.py, results/RESULTS.json und results/closed_mixed_trajectory.csv: neue Ausführung, 48/48 Kontrollen.
 6. prior_sources/: die sechs bytegleich wiedergewonnenen ursprünglichen Lean-Dateien.
 7. production_evidence/: separat geprüfter Original-Debian-Pfad und tatsächliche Hostgrenze.
+8. REVISION_2.json und SOURCE_GATE_PENDING.json: dokumentierte Ergänzung der Quellenanzeige und weiterhin offene Publikationsprüfung. Die wissenschaftliche PDF und die numerischen Ergebnisse bleiben bytegleich zum Vorgänger.
 
 ## Ergebnis und Reproduktion
 

@@ -17,7 +17,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from reportlab.pdfgen.canvas import Canvas
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle, PageBreak
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.colors import HexColor, white
 from reportlab.pdfbase import pdfmetrics
@@ -80,6 +80,8 @@ def make(source,target):
     text=(ROOT/source).read_text();text=re.sub(r'<!--.*?-->','',text,flags=re.S)
     blocks=re.split(r'\n\s*\n',text.strip());story=[]
     for block in blocks:
+        if block == '## Quellenanhang':
+            story.append(PageBreak())
         if block.startswith('ABBILDUNG: '):
             story.append(Image(str(ROOT/block.removeprefix('ABBILDUNG: ')),width=A4[0]-100,height=(A4[0]-100)*6.2/9.5))
             story.append(Paragraph('Abbildung 1. Geschlossenes illustratives FLRW-Modell; keine astronomischen Messdaten. Durchgezogene und gestrichelte Kurven der Bilanz bzw. Rotverschiebung liegen innerhalb der angegebenen Residuen übereinander.',STYLES['caption']));continue

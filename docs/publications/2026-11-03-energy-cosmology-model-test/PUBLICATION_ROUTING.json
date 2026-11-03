@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_publication_routing_manifest_v1",
-  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v1",
+  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v2",
   "title": "Energieäquivalenz und dynamische Raumzeit: reproduzierbare Modellprüfung",
   "author": "Ingolf Lohmann",
   "repository_scope": {
@@ -14,8 +14,8 @@
     },
     {
       "path": "PROSAARTIKEL.md",
-      "bytes": 7695,
-      "sha256": "1f38190732614a894d5ef29f04a1b3fa20984e20289797d7845c13b6e0e2ca86"
+      "bytes": 8922,
+      "sha256": "22ab19a49f398d14a7f19f24fc8642177e1e4bc645397aaf45484dd759e584e3"
     },
     {
       "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
@@ -24,8 +24,8 @@
     },
     {
       "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
-      "bytes": 86300,
-      "sha256": "30fc885b9451ed2c08071fcb0cc8a0036af15bcdaa19a213bd1f5b174bce9568"
+      "bytes": 91030,
+      "sha256": "c9c13cc334339dd9d305f4dc29d5d82021843bfd282c6f4f02734856757a4e17"
     },
     {
       "path": "run_experiment.py",

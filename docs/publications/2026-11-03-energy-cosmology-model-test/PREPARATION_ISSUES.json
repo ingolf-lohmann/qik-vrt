@@ -42,5 +42,21 @@
       "error": "read_text translated original CSV CRLF to LF",
       "repair": "Read exact bytes then decode UTF-8; original CSV files unchanged; SHA256 and Git blob guard rechecked."
     }
+  ],
+  "revision_2_additional_observations": [
+    {
+      "issue": "Prosa source appendix absent",
+      "repair": "Four explicit locators added; old missing-source regression and corrected text/PDF links checked."
+    },
+    {
+      "issue": "Original source gate script not retrievable",
+      "repair": "Original gate remains PENDING; manual URI checks explicitly separate."
+    },
+    {
+      "issue": "One partially materialized original candidate AI file detected by archived hash mismatch",
+      "observed_bytes": 28031,
+      "expected_bytes": 31969,
+      "repair": "Rewritten from retained exact REST source; all22 archived contract hashes now match. No execution or policy acceptance before exact match; cause of incomplete local materialization not established."
+    }
   ]
 }

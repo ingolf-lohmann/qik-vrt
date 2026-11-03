@@ -8,19 +8,29 @@
       "sha256": "cd52795825d6af4cc87e0a2235e203601fe5ba22db5fb2a38591ccf113782d28"
     },
     {
+      "path": "CATALOG_CONSULTATION.json",
+      "bytes": 3662,
+      "sha256": "f416ce341dc5b72c00f50fc3f6e20ab7422f0a6cb4f02981bd355bf8d6b718cb"
+    },
+    {
       "path": "CLAIM_MATRIX.json",
       "bytes": 3537,
       "sha256": "6292df49f9da4c24d08d75b7e48cbf59bcca3d0d4a89380ea9074652835de790"
     },
     {
+      "path": "CONTINUATION_SOURCE_RECONCILIATION.json",
+      "bytes": 1396,
+      "sha256": "90b478e419442cb87403a15341f4292963cfa9e15dc50241f832101a372c65bd"
+    },
+    {
       "path": "DOCUMENT_QA.json",
-      "bytes": 672,
-      "sha256": "697f55734dc26d8744409bc47cef1341b0694733759bc512a0e6d2a301e7baf0"
+      "bytes": 809,
+      "sha256": "355065f5bd648e518ccc54a784f26468e3bf05bff4713b6aec2bd0a8ba95ad2a"
     },
     {
       "path": "ENTRY_INDEX.json",
-      "bytes": 914,
-      "sha256": "04246ece674ee53a89811eee939c30235a3c3eb6c5885ea42c18809e965ec7ad"
+      "bytes": 1057,
+      "sha256": "eee2f22186de686d021b725c96750c234b3ba9ad319ccfb134badf2c91134226"
     },
     {
       "path": "FACHARTIKEL.md",
@@ -33,19 +43,24 @@
       "sha256": "170231430ed05e742cb52635003003bf755ed7bfa294ce69e72877040a9360d7"
     },
     {
+      "path": "MANUAL_SOURCE_INSPECTION.json",
+      "bytes": 4625,
+      "sha256": "c11ea2c9482f14b3418688e9b026525a1744166f629e5d3dc6002f26d126dfa9"
+    },
+    {
       "path": "PREPARATION_ISSUES.json",
-      "bytes": 1916,
-      "sha256": "b41deb2818ee4965202ea443f389d93bba661379ac72731bfd719d6e0a83e40d"
+      "bytes": 2699,
+      "sha256": "1b7da1a07ad836cce8f1f2386716918d1b8cad8194c7c297c93d0ac90bccb8c4"
     },
     {
       "path": "PROSAARTIKEL.md",
-      "bytes": 7695,
-      "sha256": "1f38190732614a894d5ef29f04a1b3fa20984e20289797d7845c13b6e0e2ca86"
+      "bytes": 8922,
+      "sha256": "22ab19a49f398d14a7f19f24fc8642177e1e4bc645397aaf45484dd759e584e3"
     },
     {
       "path": "PUBLICATION_ROUTING.json",
       "bytes": 2190,
-      "sha256": "3e8d5556ebfe4b09cb33d1c7fc9c4ce95952bdfc9cfed7c9a130d266324a5707"
+      "sha256": "f2bd182738d40782965be3c4ab342ae3915fc29397070e5cc44a0394277ac605"
     },
     {
       "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
@@ -54,13 +69,28 @@
     },
     {
       "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
-      "bytes": 86300,
-      "sha256": "30fc885b9451ed2c08071fcb0cc8a0036af15bcdaa19a213bd1f5b174bce9568"
+      "bytes": 91030,
+      "sha256": "c9c13cc334339dd9d305f4dc29d5d82021843bfd282c6f4f02734856757a4e17"
     },
     {
       "path": "README.md",
-      "bytes": 4333,
-      "sha256": "ff7c4f7512c31e5f26cf2a84efd491e6efeac91da94b4c54f753cc500be99c45"
+      "bytes": 4599,
+      "sha256": "f8985f7ce4e03237558240e1842365aff93ef800c9c4d0965b2f4cdc96f303c4"
+    },
+    {
+      "path": "REVISION_2.json",
+      "bytes": 707,
+      "sha256": "d58b598d5878cb7ed593392529250ca9966f1021099fda3500e44663365cdae7"
+    },
+    {
+      "path": "SOURCE_GATE_PENDING.json",
+      "bytes": 920,
+      "sha256": "dca20750fa2bb9378f274fbc89016d0008b4c757c8367a227a3d0b1d3ee311d6"
+    },
+    {
+      "path": "SOURCE_MANIFEST.json",
+      "bytes": 1285,
+      "sha256": "d9c67846f4caa2485b9c52a57b64149ac7a42ca5b21c843ca0adc6a1e7965375"
     },
     {
       "path": "WORKFLOW_TRIGGER_INVENTORY.json",
@@ -69,8 +99,8 @@
     },
     {
       "path": "ZENODO_CANDIDATE.json",
-      "bytes": 1158,
-      "sha256": "00121ebf69a862894792367fe066c9f88d172cecb1ba3f0c234a4add0b9266c3"
+      "bytes": 1252,
+      "sha256": "d260dee9b312076035e3ba2ccf44c4dfba1d44f286297a79cff30821f48ecbe8"
     },
     {
       "path": "execution/ITERATION_1_RECOVERY.json",
@@ -174,8 +204,8 @@
     },
     {
       "path": "package_bundle.py",
-      "bytes": 2049,
-      "sha256": "211af0bec736b2f30920f37f66f6e07e36c76d00f256670e6ad41d04a0785b18"
+      "bytes": 2052,
+      "sha256": "3e54f628a9519fb363a9a5fccc86c0f40b757f5ecbebb8e445319c11078c5bcb"
     },
     {
       "path": "prior_sources/proof/IterativeEvidence.lean",
@@ -239,8 +269,8 @@
     },
     {
       "path": "render_articles.py",
-      "bytes": 7269,
-      "sha256": "858bc6c2aee7e68f9c975ac4a0b8ec9c4f89b06753a0d0cf750092a4a31a47b0"
+      "bytes": 7358,
+      "sha256": "09f310c070eeae86a91392bcde71b0b170cd9c774f42c24ccd88c10d1dcea464"
     },
     {
       "path": "results/RESULTS.json",
@@ -263,6 +293,6 @@
       "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
     }
   ],
-  "file_count": 52,
+  "file_count": 58,
   "effect_ack_done": false
 }

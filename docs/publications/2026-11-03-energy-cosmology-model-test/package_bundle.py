@@ -26,7 +26,7 @@ def main():
         'files':entries,'file_count':len(entries),'effect_ack_done':False}
     (ROOT/'ARTIFACT_MANIFEST.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
     (ROOT/'SHA256SUMS.txt').write_text(''.join(e['sha256']+'  '+e['path']+'\n' for e in entries))
-    archive=ROOT.parent/'QIKVRT_Energie_Raumzeit_Pruefpaket_20261103.zip'
+    archive=ROOT.parent/'QIKVRT_Energie_Raumzeit_Pruefpaket_20261103_v2.zip'
     with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
         for p in included():
             info=zipfile.ZipInfo(p.relative_to(ROOT).as_posix(),date_time=(2026,11,3,0,0,0))
