@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "/workspace/scratch/41d159cf0ae2/ionos_handoff/frozen_source/tools/qikvrt_debian.py",
+    "verify",
+    "--root",
+    "/workspace/scratch/41d159cf0ae2/ionos_handoff/artifact",
+    "--bundle-sha256",
+    "369f8ea601725808b6be03f90859703df44e7a72e5f49955292ebbcaca6c16f6"
+  ],
+  "bundle_sha256": "369f8ea601725808b6be03f90859703df44e7a72e5f49955292ebbcaca6c16f6",
+  "expected_origin": "Exact DEBIAN_BUNDLE.json extracted from provider-digest-verified native artifact 13164813749",
+  "exit_code": 0,
+  "stdout_sha256": "fae3c440b2b231af1fd4ac45723a117c544d7642db609a4644af88e3ae624a2c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "installation_performed": false
+}

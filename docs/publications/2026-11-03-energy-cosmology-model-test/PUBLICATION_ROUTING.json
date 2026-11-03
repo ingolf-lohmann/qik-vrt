@@ -1,0 +1,76 @@
+{
+  "schema": "qikvrt_publication_routing_manifest_v1",
+  "bundle_id": "qikvrt-energy-cosmology-model-test-20261103-v3",
+  "title": "Energieäquivalenz und dynamische Raumzeit: reproduzierbare Modellprüfung",
+  "author": "Ingolf Lohmann",
+  "repository_scope": {
+    "authority": "ingolf-lohmann/qik-vrt"
+  },
+  "artifacts": [
+    {
+      "path": "FACHARTIKEL.md",
+      "bytes": 18567,
+      "sha256": "0beb67b09ba077e5cf0d96a6b5bfb8ebf1889d74c535653f2f1ab44a200d35cf"
+    },
+    {
+      "path": "PROSAARTIKEL.md",
+      "bytes": 11202,
+      "sha256": "3c6d9f4a57e8b2795d98b002db89fbeb8f7ca4a9541debae44361ab0b8e9610a"
+    },
+    {
+      "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
+      "bytes": 359646,
+      "sha256": "d6bfa63e6b348d3630db3602332f5057f4de991593fb7fd2ec92b05419719f93"
+    },
+    {
+      "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
+      "bytes": 119265,
+      "sha256": "73527b183b10ec6c2855ff24b3bd9046e8be8a7c8b20929d983e2db8e6044006"
+    },
+    {
+      "path": "run_experiment.py",
+      "bytes": 11575,
+      "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
+    },
+    {
+      "path": "results/RESULTS.json",
+      "bytes": 15250,
+      "sha256": "290f27a1940d951088b1e57adb107a80da710c283574f130372a515c93608006"
+    },
+    {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 9335,
+      "sha256": "d221fcfc51cfa615966d59e1e0f4a4b19b9ed5deb7b00edbfe9c2a60ed8bf61f"
+    },
+    {
+      "path": "Ein_virtuelles_Universum_auf_dem_Pruefstand.txt",
+      "bytes": 11176,
+      "sha256": "f6d34fb6063e040c2ec43a10a6374a60b711516047d43cf4ca68bb61d3e56c15"
+    }
+  ],
+  "routes": {
+    "repository": {
+      "disposition": "RESEARCH_CANDIDATE",
+      "target_path": "docs/publications/2026-11-03-energy-cosmology-model-test"
+    },
+    "zenodo": {
+      "disposition": "DRAFT_NOT_PUBLISHED",
+      "effect_gate": "ORIGINAL_V2_EXACT_ARTIFACT_AND_SCIENTIFIC_SCOPE_GATES",
+      "upload_type": "publication",
+      "publication_type": "article"
+    },
+    "ietf": {
+      "disposition": "NOT_A_PROTOCOL_SPECIFICATION"
+    }
+  },
+  "automation": {
+    "classifier": "tools/qikvrt_publication_router.py",
+    "workflow": ".github/workflows/qikvrt_publication_router.yml",
+    "external_effects_default": "DENY"
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

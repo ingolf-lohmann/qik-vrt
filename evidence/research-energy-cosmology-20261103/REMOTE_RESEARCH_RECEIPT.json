@@ -1,0 +1,115 @@
+{
+  "schema": "qikvrt_research_source_ack_v1",
+  "recorded_at": "2026-11-03T06:02:30.569Z",
+  "owner": "Ingolf Lohmann",
+  "owner_instruction_sha256": "dd7309e87b2e6ef3413b09cc19ef21e4f7a525294b3fb0db4e643327883d6205",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "branch": "publication/energy-cosmology-20261103",
+    "commit": "3ff8a370f3735f5e1c8cd8ae29b983194bf045da",
+    "tree": "4091f5f2813184aaf59e25d5fe4f79ea12d31638",
+    "baseline_main": "40fa8eb1a6b413801ba8554dca35f915d54316c7"
+  },
+  "source_effect": {
+    "state": "REMOTE_REPOSITORY_BYTES_VERIFIED",
+    "commit": "3ff8a370f3735f5e1c8cd8ae29b983194bf045da",
+    "tree": "4091f5f2813184aaf59e25d5fe4f79ea12d31638",
+    "scoped_remote_blobs_verified": 54,
+    "integrity_outputs_verified": 3,
+    "critical_remote_sha256_checks": [
+      {
+        "path": "README.md",
+        "bytes": 4333,
+        "sha256": "ff7c4f7512c31e5f26cf2a84efd491e6efeac91da94b4c54f753cc500be99c45"
+      },
+      {
+        "path": "ENTRY_INDEX.json",
+        "bytes": 914,
+        "sha256": "04246ece674ee53a89811eee939c30235a3c3eb6c5885ea42c18809e965ec7ad"
+      },
+      {
+        "path": "run_experiment.py",
+        "bytes": 11575,
+        "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
+      },
+      {
+        "path": "results/RESULTS.json",
+        "bytes": 15250,
+        "sha256": "290f27a1940d951088b1e57adb107a80da710c283574f130372a515c93608006"
+      },
+      {
+        "path": "FACHARTIKEL.md",
+        "bytes": 14539,
+        "sha256": "f3951cb0d78db01d37da778722cda28e98837aa87ff2292f77c166d9d378a993"
+      },
+      {
+        "path": "PROSAARTIKEL.md",
+        "bytes": 7695,
+        "sha256": "1f38190732614a894d5ef29f04a1b3fa20984e20289797d7845c13b6e0e2ca86"
+      },
+      {
+        "path": "results/closed_mixed_trajectory.csv",
+        "bytes": 143244,
+        "sha256": "f757df1df19b6e93ac532130f538cabd90e59ed7fc9bf383b3f763763be0c37f"
+      }
+    ],
+    "state_work_unit_bytes_verified": true,
+    "archive_exact_head_CI_runs": 0,
+    "main_integration_verified": false,
+    "zenodo_published": false,
+    "host_installed": false
+  },
+  "manifest_derivation": {
+    "base_git_blob": "532c1af8365aaee44bdf819a2b026d7f2a357025",
+    "original_canonical_json_reproduced": true,
+    "original_content_tree_reproduced": true,
+    "new_payloads": 55,
+    "manifest_file_count": 5764,
+    "immutable_count": 5753,
+    "content_tree_sha256": "063296e38ae34f4ae4595276443b403c670420de54d8f633fa60a8cb4bde2eeb",
+    "full_repository_test_run": false,
+    "method": "Immutable base entries preserved; 55 new actual payloads SHA256/Git-blob checked; original classification used; canonical generator serialization and content-tree reproduced."
+  },
+  "runtime_observation": {
+    "id": "ec9ec6d8-dccb-429d-86e4-0670f7cf7c46",
+    "sha256": "386ce63ab64afd7cc8d43944bdb3d452c34586490cc428c877c56d4c193522b8",
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=ec9ec6d8-dccb-429d-86e4-0670f7cf7c46",
+    "public_snapshot_bytes_independently_verified": true,
+    "domain": "https://raumzeitterminal.de/",
+    "http_status": 525,
+    "observed_at": "2026-11-03T06:02:29.926Z",
+    "operator_authorized": true,
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ]
+  },
+  "scientific_result": {
+    "controls_passed": 48,
+    "controls_total": 48,
+    "universal_poster_law_proved": false,
+    "conditional_model_bilance_verified": true,
+    "physical_internal_spacetime_emergence_verified": false,
+    "new_empirical_evidence": false
+  },
+  "production": {
+    "debian_packages_verified": 5,
+    "source_files_manifest_compared": 199,
+    "original_package_verifier_exit": 0,
+    "installation_performed": false,
+    "first_open_binding": "Original admitted PersonalAuth / OS Secret Service / host-material execution process is not attached in this container."
+  },
+  "publication": {
+    "zenodo_mutation_performed": false,
+    "doi": null,
+    "scientific_condition_for_universal_law_confirmation_met": false
+  },
+  "native_effect_ack_done": false,
+  "scope": "This is a repository source acknowledgment, not native EAP runtime acceptance. It binds the preceding candidate, not its own future commit.",
+  "open_work": [
+    "Recover original historical execution archive/raw logs.",
+    "Review actual conditional scientific result and admit original protected publication route.",
+    "Attach original admitted SSO/host execution process, deliver five original protected inputs, verify host and install/restart/HTTPS/EAP effects.",
+    "Repair selectorless review publisher before native CI on this candidate."
+  ]
+}
