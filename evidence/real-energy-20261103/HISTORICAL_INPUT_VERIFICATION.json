@@ -1,0 +1,98 @@
+{
+  "schema": "qikvrt-real-energy-local-verification/v1",
+  "observed_at": "2026-11-03T07:31:41.729645+00:00",
+  "original_candidate_sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+  "original_candidate_unmodified": true,
+  "original_PRE_T01_T05_compile_exit": 0,
+  "new_real_theorems": 3,
+  "combined_theorems": 8,
+  "checker": "Original Lean4.19.0",
+  "mathlib_commit": "c44e0c8ee63ca166450922a373c7409c5d26b00b",
+  "locked_mathlib_manifest_sha256": "5c6421b650bc87a2427a892a39e5522dc44543ca4ac1bd6e9f08d536c044a752",
+  "lean_executable_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+  "source_files": {
+    "PlanckRealEnergyDomain.lean": {
+      "bytes": 3467,
+      "sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce"
+    },
+    "RealEnergyAxiomAudit.lean": {
+      "bytes": 638,
+      "sha256": "63b0852be9c1c9468bea5a20a7122ad729578de6b918ed6001c78a42008964a5"
+    },
+    "RealErasureBudget.lean": {
+      "bytes": 1533,
+      "sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63"
+    },
+    "negative/negative_gap.lean": {
+      "bytes": 68,
+      "sha256": "cce06233c9dc548971cc096db40dbe54a0e6759bc4ccddcc74014169bbaff9e9"
+    },
+    "negative/over_budget.lean": {
+      "bytes": 79,
+      "sha256": "653883e33566815282a8e2cbcb75d636d2712f5f2b59248264c6c84a4a406519"
+    },
+    "negative/upper_gap_endpoint.lean": {
+      "bytes": 69,
+      "sha256": "569521a245ae081069bc1fba9a41332d86785f0de03607157173cbe9ca20bb6b"
+    },
+    "negative/zero_constants.lean": {
+      "bytes": 65,
+      "sha256": "e23287b25835de7e2bcf0551066d253cd5c11c7aa9e3761503c28f2454412143"
+    }
+  },
+  "cases": [
+    {
+      "name": "real_budget_bridge",
+      "exit": 0,
+      "expected": "ACCEPT",
+      "pass": true,
+      "log_sha256": "0e606818852cc6d4e60902e87575d34ac32240a5d6906a692c9213d2c43e035c"
+    },
+    {
+      "name": "real_axiom_audit",
+      "exit": 0,
+      "expected": "ACCEPT",
+      "pass": true,
+      "log_sha256": "a463b47a37ccd6f55871086244221c4b1c155b32222f6415ccc51aca2e0e5b7a"
+    },
+    {
+      "name": "negative_negative_gap",
+      "exit": 1,
+      "expected": "REJECT",
+      "pass": true,
+      "log_sha256": "511ddfa289ac99f1d684f4c408e07948f85ac030d48952a244d1be8900a8e998"
+    },
+    {
+      "name": "negative_over_budget",
+      "exit": 1,
+      "expected": "REJECT",
+      "pass": true,
+      "log_sha256": "daf3e2e1c4a649a31683b2b892a50d839ec0e35a84396437a5ea0cf8f53588cf"
+    },
+    {
+      "name": "negative_upper_gap_endpoint",
+      "exit": 1,
+      "expected": "REJECT",
+      "pass": true,
+      "log_sha256": "094d64dea8e8b4bb9e2226d7de939680ef836c2b1f6b5646792f641946da165f"
+    },
+    {
+      "name": "negative_zero_constants",
+      "exit": 1,
+      "expected": "REJECT",
+      "pass": true,
+      "log_sha256": "41552c7e944b2159fdfc7e621f7ca1b2cee9d800827ae56e1b8c0270536d4636"
+    }
+  ],
+  "pass": true,
+  "native_CI": "NOT_EXECUTED",
+  "seven_independent_checkers": "NOT_EXECUTED",
+  "SI_calibration": "NOT_ESTABLISHED",
+  "empirical_coupling": "NOT_MEASURED",
+  "axiom_dependencies": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "axiom_audit_count": 8
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "qikvrt-locked-real-energy-verification/v2",
+  "started_at": "2026-11-03T08:17:31.438467+00:00",
+  "status": "UNVERIFIED",
+  "cases": [],
+  "source_lock_sha256": null,
+  "native_CI": "NOT_EXECUTED",
+  "seven_independent_checkers": "NOT_EXECUTED",
+  "empirical_correspondence": "NOT_MEASURED",
+  "effect_ack_done": false,
+  "finished_at": "2026-11-03T08:17:31.438587+00:00",
+  "reason": "ValueError: SOURCE_BINDING_MISMATCH: PlanckRealEnergyDomain.lean"
+}

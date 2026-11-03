@@ -1,0 +1,65 @@
+{
+  "schema": "qikvrt-real-energy-source-lock/v2",
+  "origin_archive_sha256": "3de2e360f401123b121def22765c8cc6fe0c6e53f2b5ad5d7ef98d103f744ddf",
+  "package_files": {
+    "PlanckRealEnergyDomain.lean": {
+      "bytes": 3467,
+      "sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce"
+    },
+    "RealEnergyAcceptanceAudit.lean": {
+      "bytes": 549,
+      "sha256": "799ab42cbab9a4f40394bac15ec90589cef6570cbe105f4ebeae2d4f8ae471f3"
+    },
+    "RealEnergyAxiomAudit.lean": {
+      "bytes": 638,
+      "sha256": "63b0852be9c1c9468bea5a20a7122ad729578de6b918ed6001c78a42008964a5"
+    },
+    "RealEnergyStatements.lean": {
+      "bytes": 1889,
+      "sha256": "3fd5220b2bb3808e5b6def6ca7eae0e16df2693c068355addc9698056543e1cf"
+    },
+    "RealErasureBudget.lean": {
+      "bytes": 1533,
+      "sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63"
+    },
+    "negative/negative_gap.lean": {
+      "bytes": 68,
+      "sha256": "cce06233c9dc548971cc096db40dbe54a0e6759bc4ccddcc74014169bbaff9e9"
+    },
+    "negative/over_budget.lean": {
+      "bytes": 79,
+      "sha256": "653883e33566815282a8e2cbcb75d636d2712f5f2b59248264c6c84a4a406519"
+    },
+    "negative/upper_gap_endpoint.lean": {
+      "bytes": 69,
+      "sha256": "569521a245ae081069bc1fba9a41332d86785f0de03607157173cbe9ca20bb6b"
+    },
+    "negative/zero_constants.lean": {
+      "bytes": 65,
+      "sha256": "e23287b25835de7e2bcf0551066d253cd5c11c7aa9e3761503c28f2454412143"
+    },
+    "lakefile.toml": {
+      "bytes": 498,
+      "sha256": "82f1f7cb8141f7dfa151d74e1bc33f545fdf1e1958551979d0af402953086427"
+    },
+    "lean-toolchain": {
+      "bytes": 25,
+      "sha256": "55e97be96000b5e9e290c9e74482e5e317861499a5540353ce845471bded8cea"
+    },
+    "lake-manifest.json": {
+      "bytes": 2974,
+      "sha256": "6f5964b2526d7d9d2618d58f77df04909720eea9388b395488abe8adcc15bd1d"
+    }
+  },
+  "mathlib": {
+    "revision": "c44e0c8ee63ca166450922a373c7409c5d26b00b",
+    "git_tree": "fdf252e589fb338709bf537ba48ce79a78cbe5e9",
+    "archive_sha256": "9fce64f31ba5612df46871eee8b4581c81c120604deb08cc35fa9f0fb543a425",
+    "archive_url": "https://github.com/leanprover-community/mathlib4/archive/c44e0c8ee63ca166450922a373c7409c5d26b00b.tar.gz",
+    "source_manifest_sha256": "526d1e0a45df5d8cde128246b5bb7442eea93be3d832220bdc1584e8eadebc05",
+    "source_files": 6816,
+    "original_manifest_sha256": "5c6421b650bc87a2427a892a39e5522dc44543ca4ac1bd6e9f08d536c044a752",
+    "binding": "Lake path dependency backed by byte-locked original archive; all 6816 file hashes and independently observed upstream Git tree verified. No restored upstream Git commit claimed."
+  },
+  "lean_linux_x86_64_executable_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023"
+}
