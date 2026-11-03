@@ -115,6 +115,35 @@ does not retry the failed job. Restoration, actual protected input delivery,
 the original `/v1.45/info` identity read and exact-domain delivery each retain
 their existing admission and independent readback requirements.
 
+### Main CI replay after a protected host failure
+
+On 3 November 2026, [Main CI run 41720113301](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41720113301)
+for commit `c6083135f3cb2723e849d7b4f9d7dee89898e5c6` failed at the
+original host identity step in attempts 1 and 2. The
+[second host job](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41720113301/job/126227954136)
+reported `protected host binding/credential unavailable` before mTLS.
+Attempt 3 was cancelled. The run metadata attributes the attempts to the
+same GitHub account, with no evidence of the specific rerun client. The
+repeated failure establishes a job-input boundary, with no host outage inferred.
+
+A native rerun of Main CI now fails with `HOLD_MAIN_CI_REPLAY` before
+the full build. The original host job independently rejects attempts above
+one before checkout and protected input reads, including failed-job-only
+reruns that reuse successful prerequisites. Rejection is a failure, so it
+cannot turn a prior host failure into a green skipped job. A rejected replay
+does not upload a host-input witness. Older GitHub runs retain the workflow
+definition of their original commit.
+
+Reconcile the original attempt and its exact-subject evidence. For
+`HOLD_PROTECTED_INPUT_DELIVERY`, obtain the existing
+`productionEnvironmentReadback` via the registered original SSO adapter,
+using the request ID tied to the original failure (for this incident,
+`host-input-41720113301-1`). Repair the demonstrated delivery gap, then use
+a fresh admitted original run with attempt 1 and the applicable source,
+review, host and domain gates. A new run ID or commit alone is no evidence
+of a repaired input path. The host check and package/production acceptance
+remain separate.
+
 The receiver checks out its own Main event SHA, never triggering-run source or
 executable artifacts. It has no dependency on the caller and no workflow-global
 concurrency lock. Original signing-job artifacts can be reconciled even when

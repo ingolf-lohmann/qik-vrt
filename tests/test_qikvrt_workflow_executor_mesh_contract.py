@@ -938,6 +938,33 @@ class OwnerSigningContinuationTests(unittest.TestCase):
         self.assertEqual(value["credential_delivery"]["state"], "PAIR_NOT_DELIVERED")
         writers.assert_not_called()
 
+    def test_main_ci_replay_fails_before_build_or_protected_host_reads(self):
+        workflow = (ROOT / MODULE.AMO_CI_WORKFLOW).read_text()
+        sections = (
+            ("test", "offline_browser", "Stop Main CI replay before the full build",
+             "github.ref == 'refs/heads/main' && github.run_attempt > 1"),
+            ("container_deploy", "container_public_readback",
+             "Stop replay before reading protected host inputs", "github.run_attempt > 1"),
+        )
+        for job, successor, name, condition in sections:
+            with self.subTest(job=job):
+                section = workflow.split(f"\n  {job}:\n", 1)[1].split(f"\n  {successor}:\n", 1)[0]
+                steps = "\n" + section.split("    steps:\n", 1)[1]
+                first_step = steps.split("\n      - ", 2)[1]
+                self.assertTrue(first_step.startswith(f"name: {name}\n"))
+                self.assertIn("if: ${{ " + condition + " }}", first_step)
+                self.assertNotIn("continue-on-error", first_step)
+                body = first_step.split("        run: |\n", 1)[1]
+                script = "\n".join(line[10:] for line in body.splitlines())
+                result = subprocess.run(["sh", "-eu", "-c", script], capture_output=True,
+                                        text=True, timeout=5)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("HOLD_MAIN_CI_REPLAY", result.stdout)
+        host = workflow.split("\n  container_deploy:\n", 1)[1].split(
+            "\n  container_public_readback:\n", 1)[0]
+        self.assertIn("always() && (steps.host.outcome == 'success' || "
+                      "steps.host.outcome == 'failure')", host)
+
     def test_actual_ci_preflight_distinguishes_request_and_delivery_without_network(self):
         workflow = (ROOT / MODULE.AMO_CI_WORKFLOW).read_text()
         script = workflow.split("          python3 -B - <<'PYAMO'\n", 1)[1].split("          PYAMO", 1)[0]

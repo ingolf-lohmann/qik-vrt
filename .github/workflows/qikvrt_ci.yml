@@ -56,6 +56,11 @@ jobs:
     # Non-writer paths retain 15m; all tests and terminal enforcement stay intact.
     timeout-minutes: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && 90 || 15 }}
     steps:
+      - name: Stop Main CI replay before the full build
+        if: ${{ github.ref == 'refs/heads/main' && github.run_attempt > 1 }}
+        run: |
+          echo '::error::HOLD_MAIN_CI_REPLAY: reconcile the original failure and use a fresh admitted run after causal repair.'
+          exit 1
       - name: Set up standalone Python runtime
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
@@ -1718,6 +1723,12 @@ jobs:
     outputs:
       deployed: ${{ steps.host.outputs.deployed }}
     steps:
+      # Failed-job-only reruns can reuse successful prerequisite jobs.
+      - name: Stop replay before reading protected host inputs
+        if: ${{ github.run_attempt > 1 }}
+        run: |
+          echo '::error::HOLD_MAIN_CI_REPLAY: reconcile the original host receipt and use a fresh admitted run after causal repair.'
+          exit 1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ needs.container.outputs.head }}
@@ -1801,7 +1812,7 @@ jobs:
             printf 'deployed=true\n' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        if: always()
+        if: ${{ always() && (steps.host.outcome == 'success' || steps.host.outcome == 'failure') }}
         with:
           name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
           path: |
