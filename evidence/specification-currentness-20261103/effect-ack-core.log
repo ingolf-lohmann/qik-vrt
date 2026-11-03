@@ -1,0 +1,6 @@
+COMMAND ["python3", "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_effect_ack_conformance.py"]
+.........................................
+----------------------------------------------------------------------
+Ran 41 tests in 0.017s
+
+OK
