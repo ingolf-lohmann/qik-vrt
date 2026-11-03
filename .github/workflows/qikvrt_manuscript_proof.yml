@@ -499,7 +499,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 bootstrap_mathlib.py
-          lake exe cache get Mathlib/Data/Real/Sqrt.lean
+          lake exe cache get Mathlib.Data.Real.Sqrt
           lake build
           python3 check_real_successor.py \
             --lean "$(lake env which lean)" \

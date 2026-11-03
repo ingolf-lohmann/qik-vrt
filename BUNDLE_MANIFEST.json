@@ -10,13 +10,13 @@
   "files": [
     {
       "path": ".github/workflows/qikvrt_manuscript_proof.yml",
-      "bytes": 27001,
-      "sha256": "8dd0f1a66fb4fc1cf22f3aecde58ccece8408fcff8861616496d5ea78c410473"
+      "bytes": 26996,
+      "sha256": "3b87f476f94c3b00da650ceeb45234a672d2c4b43278cd74a29da1e02a6ae3f1"
     },
     {
       "path": "CHANGE_NOTICE.md",
-      "bytes": 2375,
-      "sha256": "8d3ab65269a06fc9091bca02dfbcc1005fb2064fa1d110c17272203e266d4453"
+      "bytes": 2781,
+      "sha256": "65ce3d7390d3ae9a8ba3eccf3da7ee554a156110c98e1d2ff74daf92a8e75f6f"
     },
     {
       "path": "README_REAL_ENERGY_COMPLETION.md",
@@ -404,6 +404,16 @@
       "sha256": "63d92f9f85883bfa56adff465369f5e9f0d5d6e0c63c74504771279c4a6d935b"
     },
     {
+      "path": "docs/publications/index.html",
+      "bytes": 47303,
+      "sha256": "fbe1b38ca9b128e8b13cf552dfa635b0098f8bce650e1811c2bfe4b55541cb8e"
+    },
+    {
+      "path": "docs/publications/index.json",
+      "bytes": 65040,
+      "sha256": "a30bc20cb6af8ae0da121f462c87326174e3fed8bd67193da4f24cac56e2ff8e"
+    },
+    {
       "path": "evidence/real-energy-20261103/CHECKER_SELFTEST.json",
       "bytes": 646,
       "sha256": "b2195f5eb10338a424f5404fe244183b45957160783a4064ede5d65c6f609868"
@@ -495,8 +505,8 @@
     },
     {
       "path": "formalization/QIKVRT_RealEnergy_v1/README.md",
-      "bytes": 4584,
-      "sha256": "dad3c7ee23a401e2639fd54ddbd5359c1d47bdbc0d7ed3561c1b15e1ec22f584"
+      "bytes": 4579,
+      "sha256": "58a7cf8590d837718c79755cc7135e66bc44c841b82cffc0b53881fd49dae4c2"
     },
     {
       "path": "formalization/QIKVRT_RealEnergy_v1/RealEnergyAcceptanceAudit.lean",

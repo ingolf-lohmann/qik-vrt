@@ -18,7 +18,7 @@ Voraussetzungen: Linux x86-64, Git, Python 3 und die originale Lean-4.19.0-Toolc
 
 ```bash
 python3 bootstrap_mathlib.py
-lake exe cache get Mathlib/Data/Real/Sqrt.lean
+lake exe cache get Mathlib.Data.Real.Sqrt
 lake build
 python3 check_real_successor.py \
   --lean "$(lake env which lean)" \
