@@ -73,5 +73,32 @@
     "ietf_submitted": false,
     "zenodo_published": false,
     "effect_ack_done": false
+  },
+  "internal_reference": {
+    "state": "INTERNAL_HISTORICAL_REFERENCE",
+    "classification": "HISTORICAL_EXACT",
+    "source_commit": "a09bef1a94dce870b017c16147b80a52f72e8a6c",
+    "source_tree": "5c6abd5e2efecc191d8c2b836ed6aa64c1cdeceb",
+    "xml_path": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.xml",
+    "xml_bytes": 10307,
+    "xml_sha256": "11fd502eeec40a017fab27572cb8e4cd59b6d0e1e4c68769aabe5a435dc34ac2",
+    "verify_digest_before_use": true,
+    "scope": "Internal source review and conformance checks against the recovered candidate. Live runtime and deployment actions retain their own admission and specification-currentness requirements.",
+    "working_rules": {
+      "causal_authority": "Require explicit authority, evidence and dependency bindings. Preserve non-commutative effect order, authority, leases, exact versions and Effect-Ack dependencies across execution projections.",
+      "prepare_and_commit": "Prepare leaves the protected effect pending. Commit must bind the same exact request, full responsibility record and fresh single-use token.",
+      "post_effect": "A pre-execution DONE record authorizes at most the bound effect. Claim actual completion only from a distinct, independently verified observation of the resulting state. Transport success and terminal input are evidence within their own scopes."
+    },
+    "ietf_submission": "OPEN",
+    "submission_channel_reopens_after": "2026-11-14T23:59:00-08:00",
+    "submission_channel": "https://datatracker.ietf.org/submit/",
+    "wire_profile": "HTTP/00",
+    "deployment_target": "https://raumzeitterminal.de",
+    "deployment_acceptance": "OPEN",
+    "owner_instruction": {
+      "source": "authenticated_current_chat",
+      "utf8_bytes": 303,
+      "sha256": "3f9ed71e269c1dfc2199f31566bab1865d415cbb02af5e1ee45d0ff20b688044"
+    }
   }
 }
