@@ -1,0 +1,6 @@
+COMMAND ["python3", "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_effect_ack_wire.py"]
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.040s
+
+OK
