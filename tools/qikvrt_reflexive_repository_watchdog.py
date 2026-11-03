@@ -30,6 +30,7 @@ WAITING_STATUSES = frozenset({"queued", "waiting", "requested", "pending"})
 UNTRUSTED_CONCLUSIONS = frozenset({"action_required", "startup_failure"})
 EXECUTED_FAILURE_CONCLUSIONS = frozenset({"failure", "timed_out"})
 GATEWATCH_SCOPES = frozenset({"MAIN", "PULL_REQUEST_MAIN", "PULL_REQUEST_STACKED"})
+MAX_JOB_READBACK_REQUESTS = 20
 GATEWATCH_STATES = frozenset(
     {
         "SUCCESS",
@@ -108,6 +109,42 @@ def _timestamp(value: Any, label: str) -> datetime:
     if parsed.tzinfo is None:
         raise ReflexiveWatchdogBlock(f"{label} must include a timezone")
     return parsed.astimezone(timezone.utc)
+
+
+def job_readback_budget(value: Any, *, expected_head: str) -> dict[str, Any]:
+    """Admit a complete, exact-head run page before any per-run job request."""
+    expected_head = _head_sha(expected_head, "expected head")
+    value = _mapping(value, "workflow run page")
+    runs = value.get("workflow_runs")
+    total = value.get("total_count")
+    blocker = None
+    run_ids = []
+    if (not isinstance(runs, list) or not isinstance(total, int)
+            or isinstance(total, bool) or total < 0):
+        blocker = "RUN_INVENTORY_INVALID"
+    elif value.get("truncated", False) is not False or len(runs) != total:
+        blocker = "RUN_INVENTORY_INCOMPLETE"
+    elif total > MAX_JOB_READBACK_REQUESTS:
+        blocker = "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"
+    else:
+        for run in runs:
+            if (not isinstance(run, Mapping) or type(run.get("id")) is not int
+                    or run["id"] <= 0 or run["id"] in run_ids
+                    or run.get("head_sha") != expected_head):
+                blocker = "RUN_INVENTORY_INVALID"
+                break
+            run_ids.append(run["id"])
+    return {
+        "schema": "qikvrt_job_readback_budget_v1",
+        "state": "HOLD" if blocker else "READY",
+        "first_blocker": blocker,
+        "expected_head_sha": expected_head,
+        "reported_run_count": total if type(total) is int else None,
+        "returned_run_count": len(runs) if isinstance(runs, list) else None,
+        "max_job_requests": MAX_JOB_READBACK_REQUESTS,
+        "run_ids": [] if blocker else run_ids,
+        "effect_ack_done": False,
+    }
 
 
 def _iso(value: datetime) -> str:
@@ -1118,6 +1155,10 @@ def repair_handoff(analysis_bytes: bytes, *, run_id: int, run_attempt: int,
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    budget_parser = subcommands.add_parser("job-readback-budget")
+    budget_parser.add_argument("--runs-file", type=Path, required=True)
+    budget_parser.add_argument("--expect-head", required=True)
+    budget_parser.add_argument("--json", action="store_true")
     analyze_parser = subcommands.add_parser("analyze")
     analyze_parser.add_argument("--runs-file", type=Path, required=True)
     analyze_parser.add_argument("--jobs-dir", type=Path, required=True)
@@ -1159,7 +1200,12 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "repair-handoff":
+        if arguments.command == "job-readback-budget":
+            value = job_readback_budget(
+                _read_json(arguments.runs_file, "workflow run page"),
+                expected_head=arguments.expect_head,
+            )
+        elif arguments.command == "repair-handoff":
             value = repair_handoff(arguments.analysis_file.read_bytes(),
                 run_id=arguments.run_id, run_attempt=arguments.run_attempt,
                 producer_event=arguments.event, parent_workflow=arguments.parent_workflow)
@@ -1218,7 +1264,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(canonical_json_bytes(value).decode("utf-8"), end="")
         else:
             print(f"{value['state']} first_blocker={value.get('first_blocker')}")
-        return 0
+        return 2 if arguments.command == "job-readback-budget" and value["state"] == "HOLD" else 0
     except ReflexiveWatchdogBlock as exc:
         print(f"BLOCK REFLEXIVE_REPOSITORY_WATCHDOG {exc}", file=sys.stderr)
         return 2

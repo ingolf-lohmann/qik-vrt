@@ -65,6 +65,22 @@ workflow, or treats its own terminality as gate success.
 
 ## Reflexivity
 
+### Job-readback request budget
+
+The existing observation step validates the returned run page before requesting
+any jobs. The page must include an integer `total_count` equal to its returned
+run count, no truncation, and unique positive run IDs bound to the exact expected
+head. At most 20 per-run job requests are admitted. An incomplete inventory or a
+larger request budget produces `HOLD` with an empty request list and a retained
+`job-readback-budget.json`; it makes no per-run job request and does not sample
+the first 20 runs. The existing failure receipt records `JOBS_BUDGET_PREFLIGHT`,
+and pipeline progress remains unknown. A denied run or job GET stops the step;
+there is no automatic retry. Failure to download the prior receipt artifact also
+stops at `BASELINE_READBACK`, before any current run or job request. An HTTP 403
+on that earlier path cannot be ignored as an optional missing baseline.
+This is a bound on this step's per-run job reads,
+not a provider-wide quota controller or proof of live event delivery.
+
 ### Failure of the observer itself
 
 An API/readback failure before analysis is an observation error. It must leave
