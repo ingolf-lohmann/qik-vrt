@@ -1,0 +1,109 @@
+{
+  "schema": "qikvrt-publication-recovery-source-check/v1",
+  "observed_at": "2026-11-04T08:29:46.660514+00:00",
+  "owner": "Ingolf Lohmann",
+  "authorization": "Existing publication/repair grants and current direct instruction to close this and similar gaps",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+  "base_tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d",
+  "tested_source_tree": "22095e5fb54a0e864660b5140829cb0ab78f826a",
+  "source_commit": "14e80f8f517aaf5b8a168e38a99994da5424dda5",
+  "working_copy": "Exact Git-Data/tree reconstruction from REST source; local history explicitly shallow",
+  "repairs": [
+    "GET retains original attempt readback after provider-reference expiry; POST and publisher remain strict",
+    "Listener bind errors are distinguished from SSO/store/writer failures",
+    "TLS startup failure releases listener and writer fence and redacts exception detail"
+  ],
+  "source_files": [
+    {
+      "path": "runtime/self-host/PUBLICATION.md",
+      "bytes": 9704,
+      "sha256": "81c5044c9cc9416d0d13eae05605970cc292a76c495a15f77bdeed7ecbe09967",
+      "git_blob": "fc897174bd688f572e51ee29d04600d4a3160633"
+    },
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 143025,
+      "sha256": "d2843fcb855d4dc19d438ba9aa960412679b58fc7803d9847b3017b0343391e9",
+      "git_blob": "19a56852e518e281b32579e9a56b0ff0af5ad650"
+    },
+    {
+      "path": "tests/test_production_environment.py",
+      "bytes": 48472,
+      "sha256": "96b95e18f6565ef9bf6595dea0e8ad4c17ea02e307c3fc19ac411a1c7ab74af6",
+      "git_blob": "06cf6f5489972d6bbae9785bad3df08c2589d6cb"
+    },
+    {
+      "path": "tests/test_publication_rest.py",
+      "bytes": 13446,
+      "sha256": "d9f050cb47179977d380fa2127659919e0b3883ab2fae8fc8e175ef3f6844598",
+      "git_blob": "bf5c57472f3e01c9c1692c83386978f56729925d"
+    },
+    {
+      "path": "tests/test_self_host_publication.py",
+      "bytes": 17039,
+      "sha256": "03d0aad7f4bda3b49a4764d4f375d6ad973b5bb197154a397846a257f6632a77",
+      "git_blob": "107133ac19f3af13ad8cca4541cacaf94466a652"
+    },
+    {
+      "path": "tools/qikvrt_authority_credentials.py",
+      "bytes": 33737,
+      "sha256": "d104cc9475aae942df42ca8cbd2b48841e92ddec219e5c5c5bbf4cc6c697fc8d",
+      "git_blob": "fc7c99e7a6ff70a1559971e058822a8ee678ebf6"
+    },
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 269059,
+      "sha256": "f332bd157258cf29f3f574329874d1dba7644f13d730becfe6dec9c8e693fdd7",
+      "git_blob": "e7a0bab1ec73b2b0fa3f8f28d3506fbf4572b15c"
+    }
+  ],
+  "checks": {
+    "make_test_exit": 0,
+    "focused_tests": 312,
+    "focused_skips": 7,
+    "focused_result": "OK_WITH_OPTIONAL_SKIPS",
+    "native_candidate_ci": "NOT_YET_OBSERVED"
+  },
+  "logs": [
+    {
+      "path": "evidence/publication-recovery/20261104/full-make-test.log",
+      "bytes": 468534,
+      "sha256": "07926b5318ce1a2bee8ba39188f2f7624d764da8f1df8c0f3717a8a45151bca2"
+    },
+    {
+      "path": "evidence/publication-recovery/20261104/focused-regressions.log",
+      "bytes": 58251,
+      "sha256": "273ca056e13f7d383bb71ad55b69894b1da053465cb5663effefd8bbf0e994b7"
+    },
+    {
+      "path": "evidence/publication-recovery/20261104/original-startup-regressions.log",
+      "bytes": 2725,
+      "sha256": "997fa50d5c88e3da37e060b8f22e6cbeaee0dfda2118e307f177c573ddb6b5cb"
+    },
+    {
+      "path": "evidence/publication-recovery/20261104/original-recovery-regressions.log",
+      "bytes": 4006,
+      "sha256": "b1b82a8104730539a11e34d1f4ce79190ca919cca6413625aa1bf5328133faa9"
+    }
+  ],
+  "evidence_limits": [
+    "Original startup main function rejects both new startup regression expectations",
+    "Initial recovery regression also reports a proposed-keyword TypeError; it is not a production failure trace",
+    "Recorded fixture failures contain no provider credentials or productive effects",
+    "Local make test verifies the frozen source tree; it does not establish complete Git-history backup",
+    "No live SSO/host/credential delivery or new Zenodo publication is established"
+  ],
+  "open_obligations": [
+    "Registered original process and existing private request/credential-store attachment",
+    "Protected Zenodo token delivery and exact original publisher continuation",
+    "Native exact-head CI and governed Main integration",
+    "Independent public DOI and 16-file byte readback",
+    "Original host/domain/Mirror acceptance"
+  ],
+  "effect_ack_done": false,
+  "contributions": {
+    "human": "Ingolf Lohmann: authorization, scope, original architecture and source",
+    "artificial": "OpenAI Codex: source inspection, isolated reproductions, patch and local verification"
+  }
+}

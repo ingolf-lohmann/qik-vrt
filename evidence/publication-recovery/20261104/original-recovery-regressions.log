@@ -1,0 +1,46 @@
+EEF.F.
+======================================================================
+ERROR: test_expired_reference_can_be_read_but_cannot_start_the_publisher (tests.test_self_host_publication.PublicationAdapterTests.test_expired_reference_can_be_read_but_cannot_start_the_publisher)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/8aac24774cd0/authority-main-complete/ingolf-lohmann-qik-vrt-c608313/tests/test_self_host_publication.py", line 191, in test_expired_reference_can_be_read_but_cannot_start_the_publisher
+    admitted = host.publication_request(self.request_path, self.pin, allow_expired_credentials=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: publication_request() got an unexpected keyword argument 'allow_expired_credentials'
+
+======================================================================
+ERROR: test_expired_provider_reference_does_not_hide_an_uncertain_attempt (tests.test_publication_rest.PublicationRESTTests.test_expired_provider_reference_does_not_hide_an_uncertain_attempt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/8aac24774cd0/authority-main-complete/ingolf-lohmann-qik-vrt-c608313/tests/test_publication_rest.py", line 116, in test_expired_provider_reference_does_not_hide_an_uncertain_attempt
+    result = self.run_operation()
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/8aac24774cd0/authority-main-complete/ingolf-lohmann-qik-vrt-c608313/tests/test_publication_rest.py", line 50, in run_operation
+    return authority.publication_handoff(self.auth, "fixture-sso-bearer",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/8aac24774cd0/authority-main-complete/ingolf-lohmann-qik-vrt-c608313/tools/qikvrt_authority_credentials.py", line 216, in publication_handoff
+    raise ProductionBlock("ORIGINAL_PUBLICATION_ADMISSION_UNAVAILABLE") from None
+tools.qikvrt_authority_credentials.ProductionBlock: ORIGINAL_PUBLICATION_ADMISSION_UNAVAILABLE
+
+======================================================================
+FAIL: test_occupied_listener_is_not_misdiagnosed_as_a_missing_sso_profile (tests.test_production_environment.StartupTests.test_occupied_listener_is_not_misdiagnosed_as_a_missing_sso_profile)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/8aac24774cd0/authority-main-complete/ingolf-lohmann-qik-vrt-c608313/tests/test_production_environment.py", line 717, in test_occupied_listener_is_not_misdiagnosed_as_a_missing_sso_profile
+    self.assertIn("NATIVE_LISTENER_ADDRESS_IN_USE", error.getvalue())
+AssertionError: 'NATIVE_LISTENER_ADDRESS_IN_USE' not found in 'BLOCK QIKVRT_API_TOKEN must use canonical b64url:<unpadded-value> encoding\n'
+
+======================================================================
+FAIL: test_tls_start_failure_is_redacted_and_releases_the_listener_and_fence (tests.test_production_environment.StartupTests.test_tls_start_failure_is_redacted_and_releases_the_listener_and_fence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/8aac24774cd0/authority-main-complete/ingolf-lohmann-qik-vrt-c608313/tests/test_production_environment.py", line 737, in test_tls_start_failure_is_redacted_and_releases_the_listener_and_fence
+    listener.return_value.server_close.assert_called_once()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 928, in assert_called_once
+    raise AssertionError(msg)
+AssertionError: Expected 'server_close' to have been called once. Called 0 times.
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.164s
+
+FAILED (failures=2, errors=2)
