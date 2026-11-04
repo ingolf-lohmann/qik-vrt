@@ -199,5 +199,34 @@
       "final_native_acceptance": "REQUIRES_FRESH_EXACT_HEAD_READBACK",
       "effect_ack_done": false
     }
+  },
+  "open_work_stall_repair_20261104": {
+    "owner": "Ingolf Lohmann",
+    "authorization_source": "CURRENT_AUTHENTICATED_CHAT",
+    "instruction": "Also du musst natürlich auch Stillstanderkennung in das Repository hineinbringen und dafür sorgen, dass solange Aufgaben anstehen es keinen Stillstand geben kann. Freigabe erteilt",
+    "instruction_utf8_sha256": "8d5a979c66ca43eec53226d6b8ac59d8cf1eaaab97ae0bbb4dc77c687606378d",
+    "predecessor_head": "ed22c8ab5bf8d963d2718f43192f4e7320424f6f",
+    "predecessor_tree": "ecb6ca0ca7f71de87a66b5f78135972e8f5a338e",
+    "existing_candidate": "https://github.com/ingolf-lohmann/qik-vrt/pull/686",
+    "detected_defects": [
+      "NO_ACTIVE_RUN_CLASSIFIED_QUIESCENT_WITHOUT_OPEN_WORK_READBACK",
+      "OBSERVATION_TIMESTAMP_RESTARTED_PROGRESS_LEASE",
+      "EXISTING_REPAIR_HANDOFF_NOT_CONNECTED_TO_WORKFLOW_CONSUMER"
+    ],
+    "source_repair": [
+      "COMPLETE_BOUNDED_OPEN_WORK_INVENTORY",
+      "CUMULATIVE_EXACT_SUBJECT_JOB_STEP_PROGRESS_CLOCK",
+      "EXISTING_CONSUMER_WITH_INDEPENDENT_PRODUCER_READBACK",
+      "MACHINE_READABLE_ANALYSIS_FAILURE",
+      "EVENT_DRIVEN_ACYCLIC_CONTINUATION"
+    ],
+    "human_contribution": "Requirement and authorization",
+    "artificial_contribution": "OpenAI Codex source repair and isolated regression verification",
+    "full_make_test": "NOT_EXECUTED_IN_PARTIAL_SOURCE_SNAPSHOT",
+    "native_exact_head_ci": "PENDING_NEW_CANDIDATE",
+    "main_integration": "NOT_YET_VERIFIED",
+    "productive_host_and_domain": "OPEN",
+    "universal_zero_stall_guarantee": false,
+    "effect_ack_done": false
   }
 }

@@ -12,6 +12,8 @@ import sys
 import tempfile
 import textwrap
 import unittest
+import zipfile
+from unittest import mock
 from datetime import datetime, timedelta, timezone
 
 
@@ -110,6 +112,7 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         scope: str = "MAIN",
         liveness_dir: pathlib.Path | None = None,
         authority_head: str | None = HEAD,
+        work_value: dict[str, object] | None = None,
     ) -> dict[str, object]:
         return MODULE.analyze(
             {"workflow_runs": runs},
@@ -125,7 +128,98 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
                 liveness_dir if liveness_dir is not None else self.default_liveness_dir
             ),
             authority_head=authority_head,
+            work_value=work_value if work_value is not None else self.work_inventory(now=now),
         )
+
+    @staticmethod
+    def work_inventory(*numbers: int, now: str = "2026-08-10T18:00:00Z") -> dict[str, object]:
+        return {"schema": "qikvrt_open_work_inventory_v1", "repository": "example/qik-vrt",
+                "head_sha": HEAD, "observed_at": now, "complete": True, "truncated": False,
+                "total_count": len(numbers),
+                "items": [{"id": number, "number": number, "kind": "ISSUE"} for number in numbers]}
+
+    def test_open_work_without_a_runner_requires_continuation_instead_of_quiescence(self):
+        value = self.analyze([], {}, work_value=self.work_inventory(682))
+        self.assertEqual(value["state"], "CONTINUATION_REQUIRED_OPEN_WORK")
+        self.assertFalse(value["continuation_obligation"]["silent_idle_allowed"])
+        self.assertTrue(value["continuation_obligation"]["required"])
+        self.assertFalse(value["continuation_obligation"]["effect_permission"])
+        handoff = MODULE.repair_handoff(MODULE.canonical_json_bytes(value),
+                    run_id=21, run_attempt=1, producer_event="issues")
+        self.assertEqual(handoff["state"], "REPAIR_INPUT_REQUIRED")
+        feedback = MODULE.repair_handoff(MODULE.canonical_json_bytes(value),
+                    run_id=22, run_attempt=1, producer_event="workflow_run",
+                    parent_workflow="QIK-VRT autonomous draft-PR continuation")
+        self.assertEqual(feedback["state"], "NOOP")
+
+    def test_unreadable_queue_cannot_be_called_empty(self):
+        value = MODULE.analyze({"workflow_runs": []}, {}, expected_head=HEAD,
+            expected_tree=TREE, repository="example/qik-vrt", now=datetime(2026, 8, 10, 18, tzinfo=timezone.utc),
+            node_liveness_dir=self.default_liveness_dir, authority_head=HEAD)
+        self.assertEqual(value["state"], "PREEMPTIVE_HOLD_WORK_INVENTORY")
+        self.assertEqual(value["open_work"]["state"], "UNKNOWN")
+        self.assertFalse(value["continuation_obligation"]["silent_idle_allowed"])
+
+    def test_incomplete_wrong_subject_stale_and_future_work_inventory(self):
+        incomplete = self.work_inventory()
+        incomplete["complete"] = False
+        self.assertEqual(self.analyze([], {}, work_value=incomplete)["open_work"]["state"], "UNKNOWN")
+        for key, changed in (("repository", "other/repo"), ("head_sha", "c" * 40),
+                             ("observed_at", "2026-08-10T17:00:00Z"),
+                             ("observed_at", "2026-08-10T18:01:00Z")):
+            value = self.work_inventory()
+            value[key] = changed
+            with self.subTest(key=key, value=changed), self.assertRaises(MODULE.ReflexiveWatchdogBlock):
+                self.analyze([], {}, work_value=value)
+
+    def test_frequent_observations_do_not_reset_the_useful_progress_lease(self):
+        runs = [run(31, "QIKVRT CI", "in_progress", "2026-08-10T17:43:00Z", "2026-08-10T17:44:00Z")]
+        value = None
+        for minute in (44, 49, 54, 59):
+            value = self.analyze(runs, jobs(31), now=f"2026-08-10T17:{minute}:00Z", baseline=value)
+        self.assertEqual(value["state"], "PREEMPTIVE_HOLD_NO_PROGRESS_TRANSITION")
+        self.assertEqual(value["last_progress_at"], "2026-08-10T17:44:00Z")
+        self.assertEqual(value["unchanged_for_seconds"], 900)
+        self.assertEqual(value["baseline"]["age_seconds"], 300)
+
+    def test_heartbeat_and_identical_retry_are_not_useful_progress(self):
+        now = "2026-08-10T17:44:00Z"
+        runs = [run(32, "QIKVRT CI", "completed", now, now, "failure")]
+        evidence = {"jobs_by_run": {"32": [{"name": "tests", "status": "completed", "conclusion": "failure"}]}}
+        first = self.analyze(runs, evidence, now=now, work_value=self.work_inventory(682, now=now))
+        retry = [run(33, "QIKVRT CI", "completed", "2026-08-10T17:59:00Z", "2026-08-10T17:59:00Z", "failure")]
+        evidence["jobs_by_run"]["33"] = evidence["jobs_by_run"]["32"]
+        value = self.analyze(retry, evidence, baseline=first, work_value=self.work_inventory(682))
+        self.assertEqual(value["progress_fingerprint"], first["progress_fingerprint"])
+        self.assertEqual(value["first_blocker"], "OPEN_WORK_WITHOUT_USEFUL_PROGRESS")
+        self.assertEqual(value["unchanged_for_seconds"], 960)
+
+    def test_new_executed_step_advances_the_progress_clock(self):
+        runs = [run(34, "QIKVRT CI", "in_progress", "2026-08-10T17:43:00Z", "2026-08-10T17:44:00Z")]
+        evidence = jobs(34)
+        first = self.analyze(runs, evidence, now="2026-08-10T17:44:00Z")
+        evidence["jobs_by_run"]["34"][0]["steps"] = [
+            {"number": 1, "name": "tests", "status": "completed", "conclusion": "success"}]
+        value = self.analyze(runs, evidence, baseline=first)
+        self.assertNotEqual(value["progress_fingerprint"], first["progress_fingerprint"])
+        self.assertEqual(value["last_progress_at"], "2026-08-10T18:00:00Z")
+        self.assertEqual(value["unchanged_for_seconds"], 0)
+
+    def test_foreign_baseline_does_not_transfer_a_progress_clock(self):
+        first = self.analyze([], {}, now="2026-08-10T17:44:00Z")
+        first["repository"] = "foreign/repo"
+        value = self.analyze([], {}, baseline=first)
+        self.assertFalse(value["baseline"]["same_head_and_tree"])
+        self.assertEqual(value["unchanged_for_seconds"], 0)
+
+    def test_future_or_corrupted_progress_baseline_fails_closed(self):
+        for field, changed in (("last_progress_at", "2026-08-10T18:01:00Z"),
+                               ("observed_at", "2026-08-10T18:01:00Z"),
+                               ("progress_markers", ["invalid"])):
+            first = self.analyze([], {}, now="2026-08-10T17:44:00Z")
+            first[field] = changed
+            with self.subTest(field=field), self.assertRaises(MODULE.ReflexiveWatchdogBlock):
+                self.analyze([], {}, baseline=first)
 
     @staticmethod
     def write_liveness(
@@ -501,7 +595,8 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
                 bounded = MODULE.analyze(inventory, {'jobs_by_run': selected}, expected_head=HEAD,
                     expected_tree=TREE, repository='example/qik-vrt',
                     now=datetime(2026, 8, 10, 18, tzinfo=timezone.utc), root=ROOT,
-                    node_liveness_dir=self.default_liveness_dir, authority_head=HEAD, job_plan=plan)
+                    node_liveness_dir=self.default_liveness_dir, authority_head=HEAD, job_plan=plan,
+                    work_value=self.work_inventory())
                 for key in ('state', 'disposition', 'first_blocker', 'gatewatch', 'resource_graph'):
                     self.assertEqual(bounded[key], full[key], key)
                 self.assertEqual(bounded['observations']['active_writers'], ['40'])
@@ -712,6 +807,9 @@ class JobReadbackBudgetTests(unittest.TestCase):
             import json, os, pathlib, sys, urllib.parse
             root = pathlib.Path(os.environ['FIXTURE_ROOT'])
             path = sys.argv[2]
+            if '/issues?' in path:
+                print('[]')
+                raise SystemExit(0)
             if '/git/ref/' in path:
                 kind = 'subject'
             elif '/workflows/' in path:
@@ -955,6 +1053,120 @@ class JobReadbackBudgetTests(unittest.TestCase):
         for key, bad in [('head_sha', TREE), ('run_id', 2), ('run_attempt', 2)]:
             with self.assertRaises(MODULE.ReflexiveWatchdogBlock):
                 MODULE.validate_job_plan(page, {'1': [{**valid, key: bad}]}, plan, expected_head=HEAD)
+
+
+class OpenWorkCollectionTests(unittest.TestCase):
+    def test_actual_consumer_shell_retains_bound_analysis_without_executing_its_text(self):
+        from tools import qikvrt_autonomous_self_heal as consumer
+        analysis = {"schema": "qikvrt_reflexive_repository_watchdog_receipt_v1",
+            "repository": "example/qik-vrt", "head_sha": HEAD, "tree_sha": TREE,
+            "disposition": "HOLD", "first_blocker": "OPEN_WORK_WITHOUT_PRODUCTIVE_EXECUTION",
+            "safe_continuation": "$(touch MUST_NOT_EXECUTE); exit 99"}
+        envelope = MODULE.repair_handoff(MODULE.canonical_json_bytes(analysis),
+            run_id=123, run_attempt=1, producer_event="issues")
+        source = {"repository": {"full_name": "example/qik-vrt"}, "head_sha": HEAD,
+            "path": envelope["origin"]["workflow_path"], "id": 123, "run_attempt": 1,
+            "event": "issues", "status": "completed", "conclusion": "success"}
+        source_jobs = {"total_count": 1, "jobs": [{"id": 124, "run_id": 123,
+            "head_sha": HEAD, "run_attempt": 1, "status": "completed", "steps": [{
+                "name": "Bind error analysis for the existing repair consumer",
+                "status": "completed", "conclusion": "success"}]}]}
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            (root / "tools").mkdir()
+            (root / "state/autonomy").mkdir(parents=True)
+            shutil.copyfile(pathlib.Path(consumer.__file__), root / "tools/qikvrt_autonomous_self_heal.py")
+            shutil.copyfile(ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+                            root / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json")
+            (root / "bin").mkdir()
+            for name, value in (("source-run", source), ("source-jobs", source_jobs),
+                ("source-artifacts", {"artifacts": [{"id": 125, "expired": False,
+                    "name": "qikvrt-reflexive-repository-watchdog-123-1"}]})):
+                (root / f"{name}.json").write_text(json.dumps(value))
+            with zipfile.ZipFile(root / "artifact.zip", "w") as archive:
+                archive.writestr("error-analysis-handoff.json", MODULE.canonical_json_bytes(envelope))
+            gh = root / "bin/gh"
+            gh.write_text(f'#!{sys.executable}\nimport pathlib,sys\nr=pathlib.Path({str(root)!r})\np=sys.argv[2]\n'
+                "name='artifact.zip' if p.endswith('/zip') else 'source-artifacts.json' if '/artifacts?' in p else 'source-jobs.json' if '/jobs?' in p else 'source-run.json'\n"
+                "sys.stdout.buffer.write((r/name).read_bytes())\n")
+            gh.chmod(0o700)
+            git = root / "bin/git"
+            git.write_text(f'#!{sys.executable}\nimport sys\nprint({TREE!r} if "tree" in sys.argv[-1] else {HEAD!r})\n')
+            git.chmod(0o700)
+            workflow = (ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml").read_text()
+            section = workflow.split('      - name: Admit the exact watchdog repair input before continuing existing work\n', 1)[1]
+            shell = textwrap.dedent(section.split('\n      - name:', 1)[0].split('        run: |\n', 1)[1])
+            environment = {**os.environ, "PATH": str(root / "bin") + os.pathsep + os.environ["PATH"],
+                "WATCHDOG_REPAIR_ROOT": str(root / "runner-temp/repair"),
+                "GITHUB_REPOSITORY": "example/qik-vrt", "SOURCE_RUN_ID": "123", "SOURCE_RUN_ATTEMPT": "1"}
+            result = subprocess.run(["bash", "-c", shell], cwd=root, env=environment,
+                capture_output=True, text=True, timeout=20)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            receipt = json.loads((root / 'runner-temp/repair/consumer-receipt.json').read_text())
+            self.assertTrue(receipt["inbox_readback_verified"])
+            self.assertFalse(receipt["writer_admitted"])
+            self.assertFalse(receipt["repair_executed"])
+            self.assertFalse((root / "MUST_NOT_EXECUTE").exists())
+            source["head_sha"] = "c" * 40
+            with self.assertRaisesRegex(consumer.SelfHealBlock, "producer"):
+                consumer.consume_repair_input(envelope, source, source_jobs, repository="example/qik-vrt",
+                    head=HEAD, tree=TREE, inbox=root / "rejected")
+
+    @staticmethod
+    def entries(count, start=1):
+        return [{"id": i, "number": i, "state": "open",
+                 "url": f"https://api.github.com/repos/example/qik-vrt/issues/{i}",
+                 **({"pull_request": {}} if i % 2 == 0 else {})}
+                for i in range(start, start + count)]
+
+    def collect(self):
+        with tempfile.TemporaryDirectory() as directory:
+            return MODULE.collect_work(repository="example/qik-vrt", expected_head=HEAD,
+                directory=pathlib.Path(directory), now=datetime(2026, 8, 10, 18, tzinfo=timezone.utc))
+
+    def test_full_open_issue_and_pr_inventory_requires_terminal_and_stability_reads(self):
+        first, last = self.entries(100), self.entries(2, 101)
+        with mock.patch.object(MODULE, "_readback_page", side_effect=[first, last, first]) as read:
+            value = self.collect()
+        self.assertTrue(value["complete"])
+        self.assertEqual(value["total_count"], 102)
+        self.assertEqual(read.call_count, 3)
+        self.assertEqual(value["items"][1]["kind"], "PULL_REQUEST")
+        self.assertNotIn("state", value["items"][0])
+
+    def test_denial_stops_without_retry_or_empty_queue_success(self):
+        with mock.patch.object(MODULE, "_readback_page", side_effect=MODULE.ReflexiveWatchdogBlock("HTTP 403")) as read:
+            with self.assertRaisesRegex(MODULE.ReflexiveWatchdogBlock, "HTTP 403"):
+                self.collect()
+        self.assertEqual(read.call_count, 1)
+
+    def test_changing_or_duplicate_inventory_cannot_prove_an_empty_or_complete_queue(self):
+        with mock.patch.object(MODULE, "_readback_page", side_effect=[[], self.entries(1)]):
+            value = self.collect()
+        self.assertFalse(value["complete"])
+        self.assertEqual(value["first_blocker"], "WORK_READBACK_CHANGED_DURING_COLLECTION")
+        with mock.patch.object(MODULE, "_readback_page", side_effect=[self.entries(100), self.entries(1)]):
+            with self.assertRaisesRegex(MODULE.ReflexiveWatchdogBlock, "DUPLICATED"):
+                self.collect()
+
+    def test_inventory_budget_exhaustion_is_hold(self):
+        pages = [self.entries(100, 1 + 100 * i) for i in range(MODULE.MAX_WORK_READBACK_PAGES)]
+        with mock.patch.object(MODULE, "_readback_page", side_effect=pages) as read:
+            value = self.collect()
+        self.assertFalse(value["complete"])
+        self.assertTrue(value["truncated"])
+        self.assertEqual(read.call_count, MODULE.MAX_WORK_READBACK_PAGES)
+
+    def test_producer_and_consumer_are_connected_without_a_completion_feedback_loop(self):
+        producer = WORKFLOW.read_text()
+        consumer = (ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml").read_text()
+        self.assertIn("--work-file", producer)
+        self.assertIn("Bind error analysis for the existing repair consumer", producer)
+        self.assertIn("steps.analyze.outcome == 'failure'", producer)
+        self.assertIn('"QIKVRT reflexive repository watchdog"', consumer.split('permissions:')[0])
+        self.assertNotIn('"QIK-VRT autonomous draft-PR continuation"', producer.split('permissions:')[0])
+        self.assertIn("repair-consume", consumer)
+        self.assertIn("--source-jobs", consumer)
 
 
 if __name__ == "__main__":

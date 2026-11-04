@@ -5,7 +5,7 @@ name: QIK-VRT autonomous draft-PR continuation
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["QIKVRT CI", "QIK-VRT autonomous bounded self-heal"]
+    workflows: ["QIKVRT CI", "QIK-VRT autonomous bounded self-heal", "QIKVRT reflexive repository watchdog"]
     types: [completed]
   push:
     branches: [main]
@@ -26,6 +26,7 @@ on:
       - "tests/test_seed_workflows.py"
 
 permissions:
+  actions: read
   contents: write
   pull-requests: write
   statuses: write
@@ -40,6 +41,7 @@ jobs:
     timeout-minutes: 60
     env:
       OPT_IN_MARKER: "<!-- qikvrt-autonomous-self-heal:enabled -->"
+      WATCHDOG_REPAIR_ROOT: ${{ runner.temp }}/qikvrt-watchdog-repair-input
     steps:
       - name: Set up Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
@@ -67,6 +69,53 @@ jobs:
           python3 -B "$RUNNER_TEMP/qikvrt-pr-controller.py" pr-checkout --root "$GITHUB_WORKSPACE" --sha "$live_main"
           python3 -B tools/qikvrt_tool_cache.py verify
           cp state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json "$RUNNER_TEMP/qikvrt-pr-continuation-contract.json"
+
+      - name: Admit the exact watchdog repair input before continuing existing work
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+          SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$WATCHDOG_REPAIR_ROOT"
+          mkdir -p "$root"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" > "$root/source-run.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/jobs?filter=latest&per_page=100" > "$root/source-jobs.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/artifacts?per_page=100" > "$root/source-artifacts.json"
+          artifact="$(jq -er --arg name "qikvrt-reflexive-repository-watchdog-$SOURCE_RUN_ID-$SOURCE_RUN_ATTEMPT" \
+            '[.artifacts[] | select(.name == $name and .expired == false)] | if length == 1 then .[0].id else error("unique current producer artifact required") end' \
+            "$root/source-artifacts.json")"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact/zip" > "$root/source.zip"
+          python3 -B - <<'PYTHON'
+          import os, pathlib, zipfile
+          root = pathlib.Path(os.environ['WATCHDOG_REPAIR_ROOT'])
+          if (root / 'source.zip').stat().st_size > 64 * 1024 * 1024:
+              raise SystemExit('BLOCK: oversized producer artifact')
+          with zipfile.ZipFile(root / 'source.zip') as archive:
+              name = 'error-analysis-handoff.json'
+              matches = [entry for entry in archive.infolist() if entry.filename == name]
+              if len(matches) != 1 or matches[0].file_size > 8 * 1024 * 1024:
+                  raise SystemExit('BLOCK: missing, duplicated or oversized repair input')
+              (root / name).write_bytes(archive.read(matches[0]))
+          PYTHON
+          python3 -B tools/qikvrt_autonomous_self_heal.py repair-consume \
+            --envelope "$root/error-analysis-handoff.json" \
+            --source-run "$root/source-run.json" --source-jobs "$root/source-jobs.json" \
+            --repository-name "$GITHUB_REPOSITORY" \
+            --expected-head "$(git rev-parse --verify HEAD^{commit})" \
+            --expected-tree "$(git rev-parse --verify HEAD^{tree})" \
+            --inbox "$root/inbox" > "$root/consumer-receipt.json"
+
+      - name: Preserve the independently checked repair input
+        if: always() && github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-watchdog-repair-input-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-watchdog-repair-input
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Select and record one fair exact opted-in draft PR
         id: select

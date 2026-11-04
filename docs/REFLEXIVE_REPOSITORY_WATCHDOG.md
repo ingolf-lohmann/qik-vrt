@@ -1,5 +1,55 @@
 # Reflexive repository Gatewatch and pre-deadlock admission
 
+## Open work and useful-progress continuity — Owner correction, 4 November 2026
+
+The existing watchdog must not infer idle from the absence of active workflow
+runs. Its native observation now includes `collect-work`, a GET-only inventory
+of open GitHub issues and pull requests. Collection is bounded to ten pages plus
+one first-page stability read. A short terminal page is required. Duplicate or
+foreign entries, an unstable first page, truncation, missing access, a stale
+inventory or a different subject cannot establish an empty queue. The existing
+twenty-request jobs budget remains unchanged. This inventory covers GitHub work;
+it does not claim completeness for private workspace tasks or other stores.
+
+`CONTINUATION_REQUIRED_OPEN_WORK` retains the exact pending item identities when
+no productive execution is observed. Missing inventory yields
+`PREEMPTIVE_HOLD_WORK_INVENTORY`, with unknown work state. Neither is quiescence,
+completion, permission to run issue text, or permission to bypass a blocker.
+The existing continuation consumer must triage the preserved obligations and
+continue only a safe, callable, already authorized successor. Protected external
+dependencies remain explicit holds with their causal next action.
+
+The useful-progress clock is cumulative within the same repository, HEAD, tree
+and observation scope. Receipts retain `last_progress_at` and terminal executed
+job/step markers. A new executed result advances the clock. Observer heartbeats,
+timestamps, run IDs, attempt numbers and an identical retry do not. Frequent
+observations therefore cannot renew the progress lease indefinitely. Marker
+history survives replacement of a run by an identical retry; stale or foreign
+bindings cannot supply progress. The age of the last observation is retained
+separately, so failure of the observer remains detectable.
+
+Open work or active execution without a new marker beyond the progress lease
+produces the existing no-progress hold and a concrete continuation edge. A
+baseline is necessary for that time comparison. A failed check records unknown
+live progress. Analysis and collection failures both produce a machine-readable
+observation-failure receipt.
+
+The previously implemented `repair-handoff` / `repair-consume` path is now wired
+between the existing workflows. The consumer independently reads the producer
+run, attempt and jobs, verifies the executed handoff step and exact analysis
+bytes, and retains the original input before selecting existing admitted work.
+It grants no writer authority. Producer artifacts are bounded and read as data;
+repair inputs live outside the checkout and are retained as artifacts.
+The watchdog does not subscribe to continuation completion, preventing a
+watchdog → continuation → watchdog feedback loop. Actual issue and PR events
+and existing workflow events carry observations; no timer is introduced.
+
+This is an executable detection and continuation obligation, not a proof of
+universal liveness. Main integration, native execution, available credentials,
+original-host admission and productive domain/EFFECT_ACK acceptance retain
+their separate evidence obligations.
+
+
 The adaptive repository monitor is extended by a read-only watchdog that observes its own repository instance at relevant source and workflow transitions. Its purpose is not to wait for a deadlock and then diagnose it. It models writer leases, runner pressure, exact-head execution evidence, and unchanged progress topology early enough to issue a deterministic `HOLD` before a second writer or replacement writer is admitted.
 
 ## Operational model

@@ -1,0 +1,71 @@
+{
+  "base_head": "ed22c8ab5bf8d963d2718f43192f4e7320424f6f",
+  "bash_syntax": "PASS",
+  "continuation_tests": 49,
+  "effect_ack_done": false,
+  "embedded_bash_syntax_blocks": 10,
+  "full_make_test": "NOT_EXECUTED_IN_PARTIAL_SOURCE_SNAPSHOT",
+  "native_exact_head_ci": "REQUIRES_NATIVE_RUN_FOR_NEW_CANDIDATE",
+  "native_runtime_acceptance": false,
+  "schema": "qikvrt_stall_source_checks_v1",
+  "scope": "PARTIAL_EXACT_SOURCE_SNAPSHOT_AND_ISOLATED_FIXTURES",
+  "sources": [
+    {
+      "bytes": 45385,
+      "git_blob": "dca02c44b10599853042d6c006bc7e7b0cdb9615",
+      "path": "AI",
+      "sha256": "ea242c8d10cb803a7f1c16d7eec2749853d6c713a00638e4a464c4d820ba1934"
+    },
+    {
+      "bytes": 35562,
+      "git_blob": "13441a7f6ffc58ea6e5ed63a923a2922fc708dff",
+      "path": "AGENTS.md",
+      "sha256": "b713c3c9ef7fe3756a8e1c99212922eed2ab663bdd673b3f5ba47827a35048d6"
+    },
+    {
+      "bytes": 84150,
+      "git_blob": "631989706fc8854e047b27221aa6b11ab5af596f",
+      "path": "tools/qikvrt_reflexive_repository_watchdog.py",
+      "sha256": "3d4ae027b52853a06a549edcd8548264c4c8ab2fa8a916811b786b8d6bd2a3ce"
+    },
+    {
+      "bytes": 62641,
+      "git_blob": "8be742540b37dc98f7ff3f0ee4ea5c5e0a55f349",
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "sha256": "7196a79d537e3f9790f8180d1310464a2de6e84f12b2fb8f21ce25d3bb5fdf40"
+    },
+    {
+      "bytes": 13061,
+      "git_blob": "b3203033e9c032b42fb8bfcc40f541587c23713c",
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "sha256": "e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d"
+    },
+    {
+      "bytes": 14726,
+      "git_blob": "4b98d45ad5eea5147213a19b3204e096067d5c8c",
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "sha256": "189f63cb20088d24e27bc36aa1d88b7190a260b9de7d2bdecd40bf20ed488d41"
+    },
+    {
+      "bytes": 14871,
+      "git_blob": "2e7f6695713f072e521bdd5483b5f475c74c0d65",
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "sha256": "c0388f34cb8df42596b1bc1b90e9139ce58f7a3c7f0f219ba4a69bff7631b271"
+    },
+    {
+      "bytes": 10839,
+      "git_blob": "f60c11db6990514b470ef3f24766877eb9195bee",
+      "path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
+      "sha256": "1de5c7a18716176b78cde60548cdec9702f4af30a32da0500befeb4a482a977a"
+    },
+    {
+      "bytes": 15164,
+      "git_blob": "463f95e9b0191c61d9238034e307d2ce843aaba4",
+      "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+      "sha256": "5a68945ac8e15ef05a60c69d00a2d66d0fc81a69446387d87c4d80f00db7f6be"
+    }
+  ],
+  "total_tests": 101,
+  "watchdog_tests": 52,
+  "yaml_parse": "PASS"
+}
