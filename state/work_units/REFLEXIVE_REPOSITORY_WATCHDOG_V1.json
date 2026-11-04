@@ -227,6 +227,16 @@
     "main_integration": "NOT_YET_VERIFIED",
     "productive_host_and_domain": "OPEN",
     "universal_zero_stall_guarantee": false,
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "workflow_context_correction": {
+      "observed_candidate": "43594d18fcf9c76cd9cbeb0d26c72770b3f7e636",
+      "native_run": 41925125016,
+      "observed_state": "WORKFLOW_FILE_FAILURE_BEFORE_JOBS",
+      "detected_invalid_expression": "runner.temp in jobs.<job_id>.env",
+      "primary_contract": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+      "source_repair": "MOVE_RUNNER_TEMP_BINDING_TO_STEP_ENV",
+      "regression": "test_runner_context_is_not_evaluated_in_job_level_environment",
+      "native_successor_validation": "REQUIRED"
+    }
   }
 }

@@ -1056,6 +1056,15 @@ class JobReadbackBudgetTests(unittest.TestCase):
 
 
 class OpenWorkCollectionTests(unittest.TestCase):
+    def test_runner_context_is_not_evaluated_in_job_level_environment(self):
+        # GitHub's context-availability contract permits runner at step.env,
+        # but not jobs.<job_id>.env. Plain YAML parsing cannot detect this.
+        source = (ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml").read_text()
+        before_steps = source.split('    steps:', 1)[0]
+        self.assertNotIn('${{ runner.', before_steps)
+        step = source.split('      - name: Admit the exact watchdog repair input before continuing existing work', 1)[1]
+        self.assertIn('          WATCHDOG_REPAIR_ROOT: ${{ runner.temp }}', step.split('        run:', 1)[0])
+
     def test_actual_consumer_shell_retains_bound_analysis_without_executing_its_text(self):
         from tools import qikvrt_autonomous_self_heal as consumer
         analysis = {"schema": "qikvrt_reflexive_repository_watchdog_receipt_v1",

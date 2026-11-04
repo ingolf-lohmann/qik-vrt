@@ -41,7 +41,6 @@ jobs:
     timeout-minutes: 60
     env:
       OPT_IN_MARKER: "<!-- qikvrt-autonomous-self-heal:enabled -->"
-      WATCHDOG_REPAIR_ROOT: ${{ runner.temp }}/qikvrt-watchdog-repair-input
     steps:
       - name: Set up Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
@@ -73,6 +72,7 @@ jobs:
       - name: Admit the exact watchdog repair input before continuing existing work
         if: github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
         env:
+          WATCHDOG_REPAIR_ROOT: ${{ runner.temp }}/qikvrt-watchdog-repair-input
           GH_TOKEN: ${{ github.token }}
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
           SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
