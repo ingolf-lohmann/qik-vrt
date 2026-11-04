@@ -182,6 +182,16 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
                     checked += 1
         self.assertEqual(checked, 24)
 
+    def test_native_container_acceptance_invokes_frozen_package_guard_tests(self):
+        source = (ROOT / "Makefile").read_text()
+        recipe = source.split("self-host-container-test: tool-cache-contract\n", 1)[1].split("\n\n", 1)[0]
+        invoked = [token for line in recipe.splitlines()
+                   if line.startswith("\t") and "-m unittest" in line
+                   for token in line.split("-m unittest", 1)[1].split()]
+        self.assertIn("tests.test_self_host_container", invoked)
+        self.assertIn("tests.test_frozen_build_apt", invoked)
+        self.assertNotIn("|| true", recipe)
+
     def test_incomplete_wrong_subject_stale_and_future_work_inventory(self):
         incomplete = self.work_inventory()
         incomplete["complete"] = False

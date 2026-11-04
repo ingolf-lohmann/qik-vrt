@@ -193,11 +193,18 @@
     "instruction_utf8_sha256": "8d5a979c66ca43eec53226d6b8ac59d8cf1eaaab97ae0bbb4dc77c687606378d",
     "main_integration": "NOT_YET_VERIFIED",
     "native_build_transport_correction": {
+      "artifact_readback_repaired": "ORIGINAL_CARRIER_AND_NEW_IMAGE_SEPARATE_WITH_ALL_BYTES_RETAINED",
+      "checker_omission_repaired": "STANDARD_NATIVE_MAKE_TARGET_NOW_INVOKES_GUARD_SUITE",
       "evidence": "evidence/receipts/20261104-open-work-stall-repair/apt-transport-repair.json",
-      "local_builder_guard_tests": 7,
+      "local_builder_guard_tests": 8,
       "local_watchdog_state_matrix_cases": 24,
       "main_adoption": "UNVERIFIED",
       "native_exact_new_head_validation": "REQUIRED",
+      "native_parent_s1_success": {
+        "head": "a000c5fe62a3fda3c85a73b8c51884d0ca2e256c",
+        "job": 126946814342,
+        "scope": "PARENT_ONLY"
+      },
       "observed_head": "add7617d5cd930ba8a7329474791042a28ec4f59",
       "observed_tree": "510eb3a1f62b48acc3efdd1bd1b3f4ee0ae8ed6c",
       "original_failure_job": 126915921892,

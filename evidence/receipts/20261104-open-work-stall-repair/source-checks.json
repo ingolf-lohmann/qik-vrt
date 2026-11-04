@@ -1,13 +1,15 @@
 {
   "base_head": "ed22c8ab5bf8d963d2718f43192f4e7320424f6f",
   "bash_syntax": "PASS",
+  "ci_bash_syntax_blocks": 43,
   "continuation_tests": 49,
   "effect_ack_done": false,
   "embedded_bash_syntax_blocks": 10,
-  "frozen_apt_guard_tests": 7,
+  "frozen_apt_guard_tests": 8,
   "full_make_test": "NOT_EXECUTED_IN_PARTIAL_SOURCE_SNAPSHOT",
   "native_exact_head_ci": "REQUIRES_NATIVE_RUN_FOR_NEW_CANDIDATE",
   "native_runtime_acceptance": false,
+  "native_selector_regression": "ORIGINAL_FAIL_SUCCESSOR_PASS",
   "open_work_state_matrix_cases": 24,
   "real_package_archives_verified": 8,
   "schema": "qikvrt_stall_source_checks_v1",
@@ -32,10 +34,10 @@
       "sha256": "3d4ae027b52853a06a549edcd8548264c4c8ab2fa8a916811b786b8d6bd2a3ce"
     },
     {
-      "bytes": 64753,
-      "git_blob": "d370f0ed9ca8abaa7cde8f628dab24532b7256f6",
+      "bytes": 65364,
+      "git_blob": "5611716e883a32446d818959608a78bf1929264d",
       "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
-      "sha256": "c643d7c26e2ce5f9ebbc0f891792a84a7da6e9de2e070a01b55c43af94509ff7"
+      "sha256": "ba771a25629dbdeea688449882f301e5a01d54876587807d3d0343fc0819314d"
     },
     {
       "bytes": 13061,
@@ -56,10 +58,10 @@
       "sha256": "c0388f34cb8df42596b1bc1b90e9139ce58f7a3c7f0f219ba4a69bff7631b271"
     },
     {
-      "bytes": 12185,
-      "git_blob": "06e7beba27353e6580c53434f832f19086e3c181",
+      "bytes": 12543,
+      "git_blob": "926e3ab30f4c61f3d3a7d2166d80feb744f91eef",
       "path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
-      "sha256": "aa3aa4a5b07f9b7feb5eed6b4954acc32e719022c95896fb5bbf1d2ffbbcd10d"
+      "sha256": "8c16e149a63f562adec2a19849f634ed3d6559fb16ac99a1830ead7f71204d36"
     },
     {
       "bytes": 17062,
@@ -86,13 +88,25 @@
       "sha256": "ed56afd3b01f65f14e65e55c6619407fc3f68ab3912d3ec1115dc9c9b5790dd7"
     },
     {
-      "bytes": 9650,
-      "git_blob": "66c53190b5a7158de1c40b6936b949e405eea64e",
+      "bytes": 10539,
+      "git_blob": "9d66917284777b1521e59f18249c1eb48b64375e",
       "path": "tests/test_frozen_build_apt.py",
-      "sha256": "f58ca36b91db6fa53bef458c31188b0056587042391291a4c5e10e85cabedfb5"
+      "sha256": "212b628b6d6a0e4821c0af0374be1cb2a316273ba8e00e27e0b805626d02373a"
+    },
+    {
+      "bytes": 21348,
+      "git_blob": "ed7753ca938d2e8c5efa84f076ecb4fa91f18f89",
+      "path": "Makefile",
+      "sha256": "706246470e38c0d3f7812f1be669e4ae5fb1f47b2673a78bc2a9c7dbaefc4dc0"
+    },
+    {
+      "bytes": 113503,
+      "git_blob": "bb78996ef6e8b874089a1d361414885030a5b1b5",
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "bea48242b373b5c4756f395614cc8691e72e2f14483ef2fc8e01768c03f77a4c"
     }
   ],
-  "total_tests": 110,
-  "watchdog_tests": 54,
+  "total_tests": 112,
+  "watchdog_tests": 55,
   "yaml_parse": "PASS"
 }

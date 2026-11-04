@@ -35,6 +35,7 @@ test_heartbeat_and_identical_retry_are_not_useful_progress (tests.test_qikvrt_re
 test_incomplete_wrong_subject_stale_and_future_work_inventory (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_incomplete_wrong_subject_stale_and_future_work_inventory) ... ok
 test_mirror_or_missing_repository_is_held_even_with_equal_authority_commit (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_mirror_or_missing_repository_is_held_even_with_equal_authority_commit) ... ok
 test_missing_required_pull_request_gate_is_held_without_overclaiming_success (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_missing_required_pull_request_gate_is_held_without_overclaiming_success) ... ok
+test_native_container_acceptance_invokes_frozen_package_guard_tests (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_native_container_acceptance_invokes_frozen_package_guard_tests) ... ok
 test_new_executed_step_advances_the_progress_clock (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_new_executed_step_advances_the_progress_clock) ... ok
 test_old_same_head_receipt_detects_a_missed_gatewatch_tick (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_old_same_head_receipt_detects_a_missed_gatewatch_tick) ... ok
 test_open_work_never_allows_silent_idle_across_supported_run_states (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_open_work_never_allows_silent_idle_across_supported_run_states) ... ok
@@ -54,6 +55,6 @@ test_unreadable_queue_cannot_be_called_empty (tests.test_qikvrt_reflexive_reposi
 test_workflow_is_transition_driven_reflexive_and_read_only (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_workflow_is_transition_driven_reflexive_and_read_only) ... ok
 
 ----------------------------------------------------------------------
-Ran 54 tests in 8.417s
+Ran 55 tests in 7.776s
 
 OK

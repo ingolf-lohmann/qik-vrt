@@ -6,6 +6,15 @@
     "BYTE_DRIFT",
     "INSTALLED_VERSION_DRIFT"
   ],
+  "artifact_layout_correction": {
+    "existing_connector_limit_bytes": 536870912,
+    "independent_new_native_download": "REQUIRED",
+    "original_artifact_bytes": 769740368,
+    "original_artifact_id": 13375370367,
+    "original_artifact_sha256": "499b9e43d043b2cd1c845ba267a6f07a4c64c7c3bb7f03f2438deb07a348d7f2",
+    "original_large_download_attempted": false,
+    "repair": "Preserve unchanged original carrier in a separate existing-workflow artifact; retain new image and all non-secret receipts under the existing consumer artifact name. No archive-byte mutation or evidence deletion."
+  },
   "bounds_seconds": {
     "binary_download": 180,
     "index_update": 180,
@@ -15,14 +24,30 @@
     "term_kill_grace": 10
   },
   "effect_ack_done": false,
-  "local_guard_tests": 7,
+  "local_guard_tests": 8,
   "local_signature_verification": "NOT_REEXECUTED; ORIGINAL_NATIVE_APT_DEBIAN_KEYRING_SIGNATURE_VERIFICATION_REQUIRED",
   "main_integration": false,
   "main_release_byte_equivalence": {
     "frozen_snapshot_and_official_live_identical": true,
     "sha256": "77737fa4b34f2693e982cc9ee35736816c35a7778fc2d326cc1bbf5b301fe1aa"
   },
-  "native_successor": "REQUIRED_FOR_NEW_HEAD",
+  "native_selector_correction": {
+    "missing_native_module": "tests.test_frozen_build_apt",
+    "observed_command": "tests.test_self_host_container",
+    "observed_make_target": "self-host-container-test",
+    "regression_before": "New explicit selector regression fails at original Makefile because the guard suite is not invoked.",
+    "repair": "Add guard suite to existing native container Make target; existing watchdog acceptance rejects a future omission."
+  },
+  "native_successor": {
+    "acceptance_scope": "EXACT_A000_PARENT_ONLY; NO_TRANSFER_TO_SELECTOR_LAYOUT_SUCCESSOR",
+    "core_conclusion": "SUCCESS",
+    "core_job": 126941885177,
+    "head": "a000c5fe62a3fda3c85a73b8c51884d0ca2e256c",
+    "pr_ci": 41935226990,
+    "s1_conclusion": "SUCCESS",
+    "s1_job": 126946814342,
+    "tree": "81a575b16b3d423ac7ab4f207dd7787a1be3bc2e"
+  },
   "observed_at": "2026-11-04T23:34:39.997531+00:00",
   "original_failures": [
     {

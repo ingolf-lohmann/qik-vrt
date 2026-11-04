@@ -2,11 +2,12 @@ test_exact_plan_and_actual_bytes_are_checked_without_execution (tests.test_froze
 test_incomplete_corrupt_and_symlinked_downloads_fail_closed (tests.test_frozen_build_apt.FrozenBuildAPT.test_incomplete_corrupt_and_symlinked_downloads_fail_closed) ... ok
 test_installed_versions_are_read_from_dpkg_and_must_match (tests.test_frozen_build_apt.FrozenBuildAPT.test_installed_versions_are_read_from_dpkg_and_must_match) ... ok
 test_missing_extra_and_duplicate_package_plans_cannot_pass (tests.test_frozen_build_apt.FrozenBuildAPT.test_missing_extra_and_duplicate_package_plans_cannot_pass) ... ok
+test_original_carrier_and_new_image_have_separate_readback_artifacts (tests.test_frozen_build_apt.FrozenBuildAPT.test_original_carrier_and_new_image_have_separate_readback_artifacts) ... ok
 test_real_builder_shell_stops_before_install_for_each_failure (tests.test_frozen_build_apt.FrozenBuildAPT.test_real_builder_shell_stops_before_install_for_each_failure) ... ok
 test_shell_text_is_data_and_never_executed (tests.test_frozen_build_apt.FrozenBuildAPT.test_shell_text_is_data_and_never_executed) ... ok
 test_wrong_origin_path_size_and_weak_hash_are_rejected (tests.test_frozen_build_apt.FrozenBuildAPT.test_wrong_origin_path_size_and_weak_hash_are_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 1.098s
+Ran 8 tests in 1.085s
 
 OK

@@ -1548,6 +1548,14 @@ jobs:
           path: ${{ runner.temp }}/container-evidence/s1-2.oci.tar
           if-no-files-found: warn
           retention-days: 30
+      - name: Preserve original frozen carrier separately
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-original-carrier-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-evidence/carrier-original.oci.tar
+          if-no-files-found: warn
+          retention-days: 30
       - name: Preserve exact OCI image and non-secret original evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -1555,6 +1563,7 @@ jobs:
           name: qikvrt-s1-container-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             ${{ runner.temp }}/container-evidence
+            !${{ runner.temp }}/container-evidence/carrier-original.oci.tar
             !${{ runner.temp }}/container-evidence/s1-*.oci.tar
           if-no-files-found: error
           retention-days: 30

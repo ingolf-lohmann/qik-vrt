@@ -11,14 +11,19 @@ the same isolated inputs: the old code remains SAFE_PROGRESS after four
 five-minute observations without a useful transition, and calls an inactive
 runner quiescent without reading open work. The candidate detects both cases.
 
-watchdog-tests.txt: 54 passed. continuation-tests.txt: 49 passed.
-frozen-apt-tests.txt: 7 passed. Total: 110 targeted tests. A 24-case matrix
+watchdog-tests.txt: 55 passed. continuation-tests.txt: 49 passed.
+frozen-apt-tests.txt: 8 passed. Total: 112 targeted tests. A 24-case matrix
 checks that open work never permits silent idle. The original Docker RUN shell
 was executed with isolated APT/dpkg fixtures: valid input proceeds; update,
 plan, byte and installed-version faults stop at their actual boundary. Eight
 real official Debian archives were independently size/SHA256 checked.
 apt-transport-repair.json preserves the two distinct native failures and their
-causal transport correction, without claiming a native successor result.
+causal transport correction. Parent a000c5fe native S1 and core jobs succeeded;
+its 769740368-byte combined artifact exceeds the existing readback limit.
+The successor invokes these guard cases from the existing native Make target
+and preserves unchanged original carrier and new image in separate artifacts.
+Native exact-head acceptance and independent byte readback must run anew.
+All 43 Bash blocks of the modified CI workflow pass syntax checking.
 The tests include the actual consumer shell, original admission/readback guard,
 malicious analysis text retained as data, wrong producer binding, bounded open
 work pagination, missing/stale inventory, observer failure, cumulative progress,

@@ -101,6 +101,17 @@ class FrozenBuildAPT(unittest.TestCase):
         with patch.object(c.subprocess, "check_output", return_value=output.replace(b"1.0", b"0.9", 1)):
             with self.assertRaisesRegex(ValueError, "INSTALLED_VERSION_DRIFT"): self.check("installed")
 
+    def test_original_carrier_and_new_image_have_separate_readback_artifacts(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_ci.yml").read_text()
+        original = workflow.split("- name: Preserve original frozen carrier separately\n", 1)[1].split("\n      - name:", 1)[0]
+        result = workflow.split("- name: Preserve exact OCI image and non-secret original evidence\n", 1)[1].split("\n  container_publish:", 1)[0]
+        self.assertIn("if: always()", original)
+        self.assertIn("qikvrt-s1-original-carrier-", original)
+        self.assertIn("path: ${{ runner.temp }}/container-evidence/carrier-original.oci.tar", original)
+        self.assertIn("!${{ runner.temp }}/container-evidence/carrier-original.oci.tar", result)
+        self.assertNotIn("!${{ runner.temp }}/container-evidence/image.oci.tar", result)
+        self.assertIn("qikvrt-s1-container-", result)
+
     def test_real_builder_shell_stops_before_install_for_each_failure(self):
         # Exercise the actual Dockerfile RUN body with isolated commands. Only
         # APT/dpkg/git are fixtures; Python executes the original guard source.
