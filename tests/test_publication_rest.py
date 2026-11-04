@@ -34,8 +34,10 @@ class PublicationRESTTests(unittest.TestCase):
             "execution_tree": self.tree, "manifest_sha256": "b" * 64}
         manifest = {"machine_proof": {"publication_id": "fixture-only-publication"},
             "owner_authorization": {"consumption_key": {"value": "c" * 64}}}
+        registry = {"credentials": {name: {"expires_at": "2999-01-01T00:00:00Z"}
+            for name in ("GITHUB_TOKEN", "ZENODO_ACCESS_TOKEN")}}
         self.admitted = (original, Path("/fixture-only-checkout"), Path("/fixture-only-manifest"),
-            manifest, publisher, Path("/fixture-only-registry"), {})
+            manifest, publisher, Path("/fixture-only-registry"), registry)
         self.admission = mock.patch.object(launcher, "publication_request", return_value=self.admitted).start()
         self.source = mock.patch.object(authority, "production_source", return_value=True).start()
         self.invoke = mock.patch.object(launcher, "publication_resume", return_value={"state": "HOLD_PUBLISHER"}).start()
@@ -50,7 +52,8 @@ class PublicationRESTTests(unittest.TestCase):
 
     def test_check_calls_original_admission_without_credentials_or_publisher(self):
         result = self.run_operation()
-        self.admission.assert_called_once_with(Path(self.env["QIKVRT_PUBLICATION_REQUEST"]), self.pin)
+        self.admission.assert_called_once_with(Path(self.env["QIKVRT_PUBLICATION_REQUEST"]), self.pin,
+                                              allow_expired_credentials=True)
         self.invoke.assert_not_called()
         self.assertEqual(self.auth.store.read(), {})
         self.assertEqual(result["state"], "SOURCE_AND_REFERENCES_ADMITTED")
@@ -99,6 +102,30 @@ class PublicationRESTTests(unittest.TestCase):
         self.assertEqual(self.run_operation()["prior_attempt_state"], "UNKNOWN_READBACK_REQUIRED")
         self.run_operation(write=True)
         self.assertEqual(self.invoke.call_count, 1)
+
+    def test_expired_provider_reference_does_not_hide_an_uncertain_attempt(self):
+        self.invoke.side_effect = TimeoutError("PRIVATE_PROVIDER_BODY")
+        with self.assertRaises(authority.ProductionBlock):
+            self.run_operation(write=True)
+        self.admitted[6]["credentials"]["ZENODO_ACCESS_TOKEN"]["expires_at"] = "2000-01-01T00:00:00Z"
+        def admission(*args, **kwargs):
+            if kwargs.get("allow_expired_credentials") is not True:
+                raise ValueError("PUBLISHER_CREDENTIAL_EXPIRED")
+            return self.admitted
+        self.admission.side_effect = admission
+        result = self.run_operation()
+        self.assertEqual(result["state"], "ORIGINAL_ATTEMPT_READBACK_ONLY")
+        self.assertEqual(result["prior_attempt_state"], "UNKNOWN_READBACK_REQUIRED")
+        self.assertFalse(result["credential_metadata_current"])
+        self.assertFalse(result["publisher_invoked"])
+        self.assertFalse(result["public_readback_verified"])
+        self.assertFalse(result["effect_ack_done"])
+        with self.assertRaises(authority.ProductionBlock):
+            self.run_operation(write=True)
+        self.assertEqual(self.invoke.call_count, 1)
+        self.auth.live = False
+        with self.assertRaisesRegex(authority.ProductionBlock, "LIVE_ORIGINAL_SSO_SESSION_REQUIRED"):
+            self.run_operation()
 
     def test_failed_durable_intent_cannot_invoke_and_checker_failure_is_redacted(self):
         with mock.patch.object(self.auth.store, "write", side_effect=OSError("PRIVATE")):

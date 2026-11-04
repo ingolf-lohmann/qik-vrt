@@ -697,6 +697,50 @@ class HTTPIntegrationTests(unittest.TestCase):
 
 
 class StartupTests(unittest.TestCase):
+    def startup_environment(self):
+        return {"QIKVRT_API_TOKEN": "b64url:" + base64.urlsafe_b64encode(b"fixture-only-api-token-32-bytes!!!").decode().rstrip("="),
+                "QIKVRT_API_TOKEN_EXPIRES_UTC": "2999-01-01T00:00:00Z",
+                "QIKVRT_ALLOWED_REPOSITORY": "ingolf-lohmann/qik-vrt",
+                "QIKVRT_API_PRINCIPAL": "ingolf-lohmann"}
+
+    def test_occupied_listener_is_not_misdiagnosed_as_a_missing_sso_profile(self):
+        import contextlib
+        import socket
+        from src import qikvrt_github_api_shim as shim
+        with socket.socket() as occupied:
+            occupied.bind(("127.0.0.1", 0))
+            occupied.listen(1)
+            environment = dict(self.startup_environment(), QIKVRT_API_PORT=str(occupied.getsockname()[1]))
+            error = io.StringIO()
+            with mock.patch.dict(os.environ, environment, clear=True), contextlib.redirect_stderr(error):
+                self.assertEqual(shim.main(), 2)
+        self.assertIn("NATIVE_LISTENER_ADDRESS_IN_USE", error.getvalue())
+        self.assertNotIn("SSO profile/store/writer", error.getvalue())
+
+    def test_tls_start_failure_is_redacted_and_releases_the_listener_and_fence(self):
+        import contextlib
+        from src import qikvrt_github_api_shim as shim
+        released = []
+        def attach(stack, host, port):
+            stack.callback(released.append, "writer-released")
+            return shim.QikvrtGitHubApiShim, None
+        environment = dict(self.startup_environment(), QIKVRT_API_HOST="0.0.0.0",
+            QIKVRT_ALLOW_NON_LOOPBACK="1", QIKVRT_TLS_CERT_FILE="/private/fixture-cert",
+            QIKVRT_TLS_KEY_FILE="/private/fixture-key")
+        error = io.StringIO()
+        with mock.patch.dict(os.environ, environment, clear=True), \
+                mock.patch.object(shim, "authority_sso_handler", side_effect=attach), \
+                mock.patch.object(shim, "ThreadingHTTPServer") as listener, \
+                mock.patch.object(shim.ssl, "SSLContext") as tls, contextlib.redirect_stderr(error):
+            tls.return_value.load_cert_chain.side_effect = OSError("PRIVATE_CERTIFICATE_PATH")
+            self.assertEqual(shim.main(), 2)
+            listener.return_value.server_close.assert_called_once()
+            listener.return_value.serve_forever.assert_not_called()
+        self.assertEqual(released, ["writer-released"])
+        self.assertIn("NATIVE_TLS_CONFIGURATION_UNAVAILABLE", error.getvalue())
+        self.assertNotIn("PRIVATE", error.getvalue())
+        self.assertNotIn("/private/", error.getvalue())
+
     def test_original_profile_and_writer_lock_are_reused_without_a_model_key(self):
         from contextlib import ExitStack, contextmanager
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))

@@ -3711,7 +3711,7 @@ def publication_private_bytes(path, maximum):
     return raw
 
 
-def publication_request(request_path, request_pin):
+def publication_request(request_path, request_pin, *, allow_expired_credentials=False):
     """Read-only admission for an exact request; reuse the production publisher."""
     private_path(request_path)
     private_path(request_path.parent, directory=True)
@@ -3811,7 +3811,8 @@ def publication_request(request_path, request_pin):
                 or not re.fullmatch(r"[A-Za-z0-9._:/-]{1,200}", entry["opaque_reference"])):
             raise ValueError("CREDENTIAL_PROVIDER_BINDING_REQUIRED")
         expiry = datetime.datetime.fromisoformat(entry["expires_at"].replace("Z", "+00:00"))
-        if expiry.tzinfo is None or expiry <= datetime.datetime.now(datetime.timezone.utc):
+        if expiry.tzinfo is None or (not allow_expired_credentials
+                and expiry <= datetime.datetime.now(datetime.timezone.utc)):
             raise ValueError("PUBLISHER_CREDENTIAL_EXPIRED")
         source = Path(entry["source_path"])
         private_path(source)
