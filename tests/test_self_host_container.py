@@ -4,6 +4,7 @@
 import hashlib
 import ast
 import io
+from itertools import combinations
 import json
 import os
 from pathlib import Path
@@ -514,6 +515,11 @@ class HostIdentityReadback(unittest.TestCase):
 class HostWorkflowIdentity(unittest.TestCase):
     """Execute the actual workflow shell against an isolated fixture Engine."""
 
+    JOB_INPUTS = (
+        'QIKVRT_HOST_BINDING', 'QIKVRT_HOST_BINDING_SHA256', 'QIKVRT_HOST_CA',
+        'QIKVRT_HOST_CERT', 'QIKVRT_HOST_KEY',
+    )
+
     def job(self):
         text = (Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_ci.yml').read_text()
         return text.split('  container_deploy:\n', 1)[1].split('  container_public_readback:\n', 1)[0]
@@ -538,7 +544,7 @@ class HostWorkflowIdentity(unittest.TestCase):
         self.assertIn('environment: qikvrt-production', self.job())
         self.assertIn('cancel-in-progress: false', self.job())
 
-    def run_workflow(self, *, variant='valid', enabled='false', published='skipped'):
+    def run_workflow(self, *, variant='valid', enabled='false', published='skipped', missing_inputs=()):
         root = Path(__file__).resolve().parents[1]
         script = textwrap.dedent(self.job().split('        run: |\n', 1)[1].split('\n      - uses:', 1)[0])
         with tempfile.TemporaryDirectory() as directory:
@@ -589,11 +595,8 @@ else:raise RuntimeError('unexpected fixture operation')
                 'EXPECTED_MANIFEST': value['manifest_sha256'], 'PUBLISHED_IMAGE': c.IMAGE + '@' + value['image_digest'],
                 'PUBLISH_RESULT': published, 'DEPLOY_ENABLED': enabled, 'FIXTURE_HOST_CASE': variant}
             if variant == 'published-image': env['PUBLISHED_IMAGE'] = c.IMAGE + '@sha256:' + '0'*64
-            if variant == 'credential': env['QIKVRT_HOST_KEY'] = ''
-            if variant == 'all-credentials':
-                for name in ('QIKVRT_HOST_BINDING', 'QIKVRT_HOST_BINDING_SHA256',
-                             'QIKVRT_HOST_CA', 'QIKVRT_HOST_CERT', 'QIKVRT_HOST_KEY'):
-                    env[name] = ''
+            for name in missing_inputs:
+                env[name] = ''
             if variant == 'input-pin': env['EXPECTED_TREE'] = '0'*40
             result = subprocess.run(['bash', '-c', script], cwd=fixture, env=env,
                                     capture_output=True, text=True, timeout=30)
@@ -606,23 +609,29 @@ else:raise RuntimeError('unexpected fixture operation')
             return result, calls, output
 
     def test_missing_job_inputs_have_durable_diagnostics_before_any_host_call(self):
-        for variant, missing in (('credential', 1), ('all-credentials', 5)):
-            with self.subTest(variant=variant):
-                result, calls, output = self.run_workflow(variant=variant, enabled='true', published='success')
-                self.assertNotEqual(result.returncode, 0)
-                self.assertEqual(calls, [])
-                self.assertEqual(output, '')
-                receipt = self.last_material_receipt
-                self.assertIsNotNone(receipt)
-                self.assertEqual(receipt['state'], 'HOLD_PROTECTED_INPUT_DELIVERY')
-                self.assertEqual(sum(not v for v in receipt['bindings'].values()), missing)
-                self.assertEqual((receipt['source_head'], receipt['source_tree']), (HEAD, TREE))
-                self.assertFalse(receipt['job_credential_delivery_verified'])
-                self.assertFalse(receipt['host_identity_verified'])
-                self.assertFalse(receipt['effect_ack_done'])
-                raw = json.dumps(receipt)
-                for private in ('fixture-ca', 'fixture-cert', 'fixture-key', declaration()['docker_api']):
-                    self.assertNotIn(private, raw)
+        for missing_count in range(1, len(self.JOB_INPUTS) + 1):
+            for missing_inputs in combinations(self.JOB_INPUTS, missing_count):
+                with self.subTest(missing_inputs=missing_inputs):
+                    result, calls, output = self.run_workflow(
+                        enabled='true', published='success', missing_inputs=missing_inputs,
+                    )
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn('protected host binding/credential unavailable', result.stderr)
+                    self.assertEqual(calls, [])
+                    self.assertEqual(output, '')
+                    receipt = self.last_material_receipt
+                    self.assertIsNotNone(receipt)
+                    self.assertEqual(receipt['state'], 'HOLD_PROTECTED_INPUT_DELIVERY')
+                    self.assertEqual(receipt['bindings'], {
+                        name: name not in missing_inputs for name in self.JOB_INPUTS
+                    })
+                    self.assertEqual((receipt['source_head'], receipt['source_tree']), (HEAD, TREE))
+                    self.assertFalse(receipt['job_credential_delivery_verified'])
+                    self.assertFalse(receipt['host_identity_verified'])
+                    self.assertFalse(receipt['effect_ack_done'])
+                    raw = json.dumps(receipt)
+                    for private in ('fixture-ca', 'fixture-cert', 'fixture-key', declaration()['docker_api']):
+                        self.assertNotIn(private, raw)
 
     def test_present_job_inputs_do_not_claim_correct_keys_or_host_acceptance(self):
         result, calls, _ = self.run_workflow()
@@ -631,7 +640,7 @@ else:raise RuntimeError('unexpected fixture operation')
         receipt = self.last_material_receipt
         self.assertIsNotNone(receipt)
         self.assertEqual(receipt['state'], 'PROTECTED_INPUTS_PRESENT')
-        self.assertTrue(all(receipt['bindings'].values()))
+        self.assertEqual(receipt['bindings'], dict.fromkeys(self.JOB_INPUTS, True))
         self.assertFalse(receipt['job_credential_delivery_verified'])
         self.assertFalse(receipt['host_identity_verified'])
         self.assertFalse(receipt['effect_ack_done'])
@@ -650,7 +659,7 @@ else:raise RuntimeError('unexpected fixture operation')
         self.assertEqual([call[0] for call in calls], ['container-host-identity', 'container-deploy'])
         self.assertEqual(output, 'deployed=true\n')
         for variant in ('wrong-host','head','tree','manifest','image','binding','checker','claim','stale','missing',
-                        'credential','input-pin','published-image'):
+                        'input-pin','published-image'):
             with self.subTest(variant=variant):
                 result, calls, output = self.run_workflow(variant=variant, enabled='true', published='success')
                 self.assertNotEqual(result.returncode, 0)
