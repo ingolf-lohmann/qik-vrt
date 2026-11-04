@@ -4,9 +4,12 @@
   "continuation_tests": 49,
   "effect_ack_done": false,
   "embedded_bash_syntax_blocks": 10,
+  "frozen_apt_guard_tests": 7,
   "full_make_test": "NOT_EXECUTED_IN_PARTIAL_SOURCE_SNAPSHOT",
   "native_exact_head_ci": "REQUIRES_NATIVE_RUN_FOR_NEW_CANDIDATE",
   "native_runtime_acceptance": false,
+  "open_work_state_matrix_cases": 24,
+  "real_package_archives_verified": 8,
   "schema": "qikvrt_stall_source_checks_v1",
   "scope": "PARTIAL_EXACT_SOURCE_SNAPSHOT_AND_ISOLATED_FIXTURES",
   "sources": [
@@ -29,10 +32,10 @@
       "sha256": "3d4ae027b52853a06a549edcd8548264c4c8ab2fa8a916811b786b8d6bd2a3ce"
     },
     {
-      "bytes": 63309,
-      "git_blob": "55693b4cc604a4ebf8a7fad55c1104e27f47e70c",
+      "bytes": 64753,
+      "git_blob": "d370f0ed9ca8abaa7cde8f628dab24532b7256f6",
       "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
-      "sha256": "8a32f7314966f40044c2934191f1eda6d970793b8b587f3be2aecfd716698a83"
+      "sha256": "c643d7c26e2ce5f9ebbc0f891792a84a7da6e9de2e070a01b55c43af94509ff7"
     },
     {
       "bytes": 13061,
@@ -53,19 +56,43 @@
       "sha256": "c0388f34cb8df42596b1bc1b90e9139ce58f7a3c7f0f219ba4a69bff7631b271"
     },
     {
-      "bytes": 11444,
-      "git_blob": "61b7c98250d79cc7e7c1df2b302c73bfd2f4e474",
+      "bytes": 12185,
+      "git_blob": "06e7beba27353e6580c53434f832f19086e3c181",
       "path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
-      "sha256": "95d6437eda7285126028d6bde8f566d29221b6fd1a32b599a874293ddc0b53d9"
+      "sha256": "aa3aa4a5b07f9b7feb5eed6b4954acc32e719022c95896fb5bbf1d2ffbbcd10d"
     },
     {
-      "bytes": 15164,
-      "git_blob": "463f95e9b0191c61d9238034e307d2ce843aaba4",
+      "bytes": 17062,
+      "git_blob": "9e8a9ae0f63d963cb61d2d2f5adc1947a35091f5",
       "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
-      "sha256": "5a68945ac8e15ef05a60c69d00a2d66d0fc81a69446387d87c4d80f00db7f6be"
+      "sha256": "a12232b7facf1624a5a6018dc3d71ea4572f94e2ced034eb5df2e9751c8160ec"
+    },
+    {
+      "bytes": 7358,
+      "git_blob": "a136f1846128a7303c1d29748831ccaf59e7b301",
+      "path": "runtime/self-host/Dockerfile",
+      "sha256": "6c052d98cb1e5e9e7f29230ee85398ca59b6416063c307d23831b81a049aaa45"
+    },
+    {
+      "bytes": 2656,
+      "git_blob": "b552d7724bb02d757a63e4f76acc981bf63f0be9",
+      "path": "runtime/self-host/FROZEN_BUILD_APT_V1.json",
+      "sha256": "6715635413c9b03ca5a3eb229afc3d767ef08c39bb6b6a2033859160cf52d4a9"
+    },
+    {
+      "bytes": 86157,
+      "git_blob": "a9dae9236c94b551912edd1c1038395c7a7e49d9",
+      "path": "tools/qikvrt_self_host_container.py",
+      "sha256": "ed56afd3b01f65f14e65e55c6619407fc3f68ab3912d3ec1115dc9c9b5790dd7"
+    },
+    {
+      "bytes": 9650,
+      "git_blob": "66c53190b5a7158de1c40b6936b949e405eea64e",
+      "path": "tests/test_frozen_build_apt.py",
+      "sha256": "f58ca36b91db6fa53bef458c31188b0056587042391291a4c5e10e85cabedfb5"
     }
   ],
-  "total_tests": 102,
-  "watchdog_tests": 53,
+  "total_tests": 110,
+  "watchdog_tests": 54,
   "yaml_parse": "PASS"
 }

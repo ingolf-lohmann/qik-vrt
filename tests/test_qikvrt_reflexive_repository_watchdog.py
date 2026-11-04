@@ -160,6 +160,28 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertEqual(value["open_work"]["state"], "UNKNOWN")
         self.assertFalse(value["continuation_obligation"]["silent_idle_allowed"])
 
+    def test_open_work_never_allows_silent_idle_across_supported_run_states(self):
+        cases = [(None, None), ("queued", None), ("in_progress", None),
+                 ("completed", "success"), ("completed", "failure"),
+                 ("completed", "cancelled"), ("completed", "timed_out"),
+                 ("completed", "action_required")]
+        checked = 0
+        for count in (1, 2, 169):
+            work = self.work_inventory(*range(1, count + 1))
+            for status, conclusion in cases:
+                with self.subTest(work_items=count, status=status, conclusion=conclusion):
+                    runs = [] if status is None else [run(91, "QIKVRT CI", status,
+                        "2026-08-10T17:59:00Z", "2026-08-10T18:00:00Z", conclusion)]
+                    evidence = {} if status is None else {"jobs_by_run": {"91": [{
+                        "id": 910, "name": "tests", "status": status, "conclusion": conclusion}]}}
+                    value = self.analyze(runs, evidence, work_value=work)
+                    self.assertNotEqual(value["state"], "QUIESCENT_OBSERVATION")
+                    self.assertFalse(value["continuation_obligation"]["silent_idle_allowed"])
+                    self.assertTrue(value["continuation_obligation"]["required"])
+                    self.assertFalse(value["continuation_obligation"]["effect_permission"])
+                    checked += 1
+        self.assertEqual(checked, 24)
+
     def test_incomplete_wrong_subject_stale_and_future_work_inventory(self):
         incomplete = self.work_inventory()
         incomplete["complete"] = False

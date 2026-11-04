@@ -230,3 +230,32 @@ predecessor test or availability observation substitutes for those effects.
 No observation proves that the observer will receive another event. A quiet
 system with a lost event needs an independent observation before an observer
 failure can be detected; no timer-free global liveness guarantee is claimed.
+
+## Bounded acceptance and the native build stall
+
+The executable invariant is that OPEN or UNKNOWN work never permits silent
+idle. A finite acceptance matrix covers 1, 2 and 169 open items with no run,
+queued work, running work and terminal success, failure, cancellation, timeout
+and action-required states (24 combinations). Existing negative traces cover
+unchanged heartbeats, repeated identical failures, stale/wrong-source evidence,
+missing readback and analyzer failure. These checks do not prove unconditional
+liveness of an external service or permanent runtime availability.
+
+The original exact-head S1 jobs additionally exposed an actual dependency stall:
+job 126915921892 received package HTTP 503; job 126914575535 emitted only two
+InRelease fetches before its 35-minute cancellation. The successor retains the
+original frozen carrier, platform, signature verification, eight package
+versions and no-upgrade policy. FROZEN_BUILD_APT_V1.json locks every selected
+package's origin, path, size and SHA-256. The official Debian transport supplies
+only that set; new index entries cannot silently change a dependency. APT still
+verifies Debian signatures and package hashes against its original keyring.
+The guard rejects plan drift before download, verifies actual archive bytes
+before a no-download install, and checks installed versions afterward.
+
+Index fetch, binary fetch and install have absolute limits of 180, 180 and
+120 seconds, each with a 10-second termination grace; individual network waits
+are limited to 30 seconds and retries are zero. A failure stops the builder;
+it never manufactures a successful smoke test. The existing native CI must
+still execute the new source, reproduce both OCI builds and verify the actual
+terminal/restart before integration. Productive Originalhost, exact domain,
+peer adoption and EFFECT_ACK remain separate, independently observed effects.

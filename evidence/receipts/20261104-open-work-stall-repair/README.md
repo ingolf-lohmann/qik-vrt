@@ -11,7 +11,14 @@ the same isolated inputs: the old code remains SAFE_PROGRESS after four
 five-minute observations without a useful transition, and calls an inactive
 runner quiescent without reading open work. The candidate detects both cases.
 
-watchdog-tests.txt: 53 passed. continuation-tests.txt: 49 passed.
+watchdog-tests.txt: 54 passed. continuation-tests.txt: 49 passed.
+frozen-apt-tests.txt: 7 passed. Total: 110 targeted tests. A 24-case matrix
+checks that open work never permits silent idle. The original Docker RUN shell
+was executed with isolated APT/dpkg fixtures: valid input proceeds; update,
+plan, byte and installed-version faults stop at their actual boundary. Eight
+real official Debian archives were independently size/SHA256 checked.
+apt-transport-repair.json preserves the two distinct native failures and their
+causal transport correction, without claiming a native successor result.
 The tests include the actual consumer shell, original admission/readback guard,
 malicious analysis text retained as data, wrong producer binding, bounded open
 work pagination, missing/stale inventory, observer failure, cumulative progress,

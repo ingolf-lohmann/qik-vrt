@@ -1,0 +1,120 @@
+{
+  "actual_builder_shell_fault_variants": [
+    "VALID",
+    "UPDATE_FAILURE",
+    "PLAN_DRIFT",
+    "BYTE_DRIFT",
+    "INSTALLED_VERSION_DRIFT"
+  ],
+  "bounds_seconds": {
+    "binary_download": 180,
+    "index_update": 180,
+    "no_download_install": 120,
+    "per_https_io": 30,
+    "retries": 0,
+    "term_kill_grace": 10
+  },
+  "effect_ack_done": false,
+  "local_guard_tests": 7,
+  "local_signature_verification": "NOT_REEXECUTED; ORIGINAL_NATIVE_APT_DEBIAN_KEYRING_SIGNATURE_VERIFICATION_REQUIRED",
+  "main_integration": false,
+  "main_release_byte_equivalence": {
+    "frozen_snapshot_and_official_live_identical": true,
+    "sha256": "77737fa4b34f2693e982cc9ee35736816c35a7778fc2d326cc1bbf5b301fe1aa"
+  },
+  "native_successor": "REQUIRED_FOR_NEW_HEAD",
+  "observed_at": "2026-11-04T23:34:39.997531+00:00",
+  "original_failures": [
+    {
+      "cause": "SNAPSHOT_PACKAGE_HTTP_503_NO_HEALTHY_BACKENDS",
+      "job_id": 126915921892,
+      "run_id": 41925774870,
+      "state": "FAILURE"
+    },
+    {
+      "job_id": 126914575535,
+      "last_output": "TWO_INRELEASE_FETCHES_NO_INDEX_PROGRESS",
+      "run_id": 41925785768,
+      "state": "CANCELLED_AFTER_35_MINUTE_LIMIT"
+    }
+  ],
+  "original_security_object_redirect_readback": "TIMED_OUT; no byte-readback or equality claim",
+  "owner_instruction": {
+    "text": "Dann weise die jetzt mal nach. Und dann beginnt der Home Run, hoffentlich.",
+    "utf8_sha256": "0377764c1e8c4591f20a63f1df49d66fe1026637c4b26aaa938d52cfebfdc62c"
+  },
+  "productive_runtime_verified": false,
+  "repair": "OFFICIAL_DEBIAN_TRANSPORT_WITH_EXACT_EIGHT_PACKAGE_VERSION_SIZE_SHA256_LOCK_NO_UPGRADES",
+  "schema": "qikvrt_stall_native_build_transport_repair_v1",
+  "security_release_byte_equivalence": false,
+  "security_scope": "Current signed metadata has changed; only original libssh2-1 version 1.10.0-3+deb12u1 is admitted, with its exact locked SHA256. No claim that the entire live security index equals the frozen one.",
+  "source_head": "add7617d5cd930ba8a7329474791042a28ec4f59",
+  "source_tree": "510eb3a1f62b48acc3efdd1bd1b3f4ee0ae8ed6c",
+  "verified_package_downloads": [
+    {
+      "bytes": 386008,
+      "name": "libcurl3-gnutls",
+      "sha1": "bdf66352a5b107e992a49026872c0cfaf2b19655",
+      "sha256": "bf430ecf80f7808704e0187cddc582fd57fc98789ea356d4797651edad387ef3",
+      "url": "https://deb.debian.org/debian/pool/main/c/curl/libcurl3-gnutls_7.88.1-10%2Bdeb12u15_amd64.deb",
+      "verified": true
+    },
+    {
+      "bytes": 395632,
+      "name": "make",
+      "sha1": "3178850c82672525244b750776815e2ff4551fc2",
+      "sha256": "a1a83af8cbd854af887b72ad196b1f4af58387815e21ced1000253a116a46e2a",
+      "url": "https://deb.debian.org/debian/pool/main/m/make-dfsg/make_4.3-4.1_amd64.deb",
+      "verified": true
+    },
+    {
+      "bytes": 7264380,
+      "name": "git",
+      "sha1": "2c939052f7ad1cd1bb8671f79fea6e287f1e4310",
+      "sha256": "637a85ddd6247fab13bdd0592f2f39aff04ce4dbf0655d3ab553ac359a38ce6f",
+      "url": "https://deb.debian.org/debian/pool/main/g/git/git_2.39.5-0%2Bdeb12u3_amd64.deb",
+      "verified": true
+    },
+    {
+      "bytes": 2053236,
+      "name": "git-man",
+      "sha1": "220dfb65d0a51ece4baf8910941a31071d666013",
+      "sha256": "904dbd8dbc3db34c6780fb0abfe35816d4a90a490126ef0a055a77a0c5dcab82",
+      "url": "https://deb.debian.org/debian/pool/main/g/git/git-man_2.39.5-0%2Bdeb12u3_all.deb",
+      "verified": true
+    },
+    {
+      "bytes": 60824,
+      "name": "librtmp1",
+      "sha1": "529016adaf5f7b70271308d4a50070add2c10514",
+      "sha256": "e1f69020dc2c466e421ec6a58406b643be8b5c382abf0f8989011c1d3df91c87",
+      "url": "https://deb.debian.org/debian/pool/main/r/rtmpdump/librtmp1_2.4%2B20151223.gitfa8646d.1-2%2Bb2_amd64.deb",
+      "verified": true
+    },
+    {
+      "bytes": 175976,
+      "name": "libssh2-1",
+      "sha1": "dc2f82fddaccf5a450af68a66571647bf3b158d2",
+      "sha256": "fff72a194e493f88e100a2567e22472bb4ab828d429c2956965c6f2f134f1b3a",
+      "url": "https://deb.debian.org/debian-security/pool/updates/main/libs/libssh2/libssh2-1_1.10.0-3%2Bdeb12u1_amd64.deb",
+      "verified": true
+    },
+    {
+      "bytes": 29032,
+      "name": "liberror-perl",
+      "sha1": "2209e421e199ef9263d21f6ffd58e03649f3f5ea",
+      "sha256": "5a466348531b9c38c8e5ccb18c231f27a98b9fdab61b37ea22592553de5d2ced",
+      "url": "https://deb.debian.org/debian/pool/main/libe/liberror-perl/liberror-perl_0.17029-2_all.deb",
+      "verified": true
+    },
+    {
+      "bytes": 183248,
+      "name": "libldap-2.5-0",
+      "sha1": "b7837c3a177a951bb43644b0e43db78565dcf500",
+      "sha256": "4b6c30f6554149c594628d945edc6003f0eea8d0cc1341638c0e71375db147ed",
+      "url": "https://deb.debian.org/debian/pool/main/o/openldap/libldap-2.5-0_2.5.13%2Bdfsg-5_amd64.deb",
+      "verified": true
+    }
+  ],
+  "watchdog_invariant": "24 supported state/backlog combinations reject silent idle while work is open"
+}
