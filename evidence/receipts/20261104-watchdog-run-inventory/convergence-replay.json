@@ -1,0 +1,15 @@
+{
+  "analysis_state": "PREEMPTIVE_HOLD_EXECUTED_GATE_FAILURE",
+  "archive_sha256": "4c29c610cea56a359d84403c8a26c9ade14c3a6241a7012ff7cc0af503b18421",
+  "effect_ack_done": false,
+  "first_blocker": "TRUSTED_GATE_EXECUTED_FAILURE",
+  "input_head": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+  "input_tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d",
+  "job_page_requests": 13,
+  "job_readback_state": "READY",
+  "returned_run_count": 356,
+  "run_count": 356,
+  "run_page_requests": 4,
+  "schema": "qikvrt-recorded-watchdog-convergence-replay/v1",
+  "scope": "RECORDED_REST_REPLAY_NOT_FRESH_PROVIDER_EXECUTION"
+}

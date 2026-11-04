@@ -16,7 +16,7 @@ failure or productive runtime defect is inferred from that observation.
 
 `predecessor-regression.txt` records the new three-page regression (trailing whitespace normalized) against the
 unmodified predecessor workflow/controller: expected collection success fails
-with exit 2. `targeted-tests.txt` records 165 passing executions of the repaired
+with exit 2. `targeted-tests.txt` records the first candidate c5429262 with 165 passing executions of the repaired
 watchdog, executor-contract and seed-workflow tests. The workflow body is actually
 executed against isolated REST fixtures, including 213 metadata entries over
 three pages and exactly 11 required jobs GETs. This fixture is not a recovered
@@ -37,3 +37,23 @@ the universal productive-effect thesis remain separate evidence obligations.
 
 Human requirement and authorization: Ingolf Lohmann.
 Implementation and bounded verification: OpenAI Codex.
+
+The combined successor in PR #684 retains source parent
+`8fbc9df0107987dff0f4287320f9eb938bbf2f84` from overlapping PR #683,
+including its bounded page collectors, numeric ordering, original work unit and
+byte-identical `READBACK_AND_TESTS.zip` (SHA-256
+`4c29c610cea56a359d84403c8a26c9ade14c3a6241a7012ff7cc0af503b18421`).
+It retains the strict inventory-bound analysis and legacy budget policy from
+parent `c54292622335b43f112f82dc54e3ef695eaf7653`.
+
+`predecessor-convergence-counterexample.json` records an isolated unknown-job-status
+case accepted as READY/SUCCESS by 8fbc9df0. The combined collector rejects it;
+the gate evaluator also marks malformed or active jobs untrusted.
+`convergence-targeted-tests.txt` records 169 passing targeted executions, including
+job continuation pages within a total budget of 20, a ten-page run limit, numeric
+latest-run ordering, malformed-list rejection and analysis-time identity drift.
+`convergence-replay.json` reruns the archived REST inputs through the combined
+source: all 356 metadata entries, four run pages, 13 job pages, analysis reached,
+and the real recorded executed-gate failure retained. This is recorded-data replay,
+not a fresh provider observation. Final full-suite/native acceptance must refer
+to the combined successor; neither predecessor's checks transfer to it.

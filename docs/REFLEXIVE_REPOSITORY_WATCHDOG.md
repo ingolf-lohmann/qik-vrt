@@ -67,9 +67,10 @@ workflow, or treats its own terminality as gate success.
 
 ### Job-readback request budget
 
-The existing observation step uses `gh api --paginate --slurp` to retain all
-exact-head run pages in `current-run-pages.json`. It merges them into
-`current-runs.json` before requesting any jobs. Every page must report the same
+The existing controller's `collect-runs` command reads pages of 100 entries with
+at most ten original `gh api` GETs, retaining page bytes and stderr under
+`run-pages/`. It merges them into `current-runs.json` before requesting any jobs.
+Every page must report the same
 integer `total_count`; the combined inventory must match that count, contain no
 truncation or duplicate IDs, and bind every run to the expected head. Invalid
 names, statuses or timestamps also stop admission. This count check fails closed
@@ -92,17 +93,25 @@ there is no automatic retry. Failure to download the prior receipt artifact also
 stops at `BASELINE_READBACK`, before any current run or job request. An HTTP 403
 on that earlier path cannot be ignored as an optional missing baseline.
 
-Each selected run receives one jobs GET with `per_page=100`, without unbounded
-job pagination. `JOBS_COMPLETENESS_PREFLIGHT` requires its integer `total_count`
+`collect-jobs` shares a hard budget of 20 actual jobs GETs across selected runs
+and their continuation pages, each with `per_page=100`. Budget exhaustion stops
+analysis; a 21st request is never issued. Page counts, identities and statuses
+are checked during collection. `JOBS_COMPLETENESS_PREFLIGHT` also requires the
+merged integer `total_count`
 to equal the returned job count and rejects malformed/duplicate jobs, mismatched
-run/head/attempt identities and active jobs on a terminal run. More than 100 jobs
-therefore remains HOLD if the single response is incomplete. Analysis rederives
+run/head/attempt identities and active jobs on a terminal run. Analysis rederives
 the plan, verifies its inventory SHA-256, and requires exactly the selected job
 files. A missing file cannot become an empty successful observation. The original
 artifact, causal reproduction and bounded regression evidence for issue #682 are
 in `evidence/receipts/20261104-watchdog-run-inventory/`.
 
-This is a bound on this step's per-run job reads,
+Unknown job statuses count as untrusted evidence even in the gate evaluator;
+one successful job cannot hide another malformed or active job. The collector
+and numeric latest-run ordering from overlapping PR #683 are retained, together
+with its original evidence archive. The source histories converge in PR #684;
+native tests for predecessor heads do not accept the combined successor.
+
+This is a bound on this step's job-page reads,
 not a provider-wide quota controller or proof of live event delivery.
 
 ### Failure of the observer itself

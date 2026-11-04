@@ -175,6 +175,29 @@
     "attribution": {
       "requirement_and_authorization": "Ingolf Lohmann",
       "source_repair_and_bounded_tests": "OpenAI Codex"
+    },
+    "convergence": {
+      "pr": 684,
+      "other_pr": 683,
+      "preserved_source_parent": "8fbc9df0107987dff0f4287320f9eb938bbf2f84",
+      "own_source_parent": "c54292622335b43f112f82dc54e3ef695eaf7653",
+      "source_reuse": [
+        "bounded original run/job page collectors",
+        "numeric latest-run ordering",
+        "archived recorded REST evidence",
+        "original branch work unit"
+      ],
+      "additional_correction": "UNKNOWN_JOB_STATUS_MUST_NOT_BECOME_GATE_SUCCESS",
+      "strict_analysis": "EXACT_PLAN_COMPLETE_JOB_LIST_HEAD_RUN_ATTEMPT_REVALIDATION",
+      "maximum_run_page_requests": 10,
+      "maximum_total_job_page_requests": 20,
+      "targeted_tests": 169,
+      "targeted_result": "PASS",
+      "recorded_replay": "356_OF_356_RUNS_4_RUN_PAGES_13_JOB_PAGES_ANALYSIS_REACHED_TRUSTED_GATE_EXECUTED_FAILURE",
+      "archive_sha256": "4c29c610cea56a359d84403c8a26c9ade14c3a6241a7012ff7cc0af503b18421",
+      "final_full_suite": "REQUIRES_EXACT_COMBINED_CANDIDATE_RUN",
+      "final_native_acceptance": "REQUIRES_FRESH_EXACT_HEAD_READBACK",
+      "effect_ack_done": false
     }
   }
 }

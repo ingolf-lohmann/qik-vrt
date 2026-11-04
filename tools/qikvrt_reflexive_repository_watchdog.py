@@ -31,6 +31,8 @@ UNTRUSTED_CONCLUSIONS = frozenset({"action_required", "startup_failure"})
 EXECUTED_FAILURE_CONCLUSIONS = frozenset({"failure", "timed_out"})
 GATEWATCH_SCOPES = frozenset({"MAIN", "PULL_REQUEST_MAIN", "PULL_REQUEST_STACKED"})
 MAX_JOB_READBACK_REQUESTS = 20
+MAX_RUN_READBACK_PAGES = 10
+READBACK_PAGE_SIZE = 100
 GATEWATCH_STATES = frozenset(
     {
         "SUCCESS",
@@ -161,6 +163,7 @@ def job_readback_budget(
         try:
             for run in runs:
                 _string(run.get("name"), "workflow name")
+                _positive_int(run.get("run_attempt"), "run attempt")
                 if run.get("status") not in ACTIVE_STATUSES | {"completed"}:
                     raise ReflexiveWatchdogBlock("invalid run status")
                 _run_created_time(run)
@@ -193,6 +196,121 @@ def job_readback_budget(
             metadata_only_run_ids=metadata_only_ids if blocker is None else [],
         )
     return result
+
+
+def _readback_page(endpoint: str, destination: Path) -> Mapping[str, Any]:
+    """One original gh REST call, no automatic retry; retain the response bytes."""
+    try:
+        result = subprocess.run(["gh", "api", endpoint], capture_output=True, timeout=30)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise ReflexiveWatchdogBlock(f"REST readback unavailable: {exc}") from exc
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(result.stdout)
+    destination.with_suffix(".stderr").write_bytes(result.stderr)
+    if result.returncode:
+        sys.stderr.write(result.stderr.decode("utf-8", errors="replace"))
+        raise ReflexiveWatchdogBlock(f"REST readback failed (exit {result.returncode})")
+    try:
+        return _mapping(json.loads(result.stdout), "REST readback page")
+    except (ValueError, UnicodeError) as exc:
+        raise ReflexiveWatchdogBlock("REST readback is not JSON") from exc
+
+
+def _collect_pages(endpoint: str, key: str, directory: Path, *, max_requests: int,
+                   expected_head: str | None = None,
+                   expected_run_id: int | None = None,
+                   expected_run_attempt: int | None = None) -> tuple[dict[str, Any], int]:
+    items: list[Mapping[str, Any]] = []
+    seen: set[int] = set()
+    total = None
+    blocker = None
+    requests = 0
+    for page in range(1, max_requests + 1):
+        value = _readback_page(
+            f"{endpoint}&per_page={READBACK_PAGE_SIZE}&page={page}",
+            directory / f"{page}.json",
+        )
+        requests += 1
+        count, entries = value.get("total_count"), value.get(key)
+        if type(count) is not int or count < 0 or not isinstance(entries, list):
+            blocker = "READBACK_PAGE_INVALID"
+            break
+        if total is None:
+            total = count
+        if count != total or value.get("truncated", False) is not False:
+            blocker = "READBACK_INVENTORY_CHANGED_OR_TRUNCATED"
+            break
+        if len(entries) != min(READBACK_PAGE_SIZE, total - len(items)):
+            blocker = "READBACK_INVENTORY_INCOMPLETE"
+            break
+        for entry in entries:
+            if (not isinstance(entry, Mapping) or type(entry.get("id")) is not int
+                    or entry["id"] <= 0 or entry["id"] in seen
+                    or (expected_head is not None and entry.get("head_sha") != expected_head)
+                    or (expected_run_id is not None and entry.get("run_id") != expected_run_id)
+                    or (expected_run_attempt is not None
+                        and entry.get("run_attempt") != expected_run_attempt)
+                    or (key == "jobs" and entry.get("status") not in ACTIVE_STATUSES | {"completed"})):
+                blocker = "READBACK_ENTRY_INVALID_OR_DUPLICATED"
+                break
+            seen.add(entry["id"])
+            items.append(entry)
+        if blocker or len(items) == total:
+            break
+    if blocker is None and (total is None or len(items) != total):
+        blocker = "READBACK_REQUEST_BUDGET_EXCEEDED"
+    return {"total_count": total, key: items, "truncated": blocker is not None,
+            "first_blocker": blocker, "page_requests": requests}, requests
+
+
+def _repository(value: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", value):
+        raise ReflexiveWatchdogBlock("invalid readback repository")
+    return value
+
+
+def collect_runs(*, repository: str, expected_head: str, directory: Path) -> dict[str, Any]:
+    endpoint = (f"repos/{_repository(repository)}/actions/runs?head_sha="
+                + _head_sha(expected_head, "expected head"))
+    value, _ = _collect_pages(endpoint, "workflow_runs", directory,
+                              max_requests=MAX_RUN_READBACK_PAGES, expected_head=expected_head)
+    return value
+
+
+def collect_jobs(runs: Any, *, repository: str, expected_head: str,
+                 directory: Path) -> dict[str, Any]:
+    plan = job_readback_budget(runs, expected_head=expected_head, required_jobs_only=True)
+    receipt = {"state": plan["state"], "first_blocker": plan["first_blocker"],
+               "run_inventory_sha256": plan["inventory_sha256"],
+               "max_job_requests": MAX_JOB_READBACK_REQUESTS, "job_requests": 0,
+               "completed_run_ids": [], "effect_ack_done": False}
+    _repository(repository)
+    if receipt["state"] == "HOLD":
+        return receipt
+    directory.mkdir(parents=True, exist_ok=True)
+    if any(directory.glob("*.json")):
+        raise ReflexiveWatchdogBlock("job observation directory is not empty")
+    for run_id in plan["run_ids"]:
+        run = next(run for run in runs["workflow_runs"] if run["id"] == run_id)
+        attempt = _positive_int(run.get("run_attempt"), "selected run attempt")
+        remaining = MAX_JOB_READBACK_REQUESTS - receipt["job_requests"]
+        value, requests = _collect_pages(
+            f"repos/{repository}/actions/runs/{run_id}/jobs?filter=latest", "jobs",
+            directory / "pages" / str(run_id), max_requests=remaining,
+            expected_head=expected_head, expected_run_id=run_id, expected_run_attempt=attempt,
+        )
+        receipt["job_requests"] += requests
+        (directory / f"{run_id}.json").write_bytes(canonical_json_bytes(value))
+        if value["truncated"]:
+            receipt.update(state="HOLD", first_blocker=value["first_blocker"])
+            break
+        receipt["completed_run_ids"].append(run_id)
+    return receipt
+
+
+def _run_order(run: Mapping[str, Any]) -> tuple[datetime, int, str]:
+    run_id = _run_id(run)
+    return (_run_created_time(run), int(run_id) if run_id.isdecimal() else -1, run_id)
 
 
 def _iso(value: datetime) -> str:
@@ -298,7 +416,7 @@ def _runs(value: Mapping[str, Any] | Sequence[Any]) -> list[Mapping[str, Any]]:
     return [item for item in raw if isinstance(item, Mapping)]
 
 
-def _jobs_by_run(value: Mapping[str, Any] | None) -> dict[str, list[Mapping[str, Any]]]:
+def _jobs_by_run(value: Mapping[str, Any] | None, *, strict: bool = False) -> dict[str, list[Mapping[str, Any]]]:
     if value is None:
         return {}
     raw = value.get("jobs_by_run", value)
@@ -308,6 +426,14 @@ def _jobs_by_run(value: Mapping[str, Any] | None) -> dict[str, list[Mapping[str,
     for run_id, jobs in raw.items():
         if not isinstance(run_id, str) or not isinstance(jobs, list):
             raise ReflexiveWatchdogBlock("job observation contains an invalid run entry")
+        if strict:
+            ids = set()
+            for job in jobs:
+                if (not isinstance(job, Mapping) or type(job.get("id")) is not int
+                        or job["id"] <= 0 or job["id"] in ids
+                        or job.get("status") not in ACTIVE_STATUSES | {"completed"}):
+                    raise ReflexiveWatchdogBlock("JOB_INVENTORY_INVALID: malformed selected job")
+                ids.add(job["id"])
         result[run_id] = [item for item in jobs if isinstance(item, Mapping)]
     return result
 
@@ -351,8 +477,8 @@ def validate_job_plan(
         raise ReflexiveWatchdogBlock("JOB_INVENTORY_INCOMPLETE: selected run job files do not match the plan")
     for run in _runs(runs_value):
         for job in jobs_by_run.get(_run_id(run), []):
-            if (("head_sha" in job and job["head_sha"] != expected_head)
-                    or ("run_attempt" in job and job["run_attempt"] != run.get("run_attempt"))):
+            if (job.get("head_sha") != expected_head or job.get("run_id") != run["id"]
+                    or job.get("run_attempt") != run.get("run_attempt")):
                 raise ReflexiveWatchdogBlock("JOB_INVENTORY_INVALID: job head or attempt drifted")
         if run["status"] == "completed" and any(
             job.get("status") in ACTIVE_STATUSES for job in jobs_by_run.get(_run_id(run), [])
@@ -400,10 +526,7 @@ def _latest_by_name(runs: Sequence[Mapping[str, Any]]) -> list[Mapping[str, Any]
         if not isinstance(name, str) or not name:
             continue
         current = latest.get(name)
-        if current is None or (_run_created_time(run), _run_id(run)) > (
-            _run_created_time(current),
-            _run_id(current),
-        ):
+        if current is None or _run_order(run) > _run_order(current):
             latest[name] = run
     return sorted(latest.values(), key=lambda item: str(item.get("name")))
 
@@ -434,6 +557,8 @@ def _job_summary(jobs: Sequence[Mapping[str, Any]]) -> dict[str, int]:
                 summary["executed_failures"] += 1
             else:
                 summary["other_terminal"] += 1
+        else:
+            summary["other_terminal"] += 1
     return summary
 
 
@@ -457,7 +582,7 @@ def _latest_by_exact_name(
     candidates = [run for run in runs if run.get("name") == name]
     if not candidates:
         return None
-    return max(candidates, key=lambda item: (_run_created_time(item), _run_id(item)))
+    return max(candidates, key=_run_order)
 
 
 def _gate_state_for_run(
@@ -488,7 +613,9 @@ def _gate_state_for_run(
     elif conclusion in EXECUTED_FAILURE_CONCLUSIONS or summary["executed_failures"]:
         state = "FAILED"
         reason = "EXECUTED_FAILURE"
-    elif conclusion == "success" and summary["total"] and summary["success"] and not summary["other_terminal"]:
+    elif (conclusion == "success" and summary["total"] and summary["success"]
+          and not summary["other_terminal"] and not summary["queued"]
+          and not summary["in_progress"]):
         state = "SUCCESS"
         reason = "TERMINAL_SUCCESS_WITH_EXECUTED_JOB_EVIDENCE"
     elif conclusion in UNTRUSTED_CONCLUSIONS:
@@ -872,7 +999,7 @@ def analyze(
         raise ReflexiveWatchdogBlock("observer workflow names are invalid")
 
     runs = [run for run in _runs(runs_value) if run.get("head_sha") == expected_head]
-    jobs_by_run = _jobs_by_run(jobs_value)
+    jobs_by_run = _jobs_by_run(jobs_value, strict=job_plan is not None)
     if job_plan is not None:
         validate_job_plan(runs_value, jobs_by_run, job_plan, expected_head=expected_head)
     normalized = [
@@ -1245,6 +1372,17 @@ def repair_handoff(analysis_bytes: bytes, *, run_id: int, run_attempt: int,
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    runs_parser = subcommands.add_parser("collect-runs")
+    runs_parser.add_argument("--repository", required=True)
+    runs_parser.add_argument("--expect-head", required=True)
+    runs_parser.add_argument("--pages-dir", type=Path, required=True)
+    runs_parser.add_argument("--json", action="store_true")
+    jobs_parser = subcommands.add_parser("collect-jobs")
+    jobs_parser.add_argument("--runs-file", type=Path, required=True)
+    jobs_parser.add_argument("--repository", required=True)
+    jobs_parser.add_argument("--expect-head", required=True)
+    jobs_parser.add_argument("--jobs-dir", type=Path, required=True)
+    jobs_parser.add_argument("--json", action="store_true")
     budget_parser = subcommands.add_parser("job-readback-budget")
     budget_parser.add_argument("--runs-file", type=Path, required=True)
     budget_parser.add_argument("--expect-head", required=True)
@@ -1294,7 +1432,16 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "job-readback-budget":
+        if arguments.command == "collect-runs":
+            value = collect_runs(repository=arguments.repository,
+                                 expected_head=arguments.expect_head,
+                                 directory=arguments.pages_dir)
+        elif arguments.command == "collect-jobs":
+            value = collect_jobs(_read_json(arguments.runs_file, "workflow runs"),
+                                 repository=arguments.repository,
+                                 expected_head=arguments.expect_head,
+                                 directory=arguments.jobs_dir)
+        elif arguments.command == "job-readback-budget":
             runs = _read_json(arguments.runs_file, "workflow run page")
             if arguments.inventory_output:
                 if not arguments.required_jobs_only:
@@ -1372,8 +1519,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         if arguments.json:
             print(canonical_json_bytes(value).decode("utf-8"), end="")
         else:
-            print(f"{value['state']} first_blocker={value.get('first_blocker')}")
-        return 2 if arguments.command == "job-readback-budget" and value["state"] == "HOLD" else 0
+            state = value.get("state", "HOLD" if value.get("truncated") else "READY")
+            print(f"{state} first_blocker={value.get('first_blocker')}")
+        return 2 if (arguments.command in {"job-readback-budget", "collect-jobs"}
+                     and value["state"] == "HOLD") else 0
     except ReflexiveWatchdogBlock as exc:
         print(f"BLOCK REFLEXIVE_REPOSITORY_WATCHDOG {exc}", file=sys.stderr)
         return 2
