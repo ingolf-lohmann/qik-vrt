@@ -179,6 +179,7 @@ def publication_handoff(auth, bearer, request, environment, *, write=False):
     observed digest and source identity. An uncertain call is readback-only;
     changing its request ID or source timestamp cannot repeat the invocation.
     """
+    import datetime
     import re
     from pathlib import Path
     from tools import qikvrt_self_host as host
@@ -208,7 +209,10 @@ def publication_handoff(auth, bearer, request, environment, *, write=False):
                 or not isinstance(pin, str) or not re.fullmatch(r"[a-f0-9]{64}", pin)):
             raise ProductionBlock("ORIGINAL_PRIVATE_PUBLICATION_REQUEST_REQUIRED")
         try:
-            admitted = host.publication_request(Path(location), pin)
+            # GET can observe an existing attempt after a provider token expires.
+            # POST and the original launcher retain strict credential admission.
+            admitted = host.publication_request(Path(location), pin,
+                                                allow_expired_credentials=not write)
             original, root, manifest_path, manifest, publisher, registry_path, registry = admitted
         except Exception:
             # A malformed private source or checker failure never exposes paths,
@@ -243,6 +247,10 @@ def publication_handoff(auth, bearer, request, environment, *, write=False):
             "source_tree": original["execution_tree"], "request_sha256": pin,
             "manifest_sha256": original["manifest_sha256"],
             "publication_id": manifest["machine_proof"]["publication_id"],
+            "credential_metadata_current": all(
+                datetime.datetime.fromisoformat(entry["expires_at"].replace("Z", "+00:00"))
+                > datetime.datetime.now(datetime.timezone.utc)
+                for entry in registry["credentials"].values()),
             "implementation_source_verified": implementation,
             "state": "SOURCE_AND_REFERENCES_ADMITTED", "publisher_invoked": False,
             "job_credential_delivery_verified": False, "public_readback_verified": False,
