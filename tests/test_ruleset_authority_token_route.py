@@ -282,7 +282,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             exec(compile(python_step(WORKFLOW, 'Conditional canonical projection with exact readback'), str(WORKFLOW), 'exec'), namespace)
         return created, namespace, calls
 
-    def run_gate(self, **overrides):
+    def run_gate(self, *, expected_calls=2, **overrides):
         calls = []
         pr = {'number': 641, 'state': 'open', 'base': {'ref': 'main', 'sha': self.base}, 'head': {'sha': self.head}, 'user': {'login': 'integration-author'}}
 
@@ -314,7 +314,9 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             env['GITHUB_STEP_SUMMARY'] = str(Path(directory) / 'summary')
             with mock.patch.dict(os.environ, env, clear=True), mock.patch('subprocess.check_output', side_effect=read), mock.patch('subprocess.check_call', side_effect=lambda args: calls.append(args) or 0), contextlib.redirect_stdout(io.StringIO()):
                 exec(compile(python_step(self.gate, 'Reobserve native rules and exact-head reviews'), str(self.gate), 'exec'), {})
-        self.assertEqual(len(calls), 2)
+        self.assertEqual(len(calls), expected_calls)
+        if expected_calls == 0:
+            return []
         published=[]
         for command in calls:
             self.assertEqual(command[:5], ['gh', 'api', '--method', 'POST', f'repos/{self.repository}/statuses/{self.head}'])
@@ -325,10 +327,14 @@ class RequiredReviewContextContractTests(unittest.TestCase):
         self.assertEqual({item['context'] for item in published}, {self.context,self.legacy})
         return published
 
-    def test_original_completion_without_pr_selector_reobserves_inventory_and_retains_failure(self):
-        statuses = self.run_gate(REQUESTED_PR='', EVENT_NAME='workflow_run', EVENT_PRS='[]')
-        self.assertEqual({s['context'] for s in statuses}, {self.context, self.legacy})
-        self.assertTrue(all(s['state'] == 'failure' for s in statuses))
+    def test_original_completion_without_pr_selector_fails_closed_without_status_write(self):
+        statuses = self.run_gate(
+            expected_calls=0,
+            REQUESTED_PR='',
+            EVENT_NAME='workflow_run',
+            EVENT_PRS='[]',
+        )
+        self.assertEqual(statuses, [])
 
     def run_promotion_snapshot(self, statuses, *, native_satisfied=False, author_login='integration-author', reviewer_login='ingolf-lohmann'):
         gates = required_gates(self.promotion)
