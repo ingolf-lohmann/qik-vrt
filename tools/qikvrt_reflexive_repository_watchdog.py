@@ -1435,7 +1435,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         if arguments.json:
             print(canonical_json_bytes(value).decode("utf-8"), end="")
         else:
-            print(f"{value['state']} first_blocker={value.get('first_blocker')}")
+            state = value.get("state", "HOLD" if value.get("truncated") else "READY")
+            print(f"{state} first_blocker={value.get('first_blocker')}")
         return 2 if (arguments.command in {"job-readback-budget", "collect-jobs"}
                      and value["state"] == "HOLD") else 0
     except ReflexiveWatchdogBlock as exc:
