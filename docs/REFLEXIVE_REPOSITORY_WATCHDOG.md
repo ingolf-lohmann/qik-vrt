@@ -67,30 +67,50 @@ workflow, or treats its own terminality as gate success.
 
 ### Job-readback request budget
 
-The existing controller collects run pages of 100 entries, with at most ten
-page requests. It retains the original page bytes and stderr in the artifact.
-Every page must report the same integer `total_count`; the merged inventory must
-contain exactly that many unique positive run IDs, all bound to the expected
-head. Changed totals, duplicated entries, wrong heads, short pages and exhausting
-the page limit leave the inventory incomplete. No job request is then admitted.
+The existing controller's `collect-runs` command reads pages of 100 entries with
+at most ten original `gh api` GETs, retaining page bytes and stderr under
+`run-pages/`. It merges them into `current-runs.json` before requesting any jobs.
+Every page must report the same
+integer `total_count`; the combined inventory must match that count, contain no
+truncation or duplicate IDs, and bind every run to the expected head. Invalid
+names, statuses or timestamps also stop admission. This count check fails closed
+if the provider's own pagination/search limit prevents a complete inventory.
 
-For up to 20 runs, all job reads remain selected. Larger complete inventories
-select every active run and the latest run of each workflow name, using creation
-time and numeric run ID. This is the evidence closure consumed by the current
-gate and active-progress checks, not the first 20 runs. All historical runs remain
-in topology, writer and queue observations. The selection and excluded historical
-IDs are explicit in `job-readback-budget.json`; unselected jobs are marked
-unobserved, never as verified zero-job executions. If that entire closure exceeds
-20 runs, `JOBS_BUDGET_PREFLIGHT` still produces `HOLD` before any job GET.
+`job-readback-budget --required-jobs-only` derives the exact job dependencies of
+the analyzer: the latest run of **each workflow name**, plus **every active run**,
+including an older active run with a newer completed successor. It never samples
+the first 20 runs. At most 20 per-run jobs GETs are admitted for this union; older
+completed runs remain in the full metadata inventory. Their normalized receipt
+entries explicitly have `jobs_observed=false` and `jobs=null`, rather than
+claiming an observed zero-job execution. Latest gate decisions and all writer,
+queue, liveness and stale-progress checks remain in force. The legacy budget CLI
+without this explicit option retains its all-run policy and historical format.
 
-Job pagination shares the same hard budget of 20 actual HTTP requests, including
-continuation pages. It validates complete counts, unique IDs and each job's run
-and head identity. Budget exhaustion or incomplete job readback stops analysis;
-analysis also rejects missing selected job files or an incomplete run inventory.
-The collected responses and request count remain in the existing artifact.
-A denied run or job GET stops immediately, without retry. Failure to download the prior receipt artifact also
+An incomplete inventory or a union needing more than 20 job requests produces
+`HOLD` before any jobs GET. The failure receipt records `JOBS_BUDGET_PREFLIGHT`;
+pipeline progress remains unknown. A denied run or job GET stops the step;
+there is no automatic retry. Failure to download the prior receipt artifact also
 stops at `BASELINE_READBACK`, before any current run or job request. An HTTP 403
 on that earlier path cannot be ignored as an optional missing baseline.
+
+`collect-jobs` shares a hard budget of 20 actual jobs GETs across selected runs
+and their continuation pages, each with `per_page=100`. Budget exhaustion stops
+analysis; a 21st request is never issued. Page counts, identities and statuses
+are checked during collection. `JOBS_COMPLETENESS_PREFLIGHT` also requires the
+merged integer `total_count`
+to equal the returned job count and rejects malformed/duplicate jobs, mismatched
+run/head/attempt identities and active jobs on a terminal run. Analysis rederives
+the plan, verifies its inventory SHA-256, and requires exactly the selected job
+files. A missing file cannot become an empty successful observation. The original
+artifact, causal reproduction and bounded regression evidence for issue #682 are
+in `evidence/receipts/20261104-watchdog-run-inventory/`.
+
+Unknown job statuses count as untrusted evidence even in the gate evaluator;
+one successful job cannot hide another malformed or active job. The collector
+and numeric latest-run ordering from overlapping PR #683 are retained, together
+with its original evidence archive. The source histories converge in PR #684;
+native tests for predecessor heads do not accept the combined successor.
+
 This is a bound on this step's job-page reads,
 not a provider-wide quota controller or proof of live event delivery.
 
@@ -117,7 +137,7 @@ writers. Main's 26 October delivery repair uses completion notifications and
 the active observation. The later Owner correction of 31 October removes the five-minute schedule.
 Readback of unfinished runs and unchanged heads occurs on actual state
 transitions; freshness budgets remain checks, not activation timers. The analyzer still evaluates
-every returned run and its jobs; no liveness, missing-evidence or stale-progress
+every returned run and the explicitly selected complete job inputs; no liveness, missing-evidence or stale-progress
 criterion is removed. This source configuration change does not establish a
 completed public-host observation or global deadlock freedom.
 

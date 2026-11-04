@@ -113,8 +113,30 @@ def _timestamp(value: Any, label: str) -> datetime:
     return parsed.astimezone(timezone.utc)
 
 
-def job_readback_budget(value: Any, *, expected_head: str) -> dict[str, Any]:
-    """Keep the full topology; request jobs for its active/latest evidence closure."""
+def merge_run_pages(value: Any) -> dict[str, Any]:
+    """Merge gh api --paginate --slurp output; never conceal inconsistent pages."""
+    if not isinstance(value, list) or not value:
+        raise ReflexiveWatchdogBlock("RUN_INVENTORY_INVALID: expected a non-empty page list")
+    runs: list[Any] = []
+    total = None
+    for page in value:
+        page = _mapping(page, "workflow run page")
+        count = page.get("total_count")
+        if type(count) is not int or count < 0 or not isinstance(page.get("workflow_runs"), list):
+            raise ReflexiveWatchdogBlock("RUN_INVENTORY_INVALID: malformed page")
+        if total is not None and count != total:
+            raise ReflexiveWatchdogBlock("RUN_INVENTORY_INCOMPLETE: page totals changed during readback")
+        if page.get("truncated", False) is not False:
+            raise ReflexiveWatchdogBlock("RUN_INVENTORY_INCOMPLETE: truncated page")
+        total = count
+        runs.extend(page["workflow_runs"])
+    return {"total_count": total, "workflow_runs": runs, "page_count": len(value)}
+
+
+def job_readback_budget(
+    value: Any, *, expected_head: str, required_jobs_only: bool = False
+) -> dict[str, Any]:
+    """Admit a complete, exact-head run page before any per-run job request."""
     expected_head = _head_sha(expected_head, "expected head")
     value = _mapping(value, "workflow run page")
     runs = value.get("workflow_runs")
@@ -126,6 +148,8 @@ def job_readback_budget(value: Any, *, expected_head: str) -> dict[str, Any]:
         blocker = "RUN_INVENTORY_INVALID"
     elif value.get("truncated", False) is not False or len(runs) != total:
         blocker = "RUN_INVENTORY_INCOMPLETE"
+    elif not required_jobs_only and total > MAX_JOB_READBACK_REQUESTS:
+        blocker = "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"
     else:
         for run in runs:
             if (not isinstance(run, Mapping) or type(run.get("id")) is not int
@@ -134,25 +158,25 @@ def job_readback_budget(value: Any, *, expected_head: str) -> dict[str, Any]:
                 blocker = "RUN_INVENTORY_INVALID"
                 break
             run_ids.append(run["id"])
-    selected = list(run_ids)
-    scope = "ALL_RUNS"
-    if not blocker and total > MAX_JOB_READBACK_REQUESTS:
-        scope = "ALL_ACTIVE_AND_LATEST_PER_WORKFLOW_NAME"
-        if any(not isinstance(run.get("name"), str) or not run["name"]
-               or run.get("status") not in ACTIVE_STATUSES | {"completed"}
-               for run in runs):
-            blocker = "RUN_SELECTION_METADATA_INVALID"
-        else:
-            try:
-                latest = _latest_by_name(runs)
-                selected = sorted({run["id"] for run in latest}
-                                  | {run["id"] for run in runs
-                                     if run["status"] in ACTIVE_STATUSES})
-            except ReflexiveWatchdogBlock:
-                blocker = "RUN_SELECTION_METADATA_INVALID"
-        if not blocker and len(selected) > MAX_JOB_READBACK_REQUESTS:
-            blocker = "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"
-    return {
+    metadata_only_ids: list[int] = []
+    if required_jobs_only and blocker is None:
+        try:
+            for run in runs:
+                _string(run.get("name"), "workflow name")
+                _positive_int(run.get("run_attempt"), "run attempt")
+                if run.get("status") not in ACTIVE_STATUSES | {"completed"}:
+                    raise ReflexiveWatchdogBlock("invalid run status")
+                _run_created_time(run)
+                _run_transition_time(run)
+            required = {run["id"] for run in _latest_by_name(runs)}
+            required.update(run["id"] for run in runs if run["status"] in ACTIVE_STATUSES)
+            metadata_only_ids = sorted(set(run_ids) - required)
+            run_ids = sorted(required)
+            if len(run_ids) > MAX_JOB_READBACK_REQUESTS:
+                blocker = "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"
+        except ReflexiveWatchdogBlock:
+            blocker = "RUN_INVENTORY_INVALID"
+    result = {
         "schema": "qikvrt_job_readback_budget_v1",
         "state": "HOLD" if blocker else "READY",
         "first_blocker": blocker,
@@ -160,13 +184,18 @@ def job_readback_budget(value: Any, *, expected_head: str) -> dict[str, Any]:
         "reported_run_count": total if type(total) is int else None,
         "returned_run_count": len(runs) if isinstance(runs, list) else None,
         "max_job_requests": MAX_JOB_READBACK_REQUESTS,
-        "selection_scope": scope,
-        "selected_run_count": len(selected),
-        "excluded_historical_run_ids": [i for i in run_ids if i not in selected],
-        "run_inventory_sha256": sha256_bytes(canonical_json_bytes(value)),
-        "run_ids": [] if blocker else selected,
+        "run_ids": [] if blocker else run_ids,
         "effect_ack_done": False,
     }
+    if required_jobs_only:
+        result.update(
+            selection="LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1",
+            inventory_sha256=sha256_bytes(canonical_json_bytes(value)),
+            required_job_request_count=(len(run_ids) if blocker in
+                {None, "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"} else None),
+            metadata_only_run_ids=metadata_only_ids if blocker is None else [],
+        )
+    return result
 
 
 def _readback_page(endpoint: str, destination: Path) -> Mapping[str, Any]:
@@ -220,7 +249,8 @@ def _collect_pages(endpoint: str, key: str, directory: Path, *, max_requests: in
                     or (expected_head is not None and entry.get("head_sha") != expected_head)
                     or (expected_run_id is not None and entry.get("run_id") != expected_run_id)
                     or (expected_run_attempt is not None
-                        and entry.get("run_attempt") != expected_run_attempt)):
+                        and entry.get("run_attempt") != expected_run_attempt)
+                    or (key == "jobs" and entry.get("status") not in ACTIVE_STATUSES | {"completed"})):
                 blocker = "READBACK_ENTRY_INVALID_OR_DUPLICATED"
                 break
             seen.add(entry["id"])
@@ -249,9 +279,9 @@ def collect_runs(*, repository: str, expected_head: str, directory: Path) -> dic
 
 def collect_jobs(runs: Any, *, repository: str, expected_head: str,
                  directory: Path) -> dict[str, Any]:
-    plan = job_readback_budget(runs, expected_head=expected_head)
+    plan = job_readback_budget(runs, expected_head=expected_head, required_jobs_only=True)
     receipt = {"state": plan["state"], "first_blocker": plan["first_blocker"],
-               "run_inventory_sha256": plan["run_inventory_sha256"],
+               "run_inventory_sha256": plan["inventory_sha256"],
                "max_job_requests": MAX_JOB_READBACK_REQUESTS, "job_requests": 0,
                "completed_run_ids": [], "effect_ack_done": False}
     _repository(repository)
@@ -276,6 +306,11 @@ def collect_jobs(runs: Any, *, repository: str, expected_head: str,
             break
         receipt["completed_run_ids"].append(run_id)
     return receipt
+
+
+def _run_order(run: Mapping[str, Any]) -> tuple[datetime, int, str]:
+    run_id = _run_id(run)
+    return (_run_created_time(run), int(run_id) if run_id.isdecimal() else -1, run_id)
 
 
 def _iso(value: datetime) -> str:
@@ -381,7 +416,7 @@ def _runs(value: Mapping[str, Any] | Sequence[Any]) -> list[Mapping[str, Any]]:
     return [item for item in raw if isinstance(item, Mapping)]
 
 
-def _jobs_by_run(value: Mapping[str, Any] | None) -> dict[str, list[Mapping[str, Any]]]:
+def _jobs_by_run(value: Mapping[str, Any] | None, *, strict: bool = False) -> dict[str, list[Mapping[str, Any]]]:
     if value is None:
         return {}
     raw = value.get("jobs_by_run", value)
@@ -391,11 +426,19 @@ def _jobs_by_run(value: Mapping[str, Any] | None) -> dict[str, list[Mapping[str,
     for run_id, jobs in raw.items():
         if not isinstance(run_id, str) or not isinstance(jobs, list):
             raise ReflexiveWatchdogBlock("job observation contains an invalid run entry")
+        if strict:
+            ids = set()
+            for job in jobs:
+                if (not isinstance(job, Mapping) or type(job.get("id")) is not int
+                        or job["id"] <= 0 or job["id"] in ids
+                        or job.get("status") not in ACTIVE_STATUSES | {"completed"}):
+                    raise ReflexiveWatchdogBlock("JOB_INVENTORY_INVALID: malformed selected job")
+                ids.add(job["id"])
         result[run_id] = [item for item in jobs if isinstance(item, Mapping)]
     return result
 
 
-def load_jobs_directory(path: Path) -> dict[str, list[Mapping[str, Any]]]:
+def load_jobs_directory(path: Path, *, strict: bool = False) -> dict[str, list[Mapping[str, Any]]]:
     result: dict[str, list[Mapping[str, Any]]] = {}
     if not path.exists():
         return result
@@ -407,12 +450,40 @@ def load_jobs_directory(path: Path) -> dict[str, list[Mapping[str, Any]]]:
         jobs = _mapping(value, f"job observation {item.name}").get("jobs")
         if not isinstance(jobs, list):
             raise ReflexiveWatchdogBlock(f"job observation {item.name} does not contain jobs")
-        if (value.get("truncated", False) is not False
-                or ("total_count" in value and (type(value["total_count"]) is not int
-                                                or value["total_count"] != len(jobs)))):
-            raise ReflexiveWatchdogBlock(f"job observation {item.name} is incomplete")
+        if strict:
+            ids = set()
+            if (type(value.get("total_count")) is not int or value["total_count"] != len(jobs)
+                    or value.get("truncated", False) is not False):
+                raise ReflexiveWatchdogBlock(f"JOB_INVENTORY_INCOMPLETE: {item.name}")
+            for job in jobs:
+                if (not isinstance(job, Mapping) or type(job.get("id")) is not int
+                        or job["id"] <= 0 or job["id"] in ids
+                        or job.get("status") not in ACTIVE_STATUSES | {"completed"}
+                        or ("run_id" in job and str(job["run_id"]) != item.stem)):
+                    raise ReflexiveWatchdogBlock(f"JOB_INVENTORY_INVALID: {item.name}")
+                ids.add(job["id"])
         result[item.stem] = [entry for entry in jobs if isinstance(entry, Mapping)]
     return result
+
+
+def validate_job_plan(
+    runs_value: Any, jobs_by_run: Mapping[str, Sequence[Mapping[str, Any]]],
+    plan: Any, *, expected_head: str,
+) -> None:
+    expected = job_readback_budget(runs_value, expected_head=expected_head, required_jobs_only=True)
+    if expected["state"] != "READY" or plan != expected:
+        raise ReflexiveWatchdogBlock("JOB_READBACK_PLAN_INVALID: rederive from the complete exact-head inventory")
+    if set(jobs_by_run) != {str(run_id) for run_id in expected["run_ids"]}:
+        raise ReflexiveWatchdogBlock("JOB_INVENTORY_INCOMPLETE: selected run job files do not match the plan")
+    for run in _runs(runs_value):
+        for job in jobs_by_run.get(_run_id(run), []):
+            if (job.get("head_sha") != expected_head or job.get("run_id") != run["id"]
+                    or job.get("run_attempt") != run.get("run_attempt")):
+                raise ReflexiveWatchdogBlock("JOB_INVENTORY_INVALID: job head or attempt drifted")
+        if run["status"] == "completed" and any(
+            job.get("status") in ACTIVE_STATUSES for job in jobs_by_run.get(_run_id(run), [])
+        ):
+            raise ReflexiveWatchdogBlock("JOB_INVENTORY_INVALID: terminal run has active jobs")
 
 
 def _run_time(run: Mapping[str, Any], field: str) -> datetime | None:
@@ -460,11 +531,6 @@ def _latest_by_name(runs: Sequence[Mapping[str, Any]]) -> list[Mapping[str, Any]
     return sorted(latest.values(), key=lambda item: str(item.get("name")))
 
 
-def _run_order(run: Mapping[str, Any]) -> tuple[datetime, int, str]:
-    run_id = _run_id(run)
-    return (_run_created_time(run), int(run_id) if run_id.isdecimal() else -1, run_id)
-
-
 def _job_summary(jobs: Sequence[Mapping[str, Any]]) -> dict[str, int]:
     summary = {
         "total": len(jobs),
@@ -491,6 +557,8 @@ def _job_summary(jobs: Sequence[Mapping[str, Any]]) -> dict[str, int]:
                 summary["executed_failures"] += 1
             else:
                 summary["other_terminal"] += 1
+        else:
+            summary["other_terminal"] += 1
     return summary
 
 
@@ -910,6 +978,7 @@ def analyze(
     node_liveness_dir: Path | None = None,
     authority_head: str | None = None,
     authority_observation: Mapping[str, Any] | None = None,
+    job_plan: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     contract = load_contract(root)
     if authority_observation is not None:
@@ -930,22 +999,18 @@ def analyze(
         raise ReflexiveWatchdogBlock("observer workflow names are invalid")
 
     runs = [run for run in _runs(runs_value) if run.get("head_sha") == expected_head]
-    jobs_by_run = _jobs_by_run(jobs_value)
-    job_plan = None
-    if isinstance(runs_value, Mapping) and "total_count" in runs_value:
-        job_plan = job_readback_budget(runs_value, expected_head=expected_head)
-        if job_plan["state"] != "READY":
-            raise ReflexiveWatchdogBlock(str(job_plan["first_blocker"]))
-        if any(str(run_id) not in jobs_by_run for run_id in job_plan["run_ids"]):
-            raise ReflexiveWatchdogBlock("SELECTED_JOB_READBACK_MISSING")
-        selected_ids = {str(run_id) for run_id in job_plan["run_ids"]}
-        jobs_by_run = {run_id: jobs for run_id, jobs in jobs_by_run.items()
-                       if run_id in selected_ids}
+    jobs_by_run = _jobs_by_run(jobs_value, strict=job_plan is not None)
+    if job_plan is not None:
+        validate_job_plan(runs_value, jobs_by_run, job_plan, expected_head=expected_head)
     normalized = [
-        {**_normalize_run(run, jobs_by_run.get(_run_id(run), [])),
-         "job_readback_observed": _run_id(run) in jobs_by_run}
+        _normalize_run(run, jobs_by_run.get(_run_id(run), []))
         for run in sorted(runs, key=lambda item: (_run_created_time(item), _run_id(item)))
     ]
+    if job_plan is not None:
+        for item in normalized:
+            item["jobs_observed"] = item["id"] in jobs_by_run
+            if not item["jobs_observed"]:
+                item["jobs"] = None
     productive = [run for run in runs if run.get("name") not in observer_names]
     active_productive = [run for run in productive if run.get("status") in ACTIVE_STATUSES]
     waiting_productive = [run for run in productive if run.get("status") in WAITING_STATUSES]
@@ -1144,8 +1209,6 @@ def analyze(
             "progress_lease_seconds": progress_lease,
         },
         "observations": {
-            "job_readback_plan": job_plan,
-            "job_readback_observed_run_ids": sorted(jobs_by_run),
             "exact_head_run_count": len(runs),
             "active_productive_runs": [_run_id(run) for run in active_productive],
             "active_writers": [_run_id(run) for run in active_writers],
@@ -1153,8 +1216,10 @@ def analyze(
             "waiting_productive_runs": queue_ages,
             "untrusted_terminal_runs": untrusted,
             "runs": normalized,
+            "job_readback_plan": job_plan,
             "run_job_evidence": [{"run": dict(run), "jobs": jobs_by_run.get(_run_id(run), [])}
-                                 for run in runs] if authority_observation is not None else [],
+                                 for run in runs if job_plan is None or _run_id(run) in jobs_by_run]
+                                if authority_observation is not None else [],
         },
         "gatewatch": {
             **gatewatch,
@@ -1307,10 +1372,6 @@ def repair_handoff(analysis_bytes: bytes, *, run_id: int, run_attempt: int,
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
-    budget_parser = subcommands.add_parser("job-readback-budget")
-    budget_parser.add_argument("--runs-file", type=Path, required=True)
-    budget_parser.add_argument("--expect-head", required=True)
-    budget_parser.add_argument("--json", action="store_true")
     runs_parser = subcommands.add_parser("collect-runs")
     runs_parser.add_argument("--repository", required=True)
     runs_parser.add_argument("--expect-head", required=True)
@@ -1322,9 +1383,17 @@ def build_parser() -> argparse.ArgumentParser:
     jobs_parser.add_argument("--expect-head", required=True)
     jobs_parser.add_argument("--jobs-dir", type=Path, required=True)
     jobs_parser.add_argument("--json", action="store_true")
+    budget_parser = subcommands.add_parser("job-readback-budget")
+    budget_parser.add_argument("--runs-file", type=Path, required=True)
+    budget_parser.add_argument("--expect-head", required=True)
+    budget_parser.add_argument("--required-jobs-only", action="store_true")
+    budget_parser.add_argument("--inventory-output", type=Path)
+    budget_parser.add_argument("--jobs-dir", type=Path)
+    budget_parser.add_argument("--json", action="store_true")
     analyze_parser = subcommands.add_parser("analyze")
     analyze_parser.add_argument("--runs-file", type=Path, required=True)
     analyze_parser.add_argument("--jobs-dir", type=Path, required=True)
+    analyze_parser.add_argument("--job-plan-file", type=Path)
     analyze_parser.add_argument("--baseline", type=Path)
     analyze_parser.add_argument("--expect-head", required=True)
     analyze_parser.add_argument("--expect-tree", required=True)
@@ -1373,10 +1442,22 @@ def main(argv: Sequence[str] | None = None) -> int:
                                  expected_head=arguments.expect_head,
                                  directory=arguments.jobs_dir)
         elif arguments.command == "job-readback-budget":
+            runs = _read_json(arguments.runs_file, "workflow run page")
+            if arguments.inventory_output:
+                if not arguments.required_jobs_only:
+                    raise ReflexiveWatchdogBlock("paginated inventory requires the explicit job selection policy")
+                runs = merge_run_pages(runs)
+                arguments.inventory_output.write_bytes(canonical_json_bytes(runs))
             value = job_readback_budget(
-                _read_json(arguments.runs_file, "workflow run page"),
+                runs,
                 expected_head=arguments.expect_head,
+                required_jobs_only=arguments.required_jobs_only,
             )
+            if arguments.jobs_dir is not None:
+                if not arguments.required_jobs_only:
+                    raise ReflexiveWatchdogBlock("job completeness requires the explicit job selection policy")
+                validate_job_plan(runs, load_jobs_directory(arguments.jobs_dir, strict=True),
+                                  value, expected_head=arguments.expect_head)
         elif arguments.command == "repair-handoff":
             value = repair_handoff(arguments.analysis_file.read_bytes(),
                 run_id=arguments.run_id, run_attempt=arguments.run_attempt,
@@ -1407,7 +1488,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         else:
             runs = _read_json(arguments.runs_file, "workflow runs")
-            jobs = {"jobs_by_run": load_jobs_directory(arguments.jobs_dir)}
+            job_plan = (_mapping(_read_json(arguments.job_plan_file, "job readback plan"),
+                                 "job readback plan") if arguments.job_plan_file else None)
+            jobs = {"jobs_by_run": load_jobs_directory(arguments.jobs_dir, strict=job_plan is not None)}
             baseline = _read_json(arguments.baseline, "baseline") if arguments.baseline else None
             if baseline is not None and not isinstance(baseline, Mapping):
                 raise ReflexiveWatchdogBlock("baseline must be an object")
@@ -1431,6 +1514,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 authority_head=authority_head,
                 authority_observation=(_read_json(arguments.authority_observation_file, "authority observation")
                     if arguments.authority_observation_file else None),
+                job_plan=job_plan,
             )
         if arguments.json:
             print(canonical_json_bytes(value).decode("utf-8"), end="")

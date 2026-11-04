@@ -152,20 +152,25 @@ jobs:
           observation_stage=RUNS_READBACK
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-runs \
             --repository "$REPOSITORY" --expect-head "$EXPECTED_HEAD" \
-            --pages-dir "$root/run-pages" --json \
-            > "$root/current-runs.json"
+            --pages-dir "$root/run-pages" --json > "$root/current-runs.json"
 
-          # Preserve every run for topology checks. Read all active and latest
-          # workflow evidence within the unchanged 20-request job budget.
+          # Retain every run; jobs are needed for every active run and the latest
+          # run of each workflow. Admit their complete union before any jobs GET.
           observation_stage=JOBS_BUDGET_PREFLIGHT
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
-            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" --json \
+            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" \
+            --required-jobs-only --json \
             > "$root/job-readback-budget.json"
           observation_stage=JOBS_READBACK
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-jobs \
             --runs-file "$root/current-runs.json" --repository "$REPOSITORY" \
             --expect-head "$EXPECTED_HEAD" --jobs-dir "$root/jobs" --json \
             > "$root/job-readback.json"
+          observation_stage=JOBS_COMPLETENESS_PREFLIGHT
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
+            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" \
+            --required-jobs-only --jobs-dir "$root/jobs" --json \
+            > "$root/validated-job-readback-budget.json"
 
 
       - name: Preserve failed observation as machine-readable HOLD
@@ -212,6 +217,7 @@ jobs:
             analyze
             --runs-file "$root/current-runs.json"
             --jobs-dir "$root/jobs"
+            --job-plan-file "$root/job-readback-budget.json"
             --expect-head "$head"
             --expect-tree "$tree"
             --repository "$REPOSITORY"
