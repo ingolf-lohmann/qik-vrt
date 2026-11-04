@@ -1,0 +1,111 @@
+{
+  "schema": "qikvrt-evidence-claim-register/v1",
+  "work_unit_id": "QIKVRT_EAP_RESPONSIBILITY_DEMONSTRATION_20261104_V1",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+    "tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d"
+  },
+  "claims": [
+    {
+      "id": "EAP-FINITE-STATE",
+      "classification": "finite_model_enumeration",
+      "status": "VERIFIED",
+      "statement": "The frozen Draft-01 model selects one of five states over all 2621440 abstract assignments. Ordinary release requires DONE and valid consumer admission over 5242880 variants.",
+      "evidence": [
+        "finite-model.log",
+        "docs/publications/2026-07-22-effect-ack-universal-effect-control/proof-report.json"
+      ],
+      "limits": "Finite abstract domain only; conditional mediation assumptions; no new Lean-kernel run. Historical wire-field inspection remains CONTINUE_PARTIAL_CORE_ONLY."
+    },
+    {
+      "id": "EAP-C90-ORACLE",
+      "classification": "software_test",
+      "status": "VERIFIED",
+      "statement": "Existing ANSI-C90 core and independently structured oracle pass 7864387 checks.",
+      "evidence": [
+        "c90-core.log",
+        "tests/test_effect_ack_core.c"
+      ],
+      "limits": "Bounded abstract input universe and original C90 implementation."
+    },
+    {
+      "id": "EAP-BOUND-LOCAL-EFFECT",
+      "classification": "software_test",
+      "status": "VERIFIED",
+      "statement": "73 conformance tests pass, including original local HTTP/SQLite prepare/commit, independent readback, replay without second input, restart, JS client verification and Mirror client.",
+      "evidence": [
+        "eap-conformance.log",
+        "tests/test_effect_ack_http_service.py",
+        "tests/test_eap_mirror_client.py"
+      ],
+      "limits": "Isolated fixture credentials and local runtime. A client source attributed to Claude is not a live response from Claude or proof of dynamic multi-AI composition."
+    },
+    {
+      "id": "EAP-NEGATIVE-CASES",
+      "classification": "software_test",
+      "status": "VERIFIED",
+      "statement": "Original tests reject transport-only release, changed identity/payload/token, tampered evidence, stale anchors and expiry; 192 continuation/specification tests also pass, including false journal-to-installation completion.",
+      "evidence": [
+        "eap-conformance.log",
+        "continuation-guards.log"
+      ],
+      "limits": "Tests cover their stated cases; supplied truthful observations and authenticated production adapters remain prerequisites."
+    },
+    {
+      "id": "EAP-FULL-REGRESSION",
+      "classification": "software_test",
+      "status": "VERIFIED",
+      "statement": "The unmodified c6083135 source passes make test with exit 0.",
+      "evidence": [
+        "full-suite.log.gz",
+        "runs.json"
+      ],
+      "limits": "Full baseline run before evidence-only additions. Final evidence candidate receives separate integrity verification; no assertion of exact-candidate hosted CI."
+    },
+    {
+      "id": "EAP-LIVE-MULTI-AI",
+      "classification": "empirical_evidence",
+      "status": "UNVERIFIED",
+      "statement": "Different independently operated cognitive systems dynamically link and return authenticated application effects.",
+      "evidence": [
+        "native-connection-public.json"
+      ],
+      "next_action": "Obtain exact-request native ACK/application replies from each admitted live peer."
+    },
+    {
+      "id": "EAP-PRODUCTIVE-EFFECT",
+      "classification": "empirical_evidence",
+      "status": "UNVERIFIED",
+      "statement": "The actual authorized production effect is complete and independently verified at raumzeitterminal.de or the exact Zenodo 16-file target.",
+      "evidence": [
+        "native-connection-public.json"
+      ],
+      "next_action": "Restore original admitted runtime/protected publisher connection, execute the same authorization, verify actual served bytes/record/DOI."
+    },
+    {
+      "id": "EAP-THIRD-PARTY-REPRODUCTION",
+      "classification": "empirical_evidence",
+      "status": "UNVERIFIED",
+      "statement": "An independent third-party verifier reproduces this exact evidence.",
+      "evidence": [
+        "environment.json"
+      ],
+      "next_action": "Independent verifier reruns the frozen commands and compares outcomes/digests."
+    },
+    {
+      "id": "EAP-RESPONSIBILITY",
+      "classification": "interpretation",
+      "status": "UNVERIFIED",
+      "statement": "Technical attribution and effect gates establish responsible real-world governance in general.",
+      "evidence": [
+        "src/qikvrt_effect_ack.py",
+        "tests/test_handler_security.py"
+      ],
+      "limits": "Owner/principal fields and authorization checks are technically testable; legal, ethical and organizational accountability requires an explicit use-case and governance evidence."
+    }
+  ],
+  "overall_outcome": "UNVERIFIED",
+  "effect_ack_done": false
+}

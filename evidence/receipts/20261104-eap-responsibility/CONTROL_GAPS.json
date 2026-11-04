@@ -1,0 +1,29 @@
+{
+  "scope": "This client run only. No all-node compliance inferred.",
+  "findings": [
+    {
+      "id": "BOOTSTRAP-PREFLIGHT",
+      "status": "OPEN",
+      "finding": "Initial context/source discovery and Git clone occurred before local ai_handoff CLI was available. Clone used Git transport despite standing REST-only GitHub action routing.",
+      "correction": "Subsequent external writes use original REST Git data tools with live preflight; preserve this bootstrap deviation rather than claiming complete preflight coverage."
+    },
+    {
+      "id": "NATIVE-ENDPOINT-PREFLIGHT",
+      "status": "CORRECTED_FOR_SUCCESSOR",
+      "finding": "The first native read preflight declared /api/native-terminal instead of actual /api/mesh/terminal/native.",
+      "correction": "Actual REST contract recovered; corrected live preflight and fresh original connector read completed before final evidence freeze."
+    },
+    {
+      "id": "REQUEST-ID-SCHEMA",
+      "status": "CORRECTED_FOR_SUCCESSOR",
+      "finding": "First task creation was rejected INVALID_ARGUMENT because requestId was not a UUID; no write occurred.",
+      "correction": "Used deterministic UUID 29a19709-fd7c-5aa7-8412-76416414cc9b; one successful task creation."
+    },
+    {
+      "id": "MIRROR-OUTBOX",
+      "status": "OPEN",
+      "finding": "Bootstrap reports ORIGINAL_MIRROR_OUTBOX_SOURCE_MISSING.",
+      "next_action": "Recover original node-tools/qikvrt_mirror_emit.py and admitted writer; do not substitute a fabricated outbox or claim peer adoption."
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_EAP_RESPONSIBILITY_DEMONSTRATION_20261104_V1",
+  "created_at": "2026-11-04T08:17:13.791148Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+  "source_tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "system_family": "OpenAI Codex",
+    "model_build": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Purpose, instruction and authorization to demonstrate and persist QIKVRT/EAP evidence."
+  ],
+  "artificial_cognitive_contributions": [
+    "Test selection, original test execution, source analysis, claim classification, evidence and continuation materialization."
+  ],
+  "joint_components": [
+    "Human-selected goal with separable AI-generated test assessment."
+  ],
+  "unresolved_origin": [
+    "No third-party reproduction or hidden cognitive-state observation claimed."
+  ],
+  "human_instruction": {
+    "text": "Dann führe diesen Beweis jetzt durch und persisiere ihn in geeigneter Weise in genau diesem Framework in der dafür vorgesehenen Art und Weise",
+    "sha256": "c5c19d3c6596483168d534853c5845a00765e3dbd10d101699c8733bf19a8129",
+    "carrier": "Current direct authenticated user chat",
+    "timestamp": "NOT_EXPOSED"
+  },
+  "inputs": [
+    {
+      "path": "AI",
+      "bytes": 44711,
+      "sha256": "86ae511cf1587af822f9325434dafd5cc22023cbe74e1fdef0bb6f40ed8d3de5"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 20513,
+      "sha256": "f11774e1baee3a43ef6af4d059af62c8f3fcf099ae8a8e2f29eb8038706b1e5e"
+    },
+    {
+      "path": "docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "bytes": 10127,
+      "sha256": "7fb4e5c369b079e93ce409e9ca4f6830476a1b6dbd42543273d85164e111a631"
+    },
+    {
+      "path": "policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json",
+      "bytes": 4124,
+      "sha256": "2989090944c4580ee1f8a9ec2bddc285ec870a572ad4a38500e78b9ce232e082"
+    },
+    {
+      "path": "state/charter/CHARTER_ADOPTION_V1.json",
+      "bytes": 3424,
+      "sha256": "0d4e6739eb95dddf9ac0e9aff68a891d1efd8a9e2787261b39c1917745e6c0ca"
+    },
+    {
+      "path": "AI_ADAPTERS.json",
+      "bytes": 1580,
+      "sha256": "29c40160d7513f9548a8ccc9f2a1915d2078b7314a947d3478ea3c9e08ed2829"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 34856,
+      "sha256": "29b52e4d9f67e4a32f2969c4a5c0485616b3ecb7f668089f3eb56b4f69c953f3"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_REPOSITORY_GOALS_AND_RULESET_AUTHORIZATION_V1.json",
+      "bytes": 3050,
+      "sha256": "feacc531af8ffc3f54907c0a86b8421863a92a9fbc4ef1c22a64b85be28fb646"
+    },
+    {
+      "path": "evidence/receipts/gemini-manifest-feedback-20261022.json",
+      "bytes": 2244,
+      "sha256": "3353aa11c8973b85615a8d76f23a574da90cfa7c0b3bc55c0d891bd457a302a5"
+    },
+    {
+      "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "bytes": 5363,
+      "sha256": "f7d943385ceb64beec29c7902575a257d7fd0daa8fb622b18b0d5b88db0911d7"
+    },
+    {
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "bytes": 10718,
+      "sha256": "c28f213741a9e0abf55c3f227efca00f7ec1e044741ba95231b3023a389949fe"
+    },
+    {
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "bytes": 13752,
+      "sha256": "e5a9062cb84b8f094190ef87830da68287334b363f0ed48ee633dca0a5817bb9"
+    },
+    {
+      "path": "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",
+      "bytes": 8523,
+      "sha256": "9cf2cd7cbbb4e39244eb96f0c67f80f21c8cbf401a105be5a12a6b8abd192dd7"
+    },
+    {
+      "path": "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
+      "bytes": 8218,
+      "sha256": "096346a10a4f3cc7c8718b9223e21d8d6249ee02789e9ec0ff70525126878272"
+    },
+    {
+      "path": "docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md",
+      "bytes": 9104,
+      "sha256": "e27d84c9e623f5e7716f56058898db8df96abd7189ab4bf3e30540a8902f81d0"
+    },
+    {
+      "path": "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json",
+      "bytes": 9011,
+      "sha256": "6eb3068d7c392d3c5263faced2ad5a06208dc73605e837ce12e124f2dfec76b4"
+    },
+    {
+      "path": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+      "bytes": 11714,
+      "sha256": "456bef59ab55c945336ba013bce9cf1958f7ee9b0c7fb68b0f5c8839f4fd89e7"
+    },
+    {
+      "path": "state/interface_adaptation/EVALUATION_MATRIX.json",
+      "bytes": 991,
+      "sha256": "ea3e78ec8fc3c4edbde30a02108c8c0cc0385516f0e4ff4fb2f1e725cb290d9f"
+    },
+    {
+      "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+      "bytes": 45656,
+      "sha256": "4abc1c83482bc850cfb96ef87d0a24cf92f551a9303b1bb45a3251b1f245c97a"
+    },
+    {
+      "path": "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md",
+      "bytes": 5991,
+      "sha256": "c84f4411ed2b2530bb6ac1ba80faef920dd8f5cf88542f2c23cabfbe24f19d3b"
+    },
+    {
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "bytes": 30416,
+      "sha256": "05f5c7f061829678af740375caa863c8ecf67dfba65dd30c91866c71625aa9dc"
+    },
+    {
+      "path": "state/work_units/QIKVRT_CONTEXT_CORRECTION_PERSISTENCE_20261023_V1.json",
+      "bytes": 7790,
+      "sha256": "07968b2c91f919da688c7b8c31d5c1aab8586088586aa89e575e4173b7174032"
+    },
+    {
+      "path": "state/work_units/QIKVRT_GOAL_BOUND_CONTINUATION_REPAIR_20261102_V1.json",
+      "bytes": 9024,
+      "sha256": "416035f73cefa4a7dfd5d6417c8a802dd699a83bac05fd41496578028f81f67c"
+    },
+    {
+      "path": "schemas/human_machine_progress.schema.json",
+      "bytes": 10895,
+      "sha256": "a11a25b71e4b02f80ed5505217de38fc81e9c0e8caa0cb241c29b821bfeb6998"
+    },
+    {
+      "path": "AI_PROGRESS.json",
+      "bytes": 18654,
+      "sha256": "5f204dbb19628515e836c54efc64baeec202e6395789aa5234c415e943d4df6a"
+    },
+    {
+      "path": "AI_STATUS.md",
+      "bytes": 1065,
+      "sha256": "e1138fd1143a228d75fcebbd8a54b31e1c563da61c3e68165ae63dbeb180001a"
+    },
+    {
+      "path": "runtime/CACHE_POLICY.md",
+      "bytes": 6867,
+      "sha256": "150485aa6f4e9ca9f66595840c79a88034875c3b1997b7aa32889da02ce35d23"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 7584,
+      "sha256": "acdad306c1ba5e8982e2e17910223e20c8740e172ab96935db212f63063c1418"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 48169,
+      "sha256": "1cde18dada820d8874a7713888489c40272c31a2cc98024d027556f9dd478325"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 11070,
+      "sha256": "ad273ff758414a1c1a29637ab796e8b8fde066109edfb28edd249d213d750be3"
+    },
+    {
+      "path": "README.md",
+      "bytes": 23610,
+      "sha256": "6b6ca8fd3bd4b4561162fd8648c5b2e82de6ff373b48a536a8ecf4d2451e152b"
+    },
+    {
+      "path": "STATUS.md",
+      "bytes": 9525,
+      "sha256": "9927c7e58ab6c9214ec75474a2e7cfe9d93da2c319519b7725745841e01d54df"
+    },
+    {
+      "path": "docs/CURRENT_AUTHORITY.md",
+      "bytes": 2919,
+      "sha256": "236136e383bc504ed59a96c7656aa782e2c2da8046593446c458e86de80cf5d7"
+    },
+    {
+      "path": "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
+      "bytes": 5019,
+      "sha256": "3ad7db021c2a9be4f419018ad1a56d5a532fce925c7ca48d751607f9f29153e3"
+    },
+    {
+      "path": "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+      "bytes": 2563,
+      "sha256": "25e93915d7cae8bd752cc27f5059cdc7cbfaf978249b1ed55e71d3ccb14b56e8"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+      "bytes": 3191,
+      "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8"
+    },
+    {
+      "path": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+      "bytes": 10076,
+      "sha256": "269ed51fe324347c9e898c6102e160bd9adb4a3221edff54a79376107056a351"
+    },
+    {
+      "path": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+      "bytes": 4960,
+      "sha256": "1c958c12106274fc485c1f53f2bfc76993598487328c5bd53ab67ce3244d0c71"
+    },
+    {
+      "path": "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_NODE_IDENTITY.json",
+      "bytes": 6033,
+      "sha256": "1e8ae846165add39844792544db97cb8ffa05db606faea740447d4eb2b3b8dea"
+    },
+    {
+      "path": "state/work_units/QIKVRT_SAFETY_SECURITY_IMPACT_20261019_V1.json",
+      "bytes": 15993,
+      "sha256": "67b6f052ca691c6dede266457f1819254cace406a42598c8d2a5bdfa31dd0d13"
+    },
+    {
+      "path": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+      "bytes": 22751,
+      "sha256": "ac22766b8d75aeb315c41a51119618d73c07854b6800d7d2e1685bd822a46c93"
+    },
+    {
+      "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "bytes": 8577,
+      "sha256": "3048430991fb1725f1c50ad5e581dcc6d2972cffe3469c41aba68c0c0940047d"
+    },
+    {
+      "path": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+      "bytes": 9042,
+      "sha256": "311075cffa0746c1873257809ef82554fde80bee0f4e0d3be1f519b583a4eb0a"
+    },
+    {
+      "path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+      "bytes": 22714,
+      "sha256": "d20dc488feceb457c0d5d736f71c09902f8e4832126ee5ca20369b7966f1eb4d"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "evidence/receipts/20261104-eap-responsibility/EVIDENCE_MANIFEST.json",
+      "bytes": 6424,
+      "sha256": "4e3c975a07f0c8801b2464ca6bc191ee4781d496e2b47ab4da9de79a5fdbafa0"
+    }
+  ],
+  "git_history": {
+    "base_commit": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+    "base_tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d",
+    "planned_branch": "work/QIKVRT_EAP_RESPONSIBILITY_DEMONSTRATION_20261104_V1",
+    "history_rewrite": false,
+    "integration_status": "NOT_CLAIMED_BY_THIS_PREWRITE_RECORD"
+  },
+  "verification": {
+    "claims": "evidence/receipts/20261104-eap-responsibility/CLAIMS.json",
+    "runs": "evidence/receipts/20261104-eap-responsibility/runs.json",
+    "continuation": "evidence/receipts/20261104-eap-responsibility/CONTINUATION.json",
+    "baseline_full_make_test": "PASS",
+    "formal_kernel_run": "NOT_PERFORMED",
+    "overall_outcome": "UNVERIFIED"
+  },
+  "human_decision": {
+    "state": "AUTHORIZED",
+    "source": "human_instruction"
+  },
+  "external_effects": {
+    "repository_evidence_persistence": "AUTHORIZED_NEXT_ACTION",
+    "workspace_task": "29a19709-fd7c-5aa7-8412-76416414cc9b",
+    "production_effect_attempted": false,
+    "zenodo_mutation_attempted": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "work": [
+    {
+      "id": "EAP-LIVE-MULTI-AI",
+      "state": "OPEN",
+      "next_action": "Obtain exact-request native ACK/application replies from each admitted live peer."
+    },
+    {
+      "id": "EAP-PRODUCTIVE-EFFECT",
+      "state": "OPEN",
+      "next_action": "Restore original admitted runtime/protected publisher connection, execute the same authorization, verify actual served bytes/record/DOI."
+    },
+    {
+      "id": "EAP-THIRD-PARTY-REPRODUCTION",
+      "state": "OPEN",
+      "next_action": "Independent verifier reruns the frozen commands and compares outcomes/digests."
+    },
+    {
+      "id": "EAP-RESPONSIBILITY",
+      "state": "OPEN",
+      "next_action": "Define a concrete governed use-case and independently observe its actual effect."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+    "tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d"
+  },
+  "route": "connector",
+  "service": "qikvrt",
+  "tool": "mcp__codex_apps__qik_vrt___kognitiver_arbeitsraum__qik_vrt_kognitiver_arbeitsraum_create_task",
+  "endpoint": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/api/v1/tasks",
+  "method": "POST",
+  "operation": "journal-create",
+  "observed_method": "POST",
+  "observed_operation": "journal-create",
+  "observed_repository": "ingolf-lohmann/qik-vrt",
+  "transport": "REST_API_ONLY",
+  "evidence": "Current Owner instruction authorizes performing and persisting this exact source-bound proof attempt through existing Git data and workspace routes.",
+  "authorized": true,
+  "safe": true,
+  "deterministic": true,
+  "callable": true,
+  "authenticated": true,
+  "permitted": true,
+  "admitted": true,
+  "specification_use": "HISTORICAL_EXACT",
+  "specification_claims": [],
+  "specification_basis": {
+    "subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "main",
+      "head": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+      "tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d"
+    },
+    "scope": "SOURCE_REPAIR_ONLY",
+    "reason": "Persist bounded test evidence for frozen c6083135 EAP implementation. No current specification or deployment claim."
+  }
+}

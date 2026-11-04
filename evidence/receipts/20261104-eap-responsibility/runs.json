@@ -1,0 +1,165 @@
+[
+  {
+    "id": "bootstrap",
+    "command": [
+      "python3",
+      "-B",
+      "tools/ai_runtime_bootloader.py",
+      "--profile",
+      "all",
+      "--json"
+    ],
+    "started_utc": "2026-11-04T08:09:29.098873+00:00",
+    "ended_utc": "2026-11-04T08:09:32.114285+00:00",
+    "duration_ms": 3015,
+    "exit_code": 0,
+    "log": "bootstrap.log",
+    "bytes": 10232,
+    "sha256": "0de23ea4e0131e09472915b23f4ae805788565e24ba9ce5cd7c6c984e35a99db",
+    "unittest_batches": []
+  },
+  {
+    "id": "collective-bootstrap",
+    "command": [
+      "python3",
+      "-B",
+      "tools/ai_collective_bootstrap_extension.py",
+      "--json"
+    ],
+    "started_utc": "2026-11-04T08:09:32.114593+00:00",
+    "ended_utc": "2026-11-04T08:09:32.149470+00:00",
+    "duration_ms": 35,
+    "exit_code": 0,
+    "log": "collective-bootstrap.log",
+    "bytes": 567,
+    "sha256": "b4893f2feff4865e70462e0e45fd7a57246053373b4ce4c102aeac196b7ab2ca",
+    "unittest_batches": []
+  },
+  {
+    "id": "eap-conformance",
+    "command": [
+      "make",
+      "conformance"
+    ],
+    "started_utc": "2026-11-04T08:09:32.149822+00:00",
+    "ended_utc": "2026-11-04T08:09:40.731634+00:00",
+    "duration_ms": 8582,
+    "exit_code": 0,
+    "log": "eap-conformance.log",
+    "bytes": 12877,
+    "sha256": "3b809111d360c760f386aa8f9ece20853a6ca6ea9118e92356f96915dab10016",
+    "unittest_batches": [
+      73
+    ]
+  },
+  {
+    "id": "c90-core",
+    "command": [
+      "make",
+      "effect-ack-core-test"
+    ],
+    "started_utc": "2026-11-04T08:09:40.732123+00:00",
+    "ended_utc": "2026-11-04T08:09:40.984056+00:00",
+    "duration_ms": 252,
+    "exit_code": 0,
+    "log": "c90-core.log",
+    "bytes": 203,
+    "sha256": "a058f4cc927a92918973b6966e5db5c6453a5428d9c9e4f0d4e0206c26279235",
+    "unittest_batches": []
+  },
+  {
+    "id": "finite-model",
+    "command": [
+      "make",
+      "scientific-bundle-test"
+    ],
+    "started_utc": "2026-11-04T08:09:40.984343+00:00",
+    "ended_utc": "2026-11-04T08:09:53.406123+00:00",
+    "duration_ms": 12422,
+    "exit_code": 0,
+    "log": "finite-model.log",
+    "bytes": 144,
+    "sha256": "0677164c514361c0266b661e8fd6a14c9828b101ca377d572d72bb08cd1416f4",
+    "unittest_batches": []
+  },
+  {
+    "id": "continuation-guards",
+    "command": [
+      "make",
+      "ai-runtime-contract"
+    ],
+    "started_utc": "2026-11-04T08:09:53.406438+00:00",
+    "ended_utc": "2026-11-04T08:09:58.093155+00:00",
+    "duration_ms": 4687,
+    "exit_code": 0,
+    "log": "continuation-guards.log",
+    "bytes": 38472,
+    "sha256": "5ec1a909ccc9e6402eac9eba56c368443c46fdfe71aefc79d5a0d824eb2ca44e",
+    "unittest_batches": [
+      18,
+      174
+    ]
+  },
+  {
+    "id": "full-suite",
+    "command": [
+      "make",
+      "test"
+    ],
+    "started_utc": "2026-11-04T08:10:34.763922+00:00",
+    "ended_utc": "2026-11-04T08:14:44.741597+00:00",
+    "duration_ms": 249978,
+    "exit_code": 0,
+    "log": "full-suite.log",
+    "bytes": 467947,
+    "sha256": "6b4bb7066f5a6e37b00da5a76d7a0b632f28217a81e6330889ca333bdf7f607f",
+    "stored_log": "full-suite.log.gz",
+    "stored_sha256": "bc65886373823d5f7b18621e10123802e6ea79c936c4def1fd6cc7f871033f6a",
+    "unittest_batches": [
+      12,
+      15,
+      18,
+      174,
+      4,
+      238,
+      16,
+      35,
+      202,
+      14,
+      292,
+      7,
+      15,
+      73,
+      6,
+      209,
+      5,
+      70,
+      3,
+      16,
+      58,
+      66,
+      5,
+      51,
+      11,
+      7,
+      13,
+      53,
+      16,
+      20,
+      4,
+      25,
+      61,
+      119,
+      3,
+      23,
+      13,
+      10,
+      77,
+      26,
+      9,
+      5,
+      258,
+      11
+    ]
+  }
+]

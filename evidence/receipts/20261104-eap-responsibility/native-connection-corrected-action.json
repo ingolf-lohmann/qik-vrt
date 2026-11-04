@@ -1,0 +1,26 @@
+{
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+    "tree": "5bf68107cbe9c63918def36a5fcd8fe0e3e7188d"
+  },
+  "route": "connector",
+  "service": "qikvrt",
+  "tool": "mcp__codex_apps__raumzeitterminal___ingolf_lohmann__raumzeitterminal_ingolf_lohmann_qikvrt_native_connection",
+  "endpoint": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/mesh/terminal/native",
+  "method": "GET",
+  "operation": "native-connection",
+  "observed_method": "GET",
+  "observed_operation": "native-connection",
+  "observed_repository": "ingolf-lohmann/qik-vrt",
+  "evidence": "Actual connector operation description; source-bound verification task authorized by current Owner instruction.",
+  "specification_use": "DISCOVERY_ONLY",
+  "authorized": true,
+  "safe": true,
+  "deterministic": true,
+  "callable": true,
+  "authenticated": true,
+  "permitted": true,
+  "admitted": true
+}

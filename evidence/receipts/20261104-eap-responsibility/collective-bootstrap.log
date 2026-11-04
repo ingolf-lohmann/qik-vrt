@@ -1,0 +1,21 @@
+{
+  "audio_pending": [
+    "AUDIO-01",
+    "AUDIO-02",
+    "AUDIO-03",
+    "AUDIO-04",
+    "AUDIO-05",
+    "AUDIO-06"
+  ],
+  "audio_recordings": 6,
+  "gates": {
+    "audio_binding": "PASS",
+    "collective_cognition": "PASS",
+    "files": "PASS",
+    "owner_directive": "PASS",
+    "third_party_license_boundary": "PASS"
+  },
+  "next_action": "Run repository-native ASR on the exact bound audio bytes, persist ASR_DRAFT receipts, then perform human acoustic review before VERBATIM_VERIFIED.",
+  "schema": "qikvrt-ai-collective-bootstrap/1.0",
+  "state": "CONTINUE"
+}
