@@ -67,18 +67,31 @@ workflow, or treats its own terminality as gate success.
 
 ### Job-readback request budget
 
-The existing observation step validates the returned run page before requesting
-any jobs. The page must include an integer `total_count` equal to its returned
-run count, no truncation, and unique positive run IDs bound to the exact expected
-head. At most 20 per-run job requests are admitted. An incomplete inventory or a
-larger request budget produces `HOLD` with an empty request list and a retained
-`job-readback-budget.json`; it makes no per-run job request and does not sample
-the first 20 runs. The existing failure receipt records `JOBS_BUDGET_PREFLIGHT`,
-and pipeline progress remains unknown. A denied run or job GET stops the step;
-there is no automatic retry. Failure to download the prior receipt artifact also
+The existing controller collects run pages of 100 entries, with at most ten
+page requests. It retains the original page bytes and stderr in the artifact.
+Every page must report the same integer `total_count`; the merged inventory must
+contain exactly that many unique positive run IDs, all bound to the expected
+head. Changed totals, duplicated entries, wrong heads, short pages and exhausting
+the page limit leave the inventory incomplete. No job request is then admitted.
+
+For up to 20 runs, all job reads remain selected. Larger complete inventories
+select every active run and the latest run of each workflow name, using creation
+time and numeric run ID. This is the evidence closure consumed by the current
+gate and active-progress checks, not the first 20 runs. All historical runs remain
+in topology, writer and queue observations. The selection and excluded historical
+IDs are explicit in `job-readback-budget.json`; unselected jobs are marked
+unobserved, never as verified zero-job executions. If that entire closure exceeds
+20 runs, `JOBS_BUDGET_PREFLIGHT` still produces `HOLD` before any job GET.
+
+Job pagination shares the same hard budget of 20 actual HTTP requests, including
+continuation pages. It validates complete counts, unique IDs and each job's run
+and head identity. Budget exhaustion or incomplete job readback stops analysis;
+analysis also rejects missing selected job files or an incomplete run inventory.
+The collected responses and request count remain in the existing artifact.
+A denied run or job GET stops immediately, without retry. Failure to download the prior receipt artifact also
 stops at `BASELINE_READBACK`, before any current run or job request. An HTTP 403
 on that earlier path cannot be ignored as an optional missing baseline.
-This is a bound on this step's per-run job reads,
+This is a bound on this step's job-page reads,
 not a provider-wide quota controller or proof of live event delivery.
 
 ### Failure of the observer itself

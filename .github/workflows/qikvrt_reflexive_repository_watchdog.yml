@@ -150,22 +150,22 @@ jobs:
           jq -er '.main_head' "$root/authority-role-readback.json" \
             > "$root/observed-authority-main-head.txt"
           observation_stage=RUNS_READBACK
-          gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" \
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-runs \
+            --repository "$REPOSITORY" --expect-head "$EXPECTED_HEAD" \
+            --pages-dir "$root/run-pages" --json \
             > "$root/current-runs.json"
 
-          # Admit the complete page before any per-run GET. A truncated inventory
-          # or more than 20 job requests is HOLD, never a sampled success.
+          # Preserve every run for topology checks. Read all active and latest
+          # workflow evidence within the unchanged 20-request job budget.
           observation_stage=JOBS_BUDGET_PREFLIGHT
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
             --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" --json \
             > "$root/job-readback-budget.json"
-          jq -r '.run_ids[]' "$root/job-readback-budget.json" > "$root/job-readback-run-ids.txt"
-          mapfile -t run_ids < "$root/job-readback-run-ids.txt"
-          for run_id in "${run_ids[@]}"; do
-            observation_stage=JOBS_READBACK
-            gh api "repos/$REPOSITORY/actions/runs/$run_id/jobs?per_page=100" \
-              > "$root/jobs/$run_id.json"
-          done
+          observation_stage=JOBS_READBACK
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-jobs \
+            --runs-file "$root/current-runs.json" --repository "$REPOSITORY" \
+            --expect-head "$EXPECTED_HEAD" --jobs-dir "$root/jobs" --json \
+            > "$root/job-readback.json"
 
 
       - name: Preserve failed observation as machine-readable HOLD
