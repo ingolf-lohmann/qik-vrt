@@ -67,17 +67,41 @@ workflow, or treats its own terminality as gate success.
 
 ### Job-readback request budget
 
-The existing observation step validates the returned run page before requesting
-any jobs. The page must include an integer `total_count` equal to its returned
-run count, no truncation, and unique positive run IDs bound to the exact expected
-head. At most 20 per-run job requests are admitted. An incomplete inventory or a
-larger request budget produces `HOLD` with an empty request list and a retained
-`job-readback-budget.json`; it makes no per-run job request and does not sample
-the first 20 runs. The existing failure receipt records `JOBS_BUDGET_PREFLIGHT`,
-and pipeline progress remains unknown. A denied run or job GET stops the step;
+The existing observation step uses `gh api --paginate --slurp` to retain all
+exact-head run pages in `current-run-pages.json`. It merges them into
+`current-runs.json` before requesting any jobs. Every page must report the same
+integer `total_count`; the combined inventory must match that count, contain no
+truncation or duplicate IDs, and bind every run to the expected head. Invalid
+names, statuses or timestamps also stop admission. This count check fails closed
+if the provider's own pagination/search limit prevents a complete inventory.
+
+`job-readback-budget --required-jobs-only` derives the exact job dependencies of
+the analyzer: the latest run of **each workflow name**, plus **every active run**,
+including an older active run with a newer completed successor. It never samples
+the first 20 runs. At most 20 per-run jobs GETs are admitted for this union; older
+completed runs remain in the full metadata inventory. Their normalized receipt
+entries explicitly have `jobs_observed=false` and `jobs=null`, rather than
+claiming an observed zero-job execution. Latest gate decisions and all writer,
+queue, liveness and stale-progress checks remain in force. The legacy budget CLI
+without this explicit option retains its all-run policy and historical format.
+
+An incomplete inventory or a union needing more than 20 job requests produces
+`HOLD` before any jobs GET. The failure receipt records `JOBS_BUDGET_PREFLIGHT`;
+pipeline progress remains unknown. A denied run or job GET stops the step;
 there is no automatic retry. Failure to download the prior receipt artifact also
 stops at `BASELINE_READBACK`, before any current run or job request. An HTTP 403
 on that earlier path cannot be ignored as an optional missing baseline.
+
+Each selected run receives one jobs GET with `per_page=100`, without unbounded
+job pagination. `JOBS_COMPLETENESS_PREFLIGHT` requires its integer `total_count`
+to equal the returned job count and rejects malformed/duplicate jobs, mismatched
+run/head/attempt identities and active jobs on a terminal run. More than 100 jobs
+therefore remains HOLD if the single response is incomplete. Analysis rederives
+the plan, verifies its inventory SHA-256, and requires exactly the selected job
+files. A missing file cannot become an empty successful observation. The original
+artifact, causal reproduction and bounded regression evidence for issue #682 are
+in `evidence/receipts/20261104-watchdog-run-inventory/`.
+
 This is a bound on this step's per-run job reads,
 not a provider-wide quota controller or proof of live event delivery.
 
@@ -104,7 +128,7 @@ writers. Main's 26 October delivery repair uses completion notifications and
 the active observation. The later Owner correction of 31 October removes the five-minute schedule.
 Readback of unfinished runs and unchanged heads occurs on actual state
 transitions; freshness budgets remain checks, not activation timers. The analyzer still evaluates
-every returned run and its jobs; no liveness, missing-evidence or stale-progress
+every returned run and the explicitly selected complete job inputs; no liveness, missing-evidence or stale-progress
 criterion is removed. This source configuration change does not establish a
 completed public-host observation or global deadlock freedom.
 

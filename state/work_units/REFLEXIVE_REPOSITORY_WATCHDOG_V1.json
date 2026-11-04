@@ -126,5 +126,55 @@
     "EFFECT_ACK_DONE": false,
     "AUTHORITY_MIRROR_EQUALITY": false,
     "DEADLOCK_FREEDOM_PROVED": false
+  },
+  "complete_run_inventory_repair_20261104": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "base_head": "e1ac5f52896b494eb9051f704a42d4554d4b7139",
+    "base_tree": "22095e5fb54a0e864660b5140829cb0ab78f826a",
+    "source_issue": "https://github.com/ingolf-lohmann/qik-vrt/issues/682",
+    "predecessor_pr": 675,
+    "original_observation": {
+      "run_id": 41759139590,
+      "attempt": 1,
+      "artifact_id": 13288684528,
+      "artifact_zip_sha256": "8c28964fe5e2ee70e4b822e43fb9ff5f763bfc629d90b9dde097f3a248514971",
+      "first_blocker": "RUN_INVENTORY_INCOMPLETE",
+      "reported_run_count": 213,
+      "returned_run_count": 100,
+      "failed_stage": "JOBS_BUDGET_PREFLIGHT",
+      "deadlock_analysis_executed": false,
+      "report_byte_reproduction": true
+    },
+    "requirements": {
+      "full_exact_head_run_pagination": true,
+      "job_inputs": "LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1",
+      "maximum_per_run_job_requests": 20,
+      "old_completed_runs": "RETAIN_METADATA_AND_MARK_JOBS_UNOBSERVED",
+      "missing_or_truncated_selected_jobs": "HOLD",
+      "denial": "STOP_WITHOUT_AUTOMATIC_RETRY",
+      "new_executor_or_timer": false
+    },
+    "local_verification": {
+      "targeted_command": "python3 -B -m unittest -q tests.test_qikvrt_reflexive_repository_watchdog tests.test_qikvrt_workflow_executor_mesh_contract tests.test_seed_workflows",
+      "targeted_test_executions": 165,
+      "targeted_result": "PASS",
+      "predecessor_213_run_regression": "FAIL_EXIT_2_BEFORE_REPAIR",
+      "fixture_scope": "213_RUNS_3_PAGES_11_SELECTED_JOB_GETS",
+      "full_suite_command": "make test",
+      "full_suite_result": "REQUIRES_EXACT_CANDIDATE_RUN_AND_REMOTE_READBACK",
+      "native_acceptance": "NOT_ESTABLISHED_BY_LOCAL_TESTS"
+    },
+    "evidence_path": "evidence/receipts/20261104-watchdog-run-inventory",
+    "retained_open_duties": [
+      "ORIGINAL_PROTECTED_HOST_INPUT_DELIVERY",
+      "RAUMZEITTERMINAL_DE_NATIVE_RUNTIME_ACCEPTANCE",
+      "ACTUAL_CLAUDE_PEER_READBACK",
+      "FULL_DISTRIBUTED_UNIVERSAL_PRODUCTIVE_EFFECT_PROOF"
+    ],
+    "effect_ack_done": false,
+    "attribution": {
+      "requirement_and_authorization": "Ingolf Lohmann",
+      "source_repair_and_bounded_tests": "OpenAI Codex"
+    }
   }
 }

@@ -150,14 +150,15 @@ jobs:
           jq -er '.main_head' "$root/authority-role-readback.json" \
             > "$root/observed-authority-main-head.txt"
           observation_stage=RUNS_READBACK
-          gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" \
-            > "$root/current-runs.json"
+          gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" --paginate --slurp \
+            > "$root/current-run-pages.json"
 
-          # Admit the complete page before any per-run GET. A truncated inventory
-          # or more than 20 job requests is HOLD, never a sampled success.
+          # Retain every run; jobs are needed for every active run and the latest
+          # run of each workflow. Admit their complete union before any jobs GET.
           observation_stage=JOBS_BUDGET_PREFLIGHT
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
-            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" --json \
+            --runs-file "$root/current-run-pages.json" --expect-head "$EXPECTED_HEAD" \
+            --required-jobs-only --inventory-output "$root/current-runs.json" --json \
             > "$root/job-readback-budget.json"
           jq -r '.run_ids[]' "$root/job-readback-budget.json" > "$root/job-readback-run-ids.txt"
           mapfile -t run_ids < "$root/job-readback-run-ids.txt"
@@ -166,6 +167,11 @@ jobs:
             gh api "repos/$REPOSITORY/actions/runs/$run_id/jobs?per_page=100" \
               > "$root/jobs/$run_id.json"
           done
+          observation_stage=JOBS_COMPLETENESS_PREFLIGHT
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
+            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" \
+            --required-jobs-only --jobs-dir "$root/jobs" --json \
+            > "$root/validated-job-readback-budget.json"
 
 
       - name: Preserve failed observation as machine-readable HOLD
@@ -212,6 +218,7 @@ jobs:
             analyze
             --runs-file "$root/current-runs.json"
             --jobs-dir "$root/jobs"
+            --job-plan-file "$root/job-readback-budget.json"
             --expect-head "$head"
             --expect-tree "$tree"
             --repository "$REPOSITORY"
