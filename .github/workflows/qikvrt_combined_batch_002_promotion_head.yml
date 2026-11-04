@@ -46,7 +46,7 @@ jobs:
           assert r['completion_claims']['candidate_byte_freeze_complete'] is True
           assert r['completion_claims']['claim_disposition_complete'] is False
           PY
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: qikvrt-combined-batch-002-promotion-head-${{ github.run_id }}-${{ github.run_attempt }}
           path: self-disclosure-status.json
