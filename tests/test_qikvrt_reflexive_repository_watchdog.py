@@ -50,6 +50,7 @@ def run(
         "conclusion": conclusion,
         "event": "workflow_dispatch",
         "head_sha": HEAD,
+        "run_attempt": 1,
         "created_at": created_at,
         "updated_at": updated_at,
     }
@@ -494,7 +495,8 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertIn("observed-authority-main-head.txt", workflow)
         self.assertIn("gatewatch-receipt.json", workflow)
         self.assertIn("job-readback-budget", workflow)
-        self.assertIn("jq -r '.run_ids[]'", workflow)
+        self.assertIn("collect-runs", workflow)
+        self.assertIn("collect-jobs", workflow)
         self.assertIn("select(.id != $current)", workflow)
         self.assertIn("--previous-readback", workflow)
         self.assertIn(".semantic_fingerprint", workflow)
@@ -615,7 +617,16 @@ class JobReadbackBudgetTests(unittest.TestCase):
     @staticmethod
     def page(count: int, *, total: int | None = None) -> dict:
         return {"total_count": count if total is None else total,
-                "workflow_runs": [{"id": i + 1, "head_sha": HEAD} for i in range(count)]}
+                "workflow_runs": [run(i + 1, f"workflow-{i + 1}", "completed",
+                                      "2026-08-10T17:00:00Z", "2026-08-10T17:01:00Z",
+                                      "success") for i in range(count)]}
+
+    @classmethod
+    def history(cls, count=213):
+        value = cls.page(count)
+        for entry in value["workflow_runs"]:
+            entry["name"] = f"workflow-{entry['id'] % 3}"
+        return value
 
     def test_incomplete_over_budget_and_invalid_pages_never_admit_job_reads(self):
         cases = [
@@ -648,7 +659,8 @@ class JobReadbackBudgetTests(unittest.TestCase):
                 self.assertEqual(result["run_ids"], list(range(1, count + 1)))
 
     def collect(self, page: dict, *, deny: str = "", checker_missing: bool = False,
-                full_observation: bool = False) -> tuple:
+                full_observation: bool = False, run_pages=None, job_counts=None,
+                job_override=None) -> tuple:
         """Run the real workflow collection body against an isolated REST fixture."""
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
@@ -659,6 +671,9 @@ class JobReadbackBudgetTests(unittest.TestCase):
                               if full_observation else "observation")
         (observation / "jobs").mkdir(parents=True)
         (root / "runs.json").write_text(json.dumps(page), encoding="utf-8")
+        (root / "pages.json").write_text(json.dumps(run_pages), encoding="utf-8")
+        (root / "job-counts.json").write_text(json.dumps(job_counts or {}), encoding="utf-8")
+        (root / "job-override.json").write_text(json.dumps(job_override or {}), encoding="utf-8")
         shutil.copyfile(ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
                         root / "tools/qikvrt_reflexive_repository_watchdog.py")
         if checker_missing:
@@ -666,7 +681,7 @@ class JobReadbackBudgetTests(unittest.TestCase):
         stub = root / "bin/gh"
         stub.write_text(textwrap.dedent(f"""\
             #!{sys.executable}
-            import json, os, pathlib, sys
+            import json, os, pathlib, sys, urllib.parse
             root = pathlib.Path(os.environ['FIXTURE_ROOT'])
             path = sys.argv[2]
             if '/git/ref/' in path:
@@ -687,8 +702,25 @@ class JobReadbackBudgetTests(unittest.TestCase):
             responses = {{'subject': '{HEAD}',
                          'baseline-runs': '{{"workflow_runs":[{{"id":900}}]}}',
                          'baseline-artifacts': '{{"artifacts":[{{"id":901,"name":"qikvrt-reflexive-repository-watchdog-previous"}}]}}',
-                         'jobs': '{{"total_count":0,"jobs":[]}}'}}
-            print(responses.get(kind, (root / 'runs.json').read_text()))
+                         }}
+            query = urllib.parse.parse_qs(urllib.parse.urlsplit(path).query)
+            page_number = int(query.get('page', ['1'])[0])
+            start = (page_number - 1) * 100
+            if kind == 'runs':
+                pages = json.loads((root / 'pages.json').read_text())
+                value = json.loads((root / 'runs.json').read_text())
+                value['workflow_runs'] = value['workflow_runs'][start:start + 100]
+                print(json.dumps(pages[page_number - 1] if pages is not None else value))
+            elif kind == 'jobs':
+                run_id = int(path.split('/runs/')[1].split('/')[0])
+                count = json.loads((root / 'job-counts.json').read_text()).get(str(run_id), 0)
+                override = json.loads((root / 'job-override.json').read_text())
+                entries = [{{'id': run_id * 1000 + i + 1, 'run_id': run_id,
+                            'head_sha': '{HEAD}', 'run_attempt': 1, 'name': 'job', 'status': 'completed',
+                            'conclusion': 'success', **override}} for i in range(count)]
+                print(json.dumps({{'total_count': count, 'jobs': entries[start:start + 100]}}))
+            else:
+                print(responses[kind])
             """), encoding="utf-8")
         stub.chmod(0o700)
         body = ReflexiveObservationFailureTests.step_body(
@@ -710,7 +742,8 @@ class JobReadbackBudgetTests(unittest.TestCase):
                        "EVENT_NAME": "push", "EVENT_PR": "", "CURRENT_RUN_ID": "10"}
         result = subprocess.run(["bash", "-c", "set -euo pipefail\n" + body], cwd=root,
                                 env=environment, capture_output=True, text=True, timeout=15)
-        requests = [json.loads(line) for line in (root / "requests.jsonl").read_text().splitlines()]
+        log = root / "requests.jsonl"
+        requests = [json.loads(line) for line in log.read_text().splitlines()] if log.exists() else []
         plan_path = observation / "job-readback-budget.json"
         plan_bytes = plan_path.read_text() if plan_path.exists() else ""
         plan = json.loads(plan_bytes) if plan_bytes.strip() else None
@@ -721,7 +754,7 @@ class JobReadbackBudgetTests(unittest.TestCase):
             with self.subTest(total=page["total_count"]):
                 result, requests, plan = self.collect(page)
                 self.assertNotEqual(result.returncode, 0, result.stderr)
-                self.assertEqual([r["kind"] for r in requests], ["runs"])
+                self.assertTrue(all(r["kind"] == "runs" for r in requests))
                 self.assertEqual(plan["state"], "HOLD")
 
     def test_real_workflow_reads_every_job_for_a_complete_admitted_page(self):
@@ -754,8 +787,98 @@ class JobReadbackBudgetTests(unittest.TestCase):
         result, requests, plan = self.collect(self.page(3), checker_missing=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("can't open file", result.stderr)
-        self.assertEqual([r["kind"] for r in requests], ["runs"])
+        self.assertEqual(requests, [])
         self.assertIsNone(plan)
+
+    def test_paginated_history_reaches_job_analysis_without_sampling_topology(self):
+        page = self.history()
+        page["workflow_runs"][0]["status"] = "in_progress"
+        result, requests, plan = self.collect(page)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len([r for r in requests if r["kind"] == "runs"]), 3)
+        self.assertEqual(plan["reported_run_count"], 213)
+        self.assertEqual(plan["returned_run_count"], 213)
+        self.assertEqual(plan["selection_scope"], "ALL_ACTIVE_AND_LATEST_PER_WORKFLOW_NAME")
+        self.assertIn(1, plan["run_ids"])
+        self.assertEqual(plan["run_ids"], [1, 211, 212, 213])
+        self.assertEqual(len([r for r in requests if r["kind"] == "jobs"]), 4)
+        self.assertEqual(len(plan["excluded_historical_run_ids"]), 209)
+
+    def test_analysis_retains_all_runs_and_rejects_missing_selected_readback(self):
+        page = self.history()
+        plan = MODULE.job_readback_budget(page, expected_head=HEAD)
+        arguments = dict(expected_head=HEAD, expected_tree=TREE, repository="example/qik-vrt",
+                         now=datetime(2026, 8, 10, 18, tzinfo=timezone.utc))
+        observed = {str(run_id): [] for run_id in plan["run_ids"]}
+        receipt = MODULE.analyze(page, observed, **arguments)
+        self.assertEqual(receipt["observations"]["exact_head_run_count"], 213)
+        self.assertEqual(len(receipt["observations"]["runs"]), 213)
+        self.assertEqual(sum(r["job_readback_observed"]
+                             for r in receipt["observations"]["runs"]), 3)
+        self.assertFalse(receipt["effect_ack_done"])
+        with self.assertRaisesRegex(MODULE.ReflexiveWatchdogBlock, "SELECTED_JOB_READBACK_MISSING"):
+            MODULE.analyze(page, {}, **arguments)
+        with self.assertRaisesRegex(MODULE.ReflexiveWatchdogBlock, "RUN_INVENTORY_INCOMPLETE"):
+            MODULE.analyze({**page, "total_count": 214}, observed, **arguments)
+
+    def test_all_active_runs_and_latest_names_must_fit_before_first_job_request(self):
+        page = self.history(21)
+        for entry in page["workflow_runs"]:
+            entry["status"] = "queued"
+        result, requests, plan = self.collect(page)
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(plan["first_blocker"], "JOB_READBACK_REQUEST_BUDGET_EXCEEDED")
+        self.assertFalse(any(r["kind"] == "jobs" for r in requests))
+
+    def test_changed_duplicate_wrong_head_and_short_pages_hold_without_job_reads(self):
+        page = self.history()
+        first = {**page, "workflow_runs": page["workflow_runs"][:100]}
+        second = {**page, "workflow_runs": page["workflow_runs"][100:200]}
+        cases = [
+            [first, {**second, "total_count": 214}],
+            [first, {**second, "workflow_runs": first["workflow_runs"]}],
+            [first, {**second, "workflow_runs": [{**r, "head_sha": TREE}
+                                                 for r in second["workflow_runs"]]}],
+            [first, {**second, "workflow_runs": []}],
+        ]
+        for pages in cases:
+            with self.subTest(pages=pages):
+                result, requests, plan = self.collect(page, run_pages=pages)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertEqual(plan["first_blocker"], "RUN_INVENTORY_INCOMPLETE")
+                self.assertFalse(any(r["kind"] == "jobs" for r in requests))
+
+    def test_run_page_budget_is_bounded_and_not_reported_as_complete(self):
+        result, requests, plan = self.collect(self.history(1001))
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertEqual(len(requests), MODULE.MAX_RUN_READBACK_PAGES)
+        self.assertEqual(plan["returned_run_count"], 1000)
+        self.assertEqual(plan["first_blocker"], "RUN_INVENTORY_INCOMPLETE")
+
+    def test_job_pagination_counts_each_http_request_against_the_shared_budget(self):
+        result, requests, plan = self.collect(self.page(2), job_counts={"1": 101})
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len([r for r in requests if r["kind"] == "jobs"]), 3)
+        result, requests, plan = self.collect(self.page(20), job_counts={"1": 101})
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertEqual(len([r for r in requests if r["kind"] == "jobs"]), 20)
+        self.assertEqual(plan["state"], "READY")  # Actual pagination budget failed later.
+
+    def test_job_wrong_head_or_run_identity_stops_without_another_get(self):
+        for override in ({"head_sha": TREE}, {"run_id": 999}, {"run_attempt": 2}):
+            result, requests, _ = self.collect(self.page(3), job_counts={"1": 1},
+                                                job_override=override)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertEqual(len([r for r in requests if r["kind"] == "jobs"]), 1)
+
+    def test_completed_success_with_active_job_evidence_is_untrusted(self):
+        entry = run(1, "QIKVRT CI", "completed", "2026-08-10T17:00:00Z",
+                    "2026-08-10T17:01:00Z", "success")
+        result = MODULE._gate_state_for_run(entry, {"1": [
+            {"status": "completed", "conclusion": "success"},
+            {"status": "queued", "conclusion": None},
+        ]}, required=True)
+        self.assertEqual(result["state"], "UNTRUSTED")
 
 
 if __name__ == "__main__":
