@@ -687,6 +687,15 @@ rewrite a frozen proof-bearing source merely to relabel its revision. Companion
 HTTP-01 remains an unresolved archive candidate until original bytes and changes
 are reviewed; it is not a replacement core revision.
 
+### Historical source-only GraphQL readiness
+
+`HISTORICAL_EXACT` also retains the existing Owner-authorized
+`markPullRequestReadyForReview` fallback. The live guard requires the same exact
+subject, `GRAPHQL_FALLBACK`, the pinned original Owner decision, unavailable REST
+operation and `NOT_ATTEMPTED` REST effect. It authorizes no other GraphQL
+operation, runtime scope or current-specification claim. Authentication,
+platform permission and independent effect readback remain separate.
+
 ## Human behavioral admissibility — Owner 5 November 2026
 
 The seven behavioral criteria and practical human audit are normative in

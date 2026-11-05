@@ -336,6 +336,12 @@ def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
                 rf"/repos/{repository}/(?:git/(?:blobs|trees|commits|refs(?:/heads/[^%]+)?)"
                 r"|issues(?:/\d+(?:/comments)?)?|pulls(?:/\d+(?:/(?:reviews|merge))?)?)",
                 endpoint.path) is not None)
+        source_graphql_route = (
+            action.get("subject") == subject and action.get("service") == "github"
+            and action.get("transport") == "GRAPHQL_FALLBACK"
+            and action.get("operation") == "markPullRequestReadyForReview"
+            and github_graphql_fallback_allowed(
+                action, load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")))
         journal_route = (
             endpoint.netloc == "qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
             and (endpoint.path == "/mcp" or re.fullmatch(r"/api/v1/tasks(?:/[a-z0-9-]+)?", endpoint.path))
@@ -344,7 +350,8 @@ def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
                 "qik_vrt_kognitiver_arbeitsraum_update_task")))
         verifier_route = historical_readonly_watchdog_retry(action, subject, endpoint, now=now)
         if (endpoint.scheme != "https" or endpoint.query or endpoint.fragment
-                or ".." in endpoint.path.split("/") or not (source_route or journal_route or verifier_route)):
+                or ".." in endpoint.path.split("/")
+                or not (source_route or source_graphql_route or journal_route or verifier_route)):
             fail("SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED")
         return
     if use != "CURRENT" or not claims or len(set(claims)) != len(claims):

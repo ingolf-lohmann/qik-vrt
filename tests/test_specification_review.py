@@ -71,6 +71,64 @@ class SpecificationReview(unittest.TestCase):
                             subject=self.subject, scope='SOURCE_REPAIR_ONLY',
                             reason='repair frozen source only')))
 
+    def historical_graphql(self):
+        original = Path(__file__).resolve().parents[1]
+        paths = ('policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json',
+                 'state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json')
+        for path in paths:
+            target = self.root / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((original / path).read_bytes())
+        policy = json.loads((self.root / paths[0]).read_bytes())
+        return dict(subject=self.subject, method='POST', service='github',
+                    transport='GRAPHQL_FALLBACK', operation='markPullRequestReadyForReview',
+                    endpoint='https://api.github.com/graphql',
+                    fallback_reason='REST_OPERATION_UNAVAILABLE', rest_effect_state='NOT_ATTEMPTED',
+                    owner_decision_sha256=policy['client_continuation']['github_fallback']['decision_sha256'],
+                    specification_use='HISTORICAL_EXACT', specification_claims=[],
+                    specification_basis=dict(subject=self.subject, scope='SOURCE_REPAIR_ONLY',
+                                             reason='exact authorized source PR readiness only'))
+
+    def test_historical_exact_reuses_only_the_existing_owner_graphql_readiness_grant(self):
+        self.check(self.historical_graphql())
+
+    def test_historical_graphql_rejects_other_routes_operations_and_ambiguous_effects(self):
+        action = self.historical_graphql()
+        changes = ({'method': 'PATCH'}, {'operation': 'mergePullRequest'},
+                   {'operation': 'deploy'}, {'transport': 'REST_API_ONLY'},
+                   {'endpoint': 'https://foreign.example/graphql'},
+                   {'endpoint': 'https://api.github.com/graphql?extra=1'},
+                   {'service': 'ionos'}, {'rest_effect_state': 'UNKNOWN'},
+                   {'owner_decision_sha256': '0' * 64},
+                   {'fallback_reason': 'CONVENIENCE'})
+        for change in changes:
+            with self.subTest(change=change), self.assertRaises(SystemExit):
+                self.check(dict(action, **change))
+
+    def test_historical_graphql_requires_the_same_exact_subject(self):
+        action = self.historical_graphql()
+        for key, value in (('repository', 'foreign/repo'), ('head', '9' * 40)):
+            with self.subTest(key=key), self.assertRaises(SystemExit):
+                self.check(dict(action, subject=dict(self.subject, **{key: value})))
+
+    def test_historical_graphql_cannot_invent_a_missing_owner_decision(self):
+        action = self.historical_graphql()
+        (self.root / 'state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json').unlink()
+        with self.assertRaises(SystemExit):
+            self.check(action)
+
+    def test_historical_graphql_does_not_admit_a_currentness_claim(self):
+        action = self.historical_graphql()
+        action['specification_claims'] = ['effect-ack']
+        with self.assertRaises(SystemExit):
+            self.check(action)
+
+    def test_historical_graphql_does_not_admit_a_runtime_scope(self):
+        action = self.historical_graphql()
+        action['specification_basis']['scope'] = 'PRODUCTION'
+        with self.assertRaises(SystemExit):
+            self.check(action)
+
     def readonly_retry(self):
         path = '.github/workflows/qikvrt_reflexive_repository_watchdog.yml'
         original = Path(__file__).resolve().parents[1] / path
