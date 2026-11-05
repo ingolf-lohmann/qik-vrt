@@ -4,8 +4,9 @@ name: QIK-VRT autonomous draft-PR continuation
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "37 * * * *"
+  workflow_run:
+    workflows: ["QIKVRT CI", "QIK-VRT autonomous bounded self-heal", "QIKVRT reflexive repository watchdog"]
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -25,6 +26,7 @@ on:
       - "tests/test_seed_workflows.py"
 
 permissions:
+  actions: read
   contents: write
   pull-requests: write
   statuses: write
@@ -41,7 +43,7 @@ jobs:
       OPT_IN_MARKER: "<!-- qikvrt-autonomous-self-heal:enabled -->"
     steps:
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
 
@@ -66,6 +68,54 @@ jobs:
           python3 -B "$RUNNER_TEMP/qikvrt-pr-controller.py" pr-checkout --root "$GITHUB_WORKSPACE" --sha "$live_main"
           python3 -B tools/qikvrt_tool_cache.py verify
           cp state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json "$RUNNER_TEMP/qikvrt-pr-continuation-contract.json"
+
+      - name: Admit the exact watchdog repair input before continuing existing work
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
+        env:
+          WATCHDOG_REPAIR_ROOT: ${{ runner.temp }}/qikvrt-watchdog-repair-input
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+          SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$WATCHDOG_REPAIR_ROOT"
+          mkdir -p "$root"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" > "$root/source-run.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/jobs?filter=latest&per_page=100" > "$root/source-jobs.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/artifacts?per_page=100" > "$root/source-artifacts.json"
+          artifact="$(jq -er --arg name "qikvrt-reflexive-repository-watchdog-$SOURCE_RUN_ID-$SOURCE_RUN_ATTEMPT" \
+            '[.artifacts[] | select(.name == $name and .expired == false)] | if length == 1 then .[0].id else error("unique current producer artifact required") end' \
+            "$root/source-artifacts.json")"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact/zip" > "$root/source.zip"
+          python3 -B - <<'PYTHON'
+          import os, pathlib, zipfile
+          root = pathlib.Path(os.environ['WATCHDOG_REPAIR_ROOT'])
+          if (root / 'source.zip').stat().st_size > 64 * 1024 * 1024:
+              raise SystemExit('BLOCK: oversized producer artifact')
+          with zipfile.ZipFile(root / 'source.zip') as archive:
+              name = 'error-analysis-handoff.json'
+              matches = [entry for entry in archive.infolist() if entry.filename == name]
+              if len(matches) != 1 or matches[0].file_size > 8 * 1024 * 1024:
+                  raise SystemExit('BLOCK: missing, duplicated or oversized repair input')
+              (root / name).write_bytes(archive.read(matches[0]))
+          PYTHON
+          python3 -B tools/qikvrt_autonomous_self_heal.py repair-consume \
+            --envelope "$root/error-analysis-handoff.json" \
+            --source-run "$root/source-run.json" --source-jobs "$root/source-jobs.json" \
+            --repository-name "$GITHUB_REPOSITORY" \
+            --expected-head "$(git rev-parse --verify HEAD^{commit})" \
+            --expected-tree "$(git rev-parse --verify HEAD^{tree})" \
+            --inbox "$root/inbox" > "$root/consumer-receipt.json"
+
+      - name: Preserve the independently checked repair input
+        if: always() && github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-watchdog-repair-input-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-watchdog-repair-input
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Select and record one fair exact opted-in draft PR
         id: select
@@ -198,10 +248,37 @@ jobs:
           python3 -B "$RUNNER_TEMP/qikvrt-pr-controller.py" pr-fixtures
           make test
           candidate_head="$(git rev-parse --verify HEAD^{commit})"
+          # BEGIN tested-successor checkpoint
+          test "$candidate_head" = "$(git rev-parse --verify HEAD^{commit})"
+          git diff --quiet
+          git diff --cached --quiet
+          checkpoint_dir="$RUNNER_TEMP/qikvrt-pr-successor-checkpoint"
+          test ! -e "$checkpoint_dir"
+          mkdir "$checkpoint_dir"
+          git bundle create "$checkpoint_dir/candidate.bundle" HEAD "^$EXPECTED_HEAD" "^$OBSERVED_BASE"
+          git bundle verify "$checkpoint_dir/candidate.bundle" > "$checkpoint_dir/bundle-verify.log" 2>&1
+          printf '%s\n' "$candidate_head" > "$checkpoint_dir/candidate-head.txt"
+          git rev-parse --verify HEAD^{tree} > "$checkpoint_dir/candidate-tree.txt"
+          git cat-file commit "$candidate_head" > "$checkpoint_dir/candidate-commit.raw"
+          cp "$RUNNER_TEMP/qikvrt-pr-selection.json" "$checkpoint_dir/selection.json"
+          (
+            cd "$checkpoint_dir"
+            sha256sum candidate.bundle candidate-head.txt candidate-tree.txt candidate-commit.raw selection.json bundle-verify.log > SHA256SUMS
+          )
+          # END tested-successor checkpoint
           live_head_before_push="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
           test "$live_head_before_push" = "$EXPECTED_HEAD"
           python3 -B "$RUNNER_TEMP/qikvrt-pr-controller.py" pr-publish \
             --selection "$RUNNER_TEMP/qikvrt-pr-selection.json" --sha "$candidate_head"
+
+      - name: Retain tested successor after publication failure
+        if: always() && steps.select.outputs.found == 'true' && steps.select.outputs.resume_handoff != 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # existing repository pin
+        with:
+          name: qikvrt-pr-successor-checkpoint-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-pr-successor-checkpoint/
+          if-no-files-found: ignore
+          retention-days: 30
 
       - name: Confirm no eligible work is a strict NOOP
         if: steps.select.outputs.found != 'true'

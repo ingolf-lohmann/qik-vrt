@@ -1,0 +1,175 @@
+{
+  "schema": "qikvrt_domain_route_observation_v1",
+  "recorded_at": "2026-10-26T13:16:40.219532+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "77ac57968cf043dd8801aa44cfa837976511f934",
+  "source_tree": "52ec697813d974f05cbf8d579c2e4777d50b4d3f",
+  "exact_hostname": "raumzeitterminal.de",
+  "dns": [
+    {
+      "check": "A",
+      "source_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=A",
+      "observed_at": "2026-10-26T13:16:40.165582+00:00",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "raumzeitterminal.de",
+            "type": 1
+          }
+        ],
+        "Answer": [
+          {
+            "name": "raumzeitterminal.de",
+            "type": 1,
+            "TTL": 3600,
+            "data": "217.160.0.52"
+          }
+        ]
+      }
+    },
+    {
+      "check": "AAAA",
+      "source_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=AAAA",
+      "observed_at": "2026-10-26T13:16:40.218430+00:00",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "raumzeitterminal.de",
+            "type": 28
+          }
+        ],
+        "Answer": [
+          {
+            "name": "raumzeitterminal.de",
+            "type": 28,
+            "TTL": 3600,
+            "data": "2001:8d8:100f:f000::205"
+          }
+        ]
+      }
+    },
+    {
+      "check": "NS",
+      "source_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=NS",
+      "observed_at": "2026-10-26T13:16:40.218572+00:00",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "raumzeitterminal.de",
+            "type": 2
+          }
+        ],
+        "Answer": [
+          {
+            "name": "raumzeitterminal.de",
+            "type": 2,
+            "TTL": 86400,
+            "data": "ns1115.ui-dns.biz."
+          },
+          {
+            "name": "raumzeitterminal.de",
+            "type": 2,
+            "TTL": 86400,
+            "data": "ns1035.ui-dns.de."
+          },
+          {
+            "name": "raumzeitterminal.de",
+            "type": 2,
+            "TTL": 86400,
+            "data": "ns1116.ui-dns.com."
+          },
+          {
+            "name": "raumzeitterminal.de",
+            "type": 2,
+            "TTL": 86400,
+            "data": "ns1058.ui-dns.org."
+          }
+        ]
+      }
+    },
+    {
+      "check": "verification_TXT",
+      "source_url": "https://cloudflare-dns.com/dns-query?name=_openai-site-verification.raumzeitterminal.de&type=TXT",
+      "observed_at": "2026-10-26T13:16:40.219109+00:00",
+      "data": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": false,
+        "CD": false,
+        "Question": [
+          {
+            "name": "_openai-site-verification.raumzeitterminal.de",
+            "type": 16
+          }
+        ],
+        "Answer": [
+          {
+            "name": "_openai-site-verification.raumzeitterminal.de",
+            "type": 16,
+            "TTL": 3600,
+            "data": "\"openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI\""
+          }
+        ]
+      }
+    }
+  ],
+  "existing_site": {
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "custom_domain_id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+    "hostname": "raumzeitterminal.de",
+    "provider_status": "active",
+    "ssl_status": "pending_validation",
+    "apex_proxy_ipv4_targets": [
+      "162.159.143.30",
+      "172.66.3.26"
+    ]
+  },
+  "existing_client": {
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+    "http_status": 200,
+    "html_sha256": "59b096df5ad673af52a1857d9e35f9c2e018dacdc14e84e0a1e07bcc1373e290",
+    "browser_flow_verified": false,
+    "native_runtime_admitted": false
+  },
+  "origin_tls": {
+    "owned_vps_ipv4": "217.160.163.62",
+    "ownership_source": "Retained Owner statement from 2026-10-26, not independently authenticated host identity",
+    "ip_https_observation": "Certificate/IP mismatch; not host admission",
+    "named_sni_egress_observation": "HTTP503 from envoy: upstream connection failure; no origin identity or QIKVRT runtime verified"
+  },
+  "dns_provider_operation": {
+    "source": ".github/workflows/qikvrt_ionos_dns.yml",
+    "secret_reference": "secrets.IONOS_DNS_API_KEY",
+    "method": "GET readback; existing-record PUT apply",
+    "key_value_read": false,
+    "operation_exposed_in_current_github_connector": false,
+    "provider_authenticated_readback": false,
+    "provider_write_performed": false
+  },
+  "interpretation": {
+    "first_observed_source_gap": "Explicit IPv4 cutover cannot handle the live apex AAAA using the original strict single-A path",
+    "dns_change_sufficient_for_native_runtime": false,
+    "exact_domain_client_acceptance": false,
+    "effect_ack_done": false
+  }
+}

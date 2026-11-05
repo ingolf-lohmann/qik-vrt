@@ -1,0 +1,564 @@
+{
+  "schema": "qikvrt_client_delivery_reporting_work_unit_v1",
+  "work_unit_id": "QIKVRT_REMOTE_DELIVERY_REPORTING_R1_R5_20261031",
+  "principal": "Ingolf Lohmann",
+  "kernel_proof_continuity": {
+    "directive_id": "OWNER-KERNEL-PROOF-CONTINUITY-20261031",
+    "source_instruction_sha256": "b7847f01056d259512c0058fc793bb4c8496662c0dd149105ffae26ceea446ab",
+    "existing_program": "state/work_units/UNIFIED_ONTOLOGY_KERNEL_PROGRAM_V2.json",
+    "json_pointer": "/continuous_proof_connectivity",
+    "state": "VERSIONED_REQUIREMENT_WITH_OPEN_FORMAL_AND_RUNTIME_OBLIGATIONS",
+    "delivery_reporting_receipts_cover_other_topics": false,
+    "retain_in_successor": true,
+    "local_validation_artifact": "evidence/formal-receipts/DeliveryReporting/history/KERNEL_PROOF_CONNECTIVITY_LOCAL_VALIDATION_20261031.zip",
+    "local_validation_sha256": "fa832370a6b74c08aa01db06a208a042b545a2e581c97156ca1e9b16868a2d66"
+  },
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "existing_candidate": {
+    "pull_request": 546,
+    "head": "de01755741cda99bd8ca59bcbb83d784d022a6d9",
+    "tree": "5e686d7a1a7d6b08c2da8934ec41b5c334d31180",
+    "recovery": "Original five semantic file patches applied to current Main; historical work unit retained. Integrity is regenerated, not copied."
+  },
+  "owner_supplied_incident": {
+    "evidence_class": "OWNER_SUPPLIED_MIRROR_REPORT_NOT_INDEPENDENTLY_VERIFIED",
+    "reported_at": "2026-10-31T17:33:00+01:00",
+    "reported_false_claim_at": "2026-10-31T16:53:00+01:00",
+    "claim": "Merge request for PR658 was said to have reached Authority but was only submitted to a loopback Terminal copy.",
+    "reported_network_error": "403 CONNECT from Mirror sandbox proxy",
+    "http_trace_sha256": "b7f028ed7d056f60c2708ffe08ac5b8f3a9d661d8a25498dd1298a1cf0a4ed5e",
+    "trace_bytes_available": false,
+    "authority_no_byte_received_independently_verified": false,
+    "reported_owner_effort": {
+      "value": ">2 h",
+      "evidence_class": "OWNER_ASSERTED"
+    },
+    "other_reported_errors": [
+      "Misstated own write history",
+      "Did not read OWNER-CONFLICT-FREE-GREEN-MERGE-20261028",
+      "Repeated configuration assignments to Owner"
+    ]
+  },
+  "mirror_client": {
+    "reported_commit": "75522c4911304efbe14fd9780c1a49bb7700e1f3",
+    "required_tree": "3954495264e5e1fedbdcbac7d919189872c6810d",
+    "patch_filename": "0001-eap-mirror-client.patch",
+    "reported_patch_sha256": "24099374de70ed537421513c81a8452cbd095a204b75c6b6fa1ebd5aedb1531f",
+    "patch_bytes_available": false,
+    "imported": false,
+    "state": "HOLD_EXACT_ORIGINAL_PATCH_AND_TREE_NOT_AVAILABLE",
+    "reported_tests": {
+      "python": "4/4",
+      "conformance": "68 OK",
+      "independently_reexecuted": false
+    },
+    "authority_lookup": "GET exact original commit 75522c4911304efbe14fd9780c1a49bb7700e1f3 returned HTTP404 from Authority; bounded workspace filename search found no patch or HTTP trace."
+  },
+  "causal_repair": {
+    "existing_validator": "tools/ai_handoff.py --client-receipt",
+    "new_executor": false,
+    "normative_rules": "R1-R5 in AI and shared progress policy",
+    "executable_scope": "Declared communication consistency, remote observation chronology, message/node/host binding, loopback/status/replay rejection; no evidence authentication, arbitrary prose checking or universal adoption claim."
+  },
+  "native_readback": "evidence/client-delivery/AUTHORITY_READBACK_20261031.json",
+  "original_native_job_logs": [
+    {
+      "path": "job-124579086355.log",
+      "bytes": 798233,
+      "sha256": "6c53e8707515b07b9667c95d0f80cc09abeafffee353aef25576c7b98ccc483d",
+      "original_decoded_connector_text_matches": true,
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579086355/logs"
+    },
+    {
+      "path": "job-124579087227.log",
+      "bytes": 800111,
+      "sha256": "407dea7f811bfd4b049c90c12a2cf656fbc1b840ee2cd542d78b093b70d1bc03",
+      "original_decoded_connector_text_matches": true,
+      "source": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/jobs/124579087227/logs"
+    }
+  ],
+  "pr658_merge": {
+    "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+    "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+    "merge_attempted": false,
+    "open_gates": [
+      "Draft transition",
+      "Exact-head native governance/technical disposition",
+      "Current Main, platform and competing-writer reobservation"
+    ],
+    "green_test_workflows": [
+      41215513746,
+      41215513755
+    ],
+    "failed_materialization_run": 41215514005,
+    "owner_review": "Accepted as Owner-supplied assertion; no independent GitHub review or comment invented.",
+    "failed_batch003_remaining_disposition_run": 41215513887,
+    "rerun": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "run_id": 41215514005,
+      "attempt": 2,
+      "job_id": 124601748625,
+      "state_at_readback": "completed_success",
+      "preflight": "success",
+      "merge_attempted": false,
+      "duplicate_dispatch_allowed": false,
+      "closing_evidence": {
+        "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+        "run": 41215514005,
+        "attempt": 2,
+        "job": 124601748625,
+        "conclusion": "success",
+        "original_log_sha256": "3ea5d879e2c9b199ada275c12c8223712a214450982601f0329fa1183921ef6f"
+      }
+    },
+    "rerun_causal_evidence": "The same Git-Data archive preflight succeeded in native job124598246404 with unchanged workflow/journal code and same repository token carrier; complete inventory showed no equivalent active exact-head run before the single rerun."
+  },
+  "open_obligations": [
+    {
+      "id": "PR658_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "W5 materializer41215514005 attempt2 is independently verified SUCCESS at a56b0632. Require current native governance, Draft transition, platform/competing-writer gates and eventual merge readback separately; do not rerun successful materialization unchanged."
+    },
+    {
+      "id": "ORIGINAL_MIRROR_CLIENT",
+      "state": "OPEN",
+      "next_action": "Recover original separately announced patch through admitted carrier; verify exact bytes and reported tree before any import."
+    },
+    {
+      "id": "AUTHORITY_OWNER_REST_GRANT",
+      "state": "OPEN_NOT_OBSERVED",
+      "next_action": "Original admitted host must independently read back the sealed grant for claude:mirror and own 0600 token file; no secret is requested or published."
+    },
+    {
+      "id": "EXACT_HOST_ADMISSION",
+      "state": "OPEN",
+      "next_action": "Original admitted host must repair the observed TLS/runtime prerequisite and verify exact-domain EAP receipt; the current adapter reports HTTP525 and ready=false."
+    },
+    {
+      "id": "MIRROR_NETWORK_PATH",
+      "state": "OPEN_MIRROR_REPORTED",
+      "next_action": "Mirror runtime must verify its own authorized network path and protected token binding; Authority cannot infer that from local tests."
+    },
+    {
+      "id": "ALL_NODE_ADOPTION",
+      "state": "OPEN",
+      "next_action": "Require each admitted node exact-policy ACK and independent remote readback; source persistence is insufficient."
+    }
+  ],
+  "validation": {
+    "state": "FINAL_LOCAL_SOURCE_GATES_PASS",
+    "full_make_test_exit": 0,
+    "reported_python_test_executions": 2277,
+    "targeted_test_count": 154,
+    "baseline_comparison": {
+      "original_main_false_acceptances": 4,
+      "repaired_rejections": 4
+    },
+    "alternate_address_controls": "Loopback literal, shorthand, octal, hexadecimal and mapped IPv6 rejected; declared admitted private remote address remains a distinct positive case.",
+    "raw_local_validation": "evidence/client-delivery/PR546_FINAL_LOCAL_VALIDATION.zip",
+    "integrity": "Regenerated and verified again after final evidence packaging.",
+    "native_ci": "FRESH_FINAL_HEAD_NATIVE_CI_REQUIRED; predecessor native success is historical only."
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann supplied incident, rule request and existing authorizations.",
+    "artificial_cognitive": "Claude self-reported incident and client candidate; Codex independently read GitHub/adapter evidence, recovered PR546 and implemented this bounded repair.",
+    "unresolved": "Raw Mirror HTTP trace and client patch not supplied; no remote Claude identity or delivery authenticated."
+  },
+  "completion_claims": {
+    "main_integration": false,
+    "pr658_merged": false,
+    "mirror_client_imported": false,
+    "live_eap_delivery": false,
+    "all_nodes_adopted": false,
+    "productive_effect_ack_done": false
+  },
+  "local_bootstrap_incident": {
+    "artifact": "Untracked transfer temporary blocked this session initial bootstrap",
+    "bytes": 55574528,
+    "sha256": "1fd21d0e66315e07c8e89d40ca9e59df385dc8973c4e8ffecc0832d4e98e4e5c",
+    "action": "Quarantined outside checkout; original bytes retained in scratch",
+    "subsequent_bootstrap": "CONTINUE",
+    "cause": "NOT_ESTABLISHED; do not attribute local temporary to remote Main failure"
+  },
+  "independent_review_lookup": {
+    "direct_owner_decision_for_reported_1641_exact_head": "NOT_RECOVERED",
+    "source": "Bounded Personal Context lookup for exact PR658 head; no raw current-head Owner decision recovered. Prior assistant summaries are not review authority.",
+    "existing_generic_owner_authorizations_retained": true
+  },
+  "connector_capability_observation": {
+    "authenticated_login": "ingolf-lohmann",
+    "authenticated_id": 294949349,
+    "branch_protection_read": "HTTP403 Resource not accessible by integration",
+    "rules_branches_read": "Connector URL allowlist rejected /rules/branches/main (HTTP400); not a target protection result",
+    "successful_repository_reads_and_existing_authorization_invalidated": false
+  },
+  "corrections": [
+    {
+      "supersedes": "91c086deec1d01ed69594dc7bd6156fdabb7409b:run-name attribution",
+      "observed_defect": "Both original jobs are named materialize; the initial snapshot incorrectly assigned the required repository materialization identity to 41215513887.",
+      "correct_binding": {
+        "repository_evidence_materialization": {
+          "run_id": 41215514005,
+          "job_id": 124579087227
+        },
+        "batch003_remaining_subject_disposition": {
+          "run_id": 41215513887,
+          "job_id": 124579086355
+        }
+      },
+      "source": "evidence/client-delivery/FAILED_RUN_IDENTITY_READBACK_20261031.json",
+      "scope_change": "None: both original native failures remain HTTP403, neither is green; no merge was attempted."
+    },
+    {
+      "supersedes": "91c086deec1d01ed69594dc7bd6156fdabb7409b:raw log export byte sizes",
+      "observed_defect": "The initial local patch carrier appended one extra terminal LF to each decoded log. No original line was removed.",
+      "repair": "Remove exactly that extra LF, compare the entire retained decoded string with original connector output, rebuild the ZIP and pin corrected byte sizes/digests.",
+      "original_line_content_rewritten": false
+    }
+  ],
+  "predecessor_validation": {
+    "state": "LOCAL_CURRENT_SOURCE_GATES_PASS",
+    "full_make_test_exit": 0,
+    "reported_python_test_executions": 2276,
+    "targeted_test_count": 153,
+    "baseline_comparison": {
+      "original_main_false_acceptances": 4,
+      "repaired_rejections": 4,
+      "cases": [
+        "missing remote readback",
+        "loopback receipt",
+        "HTTP403",
+        "HTTP525"
+      ]
+    },
+    "integrity": "Deterministically regenerated; fresh final verification required after evidence packaging.",
+    "raw_local_validation": "evidence/client-delivery/PR546_REMOTE_READBACK_LOCAL_VALIDATION.zip",
+    "native_ci": "FRESH_REMOTE_CANDIDATE_RUN_REQUIRED",
+    "source_head": "91c086deec1d01ed69594dc7bd6156fdabb7409b",
+    "scope": "Historical code validation before final alternate-IP controls; not transferred to final head."
+  },
+  "native_predecessor_success": {
+    "head": "91c086deec1d01ed69594dc7bd6156fdabb7409b",
+    "tree": "39d062f8c348327ce64c860668e77745d9acc317",
+    "full_ci": 41221975828,
+    "materializer": 41221975958,
+    "materializer_job": 124598246404,
+    "conclusion": "success",
+    "success_transferred_to_final_head": false
+  },
+  "independent_formal_readback_repair": {
+    "source_head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+    "source_tree": "c93d1149a067026f1b5884a1322f421643df5231",
+    "native_run": 41238540287,
+    "native_job": 124647324632,
+    "native_artifact": 13056581157,
+    "original_archive": "evidence/formal-receipts/DeliveryReporting/PREDECESSOR_06F0320F_NATIVE.zip",
+    "archive_sha256": "67c49323f42c3b47cb245006d1d18b8a3ef06553d8db7a32531f0a44509ff9bd",
+    "handoff_comment": "https://github.com/ingolf-lohmann/qik-vrt/pull/546#issuecomment-6548712456",
+    "comment_original_bytes_independently_readback_equal": true,
+    "causal_repairs": [
+      "Own replay used an environment diff and replayed 4902 declarations; PANIC did not prevent a printed PASS or exit0. Select original module data against exact original imports; reject PANIC/error independently of exit code.",
+      "nanoda rejected a Nat literal because its configuration omitted the original Lean-bundle nat_extension/string_extension switches. Restore the exact documented extension settings, preserving axiom policy.",
+      "Import the original 393794-byte/1152-vector artifact output, pin SHA-256 5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff; no vector verdict was hand-authored."
+    ],
+    "current_acceptance": "FRESH_REPAIRED_HEAD_NATIVE_EXECUTION_REQUIRED",
+    "seven_checkers_pass": false,
+    "main_merged": false,
+    "productive_effect_ack_done": false,
+    "local_runtime": "Official hash-verified Lean4.19/4.35 executables cannot resolve numeric /proc/<pid>/exe in this client runtime; no executable modification or protection bypass performed. Native workflow is reused.",
+    "prior_local_duplicate_implementation": "Not published; two fresh branch readbacks detected concurrent source writers. Existing ai_handoff runner/policy/bridge/merge evaluator reused.",
+    "w5_materialization_readback": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+      "run": 41215514005,
+      "attempt": 2,
+      "job": 124601748625,
+      "conclusion": "success",
+      "original_log_binding": "evidence/client-delivery/PR658_MATERIALIZATION_ATTEMPT2_JOB124601748625.json",
+      "rerun_by_this_client": false,
+      "scope": "Materialization only; no governance, merge, deployment or production effect"
+    }
+  },
+  "owner_supplied_formal_artifact_handoff": {
+    "record": "evidence/formal-receipts/DeliveryReporting/OWNER_HANDOFF_20261031.json",
+    "own_kernel_log": "evidence/formal-receipts/DeliveryReporting/own-kernel-run.txt",
+    "vectors_sha256": "5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+    "prior_open_obligations_retained": true,
+    "fresh_final_head_native_acceptance_required": true
+  },
+  "formal_proof_obligation_continuation": {
+    "schema": "qikvrt-formal-obligation-continuation/v1",
+    "request_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "source_predecessor": {
+      "head": "06f0320f333940cfaa9ddd2f25f628bbfed22e1d",
+      "tree": "c93d1149a067026f1b5884a1322f421643df5231"
+    },
+    "owner_authorization_retained": true,
+    "carrier": "PR546 fix/client-communication-evidence-20261019",
+    "observed_at_utc": "2026-10-31T20:31:00.346136+00:00",
+    "verified_local": [
+      "Original native-generated 1152 vectors imported; sha256=5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff",
+      "All generated verdicts agree through actual receipt validator and bounded original CLI controls",
+      "Status-condition mutant detected; six-of-seven, replay, foreign subject, payload/log/commit drift and zero-exit panic controls reject",
+      "322 existing targeted tests and 10 bridge/gate tests passed on the uncommitted successor inputs"
+    ],
+    "native_predecessor": {
+      "run_id": 41238540287,
+      "job_id": 124647324632,
+      "archive_sha256": "67c49323f42c3b47cb245006d1d18b8a3ef06553d8db7a32531f0a44509ff9bd",
+      "model_build": "success",
+      "axiom_audit": "four named theorem dependencies recorded",
+      "generated_vectors": "verified original bytes",
+      "own_receipt": "UNVERIFIED: missing vector pin/import; replay also emitted a panic despite exit0",
+      "nanoda": "UNVERIFIED: literal extensions disabled",
+      "overall": "NOT_ACCEPTED; do not transfer predecessor successes"
+    },
+    "causal_repairs": [
+      "Replay exact module-index declarations only; abort on original Lean panic; independently reject panic-bearing logs even after exit0",
+      "Configure nanoda documented Nat/String extensions; preserve axiom allowlist",
+      "Pin original native-generated vectors and validate fresh regeneration",
+      "Keep post-Alpha2 modules outside the immutable historical source archive",
+      "Keep the historically pinned root lakefile.toml byte-identical; isolate the new target in its own Lake project.",
+      "Correct the transport fixture changed_files count to its actual single-file inventory; add a negative scope-truncation control."
+    ],
+    "W5": {
+      "subject": "PR658 a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "required_materializer": {
+        "run": 41215514005,
+        "attempt": 2,
+        "result": "success"
+      },
+      "requested_review_disposition": {
+        "run": 41215513700,
+        "attempt": 2,
+        "result": "success",
+        "principal_approval": false
+      },
+      "batch003": {
+        "run": 41215513887,
+        "attempt": 2,
+        "result": "success"
+      },
+      "retry_count_this_continuation": 0,
+      "evidence": "evidence/formal-receipts/DeliveryReporting/history/READBACK_AND_CHECKER_IDENTITIES.json"
+    },
+    "open_work": [
+      {
+        "id": "EXACT_SUCCESSOR_SEVEN_CHECKERS",
+        "next_action": "Publish tested successor with regenerated integrity; read original exact-head seven-checker workflow and inspect all original receipts/logs, including replay panic absence."
+      },
+      {
+        "id": "NATIVE_CI_AND_GOVERNANCE",
+        "next_action": "Require current-head complete native CI, materialization and actual governance; preserve Draft and all standing Owner grants."
+      },
+      {
+        "id": "UNIVERSAL_IMPLEMENTATION_REFINEMENT",
+        "next_action": "Finite vectors are the requested bridge, not a universal Python refinement theorem; keep that stronger claim unproved."
+      },
+      {
+        "id": "R3_R5_AND_ACTUAL_CLIENT_ADOPTION",
+        "next_action": "Retain provenance, durable correction and per-node actual adoption duties outside the finite model."
+      },
+      {
+        "id": "PRODUCTION",
+        "next_action": "Original runtime admission, protected bindings, exact-domain acceptance and productive effect require their own authenticated fresh readback."
+      }
+    ],
+    "completion_claims": {
+      "seven_of_seven": false,
+      "main_integrated": false,
+      "all_nodes_adopted": false,
+      "productive_effect_ack_done": false
+    },
+    "local_full_suite": "Predecessor run stopped at two merge transport fixture assertions after introducing strict complete change-scope validation. Causal fixture correction is covered by targeted rerun; final exact-subject full suite still required.",
+    "concurrent_source_adopted": {
+      "head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+      "tree": "21ba89554d0f7f0289b676d92e0ad155cbda7e32",
+      "preserved": [
+        "Exact module-payload replay against original imports",
+        "Original panic/error guard and negative control",
+        "Original PR658 successful materializer log binding",
+        "All predecessor knowledge and source/proof limits"
+      ],
+      "remaining_causal_repair": "Isolate additive target so existing original manuscript/causal-distance source identities remain byte-current; retain stricter 7/7 receipt/input checks."
+    },
+    "corrections": [
+      {
+        "supersedes": "Unpublished local module-index replay proposal",
+        "adopted": "Reuse the already published exact readModuleData module-payload replay from03c665f8, retaining original import boundaries and its separately tested panic/error detector."
+      }
+    ],
+    "additional_concurrent_source_adopted": {
+      "head": "4c2b284f3df9032b9ad2b7b76ec077f9ba9b2ba7",
+      "tree": "683ca9f5717b13e0fd7c851cae945ad04048ed7f",
+      "preserved": "Owner-supplied original kernel log, audit archive and metadata; correct original git rev-parse HEAD/TREE collection. No compatibility preload is used for this client proof claim."
+    },
+    "verified_native_predecessor": {
+      "head": "9fe7057167beb381c3f3272c6e6d2b977529113d",
+      "tree": "e56b962fe9a5ba623f06ae89235e6f7ca1a852b5",
+      "receipt": "evidence/formal-receipts/DeliveryReporting/SEVEN_CHECKER_READBACK_9FE70571.json",
+      "seven_checker_receipts_independently_verified": true,
+      "manuscript_gate": "Source bind repaired; original global proof audit still lacks the isolated olean; repair is prepared without changing its original checker",
+      "full_suite": "Exact9fe local full run interrupted after causal native integration failure; not reported as PASS",
+      "success_transferred_to_successor": false
+    },
+    "native_model_and_manuscript_readback": {
+      "head": "2eb18c6b17da0c8773242879eca0dae755c65017",
+      "tree": "88208f5e4ee77f7faea34ef8f4bac9b0a12a0514",
+      "readback": "evidence/formal-receipts/DeliveryReporting/SEVEN_CHECKER_READBACK_2EB18C6B.json",
+      "formal_native_run": 41241017095,
+      "seven_original_logs_and_receipts_verified": true,
+      "manuscript_native_run": 41241017230,
+      "manuscript_conclusion": "success",
+      "source_input_bytes_changed_by_receipt_persistence": false,
+      "full_exact_current_head_ci": "OPEN; observe existing events without duplicate dispatch",
+      "main_integration": false,
+      "productive_effect": false
+    }
+  },
+  "exact_cli_and_execution_binding_closure": {
+    "source_parent": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "adopted_concurrent_source": [
+      "4c2b284f3df9032b9ad2b7b76ec077f9ba9b2ba7",
+      "9fe7057167beb381c3f3272c6e6d2b977529113d",
+      "2eb18c6b17da0c8773242879eca0dae755c65017",
+      "47f586be5e1cd6589ae9ba7dbd72558663402618"
+    ],
+    "owner_source_sha256_verified": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "w3_delta": "Every original Lean vector now passes through the actual --client-receipt CLI, not just direct function calls. A real CLI mutant must disagree.",
+    "receipt_delta": "Always require valid, mutually identical 40-hex execution HEAD/TREE, including outside native CI. Reject unavailable metadata; retain source-bound historical receipts as historical.",
+    "proof_scope": "Decidable declared evidence model plus finite implementation conformance; not universal program refinement or authenticated network truth.",
+    "acceptance": "NEW_EXACT_HEAD_NATIVE_7_OF_7_AND_COMPLETE_CI_REQUIRED",
+    "main_merged": false,
+    "runtime_or_productive_effect": false,
+    "local_verification": {
+      "command": "python3 -B -m unittest tests.test_delivery_reporting_proof -v",
+      "exit_code": 0,
+      "tests": 11,
+      "cli_vectors": 1152,
+      "cli_mutation_detected": true,
+      "log_sha256": "fb04cd9f1afa5610b8d39daf8de02c9e936218838119242fece06a78a0d8e32e"
+    },
+    "verified_native_source": {
+      "head": "7d284007176ed3ad1c50f1311666bc404b805b01",
+      "tree": "3d9d7bede3a25dac0843ba08202e5f218de7c9a6",
+      "run": 41242088777,
+      "attempt": 1,
+      "job": 124657887607,
+      "artifact": 13057757589,
+      "archive_sha256": "2a3f88355d274310bf55b062019e92d207e7304565739c3089ab675db6a25a58",
+      "readback": "evidence/formal-receipts/DeliveryReporting/SEVEN_CHECKER_READBACK_7D284007.json",
+      "all_seven_original_receipt_log_and_payload_digests_verified": true,
+      "cli_vectors": 1152,
+      "cli_mutation_detected": true,
+      "manuscript_run": 41242088847,
+      "manuscript_conclusion": "success"
+    },
+    "full_local_validation": {
+      "command": "make test",
+      "exit_code": 0,
+      "reported_python_executions": 2278,
+      "input_tree": "3d9d7bede3a25dac0843ba08202e5f218de7c9a6",
+      "log_sha256": "1dcd2adca56d0f26d5a8e1a32526a3218f3592a1336910666b0b54e5f0b7ec0f",
+      "archive": "evidence/formal-receipts/DeliveryReporting/CLI_BRIDGE_VERIFICATION_7D284007.zip",
+      "archive_sha256": "c32354c7e84248ed3a79ca10a7f797f5e9038c34dd795457e825d08383986896"
+    },
+    "native_delivery_readback": "evidence/native-runtime-acceptance/QIKVRT_DELIVERY_REPORTING_7D284007_NATIVE_CONNECTION.json",
+    "checkpoint_scope": "Original7d checker receipts retained exactly; evidence-only successor does not inherit CI success; fresh current-head native checks remain required.",
+    "adopted_evidence_only_parent": "20d99e34d5eb12995d36f369706685d7fb1411ca"
+  },
+  "eap_client_scope_repair_20261101": {
+    "source_predecessor": {
+      "head": "3c0d55da083d29a77d7136f352dd9346aaadd530",
+      "tree": "163215da8855388377ca5d36e32225ca0e2b9f48"
+    },
+    "owner_request_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "evidence_archive": "evidence/formal-receipts/DeliveryReporting/history/EAP_CLIENT_SCOPE_AUDIT_20261101.zip",
+    "archive_sha256": "681f8c019f49658c73309a4ee62c0050f814f3e337be6d4f3d160626f1dd21a2",
+    "observed_hole": {
+      "path": "tools/qikvrt_eap_mirror_client.py",
+      "original_formal_proof_required": false
+    },
+    "causal_repair": "Extend existing eap_clients glob and both native event filters; test the original REST merge evaluator with this path and require REQUIRED_EXACT_HEAD_GATE_MISSING without native proof. No new executor or EAP-client import.",
+    "local_validation": {
+      "make_test_exit_code": 0,
+      "reported_python_executions": 2278,
+      "targeted_tests": 169,
+      "targeted_exit_code": 0,
+      "actual_cli_vectors": 1152,
+      "actual_status_mutant_detected": true,
+      "original_policy_hole_mutant_detected": true
+    },
+    "tested_source_sha256": {
+      "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json": "ea96e81b86c3c17399ab1341cc4427fbacbf581b985a6fbdbd4b793783fcc125",
+      ".github/workflows/qikvrt_universal_ontology_formalization.yml": "29e69f392d902d3eb9f0874ee5b08d376049c46e666cdc10735b383d90435134",
+      "tests/test_delivery_reporting_proof.py": "7cc8e13ff412b790bd8451f618058ca48f1945c8c16d0139fc59f418aa4080e6"
+    },
+    "native_predecessor": {
+      "formal": 41243958004,
+      "general_ci": 41243958210,
+      "materialization": 41243957915,
+      "all_completed_success": true,
+      "acceptance_transferred_to_successor": false
+    },
+    "W5": {
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "run": 41215514005,
+      "attempt": 2,
+      "job": 124601748625,
+      "conclusion": "success",
+      "original_log_sha256": "3ea5d879e2c9b199ada275c12c8223712a214450982601f0329fa1183921ef6f"
+    },
+    "N3": {
+      "state": "HOLD_LITERAL_ADVERTISED_REF_CRITERION",
+      "all_names_resolved": true,
+      "exact_source_objects_confirmed": true,
+      "pins_changed": false,
+      "replacement_checkers_used": false,
+      "next_action": "Independent Mirror/Owner disposition of literal advertised-ref criterion. Do not infer acceptance from exact object existence."
+    },
+    "open_obligations_retained": true,
+    "fresh_exact_successor_seven_checker_and_ci_readback": "REQUIRED",
+    "mirror_N1_N10_acceptance_asserted": false,
+    "main_integration": false,
+    "productive_effect_ack_done": false,
+    "contributions": {
+      "human": "Ingolf Lohmann supplied the three-part Claude Mirror analysis and existing continuation authorization.",
+      "artificial_cognitive": "Codex independently read originals, detected and repaired EAP scope hole, ran regressions/full suite and preserved source/log bindings."
+    }
+  },
+  "mirror_client_change_class_repair_20261031": {
+    "source_head": "47f586be5e1cd6589ae9ba7dbd72558663402618",
+    "source_tree": "bf7120b1acfe7cf909750417c8befe399779ea5b",
+    "mirror_source_head": "110ad19aab36548b6fa20b84fcbbdd6556839556",
+    "defect": "The actual tools/qikvrt_eap_mirror_client.py and tests/test_eap_mirror_client.py match none of the existing formal-proof change classes. The original conditional REST merge evaluator fixture marked either isolated change PROMOTABLE without the formal workflow.",
+    "causal_repair": "Add both actual paths to existing eap_clients AND both existing formal workflow event path filters; existing classification/REST-merge regression and executable event-filter matching prove isolated client/test changes cannot silently skip the obligation.",
+    "scope": "Policy classification and actual evaluator regression; no universal refinement proof or live provider merge is inferred from the fixture.",
+    "original_analysis_sha256": "e72e589f4fd6ff009beeafaf0c314ed896f2a7314fa298875fcd72ac439495d1",
+    "evidence": "evidence/native-runtime-acceptance/authority-succession-20261016/CODEX_CONTINUATION_20261031.json",
+    "fresh_successor_seven_checker_execution_required": true,
+    "predecessor_seven_checker_acceptance_transferred": false,
+    "prior_obligations_and_corrections_retained": true,
+    "native_writer_activation_or_main_integration": false,
+    "productive_effect_ack_done": false,
+    "composite_base_head": "8ad38553fcb365d1b2941cec30a8caed91c46e7e",
+    "competing_writer_preserved": "Original47 ->7d284007 ->20d99e34 ->8ad38553 all preserved; source proposal stays on a separate branch.",
+    "reconciled_base_head": "3c0d55da083d29a77d7136f352dd9346aaadd530",
+    "reconciliation": "Preserve3c kernel_proof_continuity, exact unified ontology program and original validation archive; executable policy, workflow and tests remain byte-identical to tested9690 source."
+  },
+  "pr659_current_main_reconciliation_20261101": {
+    "source_head": "eed99965d8c692e8bbaaaf7387b52bec6b0167cf",
+    "main_head": "1be4d45a3455dc24a4b69f0f0f290fc2cf3a3f8e",
+    "preserved_main_mirror_client_glob": "tools/qikvrt_eap*.py",
+    "residual_repair": "Require the formal proof obligation and both native event filters for isolated tests/test_eap_mirror_client.py changes, which current Main leaves outside the class.",
+    "all_distinct_predecessor_records_preserved": true,
+    "original_authority_fallback_and_pending_duties_retained": true,
+    "exact_successor_native_checks_and_seven_receipts_required": true,
+    "native_role_activation_or_productive_effect_inferred": false,
+    "analysis_predecessor_main": "a8ec0bc8a32599e30409aca708564d4d03003119"
+  }
+}

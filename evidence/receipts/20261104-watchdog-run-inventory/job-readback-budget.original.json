@@ -1,0 +1,11 @@
+{
+  "effect_ack_done": false,
+  "expected_head_sha": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+  "first_blocker": "RUN_INVENTORY_INCOMPLETE",
+  "max_job_requests": 20,
+  "reported_run_count": 213,
+  "returned_run_count": 100,
+  "run_ids": [],
+  "schema": "qikvrt_job_readback_budget_v1",
+  "state": "HOLD"
+}

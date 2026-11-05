@@ -1,0 +1,4 @@
+/workspace/scratch/54daab75c95f/qik-vrt/docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative/FalsePublicNoticeAuthenticatesPayload.lean:6:55: error: tactic 'decide' proved that the proposition
+  { signature := [true], rights := [true], stableId := [], payload := [false] }.payload =
+    { signature := [true], rights := [true], stableId := [], payload := [true] }.payload
+is false

@@ -1,0 +1,28 @@
+{
+  "schema": "qikvrt_lean_publication_negative_controls_v1",
+  "proof_sha256": "8adce48052a5ca641912e2a7735d170fd2df277c228afc100898a8539bf0b9c3",
+  "controls": [
+    {
+      "control": "candidate_hash_changed",
+      "rejected": true,
+      "diagnostic": "SHA-256 mismatch for release/causal-distance-lean-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf"
+    },
+    {
+      "control": "kernel_receipt_removed",
+      "rejected": true,
+      "diagnostic": "unresolved proof_refs reference for CDL-001: release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json#QIKVRT.CausalDistance.V1.path_append"
+    },
+    {
+      "control": "open_claim_as_fact",
+      "rejected": true,
+      "diagnostic": "CD-011 has a disposition inconsistent with OPEN"
+    },
+    {
+      "control": "upload_member_missing",
+      "rejected": true,
+      "diagnostic": "Zenodo upload fileset differs from the exact proof-bearing set: missing=release/causal-distance-lean-2026-10-24/Prosaartikel.txt"
+    }
+  ],
+  "all_rejected": true,
+  "production_effect_performed": false
+}

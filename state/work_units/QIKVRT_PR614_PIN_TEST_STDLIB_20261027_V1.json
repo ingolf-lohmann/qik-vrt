@@ -1,0 +1,74 @@
+{
+  "authorization_basis": "Existing PR614 continuation and the standing 2026-10-26 known-error repair directive in AI and AGENTS.md; no Main merge or production delivery.",
+  "branch": "ci/actions-node24",
+  "effect_boundaries": {
+    "effect_ack_done": false,
+    "merge_established": false,
+    "productive_host_accepted": false,
+    "successor_requires_own_native_ci": true,
+    "this_file_is_native_ci_acceptance": false
+  },
+  "implementation_contribution": "OpenAI Codex",
+  "local_validation": {
+    "before_log_sha256": "b1d7d24fa9102d0335dac35455e62b8bbbd23a05eebbe04cad3acd3d9178b81c",
+    "original_failure_reproduced_with_site_disabled": true,
+    "semantic_comparison": {
+      "all_reference_policies_match": true,
+      "negative_controls": [
+        {
+          "assertion_failures": 1,
+          "case": "retired-active-pin",
+          "rejected": true
+        },
+        {
+          "assertion_failures": 1,
+          "case": "historical-job-rewritten",
+          "rejected": true
+        },
+        {
+          "assertion_failures": 3,
+          "case": "historical-guard-removed",
+          "rejected": true
+        }
+      ],
+      "reference_jobs_compared": 117
+    },
+    "site_disabled_command": "python3 -S -B -m unittest -v tests.test_workflow_action_runtime_pins",
+    "site_disabled_result": "PASS",
+    "site_disabled_test_count": 12,
+    "test_file_sha256": "fb25140721ad0bd8b40c39415711a5617873f06e64ffb28c7d91a99f84f95a91"
+  },
+  "native_failure": {
+    "component": "tests/test_workflow_action_runtime_pins.py",
+    "diagnosis": "The new workflow-pin test imported unprovisioned PyYAML. The native Python 3.12.15 runner has no such package; python3 -S reproduced the same import failure locally.",
+    "error": "ModuleNotFoundError: No module named 'yaml'",
+    "head_sha": "5707c9dfbe77afb125b49f50654fe3ee73e8c10b",
+    "job_id": 122275110188,
+    "job_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40528667204/job/122275110188",
+    "run_id": 40528667204,
+    "run_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/40528667204"
+  },
+  "original_carrier": {
+    "original_carrier_bytes_changed": false,
+    "original_expected_head": "5ddbd1a6f0426026dde90d3065aa615215cbe4c6",
+    "remote_effect_and_independent_readback": "VERIFIED_FOR_PARENT_HEAD_ONLY",
+    "reproduced_tree": "31f06f176a6dacd14a597cb6c7a6cb823a1cef62"
+  },
+  "original_pin_test_contribution": "Claude (Anthropic)",
+  "owner": "Ingolf Lohmann",
+  "parent_head": "5707c9dfbe77afb125b49f50654fe3ee73e8c10b",
+  "parent_tree": "31f06f176a6dacd14a597cb6c7a6cb823a1cef62",
+  "pull_request": 614,
+  "recorded_at_utc": "2026-10-27T15:26:53.152605+00:00",
+  "repair": {
+    "action_pins_changed": false,
+    "existing_path": "tests/test_workflow_action_runtime_pins.py",
+    "guards_weakened": false,
+    "method": "Replace only the new YAML-loader dependency with a bounded standard-library reader of repository job-level if/needs declarations; reject unsupported dependency syntax and malformed scalar quotes. Preserve the original pin, cache, registry and historical-job assertions.",
+    "reuse_search": "tools/, src/ and tests/ contain no other YAML loader or reusable general job-policy reader; extend the existing workflow-text regression rather than introduce a dependency or production executor.",
+    "third_party_package_added": false,
+    "workflow_bytes_changed": false
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt-pr614-stdlib-pin-test-repair/v1"
+}

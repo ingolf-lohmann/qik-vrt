@@ -1,0 +1,56 @@
+{
+  "schema": "qikvrt-workspace-access-declaration/v1",
+  "owner": "Ingolf Lohmann",
+  "original": {
+    "path": "docs/monitor/workspace-original.html",
+    "bytes": 10023,
+    "sha256": "8f380fd8d6c141eeb5187f5ba0b8483525ea0ea09c089e27a2d43828ced16495",
+    "source_date": "2026-10-25"
+  },
+  "source_contract": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "6df6eead739c01410bdfc4bb7148fa69f36c537b",
+    "tree": "4b414b1a1b8c36aa57019f38d3093627b2e599f7",
+    "policy": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "runtime_manifest_readback": "/api/runtime",
+    "native_status": "/api/eap/state",
+    "native_effect_scope": "ORIGINAL_OWNER_REST_DURABLE_TEXT_INPUT"
+  },
+  "workspace": {
+    "id": null,
+    "member": null,
+    "membership": "UNVERIFIED",
+    "license_acceptance": "UNVERIFIED",
+    "access_release": "HOLD",
+    "native_owner_admission_is_workspace_membership": false
+  },
+  "acceptance_requires": [
+    "AUTHENTICATED_MEMBER",
+    "ACTUAL_WORKSPACE",
+    "LICENSE_VERSION_AND_ORIGINAL_TEXT",
+    "ARTIFACT_MANIFEST",
+    "EXPLICIT_ACCEPTANCE_TIMESTAMP",
+    "INDEPENDENT_MEMBERSHIP_READBACK",
+    "INDEPENDENT_ACCESS_READBACK"
+  ],
+  "licenses": [
+    {
+      "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    {
+      "path": "LICENSE-CODE-APACHE-2.0.txt",
+      "sha256": "2f3e4ba2e1025aa5282ae21a8850863c1a55b7aae983919b51986918a0533d56"
+    },
+    {
+      "path": "docs/monitor/REACT_LICENSE.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    }
+  ],
+  "ordinary_release": false,
+  "effect_ack_done": false
+}

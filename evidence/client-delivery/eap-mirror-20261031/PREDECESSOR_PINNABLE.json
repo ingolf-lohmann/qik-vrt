@@ -1,0 +1,242 @@
+{
+  "schema": "qikvrt-client-continuation/1",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "fix/client-communication-evidence-20261019",
+    "head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+    "tree": "7f2253bfc8e2869b0545790a8fa8ab1975cdc471"
+  },
+  "authorization": {
+    "granted": true,
+    "source": "Current Owner-supplied R1-R5 request; state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json; existing known-error repair grant"
+  },
+  "requested_authorization_again": false,
+  "inventory": {
+    "repository": "AI and exact source inputs reconstructed from Main5a42baf4; existing PR546 retained and advanced without history rewrite; final source ref/tree independently read from GitHub.",
+    "connector": "Authenticated GitHub Principal ingolf-lohmann/id294949349; contents/ref/PR mutations and independent reads verified. Branch protection GET separately403; /rules/branches/main rejected by connector allowlist. Native connector ready=false.",
+    "cli": "Isolated local Git copy; locked tool/cache coverage44/44; final154 targeted tests and full make test exit0; deterministic integrity5360/5349; no original host listener/admission fabricated.",
+    "mesh": "Existing native connection tool reports HTTP525 for raumzeitterminal.de and ADMITTED_MESH_RUNTIME_ENDPOINT open. No native prepare/commit, peer arrival or receiver NACK issued. Exact Mirror commit lookup404; patch unavailable."
+  },
+  "attempts": [],
+  "attempt_scope": "This receipt is a read-only final continuation inventory. Historical source publications and native rerun are retained below and in the work unit, not recast as native terminal effects.",
+  "next_actions": [],
+  "state": "BLOCK",
+  "action_window": {
+    "id": "PR546-final-source-and-gate-readback-20261031",
+    "completed_at": "2026-10-31T17:25:59.028831+00:00",
+    "closed_at": "2026-10-31T17:26:01.990797+00:00"
+  },
+  "readback": {
+    "repository": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "fix/client-communication-evidence-20261019",
+      "head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+      "tree": "7f2253bfc8e2869b0545790a8fa8ab1975cdc471",
+      "source": "Independent GitHub GET branch ref and exact Git commit/tree; ordered parent edf2f95b030db793fc9dbd4c5fba45e251d63c26; Main5a42baf4 separately unchanged.",
+      "action_id": "PR546-final-source-and-gate-readback-20261031",
+      "observed_at": "2026-10-31T17:26:01.990797+00:00",
+      "observation_clock": "Client aggregate observation completion"
+    },
+    "delivery": {
+      "hostname": "raumzeitterminal.de",
+      "state": "PENDING",
+      "source": "Original qikvrt_native_connection runtime observation; no EAP receipt or response bytes supplied",
+      "url": "https://raumzeitterminal.de/",
+      "method": "GET",
+      "http_status": 525,
+      "action_id": "PR546-final-source-and-gate-readback-20261031",
+      "observed_at": "2026-10-31T17:26:01.990797+00:00",
+      "upstream_observed_at": "2026-10-31T17:26:01.710Z",
+      "ready": false
+    }
+  },
+  "blocker": {
+    "operation": "Main integration and Mirror-to-Authority live EAP acceptance",
+    "reason": "Final-head native CI/materializer and PR658 Batch003 attempt2 are running. The required PR658 materializer attempt2 and requested-review executor attempt2 now succeed, but disposition success is no Principal review. Original runtime admission remains unavailable; exact Mirror patch/client binding and live path are unverified.",
+    "evidence": "PR546e37667b6/tree7f2253bf; CI41223797824/materializer41223797860 in_progress; PR65841215514005 attempt2SUCCESS at a56b0632, Batch00341215513887 attempt2in_progress, requested-review41215513700 attempt2SUCCESS; prior fresh native reviews=[]; HTTP525 at 2026-10-31T17:26:01.710Z and ready=false.",
+    "retry_condition": "Fresh exact-head terminal green applicable native gates and genuine governance/readiness evidence for repository merge; actual admitted original host, protected peer binding and eight live200 responses plus original receipt for EAP delivery.",
+    "next_action": "Reconcile the existing native runs without duplicate dispatch; preserve missing governance and runtime gates. Recover the original patch through an admitted carrier and verify its exact hash/tree. No configuration task or renewed permission request is assigned to the Owner."
+  },
+  "pending_execution": "Existing native Actions: PR546 CI41223797824 and materializer41223797860; PR658 Batch00341215513887 attempt2. Required materializer41215514005 attempt2 and requested-review41215513700 attempt2 have completed SUCCESS. No duplicate dispatch or client timer.",
+  "communications": [],
+  "work": [
+    {
+      "id": "R1_R5_SOURCE",
+      "state": "VERIFIED",
+      "evidence": "https://github.com/ingolf-lohmann/qik-vrt/commit/e37667b641b5b58f9e7094e15e235e29ad191f58; exact tree7f2253bfc8e2869b0545790a8fa8ab1975cdc471; local154 targeted/full suite/integrity pass. Source persistence only."
+    },
+    {
+      "id": "FINAL_NATIVE_CI",
+      "state": "OPEN",
+      "next_action": "Read existing final-head native CI and materializer; no predecessor success transfer."
+    },
+    {
+      "id": "PR658_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Read existing Batch00341215513887 attempt2 first, without duplicate dispatch. Required materialization and requested-review disposition have succeeded. Retain exact governance, Draft and platform/writer gates before eventual expected-head merge."
+    },
+    {
+      "id": "ORIGINAL_MIRROR_CLIENT",
+      "state": "OPEN",
+      "next_action": "Recover exact original patch24099374... and required tree39544952...; no reconstruction/import without binding."
+    },
+    {
+      "id": "ORIGINAL_HOST_GRANT_AND_RUNTIME",
+      "state": "OPEN",
+      "next_action": "Keep original host grant/seal/admission and exact-domain EAP path open; no secret in chat/source."
+    },
+    {
+      "id": "MIRROR_NETWORK_PATH",
+      "state": "OPEN",
+      "next_action": "Require actual Mirror-side authorized path and protected token binding; report is unverified."
+    },
+    {
+      "id": "ALL_NODE_ADOPTION",
+      "state": "OPEN",
+      "next_action": "Require each actual admitted node exact-policy ACK and independent readback."
+    },
+    {
+      "id": "PRODUCTIVE_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "Require actual useful domain/terminal effect and Owner readback; no EFFECT_ACK_DONE inferred."
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "run-identity-initial",
+      "epistemic_class": "RETRACTED_ASSISTANT_ATTRIBUTION",
+      "subject": {
+        "head": "91c086deec1d01ed69594dc7bd6156fdabb7409b"
+      },
+      "scope": "Historical mistake retained",
+      "statement": "The initial snapshot wrongly called41215513887 the required repository materializer.",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/commit/91c086deec1d01ed69594dc7bd6156fdabb7409b"
+      ],
+      "record_sha256": "4b1b789fc7d608131ef2eafcf7e3daa55f4d952129beeac179bda68c0b29c975"
+    },
+    {
+      "id": "run-identity-corrected",
+      "epistemic_class": "DOCUMENTARY_SOURCE",
+      "subject": {
+        "required_run": 41215514005,
+        "batch_disposition_run": 41215513887
+      },
+      "scope": "Actual original Actions identities",
+      "statement": "Original run metadata binds required repository materialization to41215514005 and Batch-003 disposition to41215513887; both originally failed403.",
+      "evidence": [
+        "evidence/client-delivery/FAILED_RUN_IDENTITY_READBACK_20261031.json"
+      ],
+      "supersedes": [
+        "run-identity-initial"
+      ],
+      "record_sha256": "a4b954a1a1da4ea55136a52b3efbde9f3d33d63cec7965c4e30af3bd3d4711af"
+    },
+    {
+      "id": "mirror-incident",
+      "epistemic_class": "OWNER_SUPPLIED_MIRROR_REPORT",
+      "subject": {
+        "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e"
+      },
+      "scope": "Report, not independently authenticated Mirror delivery",
+      "statement": "Reported local-only submission, Mirror403 CONNECT, asserted Owner effort>2h and approval16:41 retain their stated uncertainty. Trace and patch original bytes were not available.",
+      "evidence": [
+        "state/work_units/QIKVRT_REMOTE_DELIVERY_REPORTING_20261031_V1.json"
+      ],
+      "record_sha256": "2425e9331394b53c8513bf578328291017146045ae1435a0859c0c572cc5ec7d"
+    },
+    {
+      "id": "native-endpoint-label-correction",
+      "epistemic_class": "ASSISTANT_METADATA_CORRECTION",
+      "subject": {
+        "tool": "mcp__codex_apps__raumzeitterminal___ingolf_lohmann__raumzeitterminal_ingolf_lohmann_qikvrt_native_connection",
+        "old_label": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/native-terminal",
+        "observed_contract_path": "/api/mesh/terminal/native"
+      },
+      "scope": "Session preflight declaration only",
+      "statement": "The first preflight used an unobserved endpoint label. Final preflight binds the actual named connection operation and returned contract path. A successful declarative preflight never proved a live endpoint or delivery.",
+      "evidence": [
+        "inline:old_label",
+        "qikvrt_native_connection.rest_contract.path"
+      ],
+      "record_sha256": "744140bfd7cd7a7f86c9f7c83572a77ef5be04261f2d691fffaf37eb06f6bc0f"
+    },
+    {
+      "id": "pr658-native-causal-recovery",
+      "epistemic_class": "NATIVE_WORKFLOW_OBSERVATION",
+      "subject": {
+        "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e"
+      },
+      "scope": "Exact source CI recovery only",
+      "statement": "Required materializer41215514005 attempt2 and requested-review41215513700 attempt2 now complete success after independently observed native API recovery; Batch00341215513887 attempt2 is still running. No review approval, merge or runtime effect follows.",
+      "evidence": [
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41215514005/attempts/2",
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41215513700/attempts/2",
+        "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41215513887/attempts/2"
+      ],
+      "record_sha256": "5cc1a3b7b80eb0dd4a1f648a8431bf70e3f8b8fb5c68560e66033277d89f40c8"
+    }
+  ],
+  "source_effect_journal": {
+    "first_candidate": {
+      "head": "91c086deec1d01ed69594dc7bd6156fdabb7409b",
+      "tree": "39d062f8c348327ce64c860668e77745d9acc317",
+      "ordered_parents": [
+        "de01755741cda99bd8ca59bcbb83d784d022a6d9",
+        "5a42baf45748e4407a8fa16aef287a77873e788d"
+      ],
+      "native_ci": "success on this historical head only"
+    },
+    "correction_commit": "edf2f95b030db793fc9dbd4c5fba45e251d63c26",
+    "final_candidate": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "fix/client-communication-evidence-20261019",
+      "head": "e37667b641b5b58f9e7094e15e235e29ad191f58",
+      "tree": "7f2253bfc8e2869b0545790a8fa8ab1975cdc471"
+    },
+    "pr658_rerun": {
+      "run": 41215514005,
+      "attempt": 2,
+      "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+      "job": 124601748625,
+      "dispatches": 1,
+      "preflight": "success",
+      "whole_run": "completed success; independently reobserved",
+      "causal_change": "Same native Git-Data preflight had independently succeeded with unchanged workflow/journal source before the one rerun."
+    },
+    "pr658_followup_reruns": [
+      {
+        "run": 41215513887,
+        "original_job": 124579086355,
+        "attempt": 2,
+        "dispatches": 1,
+        "status": "in_progress",
+        "source_head": "a56b0632e120ce815019e5f4a812fc828c57cd1e"
+      },
+      {
+        "run": 41215513700,
+        "original_job": 124579085778,
+        "attempt": 2,
+        "dispatches": 1,
+        "status": "completed",
+        "conclusion": "success",
+        "scope": "Requested-review disposition, not Principal approval",
+        "source_head": "a56b0632e120ce815019e5f4a812fc828c57cd1e"
+      }
+    ]
+  },
+  "limits": {
+    "receipt_consistency_is_live_effect_proof": false,
+    "all_nodes_adopted": false,
+    "main_integrated": false,
+    "eap_delivered": false,
+    "effect_ack_done": false
+  },
+  "execution_id": "PR546-final-source-and-gate-readback-20261031",
+  "import_identity_provenance": {
+    "scope": "Identity wrapper added at import; original work and knowledge unchanged",
+    "original_path": "evidence/client-delivery/eap-mirror-20261031/PREDECESSOR_ORIGINAL.json",
+    "original_sha256": "d3e7377d5d724994e7b2e61d7be0d7c49af2c8d93e64bcec33da745e9c4a10d8",
+    "original_source": "https://github.com/ingolf-lohmann/qik-vrt/pull/546"
+  }
+}

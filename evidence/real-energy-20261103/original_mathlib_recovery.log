@@ -1,0 +1,6 @@
+EXACT_UPSTREAM_TREE fdf252e589fb338709bf537ba48ce79a78cbe5e9 files 6816
+Traceback (most recent call last):
+  File "/workspace/scratch/473d0727640b/recover_original_mathlib.py", line 57, in <module>
+    assert match is not None, 'Exact upstream commit could not be recovered; no substitute commit admitted'
+           ^^^^^^^^^^^^^^^^^
+AssertionError: Exact upstream commit could not be recovered; no substitute commit admitted

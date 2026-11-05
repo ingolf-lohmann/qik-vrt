@@ -1,0 +1,16 @@
+'QIKVRT.EvidenceRecovery.V1.collect_eq_of_faithful' depends on axioms: [propext, Quot.sound]
+'QIKVRT.EvidenceRecovery.V1.collect_exists_of_available' depends on axioms: [propext, Quot.sound]
+'QIKVRT.EvidenceRecovery.V1.recovered_publication_inputs' depends on axioms: [propext, Quot.sound]
+'QIKVRT.EvidenceRecovery.V1.deterministic_preparation_equal' depends on axioms: [propext, Quot.sound]
+'QIKVRT.EvidenceRecovery.V1.missing_required_entry_aborts' depends on axioms: [propext, Quot.sound]
+'QIKVRT.EvidenceRecovery.V1.faithful_transitive' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.faithful_restrict' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.codec_recovery_exact' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.join_retains_left' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.join_retains_right' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.shared_grows_with_both' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.justified_join' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.join_replay_idempotent' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.shared_new_member' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.shared_membership_needs_justification' does not depend on any axioms
+'QIKVRT.EvidenceRecovery.V1.concrete_collection_witness' does not depend on any axioms

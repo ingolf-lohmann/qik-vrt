@@ -1,0 +1,9 @@
+{
+  "schema": "qikvrt_lean_portability_readback_v1",
+  "proof_package_sha256": "939b7da32b31972ea596b4a1ffdb8a9c1baafe3d8eb02d99f659ac005e813636",
+  "empty_target_restore": true,
+  "cold_kernel_build": "KERNEL_VERIFIED",
+  "theorem_count": 36,
+  "negative_controls_rejected": 4,
+  "source_bindings_equal_native": true
+}

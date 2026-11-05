@@ -1,0 +1,14 @@
+test_alpha2_authorization_is_self_reference_free_and_truth_bounded (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_alpha2_authorization_is_self_reference_free_and_truth_bounded) ... ok
+test_fileset_text_matches_manifest_and_two_phase_evidence (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_fileset_text_matches_manifest_and_two_phase_evidence) ... ok
+test_inactive_marker_and_schema_are_closed (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_inactive_marker_and_schema_are_closed) ... ok
+test_manifest_is_exact_truth_bounded_alpha2_fileset (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_manifest_is_exact_truth_bounded_alpha2_fileset) ... ok
+test_package_is_reproducible_and_has_exact_provenance (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_package_is_reproducible_and_has_exact_provenance) ... ok
+test_source_evidence_is_published_alpha1_and_stays_historical (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_source_evidence_is_published_alpha1_and_stays_historical) ... ok
+test_workflow_embedded_python_is_syntactically_valid (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_workflow_embedded_python_is_syntactically_valid) ... ok
+test_workflows_are_two_phase_inert_and_fail_closed (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_workflows_are_two_phase_inert_and_fail_closed) ... ok
+test_zenodo_checksum_file_binds_other_eighteen_uploads (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_zenodo_checksum_file_binds_other_eighteen_uploads) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.298s
+
+OK

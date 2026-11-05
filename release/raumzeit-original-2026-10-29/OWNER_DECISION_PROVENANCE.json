@@ -1,0 +1,31 @@
+{
+  "_license": {
+    "classification": "machine_readable_owner_decision_provenance",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_publication_owner_decision_normalization_v1",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_id": "raumzeit-original-en-de-20261020-20261029",
+  "source_head": "2ad6b3ca8f6606542818549b97e05043f80d901d",
+  "owner_messages": [
+    {
+      "verbatim": "Ja\n\nJetzt veröffentliche",
+      "scope": "The unchanged 27-page original and sources linked immediately before this instruction; the already requested three-step Zenodo/QR sequence remains the requested result."
+    }
+  ],
+  "grant_recorded_at": "2026-10-29T12:50:40.886164+00:00",
+  "normalized_decision": "AUTHORIZE_EXACT_UPLOAD authorization_id=raumzeit-original-en-de-20261029-01 publication_id=raumzeit-original-en-de-20261020-20261029 return_sha256=17ac8dccbbbbc6c8b3845626a9decaa368e4c024737315774e44475171c388b4 metadata_sha256=d9708769561424d30b6687d91019cf372fb1b1d90918ce317fd94e4c6a58b56e machine_proof_sha256=19de3aee1a9f5838f37b2c590969e1f65c70f3bbd4e2d4e9a9a952b90daffd5f",
+  "normalized_decision_is_verbatim_owner_utterance": false,
+  "basis": "Explicit approval of the exact original PDF and source archive already returned in this conversation. The canonical line serializes that grant for the existing v2 publisher; it is not a new literal Owner message or an independent GitHub APPROVED review.",
+  "new_scientific_content_approval_inferred": false,
+  "new_publication_target_inferred": false,
+  "new_generic_permission_requested": false,
+  "biometric_or_cryptographic_owner_authentication_claimed": false,
+  "platform_write_is_independent_owner_review": false
+}

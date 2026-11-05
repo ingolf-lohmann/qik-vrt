@@ -1,0 +1,431 @@
+{
+  "schema": "qikvrt_ci_build_chain_performance_v1",
+  "created_at": "2026-10-30T09:47:55.446719+00:00",
+  "priority_class": "CI_BUILD_CHAIN_PERFORMANCE",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "85aa4a181d4646c1a6cde56700d6393bdec6a04d",
+  "base_tree": "b2780688806f17f09ca96b2b890a643e6f49b7d1",
+  "owner_reported_measurement": {
+    "source_head": "8b2ab36deb18d3b2bf8c1b966057914110ea7545",
+    "python_test_executions": 2251,
+    "python_blocks_seconds_approximate": 380,
+    "mesh_recovery_block_seconds_approximate": 185,
+    "classification": "OWNER_REPORTED_CI_CHAIN_MEASUREMENT_NOT_A_LOCAL_REPRODUCTION"
+  },
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "system": "Linux",
+    "machine": "x86_64"
+  },
+  "measurements": {
+    "before": {
+      "resource": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "-m",
+          "unittest",
+          "-v",
+          "--durations=0",
+          "tests.test_qikvrt_codec",
+          "tests.test_qikvrt_feedback",
+          "tests.test_qikvrt_standpoint_codex",
+          "tests.test_qikvrt_mesh_recovery",
+          "tests.test_qikvrt_authority_transition",
+          "tests.test_qikvrt_github_authority_provider",
+          "tests.test_qikvrt_digital_twin_rest",
+          "tests.test_qikvrt_pr_closure_engine",
+          "tests.test_reciprocal_closure_step",
+          "tests.test_reciprocal_devops_closure"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 121.16266566499871,
+        "user_seconds": 56.213907,
+        "system_seconds": 32.530899,
+        "head": "85aa4a181d4646c1a6cde56700d6393bdec6a04d",
+        "tree": "b2780688806f17f09ca96b2b890a643e6f49b7d1",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "unittest_tests": 249,
+      "unittest_seconds": 120.718,
+      "module_totals": {
+        "tests.test_qikvrt_mesh_recovery": {
+          "tests": 32,
+          "seconds": 12.821
+        },
+        "tests.test_qikvrt_github_authority_provider": {
+          "tests": 48,
+          "seconds": 61.913
+        },
+        "tests.test_qikvrt_authority_transition": {
+          "tests": 22,
+          "seconds": 24.505
+        },
+        "tests.test_qikvrt_digital_twin_rest": {
+          "tests": 23,
+          "seconds": 19.395
+        },
+        "tests.test_qikvrt_codec": {
+          "tests": 28,
+          "seconds": 0.915
+        },
+        "tests.test_reciprocal_devops_closure": {
+          "tests": 18,
+          "seconds": 0.522
+        },
+        "tests.test_qikvrt_standpoint_codex": {
+          "tests": 29,
+          "seconds": 0.029
+        },
+        "tests.test_reciprocal_closure_step": {
+          "tests": 24,
+          "seconds": 0.074
+        },
+        "tests.test_qikvrt_pr_closure_engine": {
+          "tests": 14,
+          "seconds": 0.013
+        },
+        "tests.test_qikvrt_feedback": {
+          "tests": 11,
+          "seconds": 0.012
+        }
+      },
+      "slowest_20": [
+        {
+          "seconds": 4.78,
+          "test": "test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost)"
+        },
+        {
+          "seconds": 3.096,
+          "test": "test_takeover_cannot_interleave_with_outbound_post (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_takeover_cannot_interleave_with_outbound_post)"
+        },
+        {
+          "seconds": 2.859,
+          "test": "test_busy_control_plane_blocks_without_unfencing_or_hidden_retry (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_busy_control_plane_blocks_without_unfencing_or_hidden_retry)"
+        },
+        {
+          "seconds": 2.263,
+          "test": "test_repository_or_seed_ref_readback_drift_cannot_reuse_old_receipt (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_repository_or_seed_ref_readback_drift_cannot_reuse_old_receipt)"
+        },
+        {
+          "seconds": 2.225,
+          "test": "test_readback_timestamp_is_freshly_recorded_and_read_from_same_durable_sink (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_readback_timestamp_is_freshly_recorded_and_read_from_same_durable_sink)"
+        },
+        {
+          "seconds": 2.165,
+          "test": "test_http_transport_abort_after_durable_effect_does_not_repeat (tests.test_qikvrt_digital_twin_rest.ReflexiveTwinTests.test_http_transport_abort_after_durable_effect_does_not_repeat)"
+        },
+        {
+          "seconds": 2.021,
+          "test": "test_replay_is_read_only_and_does_not_mint_a_second_effect (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_replay_is_read_only_and_does_not_mint_a_second_effect)"
+        },
+        {
+          "seconds": 1.997,
+          "test": "test_root_byte_readback_drift_cannot_be_promoted_to_verified (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_root_byte_readback_drift_cannot_be_promoted_to_verified)"
+        },
+        {
+          "seconds": 1.781,
+          "test": "test_partially_created_repository_holds_and_blocks_takeover_without_seed_retry (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_partially_created_repository_holds_and_blocks_takeover_without_seed_retry)"
+        },
+        {
+          "seconds": 1.738,
+          "test": "test_recovered_authority_seeds_a_surviving_clone_and_fences_both_predecessors (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_recovered_authority_seeds_a_surviving_clone_and_fences_both_predecessors)"
+        },
+        {
+          "seconds": 1.684,
+          "test": "test_duplicate_nonfinite_and_unknown_request_fields_fail_without_effect (tests.test_qikvrt_digital_twin_rest.ReflexiveTwinTests.test_duplicate_nonfinite_and_unknown_request_fields_fail_without_effect)"
+        },
+        {
+          "seconds": 1.645,
+          "test": "test_wrong_byte_readback_keeps_pending_and_fences_new_effects_and_takeover (tests.test_qikvrt_digital_twin_rest.ReflexiveTwinTests.test_wrong_byte_readback_keeps_pending_and_fences_new_effects_and_takeover)"
+        },
+        {
+          "seconds": 1.632,
+          "test": "test_durable_receipt_corruption_cannot_use_provider_success_as_replacement (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_durable_receipt_corruption_cannot_use_provider_success_as_replacement)"
+        },
+        {
+          "seconds": 1.547,
+          "test": "test_lost_seed_ack_is_recovered_only_by_actual_fresh_pack_and_register_reads (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_lost_seed_ack_is_recovered_only_by_actual_fresh_pack_and_register_reads)"
+        },
+        {
+          "seconds": 1.537,
+          "test": "test_native_atomic_history_seed_and_double_fresh_root_readback_are_fixture_only (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_native_atomic_history_seed_and_double_fresh_root_readback_are_fixture_only)"
+        },
+        {
+          "seconds": 1.536,
+          "test": "test_executable_cli_observe_takeover_activate_write_readback (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_executable_cli_observe_takeover_activate_write_readback)"
+        },
+        {
+          "seconds": 1.534,
+          "test": "test_durable_intent_cannot_be_retargeted_even_with_canonical_json (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_durable_intent_cannot_be_retargeted_even_with_canonical_json)"
+        },
+        {
+          "seconds": 1.52,
+          "test": "test_mock_http_fixture_cannot_claim_live_creation_without_explicit_fixture_flag (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_mock_http_fixture_cannot_claim_live_creation_without_explicit_fixture_flag)"
+        },
+        {
+          "seconds": 1.497,
+          "test": "test_real_http_same_result_in_initiator_and_repository_and_successor (tests.test_qikvrt_digital_twin_rest.ReflexiveTwinTests.test_real_http_same_result_in_initiator_and_repository_and_successor)"
+        },
+        {
+          "seconds": 1.426,
+          "test": "test_missing_atomic_capability_never_falls_back_to_separate_ref_writes (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_missing_atomic_capability_never_falls_back_to_separate_ref_writes)"
+        }
+      ],
+      "log": "evidence/ci-build-chain-performance/2026-10-30/before.txt",
+      "log_sha256": "de279b247915148716fad001d9002baff574a1d47973798a8aa8dc1e05f0bed3"
+    },
+    "after": {
+      "resource": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "-m",
+          "unittest",
+          "-v",
+          "--durations=0",
+          "tests.test_qikvrt_codec",
+          "tests.test_qikvrt_feedback",
+          "tests.test_qikvrt_standpoint_codex",
+          "tests.test_qikvrt_mesh_recovery",
+          "tests.test_qikvrt_authority_transition",
+          "tests.test_qikvrt_github_authority_provider",
+          "tests.test_qikvrt_digital_twin_rest",
+          "tests.test_qikvrt_pr_closure_engine",
+          "tests.test_reciprocal_closure_step",
+          "tests.test_reciprocal_devops_closure"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 113.37616646100105,
+        "user_seconds": 49.842295,
+        "system_seconds": 29.001785,
+        "head": "85aa4a181d4646c1a6cde56700d6393bdec6a04d",
+        "tree": "b2780688806f17f09ca96b2b890a643e6f49b7d1",
+        "candidate_sources_sha256": {
+          "tools/qikvrt_mesh_recovery.py": "a1b48c8a32845c674bbdd9072f41aa9571edcdff5865a26012909c083229afd0",
+          "tests/test_qikvrt_mesh_recovery.py": "bb28d482df49ce8ba06bed07aaec84cdc24913ae82a084a5545acd45fc916735"
+        },
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "unittest_tests": 251,
+      "unittest_seconds": 112.947,
+      "module_totals": {
+        "tests.test_qikvrt_mesh_recovery": {
+          "tests": 34,
+          "seconds": 12.892
+        },
+        "tests.test_qikvrt_github_authority_provider": {
+          "tests": 48,
+          "seconds": 59.091
+        },
+        "tests.test_qikvrt_authority_transition": {
+          "tests": 22,
+          "seconds": 22.894
+        },
+        "tests.test_qikvrt_digital_twin_rest": {
+          "tests": 23,
+          "seconds": 15.858
+        },
+        "tests.test_qikvrt_codec": {
+          "tests": 28,
+          "seconds": 0.957
+        },
+        "tests.test_reciprocal_devops_closure": {
+          "tests": 18,
+          "seconds": 0.569
+        },
+        "tests.test_qikvrt_standpoint_codex": {
+          "tests": 29,
+          "seconds": 0.042
+        },
+        "tests.test_qikvrt_pr_closure_engine": {
+          "tests": 14,
+          "seconds": 0.014
+        },
+        "tests.test_reciprocal_closure_step": {
+          "tests": 24,
+          "seconds": 0.088
+        },
+        "tests.test_qikvrt_feedback": {
+          "tests": 11,
+          "seconds": 0.018
+        }
+      },
+      "slowest_20": [
+        {
+          "seconds": 3.833,
+          "test": "test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost)"
+        },
+        {
+          "seconds": 2.977,
+          "test": "test_takeover_cannot_interleave_with_outbound_post (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_takeover_cannot_interleave_with_outbound_post)"
+        },
+        {
+          "seconds": 2.75,
+          "test": "test_busy_control_plane_blocks_without_unfencing_or_hidden_retry (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_busy_control_plane_blocks_without_unfencing_or_hidden_retry)"
+        },
+        {
+          "seconds": 1.993,
+          "test": "test_durable_receipt_corruption_cannot_use_provider_success_as_replacement (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_durable_receipt_corruption_cannot_use_provider_success_as_replacement)"
+        },
+        {
+          "seconds": 1.959,
+          "test": "test_partially_created_repository_holds_and_blocks_takeover_without_seed_retry (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_partially_created_repository_holds_and_blocks_takeover_without_seed_retry)"
+        },
+        {
+          "seconds": 1.836,
+          "test": "test_http_transport_abort_after_durable_effect_does_not_repeat (tests.test_qikvrt_digital_twin_rest.ReflexiveTwinTests.test_http_transport_abort_after_durable_effect_does_not_repeat)"
+        },
+        {
+          "seconds": 1.804,
+          "test": "test_historical_offline_checkpoint_cannot_bypass_current_cqf_project_admission (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_historical_offline_checkpoint_cannot_bypass_current_cqf_project_admission)"
+        },
+        {
+          "seconds": 1.785,
+          "test": "test_lost_seed_ack_is_recovered_only_by_actual_fresh_pack_and_register_reads (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_lost_seed_ack_is_recovered_only_by_actual_fresh_pack_and_register_reads)"
+        },
+        {
+          "seconds": 1.722,
+          "test": "test_native_atomic_history_seed_and_double_fresh_root_readback_are_fixture_only (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_native_atomic_history_seed_and_double_fresh_root_readback_are_fixture_only)"
+        },
+        {
+          "seconds": 1.667,
+          "test": "test_durable_intent_cannot_be_retargeted_even_with_canonical_json (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_durable_intent_cannot_be_retargeted_even_with_canonical_json)"
+        },
+        {
+          "seconds": 1.625,
+          "test": "test_recovered_authority_seeds_a_surviving_clone_and_fences_both_predecessors (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_recovered_authority_seeds_a_surviving_clone_and_fences_both_predecessors)"
+        },
+        {
+          "seconds": 1.619,
+          "test": "test_existing_authenticated_http_route_reports_hold_and_rejects_old_writer (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_existing_authenticated_http_route_reports_hold_and_rejects_old_writer)"
+        },
+        {
+          "seconds": 1.594,
+          "test": "test_grant_cli_uses_same_issuer_and_exact_scope_before_any_provider_call (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_grant_cli_uses_same_issuer_and_exact_scope_before_any_provider_call)"
+        },
+        {
+          "seconds": 1.571,
+          "test": "test_readback_timestamp_is_freshly_recorded_and_read_from_same_durable_sink (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_readback_timestamp_is_freshly_recorded_and_read_from_same_durable_sink)"
+        },
+        {
+          "seconds": 1.566,
+          "test": "test_executable_cli_observe_takeover_activate_write_readback (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_executable_cli_observe_takeover_activate_write_readback)"
+        },
+        {
+          "seconds": 1.5,
+          "test": "test_repository_or_seed_ref_readback_drift_cannot_reuse_old_receipt (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_repository_or_seed_ref_readback_drift_cannot_reuse_old_receipt)"
+        },
+        {
+          "seconds": 1.475,
+          "test": "test_replay_is_read_only_and_does_not_mint_a_second_effect (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_replay_is_read_only_and_does_not_mint_a_second_effect)"
+        },
+        {
+          "seconds": 1.452,
+          "test": "test_mock_http_fixture_cannot_claim_live_creation_without_explicit_fixture_flag (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_mock_http_fixture_cannot_claim_live_creation_without_explicit_fixture_flag)"
+        },
+        {
+          "seconds": 1.451,
+          "test": "test_bound_fixture_roundtrip_persists_no_credentials (tests.test_qikvrt_github_authority_provider.ProjectManifestationTests.test_bound_fixture_roundtrip_persists_no_credentials)"
+        },
+        {
+          "seconds": 1.426,
+          "test": "test_expired_altered_foreign_and_consumed_observations_fail_closed (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_expired_altered_foreign_and_consumed_observations_fail_closed)"
+        }
+      ],
+      "log": "evidence/ci-build-chain-performance/2026-10-30/after.txt",
+      "log_sha256": "bca19cc2d13b2ec444643c3a2030c16c28c379ced5770db4433878e9503a8e2e"
+    }
+  },
+  "profiled_case": "tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost",
+  "profiles": {
+    "before": {
+      "total_profile_seconds": 5.823938562000017,
+      "functions": {
+        "run_bounded": {
+          "calls": 928,
+          "own_seconds": 0.03178064,
+          "cumulative_seconds": 4.163475480000001
+        },
+        "_wait": {
+          "calls": 928,
+          "own_seconds": 0.00721407,
+          "cumulative_seconds": 3.239830124
+        },
+        "test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost": {
+          "calls": 1,
+          "own_seconds": 0.0013264470000000001,
+          "cumulative_seconds": 5.610399221000001
+        },
+        "git_command": {
+          "calls": 928,
+          "own_seconds": 0.057241687000000006,
+          "cumulative_seconds": 4.495509353
+        }
+      }
+    },
+    "after": {
+      "total_profile_seconds": 4.7655793880000195,
+      "functions": {
+        "_wait": {
+          "calls": 631,
+          "own_seconds": 0.004355521,
+          "cumulative_seconds": 2.69984277
+        },
+        "git_command": {
+          "calls": 631,
+          "own_seconds": 0.041637008,
+          "cumulative_seconds": 3.4973851230000004
+        },
+        "test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost": {
+          "calls": 1,
+          "own_seconds": 0.0014073940000000002,
+          "cumulative_seconds": 4.53381199
+        },
+        "run_bounded": {
+          "calls": 631,
+          "own_seconds": 0.020277486,
+          "cumulative_seconds": 3.266031916
+        }
+      }
+    }
+  },
+  "candidate_source_sha256": {
+    "Makefile": "564ec837a7ad0eb696e5a2ee7c727801390d0cb70a2d330d5da610c7899081d2",
+    "tools/qikvrt_mesh_recovery.py": "a1b48c8a32845c674bbdd9072f41aa9571edcdff5865a26012909c083229afd0",
+    "tests/test_qikvrt_mesh_recovery.py": "bb28d482df49ce8ba06bed07aaec84cdc24913ae82a084a5545acd45fc916735"
+  },
+  "change": "Read shallow state, object format, HEAD and TREE in one fresh bounded Git process, retaining the surrounding verification and no cache. Expose the 20 slowest mesh-recovery tests on Python 3.12+ through the existing Makefile. Reuse digital-twin-rest-test as a shared prerequisite so make test executes its unchanged 23 cases once.",
+  "validation_completed_before_full_suite": {
+    "focused_negative_and_freshness_controls": 4,
+    "before_block_exit": 0,
+    "after_block_exit": 0,
+    "original_tests_removed": 0,
+    "new_tests": 2,
+    "intermediate_full_make_test": {
+      "head": "17b35798320d55b04dae8539380edf5339db4a21",
+      "tree": "f22a7e33783b6d0e035c02640ed101729c6ab0f9",
+      "exit": 0,
+      "scope": "Batched recovery code and duration reporting; before Makefile-only Twin deduplication and raw-diagnostic persistence. Not transferred as final candidate acceptance."
+    }
+  },
+  "limits": [
+    "One sequential before/after block observation on a shared local host; no statistical or CI wall-time speed guarantee.",
+    "cProfile perturbs timings, including threaded subprocess supervision. Process-call counts describe this exact test.",
+    "Local source hashes bind the changed worktree; resource HEAD/TREE describe the unchanged committed base at measurement time, not a committed candidate.",
+    "No C90 rewrite, compilation-on-demand or productive host/domain acceptance established."
+  ],
+  "effect_ack_done": false,
+  "make_recipe_coverage": {
+    "module_set_unchanged": true,
+    "discovery_commands_unchanged": true,
+    "unique_test_id_set_unchanged": true,
+    "unique_test_ids": 2088,
+    "before_test_executions": 2198,
+    "after_test_executions": 2175,
+    "removed_duplicate_executions": 23,
+    "only_deduplicated_module": "tests.test_qikvrt_digital_twin_rest",
+    "test_id_set_sha256": "b3ed69ce7fb81c6cbd3be89b13e40ea578e3c917aa92db6fbc6097de0aaa49a7",
+    "verification": "Compare actual make -n test recipes and load every explicit and discover-based unittest suite without executing tests."
+  }
+}

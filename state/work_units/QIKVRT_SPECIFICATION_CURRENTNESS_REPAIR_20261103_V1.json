@@ -1,0 +1,91 @@
+{
+  "schema": "qikvrt-specification-currentness-repair/v1",
+  "owner": "Ingolf Lohmann",
+  "base_head": "40fa8eb1a6b413801ba8554dca35f915d54316c7",
+  "base_tree": "cd81338b400104452a666873d1fe6c02e996b3a3",
+  "observed_at": "2026-11-03T09:06:42.726558+00:00",
+  "local_checks": [
+    {
+      "name": "specification-negative-controls",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/specification-negative-controls.log",
+      "bytes": 4563,
+      "sha256": "8e1ae11fe3e0f5a5bc79317936eb8808ff227e3dda0afba2c9fb19ce5c72deb9"
+    },
+    {
+      "name": "client-continuation",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/client-continuation.log",
+      "bytes": 396,
+      "sha256": "2cace46a98cc579df0f8f6cf3b58144c2e6619b89171ffa631870e3959f2d05d"
+    },
+    {
+      "name": "effect-ack-core",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/effect-ack-core.log",
+      "bytes": 251,
+      "sha256": "4258efd0e4ef97cd66c568dda14f89e60460b40d1f52a7bf4820d3a75a5a3fe1"
+    },
+    {
+      "name": "effect-ack-wire",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/effect-ack-wire.log",
+      "bytes": 217,
+      "sha256": "7913ccda7dbc2d6264c8d481464361c44cac9e4b63b4cbe30dd56b6edee8c7ff"
+    },
+    {
+      "name": "tool-cache",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/tool-cache.log",
+      "bytes": 122,
+      "sha256": "06165a7d3606e20879c4703194e14d9971f5dd489c8507996679693bbe8d2b61"
+    },
+    {
+      "name": "specification-negative-controls-source-repair-scope",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/specification-negative-controls-source-repair-scope.log",
+      "bytes": 5227,
+      "sha256": "90e00de0aafe918fc1a644f36c9c1b1e409fcd935ef270fa502f639840f57834"
+    },
+    {
+      "name": "client-continuation-source-repair-scope",
+      "exit_code": 0,
+      "log": "evidence/specification-currentness-20261103/client-continuation-source-repair-scope.log",
+      "bytes": 396,
+      "sha256": "d86721f84362ebaac986f748a9bbbe64b677c970f4815edc72b4672816ecd116"
+    }
+  ],
+  "test_counts": {
+    "specification": 18,
+    "client_continuation": 143,
+    "effect_ack_core": 41,
+    "effect_ack_wire": 14
+  },
+  "scope": "Live --client-action preflight; historical receipt validation is not fresh admission",
+  "full_startup": "BLOCK_IN_PARTIAL_SOURCE_COPY: missing historical PUBLIC_ARCHIVE_RECOVERY_RECEIPT.json",
+  "full_make_test": "NOT_RUN_IN_PARTIAL_COPY",
+  "native_ci": {
+    "predecessor_head": "83be272a7d4e3f2e48bde9d7a4d784dc6fcbd4d6",
+    "run": 41609205392,
+    "job": 125826556310,
+    "integrity": "PASS:5717 entries/5706 immutable",
+    "c90_checks": 7864387,
+    "scientific_bundle": "FAIL: revised engine comment changed exact frozen proof input",
+    "causal_correction": "restore exact original engine bytes; explain historical label in current contract instead",
+    "current_head_acceptance": "UNVERIFIED",
+    "previous_scope_head": "9b328fb682cfc42bb2e687e2ed419016486a928d"
+  },
+  "seven_checkers": "UNVERIFIED",
+  "main_integration": false,
+  "all_node_adoption": "UNVERIFIED",
+  "effect_ack_done": false,
+  "known_source_gap": "HTTP companion -01 original source not retrieved; no automatic adoption",
+  "limits": [
+    "Evidence declarations are checked for consistency and bound source bytes, not authenticated by this validator.",
+    "No interception of external clients bypassing the existing live preflight.",
+    "Early diagnostic tool output was truncated and some exploratory logs overwritten; final checks above retain complete stdout/stderr.",
+    "No universal zero-recurrence claim."
+  ],
+  "historical_engine_bytes_preserved": true,
+  "historical_exception": "SOURCE_REPAIR_ONLY: exact repository source-control/issue/PR or existing private journal; no runtime, deployment, dispatch, release or other provider"
+}

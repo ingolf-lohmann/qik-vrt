@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 """Validate and print the repository's machine-readable AI handoff context.
 
-Standard-library only. Read-only: this script does not modify repository or Git
-state and performs no network access.
+Standard-library only. Normal validation modes are read-only. The explicit
+formal-proof-run mode runs pinned local checkers and writes bounded evidence;
+it performs no network operation or Git mutation.
 """
 
 from __future__ import annotations
 
 import argparse
 import datetime as dt
+import fnmatch
 import hashlib
+import ipaddress
 import json
+import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -92,9 +97,334 @@ def client_causal_key(value: dict[str, Any]) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()
 
 
+def validate_client_tool_selection(action: dict[str, Any]) -> str:
+    """Check current Owner decisions before capability or transport selection.
+
+    This checks declared routing metadata, not the truth of a client's claims.
+    It performs no service discovery, authentication or external operation.
+    """
+    path = ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+    policy = load_json(path)
+    continuation = policy.get("client_continuation")
+    if not isinstance(continuation, dict):
+        fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+    selection = continuation.get("tool_selection")
+    if (not isinstance(selection, dict)
+            or selection.get("schema") != "qikvrt-client-tool-selection/v1"
+            or selection.get("before_external_tool_call") is not True
+            or not isinstance(selection.get("disconnected_providers"), dict)):
+        fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+    pin = hashlib.sha256(path.read_bytes()).hexdigest()
+    if "route_policy_sha256" in action and action["route_policy_sha256"] != pin:
+        fail("CLIENT_TOOL_SELECTION_POLICY_CHANGED")
+    for provider, rule in selection["disconnected_providers"].items():
+        if (not isinstance(provider, str) or not re.fullmatch(r"[a-z0-9_-]+", provider)
+                or not isinstance(rule, dict) or rule.get("state") != "DISCONNECTED"
+                or any(not isinstance(rule.get(key), list) or not rule[key]
+                       or any(not isinstance(value, str) or not value for value in rule[key])
+                       for key in ("service_aliases", "tool_prefixes", "endpoint_domains"))):
+            fail("CLIENT_TOOL_SELECTION_POLICY_INVALID")
+        services = {str(action.get(key, "")).strip().casefold()
+                    for key in ("service", "provider")}
+        tool = str(action.get("tool", "")).strip().casefold()
+        matches = bool(services.intersection(value.casefold() for value in rule["service_aliases"]))
+        matches |= any(tool.startswith(value.casefold()) for value in rule["tool_prefixes"])
+        for key in ("url", "endpoint", "base_url", "target"):
+            value = action.get(key)
+            if not isinstance(value, str) or not value:
+                continue
+            try:
+                address = value if "://" in value else "//" + value
+                hostname = (urlsplit(address).hostname or "").casefold().rstrip(".")
+            except ValueError:
+                fail("CLIENT_ACTION_ENDPOINT_INVALID")
+            matches |= any(hostname == domain.casefold()
+                           or hostname.endswith("." + domain.casefold())
+                           for domain in rule["endpoint_domains"])
+        if matches:
+            # GET/read-only, current tool availability and generic authorization
+            # cannot supersede the Owner's disconnected-provider decision.
+            fail("CLIENT_DISCONNECTED_PROVIDER_ROUTE_FORBIDDEN:" + provider)
+    return pin
+
+
+def github_graphql_fallback_allowed(action: dict[str, Any], policy: dict[str, Any]) -> bool:
+    """Check the later Owner decision without relabeling GraphQL as REST.
+
+    This checks declared routing metadata, not credential scope or live effect.
+    An ambiguous REST effect cannot be retried through the fallback.
+    """
+    fallback = policy.get("client_continuation", {}).get("github_fallback", {})
+    try:
+        source = "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json"
+        if fallback.get("source") != source:
+            return False
+        owner = json.loads((ROOT / source).read_bytes())
+        decision = owner["graphql_fallback_decision"]
+        encoded = json.dumps(decision, sort_keys=True, separators=(",", ":")).encode()
+        pin = hashlib.sha256(encoded).hexdigest()
+        instruction = decision["source_instruction"]
+        return (decision.get("state") == "ACTIVE"
+            and decision.get("repository") == action.get("subject", {}).get("repository")
+            and instruction["sha256"] == hashlib.sha256(instruction["text"].encode()).hexdigest()
+            and pin == fallback.get("decision_sha256") == action.get("owner_decision_sha256")
+            and decision.get("fallback_must_be_retained") is True
+            and action.get("operation") in fallback.get("allowed_operations", [])
+            and action.get("operation") in decision.get("allowed_operations", [])
+            and action.get("method") == "POST"
+            and action.get("endpoint") == "https://api.github.com/graphql"
+            and action.get("fallback_reason") == "REST_OPERATION_UNAVAILABLE"
+            and action.get("rest_effect_state") == "NOT_ATTEMPTED")
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return False
+
+
+def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str, Any], endpoint: Any,
+                                       *, now: int | None = None) -> bool:
+    """Check a pinned read-only retry after evidenced budget or native API recovery.
+
+    Declared receipt consistency is not authentication or proof of recovery of
+    the watchdog itself. No deployment, publication, approval or new input is
+    admitted. A later successful native GITHUB_TOKEN read is a bounded retry
+    prerequisite, not acceptance of the failed observer or productive runtime.
+    """
+    path = ".github/workflows/qikvrt_reflexive_repository_watchdog.yml"
+    workflow_pin = "e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d"
+    try:
+        proof = action["verification_retry"]
+        run, after, failure = proof["run"], proof["current_budget"], proof["failure_receipt"]
+        mode = proof.get("schema")
+        if (subject["repository"] != "ingolf-lohmann/qik-vrt" or action.get("method") != "POST"
+                or action.get("service") != "github" or action.get("transport") != "REST_API_ONLY"
+                or action.get("tool") != "github_rerun_failed_workflow_run_jobs"
+                or mode not in ("qikvrt-readonly-watchdog-budget-recovery/v1",
+                                "qikvrt-readonly-watchdog-native-api-recovery/v1")
+                or type(run["id"]) is not int or run["id"] <= 0
+                or endpoint.netloc != "api.github.com"
+                or endpoint.path != f"/repos/ingolf-lohmann/qik-vrt/actions/runs/{run['id']}/rerun-failed-jobs"
+                or run.get("workflow_id") != 331355883 or run.get("path") != path
+                or run.get("head_sha") != subject["head"] or run.get("status") != "completed"
+                or run.get("conclusion") != "failure" or type(run.get("run_attempt")) is not int
+                or run["run_attempt"] <= 0):
+            return False
+        if (failure.get("schema") != "qikvrt_reflexive_observation_failure_receipt_v1"
+                or failure.get("repository") != subject["repository"]
+                or failure.get("head_sha") != subject["head"] or failure.get("tree_sha") != subject["tree"]
+                or failure.get("run_id") != run["id"] or failure.get("run_attempt") != run["run_attempt"]
+                or failure.get("state") != "OBSERVATION_FAILED" or failure.get("disposition") != "HOLD"
+                or failure.get("effect_ack_done") is not False):
+            return False
+        source = ROOT / path
+        if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != workflow_pin:
+            return False
+        budgets = [after]
+        if mode == "qikvrt-readonly-watchdog-budget-recovery/v1":
+            before = proof["previous_budget"]
+            budgets.append(before)
+            if (failure.get("failure") != {"stage": "JOBS_BUDGET_PREFLIGHT", "exit_code": 2}
+                    or before.get("state") != "HOLD"
+                    or before.get("first_blocker") != "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"
+                    or before["required_job_request_count"] <= 20
+                    or before["inventory_sha256"] == after["inventory_sha256"]):
+                return False
+        else:
+            if failure.get("failure") != {"stage": "BASELINE_READBACK", "exit_code": 5}:
+                return False
+            witness, failed_job = proof["native_api_witness"], proof["failed_job"]
+            native_run, job = witness["run"], witness["job"]
+            if (failed_job.get("run_id") != run["id"]
+                    or type(failed_job.get("run_attempt")) is not int
+                    or failed_job.get("run_attempt") != run["run_attempt"]
+                    or failed_job.get("head_sha") != subject["head"]
+                    or failed_job.get("status") != "completed" or failed_job.get("conclusion") != "failure"
+                    or type(failed_job.get("id")) is not int or failed_job["id"] <= 0
+                    or not re.fullmatch(r"[a-f0-9]{64}", proof.get("failure_log_sha256", ""))
+                    or "API rate limit exceeded for installation" not in proof.get("failure_log_excerpt", "")
+                    or "HTTP 403" not in proof["failure_log_excerpt"]
+                    or native_run.get("repository", {}).get("full_name") != subject["repository"]
+                    or native_run.get("path") != ".github/workflows/qikvrt_ci.yml"
+                    or native_run.get("head_sha") != subject["head"]
+                    or native_run.get("head_commit", {}).get("tree_id") != subject["tree"]
+                    or native_run.get("status") != "completed" or native_run.get("conclusion") != "success"
+                    or type(native_run.get("id")) is not int or native_run["id"] <= 0 or native_run["id"] == run["id"]
+                    or type(native_run.get("run_attempt")) is not int or native_run["run_attempt"] <= 0
+                    or type(job.get("id")) is not int or job["id"] <= 0 or job["id"] == failed_job["id"]
+                    or job.get("run_id") != native_run["id"] or type(job.get("run_attempt")) is not int
+                    or job.get("run_attempt") != native_run["run_attempt"]
+                    or job.get("head_sha") != subject["head"]
+                    or job.get("name") != "Linux S1 native terminal production and smoke"
+                    or job.get("status") != "completed" or job.get("conclusion") != "success"):
+                return False
+            # These exact sources force the carrier step to perform authenticated
+            # REST metadata and archive reads. No fixture/cache-only substitute.
+            pins = {".github/workflows/qikvrt_ci.yml": "e848529d8d4f938a7b7bcf502754579b82baf4493979ff90ac55a808e024feff",
+                    "tools/qikvrt_self_host_container.py": "174e1858cd5ff35f0b01f5d6487e2f78d8054d33ea0f8b6bc50b6b714784d613",
+                    "tools/qikvrt_self_host.py": "f332bd157258cf29f3f574329874d1dba7644f13d730becfe6dec9c8e693fdd7"}
+            for name, digest in pins.items():
+                source = ROOT / name
+                if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
+                    return False
+            steps = [step for step in job.get("steps", [])
+                     if step.get("name") == "Verify and reuse original PR494 Docker carrier"]
+            if len(steps) != 1 or steps[0].get("status") != "completed" or steps[0].get("conclusion") != "success":
+                return False
+            def stamp(value):
+                if not isinstance(value, str) or not value.endswith("Z"):
+                    raise ValueError("UTC timestamp required")
+                return dt.datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp()
+            clock = dt.datetime.now(dt.timezone.utc).timestamp() if now is None else now
+            failed_at = stamp(failure["observed_at"])
+            started, completed, ended = (stamp(steps[0]["started_at"]), stamp(steps[0]["completed_at"]),
+                                         stamp(job["completed_at"]))
+            if not failed_at < started <= completed <= ended <= clock or clock - completed > 3600:
+                return False
+        for budget in budgets:
+            if (budget.get("schema") != "qikvrt_job_readback_budget_v1"
+                    or budget.get("expected_head_sha") != subject["head"]
+                    or budget.get("selection") != "LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1"
+                    or type(budget.get("max_job_requests")) is not int or budget["max_job_requests"] != 20
+                    or type(budget.get("required_job_request_count")) is not int
+                    or type(budget.get("reported_run_count")) is not int
+                    or budget.get("returned_run_count") != budget["reported_run_count"]
+                    or budget["reported_run_count"] < budget["required_job_request_count"]
+                    or not re.fullmatch(r"[a-f0-9]{64}", budget.get("inventory_sha256", ""))):
+                return False
+        ids, metadata = after["run_ids"], after["metadata_only_run_ids"]
+        return (after.get("state") == "READY" and after.get("first_blocker") is None
+                and 0 < after["required_job_request_count"] <= 20
+                and isinstance(ids, list) and isinstance(metadata, list)
+                and len(ids) == after["required_job_request_count"]
+                and len(ids) + len(metadata) == after["reported_run_count"]
+                and all(type(value) is int and value > 0 for value in ids + metadata)
+                and len(set(ids + metadata)) == after["reported_run_count"])
+    except (KeyError, TypeError, ValueError, OSError, AttributeError):
+        return False
+
+
+def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
+                               *, now: int | None = None) -> None:
+    """Live-preflight evidence contract, not authentication or source discovery.
+
+    Historical receipt validation remains historical. A live mutation must
+    explicitly choose an exact historical basis or a freshly reviewed inventory.
+    No clock, hash or caller declaration proves external inventory completeness.
+    """
+    claims = action.get("specification_claims", [])
+    if not isinstance(claims, list) or any(not isinstance(c, str) or not c for c in claims):
+        fail("SPECIFICATION_CLAIMS_INVALID")
+    use = action.get("specification_use")
+    if use is None and action.get("method") == "GET" and not claims:
+        use = "DISCOVERY_ONLY"
+    if use == "DISCOVERY_ONLY":
+        if action.get("method") != "GET" or claims:
+            fail("SPECIFICATION_DISCOVERY_CANNOT_RELEASE_OR_CLAIM_CURRENTNESS")
+        return
+    if use == "HISTORICAL_EXACT":
+        basis = action.get("specification_basis")
+        if (claims or not isinstance(basis, dict) or basis.get("subject") != subject
+                or basis.get("scope") != "SOURCE_REPAIR_ONLY"
+                or not isinstance(basis.get("reason"), str) or not basis["reason"].strip()):
+            fail("SPECIFICATION_HISTORICAL_BASIS_INVALID")
+        try:
+            endpoint = urlsplit(str(action.get("endpoint", "")))
+        except ValueError:
+            fail("SPECIFICATION_HISTORICAL_ROUTE_INVALID")
+        repository = re.escape(str(subject.get("repository", "")))
+        source_route = (
+            action.get("service") == "github" and endpoint.netloc == "api.github.com"
+            and re.fullmatch(
+                rf"/repos/{repository}/(?:git/(?:blobs|trees|commits|refs(?:/heads/[^%]+)?)"
+                r"|issues(?:/\d+(?:/comments)?)?|pulls(?:/\d+(?:/(?:reviews|merge))?)?)",
+                endpoint.path) is not None)
+        journal_route = (
+            endpoint.netloc == "qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
+            and (endpoint.path == "/mcp" or re.fullmatch(r"/api/v1/tasks(?:/[a-z0-9-]+)?", endpoint.path))
+            and str(action.get("tool", "")).endswith((
+                "qik_vrt_kognitiver_arbeitsraum_create_task",
+                "qik_vrt_kognitiver_arbeitsraum_update_task")))
+        verifier_route = historical_readonly_watchdog_retry(action, subject, endpoint, now=now)
+        if (endpoint.scheme != "https" or endpoint.query or endpoint.fragment
+                or ".." in endpoint.path.split("/") or not (source_route or journal_route or verifier_route)):
+            fail("SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED")
+        return
+    if use != "CURRENT" or not claims or len(set(claims)) != len(claims):
+        fail("SPECIFICATION_USE_REQUIRED")
+    review = action.get("specification_review")
+    if (not isinstance(review, dict) or review.get("schema") != "qikvrt-specification-review/v1"
+            or review.get("subject") != subject or review.get("claims") != claims):
+        fail("SPECIFICATION_REVIEW_BINDING_INVALID")
+    clock = int(dt.datetime.now(dt.timezone.utc).timestamp()) if now is None else now
+    observed, expires = review.get("observed_utc"), review.get("valid_until_utc")
+    if (type(observed) is not int or type(expires) is not int
+            or not 0 <= observed <= clock < expires <= observed + 3600):
+        fail("SPECIFICATION_REVIEW_STALE_OR_FUTURE")
+    channels = review.get("channels")
+    if not isinstance(channels, list) or len(channels) != 3:
+        fail("SPECIFICATION_CHANNELS_INCOMPLETE")
+    names = set()
+    seen_documents = set()
+    for channel in channels:
+        if not isinstance(channel, dict):
+            fail("SPECIFICATION_CHANNEL_INVALID")
+        name = channel.get("name")
+        if name not in {"ietf", "zenodo", "authority"} or name in names:
+            fail("SPECIFICATION_CHANNEL_IDENTITY_INVALID")
+        names.add(name)
+        items = channel.get("items")
+        if (channel.get("from_cache") is not False or channel.get("truncated") is not False
+                or channel.get("next") is not None or "next" not in channel
+                or channel.get("verification") != "DIRECT_PRIMARY_READBACK"
+                or type(channel.get("total")) is not int or not isinstance(items, list)
+                or channel["total"] != len(items) or not items
+                or not isinstance(channel.get("author_id"), str) or not channel["author_id"]
+                or not isinstance(channel.get("locator"), str) or not channel["locator"]):
+            fail("SPECIFICATION_INVENTORY_INCOMPLETE_OR_UNVERIFIED")
+        stamp = channel.get("observed_utc")
+        if type(stamp) is not int or not observed <= stamp <= clock:
+            fail("SPECIFICATION_CHANNEL_STALE_OR_FUTURE")
+        ids = set()
+        for item in items:
+            if not isinstance(item, dict):
+                fail("SPECIFICATION_ITEM_INVALID")
+            identifier = item.get("id")
+            if not isinstance(identifier, str) or not identifier or identifier in ids:
+                fail("SPECIFICATION_ITEM_IDENTITY_INVALID")
+            ids.add(identifier)
+            if item.get("disposition") not in {"APPLY", "NOT_APPLICABLE"}:
+                fail("SPECIFICATION_ITEM_REVIEW_OPEN")
+            if not isinstance(item.get("reason"), str) or not item["reason"].strip():
+                fail("SPECIFICATION_ITEM_REASON_REQUIRED")
+            relative = item.get("source_path")
+            if (not isinstance(relative, str) or not relative or Path(relative).is_absolute()
+                    or ".." in Path(relative).parts):
+                fail("SPECIFICATION_SOURCE_PATH_INVALID")
+            path = ROOT / relative
+            try:
+                if (path.is_symlink() or not path.is_file()
+                        or not path.resolve().is_relative_to(ROOT.resolve())
+                        or path.stat().st_size > 8 * 1024 * 1024):
+                    fail("SPECIFICATION_SOURCE_UNAVAILABLE")
+                raw = path.read_bytes()
+            except (OSError, RuntimeError):
+                fail("SPECIFICATION_SOURCE_UNVERIFIED")
+            if not raw or hashlib.sha256(raw).hexdigest() != item.get("sha256"):
+                fail("SPECIFICATION_SOURCE_HASH_MISMATCH")
+            if item["disposition"] == "APPLY":
+                # Compare within the named work only. A companion is never -04.
+                if (not isinstance(item.get("family"), str) or not item["family"]
+                        or not isinstance(item.get("selected_revision"), str)
+                        or not item["selected_revision"]
+                        or item["selected_revision"] != item.get("latest_revision")):
+                    fail("SPECIFICATION_SELECTED_REVISION_NOT_CURRENT")
+                seen_documents.add(identifier)
+    if not set(claims).issubset(seen_documents):
+        fail("SPECIFICATION_CLAIM_NOT_REVIEWED")
+
+
 def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> bool:
     if not isinstance(action, dict) or action.get("subject") != subject:
         fail("CLIENT_ACTION_SUBJECT_DRIFT")
+    validate_client_tool_selection(action)
     if action.get("route") not in ("connector", "cli", "mesh"):
         fail("CLIENT_ACTION_ROUTE_INVALID")
     if action.get("method") not in ("GET", "POST", "PUT", "PATCH", "DELETE"):
@@ -105,7 +435,9 @@ def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> b
         required_route = policy.get("client_continuation", {}).get(service + "_route")
         if required_route != "REST_API_ONLY":
             fail("CLIENT_" + service.upper() + "_ROUTE_POLICY_INVALID")
-        if action.get("transport") != required_route:
+        fallback = (service == "github" and action.get("transport") == "GRAPHQL_FALLBACK"
+                    and github_graphql_fallback_allowed(action, policy))
+        if action.get("transport") != required_route and not fallback:
             fail("CLIENT_" + service.upper() + "_ROUTE_FORBIDDEN")
     for key in ("operation", "evidence"):
         if not isinstance(action.get(key), str) or not action[key].strip():
@@ -197,8 +529,26 @@ def client_transition_plan(receipt: dict[str, Any]) -> dict[str, Any] | None:
         else:
             waiting.append({"transition_id": identifier, "activation": missing,
                             "action_admitted": admitted, "evidence": evidence})
-    return {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
-            "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
+    result = {"input_sha256": input_digest, "ready": ready, "waiting": waiting,
+              "scope": "PLANNING_ONLY_NOT_EXECUTION_OR_EFFECT_PROOF"}
+    if "blocking_repairs" in plan:
+        repairs = plan["blocking_repairs"]
+        if (not isinstance(repairs, list)
+            or any(not isinstance(x, str) or not x.strip() for x in repairs)
+            or len(set(repairs)) != len(repairs)):
+            fail("CLIENT_BLOCKING_REPAIR_LIST_INVALID")
+        if not set(repairs) <= identifiers:
+            fail("CLIENT_BLOCKING_REPAIR_TRANSITION_MISSING")
+        result["blocking_repairs"] = repairs
+        result["deferred"] = []
+        if repairs:
+            # An unavailable repair remains the priority. Do not silently
+            # substitute optimization or unrelated work, and retain its plan.
+            result["deferred"] = [item for item in ready
+                                  if item["transition_id"] not in repairs]
+            result["ready"] = [item for item in ready
+                               if item["transition_id"] in repairs]
+    return result
 
 
 def client_end_of_action_domain() -> str:
@@ -491,6 +841,98 @@ def validate_client_knowledge(receipt: dict[str, Any], predecessor: dict[str, An
                 fail("CLIENT_KNOWLEDGE_HISTORY_REWRITTEN")
 
 
+WORK_EFFECTS = frozenset({"JOURNAL_WRITE", "SOURCE_CHANGE", "ARTIFACT_INSTALLATION",
+                          "DATA_READBACK", "RUNTIME_EFFECT"})
+
+
+def work_completion_verdict(report: dict[str, Any]) -> str:
+    """Check declared goal/effect correspondence, never evidence authenticity.
+
+    The same finite predicate is checked by the existing Lean vector bridge.
+    A relayed report remains evidence of that report, not this client's readback.
+    """
+    fields = {"requiredTarget", "observedTarget", "requiredEffect", "observedEffect",
+              "origin", "checker", "requiredSha256", "observedSha256", "fromCache",
+              "completedUtc", "observedUtc", "closedUtc"}
+    if (not isinstance(report, dict) or set(report) != fields
+        or any(not isinstance(report[k], str) for k in fields
+               - {"fromCache", "completedUtc", "observedUtc", "closedUtc"})
+        or any(type(report[k]) is not int or report[k] < 0
+               for k in ("completedUtc", "observedUtc", "closedUtc"))
+        or type(report["fromCache"]) is not bool
+        or not report["requiredTarget"]
+        or report["requiredEffect"] not in WORK_EFFECTS
+        or report["observedEffect"] not in WORK_EFFECTS):
+        return "reject"
+    expected = report["requiredSha256"]
+    if ((expected and not re.fullmatch(r"[0-9a-f]{64}", expected))
+        or (report["requiredEffect"] == "ARTIFACT_INSTALLATION" and not expected)):
+        return "reject"
+    return "accept" if (
+        report["requiredTarget"] == report["observedTarget"]
+        and report["requiredEffect"] == report["observedEffect"]
+        and report["origin"] == "DIRECT_TOOL_READBACK"
+        and report["checker"] == "VERIFIED"
+        and report["completedUtc"] < report["observedUtc"] <= report["closedUtc"]
+        and (not expected or expected == report["observedSha256"])
+        and (report["requiredEffect"] != "DATA_READBACK" or report["fromCache"] is False)
+    ) else "reject"
+
+
+def client_administrative_action(action: dict[str, Any]) -> bool:
+    """Recognize the actual workspace journal route in declared action metadata."""
+    if not isinstance(action, dict):
+        return False
+    tool = str(action.get("tool", ""))
+    operation = str(action.get("operation", ""))
+    return (tool.endswith(("qik_vrt_kognitiver_arbeitsraum_create_task",
+                           "qik_vrt_kognitiver_arbeitsraum_update_task"))
+            or operation in {"create_task", "update_task", "createTask", "updateTask"})
+
+
+def validate_work_verification(task: dict[str, Any], receipt: dict[str, Any]) -> None:
+    acceptance = require(task, "acceptance", dict)
+    verification = require(task, "verification", dict)
+    if (set(acceptance) != {"target", "effect", "artifact_sha256"}
+        or any(not isinstance(verification.get(k), str) or not verification[k].strip()
+               for k in ("action_id", "observer", "source"))):
+        fail("CLIENT_WORK_VERIFICATION_BINDING_INVALID")
+    attempts = [a for a in receipt.get("attempts", [])
+                if isinstance(a, dict) and isinstance(a.get("action_window"), dict)
+                and a["action_window"].get("id") == verification["action_id"]]
+    if len(attempts) != 1:
+        fail("CLIENT_WORK_VERIFICATION_ACTION_MISSING")
+    attempt = attempts[0]
+    action = require(attempt, "action", dict)
+    if (not validate_client_action(action, receipt["subject"])
+        or action.get("target") != acceptance.get("target")):
+        fail("CLIENT_WORK_VERIFICATION_ACTION_TARGET_DRIFT")
+    if (client_administrative_action(action)
+        and verification.get("effect") != "JOURNAL_WRITE"):
+        fail("CLIENT_JOURNAL_WRITE_RELABELLED_AS_REPAIR")
+    window = attempt["action_window"]
+    validate_client_readback(attempt.get("readback"), receipt["subject"], window)
+    epoch = dt.datetime(1970, 1, 1, tzinfo=dt.timezone.utc)
+
+    def micros(value: Any) -> int:
+        delta = client_time(value, "CLIENT_WORK_VERIFICATION_TIME_INVALID") - epoch
+        return (delta.days * 86400 + delta.seconds) * 1000000 + delta.microseconds
+
+    report = {"requiredTarget": acceptance.get("target"),
+              "observedTarget": verification.get("target"),
+              "requiredEffect": acceptance.get("effect"),
+              "observedEffect": verification.get("effect"),
+              "requiredSha256": acceptance.get("artifact_sha256"),
+              "observedSha256": verification.get("artifact_sha256"),
+              "origin": verification.get("origin"), "checker": verification.get("checker"),
+              "fromCache": verification.get("fromCache"),
+              "completedUtc": micros(window.get("completed_at")),
+              "observedUtc": micros(verification.get("observed_at")),
+              "closedUtc": micros(window.get("closed_at"))}
+    if work_completion_verdict(report) != "accept":
+        fail("CLIENT_WORK_VERIFICATION_REJECTED")
+
+
 def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | None = None) -> None:
     """An observed predecessor's open duties are work for its successor.
 
@@ -502,6 +944,13 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
     if previous is None and "work" not in receipt:
         return
     work = require(receipt, "work", list)
+    metadata_only = receipt.get("schema") == "qikvrt-api-client-work/1"
+    if metadata_only and (receipt.get("state") != "CONTINUE"
+                          or receipt.get("ordinary_release", False) is not False
+                          or receipt.get("effect_state", "EFFECT_ACK_CONTINUE") != "EFFECT_ACK_CONTINUE"):
+        fail("CLIENT_METADATA_CHECKPOINT_CLAIM_INFLATED")
+    historical = {t.get("id"): t for t in predecessor.get("work", [])
+                  if isinstance(t, dict) and isinstance(t.get("id"), str)} if predecessor else {}
     tasks: dict[str, dict[str, Any]] = {}
     for task in work:
         if not isinstance(task, dict):
@@ -509,11 +958,21 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
         identifier = task.get("id")
         if not isinstance(identifier, str) or not identifier.strip() or identifier in tasks:
             fail("CLIENT_WORK_ID_INVALID")
-        if task.get("state") not in ("OPEN", "VERIFIED"):
+        if task.get("state") not in (("OPEN", "RECORDED", "VERIFIED") if metadata_only
+                                     else ("OPEN", "VERIFIED")):
             fail("CLIENT_WORK_STATE_INVALID")
-        if task["state"] == "VERIFIED":
+        if task["state"] in ("VERIFIED", "RECORDED"):
             if not isinstance(task.get("evidence"), str) or not task["evidence"].strip():
                 fail("CLIENT_WORK_CLOSED_WITHOUT_EVIDENCE")
+            prior = historical.get(identifier)
+            # Carry an identical historical result without promoting it to a
+            # fresh check. New closures always need goal-bound direct evidence.
+            # The separate API work schema records transport/repository metadata,
+            # never task completion. Legacy VERIFIED metadata stays readable;
+            # current producers write RECORDED and full receipts cannot import
+            # that state as a verified task or a productive effect.
+            if not metadata_only and not (prior == task and prior.get("state") == "VERIFIED"):
+                validate_work_verification(task, receipt)
         elif not isinstance(task.get("next_action"), str) or not task["next_action"].strip():
             fail("CLIENT_OPEN_WORK_WITHOUT_SUCCESSOR")
         tasks[identifier] = task
@@ -534,8 +993,219 @@ def validate_client_work(receipt: dict[str, Any], predecessor: dict[str, Any] | 
                 fail("CLIENT_PREVIOUS_WORK_INVALID")
             if task["state"] == "OPEN" and task.get("id") not in tasks:
                 fail("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+            current = tasks.get(task.get("id"))
+            if (current is not None and "acceptance" in task
+                and current.get("acceptance") != task["acceptance"]):
+                fail("CLIENT_PREDECESSOR_ACCEPTANCE_CHANGED")
+        prior_attempts = predecessor.get("attempts", [])
+        if not isinstance(prior_attempts, list):
+            fail("CLIENT_PREVIOUS_ATTEMPTS_INVALID")
+        if (not metadata_only and receipt.get("state") == "CONTINUE"
+            and any(client_administrative_action(a.get("action", {}))
+                    for a in receipt.get("attempts", []) if isinstance(a, dict))
+            and any(client_administrative_action(a.get("action", {}))
+                    for a in prior_attempts if isinstance(a, dict))
+            and not any(t["state"] == "VERIFIED" and t != historical.get(t["id"])
+                        and t.get("acceptance", {}).get("effect") != "JOURNAL_WRITE"
+                        for t in work)):
+            fail("CLIENT_ADMINISTRATIVE_CONTINUATION_LOOP")
     if receipt.get("state") == "DONE" and any(task["state"] == "OPEN" for task in work):
         fail("CLIENT_DONE_WITH_OPEN_WORK")
+
+
+def delivery_report_verdict(report: dict[str, Any]) -> str:
+    """Finite-model adapter; declared consistency is not evidence authenticity.
+
+    Exercised against Lean-generated vectors, not a universal refinement proof.
+    Times are integer UTC microseconds after the caller's checked conversion.
+    """
+    required = {"claim", "authorityHost", "subjectRef", "observations",
+                "completedUtc", "closedUtc", "provenanceBound"}
+    if (not isinstance(report, dict) or set(report) != required
+        or report["claim"] not in ("pending", "delivered")
+        or any(not isinstance(report[k], str) or not report[k]
+               for k in ("authorityHost", "subjectRef"))
+        or any(type(report[k]) is not int or report[k] < 0
+               for k in ("completedUtc", "closedUtc"))
+        or type(report["provenanceBound"]) is not bool
+        or not isinstance(report["observations"], list)):
+        return "reject"
+    ids: set[str] = set()
+    qualified = False
+    for observation in report["observations"]:
+        if (not isinstance(observation, dict)
+            or set(observation) != {"target", "status", "subjectRef", "observationId", "utc"}
+            or any(not isinstance(observation[k], str) or not observation[k]
+                   for k in ("target", "subjectRef", "observationId"))
+            or any(type(observation[k]) is not int or observation[k] < 0
+                   for k in ("status", "utc"))):
+            return "reject"
+        if observation["observationId"] in ids:
+            return "reject"
+        ids.add(observation["observationId"])
+        qualified |= (observation["target"] == report["authorityHost"]
+                      and observation["status"] == 200
+                      and observation["subjectRef"] == report["subjectRef"]
+                      and report["completedUtc"] < observation["utc"] <= report["closedUtc"])
+    return ("accept" if report["provenanceBound"]
+            and (report["claim"] == "pending" or qualified) else "reject")
+
+
+def validate_client_remote_readback(
+    remote: dict[str, Any], sent: dict[str, Any], receipt: dict[str, Any],
+) -> None:
+    """Reject local/failed/replayed observations; declarations still need verification."""
+    hostname = remote.get("target_host")
+    if not isinstance(hostname, str) or not hostname or hostname != hostname.lower():
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    if hostname == "localhost" or hostname.endswith((".localhost", ".")):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    try:
+        address = ipaddress.ip_address(hostname)
+    except ValueError:
+        address = None
+    if address is not None:
+        address = getattr(address, "ipv4_mapped", None) or address
+    dns_name = re.fullmatch(
+        r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+"
+        r"[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?", hostname,
+    )
+    if ((address is None and not dns_name)
+        or (address is not None and (address.is_loopback or address.is_unspecified
+                                    or address.is_link_local or address.is_multicast))):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    status = remote.get("http_status")
+    response = remote.get("response_sha256")
+    ref = remote.get("authority_ref_sha")
+    if (sent.get("target_host") != hostname
+        or not client_public_url(remote.get("url"), hostname)
+        or not client_public_url(remote.get("final_url"), hostname)
+        or type(status) is not int or not 200 <= status < 300
+        or remote.get("independent") is not True
+        or remote.get("authority_identity_verified") is not True
+        or remote.get("evidence") == sent.get("evidence")
+        or not ((isinstance(response, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", response))
+                or (isinstance(ref, str) and re.fullmatch(r"[0-9a-f]{40}", ref)))):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    window = require(receipt, "action_window", dict)
+    observed = client_time(remote.get("observed_at"), "CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    completed = client_time(window.get("completed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    closed = client_time(window.get("closed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    if remote.get("action_id") != window.get("id") or not completed < observed <= closed:
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_NOT_FRESH")
+    observation_id = remote.get("observation_id")
+    remote_subject = remote.get("subject")
+    if (not isinstance(observation_id, str) or not observation_id.strip()
+        or not isinstance(remote_subject, dict)
+        or remote_subject != receipt["subject"]
+        or (ref is not None and ref != receipt["subject"]["head"])):
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+    epoch = dt.datetime(1970, 1, 1, tzinfo=dt.timezone.utc)
+
+    def micros(value: dt.datetime) -> int:
+        delta = value - epoch
+        return (delta.days * 86400 + delta.seconds) * 1000000 + delta.microseconds
+
+    report = {"claim": "delivered", "authorityHost": hostname,
+              "subjectRef": receipt["subject"]["head"],
+              "completedUtc": micros(completed), "closedUtc": micros(closed),
+              "provenanceBound": True,
+              "observations": [{"target": hostname, "status": status,
+                                "subjectRef": remote_subject["head"],
+                                "observationId": observation_id, "utc": micros(observed)}]}
+    if delivery_report_verdict(report) != "accept":
+        fail("CLIENT_COMMUNICATION_REMOTE_READBACK_INVALID")
+
+
+def validate_client_communications(receipt: dict[str, Any], subject: dict[str, Any]) -> None:
+    """Check declared evidence scope, without issuing an Effect-Ack assessment.
+
+    Historical receipts without this field remain readable. These consistency
+    checks neither run the original outbox tool nor authenticate its evidence.
+    """
+    records = receipt.get("communications", [])
+    if not isinstance(records, list):
+        fail("CLIENT_COMMUNICATION_INVALID")
+    identifiers: set[str] = set()
+    observation_ids: set[str] = set()
+    scopes = {"NOT_SENT", "SENT", "RECEIVED", "APPLIED", "RECEIVER_NACK", "PRINCIPAL_RETURN"}
+    for record in records:
+        if (not isinstance(record, dict)
+            or set(record) != {"id", "message_sha256", "sender", "recipient", "claim", "evidence"}
+            or any(not isinstance(record.get(key), str) or not record[key].strip()
+                   for key in ("id", "sender"))
+            or record["id"] in identifiers
+            or not isinstance(record.get("claim"), str)
+            or record.get("claim") not in scopes
+            or not isinstance(record.get("message_sha256"), str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", record["message_sha256"])
+            or not isinstance(record.get("evidence"), dict)):
+            fail("CLIENT_COMMUNICATION_INVALID")
+        identifiers.add(record["id"])
+        claim, evidence = record["claim"], record["evidence"]
+        if set(evidence) - {"send", "ingress", "outbox_claim", "application", "readback", "return", "remote_readback"}:
+            fail("CLIENT_COMMUNICATION_INVALID")
+        if claim == "NOT_SENT":
+            if evidence:
+                fail("CLIENT_UNSENT_WITH_DELIVERY_EVIDENCE")
+            if not isinstance(record["recipient"], str) or not record["recipient"].strip():
+                fail("CLIENT_COMMUNICATION_INVALID")
+            continue
+        if claim == "PRINCIPAL_RETURN":
+            if record["recipient"] is not None or set(evidence) != {"return"}:
+                fail("CLIENT_PRINCIPAL_RETURN_RECEIVER_INFERRED")
+            returned = evidence["return"]
+            if (not isinstance(returned, dict)
+                or returned.get("message_sha256") != record["message_sha256"]
+                or not isinstance(returned.get("evidence"), str) or not returned["evidence"].strip()):
+                fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+            continue
+        if not isinstance(record["recipient"], str) or not record["recipient"].strip():
+            fail("CLIENT_COMMUNICATION_INVALID")
+
+        def proof(kind: str) -> dict[str, Any]:
+            value = evidence.get(kind)
+            if (not isinstance(value, dict) or not isinstance(value.get("evidence"), str)
+                or not value["evidence"].strip()):
+                fail("CLIENT_COMMUNICATION_" + kind.upper() + "_REQUIRED")
+            if (value.get("message_sha256") != record["message_sha256"]
+                or value.get("node") != record["recipient"]):
+                fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+            return value
+
+        sent = proof("send")
+        if (sent.get("sender") != record["sender"]
+            or not isinstance(sent.get("channel"), str) or not sent["channel"].strip()):
+            fail("CLIENT_COMMUNICATION_EVIDENCE_BINDING_MISMATCH")
+        if claim == "SENT":
+            continue
+        remote = proof("remote_readback")
+        validate_client_remote_readback(remote, sent, receipt)
+        if remote["observation_id"] in observation_ids:
+            fail("CLIENT_COMMUNICATION_OBSERVATION_REPLAY")
+        observation_ids.add(remote["observation_id"])
+        outbox = proof("outbox_claim")
+        if (outbox.get("tool") != "node-tools/qikvrt_mirror_emit.py claim"
+            or not isinstance(outbox.get("record_sha256"), str)
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", outbox["record_sha256"])):
+            fail("CLIENT_COMMUNICATION_OUTBOX_CLAIM_REQUIRED")
+        if claim in ("RECEIVED", "APPLIED"):
+            proof("ingress")
+        if claim == "APPLIED":
+            applied, readback = proof("application"), proof("readback")
+            if (applied.get("subject") != subject
+                or not isinstance(applied.get("native_event_id"), str)
+                or not applied["native_event_id"].strip()
+                or not isinstance(applied.get("ledger_digest"), str)
+                or not re.fullmatch(r"sha256:[0-9a-f]{64}", applied["ledger_digest"])
+                or readback.get("independent") is not True
+                or any(readback.get(key) != applied.get(key)
+                       for key in ("subject", "native_event_id", "ledger_digest"))
+                or readback["evidence"] == applied["evidence"]):
+                fail("CLIENT_COMMUNICATION_APPLICATION_READBACK_MISMATCH")
+            if any(remote.get(key) != applied.get(key)
+                   for key in ("subject", "native_event_id", "ledger_digest")):
+                fail("CLIENT_COMMUNICATION_REMOTE_APPLICATION_MISMATCH")
 
 
 def validate_client_receipt(receipt: dict[str, Any]) -> str:
@@ -550,6 +1220,11 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
             fail("CLIENT_SUBJECT_INVALID")
     if not isinstance(subject.get("ref"), str) or not subject["ref"].strip():
         fail("CLIENT_SUBJECT_INVALID")
+    if "delivery_report" in receipt:
+        report = require(receipt, "delivery_report", dict)
+        if (report.get("subjectRef") != subject["head"]
+            or delivery_report_verdict(report) != "accept"):
+            fail("CLIENT_DELIVERY_REPORT_REJECTED")
     authorization = require(receipt, "authorization", dict)
     if (authorization.get("granted") is not True
         or not isinstance(authorization.get("source"), str)
@@ -583,6 +1258,8 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
         if attempt.get("ambiguous_effect") is not False:
             if attempt.get("readback_before_effect") is not True and count:
                 fail("CLIENT_AMBIGUOUS_EFFECT_RETRIED_WITHOUT_READBACK")
+        if not count and "action" in attempt:
+            validate_client_action(require(attempt, "action", dict), subject)
         if count:
             if not validate_client_action(require(attempt, "action", dict), subject):
                 fail("CLIENT_EFFECT_WITHOUT_ADMISSION")
@@ -595,10 +1272,16 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
                 fail("CLIENT_CLOSING_ACTION_REUSED")
             closed_actions.add(action_id)
     actions = require(receipt, "next_actions", list)
+    transition_plan = client_transition_plan(receipt)
+    repairs = transition_plan.get("blocking_repairs", []) if transition_plan else []
+    repair_actions = ([item["action"] for item in transition_plan["ready"]]
+                      if repairs else [])
     executable = False
     for action in actions:
-        executable |= validate_client_action(action, subject)
-    transition_plan = client_transition_plan(receipt)
+        admitted = validate_client_action(action, subject)
+        if admitted and repairs and action not in repair_actions:
+            fail("CLIENT_ACTION_OUTSIDE_BLOCKING_REPAIR_SCOPE")
+        executable |= admitted
     if transition_plan is not None:
         executable |= bool(transition_plan["ready"])
     readback = receipt.get("readback")
@@ -611,6 +1294,7 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
     predecessor = client_previous_receipt(receipt)
     validate_client_work(receipt, predecessor)
     validate_client_knowledge(receipt, predecessor)
+    validate_client_communications(receipt, subject)
     if executable and state != "CONTINUE":
         fail("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
     pending = receipt.get("pending_execution")
@@ -932,11 +1616,362 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
     return registry_name, len(adapters)
 
 
+FORMAL_POLICY = "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json"
+FORMAL_ROOT = "formalization/QIKVRT_Formalization_v2.0"
+FORMAL_IDS = {"own-kernel", "lean-paranoid", "lean4lean", "nanoda",
+              "con-leche", "con-ron", "lean-default"}
+
+
+def formal_policy() -> dict[str, Any]:
+    policy = load_json(ROOT / FORMAL_POLICY)
+    checkers = policy.get("checkers", [])
+    if (policy.get("schema") != "qikvrt-formal-proof-obligation/v1"
+        or policy.get("required_count") != 7 or len(checkers) != 7
+        or {c.get("id") for c in checkers} != FORMAL_IDS
+        or any(not re.fullmatch(r"[0-9a-f]{40}", str(c.get("commit", "")))
+               or not str(c.get("repository_url", "")).startswith("https://github.com/")
+               or not c.get("check_command") or not c.get("build_command") for c in checkers)):
+        fail("FORMAL_CHECKER_IDENTITY_UNRESOLVED_HOLD_OWNER_DECISION")
+    return policy
+
+
+def formal_source_binding(policy: dict[str, Any]) -> tuple[str, dict[str, str]]:
+    digests: dict[str, str] = {}
+    for name in policy["source_files"]:
+        path = Path(name)
+        if path.is_absolute() or ".." in path.parts or (ROOT / path).is_symlink():
+            fail("FORMAL_SOURCE_PATH_INVALID")
+        try:
+            digests[name] = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+        except OSError:
+            fail("FORMAL_SOURCE_UNAVAILABLE:" + name)
+    wire = json.dumps(digests, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(wire).hexdigest(), digests
+
+
+def formal_proof_required(changed_paths: Any) -> bool:
+    policy = formal_policy()
+    if (not isinstance(changed_paths, list)
+        or any(not isinstance(path, str) or not path or Path(path).is_absolute()
+               or ".." in Path(path).parts for path in changed_paths)
+        or len(set(changed_paths)) != len(changed_paths)):
+        fail("FORMAL_CHANGE_SCOPE_UNVERIFIED")
+    patterns = [p for group in policy["change_classes"].values() for p in group]
+    return any(fnmatch.fnmatchcase(path, pattern) for path in changed_paths for pattern in patterns)
+
+
+def formal_log_has_failure(text: str) -> bool:
+    """Reuse the original command diagnostic guard, including zero-exit panic."""
+    try:
+        require_formal_command_success(0, text)
+    except RuntimeError:
+        return True
+    return False
+
+
+def formal_proof_gate(directory: Path) -> None:
+    """Validate all seven exact-input receipts; CI must freshly produce them.
+
+    Stored JSON/log digests are consistency evidence, not authenticated execution.
+    The existing native workflow reruns all commands before calling this gate.
+    """
+    policy = formal_policy()
+    vectors = ROOT / policy["vectors_path"]
+    if (not re.fullmatch(r"[0-9a-f]{64}", str(policy.get("vectors_sha256", "")))
+        or not vectors.is_file() or vectors.is_symlink()
+        or hashlib.sha256(vectors.read_bytes()).hexdigest() != policy["vectors_sha256"]
+        or not json.loads(vectors.read_text())):
+        fail("FORMAL_BRIDGE_VECTORS_MISSING_OR_DRIFT")
+    bundle, digests = formal_source_binding(policy)
+    source = digests[FORMAL_ROOT + "/QIKVRTEffectAck/DeliveryReporting.lean"]
+    inventory = set(policy["theorems"])
+    own_axioms = None
+    external_export = None
+    bound_execution = None
+    for checker in policy["checkers"]:
+        receipt = load_json(directory / (checker["id"] + ".json"))
+        if (set(policy["receipt_required"]) - receipt.keys()
+            or receipt.get("checker") != checker["id"]
+            or receipt.get("commit") != checker["commit"]
+            or receipt.get("module") != policy["module"]
+            or receipt.get("source_sha256") != source
+            or receipt.get("source_bundle_sha256") != bundle
+            or receipt.get("result") != "PASS" or type(receipt.get("exit_code")) is not int
+            or receipt["exit_code"] != 0
+            or not re.fullmatch(r"[0-9a-f]{64}", str(receipt.get("export_or_olean_sha256", "")))):
+            fail("FORMAL_RECEIPT_NONPASS_OR_DRIFT:" + checker["id"])
+        execution = receipt.get("execution", {})
+        if (not isinstance(execution, dict)
+            or any(not re.fullmatch(r"[0-9a-f]{40}", str(execution.get(k, ""))) for k in ("head", "tree"))
+            or (bound_execution is not None and execution != bound_execution)):
+            fail("FORMAL_EXECUTION_SUBJECT_MISSING_OR_DRIFT:" + checker["id"])
+        bound_execution = execution
+        if os.environ.get("GITHUB_RUN_ID"):
+            actual = {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
+                      "run_id": os.environ["GITHUB_RUN_ID"],
+                      "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT")}
+            if receipt.get("execution") != actual:
+                fail("FORMAL_NATIVE_EXECUTION_SUBJECT_DRIFT:" + checker["id"])
+        path = directory / "logs" / (checker["id"] + ".log")
+        if not path.is_file() or path.is_symlink() or hashlib.sha256(path.read_bytes()).hexdigest() != receipt["log_sha256"]:
+            fail("FORMAL_ORIGINAL_LOG_MISSING_OR_DRIFT:" + checker["id"])
+        if formal_log_has_failure(path.read_text()):
+            fail("FORMAL_CHECKER_LOG_UNRELIABLE:" + checker["id"])
+        artifact = receipt.get("artifact")
+        if (not isinstance(artifact, str) or Path(artifact).name != artifact
+            or not (directory / artifact).is_file() or (directory / artifact).is_symlink()
+            or hashlib.sha256((directory / artifact).read_bytes()).hexdigest() != receipt["export_or_olean_sha256"]):
+            fail("FORMAL_REPLAY_INPUT_MISSING_OR_DRIFT:" + checker["id"])
+        client_time(receipt["utc"], "FORMAL_RECEIPT_UTC_INVALID")
+        axioms = receipt["axioms"]
+        if (not isinstance(axioms, dict) or set(axioms) != inventory
+            or any(not isinstance(a, list) or set(a) - set(policy["permitted_axioms"])
+                   for a in axioms.values()) or axioms != policy["expected_axioms"]):
+            fail("FORMAL_AXIOM_INVENTORY_DRIFT:" + checker["id"])
+        if own_axioms is None:
+            own_axioms = axioms
+        elif axioms != own_axioms:
+            fail("FORMAL_CROSS_CHECKER_AXIOM_DISAGREEMENT")
+        if checker["id"] != "own-kernel":
+            export = receipt["export_or_olean_sha256"]
+            if external_export is not None and export != external_export:
+                fail("FORMAL_CROSS_CHECKER_EXPORT_DRIFT")
+            external_export = export
+    print("FORMAL_RECEIPT_CONSISTENCY=7/7")
+    print("FORMAL_RECEIPT_EXECUTION=" + json.dumps(bound_execution, sort_keys=True))
+    print("IMPLEMENTATION_ASSURANCE=FINITE_DIFFERENTIAL_BRIDGE_ONLY")
+    print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+
+
+def require_formal_command_success(returncode: int, output: str) -> None:
+    """A checker panic is failure even if its runtime returns zero afterwards."""
+    if returncode != 0:
+        raise RuntimeError("formal checker command returned nonzero: " + str(returncode))
+    if re.search(r"(?mi)^\s*(?:PANIC\b|error:|.*declaration uses .sorry.)", output):
+        raise RuntimeError("formal checker emitted panic/error despite zero exit")
+
+
+def run_formal_proof(directory: Path, own_root: Path, external_root: Path) -> int:
+    """Reuse the existing handoff validator as an explicit local proof action.
+
+    No provider call, download, timer, Git write or checker substitution.
+    Native workflow provisions the two hash-locked original distributions.
+    """
+    policy = formal_policy()
+    directory = directory.resolve()
+    directory.mkdir(parents=True, exist_ok=True)
+    logs = directory / "logs"
+    logs.mkdir(exist_ok=True)
+    source_project = ROOT / FORMAL_ROOT
+    project = source_project / "delivery-reporting"
+    audit = "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"
+    namespace = "QIKVRT.DeliveryReporting."
+    sys.path.insert(0, str(source_project / "scripts"))
+    from audit_lean_axioms import parse_axiom_reports
+
+    def command(argv: list[str], cwd: Path, log: Path,
+                output: Path | None = None) -> None:
+        with log.open("ab") as stream:
+            stream.write((json.dumps({"command": argv, "cwd": str(cwd),
+                "environment": {"LEAN_ABORT_ON_PANIC": "1"},
+                "utc": dt.datetime.now(dt.timezone.utc).isoformat()}) + "\n").encode())
+            stream.flush()
+            try:
+                if output is None:
+                    proc = subprocess.run(argv, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT,
+                                          timeout=300, check=False, env={**os.environ, "LEAN_ABORT_ON_PANIC": "1"})
+                else:
+                    with output.open("wb") as dest:
+                        proc = subprocess.run(argv, cwd=cwd, stdout=dest, stderr=stream,
+                                              timeout=300, check=False, env={**os.environ, "LEAN_ABORT_ON_PANIC": "1"})
+                stream.write(("\nEXIT_CODE=" + str(proc.returncode) + "\n").encode())
+                if proc.returncode:
+                    raise RuntimeError("command nonpass: " + shlex.join(argv))
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                stream.write(("\nUNVERIFIED=" + str(exc) + "\n").encode())
+                raise RuntimeError(str(exc)) from exc
+        if formal_log_has_failure(log.read_text()):
+            raise RuntimeError("checker panic despite zero exit; verification unreliable")
+
+    def inventory(log: Path) -> dict[str, list[str]]:
+        reports = parse_axiom_reports(log.read_text())
+        result = {name: sorted(axioms) for name, axioms in reports if name.startswith(namespace)}
+        if (set(result) != set(policy["theorems"])
+            or len(result) != len([n for n, _ in reports if n.startswith(namespace)])
+            or any(set(a) - set(policy["permitted_axioms"]) for a in result.values())):
+            raise RuntimeError("axiom printer inventory invalid")
+        return result
+
+    def verify_root(root: Path, version: str, sha: str, log: Path) -> None:
+        command([str(root / "bin/lean"), "--version"], project, log)
+        output = directory / ("githash-" + version + ".txt")
+        command([str(root / "bin/lean"), "--githash"], project, log, output)
+        if output.read_text().strip() != sha:
+            raise RuntimeError("original Lean commit mismatch")
+
+    bundle, digests = formal_source_binding(policy)
+    module_source = FORMAL_ROOT + "/QIKVRTEffectAck/DeliveryReporting.lean"
+    own_log = logs / "own-kernel.log"
+    if any(directory.glob("*.json")) or own_log.exists():
+        fail("FORMAL_OUTPUT_NOT_FRESH_USE_NEW_BOUND_RUN_DIRECTORY")
+    own_axioms: dict[str, list[str]] = {}
+    olean = project / ".lake/build/lib/lean/QIKVRTEffectAck/DeliveryReporting.olean"
+    own_ok = False
+    own_error = ""
+    try:
+        verify_root(own_root, "4.19.0", policy["checkers"][0]["commit"], own_log)
+        lake = str(own_root / "bin/lake")
+        command([lake, "build", policy["lean_lib"], "deliveryReportingVectors"], project, own_log)
+        command([lake, "env", "lean", "--run", "../QIKVRTEffectAck/DeliveryReportingReplay.lean"], project, own_log)
+        command([lake, "env", "lean", "../" + audit], project, own_log)
+        own_axioms = inventory(own_log)
+        vectors = directory / "generated-vectors.json"
+        command([lake, "exe", "deliveryReportingVectors"], project, own_log, vectors)
+        expected = policy.get("vectors_sha256")
+        actual = hashlib.sha256(vectors.read_bytes()).hexdigest()
+        print("GENERATED_VECTOR_SHA256=" + actual, flush=True)
+        retained = ROOT / policy["vectors_path"]
+        if not retained.is_file() or actual != expected or retained.read_bytes() != vectors.read_bytes():
+            print("QIKVRT_DELIVERY_VECTORS_BEGIN", flush=True)
+            print(vectors.read_text(), end="", flush=True)
+            print("QIKVRT_DELIVERY_VECTORS_END", flush=True)
+            raise RuntimeError("Lean vectors are not yet pinned/imported byte-exactly")
+        command([sys.executable, "-B", "-m", "unittest", "tests.test_delivery_reporting_proof"], ROOT, own_log)
+        own_ok = True
+    except RuntimeError as exc:
+        own_error = str(exc)
+
+    def receipt(checker: dict[str, Any], log: Path, payload: Path,
+                axioms: dict[str, list[str]], ok: bool, error: str = "") -> None:
+        artifact = "own-kernel.olean" if checker["id"] == "own-kernel" else export.name
+        if checker["id"] == "own-kernel" and payload.is_file():
+            shutil.copyfile(payload, directory / artifact)
+        value = {"schema": "qikvrt-formal-receipt/v1", "checker": checker["id"],
+            "commit": checker["commit"], "version": checker["version"], "module": policy["module"],
+            "source_sha256": digests[module_source], "source_bundle_sha256": bundle,
+            "source_digests": digests,
+            "export_or_olean_sha256": hashlib.sha256(payload.read_bytes()).hexdigest() if payload.is_file() else None,
+            "artifact": artifact,
+            "axioms": axioms, "result": "PASS" if ok else "UNVERIFIED", "error": error,
+            "log_sha256": hashlib.sha256(log.read_bytes()).hexdigest(),
+            "utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "command": checker["check_command"],
+            "executed_commands": [json.loads(line)["command"] for line in log.read_text().splitlines()
+                if line.startswith('{"command":')],
+            "exit_code": 0 if ok else None,
+            "execution": {"head": git_value("rev-parse", "HEAD"), "tree": git_value("rev-parse", "HEAD^{tree}"),
+                "run_id": __import__("os").environ.get("GITHUB_RUN_ID"),
+                "run_attempt": __import__("os").environ.get("GITHUB_RUN_ATTEMPT")},
+            "implementation_universally_proved": False, "productive_effect": False}
+        (directory / (checker["id"] + ".json")).write_text(json.dumps(value, indent=2) + "\n")
+
+    receipt(policy["checkers"][0], own_log, olean, own_axioms, own_ok, own_error)
+    external = directory / "external-project"
+    external.mkdir()
+    (external / "QIKVRTEffectAck").mkdir()
+    for name in ("DeliveryReporting.lean", "DeliveryReportingAxiomAudit.lean"):
+        shutil.copyfile(source_project / "QIKVRTEffectAck" / name, external / "QIKVRTEffectAck" / name)
+    (external / "lakefile.toml").write_text('name = "DeliveryReportingRecheck"\n'
+        '[[lean_lib]]\nname = "QIKVRTDeliveryReporting"\nroots = ["QIKVRTEffectAck.DeliveryReporting"]\n')
+    export = directory / "DeliveryReporting.export.ndjson"
+    external_log = logs / "external-build.log"
+    ext_axioms: dict[str, list[str]] = {}
+    external_error = ""
+    try:
+        verify_root(external_root, "4.35.0", next(c["commit"] for c in policy["checkers"]
+                    if c["id"] == "lean-default"), external_log)
+        lake = str(external_root / "bin/lake")
+        command([lake, "build", policy["lean_lib"]], external, external_log)
+        command([lake, "env", "lean", audit], external, external_log)
+        ext_axioms = inventory(external_log)
+        command([lake, "env", str(external_root / "bin/leanexport"), policy["module"],
+                 "--", *policy["theorems"]], external, external_log, export)
+        if not export.is_file() or not export.stat().st_size:
+            raise RuntimeError("empty original export")
+    except RuntimeError as exc:
+        external_error = str(exc)
+    config = directory / "nanoda-config.json"
+    config.write_text(json.dumps({"use_stdin": False, "export_file_path": str(export),
+        "permitted_axioms": policy["permitted_axioms"], "unpermitted_axiom_hard_error": True,
+        "nat_extension": True, "string_extension": True, "print_success_message": True}))
+    for checker in policy["checkers"][1:]:
+        log = logs / (checker["id"] + ".log")
+        log.write_bytes(external_log.read_bytes())
+        ok, error = False, external_error
+        if not external_error:
+            argv = [str(external_root / "bin" / checker["check_command"][0])]
+            argv += [v.replace("{export}", str(export)).replace("{config}", str(config))
+                     for v in checker["check_command"][1:]]
+            try:
+                command(argv, external, log)
+                ok = True
+            except RuntimeError as exc:
+                error = str(exc)
+        receipt(checker, log, export, ext_axioms, ok, error)
+    formal_proof_gate(directory)
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--client-receipt", type=Path,
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--client-receipt", type=Path,
                         help="Validate a non-secret client continuation receipt; no live-effect proof")
+    mode.add_argument("--client-action", type=Path,
+                      help="Check one declared action against current Owner routing decisions before any external call")
+    mode.add_argument("--cognition-audit", type=Path,
+                      help="Check a scoped human behavioral audit; no live effect or person authentication")
+    parser.add_argument("--audit-evidence-root", type=Path)
+    parser.add_argument("--audit-subject", type=Path)
+    parser.add_argument("--trusted-review-sha256", action="append", default=[])
+    mode.add_argument("--formal-proof-gate", type=Path, help="Require seven exact-input proof receipts and original logs")
+    mode.add_argument("--formal-proof-run", type=Path, help="Run the pinned local proof/bridge path into a fresh directory")
+    parser.add_argument("--own-lean-root", type=Path)
+    parser.add_argument("--external-lean-root", type=Path)
     args = parser.parse_args()
+    if args.cognition_audit is not None:
+        from src.qikvrt_cognition_audit import assess_cognition_audit, MAX_DOCUMENT
+        if args.audit_evidence_root is None or args.audit_subject is None:
+            parser.error("--cognition-audit requires --audit-evidence-root and --audit-subject")
+        try:
+            with args.cognition_audit.open("rb") as stream:
+                raw = stream.read(MAX_DOCUMENT + 1)
+            result = assess_cognition_audit(
+                raw, evidence_root=args.audit_evidence_root,
+                expected_subject=json.loads(args.audit_subject.read_text(encoding="utf-8")),
+                now=int(dt.datetime.now(dt.timezone.utc).timestamp()),
+                trusted_review_sha256=args.trusted_review_sha256)
+            print(json.dumps({"outcome": result.outcome, "audit_sha256": result.audit_sha256,
+                              "reasons": result.reasons, "scope": "HUMAN_AUDIT_DOCUMENTARY_BINDING",
+                              "live_effect_verified": False}, sort_keys=True))
+            return 0 if result.admissible else 2
+        except (OSError, ValueError, UnicodeError):
+            print(json.dumps({"outcome": "UNVERIFIED", "reasons": ["AUDIT_READ_UNAVAILABLE"],
+                              "live_effect_verified": False}, sort_keys=True))
+            return 2
+    if args.formal_proof_gate is not None:
+        formal_proof_gate(args.formal_proof_gate)
+        return 0
+    if args.formal_proof_run is not None:
+        if args.own_lean_root is None or args.external_lean_root is None:
+            fail("FORMAL_ORIGINAL_TOOLCHAINS_REQUIRED")
+        return run_formal_proof(args.formal_proof_run, args.own_lean_root.resolve(), args.external_lean_root.resolve())
+    if args.client_action is not None:
+        action = load_json(args.client_action)
+        subject = require(action, "subject", dict)
+        if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(subject.get("repository", "")))
+                or any(not re.fullmatch(r"[0-9a-f]{40}", str(subject.get(key, "")))
+                       for key in ("head", "tree"))
+                or not isinstance(subject.get("ref"), str) or not subject["ref"].strip()):
+            fail("CLIENT_SUBJECT_INVALID")
+        validate_client_tool_selection(action)
+        validate_specification_use(action, subject)
+        ready = validate_client_action(action, subject)
+        print("CLIENT_ACTION_CONSISTENCY=VALID")
+        print("CLIENT_ROUTE_POLICY_SHA256=" + validate_client_tool_selection(action))
+        print("CLIENT_DECLARED_ACTION=" + ("READY" if ready else "HOLD"))
+        print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+        return 0 if ready else 2
     if args.client_receipt is not None:
         receipt = load_json(args.client_receipt)
         state = validate_client_receipt(receipt)

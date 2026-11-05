@@ -1,0 +1,600 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+"""Transport-bound negative controls; fake GitHub is not live closure proof."""
+import copy
+import hashlib
+import io
+import json
+import os
+import tempfile
+import unittest
+import zipfile
+from unittest import mock
+from pathlib import Path
+from urllib.parse import urlsplit, parse_qs
+
+from tools import qikvrt_pr_closure_engine as M
+from src.qikvrt_effect_ack import ResponsibilityProtocol, verify_protocol_chain
+from tests import test_qikvrt_pr_closure_engine as fixtures
+from tests import test_qikvrt_expected_head_promotion as promotion_fixtures
+from tests import test_reciprocal_devops_closure as closure_fixtures
+
+
+REPO = "ingolf-lohmann/qik-vrt"
+BASE, HEAD, TREE = "a" * 40, "b" * 40, "c" * 40
+
+
+class FakeAPI(M.GitHubAPI):
+    def __init__(self):
+        super().__init__(REPO, "fixture-not-a-secret")
+        fixture = fixtures.ClosureEngineTests()
+        self.pr = fixture.pr()
+        self.pr.update(created_at="2026-10-01T00:00:00Z", updated_at="2026-10-01T00:00:00Z",
+                       requested_reviewers=[], merged=False, changed_files=1)
+        self.observed = fixture.obs(reviews=[])
+        for run in self.observed["check_runs"]:
+            run["head_sha"] = HEAD
+        self.branches = [{"name": "main", "commit": {"sha": BASE}},
+                         {"name": "feature", "commit": {"sha": HEAD}}]
+        self.calls = []
+        self.mutations = []
+        self.compare = "ahead"
+        self.permission = True
+        self.timeout_after_apply = False
+        self.discard_effect = False
+        self.lose_tip = False
+        self.bad_readback = False
+        self.missing_repo = False
+        bound = promotion_fixtures.ExpectedHeadPromotionTests().bound_snapshot()
+        self.rules = bound["review_observation"]["rules"]
+        self.workflow_runs = bound["workflow_runs"][:len(M.PROMOTION_GATES)]
+        for index, run in enumerate(self.workflow_runs):
+            run.update(name=M.PROMOTION_GATES[index], repository={"full_name": REPO},
+                       pull_requests=[{"number": 7}])
+
+    def request(self, method, path, payload=None):
+        self.calls.append((method, path, payload))
+        prefix = self.repo_path("")
+        if path == "/user":
+            return {"login": "owner"}
+        if path == prefix:
+            if self.missing_repo:
+                raise M.ClosureBlock("HTTP_404:GET:" + path)
+            return {"full_name": REPO, "archived": False, "permissions": {"push": self.permission}}
+        suffix = path[len(prefix):]
+        parsed = urlsplit(suffix)
+        query = parse_qs(parsed.query)
+        page = int(query.get("page", [1])[0])
+        if method != "GET":
+            self.mutations.append((method, path, payload))
+            if parsed.path.endswith("requested_reviewers") and not self.discard_effect:
+                self.pr["requested_reviewers"] = [{"login": "ingolf-lohmann"}]
+                self.pr["updated_at"] = "2026-10-01T00:01:00Z"
+            elif parsed.path.endswith("update-branch") and not self.discard_effect:
+                self.pr["head"]["sha"] = "d" * 40
+                self.branches[1]["commit"]["sha"] = "d" * 40
+            elif parsed.path.endswith("merge") and not self.discard_effect:
+                self.pr.update(state="closed", merged=True, merge_commit_sha="d" * 40)
+                self.branches[0]["commit"]["sha"] = "d" * 40
+            if self.lose_tip:
+                self.branches[1]["commit"]["sha"] = "e" * 40
+            if self.bad_readback:
+                self.pr["head"]["sha"] = "e" * 40
+            if self.timeout_after_apply:
+                raise M.ClosureBlock("TRANSPORT_UNCERTAIN")
+            return {"fixture_transport_ack": True}
+        if parsed.path == "/branches/main":
+            return copy.deepcopy(self.branches[0])
+        if parsed.path == "/collaborators/ingolf-lohmann/permission":
+            return {"permission": "write", "user": {"login": "ingolf-lohmann"}}
+        if parsed.path == "/collaborators/ingolf-lohmann":
+            return None
+        if parsed.path == "/branches":
+            return copy.deepcopy(self.branches[(page - 1) * 100:page * 100])
+        if parsed.path.startswith("/git/commits/"):
+            return {"sha": parsed.path.rsplit("/", 1)[-1], "tree": {"sha": TREE},
+                    "parents": [{"sha": BASE}, {"sha": HEAD}]}
+        if parsed.path == "/pulls":
+            return [copy.deepcopy(self.pr)] if page == 1 and self.pr["state"] == "open" else []
+        if parsed.path == "/pulls/7":
+            return copy.deepcopy(self.pr)
+        if parsed.path.startswith("/compare/"):
+            pair = parsed.path.split("/")[-1].split("...")
+            old, new = pair
+            return {"status": self.compare if old == BASE and new == HEAD else ("diverged" if new == "e" * 40 else "ahead"),
+                    "merge_base_commit": {"sha": old}}
+        if parsed.path.endswith("check-runs"):
+            rows = self.observed["check_runs"]
+            return {"total_count": len(rows), "check_runs": copy.deepcopy(rows[(page - 1) * 100:page * 100])}
+        if parsed.path.endswith("statuses"):
+            return copy.deepcopy(self.observed["statuses"]) if page == 1 else []
+        if parsed.path.endswith("reviews"):
+            return copy.deepcopy(self.observed["reviews"]) if page == 1 else []
+        if parsed.path == "/actions/runs":
+            rows = self.workflow_runs
+            return {"total_count": len(rows), "workflow_runs": copy.deepcopy(rows)}
+        if parsed.path.endswith("/jobs"):
+            run_id, attempt = int(parsed.path.split("/")[3]), int(parsed.path.split("/")[5])
+            row = next(r for r in self.workflow_runs if r["id"] == run_id and r["run_attempt"] == attempt)
+            return {"total_count": len(row["jobs"]), "jobs": copy.deepcopy(row["jobs"])}
+        if parsed.path.endswith("/files"):
+            return [{"filename": "tools/fixture.py"}]
+        if parsed.path == "/rules/branches/main":
+            return copy.deepcopy(self.rules)
+        if parsed.path == "/rulesets/19344903":
+            return {"enforcement": "active", "bypass_actors": [],
+                    "conditions": {"ref_name": {"include": ["refs/heads/main"], "exclude": []}},
+                    "rules": self.rules + [{"type": "non_fast_forward"},
+                        {"type": "required_status_checks", "parameters": {
+                            "strict_required_status_checks_policy": True,
+                            "required_status_checks": [{"context": "test", "integration_id": 15368}]}}]}
+        raise AssertionError((method, path, payload))
+
+
+class ReciprocalStepTests(unittest.TestCase):
+    def policy(self):
+        return fixtures.ClosureEngineTests().policy()
+
+    def run_step(self, api, path, **kw):
+        return M.execute(api, self.policy(), apply=True, journal_dir=Path(path), **kw)
+
+    def approved_api(self):
+        api = FakeAPI()
+        api.observed["reviews"] = fixtures.ClosureEngineTests().obs()["reviews"]
+        return api
+
+    def test_hardened_native_merge_is_one_effect_and_preserves_closure_boundary(self):
+        api = self.approved_api()
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d, closure_snapshot=closure_fixtures.ReciprocalClosureTests().snapshot())
+        self.assertEqual(r["closure_evaluation"]["state"], "CLOSURE_READY_FOR_ACCEPTANCE")
+        self.assertEqual(r["state"], "STEP_EFFECT_VERIFIED_CONTINUE", r["first_blocker"])
+        self.assertEqual(len(api.mutations), 1)
+        self.assertEqual(api.mutations[0][2], {"sha": HEAD, "merge_method": "merge"})
+        self.assertEqual(r["selected_action"]["tree_sha"], TREE)
+        self.assertFalse(any(r["completion_claims"].values()))
+        self.assertFalse(r["closure_evaluation"]["completion_claims"]["EFFECT_ACK_DONE"])
+
+    def test_incomplete_native_changed_path_inventory_cannot_merge(self):
+        api = self.approved_api()
+        api.pr["changed_files"] = 2  # The original fixture endpoint returns one.
+        with tempfile.TemporaryDirectory() as d:
+            result = self.run_step(api, d)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertIn("FORMAL_CHANGE_SCOPE_INCOMPLETE", result["first_blocker"])
+        self.assertEqual(api.mutations, [])
+
+    def test_eight_false_acceptance_classes_cannot_reach_closure_merge(self):
+        # The original eight #434 counterexamples, now through the real step
+        # controller. REQUEST_REVIEW is excluded by this capability fixture so
+        # self/stale approval cannot mask a MERGE by performing a lesser effect.
+        cases = ("FOREIGN_REPOSITORY", "FOREIGN_PR", "FOREIGN_HEAD", "ZERO_JOBS",
+                 "SELF_APPROVAL", "UNENFORCED_RULE", "STALE_REVIEW", "LEGACY_UNBOUND")
+        for case in cases:
+            with self.subTest(case=case):
+                api = self.approved_api()
+                run = api.workflow_runs[0]
+                if case == "FOREIGN_REPOSITORY": run["repository"]["full_name"] = "foreign/repo"
+                if case == "FOREIGN_PR": run["pull_requests"] = [{"number": 8}]
+                if case == "FOREIGN_HEAD": run["head_sha"] = BASE
+                if case == "ZERO_JOBS": run["jobs"] = []
+                if case == "SELF_APPROVAL": api.pr["user"]["login"] = "ingolf-lohmann"
+                if case == "UNENFORCED_RULE": api.rules = []
+                if case == "STALE_REVIEW": api.observed["reviews"][0]["commit_id"] = BASE
+                if case == "LEGACY_UNBOUND": run.pop("repository")
+                probe = api.probe
+                api.probe = lambda: {**probe(), "operations": ["MERGE"]}
+                with tempfile.TemporaryDirectory() as d:
+                    r = self.run_step(api, d, closure_snapshot=closure_fixtures.ReciprocalClosureTests().snapshot())
+                self.assertEqual(r["closure_evaluation"]["state"], "CLOSURE_READY_FOR_ACCEPTANCE")
+                self.assertEqual(r["state"], "BLOCK")
+                self.assertEqual(api.mutations, [])
+                self.assertFalse(r["mutation_attempted"])
+
+    def test_closure_merge_cannot_borrow_jobs_attempt_or_steps(self):
+        for field, invalid in (("run_id", 999), ("run_attempt", 2), ("head_sha", BASE), ("steps", [])):
+            with self.subTest(field=field):
+                api = self.approved_api(); api.workflow_runs[0]["jobs"][0][field] = invalid
+                with tempfile.TemporaryDirectory() as d:
+                    r = self.run_step(api, d)
+                self.assertEqual(r["state"], "BLOCK")
+                self.assertEqual(api.mutations, [])
+
+    def test_second_observation_revoked_review_blocks_before_effect(self):
+        api = self.approved_api(); original = api.promotion_snapshot; captures = []
+        def observe(pr, inventory, observed):
+            value = original(pr, inventory, observed); captures.append(value)
+            if len(captures) == 2:
+                value["review_observation"]["reviews"] = []
+            return value
+        api.promotion_snapshot = observe
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertEqual(len(captures), 2)
+        self.assertIn("PRE_EFFECT_GATE_DRIFT", r["first_blocker"])
+        self.assertEqual(api.mutations, [])
+
+    def test_one_authenticated_effect_full_recensus_bound_continue_protocol(self):
+        with tempfile.TemporaryDirectory() as d:
+            api = FakeAPI(); r = self.run_step(api, d)
+            self.assertEqual(r["state"], "STEP_EFFECT_VERIFIED_CONTINUE")
+            self.assertEqual(len(api.mutations), 1)
+            self.assertEqual(r["selected_action"]["action"], "REQUEST_REVIEW")
+            self.assertEqual(r["post_effect_readback"]["original_branch_tips_preserved"], 2)
+            self.assertFalse(any(r["completion_claims"].values()))
+            protocols = [ResponsibilityProtocol.from_dict(x) for x in r["effect_ack_chain"]]
+            verify_protocol_chain(protocols)
+            self.assertTrue(all(p.state.value == "EFFECT_ACK_CONTINUE" for p in protocols))
+            for payload, p in zip(r["protocol_payloads"], protocols):
+                self.assertEqual(p.input_hash, "sha256:" + M.digest(payload["intent"]))
+            self.assertEqual(r["receipt_sha256"], M.digest({k: v for k, v in r.items() if k != "receipt_sha256"}))
+
+    def test_dry_plan_never_mutates_or_requires_done_acceptance(self):
+        api = FakeAPI(); r = M.execute(api, self.policy(), apply=False)
+        self.assertEqual(r["state"], "STEP_PREPARED")
+        self.assertEqual(api.mutations, [])
+        self.assertEqual(r["closure_evaluation"]["state"], "BLOCK")
+
+    def test_missing_or_read_only_capability_is_exact_blocker(self):
+        for missing in (False, True):
+            api = FakeAPI(); api.missing_repo = missing; api.permission = False
+            with tempfile.TemporaryDirectory() as d:
+                r = self.run_step(api, d)
+            self.assertEqual(r["state"], "BLOCK")
+            self.assertIn("HTTP_404" if missing else "REPOSITORY_WRITE_CAPABILITY_UNAVAILABLE", r["first_blocker"])
+            self.assertEqual(api.mutations, [])
+
+    def test_forged_acceptance_readiness_never_grants_capability(self):
+        from tests.test_reciprocal_devops_closure import ReciprocalClosureTests
+        api = FakeAPI(); api.permission = False
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d, closure_snapshot=ReciprocalClosureTests().snapshot())
+        self.assertEqual(r["closure_evaluation"]["state"], "CLOSURE_READY_FOR_ACCEPTANCE")
+        self.assertEqual(api.mutations, [])
+        self.assertFalse(r["completion_claims"]["EFFECT_ACK_DONE"])
+
+    def test_inventory_drift_and_truncation_never_enable_mutation(self):
+        api = FakeAPI(); original = api.inventory
+        count = 0
+        def inventory():
+            nonlocal count
+            count += 1
+            result = original()
+            if count == 2:
+                result["branches"].append({"name": "concurrent", "sha": HEAD})
+            return result
+        api.inventory = inventory
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertIn("INVENTORY_DRIFT", r["first_blocker"])
+        self.assertEqual(api.mutations, [])
+        api = FakeAPI(); api.request = lambda *a, **k: [{"name": "x"}] * 100
+        with self.assertRaisesRegex(M.ClosureBlock, "INVENTORY_TRUNCATED"):
+            api.collection("/branches?")
+
+    def test_all_pages_are_captured_including_exact_multiple(self):
+        api = FakeAPI()
+        api.branches.extend({"name": str(i), "commit": {"sha": HEAD}} for i in range(98))
+        r = api.stable_inventory()
+        self.assertEqual(len(r["branches"]), 100)
+        self.assertTrue(any("page=2" in p for _, p, _ in api.calls))
+
+    def test_pre_effect_gate_changes_fail_closed(self):
+        api = FakeAPI(); original = api.inspect; count = 0
+        def inspect(*args):
+            nonlocal count
+            count += 1
+            pr, obs = original(*args)
+            if count == 2:
+                obs["check_runs"][0]["conclusion"] = "failure"
+            return pr, obs
+        api.inspect = inspect
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertIn("PRE_EFFECT_GATE_DRIFT", r["first_blocker"])
+        self.assertEqual(api.mutations, [])
+
+    def test_transport_ack_and_lost_tips_do_not_prove_effect(self):
+        for flag, blocker in (("discard_effect", "REVIEW_REQUEST_READBACK_MISMATCH"),
+                              ("lose_tip", "ORIGINAL_BRANCH_TIP_LOST"),
+                              ("bad_readback", "REVIEW_REQUEST_READBACK_MISMATCH")):
+            api = FakeAPI(); setattr(api, flag, True)
+            with tempfile.TemporaryDirectory() as d:
+                r = self.run_step(api, d)
+            self.assertIn(blocker, r["first_blocker"])
+            self.assertFalse(r["post_effect_verified"])
+            self.assertEqual(len(api.mutations), 1)
+
+    def test_ambiguous_response_readback_has_no_retry(self):
+        api = FakeAPI(); api.timeout_after_apply = True
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertTrue(r["post_effect_verified"])
+        self.assertIn("TRANSPORT_UNCERTAIN", r["transport_uncertainty"])
+        self.assertEqual(len(api.mutations), 1)
+
+    def test_unresolved_intent_blocks_new_effect_and_recovery_is_read_only(self):
+        api = FakeAPI(); api.discard_effect = True
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+            api.mutation_attempted = False
+            again = self.run_step(api, d)
+            self.assertIn("UNRESOLVED_INTENT", again["first_blocker"])
+            api.pr["requested_reviewers"] = [{"login": "ingolf-lohmann"}]
+            recovered = M.recover(api, next(Path(d).glob("*.intent.json")))
+            self.assertTrue(recovered["recovery_readback_only"])
+            self.assertFalse(recovered["mutation_attempted"])
+            self.assertEqual(len(api.mutations), 1)
+
+    def test_native_protection_self_review_and_closed_equal_tree_are_not_bypassed(self):
+        for kind in ("native", "self", "equal_tree"):
+            api = FakeAPI()
+            if kind == "native":
+                api.observed["reviews"] = fixtures.ClosureEngineTests().obs()["reviews"]
+                api.protection = lambda cfg: (_ for _ in ()).throw(M.ClosureBlock("NATIVE_PROTECTION_NOT_BOUND"))
+            elif kind == "self":
+                api.pr["user"]["login"] = "ingolf-lohmann"
+            else:
+                api.pr["changed_files"] = 0
+            with tempfile.TemporaryDirectory() as d:
+                r = self.run_step(api, d)
+            self.assertEqual(api.mutations, [])
+            self.assertFalse(r["post_effect_verified"])
+
+    def test_unsupported_host_operation_is_skipped_deterministically(self):
+        api = FakeAPI(); original = api.probe
+        api.probe = lambda: {**original(), "operations": []}
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertIn("BLOCK_MUTATION_CAPABILITY", r["first_blocker"])
+        self.assertEqual(api.mutations, [])
+
+    def test_later_dismissal_and_wrong_head_checks_never_transfer(self):
+        fixture = fixtures.ClosureEngineTests()
+        reviews = fixture.obs()["reviews"] + [{"state": "DISMISSED", "commit_id": "d" * 40,
+            "submitted_at": "2026-10-01T00:00:00Z", "user": {"login": "ingolf-lohmann"}}]
+        self.assertFalse(M.exact_head_approval(reviews, "ingolf-lohmann", HEAD, "author"))
+        api = FakeAPI(); api.observed["check_runs"][0]["head_sha"] = BASE
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertIn("CHECK_HEAD_DRIFT", r["first_blocker"])
+        self.assertEqual(api.mutations, [])
+
+    def test_second_mutation_is_rejected_before_io(self):
+        api = FakeAPI()
+        action = {"pr": 7, "action": "REQUEST_REVIEW", "reviewer": "ingolf-lohmann"}
+        api.mutate(action)
+        with self.assertRaisesRegex(M.ClosureBlock, "ONE_EFFECT_BUDGET"):
+            api.mutate(action)
+        self.assertEqual(len(api.mutations), 1)
+
+    def test_missing_reviewer_collaborator_capability_blocks_before_post(self):
+        api = FakeAPI()
+        api.reviewer_capability = lambda reviewer: (_ for _ in ()).throw(M.ClosureBlock("REVIEWER_NOT_REPOSITORY_COLLABORATOR:" + reviewer))
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertIn("REVIEWER_NOT_REPOSITORY_COLLABORATOR:ingolf-lohmann", r["first_blocker"])
+        self.assertEqual(api.mutations, [])
+
+    def test_native_merge_requires_two_parents_and_original_head_reachability(self):
+        before = FakeAPI().inventory(); after = copy.deepcopy(before)
+        after['main_sha'] = 'd' * 40
+        after['branches'][1 if after['branches'][0]['name'] == 'feature' else 0]['sha'] = 'd' * 40
+        after['pull_requests'] = []
+        action = {'pr': 7, 'action': 'MERGE', 'head_sha': HEAD}
+        for parents, merged, accepted in (([BASE, HEAD], True, True), ([BASE], True, False),
+                                          ([BASE, TREE], True, False), ([BASE, HEAD], False, False)):
+            api = FakeAPI(); api.pr.update(merged=merged, merge_commit_sha='d' * 40)
+            original = api.request
+            def request(method, path, payload=None):
+                if '/git/commits/' in path:
+                    return {'parents': [{'sha': p} for p in parents]}
+                return original(method, path, payload)
+            api.request = request
+            if accepted:
+                self.assertEqual(M.verify_post_effect(api, before, after, action)['merge_commit_sha'], 'd' * 40)
+            else:
+                with self.assertRaisesRegex(M.ClosureBlock, 'NATIVE_MERGE_READBACK_MISMATCH'):
+                    M.verify_post_effect(api, before, after, action)
+
+    def test_branch_update_retains_original_tip_and_old_main(self):
+        api = FakeAPI(); api.compare = 'diverged'
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertEqual(r['selected_action']['action'], 'UPDATE_BRANCH')
+        self.assertTrue(r['post_effect_verified'])
+        self.assertEqual(api.mutations[0][2], {'expected_head_sha': HEAD})
+        self.assertNotIn('force', api.mutations[0][2])
+
+    def test_recovery_rejects_tampered_binding_without_mutation(self):
+        api = FakeAPI(); api.discard_effect = True
+        with tempfile.TemporaryDirectory() as d:
+            self.run_step(api, d)
+            path = next(Path(d).glob('*.intent.json'))
+            saved = json.loads(path.read_text()); saved['inventory_before']['main_sha'] = TREE
+            path.write_text(json.dumps(saved))
+            with self.assertRaisesRegex(M.ClosureBlock, 'RECOVERY_EVIDENCE_BINDING_MISMATCH'):
+                M.recover(api, path)
+        self.assertEqual(len(api.mutations), 1)
+
+    def test_hard_boundaries_cannot_be_disabled(self):
+        for key in ('predecessor_evidence_transfer', 'self_review_counts_as_independent',
+                    'force_push_main', 'force_ref_update', 'effect_ack_done_claim'):
+            p = self.policy(); p['hard_boundaries'][key] = True
+            with self.assertRaisesRegex(M.ClosureBlock, 'hard boundaries'):
+                M.validate_policy(p, REPO)
+
+    def test_foreign_ref_does_not_disappear_from_inventory_or_get_selected(self):
+        api = FakeAPI(); api.pr['head']['repo']['full_name'] = 'foreign/repo'
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertEqual(len(r['inventory_before']['pull_requests']), 1)
+        self.assertIn('BLOCK_NON_ROLE_LOCAL_HEAD', r['first_blocker'])
+        self.assertEqual(api.mutations, [])
+
+
+class NativeCheckpointAPI(FakeAPI):
+    """Original REST adapter with a simulated provider, never live acceptance."""
+    def __init__(self):
+        super().__init__()
+        self.native_consumer = True
+        self.observed['reviews'] = fixtures.ClosureEngineTests().obs()['reviews']
+        self.run = {'id': 99, 'run_attempt': 1, 'path': M.NATIVE_WORKFLOW,
+                    'head_sha': BASE, 'head_branch': 'main', 'event': 'workflow_run',
+                    'repository': {'full_name': REPO}, 'head_repository': {'full_name': REPO}}
+        self.artifacts = []
+
+    def request(self, method, path, payload=None):
+        suffix = path.removeprefix(self.repo_path(''))
+        parsed = urlsplit(suffix)
+        if parsed.path == '/actions/runs/99/attempts/1':
+            self.calls.append((method, path, payload))
+            return copy.deepcopy(self.run)
+        if parsed.path == '/actions/artifacts':
+            self.calls.append((method, path, payload))
+            return {'total_count': len(self.artifacts), 'artifacts': copy.deepcopy(self.artifacts)}
+        if parsed.path == '/actions/artifacts/771':
+            return copy.deepcopy(self.artifacts[0])
+        return super().request(method, path, payload)
+
+    def checkpoint(self, directory, *, extra=None):
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, 'w') as archive:
+            for p in sorted(Path(directory).glob('*.json')):
+                archive.writestr(p.name, p.read_bytes())
+            for name, raw in (extra or {}).items():
+                archive.writestr(name, raw)
+        raw = stream.getvalue()
+        item = {'id': 771, 'name': M.JOURNAL_ARTIFACT, 'expired': False,
+                'size_in_bytes': len(raw), 'digest': 'sha256:' + hashlib.sha256(raw).hexdigest(),
+                'workflow_run': {'id': 99}}
+        self.artifacts = [item]
+        return raw, item
+
+
+class NativeClosureContinuationTests(unittest.TestCase):
+    def setUp(self):
+        self.env = mock.patch.dict(os.environ, {
+            'GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': REPO, 'GITHUB_REF': 'refs/heads/main',
+            'GITHUB_WORKFLOW_REF': f'{REPO}/{M.NATIVE_WORKFLOW}@refs/heads/main',
+            'GITHUB_EVENT_NAME': 'workflow_run', 'GITHUB_RUN_ID': '99', 'GITHUB_RUN_ATTEMPT': '1',
+            'GITHUB_SHA': BASE, 'GITHUB_RUN_NUMBER': '1', 'QIKVRT_CLOSURE_EVENT_HEAD': HEAD,
+        })
+        self.env.start(); self.addCleanup(self.env.stop)
+        self.api = NativeCheckpointAPI()
+        self.policy = fixtures.ClosureEngineTests().policy()
+
+    def prepare(self, directory):
+        result = M.prepare_workflow_step(self.api, self.policy, Path(directory))
+        self.assertEqual(result['state'], 'STEP_CHECKPOINT_REQUIRED', result)
+        self.assertFalse(result['mutation_attempted'])
+        self.assertEqual(self.api.mutations, [])
+        return result
+
+    def test_native_installation_token_uses_original_run_not_user_api(self):
+        value = self.api.probe()
+        self.assertEqual(value['principal'], 'github-actions[bot]')
+        self.assertEqual(value['operations'], ['MERGE'])
+        self.assertFalse(any(path == '/user' for _, path, _ in self.api.calls))
+
+    def test_prepare_checkpoint_apply_fresh_readback_is_one_effect(self):
+        with tempfile.TemporaryDirectory() as d:
+            before = self.prepare(d)
+            raw, item = self.api.checkpoint(d)
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                result = M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+                self.assertEqual(result['state'], 'STEP_EFFECT_VERIFIED_CONTINUE', result)
+                self.assertTrue(result['post_effect_verified'])
+                with self.assertRaises(M.ClosureBlock):
+                    M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+        self.assertEqual(len(self.api.mutations), 1)
+        self.assertEqual(before['intent_id'], result['intent_id'])
+        self.assertFalse(any(result['completion_claims'].values()))
+
+    def test_lost_ack_is_recovered_from_original_checkpoint_without_second_write(self):
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as successor:
+            self.prepare(d); raw, item = self.api.checkpoint(d)
+            self.api.timeout_after_apply = True
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                result = M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+                self.assertTrue(result['post_effect_verified'])
+                recovered = M.restore_workflow_journal(self.api, Path(successor) / 'intents')
+            self.assertEqual(recovered['state'], 'PREDECESSOR_READBACK_VERIFIED')
+            self.assertFalse(recovered['mutation_attempted'])
+            self.assertTrue((Path(successor) / 'intents/PREDECESSOR.json').exists())
+        self.assertEqual(len(self.api.mutations), 1)
+
+    def test_unapplied_or_unknown_original_effect_never_gets_retried(self):
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as successor:
+            self.prepare(d); raw, _ = self.api.checkpoint(d)
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                with self.assertRaises(M.ClosureBlock):
+                    M.restore_workflow_journal(self.api, Path(successor) / 'intents')
+        self.assertEqual(self.api.mutations, [])
+
+    def test_checker_source_staleness_holds_before_preparation(self):
+        self.api.branches[0]['commit']['sha'] = 'd' * 40
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaisesRegex(M.ClosureBlock, 'CHECKER_SOURCE_STALE'):
+                M.prepare_workflow_step(self.api, self.policy, Path(d))
+        self.assertEqual(self.api.mutations, [])
+
+    def test_wrong_foreign_or_replayed_producer_holds(self):
+        for field, value in [('head_sha', HEAD), ('head_branch', 'feature'),
+                             ('path', '.github/workflows/foreign.yml'), ('run_attempt', 2),
+                             ('head_repository', {'full_name': 'foreign/repo'})]:
+            with self.subTest(field=field):
+                saved = copy.deepcopy(self.api.run); self.api.run[field] = value
+                with self.assertRaises(M.ClosureBlock):
+                    M.native_workflow_binding(self.api)
+                self.api.run = saved
+        self.assertEqual(self.api.mutations, [])
+
+    def test_unavailable_checker_is_not_success_and_cannot_write(self):
+        with mock.patch.object(self.api, 'request', side_effect=M.ClosureBlock('HTTP_403:GET')):
+            with tempfile.TemporaryDirectory() as d:
+                with self.assertRaisesRegex(M.ClosureBlock, 'HTTP_403'):
+                    M.prepare_workflow_step(self.api, self.policy, Path(d))
+        self.assertEqual(self.api.mutations, [])
+
+    def test_corrupt_expired_or_untrusted_archive_cannot_open_mutation(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.prepare(d); raw, item = self.api.checkpoint(d)
+            for change in ({'expired': True}, {'digest': 'sha256:' + '0' * 64},
+                           {'name': 'foreign'}, {'workflow_run': {'id': 100}}):
+                with self.subTest(change=change), mock.patch.object(M, '_amo_get', return_value=raw):
+                    with self.assertRaises(M.ClosureBlock):
+                        M.workflow_checkpoint(self.api, {**item, **change})
+            with mock.patch.object(M, '_amo_get', return_value=raw[:-1]):
+                with self.assertRaises(M.ClosureBlock):
+                    M.workflow_checkpoint(self.api, item)
+            raw, item = self.api.checkpoint(d, extra={'../foreign.json': b'{}'})
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                with self.assertRaises(M.ClosureBlock):
+                    M.workflow_checkpoint(self.api, item)
+        self.assertEqual(self.api.mutations, [])
+
+    def test_changed_gate_after_persisted_checkpoint_does_not_merge(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.prepare(d); raw, item = self.api.checkpoint(d)
+            self.api.observed['check_runs'][0]['conclusion'] = 'failure'
+            with mock.patch.object(M, '_amo_get', return_value=raw):
+                r = M.apply_workflow_step(self.api, self.policy, Path(d), 771, item['digest'])
+            self.assertEqual(r['state'], 'BLOCK')
+            self.assertFalse(r['post_effect_verified'])
+        self.assertEqual(self.api.mutations, [])
+
+    def test_repository_automation_has_no_timer_and_consumer_is_wired(self):
+        root = Path(__file__).resolve().parents[1]
+        for workflow in (root / '.github/workflows').glob('*.yml'):
+            self.assertNotRegex(workflow.read_text(), r'(?m)^\s*(?:-\s*)?(?:schedule|cron):', workflow.name)
+        s = (root / M.NATIVE_WORKFLOW).read_text()
+        self.assertLess(s.index('workflow-prepare'), s.index('name: qikvrt-pr-closure-intents'))
+        self.assertLess(s.index('name: qikvrt-pr-closure-intents'), s.index('workflow-apply'))
+        self.assertIn('if: always()', s)
+        review = (root / '.github/workflows/qikvrt_requested_review_executor.yml').read_text()
+        self.assertIn('"QIKVRT productive TEMDD S1 carrier"', review)
+
+
+if __name__ == "__main__":
+    unittest.main()

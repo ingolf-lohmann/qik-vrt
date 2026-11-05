@@ -1,0 +1,236 @@
+{
+  "schema": "qikvrt_storage_integrity_claim_matrix_v1",
+  "date": "2026-10-30",
+  "claims": [
+    {
+      "claim_id": "SI-001",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.valid_requires_rights",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-002",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.valid_requires_signature",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-003",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.single_bit_changes_bits",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-004",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.single_signature_bit_rejected",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-005",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.single_rights_bit_rejected",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-006",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.removed_nonempty_signature_rejected",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-007",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.removed_nonempty_rights_rejected",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-008",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.payload_independent_notice_check",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-009",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.public_notice_does_not_authenticate_payload",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-010",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.changed_subject_rejected",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-011",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.missing_checker_is_unverified",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-012",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.mismatch_is_rejected",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-013",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.stopped_checker_cannot_signal",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-014",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.missing_channel_cannot_signal",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-015",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.live_detection_signals",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-016",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.lossless_reconstruction",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-017",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.canonical_reencoding",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-018",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.codec_is_injective",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-019",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.adaptation_preserves_checked_property",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-020",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.every_finite_verified_adaptation_preserves",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-021",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.no_lossless_boolean_storage_in_unit",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-022",
+      "classification": "FORMAL_PROVED",
+      "proof_ref": "QIKVRT.StorageIntegrity.V1.accepted_example_exists",
+      "scope": "Abstract finite-bit/exact-reference/codec/adaptation model; all formal hypotheses remain part of statement. Not code, cryptography, legal title or hardware verification.",
+      "receipt": "LOCAL_KERNEL_RECEIPT.json",
+      "axioms": []
+    },
+    {
+      "claim_id": "SI-TEST",
+      "classification": "IMPLEMENTATION_TESTED",
+      "statement": "69 local codec tests, including 12 rights-profile tests and 6400 individual signature bit flips in one fixture.",
+      "evidence": "TEST_RESULTS.json"
+    },
+    {
+      "claim_id": "SI-RIGHTS",
+      "classification": "NORMATIVE",
+      "statement": "Ingolf Lohmann attribution and current rights notice are mandatory in each new licensed-profile element; payload rights remain separate.",
+      "evidence": "src/qikvrt_standpoint_codex.py"
+    },
+    {
+      "claim_id": "SI-ADOPTION",
+      "classification": "OPEN",
+      "statement": "All historical V1 and existing hardware/native consumers use the new profile. No automatic adoption is claimed.",
+      "evidence": null
+    },
+    {
+      "claim_id": "SI-CODE",
+      "classification": "OPEN",
+      "statement": "The concrete Python parser and SHA-256 implementation refine the abstract Lean model for every execution.",
+      "evidence": null
+    },
+    {
+      "claim_id": "SI-AUTO",
+      "classification": "OPEN",
+      "statement": "Automatic creation and acceptance of correct adapters for every unknown future machine runtime.",
+      "evidence": null
+    },
+    {
+      "claim_id": "SI-HARDWARE",
+      "classification": "OPEN",
+      "statement": "Concrete hardware, QPU and analog integration, including independent calibration and end-to-end effects.",
+      "evidence": null
+    },
+    {
+      "claim_id": "SI-PHYSICS",
+      "classification": "INTERPRETATIVE",
+      "statement": "Owner term superdeterministic refers here to reproducible software control, not a proved physical superdeterminism.",
+      "evidence": null
+    },
+    {
+      "claim_id": "SI-REFLEXIVE",
+      "classification": "OPEN",
+      "statement": "Successful self-application proves every claim about the system; no such general theorem is established.",
+      "evidence": null
+    },
+    {
+      "claim_id": "SI-DELIVERY",
+      "classification": "OPEN",
+      "statement": "Productive exact-domain delivery, authenticated remote alarms and native EFFECT_ACK_DONE.",
+      "evidence": null
+    }
+  ]
+}

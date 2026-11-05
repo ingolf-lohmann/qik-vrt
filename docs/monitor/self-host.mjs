@@ -38,6 +38,20 @@ const files = new Map([
   ['/assets/js/qikvrt-mesh-file-client.js', ['docs/monitor/mesh-file-client.js', 'text/javascript']],
   ['/assets/js/qikvrt-mesh-file-view.js', ['docs/monitor/mesh-file-view.js', 'text/javascript']],
   ['/assets/js/qikvrt-react-runtime.js', ['docs/monitor/react-runtime.js', 'text/javascript']],
+  ['/assets/css/qikvrt-devops.css', ['docs/monitor/devops.css', 'text/css']],
+  ['/assets/js/qikvrt-devops-core.js', ['docs/monitor/devops-projection.js', 'text/javascript']],
+  ['/assets/js/qikvrt-devops-wire.js', ['docs/monitor/devops-wire.js', 'text/javascript']],
+  ['/assets/js/qikvrt-devops-react.js', ['docs/monitor/devops-react.js', 'text/javascript']],
+  ['/assets/js/qikvrt-devops-capture.js', ['docs/monitor/devops-capture.js', 'text/javascript']],
+  ['/assets/css/qikvrt-workspace.css', ['docs/monitor/workspace.css', 'text/css']],
+  ['/assets/js/qikvrt-workspace-client.js', ['docs/monitor/workspace-client.js', 'text/javascript']],
+  ['/assets/js/qikvrt-workspace-react.js', ['docs/monitor/workspace-react.js', 'text/javascript']],
+  ['/workspace/original.html', ['docs/monitor/workspace-original.html', 'text/html']],
+  ['/workspace/access.json', ['docs/monitor/workspace-access.json', 'application/json']],
+  ['/workspace/licenses/CC-BY-NC-ND-4.0.txt', ['LICENSES/CC-BY-NC-ND-4.0.txt', 'text/plain']],
+  ['/workspace/licenses/PolyForm-Noncommercial-1.0.0.txt', ['LICENSES/PolyForm-Noncommercial-1.0.0.txt', 'text/plain']],
+  ['/workspace/licenses/Apache-2.0.txt', ['LICENSE-CODE-APACHE-2.0.txt', 'text/plain']],
+  ['/workspace/licenses/REACT_LICENSE.txt', ['docs/monitor/REACT_LICENSE.txt', 'text/plain']],
   ['/scheibenhard-original.html', ['docs/monitor/scheibenhard-original.html', 'text/html']],
   ['/assets/css/qikvrt.css', ['docs/assets/css/qikvrt.css', 'text/css']],
   ['/assets/css/qikvrt-terminal.css', ['docs/assets/css/qikvrt-terminal.css', 'text/css']],
@@ -58,9 +72,9 @@ for (const path of Object.keys(manifest.files)) {
 }
 const documents = new Set(['AI','STATUS.md','README.md','docs/ARCHITECTURE.md','docs/BOUNDARIES.md',
   'docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md','.well-known/qik-vrt-self-disclosure.json','docs/publications/index.json']);
-function reply(response, code, body, type = 'application/json', method = 'GET') {
+function reply(response, code, body, type = 'application/json', method = 'GET', policy = "default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'") {
   response.writeHead(code, {'content-type': type + (/^text\/|^application\/json$/.test(type) ? '; charset=utf-8' : ''), 'cache-control': 'no-store',
-    'x-content-type-options': 'nosniff', 'content-security-policy': "default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'"});
+    'x-content-type-options': 'nosniff', 'content-security-policy': policy});
   response.end(method === 'HEAD' ? undefined : type === 'application/json' && !Buffer.isBuffer(body) ? JSON.stringify(body) : body);
 }
 const binding = () => ({schema: 'qikvrt-self-host-runtime/v1', package_version: manifest.package_version,
@@ -79,14 +93,63 @@ const binding = () => ({schema: 'qikvrt-self-host-runtime/v1', package_version: 
   mobile_runtime_verified:false,
   public_routing_verified: false, effect_ack_done: false});
 async function routes(request, response, url) {
+  if (url.pathname === '/.well-known/effect-ack' || url.pathname.startsWith('/api/eap/')) {
+    if (!config.effect_ack_http?.enabled) { reply(response,503,{error:'EAP_PROFILE_NOT_ADMITTED'}); return true; }
+    const publicRead = ['/.well-known/effect-ack','/api/eap/capabilities','/api/eap/state'].includes(url.pathname);
+    const routeAllowed = publicRead || /^\/api\/eap\/records\/[a-f0-9]{64}(?:\/context)?$/.test(url.pathname) ||
+      /^\/api\/eap\/receipts\/[A-Za-z0-9_.:-]{1,100}$/.test(url.pathname) || url.pathname === '/api/eap/effect';
+    const effect = url.pathname === '/api/eap/effect';
+    if (!routeAllowed || url.search || ![effect ? 'POST' : 'GET'].includes(request.method)) {
+      reply(response,405,{error:'EXACT_EAP_ROUTE_AND_METHOD_REQUIRED'}); return true;
+    }
+    const fieldCounts = new Map();
+    for (let i=0; i<request.rawHeaders.length; i+=2) {
+      const name=request.rawHeaders[i].toLowerCase(); fieldCounts.set(name,(fieldCounts.get(name)||0)+1);
+    }
+    if (['host','origin','authorization','qikvrt-owner','content-type','effect-ack-request'].some(name=>(fieldCounts.get(name)||0)>1)) {
+      reply(response,400,{error:'DUPLICATE_EAP_SECURITY_HEADER'}); return true;
+    }
+    // Preserve the external same-origin boundary before translating to the
+    // existing loopback OwnerREST origin. No internal credential is injected.
+    if (request.headers.origin && request.headers.origin !== config.effect_ack_http.public_origin) {
+      reply(response,403,{error:'EAP_SAME_ORIGIN_REQUIRED'}); return true;
+    }
+    const headers = {};
+    for (const name of ['authorization','qikvrt-owner','content-type','effect-ack-request']) {
+      if (typeof request.headers[name] === 'string') headers[name] = request.headers[name];
+    }
+    if (!publicRead && (!headers.authorization || !headers['qikvrt-owner'])) {
+      reply(response,401,{error:'EXISTING_OWNER_AUTHENTICATION_REQUIRED'}); return true;
+    }
+    const chunks = []; let length = 0;
+    if (effect) {
+      request.setTimeout(5000,()=>request.destroy());
+      for await (const chunk of request) {
+        length += chunk.length;
+        if (length > 32768) { reply(response,413,{error:'BOUNDED_EAP_BODY_REQUIRED'}); return true; }
+        chunks.push(chunk);
+      }
+      request.setTimeout(0);
+      if (!length) { reply(response,400,{error:'EAP_BODY_REQUIRED'}); return true; }
+    }
+    const observed = await fetch('http://127.0.0.1:'+config.terminal_port+url.pathname, {
+      method:request.method, headers, ...(effect ? {body:Buffer.concat(chunks)} : {}), signal:AbortSignal.timeout(8000)});
+    const result = await observed.arrayBuffer();
+    response.writeHead(observed.status, {'content-type':'application/json; charset=utf-8','cache-control':'no-store',
+      'x-content-type-options':'nosniff', ...(observed.headers.get('effect-ack') ? {'effect-ack':observed.headers.get('effect-ack')} : {}),
+      'link':'</.well-known/effect-ack>; rel="effect-ack"; type="application/json"'});
+    response.end(Buffer.from(result)); return true;
+  }
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
     reply(response, 409, {error:'GITHUB_ADAPTER_NOT_SELECTED', effect_ack_done:false}); return true;
   }
-  const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client'].includes(url.pathname) || files.has(url.pathname) ||
+  const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client','/devops','/devops/','/workspace','/workspace/'].includes(url.pathname) || files.has(url.pathname) ||
     (config.adapter === 'none' && url.pathname === '/api/run');
   if (!owned) return false;
   if (!['GET','HEAD'].includes(request.method)) { reply(response,405,{error:'READ_ONLY_ROUTE'}); return true; }
-  if (['/mesh','/node','/client'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/index-react.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
+  if (['/workspace','/workspace/'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/workspace.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
+  else if (['/devops','/devops/'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/devops.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
+  else if (['/mesh','/node','/client'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/index-react.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
   else if (url.pathname === '/api/runtime') reply(response,200,binding(),'application/json',request.method);
   else if (url.pathname === '/api/terminal') {
     const token = readFileSync(config.terminal_token_file,'utf8').trim();
@@ -134,7 +197,10 @@ async function routes(request, response, url) {
     }
   } else if (files.has(url.pathname)) {
     const [path,type] = files.get(url.pathname);
-    reply(response,200,readFileSync(join(root,path)),type,request.method);
+    const body = readFileSync(join(root,path));
+    const style = url.pathname === '/workspace/original.html' ? /<style>([\s\S]*?)<\/style>/.exec(body.toString('utf8'))?.[1] : null;
+    const policy = style ? "default-src 'none'; style-src 'sha256-" + createHash('sha256').update(style).digest('base64') + "'; base-uri 'none'; form-action 'none'" : undefined;
+    reply(response,200,body,type,request.method,policy);
   } else {
     const html = readFileSync(join(root,'docs/terminal/index.html'),'utf8').replace(/<html\b([^>]*)>/i,
       (_,attributes)=>'<html'+attributes.replace(/\sdata-qikvrt-source="[^"]*"/g,'')+' data-qikvrt-source="node">');

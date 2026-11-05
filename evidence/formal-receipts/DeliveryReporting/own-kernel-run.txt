@@ -1,0 +1,8 @@
+Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)
+50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9  QIKVRTEffectAck/DeliveryReporting.lean
+8e76fa9b4ffd063365e36e89cabef75d64efe4a457544299a6e0b25c7628aacf  .lake/build/lib/lean/QIKVRTEffectAck/DeliveryReporting.olean
+'QIKVRT.DeliveryReporting.T1' depends on axioms: [propext]
+'QIKVRT.DeliveryReporting.T2' depends on axioms: [propext, Quot.sound]
+'QIKVRT.DeliveryReporting.T3' depends on axioms: [propext, Quot.sound]
+'QIKVRT.DeliveryReporting.T4' does not depend on any axioms
+5e5be7c610f5d4b7ec41cfc8e0e0154bf8476b0ac48b3d5b2a839745a41080ff  /home/claude/outbox/n7/vectors.json

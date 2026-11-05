@@ -1,0 +1,30 @@
+⚠ [1344/1353] Built PlanckRealEnergyDomain
+warning: ././././PlanckRealEnergyDomain.lean:73:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+note: this linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+✔ [1346/1353] Built RealErasureBudget
+✔ [1348/1353] Built RealEnergyStatements
+ℹ [1350/1353] Built RealEnergyAxiomAudit
+info: ././././RealEnergyAxiomAudit.lean:3:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAxiomAudit.lean:4:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAxiomAudit.lean:5:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAxiomAudit.lean:6:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: ././././RealEnergyAxiomAudit.lean:7:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: ././././RealEnergyAxiomAudit.lean:8:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAxiomAudit.lean:9:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAxiomAudit.lean:10:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [1352/1353] Built RealEnergyAcceptanceAudit
+info: ././././RealEnergyAcceptanceAudit.lean:3:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAcceptanceAudit.lean:4:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAcceptanceAudit.lean:5:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAcceptanceAudit.lean:6:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAcceptanceAudit.lean:7:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAcceptanceAudit.lean:8:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAcceptanceAudit.lean:9:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././RealEnergyAcceptanceAudit.lean:10:0: 'QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully.
+
+EXIT=0

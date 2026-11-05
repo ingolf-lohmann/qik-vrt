@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt_context_memory_native_failure_and_repair_v1",
+  "failed_head": "a30019a30e22d8bf3ffc8100defcd81102de82db",
+  "run_id": 40099230528,
+  "test_job": 120887755073,
+  "failure": "SourceRecoveryTests.test_every_recovered_source_keeps_its_original_blob_identity: current daemon no longer matched successor_sha256 in the existing source recovery receipt.",
+  "observed_current_daemon_sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c",
+  "previous_successor_daemon_sha256": "f090abf4684907965ea2fe611ea4c3da3968660c19c1b881f925a144f15ad2a5",
+  "affected_current_bindings": [
+    "tests/test_temdd_event_ledger.py",
+    "src/qikvrt_temdd_event_ledger.py"
+  ],
+  "repair": "Preserve the complete previous source-recovery receipt byte-for-byte; update only the two changed successor bindings and append a hash-bound transition. Add a regression validating predecessor preservation, then run the unchanged full native gates on the new head.",
+  "failed_gate_removed": false,
+  "historical_original_changed": false,
+  "effect_ack_done": false
+}

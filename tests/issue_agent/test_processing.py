@@ -82,6 +82,12 @@ class GitHubStub:
                 stdout = '{broken'
             else:
                 stdout = json.dumps(self.prs)
+        elif args[:2] == ["gh", "api"] and args[2].endswith("/pulls/900"):
+            stdout = json.dumps(
+                self.pr()
+                if self.mode == "stale-list-current-single"
+                else self.pr("f" * 40 if self.mode == "wrong-head" else None)
+            )
         elif args[:4] == ["gh", "api", "--method", "POST"] and args[4].endswith("/pulls"):
             payload = json.loads(Path(args[-1]).read_text())
             assert payload["draft"] is True and payload["head"] == "issue-agent/458"
@@ -179,7 +185,7 @@ class ProcessingTransactionTest(unittest.TestCase):
         self.shell([sys.executable, "-B", str(ROOT / "scripts/issue_agent/finalize.py"),
                     "--directory", str(self.directory), option, value])
 
-    def transact(self, mode="success", configure=None):
+    def transact(self, mode="success", configure=None, readback_only=False):
         stub = GitHubStub(self.head, mode)
         if configure:
             configure(stub)
@@ -187,7 +193,8 @@ class ProcessingTransactionTest(unittest.TestCase):
         with patch("scripts.issue_agent.handoff.command", side_effect=stub.run):
             receipt = handoff(root=self.root, output=output, repository="ingolf-lohmann/qik-vrt",
                               issue_number=458, commit=self.head, tree=self.tree,
-                              source_commit=self.source, run_id="12345", run_attempt="1")
+                              source_commit=self.source, run_id="12345", run_attempt="1",
+                              readback_only=readback_only)
         self.assertEqual(json.loads((output / "HANDOFF.json").read_text()), receipt)
         self.assertFalse(receipt["automatic_merge"])
         self.assertFalse(receipt["automatic_issue_close"])
@@ -234,12 +241,76 @@ class ProcessingTransactionTest(unittest.TestCase):
         receipt, stub = self.transact(configure=lambda s: setattr(s, "prs", [s.pr()]))
         self.assertEqual(receipt["handoff_status"], "REVIEW_HANDOFF_READY")
         self.assertEqual(receipt["pr_create_attempts"], 0)
+        self.assertEqual(receipt["pull_request_readback_route"], "FILTERED_LIST_EXACT")
+
+    def test_stale_filtered_list_requires_exact_single_pr_readback(self):
+        receipt, stub = self.transact(
+            "stale-list-current-single",
+            configure=lambda s: setattr(s, "prs", [s.pr("f" * 40)]),
+        )
+        self.assertEqual(receipt["handoff_status"], "REVIEW_HANDOFF_READY")
+        self.assertEqual(receipt["pull_request_readback_route"], "SINGLE_PR_AFTER_LIST_MISMATCH")
+        self.assertEqual(receipt["pull_request_list_observation"]["head_sha"], "f" * 40)
+        self.assertEqual(receipt["pull_request_single_observation"]["head_sha"], self.head)
+        self.assertEqual(receipt["pr_create_attempts"], 0)
+        self.assertFalse(any(a[:4] == ["gh", "api", "--method", "POST"]
+                             and a[4].endswith("/pulls") for a in stub.calls))
+
+    def test_fresh_replay_directories_never_retry_denied_writes(self):
+        stub = GitHubStub(self.head, 'denied')
+        for attempt in ('2', '3'):
+            with patch('scripts.issue_agent.handoff.command', side_effect=stub.run):
+                receipt = handoff(root=self.root, output=self.base / ('replay-' + attempt),
+                                  repository='ingolf-lohmann/qik-vrt', issue_number=458,
+                                  commit=self.head, tree=self.tree, source_commit=self.source,
+                                  run_id='12345', run_attempt=attempt, readback_only=True)
+            self.assertEqual(receipt['handoff_status'], 'REVIEW_HANDOFF_BLOCKED')
+            self.assertEqual(receipt['failure_class'], 'PR_CREATE_RETRY_REQUIRES_NEW_CAPABILITY_EVIDENCE')
+            self.assertEqual(receipt['notification_status'], 'ISSUE_NOTIFICATION_BLOCKED')
+            self.assertEqual(receipt['pr_create_attempts'], 0)
+            self.assertEqual(receipt['issue_comment_attempts'], 0)
+        self.assertFalse(any(a[:4] == ['gh', 'api', '--method', 'POST'] for a in stub.calls))
+
+    def test_replay_observes_restored_pr_without_creating_a_notification(self):
+        receipt, stub = self.transact(configure=lambda s: setattr(s, 'prs', [s.pr()]),
+                                      readback_only=True)
+        self.assertEqual(receipt['handoff_status'], 'REVIEW_HANDOFF_READY')
+        self.assertEqual(receipt['notification_status'], 'ISSUE_NOTIFICATION_BLOCKED')
+        self.assertEqual(receipt['notification_failure'], 'ISSUE_NOTIFICATION_READBACK_REQUIRED')
+        self.assertFalse(any(a[:4] == ['gh', 'api', '--method', 'POST'] for a in stub.calls))
+
+    def test_replay_wrong_head_or_unavailable_lookup_never_writes(self):
+        for mode in ('wrong-head', 'lookup-failure'):
+            receipt, stub = self.transact(mode, readback_only=True)
+            self.assertEqual(receipt['handoff_status'], 'REVIEW_HANDOFF_BLOCKED')
+            self.assertFalse(any(a[:4] == ['gh', 'api', '--method', 'POST'] for a in stub.calls))
+
+    def test_replay_reads_original_notification_without_transferring_its_run(self):
+        stub = GitHubStub(self.head)
+        args = dict(root=self.root, repository='ingolf-lohmann/qik-vrt', issue_number=458,
+                    commit=self.head, tree=self.tree, source_commit=self.source,
+                    run_id='12345', run_attempt='1')
+        with patch('scripts.issue_agent.handoff.command', side_effect=stub.run):
+            original = handoff(output=self.base / 'original', **args)
+            calls_before = len(stub.calls)
+            replay = handoff(output=self.base / 'separate-reader', readback_only=True, **args)
+            self.assertEqual(replay['notification_status'], 'ISSUE_COMMENT_READBACK_VERIFIED')
+            self.assertEqual(replay['issue_comment_url'], original['issue_comment_url'])
+            self.assertFalse(any(a[:4] == ['gh', 'api', '--method', 'POST'] for a in stub.calls[calls_before:]))
+            calls_before = len(stub.calls)
+            changed = handoff(output=self.base / 'different-run', readback_only=True,
+                              **dict(args, run_id='54321'))
+            self.assertEqual(changed['notification_status'], 'ISSUE_NOTIFICATION_BLOCKED')
+            self.assertEqual(changed['notification_failure'], 'ISSUE_NOTIFICATION_EXISTING_BODY_MISMATCH')
+            self.assertFalse(any(a[:4] == ['gh', 'api', '--method', 'POST'] for a in stub.calls[calls_before:]))
 
     def test_pr_head_mismatch_blocks_and_still_notifies(self):
         receipt, stub = self.transact("wrong-head")
         self.assertEqual(receipt["failure_class"], "PR_SUBJECT_MISMATCH")
         self.assertEqual(receipt["handoff_status"], "REVIEW_HANDOFF_BLOCKED")
         self.assertEqual(len(stub.comments), 1)
+        self.assertEqual(receipt["pull_request_list_observation"]["head_sha"], "f" * 40)
+        self.assertEqual(receipt["pull_request_single_observation"]["head_sha"], "f" * 40)
 
     def test_lookup_failure_does_not_hide_issue_status(self):
         receipt, stub = self.transact("lookup-failure")
@@ -611,3 +682,4 @@ class CausalAdmissionTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

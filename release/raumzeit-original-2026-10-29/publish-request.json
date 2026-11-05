@@ -1,0 +1,115 @@
+{
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "state": "publish",
+  "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "2ad6b3ca8f6606542818549b97e05043f80d901d",
+  "metadata": {
+    "title": "Emergent Spacetime, Reconstructible Virtuality, and Physical Time — English and German articles with companion essays",
+    "upload_type": "publication",
+    "publication_type": "article",
+    "description": "<p>Unchanged 27-page English and German original dated 20 October 2026, including both companion essays. Author: Ingolf Lohmann. The discussion distinguishes deterministic evolution, logical reversibility, observer-relative uncertainty, open physical hypotheses and philosophical interpretation. ChatGPT assistance is disclosed in the manuscript.</p><p>The accompanying claim matrix records source-bound mathematical presentations, bibliographic attributions, interpretations and open research tasks. No new machine-checked theorem or new physical experiment is asserted.</p>",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "version": "2026-10-20-original-EN-DE",
+    "publication_date": "2026-10-29",
+    "access_right": "open",
+    "license": "cc-by-nc-nd-4.0",
+    "language": "eng",
+    "keywords": [
+      "emergent spacetime",
+      "reversibility",
+      "quantum mechanics",
+      "entropy",
+      "QIK-VRT",
+      "English",
+      "German"
+    ],
+    "notes": "Original PDF SHA-256 88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68. Original content retained, including the printed Q1 version and punctuation. English first, German second; both general-audience essays included. Archival identity and claim disposition do not establish peer review or empirical confirmation.",
+    "prereserve_doi": true,
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.21888130",
+        "relation": "references",
+        "scheme": "doi"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_EN_DE.pdf",
+      "name": "Raumzeit_arXiv_EN_DE.pdf",
+      "git_blob_sha": "051bc588b083c73ea5fee2c9ccbd0302262b7953"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_Quellen_EN_DE.zip",
+      "name": "Raumzeit_arXiv_Quellen_EN_DE.zip",
+      "git_blob_sha": "cf22ae20860a90b55da96b2335dc3542e9d9a896"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/CLAIM_MATRIX.json",
+      "name": "CLAIM_MATRIX.json",
+      "git_blob_sha": "ccec1312be1fdb2fb2837a2a067b250dacbf6f77"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/SOURCE_EVIDENCE_BINDINGS.json",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "git_blob_sha": "278464b8b7b095e0ef138353acc30d9e78a9f2f6"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/BOUNDARY_TESTS.json",
+      "name": "BOUNDARY_TESTS.json",
+      "git_blob_sha": "d822817083c08b57ba1f1b6b9b3fc81060f04d3e"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/SOURCE_BUILD_VERIFICATION.json",
+      "name": "SOURCE_BUILD_VERIFICATION.json",
+      "git_blob_sha": "7a43a71787e26238984c53e077c430097db56858"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/PREPUBLICATION_RETURN_RECEIPT.json",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "git_blob_sha": "f98c4bc26acbed57f1f7f6b96513f098e430bcf6"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/ZENODO_METADATA.json",
+      "name": "ZENODO_METADATA.json",
+      "git_blob_sha": "202cec3c22c15e83da4c1d3f6cecdbf7d4d4ee40"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/RIGHTS_MANIFEST.json",
+      "name": "RIGHTS_MANIFEST.json",
+      "git_blob_sha": "45358ce8a99b9da52168574bb0c7082c4fabe3cc"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/PUBLICATION_NOTICE.md",
+      "name": "PUBLICATION_NOTICE.md",
+      "git_blob_sha": "df37e423251afa8088fa399ea57b68aca7d8df31"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/CC-BY-NC-ND-4.0.txt",
+      "name": "CC-BY-NC-ND-4.0.txt",
+      "git_blob_sha": "cfe676c541842bd2b766787b1f6983e063a1eee2"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/MACHINE_PROOF_BUNDLE.json",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "git_blob_sha": "e0564e6081fa963489da6acca4c3e1429f9d6ab7"
+    }
+  ],
+  "evidence_path": "release/raumzeit-original-2026-10-29/zenodo-publication.json",
+  "machine_proof": {
+    "path": "release/raumzeit-original-2026-10-29/MACHINE_PROOF_BUNDLE.json",
+    "git_blob_sha": "e0564e6081fa963489da6acca4c3e1429f9d6ab7",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "owner_authorization": {
+    "path": "release/raumzeit-original-2026-10-29/OWNER_ZENODO_AUTHORIZATION.json",
+    "bytes": 6454,
+    "sha256": "cc9abf2dca2f7ebd5804161e47a939a0d6aecf2ab172342e37f6fdb23a842ce5",
+    "git_blob_sha": "184c7e3ad387b4fe139a290f6092a3a87d21143e"
+  }
+}

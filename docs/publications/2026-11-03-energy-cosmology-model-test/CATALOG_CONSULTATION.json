@@ -1,0 +1,51 @@
+{
+  "schema": "qikvrt_catalog_consultation_v1",
+  "consulted_at": "2026-11-03T06:37:41.646704+00:00",
+  "file_name": "Zenodo_Quellenkatalog.json",
+  "bytes": 345822,
+  "sha256": "b5c2016a8c4d4d7ab69bbe81d30510a3fe011faab2eaf405974f0b1acd3f4382",
+  "catalog_version": "2026-10-11.1",
+  "historical_verification_at": "2026-10-11T06:06:17.550486+00:00",
+  "reading_entry": 21888130,
+  "selected_context": [
+    {
+      "record_id": 21888130,
+      "doi": "10.5281/zenodo.21888130",
+      "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+      "known_scope": "FORMALER GESAMTEINSTIEG MIT EXPLIZITEN MODELLGRENZEN",
+      "boundary": "Die physikalische Identifikation der Architektur, ein empirisch gebundenes c und die vollständige Ableitung bekannter Physik bleiben offen. 70.439 inventarisierte Claims sind keine 70.439 bewiesenen Theoreme; der historische Korpus führt 1.262 OPEN-Claims. Die Schließung historischer Korrekturdiagnosen schließt diese offenen Claims nicht."
+    },
+    {
+      "record_id": 22907018,
+      "doi": "10.5281/zenodo.22907018",
+      "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
+      "known_scope": "WISSENSCHAFTLICH REVIDIERTES KONZEPTMODELL",
+      "boundary": "Keine abgeschlossene Quantengravitation oder Ableitung neuer Naturgesetze. Diskretheit, Planck-Auflösung, dynamischer Einstein-Grenzfall und vollständige Quantenkorrelationsstruktur bedürfen weiterer Begründung."
+    },
+    {
+      "record_id": 22527889,
+      "doi": "10.5281/zenodo.22527889",
+      "title": "QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese",
+      "known_scope": "32 FORMAL GEBUNDENE MODELLTHEOREME; PHYSISCHE SCHLIESSUNG OFFEN",
+      "boundary": "Virtuelle Kosmogenese wird nicht mit physischer Frühkosmologie gleichgesetzt. Standardmodell- und Einstein-Grenzfall, Kopplung, Stabilität, Unitarität und empirische Reproduktion bleiben offen. H5-O05 erhält durch die spätere Gap-Law-Arbeit eine konkrete Vorhersage, aber keinen abgeschlossenen Test."
+    },
+    {
+      "record_id": 22283396,
+      "doi": "10.5281/zenodo.22283396",
+      "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
+      "known_scope": "FALSIFIZIERBARE PHYSIKHYPOTHESE MIT MODELLABLEITUNG",
+      "boundary": "Der universelle Planck-Tick ist ein physikalisches Postulat; die Werte von c, hbar und G sind verwendete Eingaben. Die Vorhersage ist nicht empirisch bestätigt oder unabhängig reproduziert. Sie erledigt den Vorhersageteil von H5-O05 teilweise, nicht dessen experimentellen Teil."
+    },
+    {
+      "record_id": 21748371,
+      "doi": "10.5281/zenodo.21748371",
+      "title": "QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum",
+      "known_scope": "ARCHIVIERTER KERNELBELEG; 21 MODELLTHEOREME",
+      "boundary": "Nicht jede Frage besitzt einen solchen Antwortpfad. Globale Wahrheit, vollständiges menschliches Wissen, automatische semantisch treue Natural-Language-to-Lean-Übersetzung und allgemeine Kognitionsverbesserung sind nicht bewiesen. Der IETF-Profilentwurf ist ein nicht eingereichter Kandidat."
+    }
+  ],
+  "fresh_native_metadata_refresh": "Zenodo record pages 21888130 and 22527889 inaccessible via web retrieval; current all-version inventory not refreshed",
+  "fresh_kernel_run": false,
+  "counts_not_added_to_new_48_controls": true,
+  "scope": "Historical catalog context; not a new proof, current publication-status verification or physical cosmogenesis evidence."
+}

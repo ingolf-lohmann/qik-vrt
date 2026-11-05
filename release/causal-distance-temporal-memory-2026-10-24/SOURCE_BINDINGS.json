@@ -1,0 +1,152 @@
+{
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Ingolf Lohmann: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft.",
+      "urls": [
+        "https://doi.org/10.5281/zenodo.21711193",
+        "https://zenodo.org/records/21711193"
+      ],
+      "doi": "10.5281/zenodo.21711193"
+    },
+    {
+      "id": "S2",
+      "title": "Ingolf Lohmann: Von Softwarearchitektur zur Weltformel - Das Universum als Round Trip.",
+      "urls": [
+        "https://doi.org/10.5281/zenodo.21888130",
+        "https://zenodo.org/records/21888130"
+      ],
+      "doi": "10.5281/zenodo.21888130"
+    },
+    {
+      "id": "S3",
+      "title": "E. W. Dijkstra: A note on two problems in connexion with graphs.",
+      "urls": [
+        "https://doi.org/10.1007/BF01386390",
+        "https://www.cs.yale.edu/homes/lans/readings/routing/dijkstra-routing-1959.pdf"
+      ],
+      "doi": "10.1007/BF01386390"
+    },
+    {
+      "id": "S4",
+      "title": "Leslie Lamport: Time, Clocks, and the Ordering of Events in a Distributed System.",
+      "urls": [
+        "https://doi.org/10.1145/359545.359563",
+        "https://lamport.azurewebsites.net/pubs/time-clocks.pdf"
+      ],
+      "doi": "10.1145/359545.359563"
+    },
+    {
+      "id": "S5",
+      "title": "W3C: PROV-DM: The PROV Data Model.",
+      "urls": [
+        "https://www.w3.org/TR/2013/REC-prov-dm-20130430/"
+      ]
+    },
+    {
+      "id": "S6",
+      "title": "Judea Pearl: Causal inference in statistics: An overview.",
+      "urls": [
+        "https://doi.org/10.1214/09-SS057",
+        "https://ftp.cs.ucla.edu/pub/stat_ser/r350.pdf"
+      ],
+      "doi": "10.1214/09-SS057"
+    },
+    {
+      "id": "S7",
+      "title": "K. B. Wharton und N. Argaman: Colloquium: Bell's theorem and locally mediated reformulations of quantum mechanics.",
+      "urls": [
+        "https://doi.org/10.1103/RevModPhys.92.021002",
+        "https://arxiv.org/abs/1906.04313"
+      ],
+      "doi": "10.1103/RevModPhys.92.021002"
+    }
+  ],
+  "S1": {
+    "status": "PUBLISHED_PUBLIC_BYTE_VERIFIED",
+    "doi": "10.5281/zenodo.21711193",
+    "record_url": "https://zenodo.org/records/21711193",
+    "files": [
+      {
+        "name": "CLAIM_MATRIX.json",
+        "size_bytes": 13922,
+        "sha256": "6ca018de971cc351091c36e11a708ef852e6079991289b10a962603aef0fadcb",
+        "native_checksum": "md5:98db3575bc5a24b504bb2c8cd1b9907d",
+        "native_checksum_verified": true,
+        "byte_exact_public_redownload": true
+      },
+      {
+        "name": "QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.tex",
+        "size_bytes": 47857,
+        "sha256": "6a3414302e6ba870fab0722a123af1f9c101b6f6c6f2269d1126b37ad47d5841",
+        "native_checksum": "md5:3065143678e9ee3c47bfbfa63cee592a",
+        "native_checksum_verified": true,
+        "byte_exact_public_redownload": true
+      },
+      {
+        "name": "QIK-VRT_Kanonischer_Speicher_Retrokausalitaet_EFFECT_ACK_2026-07-30.pdf",
+        "size_bytes": 133421,
+        "sha256": "127796fa52aacf9fd5c31a4995ade48254ab88f86327aff9a1fc8ff9baf3bd2e",
+        "native_checksum": "md5:10581cd0605eb8ce1b3a483c23cb39c9",
+        "native_checksum_verified": true,
+        "byte_exact_public_redownload": true
+      },
+      {
+        "name": "KERNEL_RECEIPT.json",
+        "size_bytes": 9645,
+        "sha256": "b7f0246798e2e3bb50a49580251e5b4909e915dd71da27770c19413cc40d9df6",
+        "native_checksum": "md5:8134352630ebc6547c923de8f723a9f7",
+        "native_checksum_verified": true,
+        "byte_exact_public_redownload": true
+      },
+      {
+        "name": "SOURCE_EVIDENCE_BINDINGS.json",
+        "size_bytes": 39988,
+        "sha256": "780e4fccebe71d73f28ba34c5c202ac7d59a5de3a024beb9dd5fd59a6888c857",
+        "native_checksum": "md5:b48514ad1378686f8ff5b0256d19600a",
+        "native_checksum_verified": true,
+        "byte_exact_public_redownload": true
+      }
+    ]
+  },
+  "S2": {
+    "status": "PUBLISHED_PUBLIC_BYTE_VERIFIED",
+    "doi": "10.5281/zenodo.21888130",
+    "record_url": "https://zenodo.org/records/21888130",
+    "files": [
+      {
+        "name": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+        "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+        "byte_exact_public_redownload": true
+      }
+    ]
+  },
+  "S3": {
+    "retrieved_bytes": 192652,
+    "sha256": "baa66780e853ef06e8bf9c0d8c37e2e0a652e9f5252811e97fb2848d0514fba5",
+    "original_pdf_downloaded": true,
+    "full_copyrighted_pdf_not_in_new_upload_set": true
+  },
+  "S4": {
+    "retrieved_bytes": 854562,
+    "sha256": "c55e7cab4230aa3d7126748a149b2db6f0d7a67296d5eccfdd50a210299a96b2",
+    "original_pdf_downloaded": true,
+    "full_copyrighted_pdf_not_in_new_upload_set": true
+  },
+  "S6": {
+    "retrieved_bytes": 593923,
+    "sha256": "1a5ecb7cb7c55a9b4f2c09aac091bc01a3eabfc94fc55ee692efbc013a8b7581",
+    "original_pdf_downloaded": true,
+    "full_copyrighted_pdf_not_in_new_upload_set": true
+  },
+  "S7": {
+    "retrieved_bytes": 966695,
+    "sha256": "844984968ac8179ced2dc0a7a7fd70e6f07581986ca1f0a263ecbd84caa2bff3",
+    "original_pdf_downloaded": true,
+    "full_copyrighted_pdf_not_in_new_upload_set": true
+  },
+  "S5": {
+    "sha256": "5c925c21bc96c285b25017c3b90d82cf74251d07713b71fcb81ca60f873c9e88",
+    "url": "https://www.w3.org/TR/2013/REC-prov-dm-20130430/"
+  }
+}

@@ -1,0 +1,1053 @@
+{
+  "schema": "qikvrt_provenance_work_unit_v1",
+  "work_unit_id": "QIKVRT_PR437_TARGETED_SUCCESSOR_20261030_V1",
+  "execution_id": "QIKVRT_PR437_TARGETED_SUCCESSOR_20261030_V1",
+  "created_at": "2026-10-30T08:41:34.151894+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "403fb4b26596b21539a5be6b735be137b7d1997c",
+  "source_tree": "6581f80a54ce990ce3544c5eb15a4eb17c66b147",
+  "predecessor": {
+    "pull_request": 437,
+    "ref": "work/meta-transistor-feedback-20261001-7e5a588d",
+    "head": "24143b6d242f59cb0611896a9eefc3a6faaea596",
+    "tree": "b27798f96cb61fc01c837fe8747ff076079c4ea5",
+    "commits_behind_main": 564,
+    "own_commits": 139,
+    "changed_paths": 95,
+    "missing_on_main": 47,
+    "different_on_main": 47,
+    "byte_identical_on_main": 1,
+    "historical_evidence_transfer": false
+  },
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Principal / Code Owner / Product Owner"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE",
+    "session_or_run_id": "QIKVRT_PR437_TARGETED_SUCCESSOR_20261030_V1",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "repository Python and C test paths"
+    ],
+    "identity_and_observation_limits": "Tool-visible source and local executions; no new original-host/SSO or productive runtime acceptance."
+  },
+  "human_contributions": [
+    "Targeted successor requirement; preserve provenance and needed content; close #437 only after secured integration; reject blanket historical workflow/role transfer."
+  ],
+  "artificial_cognitive_contributions": [
+    "Compare all 95 predecessor paths against exact current main.",
+    "Restore local codec, standpoint, canonical signature, checkpoint/recovery, fenced provider and Twin APIs, bounded closure and error-analysis helpers.",
+    "Adapt current role/review rules and use existing grants to retain irreversible retirement without resetting journals.",
+    "Preserve current workflows except the two QCE RUNNER_TEMP outputs; extend the original sealed package import closure.",
+    "Run failure controls, cold-start and full repository tests; regenerate integrity; prepare REST branch/PR and explicit closure path."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "24143b6d242f59cb0611896a9eefc3a6faaea596",
+      "tree": "b27798f96cb61fc01c837fe8747ff076079c4ea5",
+      "classification": "HISTORICAL_IMPLEMENTATION_AND_PROVENANCE_NOT_ACCEPTANCE"
+    }
+  ],
+  "outputs": {
+    "branch": "fix/pr437-targeted-successor-20261030",
+    "path_dispositions": [
+      {
+        "path": ".github/workflows/issue-autonomous-processing.yml",
+        "source_blob": "3849798975369b33d6afce1fcd4fcc956244bb36",
+        "source_sha256": "358c9b357e0cbf9ded7fdb20674f84cf6b905e624345c75157a45f6e1cc628ad",
+        "source_bytes": 5216,
+        "main_blob": "c3b58a9f99b338c57bac55b12b7f07c4ce5367b9",
+        "disposition": "RETAIN_CURRENT_NATIVE_WORKFLOW",
+        "candidate_blob": "c3b58a9f99b338c57bac55b12b7f07c4ce5367b9",
+        "reason": "Preserve present action pins, trusted executor, SSO, role and admission rules; do not import predecessor workflow rewrites. The QCE two-line fix is tracked separately as adapted."
+      },
+      {
+        "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+        "source_blob": "b37c68196ba4fccc0ff8412629eb267d32fb2895",
+        "source_sha256": "56ddfc48018706d4ec009d6f9cbb15141ec1147e58291f78b1b9b7c69fea2e27",
+        "source_bytes": 7221,
+        "main_blob": "7a5f134442a2e692bb755830e9a3173e05cacc0a",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "0e15a48c54c103e441cd838c3748dc69701d1ce4",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+        "source_blob": "c56d9f7d217c59bff6c99fe810cfaf8ff43cd303",
+        "source_sha256": "ca5a3db5e387a86ad774bcb6eb97fb24219c023a9dd8139bb044de23272a89ba",
+        "source_bytes": 18571,
+        "main_blob": "e62340873666ca7ae71160352dcd4de9749cb495",
+        "disposition": "RETAIN_CURRENT_NATIVE_WORKFLOW",
+        "candidate_blob": "e62340873666ca7ae71160352dcd4de9749cb495",
+        "reason": "Preserve present action pins, trusted executor, SSO, role and admission rules; do not import predecessor workflow rewrites. The QCE two-line fix is tracked separately as adapted."
+      },
+      {
+        "path": ".github/workflows/qikvrt_ci.yml",
+        "source_blob": "373d3b34beec66cacc1248f904cdbe4cde92289e",
+        "source_sha256": "4cac450f7449438a151959a145fc0425a7e469ede6eabf86fe62b359751922e5",
+        "source_bytes": 8574,
+        "main_blob": "9c4094c0c67b3c217e1e7adc35cbcc785107cc39",
+        "disposition": "RETAIN_CURRENT_NATIVE_WORKFLOW",
+        "candidate_blob": "9c4094c0c67b3c217e1e7adc35cbcc785107cc39",
+        "reason": "Preserve present action pins, trusted executor, SSO, role and admission rules; do not import predecessor workflow rewrites. The QCE two-line fix is tracked separately as adapted."
+      },
+      {
+        "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+        "source_blob": "b1a4ab1c36286880f0692bdc36c3213aeb1f5532",
+        "source_sha256": "8581ee544f548c81dcf93b3b0c3189c42ec74fb84384933dddd6ff433681ce06",
+        "source_bytes": 15169,
+        "main_blob": "6aae9b9ea4fb27199e14e5bf5ab6f3c66b767f84",
+        "disposition": "RETAIN_CURRENT_NATIVE_WORKFLOW",
+        "candidate_blob": "6aae9b9ea4fb27199e14e5bf5ab6f3c66b767f84",
+        "reason": "Preserve present action pins, trusted executor, SSO, role and admission rules; do not import predecessor workflow rewrites. The QCE two-line fix is tracked separately as adapted."
+      },
+      {
+        "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+        "source_blob": "31477b6f85656044eac7993cb582aa2f6857b3dc",
+        "source_sha256": "e3d2279bcb3e91fc7d6f599579dc4a56d563872366f767a28bb6a3da6461568d",
+        "source_bytes": 2550,
+        "main_blob": "3b78b3bb232ef819388e868205f7a7f41450d672",
+        "disposition": "RETAIN_CURRENT_NATIVE_WORKFLOW",
+        "candidate_blob": "3b78b3bb232ef819388e868205f7a7f41450d672",
+        "reason": "Preserve present action pins, trusted executor, SSO, role and admission rules; do not import predecessor workflow rewrites. The QCE two-line fix is tracked separately as adapted."
+      },
+      {
+        "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+        "source_blob": "42d9d999bc45c265f60a7384b13bb01fb9f1e18e",
+        "source_sha256": "bcfbe072252e493550d71f3feab541ac67ee0d8560cde29e63b6547f06fc3bc6",
+        "source_bytes": 12653,
+        "main_blob": "8d4f86a7da7c7a3f29544238552564f4fd99270d",
+        "disposition": "RETAIN_CURRENT_NATIVE_WORKFLOW",
+        "candidate_blob": "8d4f86a7da7c7a3f29544238552564f4fd99270d",
+        "reason": "Preserve present action pins, trusted executor, SSO, role and admission rules; do not import predecessor workflow rewrites. The QCE two-line fix is tracked separately as adapted."
+      },
+      {
+        "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+        "source_blob": "0e56dbca0b59ad75afb8da93bf74231227522367",
+        "source_sha256": "e1e6f8728d82b464a069f1753d2525227e9e3a3aa5754d221c50413985288e57",
+        "source_bytes": 3554,
+        "main_blob": "ca59f63b4ab8528f30521f7dea9aae8ba21480d2",
+        "disposition": "RETAIN_CURRENT_NATIVE_WORKFLOW",
+        "candidate_blob": "ca59f63b4ab8528f30521f7dea9aae8ba21480d2",
+        "reason": "Preserve present action pins, trusted executor, SSO, role and admission rules; do not import predecessor workflow rewrites. The QCE two-line fix is tracked separately as adapted."
+      },
+      {
+        "path": "AI",
+        "source_blob": "7a8d70cc9567ee768cbe4f843d26a87cd01d5db5",
+        "source_sha256": "2df6fa080a197ed7af868b7763d9476cfb3d79d18af805d3e22aaab76b36b5f8",
+        "source_bytes": 23011,
+        "main_blob": "72f753e5ca247665d1d46b29b6aa9d93582b7cf6",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "72f753e5ca247665d1d46b29b6aa9d93582b7cf6",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "AI_CONTEXT.json",
+        "source_blob": "eb98756777ba0bee3f5c6ee68b274508daae9d9a",
+        "source_sha256": "1ac9abe5c660838aa887e2bddbc42275abaccbba01d04698f3e33e2d4898e9ad",
+        "source_bytes": 14782,
+        "main_blob": "4ba4490ceb3da8a3f651d7c4d12aeca7d331d23a",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "6f1275dee628b17785871b5b7d918b3b5768f444",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "Makefile",
+        "source_blob": "5e2369fab2189aa0262a8598b04b78bb1be27e42",
+        "source_sha256": "c4168026fab8ae361f0936016aac002d6dd380dc0290e3b582cf780609eeb800",
+        "source_bytes": 12912,
+        "main_blob": "ca0e2c34bc716190918c809d8ff93adc9be8405d",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "4d15810ee06bd3d6cbba587df00ecdf0a85965dd",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "REPOSITORY_FILE_MANIFEST.json",
+        "source_blob": "f3fd295b77b5e0c7e62f587c3096fb48400fd9b9",
+        "source_sha256": "ddec4642263e03af1ed3007d1c1ccfc4458b5f85ca4058bb9187d14738763e47",
+        "source_bytes": 1119262,
+        "main_blob": "d8e9abf621f1b4f5372400dba45c137258a21a2f",
+        "disposition": "REGENERATED_FOR_CURRENT_CANDIDATE",
+        "reason": "Derived inventory is never copied from the predecessor."
+      },
+      {
+        "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "source_blob": "d32729b6556202373909b7af234369373e4200aa",
+        "source_sha256": "41942574318d33410ffae22a8826a692acfb6524793da33bf2843b23f8497de5",
+        "source_bytes": 96,
+        "main_blob": "65c7e9d42c1f1dbc69b31929093a96d6e8756dd2",
+        "disposition": "REGENERATED_FOR_CURRENT_CANDIDATE",
+        "reason": "Derived inventory is never copied from the predecessor."
+      },
+      {
+        "path": "SHA256SUMS.txt",
+        "source_blob": "a22e0d36584c02ec2c114d32b861323f80f74119",
+        "source_sha256": "acc9396769ce8a330dc334b50a7636aa80a8c51e5be2a3c975ed603773774fb7",
+        "source_bytes": 531580,
+        "main_blob": "f4e3c0c3d138f5ece8b4e4b2583c9337735051d9",
+        "disposition": "REGENERATED_FOR_CURRENT_CANDIDATE",
+        "reason": "Derived inventory is never copied from the predecessor."
+      },
+      {
+        "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+        "source_blob": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+        "source_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+        "source_bytes": 400,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b"
+      },
+      {
+        "path": "docs/QIKVRT_CODEC_V1.md",
+        "source_blob": "bfe0b6b5f1672c483e88e5907c2ce9186362dbe3",
+        "source_sha256": "060ad764f0418d5ae007e41896de56a115f261b4ca5bf6b787414cb0a41e9798",
+        "source_bytes": 13830,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "bfe0b6b5f1672c483e88e5907c2ce9186362dbe3"
+      },
+      {
+        "path": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+        "source_blob": "bd33cf757dcd7337bf6fbc279a091ecd164b45f4",
+        "source_sha256": "be4336786fbd0c73b459a4b0b9b8d56a35ae36d4aa556a4f01c4c0a7eb0752e2",
+        "source_bytes": 43133,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "ff859ca00d0cc5166b9d070aba21f80163fdc3da",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+        "source_blob": "c162aaeb60735dd8c20bb985e717a8c39a8a9920",
+        "source_sha256": "1a13dd73f3bd4f6c3c39201eca43e9b42c67ed94cb4c7a62efdcc3ee698b0dc0",
+        "source_bytes": 10530,
+        "main_blob": "a4d5127b7b4ed01295756889a8b27cdeeb980aeb",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "a4d5127b7b4ed01295756889a8b27cdeeb980aeb",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "docs/architecture/GLOBAL_SYSTEM_CLOSURE_V1.md",
+        "source_blob": "0657bca55652d0ddad8d272e94c02b02eff8f205",
+        "source_sha256": "fee1f13e92e0d1357a9c871e7ecde3910fadc8466d64eb21c6bf62b56e90b3ab",
+        "source_bytes": 5509,
+        "main_blob": "4b821593959bbf017887c5d9540691a24fa138b9",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "4b821593959bbf017887c5d9540691a24fa138b9",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "docs/architecture/RECIPROCAL_DEVOPS_CLOSURE_EXECUTION_V1.md",
+        "source_blob": "563f38df8535bbbfe76d8d3c365309f3ccd69a27",
+        "source_sha256": "447f0f1ee9241c47190fcf6b123924abeaca0823a67b578e5c23f1b47ba1f8cf",
+        "source_bytes": 5364,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "e3eda806afb09399b62a1825660dcf99568749ee",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+        "source_blob": "0776ed7ac2f4898a9ccd6c97d7087ea277c77be2",
+        "source_sha256": "e44e2b3a454d728ad6c16481543594d35de85f7cc94a85bd256ba140e3a5e795",
+        "source_bytes": 14772,
+        "main_blob": "98e318acf54420a92bfbb1b2982e1357729f2451",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "98e318acf54420a92bfbb1b2982e1357729f2451",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "evidence/codec/20261001_CANONICAL_CODEC_CONSOLIDATION_BENCHMARK_V1.json",
+        "source_blob": "e5796c643a1e58a6305a4a0e1407a9ffcaa3386b",
+        "source_sha256": "d5e8cf4e3f2a80b44d56dd909c25e7bf4467138c0a4cdd34ce4974d039626592",
+        "source_bytes": 35378,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "evidence/codec/20261001_CODEC_BENCHMARK_V1.json",
+        "source_blob": "8bd407cec2020ed7a868862bdf6e1939acafaeeb",
+        "source_sha256": "19a623c7fbb03a75e1e8c23c403cc151c38a1b750a525059dc2bdb87a79771a5",
+        "source_bytes": 28237,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "evidence/codec/20261001_STANDPOINT_TRANSPORT_BENCHMARK_V1.json",
+        "source_blob": "bf6325d13b89af52446bc8d304e519f1c1424ba3",
+        "source_sha256": "27d87a7ae172e8286460ead21241e5de373e0ddd39c92bf1231b650fe564ec2e",
+        "source_bytes": 35378,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "evidence/reciprocal_devops/pr433/HOST_EFFECT_OBSERVATIONS_20261001.json",
+        "source_blob": "15b49a68d42d3de80ffc3ff0eb9229845ef5c0bc",
+        "source_sha256": "4819281408e32380f5579d2bd3f6c1cecf30a9d3cc47f23605223921641246a3",
+        "source_bytes": 753640,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "evidence/reciprocal_devops/pr433/STEP_BLOCK_RECEIPT_20261001.json",
+        "source_blob": "6bc349aad4f6e636296d61dd8ecbd08606c46abd",
+        "source_sha256": "5ce3dc4e551f71c71a9390d3f8ed1821e1dd2831fb3ed46a2ab4f0c92d30c70a",
+        "source_bytes": 205895,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+        "source_blob": "88fbbd01c076b02cb733891b3235ad789475bd86",
+        "source_sha256": "0ccf7c5f9cc6fb85b23ea7d3981901e227b40abedfe1aa0373d0e171e6753f37",
+        "source_bytes": 21531,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "88fbbd01c076b02cb733891b3235ad789475bd86"
+      },
+      {
+        "path": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+        "source_blob": "4fd05a48e1fcf91c6503f7760e3aef44e6bc304c",
+        "source_sha256": "7909c9cc548b89788ebe7165ee85609fb7431eda1d9ef70cb3f08c5e8b69c2ae",
+        "source_bytes": 3806,
+        "main_blob": "56334e8f5f461c8dd82bf373019745c264cb4c92",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "268710104aed6562d6e1b53b4ddbf735bcbd1b84",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+        "source_blob": "48ccd2311628bf138918099be7aceea2f6de53fd",
+        "source_sha256": "1857deea4054849ae492a25e4e7bef884cf25acf93d6909478efea7d3fd76639",
+        "source_bytes": 22638,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "776a269ef21aae9916afab8cef831c3e41864e47",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "source_blob": "2669baf1e7eea8162f10d4b8c1a499b6ca0b5f90",
+        "source_sha256": "7cf1eeccb42d0a1d91bc8c4160cb021c4fb6622b762b8e247fc91c1a7cf32e76",
+        "source_bytes": 1982,
+        "main_blob": "f43a6bf1d8de68b7f8529cee2701c45378961d68",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "e04941947b21c34eb8f73b49c86d17404e50a502",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json",
+        "source_blob": "7c538d9e9cfe6b77bc29350d1a3be12be7c90fa1",
+        "source_sha256": "89a72457fdaa70a4279987be9d7e441b815676290bdc2b1b19a6e4536dd9a4ab",
+        "source_bytes": 5327,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "f51aa5feeab2a25312f0527955dcabd3649e737a",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+        "source_blob": "4dc242937168eedfaced69ecebab6a1cb2c00a4e",
+        "source_sha256": "3048430991fb1725f1c50ad5e581dcc6d2972cffe3469c41aba68c0c0940047d",
+        "source_bytes": 8577,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "4dc242937168eedfaced69ecebab6a1cb2c00a4e"
+      },
+      {
+        "path": "registry/NODE_DISCOVERY_POLICY.json",
+        "source_blob": "3a43c971c3fa7336f171a21a8d87a4776fa86a5b",
+        "source_sha256": "259bb7ffed8870991c1a624f772c73ad2d8c005ae2fb2c09f333b8875f0a654c",
+        "source_bytes": 1849,
+        "main_blob": "0dd4584a2e9ced084d1652f10c90e74915610588",
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "3a43c971c3fa7336f171a21a8d87a4776fa86a5b"
+      },
+      {
+        "path": "runtime/toolchains/CACHE_COVERAGE.json",
+        "source_blob": "12ba4a0958d7cc5f94bfde30dc4f7d23932eb5ad",
+        "source_sha256": "e1bddb7c95ea315ab4976b17790e93d20f53616f5f1c694dc86f2ca5b36a9cc7",
+        "source_bytes": 3269,
+        "main_blob": "2737d3292c6343933eba952b908e2b1a1c8463ed",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "2737d3292c6343933eba952b908e2b1a1c8463ed",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "runtime/toolchains/CACHE_REGISTRY.json",
+        "source_blob": "6d447f652bad1c44fede32190232a00743e4b029",
+        "source_sha256": "ac279090330f36325d8908bc127aff7533153ce1f0e6d1e84f4c1f47619ab7ee",
+        "source_bytes": 11565,
+        "main_blob": "1115a9a8d82a8a3d0a18dbd9280c8b2ba3d9fb2c",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "1115a9a8d82a8a3d0a18dbd9280c8b2ba3d9fb2c",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "source_blob": "6d145b79ae94614f4eb990f414755bf79dc1d2f3",
+        "source_sha256": "ff3788ff80ab89da7dd1229676c6eb238e5a23b3baaeef8cac6142c8dba9eef0",
+        "source_bytes": 2718,
+        "main_blob": "c50aaac20f3142a4335d337b4c056533d3e74f96",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "c50aaac20f3142a4335d337b4c056533d3e74f96",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "scripts/issue_agent/finalize.py",
+        "source_blob": "2436cab06c7c24de93bb9c6175eea7a82c4399ac",
+        "source_sha256": "51c681f21c1e37e35aba5176a80d41dc652a5a2c82c41031df0780794ac5324c",
+        "source_bytes": 4544,
+        "main_blob": "7b451771ab5f2991445c9ebf5db26b56d907d2ae",
+        "disposition": "SUPERSEDED_BY_CURRENT_DETERMINISTIC_ISSUE_COMPILER",
+        "candidate_blob": "7b451771ab5f2991445c9ebf5db26b56d907d2ae",
+        "reason": "Current processing-outcome/deterministic compiler replaces the older optional-inference transaction; current issue-agent tests are retained."
+      },
+      {
+        "path": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+        "source_blob": "bc778c696867d0eafc370deb85a650ac4e4c0326",
+        "source_sha256": "311075cffa0746c1873257809ef82554fde80bee0f4e0d3be1f519b583a4eb0a",
+        "source_bytes": 9042,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "bc778c696867d0eafc370deb85a650ac4e4c0326"
+      },
+      {
+        "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+        "source_blob": "8783ed410334bc64e17d3951685bfe30120ad8d1",
+        "source_sha256": "d8e5e58268689fcf6d9337a255795e752a2569066a374d52148a07a0509a7aa2",
+        "source_bytes": 3554,
+        "main_blob": "a9d7ad21b53f5dd5976c4f8831a3f2f01f424741",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "8d3952c973209ac460782c951953c97fa68cb068",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "src/qikvrt_codec.py",
+        "source_blob": "639b48a91fccaf84b10075837c0ac29d04bfae20",
+        "source_sha256": "703bb15d75b441f2eccf9d414a3134ff7afa144763dc15241a90067a15c185e5",
+        "source_bytes": 23554,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "639b48a91fccaf84b10075837c0ac29d04bfae20"
+      },
+      {
+        "path": "src/qikvrt_digital_twin_rest.py",
+        "source_blob": "beb4821eff3bbfa8e7498dcac56dce8cb2becf42",
+        "source_sha256": "af0f02840d2bfefddba63a792cd8dab733adb9b3b10892a03bdec5aed1cb9ed6",
+        "source_bytes": 13948,
+        "main_blob": "269090c5072eb5d483c5ad444d09724756195eac",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "ed5760dd8788f8a644ce66b988cbcc4f53b26d7b",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "src/qikvrt_github_api_shim.py",
+        "source_blob": "f779f3df4281b086f1c14d006ccc57233b1e7352",
+        "source_sha256": "4bf07f8b272e00e2990a24beac962032ea804e92259270fac25aaa41c02487cb",
+        "source_bytes": 96168,
+        "main_blob": "2e16c27218692f55cc54b9e80e9c6c91a207fea2",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "b945e2cdf9b1b88bf8271f00fd716c9e876c95ce",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "src/qikvrt_siemens_reference_integration.py",
+        "source_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+        "source_sha256": "fb6595a2221fac4f0acb3100fbf5167a36c619583974a3f487b56ccbf73290c5",
+        "source_bytes": 3082,
+        "main_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2",
+        "disposition": "ALREADY_BYTE_IDENTICAL_ON_MAIN",
+        "candidate_blob": "816d55781e53e0801390a96e8032c9fa2b327ae2"
+      },
+      {
+        "path": "src/qikvrt_standpoint_codex.py",
+        "source_blob": "e5ee25be0e1485b6b359f61060276778a1a83644",
+        "source_sha256": "aedf27f794c3c3092d1bdeddbf4b9e18e6f9d359574af9c3b68a7364cde7a2a2",
+        "source_bytes": 10549,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "e5ee25be0e1485b6b359f61060276778a1a83644"
+      },
+      {
+        "path": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CLOSURE_V1.json",
+        "source_blob": "652a18ada8ec3a44962d698e260fab4cc4bba3a7",
+        "source_sha256": "ff8963b97b1bb0a1882b76b478248d9b85ca45902ed9e3abda00b6a79dd6be96",
+        "source_bytes": 1950,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/autonomy/AUTONOMOUS_PR_CLOSURE_POLICY_V1.json",
+        "source_blob": "e64b5f7668a792291776f3e865beb8c6822772cc",
+        "source_sha256": "a5bf6b74d6e5efaffdce048cb1682610af8c70a5f7343e18aaa514ccf85e5c9d",
+        "source_bytes": 2117,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "f323d6b0152c081e75fc974bf6dddcbff13ae6ce",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+        "source_blob": "d25cc0faeb3c64ae935a0b5c2eaaa2ea01535ec5",
+        "source_sha256": "993d1cb408342b33b208fff818b4039444dee47923eac10c7d02f6a9e2f82588",
+        "source_bytes": 12736,
+        "main_blob": "d22b840ebe2c63621d7879ca5a17d98dce9ec59f",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "6c149b5d9fd340e23acc834f5beee14dc96141d8",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+        "source_blob": "5e2f87aeb802f3f77b5f94b62b7fdee12f89e3de",
+        "source_sha256": "0ce9c94dfb102237e441fa3facca754d6259ceec6aff266cba16d8537b0152f1",
+        "source_bytes": 9492,
+        "main_blob": "15d5ec189f919921eabaa136792bba17969e627a",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "15d5ec189f919921eabaa136792bba17969e627a",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "state/work_units/API_PRODUCT_ACCEPTANCE_REST_REPAIR_PR435_PR422_20261001_V1.json",
+        "source_blob": "a47a62ccb20b641cafece8744e3c0a622aefcf3b",
+        "source_sha256": "50523f7aca73b66844ecf5f9647cf605cc9845c982284621618b1512e4f881e4",
+        "source_bytes": 5240,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/META_TRANSISTOR_LOCAL_FEEDBACK_20261001_V1.json",
+        "source_blob": "7005e18baefe273ca3fb92581ee1774274148f91",
+        "source_sha256": "cc0505b463bef208b52648fec6555625464c4729730da1f7eb68608829ae286a",
+        "source_bytes": 2641,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/PR433_PR434_SEMANTIC_CONSOLIDATION_20261001_V1.json",
+        "source_blob": "d2f9990f442bffa42f19d8c5f4a0928b9bcf5969",
+        "source_sha256": "4a80416e56a63f84b5057ce0d66588d3476433622452a55486ac64ba581b0969",
+        "source_bytes": 7476,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/PR433_RECIPROCAL_CLOSURE_EXECUTABLE_SUCCESSOR_20261001.json",
+        "source_blob": "63f485b6127739fc6bb321ebe7672ab37374acdf",
+        "source_sha256": "f7f3b553db357846903af01e7d39603c6e497b357f004e28bb94c588e27f5013",
+        "source_bytes": 7641,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_AUTOMATIC_ERROR_ANALYSIS_CONSUMER_20261002_V1.json",
+        "source_blob": "8b29a390a942ad71657670c1c74f9ac01cb87ca8",
+        "source_sha256": "edff9869340bef38ec8e879eb430d18460018b549b83d769adc374e6dbc60cb6",
+        "source_bytes": 5069,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_CI_GAP_AND_CAUSE_HIGHEST_PRIORITY_20261002_V1.json",
+        "source_blob": "3efa62ab1f9ba604863943c9d179974894f22f06",
+        "source_sha256": "fd82ea3d3b99110348bd4f2756270dec8a6095cfeb03f32ec463387b3e397f5b",
+        "source_bytes": 5709,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_CODEC_V1_20261001.json",
+        "source_blob": "b3d4adc3c8de10795ce346ff2ebfb7e9ec65e96d",
+        "source_sha256": "ea9916ed2c13159ee675b93e4783271685d6772e71c14d195e1c102ca99dd934",
+        "source_bytes": 11829,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_CODEC_V1_CONSOLIDATION_20261001.json",
+        "source_blob": "fa95cb0eb807e8e462d1005771108c6de1713f19",
+        "source_sha256": "36aad0c053167e1ba2dccd9424c626c4a576b3495b169b138e9cfd754585c2db",
+        "source_bytes": 10416,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_PR436_REFLEXIVE_API_REPOSITORY_V1.json",
+        "source_blob": "aefde1d2d54565290a20947cfd81e71b37f43658",
+        "source_sha256": "5fa9d63efdca25172432576d441827b7ecbf991d9326337a672e9907436a31e2",
+        "source_bytes": 7400,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_PR437_INVARIANT_PIPELINE_CONTINUATION_20261001_V1.json",
+        "source_blob": "b95992e5e7fb6c0d4a102696cb51191646c98314",
+        "source_sha256": "c756c64f1e5eec1acbcd482b0c54d6753e826e5e5f2b1fe478b2c55316118fbf",
+        "source_bytes": 2835,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_PR437_QCE_TEMP_OUTPUT_REPAIR_20261004_V1.json",
+        "source_blob": "c5e7077b764cae2f4e7d7bb67a57e50f1adc8c31",
+        "source_sha256": "72658b524b19401dc1bcb0571cf4dac920b5adc7075cee7e875991741387bb07",
+        "source_bytes": 9104,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_PR437_RECURSIVE_NODE_RECOVERY_20261001_V1.json",
+        "source_blob": "8e6adb4ff116a350b5b0cdf99b372f24b8729339",
+        "source_sha256": "3340065bb024c615488db339fcef0567ceba4aeb1ffd30ec6597a7de4cf7c4df",
+        "source_bytes": 16081,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_RECIPROCAL_DEVOPS_DOD_20261001.json",
+        "source_blob": "f01ba49934ef71322fe2bd14aa89be2b1adc577c",
+        "source_sha256": "1ad4f595b8585a81f7a030f441139a64d94d5268e18e031c691924d73b84ec49",
+        "source_bytes": 97405,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_SEED_DISCOVERY_AND_AUTHORITY_ACCESS_20261003_V1.json",
+        "source_blob": "a4d621f12fae8ab95c8e1645941a8bfe4ae54259",
+        "source_sha256": "27fb33107341051bd49c5dbd604e048fcc7d34db910a88b1cc0628abe3b80016",
+        "source_bytes": 9502,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/QIKVRT_STANDPOINT_CODEX_V1.json",
+        "source_blob": "29566d017e11ff5dae5ddfecf1ac33e524d1bc52",
+        "source_sha256": "33a032c355448177ff7b3661b46f6a6655e53a8d74657207ccc97c1eea4b4d42",
+        "source_bytes": 8701,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "state/work_units/SOFTWARE_INDEPENDENT_PROMOTION_PROOF_20261001_V1.json",
+        "source_blob": "5b4c312f311a9b58e1ba5f91bab484a44ee68383",
+        "source_sha256": "022870a94abfe9a66718eb2d2c4de297b5daa1e43770a7443cdf24b5e9d89873",
+        "source_bytes": 7819,
+        "main_blob": null,
+        "disposition": "PRESERVED_AS_HASH_BOUND_HISTORICAL_SOURCE",
+        "reason": "Original PR, commit, blob, bytes and digest retain provenance. Historical receipts, benchmarks and approvals are not current acceptance or a new active delegation."
+      },
+      {
+        "path": "tests/issue_agent/test_validate.py",
+        "source_blob": "ad7e298da00f015fd26b0c849357a44a49044ec5",
+        "source_sha256": "616c1981db57b3f655d0766d3fe34fca3f367d5651183cf7ac08ff10b8d5133e",
+        "source_bytes": 11724,
+        "main_blob": "c3817067c1c223858974e2dd39d80226938f6fcc",
+        "disposition": "SUPERSEDED_BY_CURRENT_DETERMINISTIC_ISSUE_COMPILER",
+        "candidate_blob": "c3817067c1c223858974e2dd39d80226938f6fcc",
+        "reason": "Current processing-outcome/deterministic compiler replaces the older optional-inference transaction; current issue-agent tests are retained."
+      },
+      {
+        "path": "tests/test_ai_runtime_bootloader.py",
+        "source_blob": "f2a3b2b62e3570aee4666b9ebc11bb2504543b70",
+        "source_sha256": "473f0070904f10b706a3929eed97464fd62365f1575f80b8b32d85cec29b72c9",
+        "source_bytes": 13081,
+        "main_blob": "44f2f9c05a247ee80cf4c990adf31c060f398099",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "ea48a114281821bcf0f5883bbc26a9c08b34abdc",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_effect_ack_release_workflows.py",
+        "source_blob": "3fb147b56d88139273f1955b59edfdf60d1a1bc5",
+        "source_sha256": "965c8ad25456224ba30b0bb8497657cda5fc5ec30142d96c5a3d2405bc9436e6",
+        "source_bytes": 35333,
+        "main_blob": "eddac792d02a4c4f1d209e32930bf5273f1c5bf9",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "eddac792d02a4c4f1d209e32930bf5273f1c5bf9",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "tests/test_integrity.py",
+        "source_blob": "d1c0c42657fbe26082300a5f2cb7e1d55f707e4c",
+        "source_sha256": "f2fea32e24b4acdb0ff13d4db6748aa904b147f7a05ed03a7c86cb49e62ed916",
+        "source_bytes": 20515,
+        "main_blob": "be35339696b7cf087ed1657e7fffe9926977f46f",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "be35339696b7cf087ed1657e7fffe9926977f46f",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "tests/test_qikvrt_authority_transition.py",
+        "source_blob": "0c79df46858ca994db1be9a3c90efc98ca3aed55",
+        "source_sha256": "6cb70b51184cca8da562f771ebd90062891843fe4f6a920c32d53aeab5ec065d",
+        "source_bytes": 23198,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "3a1496c6b1d31ae3bdfac16ef075142456a3a316",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_qikvrt_autonomous_pr_continuation.py",
+        "source_blob": "42ade91096e7c78a95435c009419bca3dd1cf786",
+        "source_sha256": "e2a6cc3b3b5e204aa1c611f83d69e4fe236c278e0b365894319b971c89630fdd",
+        "source_bytes": 21916,
+        "main_blob": "55c81898a04e13a8adcd13066947ba81d439cd43",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "ccac909ae14ad4b17bfe3e0f227dec4730d5d2ce",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_qikvrt_autonomous_self_heal.py",
+        "source_blob": "503a126c053d6c2e46d9eb9eacd700835db8b02f",
+        "source_sha256": "3c1fa650d668209b991656649692c4e450f90cd22ee0c6b8fc23320a1a6267d0",
+        "source_bytes": 18944,
+        "main_blob": "45ee71973713420db88a8f7ad23fd74cb0df3e38",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "e2fb984bcb4b2bcc4856cc979682b8ba172d3f3b",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_qikvrt_codec.py",
+        "source_blob": "795a008b3e1c64abc05e8b7709a617281e94fd40",
+        "source_sha256": "3648d34ace11bcb1ddd4913e7a2d31e6406b2daec107eb6e048598cb6cd01822",
+        "source_bytes": 22751,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "795a008b3e1c64abc05e8b7709a617281e94fd40"
+      },
+      {
+        "path": "tests/test_qikvrt_digital_twin_rest.py",
+        "source_blob": "02cfd277085f4c18a5e81865d4d9f442e2b62bbe",
+        "source_sha256": "c873736f56a6000aa1b89082f9d5fad7ac05f2c49e852941f4c1a418eb8565af",
+        "source_bytes": 19186,
+        "main_blob": "4ac9c85180e23ff52d713330df979606dacbf13b",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "102b4a578f94283b00ee43d14717b9cfda4bb588",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_qikvrt_expected_head_promotion.py",
+        "source_blob": "a583fe8495216c4461e3e1ab8b1cad93ca9e89b9",
+        "source_sha256": "6395bdd51d223f03ab5da8ade9090190f39c214f09e2aff099b8b1a96bc2eeb4",
+        "source_bytes": 17536,
+        "main_blob": "190d3238344e7f9e0793a57f38d4282bb5e138b6",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "d18159afaf1b55cda141882ded5d661745fc6025",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+        "source_blob": "c5e53f7235a1d1486e2580af2a232751c402643b",
+        "source_sha256": "93d117d12da90ff6ee5cc0cebb403944fc2bd9165e6706060fbe80ac8f958311",
+        "source_bytes": 4881,
+        "main_blob": "9f252f588d4a9b6472fb91b156e41d580c2ebe3c",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "9f252f588d4a9b6472fb91b156e41d580c2ebe3c",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "tests/test_qikvrt_feedback.py",
+        "source_blob": "9b2ef9c1bb7b2b743a4d9e2e9a3f0459ae03d42d",
+        "source_sha256": "1092d99f32b3f630909fa2e3e1582b749bb21c29f4a6ff545a3cebb69a785c79",
+        "source_bytes": 7397,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "9b2ef9c1bb7b2b743a4d9e2e9a3f0459ae03d42d"
+      },
+      {
+        "path": "tests/test_qikvrt_github_authority_provider.py",
+        "source_blob": "1378df5bafd32c837a8b23f32089157ba7c80d8e",
+        "source_sha256": "ff3c74c90f38f8f58cf63b7373f780b46e172082e5af0432913b4ad99ffd4d79",
+        "source_bytes": 50148,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "1378df5bafd32c837a8b23f32089157ba7c80d8e"
+      },
+      {
+        "path": "tests/test_qikvrt_mesh_recovery.py",
+        "source_blob": "7ac71b10299fb5303e48002d7236b3688bd87512",
+        "source_sha256": "fce910509fed6c648831993459bde6e9fd8e1465fe48bc65e29977fde85f3e61",
+        "source_bytes": 45556,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "7ac71b10299fb5303e48002d7236b3688bd87512"
+      },
+      {
+        "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+        "source_blob": "68f887f42ea9574bfdfc0cf1c393694673ad8f83",
+        "source_sha256": "6491e44cc29dd657d4c9b9af08dba513442f429b1984b84b4823ed63174f1a47",
+        "source_bytes": 5539,
+        "main_blob": "75fe95e13e520fb4f42e8ad1b4dcbd255448fbc0",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "75fe95e13e520fb4f42e8ad1b4dcbd255448fbc0",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "tests/test_qikvrt_pr_closure_engine.py",
+        "source_blob": "b5f89da757079058bc060bd255716cb6edd6011c",
+        "source_sha256": "8795db45c21c43045a037d309dcbb61f7cb728d682f836c52e4f7d10e04881b5",
+        "source_bytes": 6348,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "40c459a4970bddbb30dab24cafa7ce047a6c0074",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+        "source_blob": "a497fdff51b20dcbf236885337a03bd1c8593069",
+        "source_sha256": "822271b6cf420118304b7856ee26ac36c348bf72e41c5a6ff4947858f3d5fc61",
+        "source_bytes": 25328,
+        "main_blob": "3be9f859f99fca47bbbce3641ecf3fd8e526275a",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "2375916913823e9ad0508dc2c1205c083744d251",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_qikvrt_standpoint_codex.py",
+        "source_blob": "20f465f254ba8632bd714e4456a0d0257bf462c2",
+        "source_sha256": "3a1031e97f0507dc80baf5d5d26c030dfc0501fb7f8e78e5a206be7ebc604b61",
+        "source_bytes": 16811,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "20f465f254ba8632bd714e4456a0d0257bf462c2"
+      },
+      {
+        "path": "tests/test_reciprocal_closure_step.py",
+        "source_blob": "ce0f0adb615ba98be6d5cba71504452a5a528022",
+        "source_sha256": "8f79344214953cd69a15503c1b853f16dc4dd3f18e05494a6f62be40910c2bf7",
+        "source_bytes": 22403,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "b4619b3ba4be106ebeeebe66fa4e390d7fac9187",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_reciprocal_devops_closure.py",
+        "source_blob": "28aacf72a4ede3f41ab5c8a9676cb0f2f494d1d9",
+        "source_sha256": "40fd1e31df6d57b74fadd65c9c1a05b617bdef8cfc2fc811201d2b2fc7d16d9f",
+        "source_bytes": 10192,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "667f6b03c16f283e427fc010efa8f3f6c0067bcb",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tests/test_ruleset_authority_token_route.py",
+        "source_blob": "d513b23168bc52db09944bbd626572cb1ed03691",
+        "source_sha256": "47dc1a5500cf777993139b6dd34c1b431181fd862a44d8c4c0c75f9c39358942",
+        "source_bytes": 2384,
+        "main_blob": "ab940c5ed44592e2ea19f2f3f65e14819750648f",
+        "disposition": "RETAIN_CURRENT_IMPLEMENTATION_AND_HISTORY",
+        "candidate_blob": "ab940c5ed44592e2ea19f2f3f65e14819750648f",
+        "reason": "Current binding/contract remains authoritative. Missing implementation functions are integrated in the named successor modules; old text and tests remain available by their original immutable blobs."
+      },
+      {
+        "path": "tests/test_tcpip_e2e.py",
+        "source_blob": "1b96d827ca1be96e97f8d81438fbe56093ca946d",
+        "source_sha256": "f357e4f97ebb2d2dfcd2c2b20faa5a6fa195a29e1ee4d73841c873e06096193d",
+        "source_bytes": 19835,
+        "main_blob": "d2296d01a76179a1460b56f6973b13dbe5184f84",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "d1d869d64aa4228f043d7d9771c26837fb741b3d",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tools/ai_runtime_bootloader.py",
+        "source_blob": "2b1d8dcaed1892c2b9373dec45eca9d568eeaad5",
+        "source_sha256": "522f79b9a74eafd948de7d37ee28942e648be0a359d88d4ff21c6d2a4e238d86",
+        "source_bytes": 19517,
+        "main_blob": "45f14776445f7ec76ccb94e20cf20fb5ee505d12",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "b682c95b0067b98213140178b0b498ffd0671d37",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tools/qikvrt_authority_transition.py",
+        "source_blob": "d72832ff5c16640773e449b5eb18c112dd6ebb4c",
+        "source_sha256": "0d55ac70795accb5e2e5a399cbb58bdff3901b7346b8c8dd8e8fe33b9bff5f4d",
+        "source_bytes": 49290,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "a2098dd85c55a3292c5c43e56675788bd4fde3a1",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tools/qikvrt_autonomous_self_heal.py",
+        "source_blob": "c70de034c216c084fa2450985be46579bd007484",
+        "source_sha256": "ed83c88386a5e20baa65605e7b96a40c73fba68dc409d3855db691433c157f58",
+        "source_bytes": 40403,
+        "main_blob": "7e562e7997b50286756b3b67d8af3170ed17e9a7",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "2ba9055ec74aa2533cb42e25d6a855eb24335b9a",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tools/qikvrt_codec_benchmark.py",
+        "source_blob": "7ec9981981fc86ad520059d68b897568517a5773",
+        "source_sha256": "7a526c0e2639a4b927ac7bcb25907233f3c5708c265a27c185e9543026aefeb2",
+        "source_bytes": 7183,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "7ec9981981fc86ad520059d68b897568517a5773"
+      },
+      {
+        "path": "tools/qikvrt_expected_head_promotion.py",
+        "source_blob": "a4bcecee84ab809dcc0d4e38846ea784b0ca1960",
+        "source_sha256": "7a84beaaa0e4b99b3d453adaadabe74233c281c4016cf31b138510faf72a9d04",
+        "source_bytes": 25189,
+        "main_blob": "2419223c21ccfe9d1fbaba709af30b3323c9cc5c",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "e654b4e620445391cbbc26873af14c9a80c3c236",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tools/qikvrt_mesh_recovery.py",
+        "source_blob": "65113c10041d2f228a0d6232ea1d1dc17ef8763b",
+        "source_sha256": "c1babb9cc390bdb18fb776c473f4a5f95698939443326989aae67975d2a58f12",
+        "source_bytes": 51700,
+        "main_blob": null,
+        "disposition": "RESTORED_EXACT_SOURCE_BYTES",
+        "candidate_blob": "65113c10041d2f228a0d6232ea1d1dc17ef8763b"
+      },
+      {
+        "path": "tools/qikvrt_pr_closure_engine.py",
+        "source_blob": "887fd6dcdee330dcf25418ef15ad6df3bb8baa2b",
+        "source_sha256": "2f29674af11833053628312d38e0cd16c1faf82955de25bcb9632b57b2c66ea0",
+        "source_bytes": 42962,
+        "main_blob": null,
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "966aff9c7e10aafe4415526b8fc20429dada9835",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tools/qikvrt_reflexive_repository_watchdog.py",
+        "source_blob": "10c8203e4d731a03cd4f4b0aa490cf09a24d3e11",
+        "source_sha256": "efb9c32fd0d2b7ca7a10272adca18082f5dc290735e41850b3ca2c1628ae02c8",
+        "source_bytes": 54366,
+        "main_blob": "506df751dafb7151fe53c25358767907e21c7768",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "c13765b82bb68bd9660f1e3dd2dd51b80f815789",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      },
+      {
+        "path": "tools/qikvrt_seed_common.py",
+        "source_blob": "2b71c680e36532e5482fb9820ecee71865995fb0",
+        "source_sha256": "2b5646d297096f9696518b8039f2499a38272b8f114e57ba991fdf67e248dfbf",
+        "source_bytes": 51979,
+        "main_blob": "2e6f958f783b818f54a9041175659a3c75d04fb6",
+        "disposition": "ADAPTED_TO_CURRENT_MAIN",
+        "candidate_blob": "4521d06e55cd5e9c9174f72cabcf65d73b4917bb",
+        "reason": "Current roles, SSO, review, toolchain and workflow contracts remain authoritative; only missing implementation/contract/tests are restored."
+      }
+    ]
+  },
+  "git_history": {
+    "new_candidate_parent": "403fb4b26596b21539a5be6b735be137b7d1997c",
+    "predecessor_history_rewritten": false,
+    "predecessor_branch_deleted": false,
+    "original_pr_and_commit_blobs_retained": true,
+    "all_predecessor_changes_adopted": false
+  },
+  "verification": {
+    "local_full_suite": {
+      "command": "make test",
+      "exit_code": 0,
+      "python_unittest_executions": 2250,
+      "test_groups": 42,
+      "log_sha256": "d0abe82b2eb3c7f3a0565aae6cce617e4e24b904800c38f16276634732a8147a",
+      "scope": "Final executable source/configuration and restored test set before one additional TCP/IP feedback test, this provenance record and integrity metadata."
+    },
+    "cold_start": {
+      "command": "python3 -B -m unittest tests.test_self_host.StandaloneTests.test_frozen_rest_bootstrap_retains_the_real_credential_haltpoint tests.test_self_host.StandaloneTests.test_frozen_rest_bootstrap_serves_http_and_requires_original_provider_binding",
+      "tests": 2,
+      "exit_code": 0,
+      "scope": "Original sealed export, actual HTTP and credential haltpoint with python -S; no deployment."
+    },
+    "qce_output_control": {
+      "scope": "Actual workflow shell with isolated inert Lean command fixtures; historical output placement changes package inventory and current placement preserves it with a space in RUNNER_TEMP.",
+      "formal_kernel_run": false
+    },
+    "native_exact_head_ci": "REQUIRED_AFTER_REMOTE_COMMIT; no predecessor PASS transferred",
+    "additional_tcpip_feedback_control": {
+      "command": "python3 -B -m unittest tests.test_tcpip_e2e",
+      "tests": 3,
+      "exit_code": 0,
+      "log_sha256": "cbbb52e2652809a0c00be7d47d16675b146e4e6a13f5b22903b57e9b8d5db536",
+      "scope": "Actual isolated authenticated HTTP ingest, codec byte feedback, persistent artifact readback and replay."
+    }
+  },
+  "closure": {
+    "target": {
+      "type": "PULL_REQUEST",
+      "number": 437,
+      "head": "24143b6d242f59cb0611896a9eefc3a6faaea596"
+    },
+    "path": "Verified successor integration into current main, independent content/tree readback, then REST PATCH /repos/ingolf-lohmann/qik-vrt/pulls/437 state=closed and independent GET.",
+    "condition": "No unresolved needed source is discarded; historical evidence remains explicitly historical.",
+    "performed": false,
+    "old_opt_in_may_be_suspended_after_successor_readback": true,
+    "suspension_is_closure": false
+  },
+  "human_decision": {
+    "basis": "Current task instruction and existing autonomous continuation decision",
+    "native_review_fabricated": false,
+    "candidate_specific_platform_review": "NOT_CREATED_BY_THIS_RECORD"
+  },
+  "work": [
+    {
+      "id": "PR437_SUCCESSOR_NATIVE_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Publish and independently read back the exact tested candidate; require fresh native checks/current review and governed merge, then verify #437 closure."
+    },
+    {
+      "id": "PRODUCTION_HOST_DOMAIN_ACCEPTANCE",
+      "state": "OPEN",
+      "next_action": "Original authenticated productionEnvironmentReadback and protected delivery repair, then independent exact-host HTTPS/content acceptance. Repository integration does not discharge this duty."
+    },
+    {
+      "id": "ORIGINAL_SSO_TOPOLOGY",
+      "state": "OPEN",
+      "next_action": "Independently inspect the actual original SSO connection; no exclusive location on the Principal device is inferred."
+    }
+  ],
+  "external_effects": {
+    "scope": "Reviewable repository successor only",
+    "production_effect_verified": false,
+    "new_scheduler": false,
+    "secret_values_persisted": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}

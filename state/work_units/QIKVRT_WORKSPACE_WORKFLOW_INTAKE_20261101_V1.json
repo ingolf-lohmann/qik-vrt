@@ -1,0 +1,43 @@
+{
+  "schema": "qikvrt-workspace-workflow-intake-source/v1",
+  "owner": "Ingolf Lohmann",
+  "implementer": "OpenAI Codex",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_main": "a8ec0bc8a32599e30409aca708564d4d03003119",
+  "base_tree": "330920cdeb03ef777fd00bad07d12ef1c57208f0",
+  "existing_pull_request": 655,
+  "original_pr_head": "6b381778a528614a526de2454c92cc57abbff42f",
+  "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+  "first_observed_version": 1,
+  "last_independently_observed_version": 4,
+  "version_policy": "Fresh admitted-task version and exact payload SHA256; each version has its own immutable receipt. Version changes between read and POST reject.",
+  "site_project_id": "appgprj_6ae30a1da6248191aac4823d1fa9c108",
+  "site_source": "a0ce7cb92cb1057ec7a804dc773cedf139068b2b",
+  "site_version": 10,
+  "scope": "VERSIONED_TASK_COORDINATION_ONLY",
+  "reuse": [
+    "Original shared tasks and membership",
+    "Original MCP get_task independent read path",
+    "Existing workflow executor, its contract and existing event sources",
+    "Existing PR655; original source preserved"
+  ],
+  "new_scheduler": false,
+  "new_native_executor": false,
+  "protected_material_exported": false,
+  "task_text_published": false,
+  "local_checks": {
+    "completed_prior_full_make_test": 2293,
+    "fresh_repository_intake_tests": 7,
+    "signature_checks": 32,
+    "storage_checks": 18,
+    "existing_workspace_checks": 45,
+    "leitstand_read_checks": 21,
+    "typescript": true,
+    "production_worker_smoke": true,
+    "provenance_files": 33
+  },
+  "native_workflow_adoption": "NOT_YET_VERIFIED",
+  "original_client_release_gates": "RETAINED_BLOCKED_UNVERIFIED",
+  "effect_ack_done": false,
+  "next_gate": "Exact-head native CI/governance, admitted Main integration, actual native task acceptance and independent MCP plus original-run/artifact readback"
+}

@@ -5,6 +5,9 @@ import QIKVRTEffectAck.InformationBoundary
 import QIKVRTEffectAck.Claims
 import QIKVRTEffectAck.QuantumClassicalRuntime
 import QIKVRTEffectAck.CanonicalTemporalMemory
+import QIKVRTEffectAck.CausalDistance
+import QIKVRTEffectAck.CausalDistanceTemporalBridge
+import QIKVRTEffectAck.CausalDistanceBoundaryChecks
 
 /-!
 # QIK-VRT EFFECT_ACK Draft-01 and quantum-classical runtime formalization

@@ -30,8 +30,9 @@
     ],
     "delete_predecessor": false,
     "predecessor_evidence_transfer": false,
-    "new_pull_request": "FORBIDDEN_FOR_CURRENT_CONTINUATION",
-    "review_bypass": false
+    "new_pull_request": "ALLOWED_ONLY_WITH_OWNER_OTHER_CLOSURE_DECISION",
+    "review_bypass": false,
+    "new_pull_request_owner_decision": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json#/conditional_pull_request_creation_decision"
   },
   "dual_pole": {
     "authority_and_mirror_distinct": true,
@@ -159,7 +160,11 @@
       "original_wording": "Jeder sich abzeichnende Übergang ist nutzbar und zu nutzen!\n\nAlles andere war, ist und wird Verschwendung bleiben.",
       "attribution": "Quod erat demonstrandum,\nIngolf Lohmann",
       "implementation_instruction": "Ja,\nalso anwenden,\numsetzen und\nrealisieren!",
-      "objectives": ["RESPONSIVENESS", "ADAPTABILITY", "VERIFIED_PROGRESS_PER_HUMAN_INTERVENTION"],
+      "objectives": [
+        "RESPONSIVENESS",
+        "ADAPTABILITY",
+        "VERIFIED_PROGRESS_PER_HUMAN_INTERVENTION"
+      ],
       "relation": "OBSERVE_TRANSITION -> BIND_INPUTS_AND_ACTIVATION -> EXECUTE_ADMITTED_PREPARATION -> REASSESS_AFTER_RELEVANT_CHANGE -> EXECUTE_ADMITTED_SUCCESSOR -> FRESH_READBACK",
       "reuse": "tools/ai_handoff.py --client-receipt",
       "receipt_field": "transition_plan",
@@ -211,4 +216,3 @@
     }
   }
 }
-

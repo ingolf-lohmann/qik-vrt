@@ -1,0 +1,94 @@
+{
+  "schema": "qikvrt_seed_architecture_kernel_receipt_v1",
+  "base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "executed_at_utc": "2026-10-30T16:05:33.552167+00:00",
+  "scope": "LOCAL_ABSTRACT_MODEL_KERNEL_CHECK_NOT_UNCONDITIONAL_PHYSICAL_VALIDATION",
+  "lean_version": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+  "lean_executable_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+  "upstream_lean_archive_sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+  "compatibility_source": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/APP_PATH_COMPAT.c",
+  "compatibility_source_sha256": "4cf10f8a50d7311d3870cd570da4417a475a01608771ef7bc953d35365f779b6",
+  "compatibility_binary_sha256": "6080dec5c82327308a9efaa7c360395263a380fe144a411cd55e808d1cefe9df",
+  "theorems": 30,
+  "no_axioms": 17,
+  "allowed_logical_axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "project_axioms": 0,
+  "sorry": 0,
+  "admit": 0,
+  "unsafe": 0,
+  "kernel_runs": 2,
+  "repeated_olean_identical": true,
+  "olean_sha256": "b864d384cb62888b8dbd77beb0b0cbf6bbf9c03627be6b4eaca18074703f6e15",
+  "negative_controls": [
+    {
+      "source": "docs/proofs/seed-architecture-2026-10-30/negative/FalseDeterminismPredictsUnknownInput.lean",
+      "source_sha256": "05d392a599cb24a168d9614b031ce8693672d07f666d6d0f2a36217c08c7d821",
+      "exit_code": 1,
+      "diagnostic": "docs/proofs/seed-architecture-2026-10-30/FalseDeterminismPredictsUnknownInput.txt",
+      "diagnostic_sha256": "d8bb6ac3da4545a181bb21711bc32f17b05570ebb292ab20868fc0100efe9811",
+      "reason": "FALSE_PROPOSITION_DECIDE_NOT_MISSING_IMPORT"
+    },
+    {
+      "source": "docs/proofs/seed-architecture-2026-10-30/negative/FalseDroppedPartStillRestores.lean",
+      "source_sha256": "8dc57bc2eec1827ecd8b56dc920a7f402c02efe54f6d508278bce567e6baa24f",
+      "exit_code": 1,
+      "diagnostic": "docs/proofs/seed-architecture-2026-10-30/FalseDroppedPartStillRestores.txt",
+      "diagnostic_sha256": "52e5a5806e4083cc99df233a69ec472fb6cec28fe3b753e81c6adf8df48e9c50",
+      "reason": "FALSE_PROPOSITION_DECIDE_NOT_MISSING_IMPORT"
+    },
+    {
+      "source": "docs/proofs/seed-architecture-2026-10-30/negative/FalseGateWithoutAuthority.lean",
+      "source_sha256": "9d7fa371242b38f96597a369bccd7e5bc5222f78314a4e7a27d8dd8589ce1635",
+      "exit_code": 1,
+      "diagnostic": "docs/proofs/seed-architecture-2026-10-30/FalseGateWithoutAuthority.txt",
+      "diagnostic_sha256": "d8e92898317f5be05c5fec46e0809f61bc138a045fbb68fa2931d2741492d9d9",
+      "reason": "FALSE_PROPOSITION_DECIDE_NOT_MISSING_IMPORT"
+    },
+    {
+      "source": "docs/proofs/seed-architecture-2026-10-30/negative/FalseZeroHeatDespitePositiveBound.lean",
+      "source_sha256": "34be3c2fdc5084d97c1e3d588e713942c5097c46eb9846414d64e2e2f894e41e",
+      "exit_code": 1,
+      "diagnostic": "docs/proofs/seed-architecture-2026-10-30/FalseZeroHeatDespitePositiveBound.txt",
+      "diagnostic_sha256": "7bd3b48756617f7b754552f2280e744b3a912e837fc88be9c6ae49e7a8ca1178",
+      "reason": "FALSE_PROPOSITION_DECIDE_NOT_MISSING_IMPORT"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/SeedArchitecture.lean",
+      "bytes": 14814,
+      "sha256": "d8664d62a9668258a36824a7ada41060cdb7ffba704911c5b9968e8887782b31"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/SeedArchitectureAxiomAudit.lean",
+      "bytes": 2225,
+      "sha256": "f621ec075e3b6d8ca47c909d7e3f5523e1f921cc8496fde84af6020d778e36db"
+    },
+    {
+      "path": "docs/proofs/seed-architecture-2026-10-30/AXIOM_AUDIT.txt",
+      "bytes": 2656,
+      "sha256": "838d84bd1da649799f3ba5178f67705063a1e24a5c7ea8f455e7e455607bba9e"
+    },
+    {
+      "path": "docs/proofs/seed-architecture-2026-10-30/CLAIM_MATRIX.json",
+      "bytes": 6870,
+      "sha256": "f43918e487deb030073996fab82cec7645b11238816ff0babf3a41203784b9e6"
+    },
+    {
+      "path": "docs/proofs/seed-architecture-2026-10-30/KERNEL_COMMANDS.json",
+      "bytes": 3670,
+      "sha256": "441ae61f25190e437678240c2b061ab1bcf76b199324c3e5e1101112aa2b47de"
+    }
+  ],
+  "native_github_ci": "UNVERIFIED",
+  "main_integration": false,
+  "physical_correspondence": "OPEN",
+  "effect_ack_done": false
+}

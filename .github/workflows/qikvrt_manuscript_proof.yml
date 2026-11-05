@@ -7,7 +7,12 @@ on:
   push:
     paths:
       - "formalization/QIKVRT_Formalization_v2.0/**"
+      - "formalization/QIKVRT_RealEnergy_v1/**"
+      - "docs/publications/2026-11-03-energy-cosmology-model-test/**"
       - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
+      - "tools/qikvrt_causal_distance_kernel_evidence.py"
+      - "tests/test_causal_distance_kernel_evidence.py"
+      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
       - "tools/qikvrt_survival_connectability_kernel_evidence.py"
       - "tests/test_survival_connectability_kernel_evidence_tool.py"
       - "tests/test_survival_connectability_publication.py"
@@ -23,7 +28,12 @@ on:
   pull_request:
     paths:
       - "formalization/QIKVRT_Formalization_v2.0/**"
+      - "formalization/QIKVRT_RealEnergy_v1/**"
+      - "docs/publications/2026-11-03-energy-cosmology-model-test/**"
       - "tools/qikvrt_canonical_temporal_memory_kernel_evidence.py"
+      - "tools/qikvrt_causal_distance_kernel_evidence.py"
+      - "tests/test_causal_distance_kernel_evidence.py"
+      - "docs/publications/2026-10-24-causal-distance-temporal-memory/**"
       - "tools/qikvrt_survival_connectability_kernel_evidence.py"
       - "tests/test_survival_connectability_kernel_evidence_tool.py"
       - "tests/test_survival_connectability_publication.py"
@@ -51,7 +61,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Provision and verify declared Poppler runtime
@@ -320,6 +330,22 @@ jobs:
           path: >-
             formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-canonical-temporal-memory-kernel-evidence.json
           if-no-files-found: error
+      - name: Verify causal-distance kernel extension and negative controls
+        env:
+          PYTHONPATH: ../..
+        run: |
+          set -euo pipefail
+          python3 -m unittest -v tests.test_causal_distance_kernel_evidence
+          python3 ../../tools/qikvrt_causal_distance_kernel_evidence.py \
+            | tee .lake/build/qikvrt-causal-distance-kernel-evidence.json
+      - name: Upload causal-distance kernel evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-causal-distance-kernel-evidence
+          retention-days: 30
+          path: >-
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-causal-distance-kernel-evidence.json
+          if-no-files-found: error
       - name: Verify survival/connectability publication kernel plan
         run: |
           set -euo pipefail
@@ -335,8 +361,91 @@ jobs:
           path: >-
             formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-survival-connectability-kernel-evidence.json
           if-no-files-found: error
+      - name: Check finite recovery and shared evidence contracts
+        run: |
+          set -euo pipefail
+          lake build QIKVRTEffectAck.EvidenceRecovery QIKVRTEffectAck.EvidenceRecoveryAxiomAudit
+          lake env lean QIKVRTEffectAck/EvidenceRecoveryAxiomAudit.lean > .lake/build/evidence-recovery-axioms.log
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          source = Path('QIKVRTEffectAck/EvidenceRecovery.lean').read_text()
+          names = re.findall(r'^theorem ([A-Za-z_][A-Za-z0-9_]*)', source, re.M)
+          claims = json.loads(Path('../../docs/proofs/evidence-recovery-2026-10-30/CLAIM_MATRIX.json').read_text())
+          expected = {item['theorem'].split('.')[-1]: item['axioms'] for item in claims['formal_claims']}
+          assert len(names) == 16 and set(names) == set(expected), 'Recovery theorem inventory differs'
+          audit = Path('.lake/build/evidence-recovery-axioms.log').read_text()
+          for name in names:
+              lines = [s for s in audit.splitlines() if s.startswith("'QIKVRT.EvidenceRecovery.V1." + name + "'")]
+              assert len(lines) == 1, 'Recovery kernel audit missing or duplicated'
+              axioms = [] if 'does not depend on any axioms' in lines[0] else [s.strip() for s in re.search(r'\[(.*)\]', lines[0]).group(1).split(',')]
+              assert axioms == expected[name] and set(axioms) <= {'propext', 'Quot.sound'}, 'Recovery axioms differ'
+          print('EVIDENCE_RECOVERY_KERNEL_THEOREMS=16')
+          PY
+          count=0
+          for source in ../../docs/proofs/evidence-recovery-2026-10-30/negative/*.lean; do
+            log=".lake/build/$(basename "$source" .lean).log"
+            if lake env lean "$source" > "$log" 2>&1; then
+              echo "False recovery control accepted: $source"
+              exit 1
+            fi
+            grep -q "tactic 'decide'" "$log"
+            grep -q 'is false' "$log"
+            count=$((count + 1))
+          done
+          test "$count" -eq 3
       - name: Audit every completed manuscript proof constant
         run: python3 scripts/audit_completion_axioms.py
+      - name: Build additive storage module before project-wide proof audit
+        run: |
+          lake build QIKVRTEffectAck.StorageIntegrity
+          lake -d delivery-reporting build QIKVRTDeliveryReporting
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, shutil
+          source = Path('delivery-reporting/.lake/build/lib/lean/QIKVRTEffectAck/DeliveryReporting.olean')
+          target = Path('.lake/build/lib/lean/QIKVRTEffectAck/DeliveryReporting.olean')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          shutil.copyfile(source, target)
+          assert hashlib.sha256(source.read_bytes()).digest() == hashlib.sha256(target.read_bytes()).digest()
+          PY
+      - name: Check seed architecture composition and reject false controls
+        run: |
+          set -euo pipefail
+          lake build QIKVRTEffectAck.SeedArchitecture QIKVRTEffectAck.SeedArchitectureAxiomAudit
+          lake env lean QIKVRTEffectAck/SeedArchitectureAxiomAudit.lean > .lake/build/seed-architecture-axioms.log
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          source = Path('QIKVRTEffectAck/SeedArchitecture.lean').read_text()
+          names = re.findall(r'^theorem ([A-Za-z_][A-Za-z0-9_]*)', source, re.M)
+          audit = Path('.lake/build/seed-architecture-axioms.log').read_text()
+          claims = json.loads(Path('../../docs/proofs/seed-architecture-2026-10-30/CLAIM_MATRIX.json').read_text())
+          expected_axioms = {item['theorem'].split('.')[-1]: item['axioms'] for item in claims['formal_claims']}
+          if set(names) != set(expected_axioms):
+              raise SystemExit('Theorem/audit inventory mismatch')
+          for name in names:
+              lines = [line for line in audit.splitlines() if line.startswith("'QIKVRT.SeedArchitecture.V1." + name + "'")]
+              if len(lines) != 1:
+                  raise SystemExit('Missing or duplicate kernel audit: ' + name)
+              line = lines[0]
+              actual = [] if 'does not depend on any axioms' in line else [value.strip() for value in re.search(r'\[(.*)\]', line).group(1).split(',')]
+              if actual != expected_axioms[name] or not set(actual) <= {'propext', 'Quot.sound'}:
+                  raise SystemExit('Unexpected kernel axiom: ' + name)
+          print('SEED_ARCHITECTURE_KERNEL_THEOREMS=' + str(len(names)))
+          PY
+          count=0
+          for source in ../../docs/proofs/seed-architecture-2026-10-30/negative/*.lean; do
+            log=".lake/build/$(basename "$source" .lean).log"
+            if lake env lean "$source" > "$log" 2>&1; then
+              echo "False control accepted: $source"
+              exit 1
+            fi
+            grep -q 'error:' "$log"
+            grep -q "tactic 'decide'" "$log"
+            count=$((count + 1))
+          done
+          test "$count" -eq 4
       - name: Reject project proof escapes
         run: python3 scripts/audit_proof_escapes.py
       - name: Verify completed proof-object manifest is current
@@ -381,6 +490,29 @@ jobs:
           retention-days: 30
           path: >-
             formalization/QIKVRT_Formalization_v2.0/.lake/build/qikvrt-proof-object-runtime-evidence.json
+          if-no-files-found: error
+      - name: Verify the additive locked real-energy consumer
+        working-directory: formalization/QIKVRT_RealEnergy_v1
+        shell: bash
+        env:
+          MATHLIB_NO_CACHE_ON_UPDATE: "1"
+        run: |
+          set -euo pipefail
+          python3 bootstrap_mathlib.py
+          lake exe cache get Mathlib.Data.Real.Sqrt
+          lake build
+          python3 check_real_successor.py \
+            --lean "$(lake env which lean)" \
+            --lake "$(command -v lake)" \
+            --output "verification/native-${{ github.run_id }}-${{ github.run_attempt }}"
+          cat "verification/native-${{ github.run_id }}-${{ github.run_attempt }}/RECEIPT.json"
+      - name: Upload locked real-energy receipt and original diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-real-energy-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          path: formalization/QIKVRT_RealEnergy_v1/verification/native-*
           if-no-files-found: error
       - name: Emit cumulative runtime metrics
         if: always()

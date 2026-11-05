@@ -1,0 +1,294 @@
+{
+  "FOUR_CASES": [
+    {
+      "changed_file": true,
+      "effect_observed": {
+        "sha256": "9b7931cfbc39c53851000b35efafb44d36df3a59c06bbecda387fd8945568960",
+        "value": 3
+      },
+      "forecast": 3,
+      "future_ref": "sha256:9b3c8758dfed31317a83a907f736fd2d1271558d80ffa1444f4f3143cf131fd9",
+      "local_release": true,
+      "name": "admitted",
+      "past_unchanged": true,
+      "production_effect_ack_done": false,
+      "protocol_state": "EFFECT_ACK_DONE"
+    },
+    {
+      "changed_file": false,
+      "effect_observed": {
+        "sha256": "30703823b6f300ea7a1dca2339f8fb2d846d825ae0848c140dbca706c65509b7",
+        "value": 2
+      },
+      "forecast": 3,
+      "future_ref": "sha256:d8c9b8992107a5848f5b0e2e4bf9f97740b005e43d8407433ef38d7880f99e03",
+      "local_release": false,
+      "name": "changed_future",
+      "past_unchanged": true,
+      "production_effect_ack_done": false,
+      "protocol_state": "EFFECT_ACK_CONTINUE"
+    },
+    {
+      "changed_file": false,
+      "effect_observed": {
+        "sha256": "30703823b6f300ea7a1dca2339f8fb2d846d825ae0848c140dbca706c65509b7",
+        "value": 2
+      },
+      "forecast": 3,
+      "future_ref": "sha256:704b7f760c034650afc4f637381bbf041aaaf3788de811d94523d598434cd727",
+      "local_release": false,
+      "name": "wrong_future_type",
+      "past_unchanged": true,
+      "production_effect_ack_done": false,
+      "protocol_state": "EFFECT_ACK_CONTINUE"
+    },
+    {
+      "changed_file": false,
+      "effect_observed": {
+        "sha256": "30703823b6f300ea7a1dca2339f8fb2d846d825ae0848c140dbca706c65509b7",
+        "value": 2
+      },
+      "forecast": 3,
+      "future_ref": "sha256:9b3c8758dfed31317a83a907f736fd2d1271558d80ffa1444f4f3143cf131fd9",
+      "local_release": false,
+      "name": "missing_authorization",
+      "past_unchanged": true,
+      "production_effect_ack_done": false,
+      "protocol_state": "EFFECT_ACK_CONTINUE"
+    }
+  ],
+  "JOURNAL": {
+    "count": 11,
+    "epoch": "d181cddddd14490db4aadc9392a2a944",
+    "restart_readback_equal": true
+  },
+  "CORE_TESTS": [
+    {
+      "suite": "metric-and-witness",
+      "tests_run": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "successful": true
+    },
+    {
+      "suite": "existing-eap",
+      "tests_run": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "successful": true
+    },
+    {
+      "suite": "existing-ledger-continuity",
+      "tests_run": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "successful": true
+    }
+  ],
+  "GRAPH_TESTS": {
+    "graphs": 4096,
+    "vertices": 4,
+    "independent_oracle": "Floyd-Warshall",
+    "directed_and_symmetric_distances_compared": true
+  },
+  "MATH": {
+    "premises": "finite graph; positive integer weights; fixed identities, scope and resolution",
+    "derivation": "Fachartikel.md, sections 5 and 6",
+    "type": "ANALYTICAL_DERIVATION",
+    "new_lean_kernel_execution": false
+  },
+  "FRAMEWORK": {
+    "schema": "QIKVRT_TYPED_FRAMEWORK_MEASUREMENT_V1",
+    "catalog": {
+      "graph_ref": "sha256:9c58ce02fcb8108610b28e8b01243fac8bdb6d8b8f935bd592c6726deb6c27df",
+      "relation_class": "CURATED_READING_RECOMMENDATION_ONLY",
+      "vertices": 32,
+      "edges": 19,
+      "directed_reachable_ordered_pairs_excluding_self": 50,
+      "directed_unreachable_ordered_pairs_excluding_self": 942,
+      "largest_finite_directed_distance": 5,
+      "weak_components": [
+        [
+          "20712301"
+        ],
+        [
+          "21267021",
+          "21498773",
+          "21500322",
+          "23008704"
+        ],
+        [
+          "21482023",
+          "21529081",
+          "21640173",
+          "21711193",
+          "21721918",
+          "21731492",
+          "21748371",
+          "21804399",
+          "21888130",
+          "21947141",
+          "21983644",
+          "22216916",
+          "22283396",
+          "22527889",
+          "22907018",
+          "22941556",
+          "22955727"
+        ],
+        [
+          "21515074"
+        ],
+        [
+          "21582781"
+        ],
+        [
+          "21633411"
+        ],
+        [
+          "21636774"
+        ],
+        [
+          "21640160"
+        ],
+        [
+          "22813431"
+        ],
+        [
+          "22840633"
+        ],
+        [
+          "22845516"
+        ],
+        [
+          "22847245"
+        ],
+        [
+          "23008330"
+        ]
+      ],
+      "observed_effect_causality_inferred": false
+    },
+    "static_imports": {
+      "graph_ref": "sha256:1655ece38b07b431e81a2b9a877aa103dc9801ccdc0a4119db2796378e2012e7",
+      "relation_class": "STATIC_AST_IMPORT_DEPENDENCY_ONLY",
+      "vertices": 10,
+      "edges": 15,
+      "directed_reachable_ordered_pairs_excluding_self": 21,
+      "directed_unreachable_ordered_pairs_excluding_self": 69,
+      "largest_finite_directed_distance": 3,
+      "weak_components": [
+        [
+          "qikvrt_api_handler",
+          "qikvrt_effect_ack",
+          "qikvrt_effect_ack_http_terminal",
+          "qikvrt_github_api_shim",
+          "qikvrt_mcp_adapter",
+          "qikvrt_personal_assistant",
+          "qikvrt_personal_auth",
+          "qikvrt_personal_retrieval",
+          "qikvrt_temdd_event_ledger"
+        ],
+        [
+          "qikvrt_digital_twin_rest"
+        ]
+      ],
+      "observed_effect_causality_inferred": false
+    },
+    "qikvrt_imports_outside_selection": [
+      {
+        "consumer_file": "qikvrt_digital_twin_rest.py",
+        "consumer_sha256": "sha256:5d9d9adee51df6f6ea46c2ada0006c01bbe7adc2f4b1ef51072751b322dc712c",
+        "line": 8,
+        "kind": "STATIC_AST_IMPORT",
+        "import_name": "src.qikvrt_siemens_reference_integration"
+      },
+      {
+        "consumer_file": "qikvrt_github_api_shim.py",
+        "consumer_sha256": "sha256:3a0d4c8e5cdab500004d444c37581edfc2c31d4fdae3d4e199e1f34b0ac54463",
+        "line": 26,
+        "kind": "STATIC_AST_IMPORT",
+        "import_name": "qikvrt_api_client"
+      },
+      {
+        "consumer_file": "qikvrt_mcp_adapter.py",
+        "consumer_sha256": "sha256:cf76ec5002b9c56459ff6e8447f83698b1108128d5cb986c8556ac3cbed5e2bd",
+        "line": 32,
+        "kind": "STATIC_AST_IMPORT",
+        "import_name": "qikvrt_api_client"
+      }
+    ],
+    "catalog_is_historical_snapshot": true,
+    "catalog_verified_at": "2026-10-11T06:06:17.550486+00:00",
+    "live_mesh_measured": false,
+    "universal_personal_digital_twin_proved": false
+  },
+  "PROFILE": {
+    "tests_run": 6,
+    "failures": 0,
+    "errors": 0,
+    "successful": true,
+    "scope": "typed static source graph, historical catalog graph and read-only person-bound reading profiles"
+  },
+  "LIMITS": {
+    "all_causal_influences_observed": false,
+    "biological_life_or_consciousness_proved": false,
+    "each_graph_edge_independently_intervened": false,
+    "fixture_ledger_not_productive_journal": true,
+    "independent_external_host_witness": false,
+    "isolated_local_program_only": true,
+    "main_integration": false,
+    "new_lean_kernel_proof": false,
+    "physical_retrocausality_proved": false,
+    "productive_mesh_acceptance": false,
+    "scope": "HISTORICAL_LOCAL_WITNESS_ONLY; current kernel result is separately bound under LEAN_NATIVE."
+  },
+  "CURRENT_COMPLETION": {
+    "main_evidence_integrated": true,
+    "personal_twin_productive_acceptance": false,
+    "zenodo_published": false,
+    "effect_ack_done": false,
+    "new_lean_kernel_verified": true
+  },
+  "LEAN_NATIVE": {
+    "state": "KERNEL_VERIFIED",
+    "receipt_path": "release/causal-distance-lean-2026-10-24/NATIVE_KERNEL_RECEIPT.json",
+    "receipt_sha256": "3734147def87e97610308abbd75a65989e8dfec1d2b421a72c59cdc181286b17",
+    "theorem_count": 36,
+    "native_run_id": 40088317986,
+    "source_binding_scope": "Exact unchanged theorem and model source identities; no physical generalization."
+  },
+  "MAIN": {
+    "schema": "qikvrt_causal_distance_main_integration_receipt_v1",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 597,
+    "source_head": "b1863b75e29cb455b88740ade4441312af9caa8f",
+    "tested_tree": "184adc9c40b27cce1be4995d2eae895d3fbbd2ee",
+    "merge_commit": "a1a2204f429bcab7a184afaf51a57b7de03d4ee7",
+    "merge_tree": "184adc9c40b27cce1be4995d2eae895d3fbbd2ee",
+    "tree_equal_tested": true,
+    "native_run_id": 40090085658,
+    "native_job_id": 120860815507,
+    "terminal_lines": [
+      "2026-10-24T11:35:22.3743689Z QIKVRT_SUCCESSOR_REENTRY iteration=0 predecessor=290aef0a2f481b0050ad14d266587355bfd61803 successor=b1863b75e29cb455b88740ade4441312af9caa8f successor_tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee readback_head=b1863b75e29cb455b88740ade4441312af9caa8f readback_tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee",
+      "2026-10-24T11:46:38.2937114Z QIKVRT_FIXPOINT_REACHED iteration=1 head=b1863b75e29cb455b88740ade4441312af9caa8f tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee predecessor_test_status=0",
+      "2026-10-24T11:46:38.3142188Z QIKVRT_TERMINAL_DISPOSITION PASS mode=tested-fixpoint",
+      "2026-10-24T11:46:38.6736512Z QIKVRT_TESTED_SUBJECT head=b1863b75e29cb455b88740ade4441312af9caa8f tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee"
+    ],
+    "kernel_native_run_id": 40088317986,
+    "kernel_native_job_id": 120855663566,
+    "kernel_conclusion": "success",
+    "productive_runtime_acceptance": false,
+    "zenodo_published": false
+  },
+  "PUBLICATION_LIMITS": {
+    "python_algorithm_fully_formally_verified": false,
+    "biological_or_physical_universality_proved": false,
+    "productive_twin_accepted": false,
+    "productive_mesh_accepted": false,
+    "zenodo_published": false
+  }
+}
