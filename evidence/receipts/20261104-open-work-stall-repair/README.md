@@ -12,7 +12,7 @@ five-minute observations without a useful transition, and calls an inactive
 runner quiescent without reading open work. The candidate detects both cases.
 
 watchdog-tests.txt: 55 passed. continuation-tests.txt: 49 passed.
-frozen-apt-tests.txt: 8 passed. Total: 112 targeted tests. A 24-case matrix
+frozen-apt-tests.txt: 8 passed. specification-tests.txt: 22 passed. Total: 134 targeted tests. A 24-case matrix
 checks that open work never permits silent idle. The original Docker RUN shell
 was executed with isolated APT/dpkg fixtures: valid input proceeds; update,
 plan, byte and installed-version faults stop at their actual boundary. Eight
@@ -22,6 +22,12 @@ causal transport correction. Parent a000c5fe native S1 and core jobs succeeded;
 its 769740368-byte combined artifact exceeds the existing readback limit.
 The successor invokes these guard cases from the existing native Make target
 and preserves unchanged original carrier and new image in separate artifacts.
+The native observer also exposed a client scope omission after its 22-request
+budget HOLD causally recovered to 20. An unchanged original client rejects the
+same bound retry input; the successor admits only the pinned read-only verifier
+and rejects wrong source, attempt, workflow, recipe, approval, unchanged/bad
+budget and productive/current-specification substitutions. The original budget
+and all full-currentness publication/deployment gates remain intact.
 Native exact-head acceptance and independent byte readback must run anew.
 All 43 Bash blocks of the modified CI workflow pass syntax checking.
 The tests include the actual consumer shell, original admission/readback guard,

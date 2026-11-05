@@ -1,0 +1,16 @@
+{
+  "changed_scope": "ONLY_PINNED_READONLY_WATCHDOG_BUDGET_RECOVERY_FOR_EXACT_RUN_ATTEMPT",
+  "current_limit": 20,
+  "current_required_requests": 20,
+  "deployment_publication_approval_scope_unchanged": true,
+  "effect_ack_done": false,
+  "native_retry_executed": false,
+  "new_checker_consistency": "READY",
+  "original_error": "AI_HANDOFF_BLOCK: SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED",
+  "predecessor_git_blob": "35dd3711a73997ac486900a4e12f31ee631748ea",
+  "predecessor_head": "66d93bdfda7f83a281ff684be878bc32eda6bd09",
+  "previous_required_requests": 22,
+  "same_actual_failure_receipt": true,
+  "schema": "qikvrt_exact_readonly_verifier_recovery_replay_v1",
+  "scope": "FROZEN_SOURCE_CLIENT_PREFLIGHT_ONLY_NOT_NATIVE_EXECUTION"
+}

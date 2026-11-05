@@ -58,16 +58,16 @@
       "sha256": "c0388f34cb8df42596b1bc1b90e9139ce58f7a3c7f0f219ba4a69bff7631b271"
     },
     {
-      "bytes": 12543,
-      "git_blob": "926e3ab30f4c61f3d3a7d2166d80feb744f91eef",
+      "bytes": 13724,
+      "git_blob": "b55a3768a2591eb4c1430d5b0214c680cbd00db3",
       "path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
-      "sha256": "8c16e149a63f562adec2a19849f634ed3d6559fb16ac99a1830ead7f71204d36"
+      "sha256": "5ee092e702eefbca6b7a7911655e43217b624488c4f1632b75b5f2e28289d9c1"
     },
     {
-      "bytes": 17062,
-      "git_blob": "9e8a9ae0f63d963cb61d2d2f5adc1947a35091f5",
+      "bytes": 17862,
+      "git_blob": "55ee04063d946afd44cb9da3ebf010268f235ad7",
       "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
-      "sha256": "a12232b7facf1624a5a6018dc3d71ea4572f94e2ced034eb5df2e9751c8160ec"
+      "sha256": "8d93280547364a6654476497fc88756c692931966b8dfdde35cda9686e69dfdd"
     },
     {
       "bytes": 7358,
@@ -104,9 +104,22 @@
       "git_blob": "bb78996ef6e8b874089a1d361414885030a5b1b5",
       "path": ".github/workflows/qikvrt_ci.yml",
       "sha256": "bea48242b373b5c4756f395614cc8691e72e2f14483ef2fc8e01768c03f77a4c"
+    },
+    {
+      "bytes": 101741,
+      "git_blob": "2c99c781d41484bd9595a1ad16459e9a5d341ebc",
+      "path": "tools/ai_handoff.py",
+      "sha256": "01a41426656082ac96bcb427691669b837541f15cf6db9c2b7f382a10629fb49"
+    },
+    {
+      "bytes": 14076,
+      "git_blob": "d78aec2da82a39814e8482f25a75a311f1e3a1b1",
+      "path": "tests/test_specification_review.py",
+      "sha256": "128a6478703d4fe829740bc47b43e6cd7b4c39adfa645b473a0de2176d03fcd4"
     }
   ],
-  "total_tests": 112,
+  "specification_guard_tests": 22,
+  "total_tests": 134,
   "watchdog_tests": 55,
   "yaml_parse": "PASS"
 }

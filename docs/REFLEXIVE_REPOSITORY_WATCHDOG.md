@@ -259,3 +259,14 @@ it never manufactures a successful smoke test. The existing native CI must
 still execute the new source, reproduce both OCI builds and verify the actual
 terminal/restart before integration. Productive Originalhost, exact domain,
 peer adoption and EFFECT_ACK remain separate, independently observed effects.
+
+A budget-HOLD can itself stall the verifier. Preserve the failed run/attempt and
+its failure receipt. The existing client preflight permits only the frozen
+read-only repository-watchdog recipe (SHA-256 e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d)
+to resume through the existing failed-jobs REST operation after a complete new
+job plan demonstrably falls from above 20 requests to at most 20. The same
+head/tree, original failure stage, run ID and attempt are required. A changed
+recipe, another workflow, initial approval, unchanged/partial inventory, higher
+budget, publication, deployment and current-specification claims remain denied.
+This is a source-verification consistency check, not a provider authorization
+service or proof that a retry executed or its target passed.
