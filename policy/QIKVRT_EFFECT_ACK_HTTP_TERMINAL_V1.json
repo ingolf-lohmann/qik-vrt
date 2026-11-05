@@ -75,5 +75,16 @@
     "remote_ack_or_quorum_must_not_be_an_unassessed_egress_dependency": true,
     "source_mapping_is_not_conformity_evidence": true,
     "wire_protocol_changed": false
+  },
+  "cognitive_behavior_audit": {
+    "profile": "policy/QIKVRT_COGNITIVE_BEHAVIOR_AUDIT_V1.json",
+    "human_guide": "docs/QIKVRT_COGNITIVE_BEHAVIOR_AUDIT_V1.md",
+    "stage": "POLICY_CANDIDATE_NO_NATIVE_ADMISSION",
+    "claim_only_is_effect_evidence": false,
+    "verified_behavior_observation_required": true,
+    "independently_authenticated_readback_required": true,
+    "audit_consistency_does_not_imply_effect_ack_done": true,
+    "runtime_enforcement_claimed": false,
+    "producer_or_evaluator_implementation_modified": false
   }
 }
