@@ -270,3 +270,16 @@ recipe, another workflow, initial approval, unchanged/partial inventory, higher
 budget, publication, deployment and current-specification claims remain denied.
 This is a source-verification consistency check, not a provider authorization
 service or proof that a retry executed or its target passed.
+
+### Later native API recovery
+
+If the same frozen read-only observer instead fails at BASELINE_READBACK
+with the original installation-rate-limit403 log and failure receipt,
+`ai_handoff.py` accepts a single retry prerequisite from a later successful
+same-head/tree native S1 carrier REST step. It verifies the run/attempt/job,
+mandatory step, frozen CI and carrier source pins, strict time ordering,
+one-hour freshness and the complete unchanged20-request budget. This
+consistency check is not authentication or proof the observer recovered:
+its next actual execution and original artifact require independent readback.
+Other workflows, deployments, approvals and current-specification claims
+remain outside this historical source-verification route.

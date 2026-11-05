@@ -58,16 +58,16 @@
       "sha256": "c0388f34cb8df42596b1bc1b90e9139ce58f7a3c7f0f219ba4a69bff7631b271"
     },
     {
-      "bytes": 13724,
-      "git_blob": "b55a3768a2591eb4c1430d5b0214c680cbd00db3",
+      "bytes": 14456,
+      "git_blob": "0b223b2530a3e09168245e2a9de82bf2e5483151",
       "path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
-      "sha256": "5ee092e702eefbca6b7a7911655e43217b624488c4f1632b75b5f2e28289d9c1"
+      "sha256": "20f6066f7d709ca4e44b1d861f2ad91e1d3d42b58d8e6338c30b510bea4f00c3"
     },
     {
-      "bytes": 17862,
-      "git_blob": "55ee04063d946afd44cb9da3ebf010268f235ad7",
+      "bytes": 18614,
+      "git_blob": "75085fbe2ac6f8a6e6e534fdbc90a1f9d8d20410",
       "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
-      "sha256": "8d93280547364a6654476497fc88756c692931966b8dfdde35cda9686e69dfdd"
+      "sha256": "acb8afc7ca266dd25c1b5656dfdee8ef12ba41990ff33ea657aec03e927b28b0"
     },
     {
       "bytes": 7358,
@@ -106,20 +106,20 @@
       "sha256": "bea48242b373b5c4756f395614cc8691e72e2f14483ef2fc8e01768c03f77a4c"
     },
     {
-      "bytes": 101741,
-      "git_blob": "2c99c781d41484bd9595a1ad16459e9a5d341ebc",
+      "bytes": 106150,
+      "git_blob": "9ef18eb5c0d329aadf7a5e33b03361481a1a9621",
       "path": "tools/ai_handoff.py",
-      "sha256": "01a41426656082ac96bcb427691669b837541f15cf6db9c2b7f382a10629fb49"
+      "sha256": "8b6380bde68c02314fc9a0af53c49fd40e18ee7d3d8207496b1f1540907230e1"
     },
     {
-      "bytes": 14076,
-      "git_blob": "d78aec2da82a39814e8482f25a75a311f1e3a1b1",
+      "bytes": 17811,
+      "git_blob": "e8df533ad15eb42a53fbe13b5f797fc45fc5551f",
       "path": "tests/test_specification_review.py",
-      "sha256": "128a6478703d4fe829740bc47b43e6cd7b4c39adfa645b473a0de2176d03fcd4"
+      "sha256": "8e0dfba1e5c4300245b9cdb6aeb55336a847f9554ac21849fae57500c750da5d"
     }
   ],
-  "specification_guard_tests": 22,
-  "total_tests": 134,
+  "specification_guard_tests": 23,
+  "total_tests": 135,
   "watchdog_tests": 55,
   "yaml_parse": "PASS"
 }

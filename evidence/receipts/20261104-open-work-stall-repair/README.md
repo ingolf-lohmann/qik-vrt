@@ -12,7 +12,7 @@ five-minute observations without a useful transition, and calls an inactive
 runner quiescent without reading open work. The candidate detects both cases.
 
 watchdog-tests.txt: 55 passed. continuation-tests.txt: 49 passed.
-frozen-apt-tests.txt: 8 passed. specification-tests.txt: 22 passed. Total: 134 targeted tests. A 24-case matrix
+frozen-apt-tests.txt: 8 passed. specification-tests.txt: 23 passed. Total: 135 targeted tests. A 24-case matrix
 checks that open work never permits silent idle. The original Docker RUN shell
 was executed with isolated APT/dpkg fixtures: valid input proceeds; update,
 plan, byte and installed-version faults stop at their actual boundary. Eight
@@ -28,6 +28,15 @@ same bound retry input; the successor admits only the pinned read-only verifier
 and rejects wrong source, attempt, workflow, recipe, approval, unchanged/bad
 budget and productive/current-specification substitutions. The original budget
 and all full-currentness publication/deployment gates remain intact.
+The next native attempt encountered installation rate403 at BASELINE_READBACK.
+A later exact-subject successful GITHUB_TOKEN carrier API step provides a
+bounded read-only retry prerequisite; it does not accept the failed observer.
+The client now checks original failed attempt/log/receipt, later successful
+native run/job/mandatory carrier step, frozen CI/carrier sources, one-hour
+freshness and the unchanged complete job budget. Wrong or stale evidence and
+all productive/currentness substitutions remain denied. Its D3 predecessor
+rejects the identical real recovery input. D3 S1 artifact and OCI bytes were
+independently read and every referenced OCI blob/source label verified.
 Native exact-head acceptance and independent byte readback must run anew.
 All 43 Bash blocks of the modified CI workflow pass syntax checking.
 The tests include the actual consumer shell, original admission/readback guard,

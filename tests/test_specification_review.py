@@ -74,7 +74,7 @@ class SpecificationReview(unittest.TestCase):
     def readonly_retry(self):
         path = '.github/workflows/qikvrt_reflexive_repository_watchdog.yml'
         original = Path(__file__).resolve().parents[1] / path
-        target = self.root / path; target.parent.mkdir(parents=True); target.write_bytes(original.read_bytes())
+        target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(original.read_bytes())
         before = dict(schema='qikvrt_job_readback_budget_v1', expected_head_sha=self.subject['head'],
             selection='LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1', state='HOLD',
             first_blocker='JOB_READBACK_REQUEST_BUDGET_EXCEEDED', max_job_requests=20,
@@ -129,6 +129,54 @@ class SpecificationReview(unittest.TestCase):
             if change == 'recipe':
                 p = self.root / x['verification_retry']['run']['path']; p.write_bytes(p.read_bytes() + b'\n# changed\n')
             with self.subTest(change=change), self.assertRaises(SystemExit): self.check(x)
+
+    def native_api_retry(self):
+        action = self.readonly_retry()
+        for path in ('.github/workflows/qikvrt_ci.yml', 'tools/qikvrt_self_host_container.py', 'tools/qikvrt_self_host.py'):
+            target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((Path(__file__).resolve().parents[1] / path).read_bytes())
+        proof = action['verification_retry']; proof.pop('previous_budget')
+        proof['schema'] = 'qikvrt-readonly-watchdog-native-api-recovery/v1'
+        proof['failure_receipt'].update(failure=dict(stage='BASELINE_READBACK', exit_code=5),
+                                       observed_at='1970-01-01T00:15:00Z')
+        proof['failed_job'] = dict(id=70, run_id=7, run_attempt=1, head_sha=self.subject['head'], status='completed', conclusion='failure')
+        proof['failure_log_sha256'] = 'c'*64
+        proof['failure_log_excerpt'] = 'gh: API rate limit exceeded for installation (HTTP 403)'
+        proof['native_api_witness'] = dict(
+            run=dict(id=8, run_attempt=1, path='.github/workflows/qikvrt_ci.yml',
+                repository=dict(full_name=self.subject['repository']), head_sha=self.subject['head'],
+                head_commit=dict(tree_id=self.subject['tree']), status='completed', conclusion='success'),
+            job=dict(id=80, run_id=8, run_attempt=1, head_sha=self.subject['head'],
+                name='Linux S1 native terminal production and smoke', status='completed', conclusion='success',
+                completed_at='1970-01-01T00:16:40Z', steps=[dict(
+                    name='Verify and reuse original PR494 Docker carrier', status='completed', conclusion='success',
+                    started_at='1970-01-01T00:16:30Z', completed_at='1970-01-01T00:16:35Z')]))
+        return action
+
+    def test_native_api_retry_requires_later_exact_native_rest_success(self):
+        self.check(self.native_api_retry())
+        for change in ('old', 'future', 'stale', 'step', 'duplicate', 'source', 'tree', 'repo',
+                       'attempt', 'boolean_attempt', 'budget', 'error', 'failure', 'job', 'native_run', 'recipe'):
+            action = self.native_api_retry(); proof = action['verification_retry']
+            witness = proof['native_api_witness']; job = witness['job']; step = job['steps'][0]
+            if change == 'old': step['started_at'] = '1970-01-01T00:14:00Z'
+            if change == 'future': job['completed_at'] = '1970-01-01T00:20:00Z'
+            if change == 'step': step['conclusion'] = 'skipped'
+            if change == 'duplicate': job['steps'].append(copy.deepcopy(step))
+            if change == 'source': witness['run']['head_sha'] = 'f'*40
+            if change == 'tree': witness['run']['head_commit']['tree_id'] = 'f'*40
+            if change == 'repo': witness['run']['repository']['full_name'] = 'other/repo'
+            if change == 'attempt': proof['failed_job']['run_attempt'] = 2
+            if change == 'boolean_attempt': job['run_attempt'] = True
+            if change == 'budget': proof['current_budget']['max_job_requests'] = 21
+            if change == 'error': proof['failure_log_excerpt'] = 'unrelated HTTP 403'
+            if change == 'failure': proof['failure_receipt']['failure']['stage'] = 'SUBJECT_READBACK'
+            if change == 'job': job['conclusion'] = 'failure'
+            if change == 'native_run': witness['run']['conclusion'] = 'failure'
+            if change == 'recipe':
+                p = self.root / 'tools/qikvrt_self_host_container.py'; p.write_bytes(p.read_bytes() + b'\n')
+            with self.subTest(change=change), self.assertRaises(SystemExit):
+                self.check(action, now=5000 if change == 'stale' else 1001)
 
     def test_historical_label_cannot_bypass_currentness_for_productive_effect(self):
         for endpoint in ('https://raumzeitterminal.de/api/eap/effect',

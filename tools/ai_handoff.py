@@ -179,24 +179,26 @@ def github_graphql_fallback_allowed(action: dict[str, Any], policy: dict[str, An
         return False
 
 
-def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str, Any], endpoint: Any) -> bool:
-    """Admit one existing read-only verifier after its observed budget recovers.
+def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str, Any], endpoint: Any,
+                                       *, now: int | None = None) -> bool:
+    """Check a pinned read-only retry after evidenced budget or native API recovery.
 
-    This checks declared readback consistency, not GitHub authorization. It
-    grants no deployment, publication, initial workflow approval or new input.
-    The exact frozen workflow has only read permissions and no production
-    secrets; any recipe change requires separate source review of this pin.
+    Declared receipt consistency is not authentication or proof of recovery of
+    the watchdog itself. No deployment, publication, approval or new input is
+    admitted. A later successful native GITHUB_TOKEN read is a bounded retry
+    prerequisite, not acceptance of the failed observer or productive runtime.
     """
     path = ".github/workflows/qikvrt_reflexive_repository_watchdog.yml"
     workflow_pin = "e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d"
     try:
         proof = action["verification_retry"]
-        run, before, after = proof["run"], proof["previous_budget"], proof["current_budget"]
-        failure = proof["failure_receipt"]
+        run, after, failure = proof["run"], proof["current_budget"], proof["failure_receipt"]
+        mode = proof.get("schema")
         if (subject["repository"] != "ingolf-lohmann/qik-vrt" or action.get("method") != "POST"
                 or action.get("service") != "github" or action.get("transport") != "REST_API_ONLY"
                 or action.get("tool") != "github_rerun_failed_workflow_run_jobs"
-                or proof.get("schema") != "qikvrt-readonly-watchdog-budget-recovery/v1"
+                or mode not in ("qikvrt-readonly-watchdog-budget-recovery/v1",
+                                "qikvrt-readonly-watchdog-native-api-recovery/v1")
                 or type(run["id"]) is not int or run["id"] <= 0
                 or endpoint.netloc != "api.github.com"
                 or endpoint.path != f"/repos/ingolf-lohmann/qik-vrt/actions/runs/{run['id']}/rerun-failed-jobs"
@@ -210,13 +212,73 @@ def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str
                 or failure.get("head_sha") != subject["head"] or failure.get("tree_sha") != subject["tree"]
                 or failure.get("run_id") != run["id"] or failure.get("run_attempt") != run["run_attempt"]
                 or failure.get("state") != "OBSERVATION_FAILED" or failure.get("disposition") != "HOLD"
-                or failure.get("failure") != {"stage": "JOBS_BUDGET_PREFLIGHT", "exit_code": 2}
                 or failure.get("effect_ack_done") is not False):
             return False
         source = ROOT / path
         if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != workflow_pin:
             return False
-        for budget in (before, after):
+        budgets = [after]
+        if mode == "qikvrt-readonly-watchdog-budget-recovery/v1":
+            before = proof["previous_budget"]
+            budgets.append(before)
+            if (failure.get("failure") != {"stage": "JOBS_BUDGET_PREFLIGHT", "exit_code": 2}
+                    or before.get("state") != "HOLD"
+                    or before.get("first_blocker") != "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"
+                    or before["required_job_request_count"] <= 20
+                    or before["inventory_sha256"] == after["inventory_sha256"]):
+                return False
+        else:
+            if failure.get("failure") != {"stage": "BASELINE_READBACK", "exit_code": 5}:
+                return False
+            witness, failed_job = proof["native_api_witness"], proof["failed_job"]
+            native_run, job = witness["run"], witness["job"]
+            if (failed_job.get("run_id") != run["id"]
+                    or type(failed_job.get("run_attempt")) is not int
+                    or failed_job.get("run_attempt") != run["run_attempt"]
+                    or failed_job.get("head_sha") != subject["head"]
+                    or failed_job.get("status") != "completed" or failed_job.get("conclusion") != "failure"
+                    or type(failed_job.get("id")) is not int or failed_job["id"] <= 0
+                    or not re.fullmatch(r"[a-f0-9]{64}", proof.get("failure_log_sha256", ""))
+                    or "API rate limit exceeded for installation" not in proof.get("failure_log_excerpt", "")
+                    or "HTTP 403" not in proof["failure_log_excerpt"]
+                    or native_run.get("repository", {}).get("full_name") != subject["repository"]
+                    or native_run.get("path") != ".github/workflows/qikvrt_ci.yml"
+                    or native_run.get("head_sha") != subject["head"]
+                    or native_run.get("head_commit", {}).get("tree_id") != subject["tree"]
+                    or native_run.get("status") != "completed" or native_run.get("conclusion") != "success"
+                    or type(native_run.get("id")) is not int or native_run["id"] <= 0 or native_run["id"] == run["id"]
+                    or type(native_run.get("run_attempt")) is not int or native_run["run_attempt"] <= 0
+                    or type(job.get("id")) is not int or job["id"] <= 0 or job["id"] == failed_job["id"]
+                    or job.get("run_id") != native_run["id"] or type(job.get("run_attempt")) is not int
+                    or job.get("run_attempt") != native_run["run_attempt"]
+                    or job.get("head_sha") != subject["head"]
+                    or job.get("name") != "Linux S1 native terminal production and smoke"
+                    or job.get("status") != "completed" or job.get("conclusion") != "success"):
+                return False
+            # These exact sources force the carrier step to perform authenticated
+            # REST metadata and archive reads. No fixture/cache-only substitute.
+            pins = {".github/workflows/qikvrt_ci.yml": "bea48242b373b5c4756f395614cc8691e72e2f14483ef2fc8e01768c03f77a4c",
+                    "tools/qikvrt_self_host_container.py": "ed56afd3b01f65f14e65e55c6619407fc3f68ab3912d3ec1115dc9c9b5790dd7",
+                    "tools/qikvrt_self_host.py": "f332bd157258cf29f3f574329874d1dba7644f13d730becfe6dec9c8e693fdd7"}
+            for name, digest in pins.items():
+                source = ROOT / name
+                if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
+                    return False
+            steps = [step for step in job.get("steps", [])
+                     if step.get("name") == "Verify and reuse original PR494 Docker carrier"]
+            if len(steps) != 1 or steps[0].get("status") != "completed" or steps[0].get("conclusion") != "success":
+                return False
+            def stamp(value):
+                if not isinstance(value, str) or not value.endswith("Z"):
+                    raise ValueError("UTC timestamp required")
+                return dt.datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp()
+            clock = dt.datetime.now(dt.timezone.utc).timestamp() if now is None else now
+            failed_at = stamp(failure["observed_at"])
+            started, completed, ended = (stamp(steps[0]["started_at"]), stamp(steps[0]["completed_at"]),
+                                         stamp(job["completed_at"]))
+            if not failed_at < started <= completed <= ended <= clock or clock - completed > 3600:
+                return False
+        for budget in budgets:
             if (budget.get("schema") != "qikvrt_job_readback_budget_v1"
                     or budget.get("expected_head_sha") != subject["head"]
                     or budget.get("selection") != "LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1"
@@ -228,15 +290,13 @@ def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str
                     or not re.fullmatch(r"[a-f0-9]{64}", budget.get("inventory_sha256", ""))):
                 return False
         ids, metadata = after["run_ids"], after["metadata_only_run_ids"]
-        return (before.get("state") == "HOLD" and before.get("first_blocker") == "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"
-                and before["required_job_request_count"] > 20 and after.get("state") == "READY"
-                and after.get("first_blocker") is None and 0 < after["required_job_request_count"] <= 20
+        return (after.get("state") == "READY" and after.get("first_blocker") is None
+                and 0 < after["required_job_request_count"] <= 20
                 and isinstance(ids, list) and isinstance(metadata, list)
                 and len(ids) == after["required_job_request_count"]
                 and len(ids) + len(metadata) == after["reported_run_count"]
                 and all(type(value) is int and value > 0 for value in ids + metadata)
-                and len(set(ids + metadata)) == after["reported_run_count"]
-                and before["inventory_sha256"] != after["inventory_sha256"])
+                and len(set(ids + metadata)) == after["reported_run_count"])
     except (KeyError, TypeError, ValueError, OSError, AttributeError):
         return False
 
@@ -282,7 +342,7 @@ def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
             and str(action.get("tool", "")).endswith((
                 "qik_vrt_kognitiver_arbeitsraum_create_task",
                 "qik_vrt_kognitiver_arbeitsraum_update_task")))
-        verifier_route = historical_readonly_watchdog_retry(action, subject, endpoint)
+        verifier_route = historical_readonly_watchdog_retry(action, subject, endpoint, now=now)
         if (endpoint.scheme != "https" or endpoint.query or endpoint.fragment
                 or ".." in endpoint.path.split("/") or not (source_route or journal_route or verifier_route)):
             fail("SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED")
