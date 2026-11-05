@@ -310,3 +310,9 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+.PHONY: behavioral-cognition-audit-test
+behavioral-cognition-audit-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_behavioral_cognition_audit_v1
+
+test: behavioral-cognition-audit-test

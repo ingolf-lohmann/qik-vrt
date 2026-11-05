@@ -75,5 +75,17 @@
     "remote_ack_or_quorum_must_not_be_an_unassessed_egress_dependency": true,
     "source_mapping_is_not_conformity_evidence": true,
     "wire_protocol_changed": false
+  },
+  "behavioral_cognition_audit_overlay": {
+    "status": "CANDIDATE_NO_NATIVE_ADMISSION",
+    "policy": "policy/QIKVRT_BEHAVIORAL_COGNITION_AUDIT_V1.json",
+    "human_procedure": "docs/BEHAVIORAL_COGNITION_AUDIT_V1.md",
+    "reference_structural_checker": "tools/qikvrt_behavioral_cognition_audit_v1.py",
+    "human_review_is_not_protocol_effect": true,
+    "local_structure_check_is_not_independent_behavior_proof": true,
+    "no_automatic_policy_allows_release_from_audit_result": true,
+    "owner_authorization_is_not_credential_or_runtime_attestation": true,
+    "production_enforcement_pending": true,
+    "effect_ack_done_without_separate_admitted_transition_and_readback": false
   }
 }
