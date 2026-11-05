@@ -1,0 +1,185 @@
+{
+  "schema": "qikvrt-cognition-onboarding-manifest/v1",
+  "manifest_id": "qikvrt-cognition-evidence-entry-2026-11-05",
+  "version": "1.0.0",
+  "language": [
+    "de",
+    "en"
+  ],
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "role": "declared Product Owner and original author"
+  },
+  "authority": {
+    "repository": "https://github.com/ingolf-lohmann/qik-vrt",
+    "source_baseline_commit": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+    "source_baseline_ref": "main",
+    "canonical_entry": "AI",
+    "machine_context": "AI_CONTEXT.json",
+    "adapter_registry": "AI_ADAPTERS.json",
+    "effective_revision_rule": "Resolve the current ref and verify its commit SHA; this historical source baseline is not a live HEAD assertion."
+  },
+  "intended_audiences": [
+    "natural_cognition",
+    "artificial_cognition"
+  ],
+  "purpose": "Discover primary sources, validate provenance and epistemic boundaries, and select an authorized, separately verified terminal or transputer path.",
+  "reading_order": [
+    {
+      "id": "human",
+      "title": "Menschlicher Einstieg",
+      "path": "docs/COGNITION_ONBOARDING_DE.md",
+      "role": "explain"
+    },
+    {
+      "id": "ai",
+      "title": "Canonical AI entry",
+      "path": "AI",
+      "role": "normative entry"
+    },
+    {
+      "id": "ai_context",
+      "title": "Machine context",
+      "path": "AI_CONTEXT.json",
+      "role": "machine discovery"
+    },
+    {
+      "id": "terminal",
+      "title": "EAP HTTP mapping",
+      "path": "runtime/self-host/EAP_HTTP.md",
+      "role": "documented interface"
+    },
+    {
+      "id": "science",
+      "title": "Zenodo canonical memory",
+      "url": "https://doi.org/10.5281/zenodo.21711193",
+      "role": "published finite model"
+    },
+    {
+      "id": "eap",
+      "title": "EFFECT_ACK individual Internet-Draft",
+      "url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/",
+      "role": "protocol draft"
+    },
+    {
+      "id": "epistemic",
+      "title": "Epistemic Status individual Internet-Draft",
+      "url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-epistemic-status/",
+      "role": "evidence-claim discipline"
+    }
+  ],
+  "claim_boundaries": {
+    "classes": [
+      "FORMAL_PROVED",
+      "EMPIRICALLY_EVIDENCED",
+      "SOURCE_BOUND",
+      "INTERPRETATIVE",
+      "NORMATIVE",
+      "PREDICTED",
+      "OPEN"
+    ],
+    "non_transfer": [
+      "A published research model is not deployment conformance.",
+      "Lean theorem statements require kernel-checked proofs; a model proof is not implementation refinement.",
+      "64 characters is not a SHA-256 digest, nor is a digest evidence truth.",
+      "acknowledged=true is not authenticated EFFECT_ACK_DONE.",
+      "CI PASS is not host, DNS, TLS, peer or target-effect acceptance.",
+      "A received terminal input is not execution, merge, publication or production effect.",
+      "A Zenodo deposit is not peer review or IETF standardization.",
+      "No evidence crosses commit HEADs, PRs, subjects, or systems without independent binding."
+    ],
+    "model_scope": {
+      "zenodo_doi": "10.5281/zenodo.21711193",
+      "reported_theorems": 9,
+      "reported_claims": 4,
+      "physical_retrocausality_proven": false,
+      "independent_fresh_kernel_recheck": "OPEN"
+    },
+    "publication_scope": {
+      "ietf_individual_drafts_not_standards": true,
+      "independent_interoperability": "OPEN"
+    }
+  },
+  "connection": {
+    "read_only": {
+      "prerequisite": "Reachable original public source; verify commit, file identity, provenance, and file-specific licenses.",
+      "authentication": "Only where the actual target contract requires it.",
+      "effect": "NO_NATIVE_EFFECT"
+    },
+    "terminal_discovery": {
+      "documented_routes": [
+        "/.well-known/effect-ack",
+        "/api/eap/capabilities",
+        "/api/eap/state"
+      ],
+      "source": "runtime/self-host/EAP_HTTP.md",
+      "status": "SPECIFIED_NOT_HERE_LIVE_VERIFIED"
+    },
+    "effect_path": {
+      "method": "POST",
+      "route": "/api/eap/effect",
+      "phases": [
+        "prepare",
+        "commit",
+        "readback"
+      ],
+      "authentication": "Actual admitted Owner principal and target-scoped credentials only",
+      "authorization": "Never infer from source access, membership, model proof or owner declaration alone",
+      "ambiguous_commit": "Read back same original request before attempting any further effect",
+      "receipt_route": "/api/eap/receipts/{request_id}",
+      "status": "REQUIRES_ADMITTED_HOST_AND_EVIDENCE"
+    },
+    "native_terminal": {
+      "contract": "qikvrt_native_terminal_rest_contract_v1",
+      "path": "/api/mesh/terminal/native",
+      "modes": [
+        "prepare",
+        "commit",
+        "readback"
+      ],
+      "payload_schema": "qikvrt_terminal_input_v1",
+      "scope": "MESH",
+      "mesh_id": "qik-vrt",
+      "readiness": "OPEN_AT_2026-11-05T15:47Z",
+      "observed_http_status": 525,
+      "effect_ack_done": false,
+      "no_automatic_retry": true
+    }
+  },
+  "publication": {
+    "policy": "Stage separately versioned manuscript, machine manifest, human guide, provenance and license mapping; preserve originals.",
+    "destinations": [
+      {
+        "name": "GitHub Authority",
+        "status": "CANDIDATE_PR_ONLY",
+        "next": "Review and integrate exact-head candidate"
+      },
+      {
+        "name": "Zenodo",
+        "status": "NOT_SUBMITTED",
+        "next": "Confirm deposit scope, exact file manifest, hashes, author rights, metadata and DOI; create deposit and verify public DOI readback"
+      },
+      {
+        "name": "IETF",
+        "status": "NOT_SUBMITTED",
+        "next": "Determine if a protocol revision is actually needed; human editorial review and submit separately; verify datatracker revision"
+      },
+      {
+        "name": "Other media",
+        "status": "NOT_SUBMITTED",
+        "next": "Only publish after license, accessibility, canonical linking and independent readback"
+      }
+    ],
+    "license_rule": "Check each original file license; do not treat the corpus as uniformly licensed or imply rights transfer.",
+    "preservation": "Immutable version IDs and digests, stable DOI where available, migration-safe canonical pointers, correction history and successor links.",
+    "publish_authorization": "Owner instruction permits preparation and publication workflow; platform admission, third-party rights and final exact target remain separate gates."
+  },
+  "completion": {
+    "repository_candidate": "PENDING_GITHUB_WRITE_READBACK",
+    "main_integrated": false,
+    "zenodo_new_deposit": false,
+    "ietf_new_revision": false,
+    "native_mesh_connection": false,
+    "production_effect": false
+  }
+}
