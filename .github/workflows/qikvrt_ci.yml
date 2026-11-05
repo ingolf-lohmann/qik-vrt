@@ -411,6 +411,7 @@ jobs:
           key: qikvrt-webkit-browser-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.webkit_cache_binding.outputs.image }}-${{ hashFiles('runtime/offline/browser-tests/package-lock.json') }}
       - name: Install WebKit system dependencies (bounded diagnosis)
         id: webkit_system_deps
+        timeout-minutes: 14
         if: matrix.engine == 'webkit'
         shell: bash
         env:
@@ -430,8 +431,11 @@ jobs:
           node runtime/offline/browser-tests/webkit-apt-cache.mjs summary "$archives" \
             "$QIKVRT_OFFLINE_EVIDENCE_DIR/APT_CACHE_BEFORE.json" | sed 's/^/before_/' >> "$receipt"
           apt_log="$RUNNER_TEMP/webkit-install-deps.log"
+          node_binary="$(command -v node)"
           set +e
-          timeout --signal=TERM --kill-after=30s 12m runtime/offline/browser-tests/node_modules/.bin/playwright install-deps webkit 2>&1 | tee "$apt_log"
+          # Elevate before supervision: Playwright must not spawn sudo outside
+          # the unprivileged timeout process group and keep the tee pipe alive.
+          sudo -n timeout --signal=TERM --kill-after=30s 12m "$node_binary" runtime/offline/browser-tests/node_modules/playwright/cli.js install-deps webkit 2>&1 | tee "$apt_log"
           status="${PIPESTATUS[0]}"
           set -e
           printf 'ended_utc=%s\nduration_seconds=%s\nexit_status=%s\n' \
@@ -1923,6 +1927,7 @@ jobs:
           path: ${{ runner.temp }}/public-delivery.json
           if-no-files-found: error
           retention-days: 30
+
 
 
 
