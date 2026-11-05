@@ -1,0 +1,79 @@
+{
+  "schema": "qikvrt-source-repair-work-unit/v1",
+  "work_unit_id": "QIKVRT_HUMAN_AUDIT_WATCHDOG_BUDGET_REPAIR_20261105_V1",
+  "predecessor_source": {
+    "head": "57dd472719bbd7f5fd2b8b49b37040b17daa3a3c",
+    "tree": "473eb8cbb9a829bb4aa7d4f94347ceaabdf4e3f7"
+  },
+  "goal": "Keep the human audit candidate independently verifiable within the existing 20-request watchdog budget",
+  "observed_failure": {
+    "run_id": 42049032196,
+    "job_id": 127319788484,
+    "stage": "JOBS_BUDGET_PREFLIGHT",
+    "artifact_id": 13424794313,
+    "artifact_sha256": "5ec2fd7d238054efb6ed134dc0ae717e642a3466779ea64f6ba09f8a3692d4f0",
+    "run_count": 26,
+    "distinct_latest_workflows": 22,
+    "terminal_skipped_latest": 3,
+    "max_job_requests": 20,
+    "proof": "Latest-per-workflow alone needs 22 requests before this change, so waiting for active runs to finish cannot make the old plan fit."
+  },
+  "repair": {
+    "omit_only_additional_job_queries_for": "status=completed AND conclusion=skipped",
+    "preserve_complete_run_inventory": true,
+    "keep_active_success_failure_and_ambiguous_job_queries": true,
+    "skip_metadata_cannot_establish_executed_gate_success": true,
+    "budget_cap_changed": false,
+    "eap_wire_changed": false,
+    "human_audit_profile_bytes_changed": false
+  },
+  "validation": {
+    "total_cases": 312,
+    "runs": [
+      {
+        "cases": 43,
+        "path": "evidence/cognition-audit/2026-11-05/watchdog-budget-repair/test_cognition_audit.py.log",
+        "sha256": "514bc75e6b39768dfcf3f2eb9a3143f170b71cb39202c0948329d6ab8c04e292",
+        "exit_code": 0
+      },
+      {
+        "cases": 41,
+        "path": "evidence/cognition-audit/2026-11-05/watchdog-budget-repair/test_effect_ack_conformance.py.log",
+        "sha256": "897a444b2ce41cc76a3618e6bc1e4e548839550ad7fd5fb94941c16379411d7e",
+        "exit_code": 0
+      },
+      {
+        "cases": 23,
+        "path": "evidence/cognition-audit/2026-11-05/watchdog-budget-repair/test_specification_review.py.log",
+        "sha256": "5bb3ba6b44db5899822fa1bb265c8e939872eb5b158e2b046606f804e077ecfb",
+        "exit_code": 0
+      },
+      {
+        "cases": 62,
+        "path": "evidence/cognition-audit/2026-11-05/watchdog-budget-repair/test_qikvrt_reflexive_repository_watchdog.py.log",
+        "sha256": "36949b5f81e7cf1250dcb4ce6a047dadd8d424a62c3b7bd38c6a04e0daf7ab60",
+        "exit_code": 0
+      },
+      {
+        "cases": 143,
+        "path": "evidence/cognition-audit/2026-11-05/watchdog-budget-repair/client-continuation.log",
+        "sha256": "24726b15abdffba143fc91f39032867d16cd600d379449e538b20b4c140a50bd",
+        "exit_code": 0
+      }
+    ],
+    "full_make_test_at_successor": "PENDING_NATIVE_CI",
+    "predecessor_native_full_core": {
+      "job_id": 127319787304,
+      "conclusion": "success",
+      "head": "57dd472719bbd7f5fd2b8b49b37040b17daa3a3c",
+      "success_is_transferred_to_successor": false
+    }
+  },
+  "next": "Fresh native candidate checks; if initial observation still meets more than 20 real job requests, wait for actual topology change and admit one bound read-only retry only after READY budget proof. Do not raise the cap or silently drop work.",
+  "claim_limits": [
+    "Source repair and local regression only; originally failing remote watchdog is not yet reverified.",
+    "All human review, Main integration, native-runtime and exact-domain obligations remain separate.",
+    "Some intermediate local dependency-failure logs were overwritten before archival; retained initial/final logs and tool tails do not reconstruct the missing chunks."
+  ],
+  "created_utc": "2026-11-05T15:10:01.024584+00:00"
+}

@@ -1,0 +1,15 @@
+{
+  "effect_ack_done": false,
+  "expected_head_sha": "57dd472719bbd7f5fd2b8b49b37040b17daa3a3c",
+  "first_blocker": "JOB_READBACK_REQUEST_BUDGET_EXCEEDED",
+  "inventory_sha256": "9c61232085c41667feea3b3df96b4f8d0c599d3f1c71e13329ad55b870316801",
+  "max_job_requests": 20,
+  "metadata_only_run_ids": [],
+  "reported_run_count": 26,
+  "required_job_request_count": 26,
+  "returned_run_count": 26,
+  "run_ids": [],
+  "schema": "qikvrt_job_readback_budget_v1",
+  "selection": "LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1",
+  "state": "HOLD"
+}
