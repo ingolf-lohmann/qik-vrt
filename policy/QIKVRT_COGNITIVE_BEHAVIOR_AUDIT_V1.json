@@ -1,0 +1,104 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "operational_audit_contract"
+  },
+  "schema": "qikvrt_cognitive_behavior_audit_v1",
+  "policy_id": "QIKVRT_COGNITIVE_BEHAVIOR_AUDIT_V1",
+  "status": "CANDIDATE_NOT_ADMITTED",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "owner_source": {
+    "kind": "owner_instruction_in_public_shared_chat",
+    "url": "https://chatgpt.com/share/6aecdd9d-a114-83ed-a417-741eefcfc8fd",
+    "date": "2026-11-05",
+    "core_principle": "Die Maschine muss sich an ihrem Verhalten messen lassen, nicht an ihren Versprechungen."
+  },
+  "purpose": "Assess claimed artificial-cognitive compliance against independently reproducible behavior and effect observations, with a usable human audit path.",
+  "scope": [
+    "QIK-VRT artificial-cognitive client assertions",
+    "QIK-VRT effect and delivery claims",
+    "EFFECT_ACK-related consequence admission"
+  ],
+  "normative_requirements": {
+    "claim_not_evidence": true,
+    "observable_test_required": true,
+    "independent_readback_required": true,
+    "source_and_target_bound": true,
+    "actor_and_verifier_distinct": true,
+    "test_procedure_and_expected_outcome_predeclared": true,
+    "raw_evidence_and_digests_retained": true,
+    "negative_evidence_retained": true,
+    "contradictory_readback_must_not_be_suppressed": true,
+    "human_must_be_able_to_reproduce_without_proprietary_interpretation": true,
+    "source_claim_and_observation_evidence_classes_distinct": true,
+    "missing_evidence_never_promoted_to_pass": true,
+    "self_attested_verifier_not_sufficient": true,
+    "post_commit_or_post_effect_readback_required": true
+  },
+  "audit_case_required_fields": [
+    "audit_id",
+    "subject_id",
+    "claim_id",
+    "subject_head",
+    "owner_instruction_ref",
+    "expected_effect",
+    "target_host",
+    "test_steps",
+    "observation_window",
+    "actor_id",
+    "verifier_id",
+    "verifier_authentication",
+    "observed_effect",
+    "readback_source",
+    "readback_hash",
+    "readback_timestamp",
+    "comparison_result",
+    "evidence_class",
+    "reproduction_result"
+  ],
+  "dispositions": {
+    "UNVERIFIED": "Missing, stale, unauthenticated, or non-reproducible observation; no compliance or effect claim permitted.",
+    "CONTRADICTED": "Independent observation contradicts the scoped claim; audit fails for that claim and adverse evidence stays visible.",
+    "CONSISTENT": "The observed result matches the predeclared criterion for the exact actor, scope, host, head and time window; does not by itself authorize downstream effects.",
+    "NOT_APPLICABLE": "The predeclared test does not apply; requires reason and independently inspectable scope boundary."
+  },
+  "eap_binding": {
+    "existing_state_set_unchanged": [
+      "EFFECT_NACK",
+      "EFFECT_ACK_CONTINUE",
+      "EFFECT_ACK_DONE",
+      "EFFECT_ACK_ISOLATE",
+      "EFFECT_ACK_BLOCK"
+    ],
+    "consistency_audit_alone_is_never_EFFECT_ACK_DONE": true,
+    "inconsistent_or_forged_evidence_requires_non_release": true,
+    "missing_external_identity_or_fresh_readback_requires_non_release": true,
+    "original_eap_evaluator_and_native_adapter_remain_authoritative": true,
+    "no_new_release_transition_from_this_policy": true,
+    "explicit_human_authorization_and_original_effect_readback_remain_required": true
+  },
+  "human_audit": {
+    "guide": "docs/QIKVRT_COGNITIVE_BEHAVIOR_AUDIT_V1.md",
+    "checklist": [
+      "Specify one falsifiable claim and its exact subject.",
+      "Freeze target, source head and intended action window before testing.",
+      "Record predeclared success and failure criteria and reproducible test steps.",
+      "Perform or witness the action; capture source-native logs or bytes.",
+      "Fetch the exact outcome independently from the intended destination.",
+      "Compare observation to expectation; keep contradictions and unknowns.",
+      "Record independent verifier identity, hashes, timestamps and test verdict.",
+      "Never mark EFFECT_ACK_DONE from audit prose, self-report or test PASS alone."
+    ]
+  },
+  "adoption": {
+    "source_file_or_pr_does_not_prove_runtime_enforcement": true,
+    "requires_explicit_runtime_consumer_and_native_tests": true,
+    "requires_exact_node_specific_acknowledgement": true,
+    "requires_independent_target_readback": true,
+    "claimed_main_integration": false,
+    "claimed_runtime_adoption": false,
+    "claimed_EFFECT_ACK_DONE": false
+  }
+}
