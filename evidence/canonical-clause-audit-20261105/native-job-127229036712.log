@@ -1,0 +1,285 @@
+﻿2026-11-05T11:54:03.9257992Z Current runner version: '2.338.2'
+2026-11-05T11:54:03.9279964Z ##[group]Runner Image Provisioner
+2026-11-05T11:54:03.9280679Z Hosted Compute Agent
+2026-11-05T11:54:03.9281240Z Version: 20261021.618
+2026-11-05T11:54:03.9281796Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-05T11:54:03.9282441Z Build Date: 2026-10-21T00:45:21Z
+2026-11-05T11:54:03.9283066Z Worker ID: {733fd122-51c5-4bc5-b529-1ecd02b9bea8}
+2026-11-05T11:54:03.9283657Z Region: westus3
+2026-11-05T11:54:03.9284116Z Cloud: Azure
+2026-11-05T11:54:03.9284631Z ##[endgroup]
+2026-11-05T11:54:03.9286049Z ##[group]Operating System
+2026-11-05T11:54:03.9286698Z Ubuntu
+2026-11-05T11:54:03.9287146Z 24.04.5
+2026-11-05T11:54:03.9287574Z LTS
+2026-11-05T11:54:03.9288077Z ##[endgroup]
+2026-11-05T11:54:03.9288581Z ##[group]Runner Image
+2026-11-05T11:54:03.9289746Z Image: ubuntu-24.04
+2026-11-05T11:54:03.9290348Z Version: 20261025.353.1
+2026-11-05T11:54:03.9291535Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-05T11:54:03.9292841Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-05T11:54:03.9293663Z ##[endgroup]
+2026-11-05T11:54:03.9294634Z ##[group]GITHUB_TOKEN Permissions
+2026-11-05T11:54:03.9296296Z Contents: read
+2026-11-05T11:54:03.9296856Z Metadata: read
+2026-11-05T11:54:03.9297349Z ##[endgroup]
+2026-11-05T11:54:03.9299497Z Secret source: Actions
+2026-11-05T11:54:03.9300265Z Cache mode: write
+2026-11-05T11:54:03.9300968Z Prepare workflow directory
+2026-11-05T11:54:03.9607300Z Prepare all required actions
+2026-11-05T11:54:03.9651530Z Getting action download info
+2026-11-05T11:54:04.2593533Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-11-05T11:54:04.3704233Z Download action repository 'actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1' (SHA:ece7cb06caefa5fff74198d8649806c4678c61a1)
+2026-11-05T11:54:04.5293481Z Download action repository 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+2026-11-05T11:54:04.6316083Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-11-05T11:54:04.8156677Z Complete job name: native-carrier
+2026-11-05T11:54:04.8876025Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-11-05T11:54:04.8876857Z with:
+2026-11-05T11:54:04.8877253Z   ref: cb7cae88b6f5d4e8b3049a340b44566a9548c2fe
+2026-11-05T11:54:04.8877737Z   persist-credentials: false
+2026-11-05T11:54:04.8878161Z   repository: ingolf-lohmann/qik-vrt
+2026-11-05T11:54:04.8881348Z   token: ***
+2026-11-05T11:54:04.8881709Z   ssh-strict: true
+2026-11-05T11:54:04.8882063Z   ssh-user: git
+2026-11-05T11:54:04.8882412Z   clean: true
+2026-11-05T11:54:04.8882767Z   sparse-checkout-cone-mode: true
+2026-11-05T11:54:04.8883183Z   fetch-depth: 1
+2026-11-05T11:54:04.8883526Z   fetch-tags: false
+2026-11-05T11:54:04.8883910Z   show-progress: true
+2026-11-05T11:54:04.8884267Z   lfs: false
+2026-11-05T11:54:04.8884597Z   submodules: false
+2026-11-05T11:54:04.8884954Z   set-safe-directory: true
+2026-11-05T11:54:04.8885355Z   allow-unsafe-pr-checkout: false
+2026-11-05T11:54:04.8885923Z ##[endgroup]
+2026-11-05T11:54:05.1323981Z Syncing repository: ingolf-lohmann/qik-vrt
+2026-11-05T11:54:05.1325532Z ##[group]Getting Git version info
+2026-11-05T11:54:05.1326086Z Working directory is '/home/runner/work/qik-vrt/qik-vrt'
+2026-11-05T11:54:05.1326865Z [command]/usr/bin/git version
+2026-11-05T11:54:05.1824373Z git version 2.56.0
+2026-11-05T11:54:05.1845442Z ##[endgroup]
+2026-11-05T11:54:05.1856366Z Temporarily overriding HOME='/home/runner/work/_temp/7f5cfef6-c184-416b-9003-e8c3ea6c6a08' before making global git config changes
+2026-11-05T11:54:05.1858135Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-05T11:54:05.1861940Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-11-05T11:54:05.1916336Z Deleting the contents of '/home/runner/work/qik-vrt/qik-vrt'
+2026-11-05T11:54:05.1920692Z ##[group]Determining repository object format
+2026-11-05T11:54:05.1925635Z ##[endgroup]
+2026-11-05T11:54:05.1926483Z ##[group]Initializing the repository
+2026-11-05T11:54:05.1927263Z [command]/usr/bin/git init /home/runner/work/qik-vrt/qik-vrt
+2026-11-05T11:54:05.2032818Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-05T11:54:05.2034253Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-05T11:54:05.2035562Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-05T11:54:05.2036670Z hint: call:
+2026-11-05T11:54:05.2037364Z hint:
+2026-11-05T11:54:05.2038161Z hint: 	git config --global init.defaultBranch <name>
+2026-11-05T11:54:05.2038782Z hint:
+2026-11-05T11:54:05.2039642Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-05T11:54:05.2040821Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-05T11:54:05.2041724Z hint:
+2026-11-05T11:54:05.2042218Z hint: 	git branch -m <name>
+2026-11-05T11:54:05.2042814Z hint:
+2026-11-05T11:54:05.2043523Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-05T11:54:05.2044454Z Initialized empty Git repository in /home/runner/work/qik-vrt/qik-vrt/.git/
+2026-11-05T11:54:05.2053666Z [command]/usr/bin/git remote add origin https://github.com/ingolf-lohmann/qik-vrt
+2026-11-05T11:54:05.2116467Z ##[endgroup]
+2026-11-05T11:54:05.2117115Z ##[group]Disabling automatic garbage collection
+2026-11-05T11:54:05.2120255Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-05T11:54:05.2161466Z ##[endgroup]
+2026-11-05T11:54:05.2162319Z ##[group]Setting up auth
+2026-11-05T11:54:05.2162837Z Removing SSH command configuration
+2026-11-05T11:54:05.2166437Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T11:54:05.2208671Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T11:54:05.2553409Z Removing HTTP extra header
+2026-11-05T11:54:05.2559340Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T11:54:05.2600373Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T11:54:05.2894030Z Removing includeIf entries pointing to credentials config files
+2026-11-05T11:54:05.2894862Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T11:54:05.2896310Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T11:54:05.3085751Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-05T11:54:05.3132123Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path /home/runner/work/_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:05.3171252Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:05.3213427Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:05.3257140Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:05.3294753Z ##[endgroup]
+2026-11-05T11:54:05.3295613Z ##[group]Fetching the repository
+2026-11-05T11:54:05.3301590Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin cb7cae88b6f5d4e8b3049a340b44566a9548c2fe
+2026-11-05T11:54:10.9869722Z From https://github.com/ingolf-lohmann/qik-vrt
+2026-11-05T11:54:10.9871161Z  * branch            cb7cae88b6f5d4e8b3049a340b44566a9548c2fe -> FETCH_HEAD
+2026-11-05T11:54:10.9878283Z [command]/usr/bin/git rev-parse --verify --quiet cb7cae88b6f5d4e8b3049a340b44566a9548c2fe^{object}
+2026-11-05T11:54:10.9915758Z cb7cae88b6f5d4e8b3049a340b44566a9548c2fe
+2026-11-05T11:54:10.9925160Z ##[endgroup]
+2026-11-05T11:54:10.9925838Z ##[group]Determining the checkout info
+2026-11-05T11:54:10.9926531Z ##[endgroup]
+2026-11-05T11:54:10.9928218Z [command]/usr/bin/git sparse-checkout disable
+2026-11-05T11:54:10.9991708Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-05T11:54:11.0035154Z ##[group]Checking out the ref
+2026-11-05T11:54:11.0038176Z [command]/usr/bin/git checkout --progress --force cb7cae88b6f5d4e8b3049a340b44566a9548c2fe
+2026-11-05T11:54:12.1656348Z Updating files:  87% (5308/6062)
+2026-11-05T11:54:12.1682103Z Updating files:  88% (5335/6062)
+2026-11-05T11:54:12.1716640Z Updating files:  89% (5396/6062)
+2026-11-05T11:54:12.1767078Z Updating files:  90% (5456/6062)
+2026-11-05T11:54:12.1797241Z Updating files:  91% (5517/6062)
+2026-11-05T11:54:12.1849557Z Updating files:  92% (5578/6062)
+2026-11-05T11:54:12.1888314Z Updating files:  93% (5638/6062)
+2026-11-05T11:54:12.1927581Z Updating files:  94% (5699/6062)
+2026-11-05T11:54:12.1970404Z Updating files:  95% (5759/6062)
+2026-11-05T11:54:12.2030991Z Updating files:  96% (5820/6062)
+2026-11-05T11:54:12.2073805Z Updating files:  97% (5881/6062)
+2026-11-05T11:54:12.2135815Z Updating files:  98% (5941/6062)
+2026-11-05T11:54:12.2198465Z Updating files:  99% (6002/6062)
+2026-11-05T11:54:12.2199575Z Updating files: 100% (6062/6062)
+2026-11-05T11:54:12.2200712Z Updating files: 100% (6062/6062), done.
+2026-11-05T11:54:12.2253563Z Note: switching to 'cb7cae88b6f5d4e8b3049a340b44566a9548c2fe'.
+2026-11-05T11:54:12.2254062Z 
+2026-11-05T11:54:12.2254436Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-05T11:54:12.2255832Z changes and commit them, and you can discard any commits you make in this
+2026-11-05T11:54:12.2257018Z state without impacting any branches by switching back to a branch.
+2026-11-05T11:54:12.2257642Z 
+2026-11-05T11:54:12.2258141Z If you want to create a new branch to retain commits you create, you may
+2026-11-05T11:54:12.2259539Z do so (now or later) by using -c with the switch command. Example:
+2026-11-05T11:54:12.2260190Z 
+2026-11-05T11:54:12.2260650Z   git switch -c <new-branch-name>
+2026-11-05T11:54:12.2261222Z 
+2026-11-05T11:54:12.2261676Z Or undo this operation with:
+2026-11-05T11:54:12.2262180Z 
+2026-11-05T11:54:12.2262583Z   git switch -
+2026-11-05T11:54:12.2263042Z 
+2026-11-05T11:54:12.2263689Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-05T11:54:12.2264441Z 
+2026-11-05T11:54:12.2265110Z HEAD is now at cb7cae8 Join canonical temporal memory to policy-selected clause audit
+2026-11-05T11:54:12.2376496Z ##[endgroup]
+2026-11-05T11:54:12.2428564Z [command]/usr/bin/git log -1 --format=%H
+2026-11-05T11:54:12.2462999Z cb7cae88b6f5d4e8b3049a340b44566a9548c2fe
+2026-11-05T11:54:12.2470928Z ##[group]Removing auth
+2026-11-05T11:54:12.2472048Z Removing SSH command configuration
+2026-11-05T11:54:12.2474398Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T11:54:12.2515062Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T11:54:12.2739110Z Removing HTTP extra header
+2026-11-05T11:54:12.2741213Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T11:54:12.2780566Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T11:54:12.3003065Z Removing includeIf entries pointing to credentials config files
+2026-11-05T11:54:12.3005048Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T11:54:12.3046214Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-11-05T11:54:12.3047688Z includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-11-05T11:54:12.3049193Z includeif.gitdir:/github/workspace/.git.path
+2026-11-05T11:54:12.3050294Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-05T11:54:12.3056411Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path
+2026-11-05T11:54:12.3088729Z /home/runner/work/_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:12.3098826Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-ab07c461\-1a36\-4cb2\-90de\-042d8cc1ac07\.config
+2026-11-05T11:54:12.3145646Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path
+2026-11-05T11:54:12.3177453Z /home/runner/work/_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:12.3185088Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/qik-vrt/qik-vrt/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-ab07c461\-1a36\-4cb2\-90de\-042d8cc1ac07\.config
+2026-11-05T11:54:12.3231356Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-05T11:54:12.3266192Z /github/runner_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:12.3274636Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-ab07c461\-1a36\-4cb2\-90de\-042d8cc1ac07\.config
+2026-11-05T11:54:12.3315564Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-05T11:54:12.3346463Z /github/runner_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config
+2026-11-05T11:54:12.3352581Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-ab07c461\-1a36\-4cb2\-90de\-042d8cc1ac07\.config
+2026-11-05T11:54:12.3392590Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T11:54:12.3608883Z Removing credentials config '/home/runner/work/_temp/git-credentials-ab07c461-1a36-4cb2-90de-042d8cc1ac07.config'
+2026-11-05T11:54:12.3617667Z ##[endgroup]
+2026-11-05T11:54:12.3875075Z ##[group]Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+2026-11-05T11:54:12.3875886Z with:
+2026-11-05T11:54:12.3876485Z   python-version: 3.12
+2026-11-05T11:54:12.3877096Z   check-latest: false
+2026-11-05T11:54:12.3879876Z   token: ***
+2026-11-05T11:54:12.3880482Z   update-environment: true
+2026-11-05T11:54:12.3881121Z   allow-prereleases: false
+2026-11-05T11:54:12.3881748Z   freethreaded: false
+2026-11-05T11:54:12.3882344Z ##[endgroup]
+2026-11-05T11:54:12.5027389Z ##[group]Installed versions
+2026-11-05T11:54:12.5099657Z Successfully set up CPython (3.12.15)
+2026-11-05T11:54:12.5101285Z ##[endgroup]
+2026-11-05T11:54:12.5322132Z ##[group]Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+2026-11-05T11:54:12.5322979Z with:
+2026-11-05T11:54:12.5323577Z   node-version: 24
+2026-11-05T11:54:12.5324214Z   package-manager-cache: false
+2026-11-05T11:54:12.5324872Z   check-latest: false
+2026-11-05T11:54:12.5328092Z   token: ***
+2026-11-05T11:54:12.5329360Z env:
+2026-11-05T11:54:12.5330656Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:12.5331996Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-05T11:54:12.5333154Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:12.5334272Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:12.5335476Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:12.5336667Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-05T11:54:12.5337745Z ##[endgroup]
+2026-11-05T11:54:12.6486644Z Found in cache @ /opt/hostedtoolcache/node/24.22.1/x64
+2026-11-05T11:54:12.7341428Z ##[group]Environment details
+2026-11-05T11:54:13.0779412Z node: v24.22.1
+2026-11-05T11:54:13.0779819Z npm: 11.19.1
+2026-11-05T11:54:13.0780123Z yarn: 1.22.22
+2026-11-05T11:54:13.0781836Z ##[endgroup]
+2026-11-05T11:54:13.0926375Z ##[group]Run set -euo pipefail
+2026-11-05T11:54:13.0926758Z [36;1mset -euo pipefail[0m
+2026-11-05T11:54:13.0927061Z [36;1mtest "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"[0m
+2026-11-05T11:54:13.0927389Z [36;1mpython3 -B tools/qikvrt_tool_cache.py verify[0m
+2026-11-05T11:54:13.0927775Z [36;1msh tools/bootstrap-runtime.sh --check-only --profile self-host --adapter none[0m
+2026-11-05T11:54:13.0928151Z [36;1mpython3 -B tools/qikvrt_integrity.py verify[0m
+2026-11-05T11:54:13.0928548Z [36;1mmake temdd-event-ledger-test self-host-test 2>&1 | tee "$RUNNER_TEMP/temdd-s1-tests.log"[0m
+2026-11-05T11:54:13.0929127Z [36;1mgit diff --exit-code[0m
+2026-11-05T11:54:13.0929449Z [36;1mpython3 -B - <<'PY' > "$RUNNER_TEMP/temdd-s1-binding.json"[0m
+2026-11-05T11:54:13.0929763Z [36;1mimport hashlib,json,os,subprocess[0m
+2026-11-05T11:54:13.0930029Z [36;1mfrom pathlib import Path[0m
+2026-11-05T11:54:13.0930414Z [36;1mgit=lambda *a:subprocess.check_output(['git',*a],text=True).strip()[0m
+2026-11-05T11:54:13.0930828Z [36;1mprint(json.dumps({'schema':'qikvrt-temdd-s1-native-gate/v1',[0m
+2026-11-05T11:54:13.0931254Z [36;1m  'source_head':git('rev-parse','HEAD'),'source_tree':git('rev-parse','HEAD^{tree}'),[0m
+2026-11-05T11:54:13.0931768Z [36;1m  'native_source_sha256':hashlib.sha256(Path('src/qikvrt_temdd_event_ledger.py').read_bytes()).hexdigest(),[0m
+2026-11-05T11:54:13.0932306Z [36;1m  'run_id':os.environ['GITHUB_RUN_ID'],'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],[0m
+2026-11-05T11:54:13.0932746Z [36;1m  'scope':'EXECUTED_ORIGINAL_AND_PORTABLE_NATIVE_CONTROLS; NO_DEPLOYMENT',[0m
+2026-11-05T11:54:13.0933175Z [36;1m  'predecessor_evidence_transfer':False,'effect_ack_done':False},sort_keys=True))[0m
+2026-11-05T11:54:13.0933526Z [36;1mPY[0m
+2026-11-05T11:54:13.0963717Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-05T11:54:13.0964034Z env:
+2026-11-05T11:54:13.0964278Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:13.0964669Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-05T11:54:13.0965011Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:13.0965352Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:13.0965714Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:13.0966032Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-05T11:54:13.0966359Z   EXPECTED_HEAD: cb7cae88b6f5d4e8b3049a340b44566a9548c2fe
+2026-11-05T11:54:13.0966618Z ##[endgroup]
+2026-11-05T11:54:13.3289985Z PASS: 46/46 declared tools have cache strategies (100%)
+2026-11-05T11:54:13.3503670Z PASS: self-host Node 24.x (v24.22.1); adapter=none
+2026-11-05T11:54:13.3620579Z PASS: self-host Python 3.12.x; exact executable identities are frozen by the package builder
+2026-11-05T11:54:14.4871530Z BLOCK repository manifest differs from deterministic regeneration
+2026-11-05T11:54:14.4977706Z ##[error]Process completed with exit code 1.
+2026-11-05T11:54:14.5090662Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-11-05T11:54:14.5091411Z with:
+2026-11-05T11:54:14.5091744Z   name: qikvrt-temdd-s1-cb7cae88b6f5d4e8b3049a340b44566a9548c2fe
+2026-11-05T11:54:14.5092194Z   path: /home/runner/work/_temp/temdd-s1-tests.log
+/home/runner/work/_temp/temdd-s1-binding.json
+
+2026-11-05T11:54:14.5092567Z   if-no-files-found: error
+2026-11-05T11:54:14.5092769Z   retention-days: 30
+2026-11-05T11:54:14.5092959Z   compression-level: 6
+2026-11-05T11:54:14.5093148Z   overwrite: false
+2026-11-05T11:54:14.5093326Z   include-hidden-files: false
+2026-11-05T11:54:14.5093522Z   archive: true
+2026-11-05T11:54:14.5093687Z env:
+2026-11-05T11:54:14.5093899Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:14.5094239Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-05T11:54:14.5094581Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:14.5094930Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:14.5095251Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-05T11:54:14.5095559Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-05T11:54:14.5095812Z ##[endgroup]
+2026-11-05T11:54:14.6348261Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-05T11:54:14.6349995Z The least common ancestor is /home/runner/work/_temp. This will be the root directory of the artifact
+2026-11-05T11:54:14.6365648Z ##[error]No files were found with the provided path: /home/runner/work/_temp/temdd-s1-tests.log
+/home/runner/work/_temp/temdd-s1-binding.json. No artifacts will be uploaded.
+2026-11-05T11:54:14.6534248Z Post job cleanup.
+2026-11-05T11:54:14.7327248Z [command]/usr/bin/git version
+2026-11-05T11:54:14.7367386Z git version 2.56.0
+2026-11-05T11:54:14.7397773Z Temporarily overriding HOME='/home/runner/work/_temp/20bfa189-4c96-4e62-bdc0-41df7adec004' before making global git config changes
+2026-11-05T11:54:14.7399099Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-05T11:54:14.7401793Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/qik-vrt/qik-vrt
+2026-11-05T11:54:14.7438353Z Removing SSH command configuration
+2026-11-05T11:54:14.7444678Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-05T11:54:14.7486288Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-05T11:54:14.7745801Z Removing HTTP extra header
+2026-11-05T11:54:14.7751595Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-05T11:54:14.7797714Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-05T11:54:14.8071216Z Removing includeIf entries pointing to credentials config files
+2026-11-05T11:54:14.8076141Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-05T11:54:14.8121723Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-05T11:54:14.8516009Z Cleaning up orphan processes

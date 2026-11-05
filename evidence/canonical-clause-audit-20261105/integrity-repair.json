@@ -1,0 +1,24 @@
+{
+  "schema": "qikvrt_source_integrity_repair_v1",
+  "corrects_commit": "cb7cae88b6f5d4e8b3049a340b44566a9548c2fe",
+  "observed_native_failures": [
+    {
+      "run": 42022668341,
+      "job": 127229037732
+    },
+    {
+      "run": 42022668157,
+      "job": 127229038471
+    },
+    {
+      "run": 42022668264,
+      "job": 127229036712
+    }
+  ],
+  "cause": "Six ignored .log files were deliberately staged after the local integrity generation. They became tracked sources but were absent from the committed manifest. A local verification after staging reproduces exactly those six added paths.",
+  "repair": "Retain and stage every intended source/evidence file before generating the original deterministic integrity trio. Do not change validator policy or tested implementation.",
+  "native_log_format": "UTF-8 decoded tool-returned job log text, not a claim about original ZIP/log transport bytes.",
+  "source_code_changed": false,
+  "native_source_gates_reverified": false,
+  "productive_effect_ack_done": false
+}
