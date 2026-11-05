@@ -521,6 +521,48 @@ def context(root, output):
             "source_date_epoch": epoch, "credential_material_included": False}
 
 
+def restore_artifact_package(package, expected, head, tree):
+    """Verify downloaded bytes before restoring manifest-bound file modes.
+
+    Archive extraction can normalize permissions. No missing, extra, changed
+    or linked file is repaired or accepted by this mode restoration.
+    """
+    package = Path(package)
+    require(package.is_dir() and not package.is_symlink()
+            and not any(p.is_symlink() for p in package.parents), "ARTIFACT_PACKAGE_DIRECTORY_REQUIRED")
+    manifest = package / "MANIFEST.json"
+    require(manifest.is_file() and not manifest.is_symlink(), "ARTIFACT_PACKAGE_MANIFEST_REQUIRED")
+    raw = manifest.read_bytes()
+    require(sha(raw) == _artifact_pin(expected), "ARTIFACT_PACKAGE_MANIFEST_PIN_MISMATCH")
+    value = json.loads(raw)
+    require(value.get("schema") == "qikvrt-self-host-package/v1" and value.get("effect_ack_done") is False
+            and value.get("source_head") == head and value.get("source_tree") == tree,
+            "ARTIFACT_PACKAGE_SOURCE_MISMATCH")
+    files = value.get("files")
+    require(isinstance(files, dict) and files, "ARTIFACT_PACKAGE_INVENTORY_REQUIRED")
+    require(not any(p.is_symlink() for p in package.rglob("*")), "ARTIFACT_PACKAGE_LINK_FORBIDDEN")
+    actual = {p.relative_to(package).as_posix() for p in package.rglob("*") if p.is_file()}
+    require(actual == set(files) | {"MANIFEST.json"}, "ARTIFACT_PACKAGE_INVENTORY_MISMATCH")
+    modes = []
+    for name, entry in files.items():
+        path = Path(name)
+        require(not path.is_absolute() and ".." not in path.parts and path.as_posix() == name
+                and isinstance(entry, dict) and entry.get("mode") in ("100644", "100755"),
+                "ARTIFACT_PACKAGE_ENTRY_INVALID")
+        target = package / path
+        raw = target.read_bytes()
+        require(type(entry.get("bytes")) is int and len(raw) == entry["bytes"]
+                and sha(raw) == _artifact_pin(entry.get("sha256")), "ARTIFACT_PACKAGE_BYTES_MISMATCH")
+        modes.append((target, 0o755 if entry["mode"] == "100755" else 0o644))
+    # Validate the complete byte inventory before changing any permissions.
+    for target, mode in modes:
+        target.chmod(mode)
+        require(stat.S_IMODE(target.stat().st_mode) == mode, "ARTIFACT_PACKAGE_MODE_RESTORE_FAILED")
+    return {"state": "ARTIFACT_PACKAGE_BYTES_AND_MODES_VERIFIED", "source_head": head,
+            "source_tree": tree, "manifest_sha256": expected, "files_verified": len(files),
+            "public_production_verified": False, "effect_ack_done": False}
+
+
 def oci(path, head, tree):
     """Check every referenced OCI blob, image platform and exact source labels."""
     with tarfile.open(path, "r:*") as archive:

@@ -257,8 +257,8 @@ def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str
                 return False
             # These exact sources force the carrier step to perform authenticated
             # REST metadata and archive reads. No fixture/cache-only substitute.
-            pins = {".github/workflows/qikvrt_ci.yml": "bea48242b373b5c4756f395614cc8691e72e2f14483ef2fc8e01768c03f77a4c",
-                    "tools/qikvrt_self_host_container.py": "ed56afd3b01f65f14e65e55c6619407fc3f68ab3912d3ec1115dc9c9b5790dd7",
+            pins = {".github/workflows/qikvrt_ci.yml": "e848529d8d4f938a7b7bcf502754579b82baf4493979ff90ac55a808e024feff",
+                    "tools/qikvrt_self_host_container.py": "174e1858cd5ff35f0b01f5d6487e2f78d8054d33ea0f8b6bc50b6b714784d613",
                     "tools/qikvrt_self_host.py": "f332bd157258cf29f3f574329874d1dba7644f13d730becfe6dec9c8e693fdd7"}
             for name, digest in pins.items():
                 source = ROOT / name

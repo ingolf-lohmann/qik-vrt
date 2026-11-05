@@ -1565,8 +1565,55 @@ jobs:
             ${{ runner.temp }}/container-evidence
             !${{ runner.temp }}/container-evidence/carrier-original.oci.tar
             !${{ runner.temp }}/container-evidence/s1-*.oci.tar
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
+      - name: Read the actual uploaded image artifact back
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: qikvrt-s1-container-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-artifact-readback
+      - name: Read the actual uploaded original carrier back
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: qikvrt-s1-original-carrier-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-artifact-readback
+      - name: Verify the restored consumer inputs after the real archive round trip
+        run: |
+          python3 -B - <<'PYROUNDTRIP'
+          import json, os
+          from pathlib import Path
+          from tools import qikvrt_self_host_container as c
+          from tools.qikvrt_self_host import verify
+          temp = Path(os.environ['RUNNER_TEMP'])
+          p = temp / 'container-artifact-readback'
+          original = json.loads((temp / 'container-evidence/ci.json').read_bytes())
+          downloaded = json.loads((p / 'ci.json').read_bytes())
+          assert downloaded == original, 'downloaded producer identity changed'
+          head, tree, pin = original['source_head'], original['source_tree'], original['manifest_sha256']
+          package = c.restore_artifact_package(p / 'public-package', pin, head, tree)
+          verify(p / 'public-package', pin, check_runtime=False)
+          image = c.oci(p / 'image.oci.tar', head, tree)
+          assert image['image_digest'] == original['image_digest']
+          expected = json.loads(Path('runtime/self-host/CONTAINER_CARRIER.json').read_bytes())
+          carrier = c.carrier_archive_check(expected, p / 'carrier-original.oci.tar')
+          receipt = {'schema': 'qikvrt-s1-artifact-roundtrip/v1',
+                     'state': 'ACTUAL_ARTIFACT_CONSUMER_INPUTS_VERIFIED',
+                     'source_head': head, 'source_tree': tree, 'package': package,
+                     'image_digest': image['image_digest'], 'oci_sha256': image['oci_archive_sha256'],
+                     'carrier': carrier, 'public_production_verified': False, 'effect_ack_done': False}
+          (temp / 'container-artifact-roundtrip.json').write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n')
+          print(json.dumps(receipt, sort_keys=True))
+          PYROUNDTRIP
+      - name: Preserve the actual artifact consumer readback
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-artifact-roundtrip-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-artifact-roundtrip.json
+          if-no-files-found: warn
+          retention-days: 30
+
 
   container_publish:
     name: Reviewed versioned OCI publication
@@ -1600,6 +1647,10 @@ jobs:
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: qikvrt-s1-container-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/container-evidence
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: qikvrt-s1-original-carrier-${{ needs.container.outputs.head }}
           path: ${{ runner.temp }}/container-evidence
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
         with:
@@ -1848,7 +1899,19 @@ jobs:
           name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
           path: ${{ runner.temp }}/host-evidence
       - name: Verify HTTPS, fresh runtime/package pins and original terminal use
+        env:
+          EXPECTED_HEAD: ${{ needs.container.outputs.head }}
+          EXPECTED_TREE: ${{ needs.container.outputs.tree }}
+          EXPECTED_MANIFEST: ${{ needs.container.outputs.manifest }}
         run: |
+          python3 -B - <<'PYPACKAGE'
+          import os
+          from pathlib import Path
+          from tools.qikvrt_self_host_container import restore_artifact_package
+          print(restore_artifact_package(
+              Path(os.environ['RUNNER_TEMP']) / 'container-evidence/public-package',
+              os.environ['EXPECTED_MANIFEST'], os.environ['EXPECTED_HEAD'], os.environ['EXPECTED_TREE']))
+          PYPACKAGE
           python3 -B tools/qikvrt_self_host.py container-readback \
             --root "$RUNNER_TEMP/container-evidence/public-package" \
             --production-binding "$RUNNER_TEMP/host-evidence/host-start.json" \

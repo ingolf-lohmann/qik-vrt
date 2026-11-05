@@ -283,3 +283,22 @@ consistency check is not authentication or proof the observer recovered:
 its next actual execution and original artifact require independent readback.
 Other workflows, deployments, approvals and current-specification claims
 remain outside this historical source-verification route.
+
+### Validate the actual artifact consumer path
+
+The independent 49a2e377 artifact readback found two missing hidden package
+files and an omitted carrier download in the publication consumer. Source CI
+was green because those downstream publication effects were gated off.
+
+The existing S1 job now downloads both of its actual uploaded artifacts and
+checks the complete manifest-bound package, restores only verified original
+file modes, invokes the original package verifier, checks every referenced
+image blob and the original carrier ZIP. Its separate roundtrip receipt is
+required by that native job's success. The publication consumer downloads the
+separate carrier; the existing public-domain reader restores verified package
+modes before its original check. The same admission and production gates apply.
+
+These operations verify artifact transport and consumer inputs. They do not
+authorize publication, host admission, node renewal or productive EFFECT_ACK.
+After the local environment failed, new-source tests run in native CI; the
+previous local 135-case result remains historical, not successor acceptance.

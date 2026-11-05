@@ -16,6 +16,73 @@
     ],
     "owner_assertion": "INNOVATION_AND_IMPROVEMENT_OVER_CONVENTIONAL_RELATIONAL_DATABASES"
   },
+  "artifact_consumer_roundtrip_repair": {
+    "candidate_cases": {
+      "continuation": 49,
+      "execution": "NEW_NATIVE_EXACT_HEAD_REQUIRED",
+      "frozen_apt_and_artifacts": 10,
+      "specification": 23,
+      "total": 137,
+      "watchdog": 55
+    },
+    "causal_gaps": [
+      "Artifact upload omitted the two manifest-bound hidden files.",
+      "The split carrier remained preserved, but the existing publication consumer did not download its separate artifact."
+    ],
+    "correction": [
+      "Include hidden package files in the existing non-secret container artifact.",
+      "Download the original carrier through the existing publication consumer before its original archive check.",
+      "Read both actual uploaded artifacts back in the existing native S1 job; validate exact native producer identity, original package bytes/modes, original package verifier, every OCI blob and the immutable original carrier archive.",
+      "Restore only original manifest-bound file permissions after complete byte validation, including before the existing public-domain readback."
+    ],
+    "local_environment": {
+      "effect": "No local successor test or CLI preflight execution claimed after this failure; native complete checkout tests must run.",
+      "error": "apply_patch verification failed: exec-server transport closed",
+      "state": "UNAVAILABLE_DURING_PATCH_BEFORE_SOURCE_CHANGE"
+    },
+    "merge_performed": false,
+    "original_artifacts": {
+      "carrier": {
+        "id": 13378557846,
+        "independent_original_byte_readback": true,
+        "original_archive_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+        "zip_bytes": 377733146,
+        "zip_sha256": "6898cb71fc343bb5b1a9f9b1c9f922f8bb06c82428bbbfbf5eb9024a0c630138"
+      },
+      "image": {
+        "id": 13378304142,
+        "independent_original_byte_readback": true,
+        "manifest_files": 199,
+        "missing_package_files": [
+          ".github/CODEOWNERS",
+          ".well-known/qik-vrt-self-disclosure.json"
+        ],
+        "oci_bytes": 1142170112,
+        "oci_sha256": "f665649ab0c35fc9d0e0636b0f8a339bc2b49fd0c0a3f450198e6f9144a01214",
+        "zip_bytes": 392040345,
+        "zip_sha256": "314c2ae8ece02c165b35b2fcdd68d11ae39ada89d5098ce82cb912212a1973d2"
+      }
+    },
+    "predecessor": {
+      "head": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+      "native_ci": 41944160618,
+      "native_s1_job": 126977054766,
+      "source_owner_review": 5778176608,
+      "technical_review": 5778312264,
+      "terminal_checks": {
+        "failed": 0,
+        "skipped": 15,
+        "success": 30
+      },
+      "tree": "1c9c1f42e3f37a99d82a68497d8bbf108d07a6c7"
+    },
+    "preserved_local_result": {
+      "head": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+      "scope": "HISTORICAL_ONLY",
+      "targeted_tests": 135
+    },
+    "productive_effect_ack_done": false
+  },
   "authority_base": "670da64af4d7830cd583182908a59d74d976a451",
   "complete_run_inventory_repair_20261104": {
     "attribution": {

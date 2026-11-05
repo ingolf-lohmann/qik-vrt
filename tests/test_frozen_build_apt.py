@@ -111,6 +111,60 @@ class FrozenBuildAPT(unittest.TestCase):
         self.assertIn("!${{ runner.temp }}/container-evidence/carrier-original.oci.tar", result)
         self.assertNotIn("!${{ runner.temp }}/container-evidence/image.oci.tar", result)
         self.assertIn("qikvrt-s1-container-", result)
+        self.assertIn("include-hidden-files: true", result)
+        publisher = workflow.split("\n  container_publish:", 1)[1].split("\n  container_deploy:", 1)[0]
+        self.assertIn("name: qikvrt-s1-original-carrier-${{ needs.container.outputs.head }}", publisher)
+        for artifact in ("qikvrt-s1-container-", "qikvrt-s1-original-carrier-"):
+            self.assertIn("name: " + artifact + "${{ github.event.pull_request.head.sha || github.sha }}", result)
+        self.assertIn("restore_artifact_package", result)
+        self.assertIn("carrier_archive_check", result)
+        readback = workflow.split("\n  container_public_readback:", 1)[1]
+        self.assertIn("restore_artifact_package", readback)
+        for marker in ("PYROUNDTRIP", "PYPACKAGE"):
+            body = workflow.split("<<'" + marker + "'\n", 1)[1].split("\n          " + marker, 1)[0]
+            compile("\n".join(line[10:] for line in body.splitlines()), marker, "exec")
+
+
+    def artifact_package(self):
+        package = self.root / "package"
+        package.mkdir(exist_ok=True)
+        files = {}
+        for name, raw, mode in ((".github/CODEOWNERS", b"sealed owners\n", "100644"),
+                                (".well-known/disclosure.json", b"{}\n", "100644"),
+                                ("start.sh", b"#!/bin/sh\nexit 0\n", "100755")):
+            path = package / name; path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(raw); path.chmod(0o644)
+            files[name] = dict(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest(), mode=mode)
+        value = dict(schema="qikvrt-self-host-package/v1", source_head="a"*40, source_tree="b"*40,
+                     files=files, effect_ack_done=False)
+        raw = (json.dumps(value, sort_keys=True) + "\n").encode()
+        (package / "MANIFEST.json").write_bytes(raw)
+        return package, hashlib.sha256(raw).hexdigest()
+
+    def test_complete_artifact_package_restores_only_pinned_modes(self):
+        package, pin = self.artifact_package()
+        result = c.restore_artifact_package(package, pin, "a"*40, "b"*40)
+        self.assertEqual(result["files_verified"], 3)
+        self.assertEqual((package / "start.sh").stat().st_mode & 0o777, 0o755)
+        self.assertEqual(hashlib.sha256((package / "MANIFEST.json").read_bytes()).hexdigest(), pin)
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_artifact_faults_fail_before_any_permission_mutation(self):
+        for change in ("missing_hidden", "extra", "bytes", "symlink", "head", "tree", "pin"):
+            with self.subTest(change=change):
+                shutil.rmtree(self.root / "package", ignore_errors=True)
+                package, pin = self.artifact_package(); head, tree = "a"*40, "b"*40
+                if change == "missing_hidden": (package / ".github/CODEOWNERS").unlink()
+                if change == "extra": (package / "extra").write_bytes(b"unexpected")
+                if change == "bytes": (package / ".github/CODEOWNERS").write_bytes(b"tampered")
+                if change == "symlink":
+                    path = package / ".github/CODEOWNERS"; path.unlink(); path.symlink_to(package / "start.sh")
+                if change == "head": head = "c"*40
+                if change == "tree": tree = "c"*40
+                if change == "pin": pin = "c"*64
+                with self.assertRaisesRegex(ValueError, "ARTIFACT_PACKAGE_"):
+                    c.restore_artifact_package(package, pin, head, tree)
+                self.assertEqual((package / "start.sh").stat().st_mode & 0o777, 0o644)
 
     def test_real_builder_shell_stops_before_install_for_each_failure(self):
         # Exercise the actual Dockerfile RUN body with isolated commands. Only
