@@ -9,7 +9,9 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 BUNDLE="$ROOT/docs/publications/2026-07-22-effect-ack-universal-effect-control"
 PROOF="$BUNDLE/effect_ack_universality_proof.py"
-REPORT="$BUNDLE/proof-report.json"
+# The published report and its input bindings remain frozen in BUNDLE.
+# Reproduce the current reference source against its separate successor receipt.
+REPORT="$ROOT/evidence/receipts/effect-ack-runtime-proof-20261022.json"
 DRAFT_TXT="$BUNDLE/inputs/draft-lohmann-qikvrt-effect-ack-01.txt"
 DRAFT_XML="$BUNDLE/inputs/draft-lohmann-qikvrt-effect-ack-01.xml"
 RUNTIME="$ROOT/src/qikvrt_effect_ack.py"

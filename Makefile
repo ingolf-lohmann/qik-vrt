@@ -99,7 +99,13 @@ unit:
 	$(PYTHON) tests/test_handler_unit.py
 
 conformance:
-	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_effect_ack_http_service tests.test_eap_mirror_client
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_effect_ack_conformance tests.test_effect_ack_wire tests.test_canonical_clause_audit tests.test_effect_ack_http_service tests.test_eap_mirror_client
+
+.PHONY: canonicalization-test
+canonicalization-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_conformance.CanonicalizationTests
+
+test: canonicalization-test
 
 security:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_handler_security tests.test_api_client tests.test_qikvrt_ionos_dns tests.test_qikvrt_ionos_web

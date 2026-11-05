@@ -4,16 +4,20 @@
 from __future__ import annotations
 
 import dataclasses
+import hashlib
 import json
 import sys
 import time
 import unicodedata
 import unittest
+from enum import Enum
+from itertools import permutations
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from qikvrt_effect_ack import (  # noqa: E402
+    CANONICAL_RECORD_PROFILE,
     ConnectionDecision,
     EffectAckEngine,
     EffectAckRequest,
@@ -23,7 +27,9 @@ from qikvrt_effect_ack import (  # noqa: E402
     ResponsibilityProtocol,
     RiskLevel,
     canonical_json,
+    canonical_json_bytes,
     compute_protocol_hash,
+    compute_record_hash,
     ordinary_release,
     sha256_identifier,
     verify_protocol,
@@ -62,6 +68,136 @@ def request(**changes: object) -> EffectAckRequest:
     }
     values.update(changes)
     return EffectAckRequest(**values)  # type: ignore[arg-type]
+
+
+class CanonicalizationTests(unittest.TestCase):
+    """VERIFY_CANONICALIZATION: fixed octets, hashes and rejection cases."""
+
+    def test_unicode_nfc_normalization(self) -> None:
+        expected = b'{"msg":"\xc3\xa4"}'
+        for text in ("ä", "a\u0308"):
+            with self.subTest(text=text):
+                self.assertEqual(canonical_json_bytes({"msg": text}), expected)
+                self.assertEqual(
+                    compute_record_hash({"msg": text}),
+                    "sha256:3e2c233238a32ee1e5a6de4b4cae8d1447652be6f03f416fc585c43a835df2db",
+                )
+
+    def test_nested_object_determinism(self) -> None:
+        left = {"outer": {"b": 1, "a": 2}}
+        right = {"outer": {"a": 2, "b": 1}}
+        for record in (left, right):
+            self.assertEqual(canonical_json_bytes(record), b'{"outer":{"a":2,"b":1}}')
+            self.assertEqual(
+                compute_record_hash(record),
+                "sha256:77209164d05abc063fac37648106ce8110313b172578e17dcc7264859e55f307",
+            )
+
+    def test_key_order_independence(self) -> None:
+        entries = [("z", 0), ("ä", 1), ("A", 2), ("a", 3)]
+        expected = '{"A":2,"a":3,"z":0,"ä":1}'.encode("utf-8")
+        for order in permutations(entries):
+            self.assertEqual(canonical_json_bytes(dict(order)), expected)
+
+    def test_array_order_preservation(self) -> None:
+        forward = {"items": [1, 2, 3]}
+        reverse = {"items": [3, 2, 1]}
+        self.assertEqual(canonical_json_bytes(forward), b'{"items":[1,2,3]}')
+        self.assertNotEqual(compute_record_hash(forward), compute_record_hash(reverse))
+
+    def test_reproducible_hash_derivation(self) -> None:
+        record = {"items": [1, 2, 3]}
+        expected = "sha256:7aff5dcbe562761bfd9d8569cdd3226d3944acad6539db5d62ad3f67d9a45d0a"
+        self.assertEqual(compute_record_hash(record), expected)
+        self.assertEqual(compute_record_hash(record), expected)
+        restored = json.loads(canonical_json_bytes(record))
+        self.assertEqual(compute_record_hash(restored), expected)
+
+    def test_recursive_key_and_value_nfc(self) -> None:
+        record = {"outer": [{"a\u0308": ["e\u0301", {"o\u0308": "u\u0308"}]}]}
+        expected = '{"outer":[{"ä":["é",{"ö":"ü"}]}]}'.encode("utf-8")
+        self.assertEqual(canonical_json_bytes(record), expected)
+
+    def test_nfc_key_collision_fails_closed(self) -> None:
+        for record in ({"ä": 1, "a\u0308": 2}, {"x": [{"ä": 1, "a\u0308": 1}]}):
+            with self.subTest(record=record), self.assertRaisesRegex(ValueError, "duplicate key"):
+                compute_record_hash(record)
+
+    def test_non_string_keys_fail_closed(self) -> None:
+        for key in (1, True, None, ("x",)):
+            with self.subTest(key=key), self.assertRaisesRegex(TypeError, "string object keys"):
+                compute_record_hash({"nested": {key: "value"}})
+
+    def test_floating_point_values_fail_closed(self) -> None:
+        for value in (1.0, -0.0, float("nan"), float("inf"), -float("inf")):
+            with self.subTest(value=value), self.assertRaisesRegex(TypeError, "floating-point"):
+                compute_record_hash({"nested": [value]})
+
+    def test_lone_surrogates_fail_closed(self) -> None:
+        for record in ({"msg": "\ud800"}, {"msg": "\udfff"}, {"\ud800": "x"}):
+            with self.subTest(record=record), self.assertRaises(UnicodeEncodeError):
+                canonical_json(record)
+
+    def test_enum_values_use_the_same_recursive_rules(self) -> None:
+        class Text(Enum):
+            DECOMPOSED = "a\u0308"
+        class Invalid(Enum):
+            FLOAT = 1.5
+        self.assertEqual(canonical_json_bytes({"msg": Text.DECOMPOSED}), b'{"msg":"\xc3\xa4"}')
+        with self.assertRaisesRegex(TypeError, "floating-point"):
+            compute_record_hash({"value": Invalid.FLOAT})
+
+    def test_unicode_code_point_key_order(self) -> None:
+        # Unicode code-point order differs from UTF-16 code-unit order here.
+        record = {"\U00010000": 2, "\ue000": 1}
+        self.assertEqual(canonical_json_bytes(record), '{"\ue000":1,"\U00010000":2}'.encode("utf-8"))
+
+    def test_compact_utf8_and_json_scalar_types(self) -> None:
+        record = {"z": "\"\\\n", "a": [None, True, False, -2, 0]}
+        self.assertEqual(canonical_json_bytes(record), b'{"a":[null,true,false,-2,0],"z":"\\"\\\\\\n"}')
+        self.assertNotEqual(compute_record_hash({"x": True}), compute_record_hash({"x": 1}))
+
+    def test_hash_covers_every_supplied_field(self) -> None:
+        record = {"msg": "ä", "record_hash": "kept", "signature": "kept"}
+        raw = b'{"msg":"\xc3\xa4","record_hash":"kept","signature":"kept"}'
+        self.assertEqual(compute_record_hash(record), "sha256:" + hashlib.sha256(raw).hexdigest())
+        self.assertNotEqual(compute_record_hash(record), compute_record_hash({"msg": "ä"}))
+
+    def test_record_root_must_be_an_object(self) -> None:
+        for record in (None, "x", 1, [1, 2]):
+            with self.subTest(record=record), self.assertRaisesRegex(TypeError, "must be an object"):
+                compute_record_hash(record)
+
+    def test_input_is_not_mutated(self) -> None:
+        record = {"a\u0308": [{"b": "e\u0301"}]}
+        before = json.dumps(record, ensure_ascii=True)
+        compute_record_hash(record)
+        self.assertEqual(json.dumps(record, ensure_ascii=True), before)
+
+    def test_existing_protocol_hash_vector_is_preserved(self) -> None:
+        protocol = EffectAckEngine().evaluate(
+            request(), created_utc="2026-10-22T00:00:00Z"
+        ).protocol
+        self.assertEqual(
+            protocol.protocol_hash,
+            "sha256:d992e84ba02def2e29fa67752edefe31b5d6bd219a207fd13f40510188e3baa4",
+        )
+        verify_protocol(protocol)
+
+    def test_required_evidence_gate_binding(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        policy = json.loads((root / "policy/QIKVRT_CANONICAL_RECORD_V1.json").read_bytes())
+        self.assertEqual(policy["profile"], CANONICAL_RECORD_PROFILE)
+        gate = policy["VERIFY_CANONICALIZATION"]
+        self.assertIs(gate["required"], True)
+        self.assertEqual(gate["command"], ["make", "canonicalization-test"])
+        self.assertIn("test: canonicalization-test", (root / "Makefile").read_text())
+        self.assertEqual(set(gate["assertions"]), {
+            "unicode_nfc_normalization", "nested_object_determinism", "key_order_independence",
+            "array_order_preservation", "reproducible_hash_derivation",
+        })
+        for assertion in gate["assertions"]:
+            self.assertTrue(callable(getattr(self, "test_" + assertion)))
 
 
 class FakeClock:

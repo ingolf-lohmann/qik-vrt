@@ -1,0 +1,13 @@
+{
+  "scope": "OWN_ORIGINAL_IN_PROCESS_RUNTIME_AND_COLD_TERMINAL_READBACK",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 576,
+    "head": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+    "tree": "79ef4e99b05e38fab37957cb75547c616b619032"
+  },
+  "event_id": "e29389f1fb63417f9f676cc43333935a:1",
+  "ledger_digest": "fa947ce80d5a7220c81bdb19d2788e351e66dfb448a78735fc7bfc9d869f927d",
+  "socket_transport": "EPERM",
+  "effect_ack_done": false
+}
