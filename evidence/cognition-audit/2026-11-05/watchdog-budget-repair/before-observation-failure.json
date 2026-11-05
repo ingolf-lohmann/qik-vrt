@@ -1,0 +1,40 @@
+{
+  "boundaries": {
+    "artifact_upload_is_gate_success": false,
+    "external_effect": false,
+    "historical_receipt_is_fresh_evidence": false,
+    "observation_failure_is_quiescence": false,
+    "repository_mutation": false
+  },
+  "completion_claims": {
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "disposition": "HOLD",
+  "effect_ack_done": false,
+  "effect_already_occurred": false,
+  "expected_head_matches_checkout": true,
+  "expected_head_sha": "57dd472719bbd7f5fd2b8b49b37040b17daa3a3c",
+  "failure": {
+    "exit_code": 2,
+    "stage": "JOBS_BUDGET_PREFLIGHT"
+  },
+  "first_blocker": "REPOSITORY_REOBSERVATION_FAILED",
+  "head_sha": "57dd472719bbd7f5fd2b8b49b37040b17daa3a3c",
+  "live_subject_reobserved": false,
+  "next_action": "RESTORE_FAILED_READ_PATH_THEN_REOBSERVE_EXISTING_WORK_UNIT",
+  "observed_at": "2026-11-05T14:51:42Z",
+  "pipeline_progress": "UNKNOWN",
+  "productive_edge": false,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "retry_condition": "FAILED_READ_PATH_RECOVERED_AND_EXACT_SUBJECT_REOBSERVED",
+  "run_attempt": 1,
+  "run_id": 42049032196,
+  "safe_continuation": false,
+  "schema": "qikvrt_reflexive_observation_failure_receipt_v1",
+  "semantic_fingerprint": "0ef00eac0d4b85c1976da73677589b98d9cafda8c2e456f4cd5c5d5047a72674",
+  "state": "OBSERVATION_FAILED",
+  "tree_sha": "473eb8cbb9a829bb4aa7d4f94347ceaabdf4e3f7"
+}

@@ -83,3 +83,17 @@ A test PASS is bounded to the tested code/configuration and does not prove deplo
 **Classification: MORE_FACTS_REQUIRED.**  
 **Implementation evidence: incomplete. Test evidence: not linked comprehensively to requirement IDs. Operational evidence: not established fleet-wide.**  
 **Main merge, node distribution and full conformity must each be separately evidenced; none follows from Product Owner approval or this register.**
+
+## 7. Proposed cluetec reciprocal audit pilot
+
+The owner-authorized requirement is prepared in
+`state/work_units/QIKVRT_CLUETEC_RECIPROCAL_AI_ACT_PILOT_20261023_V1.json`
+with its human-readable contract at
+`docs/regulatory/pilots/cluetec/REQUIREMENTS_DE.md`.
+It preserves this register and the existing EAP, native runtime, review and
+continuation contracts. The package specifies 42 requirements and 42 planned
+acceptance cases; it does not establish implementation, partner acceptance,
+neutral human review, legal conformity or authority submission. Classification
+remains MORE_FACTS_REQUIRED and compliance remains COMPLIANCE NOT ESTABLISHED.
+The current official legal inventory must be resolved through every applicable
+subdivision before an operational coverage or conformity conclusion.

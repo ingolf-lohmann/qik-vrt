@@ -1,0 +1,76 @@
+{
+  "schema": "qikvrt-source-repair-work-unit/v1",
+  "work_unit_id": "QIKVRT_HUMAN_AUDIT_GRAPH_READINESS_REPAIR_20261105_V1",
+  "predecessor_source": {
+    "head": "1a02f594732943f6e02867b46e9217ac08154e76",
+    "tree": "db59478e345fabff525c8ac5407f015701ed9fc5"
+  },
+  "goal": "Allow the existing authorized audit PR to pass its original bounded Draft-to-ready route without a false currentness claim",
+  "observed_failure": {
+    "command": "original Main tools/ai_handoff.py --client-action draft-transition-preflight.json",
+    "exit_code": 2,
+    "blocker": "SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED",
+    "external_graphql_call_performed": false,
+    "cause": "The later exact-historical source-route whitelist omitted the earlier pinned Owner-authorized GraphQL PR-readiness fallback."
+  },
+  "repair": {
+    "operation": "markPullRequestReadyForReview",
+    "same_exact_subject_required": true,
+    "existing_pinned_owner_decision_required": true,
+    "actual_transport": "GRAPHQL_FALLBACK",
+    "rest_effect_state": "NOT_ATTEMPTED",
+    "rest_operation_unavailable_required": true,
+    "runtime_effects_other_graphql_and_currentness_claims_admitted": false,
+    "scope": "SOURCE_REPAIR_ONLY"
+  },
+  "validation": {
+    "total_cases": 318,
+    "runs": [
+      {
+        "cases": 43,
+        "path": "evidence/cognition-audit/2026-11-05/graph-readiness-repair/test_cognition_audit.py.log",
+        "sha256": "8236019ba7f2f8f47e45ee96951acefc980861b41a0ad6d33c9307dc10f510b1",
+        "exit_code": 0
+      },
+      {
+        "cases": 41,
+        "path": "evidence/cognition-audit/2026-11-05/graph-readiness-repair/test_effect_ack_conformance.py.log",
+        "sha256": "7d7a37326ed440129700580b6210af6e70cabe1ca2add82bcec41872edd87fe5",
+        "exit_code": 0
+      },
+      {
+        "cases": 29,
+        "path": "evidence/cognition-audit/2026-11-05/graph-readiness-repair/test_specification_review.py.log",
+        "sha256": "95d349a187a5765d03bf7d2250f64442b0f0338db544f0e5a53fc7bbe707acfb",
+        "exit_code": 0
+      },
+      {
+        "cases": 62,
+        "path": "evidence/cognition-audit/2026-11-05/graph-readiness-repair/test_qikvrt_reflexive_repository_watchdog.py.log",
+        "sha256": "973aab83e82c5abf00f3c063fc3f8c666ed80e37a52faf076bfefd11b28c9b7d",
+        "exit_code": 0
+      },
+      {
+        "cases": 143,
+        "path": "evidence/cognition-audit/2026-11-05/graph-readiness-repair/client-continuation.log",
+        "sha256": "a1b5eda6778895c1cf8a22858a06677b2752ce279fd884c3e55909cb808f338e",
+        "exit_code": 0
+      }
+    ],
+    "before_cli": "BLOCK",
+    "after_cli": "READY",
+    "after_cli_scope": "ISOLATED_LOCAL_CHECKER_FIX_NO_EXTERNAL_EFFECT_YET",
+    "full_native_successor_ci": "PENDING"
+  },
+  "authorization": "Existing Owner 2026-10-29 GraphQL fallback decision plus current explicit human-audit instruction; no new provider, permission, bypass or executor.",
+  "continuation": [
+    "Save and independently read back the exact source successor.",
+    "Use that verified own-client checker on the new exact subject before the existing ready operation.",
+    "Read back actual Draft state; rebind Owner COMMENTED decision to the new head; merge only after current applicable native gates pass."
+  ],
+  "claim_limits": [
+    "Own-client adoption is separate from Main integration and other-client adoption.",
+    "Source/readiness/merge effects do not establish native runtime or domain delivery."
+  ],
+  "created_utc": "2026-11-05T15:24:09.504934+00:00"
+}

@@ -1,0 +1,106 @@
+{
+  "schema": "qikvrt-work-unit-human-cognition-audit/v1",
+  "work_unit_id": "QIKVRT_HUMAN_BEHAVIOR_ADMISSIBILITY_20261105_V1",
+  "owner": "Ingolf Lohmann",
+  "authorization_source": "state/authorization/OWNER_HUMAN_COGNITION_AUDIT_20261105.txt",
+  "requested_goal": "Verhaltensnachweis als praktisch durch Menschen auditierbares Zulassungskriterium in QIKVRT und EAP verankern",
+  "base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+    "tree": "79ef4e99b05e38fab37957cb75547c616b619032"
+  },
+  "existing_candidate": {
+    "pr": 590,
+    "head": "7ca0de7c28844b2e7ff90581947522c35964ca6f",
+    "branch": "requirements/cluetec-reciprocal-ai-act-20261023-v1",
+    "reuse_reason": "Existing human audit requirements candidate; preserve all pilot sources and open operational duties. No new PR and no partner message."
+  },
+  "source_basis": "HISTORICAL_EXACT_SOURCE_REPAIR_ONLY_NO_COMPLETE_CURRENTNESS_CLAIM",
+  "implementation": {
+    "criteria": 7,
+    "human_form": true,
+    "separate_human_judgment_and_machine_binding": true,
+    "existing_eap_policy_conjunction": true,
+    "eap_wire_states_changed": false,
+    "automatically_authenticates_people": false
+  },
+  "validation": {
+    "total_cases": 250,
+    "runs": [
+      {
+        "path": "evidence/cognition-audit/2026-11-05/test_cognition_audit.py.log",
+        "sha256": "bbc929f44a3aa5798e3348119ac5cd01541212aad01ad9bc289ac1081764da92",
+        "cases": 43,
+        "exit_code": 0,
+        "scope": "ISOLATED_LOCAL_REGRESSION_NOT_LIVE_BEHAVIOR_CERTIFICATION"
+      },
+      {
+        "path": "evidence/cognition-audit/2026-11-05/test_effect_ack_conformance.py.log",
+        "sha256": "4022ab25cd8f3db0baa623fbfb1b6d02c32db1cda619602f1c69cc23561a4def",
+        "cases": 41,
+        "exit_code": 0,
+        "scope": "ISOLATED_LOCAL_REGRESSION_NOT_LIVE_BEHAVIOR_CERTIFICATION"
+      },
+      {
+        "path": "evidence/cognition-audit/2026-11-05/test_specification_review.py.log",
+        "sha256": "2277f592d36b572c2723a999db31b286b1bed6350e483e0265b6c12ec6fb0e7f",
+        "cases": 23,
+        "exit_code": 0,
+        "scope": "ISOLATED_LOCAL_REGRESSION_NOT_LIVE_BEHAVIOR_CERTIFICATION"
+      },
+      {
+        "path": "evidence/cognition-audit/2026-11-05/client-continuation.log",
+        "sha256": "be0d4b9805602b53bece8d23d46686792ab715299ce47584e39a7a27e22f4318",
+        "cases": 143,
+        "exit_code": 0,
+        "scope": "ISOLATED_LOCAL_REGRESSION_NOT_LIVE_BEHAVIOR_CERTIFICATION"
+      }
+    ],
+    "python_parse": "PASS",
+    "full_make_test": "NOT_RUN_PARTIAL_LOCAL_SOURCE",
+    "full_candidate_integrity": "PENDING_NATIVE_FULL_SOURCE_VERIFICATION",
+    "integrity_authoring": "Incremental candidate from exact directly read Main manifest. Unchanged entries retained; changed bytes hashed; no complete filesystem verification claimed."
+  },
+  "source_bindings": [
+    {
+      "path": "src/qikvrt_cognition_audit.py",
+      "sha256": "9c4bb3663cb5a6fa761ef54dfd22b120e5d1fc80590537b45ba31bfb989a9b4b"
+    },
+    {
+      "path": "tools/ai_handoff.py",
+      "sha256": "a223a9565a6679be80bdda598b337552eed4beee2f4cee6ebc934eec68009ce7"
+    },
+    {
+      "path": "tests/test_cognition_audit.py",
+      "sha256": "5471286aea9dd202109508f8b5cf0211301fbfce6b1dba82d1fc369361a0d68d"
+    },
+    {
+      "path": "policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json",
+      "sha256": "3eebe2edf294572475c01fabcdb8bd3a46a3465a4edf1e2fa8214ae221bc20a0"
+    }
+  ],
+  "observed_execution_boundary": {
+    "native_operator_authorized": true,
+    "native_ready": false,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "domain_http_status": 525,
+    "observed_at": "2026-11-05T14:19:19.222Z",
+    "input_accepted": false,
+    "original_mirror_outbox_tool_in_main": false,
+    "existing_missing_source_issue": 669
+  },
+  "proof_limits": [
+    "Tests use synthetic judgments; no real model or person is certified.",
+    "Source saving is not Main integration, client adoption, native runtime enforcement or productive EFFECT_ACK_DONE.",
+    "No audio transcript is claimed; offline runtime check found package.json missing.",
+    "Initial original regression attempts lacked local fixtures; fixtures were recovered and failed paths rechecked. Initial complete raw logs were not all captured; retained final logs are exact.",
+    "Zenodo current all-author inventory and Activity page contents remain unverified.",
+    "All 42 cluetec operational acceptance cases and third-party acceptance remain open in preserved pilot artifacts."
+  ],
+  "continuation": [
+    "Read back actual candidate HEAD/TREE and blob identities.",
+    "Require current candidate CI/review before Main integration; retain existing conditional merge authorization.",
+    "Bind actual authenticated human review and admitted native endpoint before runtime adoption."
+  ],
+  "created_utc": "2026-11-05T14:46:02.059124+00:00"
+}

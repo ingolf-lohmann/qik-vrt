@@ -52,7 +52,7 @@ runtime-contract: tool-cache-contract
 	sh tools/bootstrap-runtime.sh --help >/dev/null
 	PYTHON="$(PYTHON)" sh tests/test_runtime_bootstrap.sh
 
-ai-runtime-contract:
+ai-runtime-contract: cognition-audit-test
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_specification_review
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ai_runtime_bootloader tests.test_ai_onboarding
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/ai_runtime_bootloader.py --help >/dev/null
@@ -310,3 +310,7 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+.PHONY: cognition-audit-test
+cognition-audit-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest discover -s tests -p test_cognition_audit.py -v

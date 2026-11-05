@@ -1087,6 +1087,70 @@ class JobReadbackBudgetTests(unittest.TestCase):
                 MODULE.validate_job_plan(page, {'1': [{**valid, key: bad}]}, plan, expected_head=HEAD)
 
 
+class TerminalSkippedJobBudgetTests(unittest.TestCase):
+    def inventory(self, count=22):
+        entries = [run(i + 1, f"workflow-{i}", "completed", "2026-11-05T10:00:00Z",
+                       "2026-11-05T10:01:00Z", "success") for i in range(count)]
+        for entry in entries[-3:]:
+            entry["conclusion"] = "skipped"
+        return {"total_count": len(entries), "workflow_runs": entries}
+
+    def test_complete_22_workflows_fit_20_request_cap_without_three_skipped_job_queries(self):
+        page = self.inventory()
+        plan = MODULE.job_readback_budget(page, expected_head=HEAD, required_jobs_only=True)
+        self.assertEqual(plan["state"], "READY")
+        self.assertEqual(plan["required_job_request_count"], 19)
+        self.assertEqual(plan["max_job_requests"], 20)
+        self.assertEqual(plan["metadata_only_run_ids"], [20, 21, 22])
+        self.assertEqual(plan["reported_run_count"], plan["returned_run_count"])
+        self.assertEqual(len(plan["run_ids"]) + len(plan["metadata_only_run_ids"]), 22)
+
+    def test_skipped_metadata_cannot_become_successful_required_gate(self):
+        entry = self.inventory()["workflow_runs"][-1]
+        gate = MODULE._gate_state_for_run(entry, {}, required=True)
+        self.assertEqual(gate["state"], "UNTRUSTED")
+        self.assertEqual(gate["reason"], "ZERO_JOB_TERMINAL_RUN")
+
+    def test_active_run_cannot_hide_behind_a_skipped_conclusion(self):
+        page = self.inventory()
+        page["workflow_runs"][-1]["status"] = "in_progress"
+        plan = MODULE.job_readback_budget(page, expected_head=HEAD, required_jobs_only=True)
+        self.assertIn(22, plan["run_ids"])
+        self.assertNotIn(22, plan["metadata_only_run_ids"])
+
+    def test_terminal_failure_success_and_ambiguity_still_need_job_readback(self):
+        for conclusion in ("failure", "timed_out", "action_required", "startup_failure",
+                           "cancelled", "success", None):
+            with self.subTest(conclusion=conclusion):
+                page = self.inventory()
+                page["workflow_runs"][-1]["conclusion"] = conclusion
+                plan = MODULE.job_readback_budget(page, expected_head=HEAD, required_jobs_only=True)
+                self.assertIn(22, plan["run_ids"])
+
+    def test_wrong_head_in_skipped_metadata_remains_invalid(self):
+        page = self.inventory()
+        page["workflow_runs"][-1]["head_sha"] = TREE
+        plan = MODULE.job_readback_budget(page, expected_head=HEAD, required_jobs_only=True)
+        self.assertEqual(plan["state"], "HOLD")
+        self.assertEqual(plan["first_blocker"], "RUN_INVENTORY_INVALID")
+
+    def test_truncated_inventory_is_never_repaired_by_skipping_queries(self):
+        page = self.inventory()
+        page["truncated"] = True
+        plan = MODULE.job_readback_budget(page, expected_head=HEAD, required_jobs_only=True)
+        self.assertEqual(plan["state"], "HOLD")
+        self.assertEqual(plan["first_blocker"], "RUN_INVENTORY_INCOMPLETE")
+
+    def test_job_plan_can_cover_all_skipped_runs_without_inventing_jobs(self):
+        page = self.inventory(3)
+        plan = MODULE.job_readback_budget(page, expected_head=HEAD, required_jobs_only=True)
+        self.assertEqual(plan["state"], "READY")
+        self.assertEqual(plan["run_ids"], [])
+        MODULE.validate_job_plan(page, {}, plan, expected_head=HEAD)
+        for entry in page["workflow_runs"]:
+            self.assertNotEqual(MODULE._gate_state_for_run(entry, {}, required=True)["state"], "SUCCESS")
+
+
 class OpenWorkCollectionTests(unittest.TestCase):
     def test_runner_context_is_not_evaluated_in_job_level_environment(self):
         # GitHub's context-availability contract permits runner at step.env,

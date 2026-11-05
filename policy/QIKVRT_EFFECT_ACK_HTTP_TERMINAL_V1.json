@@ -75,5 +75,12 @@
     "remote_ack_or_quorum_must_not_be_an_unassessed_egress_dependency": true,
     "source_mapping_is_not_conformity_evidence": true,
     "wire_protocol_changed": false
+  },
+  "human_cognition_admissibility": {
+    "policy": "policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json",
+    "adapter": "src/qikvrt_cognition_audit.py#bind_cognition_audit",
+    "existing_policy_must_also_allow_release": true,
+    "wire_contract_changed": false,
+    "source_save_establishes_live_terminal_adoption": false
   }
 }

@@ -573,3 +573,15 @@ Source integration, protected CI, caller adoption and actual productive effects
 require their own independently observed evidence. No universal zero-failure or
 all-node adoption claim follows from this guard. Run its failure-injection tests
 through the existing `make ai-runtime-contract` target.
+
+## Human behavioral admissibility — Owner 5 November 2026
+
+Apply `policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json` and
+`docs/HUMAN_COGNITION_ADMISSIBILITY.md`. Judge observed conduct against the
+seven Owner criteria; preserve original human statements separately from
+machine inference, failures, corrections and actual retests. A human must be
+able to contest and reproduce the assessment using the supplied audit form.
+A promise, a single answer, test fixture or source save cannot establish
+permanent change. Missing/stale/unreadable evidence is UNVERIFIED. The human
+audit condition is conjoined with existing EAP policy and grants no other
+release gate. Runtime/peer adoption requires its own independent readback.

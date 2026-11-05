@@ -27,6 +27,17 @@ must not be inferred from presence, transport, analysis or authority alone.
 
 QIK-VRT AI RUNTIME ENTRYPOINT
 
+HUMAN BEHAVIORAL ADMISSIBILITY — OWNER 2026-11-05
+
+Read docs/HUMAN_COGNITION_ADMISSIBILITY.md and
+policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json before claiming cognition admission.
+Use docs/audits/COGNITION_AUDIT_FORM_DE.md: seven observable criteria, original
+human/machine evidence, human review, bounded context/time, retained violations
+and a tested correction. Promises and self-reported PASS are not evidence.
+Conjoin the independently authenticated scoped human audit with the existing
+EAP policy; retain all five wire states and every other release gate. Source
+presence does not prove runtime enforcement, other-client adoption or effect.
+
 DELIVERY REPORTING — OWNER HANDOFF 2026-10-31 17:33 MEZ — ALL NODES
 
 Apply policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json

@@ -1,0 +1,1350 @@
+{
+  "schema": "qikvrt_cluetec_reciprocal_ai_act_pilot_requirement_v1",
+  "work_unit_id": "QIKVRT_CLUETEC_RECIPROCAL_AI_ACT_PILOT_20261023_V1",
+  "version": "1.0.1-candidate.1",
+  "prepared_on": "2026-10-23",
+  "language": "de",
+  "title": "Gegenseitige AI-Act-Auditierung mit automatisiertem Dossier und gemeinsam freigegebener Einreichung",
+  "status": "REQUIREMENTS_SPECIFIED_EXECUTION_NOT_ESTABLISHED",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "declared_roles": [
+      "Principal",
+      "Code Owner",
+      "Product Owner",
+      "Verantwortlicher im Sinne des Presserechts",
+      "Safety/Security-Verantwortlicher für QIKVRT-Arbeitsergebnisse"
+    ],
+    "legal_role_verification": "SEPARATE_PRODUCT_AND_ENTITY_BOUND_ASSESSMENT_REQUIRED"
+  },
+  "authorization": {
+    "source": "Direct Owner instruction in this conversation, 2026-10-23",
+    "decision_verbatim": "Freigabe erteilt.",
+    "authorized_now": [
+      "Requirements Engineering",
+      "Vorbereitung maschinenlesbarer Anforderung und Abnahmekriterien",
+      "Persistenz des Requirement-Pakets",
+      "reviewable_repository_requirement_candidate"
+    ],
+    "future_submission_requires": "exact joint dossier, neutral human review and target-bound final authorization",
+    "authority_submission_executed": false,
+    "cluetec_contact_or_agreement_claimed": false,
+    "follow_up_grant": {
+      "source": "Direct Owner follow-up, 2026-10-23",
+      "scope": "Save the prepared ZIP in personal OneDrive root and autonomously take further steps toward the pilot goal",
+      "decision": "Freigabe erteilt."
+    }
+  },
+  "contribution_attribution": {
+    "human": "Ingolf Lohmann: Pilotidee, Zielsetzung, Rollen- und Unentgeltlichkeitserklärung, Freigabe",
+    "artificial_cognitive": "OpenAI Codex: Strukturierung, Quellenprüfung, Engineering-Anforderungen und Abnahmeentwurf",
+    "acceptance_does_not_change_origin": true
+  },
+  "repository_baseline": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "commit_sha": "8273ef8127edccf4b357fdacdd17a1e6b0f3f87f",
+    "tree_sha": "1a8003f1815b75fe534b21f242e8b782d4352796",
+    "documents": [
+      {
+        "path": "EU_AI_ACT_COMPLIANCE_STATUS.md",
+        "blob_sha": "b113385d8af26123505e21da4b492891f7691151"
+      },
+      {
+        "path": "docs/regulatory/AI_ACT_REQUIREMENTS_CONTROL_EVIDENCE_REGISTER.md",
+        "blob_sha": "3f93f5f4335f11d3c181a18726aee2eeb2af21b8"
+      },
+      {
+        "path": "docs/regulatory/system-boundary.md",
+        "blob_sha": "3b9db5498480cce7559f5b0f63f020d5749e9ca8"
+      },
+      {
+        "path": "docs/regulatory/classification-memorandum.md",
+        "blob_sha": "f43cd8feebbb7f90ea4c54ba7f60f8b758267c63"
+      },
+      {
+        "path": "docs/regulatory/EN_18286_2026_QMS_READINESS.md",
+        "blob_sha": "c10b7a1b81161caa5d4cdf603c8972ce99767794"
+      },
+      {
+        "path": "tools/qikvrt_eu_ai_act_evidence_gate.py",
+        "blob_sha": "d87df74f4f21ac807eb93f95f596d54420cf00bb"
+      }
+    ],
+    "native_writer_admission": "NOT_ESTABLISHED_IN_THIS_CLIENT",
+    "repository_integration": "DRAFT_CANDIDATE_BRANCH_NOT_MAIN"
+  },
+  "commercial_offer": {
+    "owner_own_pilot_contribution_fee_eur": 0,
+    "applies_to": [
+      "P0: zuvor angebotener Pilot zu Auditmaßnahmen und überprüftem Maßnahmenabschluss",
+      "P1: dieses gegenseitige AI-Act-Auditpilotprojekt"
+    ],
+    "partner_acceptance": "NOT_EVIDENCED",
+    "rights_waiver": false,
+    "patent_waiver": false,
+    "liability_waiver": false,
+    "third_party_royalties_and_statutory_fees": "REMAIN_SUBJECT_TO_APPLICABLE_LAW_AND_AGREED_LICENSES",
+    "no_unapproved_spend": true,
+    "scope_and_license_grant": "TO_BE_BOUND_IN_PILOT_AGREEMENT"
+  },
+  "sources": [
+    {
+      "id": "EU_AI_ACT",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "type": "REGULATION",
+      "status": "CURRENT_TEXT_AND_AMENDMENTS_MUST_BE_RESOLVED_AT_EXECUTION"
+    },
+    {
+      "id": "EU_AI_OMNIBUS_2026",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng",
+      "type": "AMENDING_REGULATION",
+      "status": "OFFICIAL_METADATA_OBSERVED; DIRECT_EURLEX_BODY_BLOCKED_BY_ANTI_BOT"
+    },
+    {
+      "id": "AI_ACT_OFFICIAL_EXPLORER",
+      "url": "https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-113",
+      "type": "OFFICIAL_COMMISSION_EXPLORER",
+      "status": "HTTP_200_SOURCE_BYTES_CAPTURED; TOP_LEVEL_INDEX_ONLY; NOT_A_SUBSTITUTE_FOR_BINDING_LEGAL_TEXT"
+    },
+    {
+      "id": "QMS_CITATION",
+      "url": "https://eur-lex.europa.eu/eli/dec_impl/2026/2274/oj/eng",
+      "type": "IMPLEMENTING_DECISION",
+      "status": "OFFICIAL_METADATA_OBSERVED; FULL_CLAUSE_AND_APPLICABILITY_REVIEW_REQUIRED"
+    },
+    {
+      "id": "PRODUCT_LIABILITY",
+      "url": "https://eur-lex.europa.eu/eli/dir/2024/2853/oj/eng",
+      "type": "DIRECTIVE_AND_NATIONAL_IMPLEMENTATION_TO_ASSESS",
+      "status": "ROLE_PRODUCT_DATE_AND_JURISDICTION_DEPENDENT"
+    },
+    {
+      "id": "EAP_DRAFT_03",
+      "url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-03.html",
+      "type": "INDIVIDUAL_EXPERIMENTAL_INTERNET_DRAFT",
+      "status": "WORK_IN_PROGRESS_NOT_IETF_ENDORSEMENT"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "CLA-001",
+      "topic": "SCOPE",
+      "shall": "Die Spezifikation MUSS die Owner-Freigabe als Entwicklungs- und Vorbereitungsvollmacht erfassen; konkrete Behördensendungen benötigen die später eingefrorene, paket- und empfängergebundene Versandfreigabe.",
+      "acceptance": "Ohne konkrete Paketfreigabe entsteht ausschließlich ein Entwurf; keine Nachricht verlässt das System.",
+      "evidence_types": [
+        "OWNER_INSTRUCTION",
+        "AUTHORIZATION_RECORD"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-001"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-002",
+      "topic": "PARTNER",
+      "shall": "cluetec MUSS den Pilotumfang, Zugriff und die benannten Prüfer selbst bestätigen; die Erklärung Ingolf Lohmanns DARF keine Zustimmung, Verpflichtung oder Zertifizierungsbefugnis von cluetec fingieren.",
+      "acceptance": "Fehlende Partnerbestätigung lässt das Partner-Gate OPEN; unabhängige Vorbereitung läuft weiter.",
+      "evidence_types": [
+        "PARTNER_ACCEPTANCE"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-002"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-003",
+      "topic": "SUBJECT",
+      "shall": "Für beide Auditspuren MÜSSEN Produkt, Zweck, Version, Komponenten, Modelle, Daten, Konfiguration, Betreiber, Rechtsentität und Deployment samt Repository-HEAD/TREE exakt gebunden sein.",
+      "acceptance": "Eine Änderung am gebundenen Gegenstand invalidiert davon abhängige Nachweise und Freigaben.",
+      "evidence_types": [
+        "SUBJECT_MANIFEST"
+      ],
+      "legal_refs": [
+        "Art.2",
+        "Art.3",
+        "Art.6"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-003"
+      ],
+      "expanded_legal_refs": [
+        "Art.2",
+        "Art.3",
+        "Art.6"
+      ]
+    },
+    {
+      "id": "CLA-004",
+      "topic": "LAW",
+      "shall": "Vor jeder Beurteilung und vor Versand MUSS der maßgebliche Rechtsstand aus amtlichen Quellen mit Fassung, Änderungsakten, Geltungsdaten, Abrufzeit und Digest bestimmt werden; Entwürfe sind getrennt zu behandeln.",
+      "acceptance": "Ein veralteter, widersprüchlicher oder nicht vollständig aufgelöster Rechtsstand sperrt den Konformitäts- und Versandabschluss.",
+      "evidence_types": [
+        "LEGAL_BASELINE",
+        "SOURCE_CAPTURE"
+      ],
+      "legal_refs": [
+        "Art.113"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-004"
+      ],
+      "expanded_legal_refs": [
+        "Art.113"
+      ]
+    },
+    {
+      "id": "CLA-005",
+      "topic": "COVERAGE",
+      "shall": "Sämtliche Artikel, Untergliederungen, Anhänge und anwendbaren Folgeakte MÜSSEN inventarisiert und nach Rolle, Produkt, Zweck, Gebiet und Zeit beurteilt werden. Ein begründetes N/A benötigt Tatsachen und verantwortliches Review.",
+      "acceptance": "Kein unbehandelter Rechtstextknoten; zusätzliche Artikel und Anhang XIV werden erkannt. OPEN zählt nie als N/A oder erfüllt.",
+      "evidence_types": [
+        "LEGAL_COVERAGE_MATRIX"
+      ],
+      "legal_refs": [
+        "ALL_PROVISIONS"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-005"
+      ],
+      "expanded_legal_refs": [
+        "ALL_PROVISIONS"
+      ]
+    },
+    {
+      "id": "CLA-006",
+      "topic": "CLASSIFY",
+      "shall": "Die Anwendbarkeit MUSS für Speicherkomponente, KI-Funktionen, Auditwerkzeug und Gesamtsystem getrennt geprüft werden, einschließlich Betreiber-/Anbieter-/GPAI-Rollen, Hochrisikokriterien, Ausnahmen, Übergängen und gegebenenfalls sektoraler Produktvorschriften.",
+      "acceptance": "Reine Speichertechnik oder SSO begründet keine pauschale KI- oder Hochrisikoeinstufung; eine offene Einordnung bleibt MORE_FACTS_REQUIRED.",
+      "evidence_types": [
+        "SIGNED_CLASSIFICATION"
+      ],
+      "legal_refs": [
+        "Art.2",
+        "Art.3",
+        "Art.6",
+        "Art.25",
+        "Art.51",
+        "Art.111",
+        "Art.113"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-006"
+      ],
+      "expanded_legal_refs": [
+        "Art.2",
+        "Art.3",
+        "Art.6",
+        "Art.25",
+        "Art.51",
+        "Art.111",
+        "Art.113"
+      ]
+    },
+    {
+      "id": "CLA-007",
+      "topic": "TRACE",
+      "shall": "Jede anwendbare Einzelpflicht MUSS auf Kontrollmaßnahme, Verantwortlichen, Implementierung, Test, Betriebsnachweis, Review und Dokumentabschnitt zurückverfolgt werden.",
+      "acceptance": "Fehlende oder nicht zum Subject passende Nachweise bleiben OPEN beziehungsweise NOT_EVIDENCED.",
+      "evidence_types": [
+        "REQUIREMENT_CONTROL_EVIDENCE_GRAPH"
+      ],
+      "legal_refs": [
+        "ALL_APPLICABLE"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-007"
+      ],
+      "expanded_legal_refs": [
+        "ALL_APPLICABLE"
+      ]
+    },
+    {
+      "id": "CLA-008",
+      "topic": "EVIDENCE",
+      "shall": "Formale Beweise, Modellprüfung, Test, Beobachtung, Rechtsquelle, Interpretation und Owner-Erklärung MÜSSEN getrennte Evidenzklassen behalten.",
+      "acceptance": "CI-PASS, Dokumenterzeugung, Hash, IETF-Veröffentlichung oder LLM-Konsens erzeugen keine allgemeine Rechtskonformität.",
+      "evidence_types": [
+        "TYPED_CLAIM_RECORD"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-008"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-009",
+      "topic": "AUTOMATE",
+      "shall": "Alle objektiv maschinell prüfbaren Kontrollen und Dokumentationsschritte MÜSSEN reproduzierbar automatisiert werden; fachliche oder rechtliche Wertungen benötigen die benannte verantwortliche Reviewinstanz.",
+      "acceptance": "Nicht maschinell entscheidbare Fragen werden mit Sachstand, Entscheidungskriterien und zuständigem Reviewer eskaliert; keine simulierten Signaturen.",
+      "evidence_types": [
+        "CHECK_REPORT",
+        "DECISION_REQUEST"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-009"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-010",
+      "topic": "REALITY",
+      "shall": "Nachweise für tatsächliche Betriebswirksamkeit, Safety, Security, Datenqualität und menschliche Aufsicht MÜSSEN am festgelegten System und unter offengelegten Testbedingungen entstehen.",
+      "acceptance": "Ein bloßer Architekturtext oder synthetischer Test schließt keine Feld- oder Human-Factors-Anforderung.",
+      "evidence_types": [
+        "OPERATIONAL_EVIDENCE"
+      ],
+      "legal_refs": [
+        "Art.9",
+        "Art.10",
+        "Art.14",
+        "Art.15"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-010"
+      ],
+      "expanded_legal_refs": [
+        "Art.9",
+        "Art.10",
+        "Art.14",
+        "Art.15"
+      ]
+    },
+    {
+      "id": "CLA-011",
+      "topic": "STORAGE",
+      "shall": "Originale, Ableitungen und Korrekturen MÜSSEN über die bestehende QIKVRT-Persistenz mit Version, Provenienz, Integritätsprüfung, Zugriffsschutz und eigenständigem Readback erhalten bleiben.",
+      "acceptance": "Manipulation, Verlust, vollgelaufener Speicher und Wiederherstellung werden getestet; historische Originale werden nicht überschrieben.",
+      "evidence_types": [
+        "NATIVE_EVENT",
+        "STORAGE_READBACK"
+      ],
+      "legal_refs": [
+        "Art.12",
+        "Art.18",
+        "Art.19"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-011"
+      ],
+      "expanded_legal_refs": [
+        "Art.12",
+        "Art.18",
+        "Art.19"
+      ]
+    },
+    {
+      "id": "CLA-012",
+      "topic": "PRIVACY",
+      "shall": "Personenbezogene Daten, Geschäftsgeheimnisse und patentkritische Inhalte MÜSSEN nach Zweckbindung und Empfängerkreis getrennt werden; öffentliche und nicht öffentliche Aktenfassungen sind gesondert freizugeben.",
+      "acceptance": "Ein Behördenadressat bedeutet keine Veröffentlichung; fremde Mandantendaten, Schlüssel und unnötige personenbezogene Daten gelangen nicht in öffentliche Repositories.",
+      "evidence_types": [
+        "DATA_RELEASE_MATRIX",
+        "REDACTION_REVIEW"
+      ],
+      "legal_refs": [
+        "Art.4a",
+        "Art.78"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-012"
+      ],
+      "expanded_legal_refs": [
+        "Art.4a",
+        "Art.78"
+      ]
+    },
+    {
+      "id": "CLA-013",
+      "topic": "DOCUMENTS",
+      "shall": "Das System MUSS alle aufgrund des Anwendbarkeitsentscheids benötigten Akten automatisch erzeugen: Einordnung, Risiken, Daten-/Modellgovernance, technische Dokumentation, Protokollierung, Anleitungen, Aufsicht, Sicherheit, QMS, Monitoring, Vorfälle, Korrekturen und erforderliche Erklärungs-/Registrierungsentwürfe.",
+      "acceptance": "Jedes Dokument besitzt Quelle, Subject, Version, Erzeuger, offene Punkte und nachgewiesene Inhalte; eine zu unterzeichnende Erklärung wird nicht als bereits unterzeichnet ausgegeben.",
+      "evidence_types": [
+        "DOCUMENT_SET_MANIFEST"
+      ],
+      "legal_refs": [
+        "Art.9-27",
+        "Art.47",
+        "Art.49",
+        "Art.50",
+        "Art.53-55",
+        "Art.72",
+        "Art.73",
+        "Annex.IV",
+        "Annex.V",
+        "Annex.VIII",
+        "Annex.XI",
+        "Annex.XII"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-013"
+      ],
+      "expanded_legal_refs": [
+        "Art.9",
+        "Art.10",
+        "Art.11",
+        "Art.12",
+        "Art.13",
+        "Art.14",
+        "Art.15",
+        "Art.16",
+        "Art.17",
+        "Art.18",
+        "Art.19",
+        "Art.20",
+        "Art.21",
+        "Art.22",
+        "Art.23",
+        "Art.24",
+        "Art.25",
+        "Art.26",
+        "Art.27",
+        "Art.47",
+        "Art.49",
+        "Art.50",
+        "Art.53",
+        "Art.54",
+        "Art.55",
+        "Art.72",
+        "Art.73",
+        "Annex.IV",
+        "Annex.V",
+        "Annex.VIII",
+        "Annex.XI",
+        "Annex.XII"
+      ]
+    },
+    {
+      "id": "CLA-014",
+      "topic": "RECIPROCAL",
+      "shall": "Spur A MUSS QIKVRT und sein automatisches Dossier durch benannte neutrale cluetec-Menschen prüfen lassen. Spur B MUSS im bestätigten Partnerumfang cluetec-Kontrollen beziehungsweise KI-Funktionen mit QIKVRT auditieren; jede Seite behält eigene Feststellungen, Verantwortliche und Antworten.",
+      "acceptance": "Wechselseitigkeit erzeugt weder Zugriffserlaubnis auf fremde Systeme noch gegenseitige automatische Selbstbestätigung.",
+      "evidence_types": [
+        "AUDIT_A",
+        "AUDIT_B",
+        "RESPONSE_RECORDS"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-014"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-015",
+      "topic": "NEUTRAL_REVIEW",
+      "shall": "Das menschliche Review MUSS Identität, Qualifikation, Mandat, Unabhängigkeitserklärung, Interessenkonflikte, geprüfte Akten, Findings und Entscheidung enthalten. Gegenseitige Geschäftsbeziehungen sind offenzulegen und erforderlichenfalls durch einen unbefangenen zusätzlichen Reviewer zu beherrschen.",
+      "acceptance": "Ein Entwickler prüft nicht allein seine eigene Arbeit; ungeklärte Konflikte oder fehlendes vorgeschriebenes menschliches Review sperren die reguläre gemeinsame Sendung.",
+      "evidence_types": [
+        "SIGNED_HUMAN_REVIEW"
+      ],
+      "legal_refs": [
+        "Art.43"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-015"
+      ],
+      "expanded_legal_refs": [
+        "Art.43"
+      ]
+    },
+    {
+      "id": "CLA-016",
+      "topic": "PAIR_REVIEW",
+      "shall": "Requirements Engineering, DevOps, Clean Coding, Pair Reviews und Tested Event Model Driven Development MÜSSEN für Änderungen verbindlich angewandt werden; technische Peer-Prüfung bleibt von neutralem Compliance-Review getrennt.",
+      "acceptance": "Jede materielle Änderung hat Requirement-ID, Änderung, Pair-Review, Testfall und dispositionsgebundenen Readback.",
+      "evidence_types": [
+        "CHANGE_REVIEW_TEST_CHAIN"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-016"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-017",
+      "topic": "REVIEW_BINDING",
+      "shall": "Menschliche Entscheidungen MÜSSEN an die exakt geprüften Artefakt-Digests und den einschlägigen Scope gebunden sein; Änderungen an Inhalt, Empfängerfassung oder relevanter Regelung lösen eine dokumentierte Impact-Prüfung und nötige erneute Freigabe aus.",
+      "acceptance": "Ein alter Kommentar oder eine Freigabe für andere Bytes autorisiert die neue Fassung nicht. Die Owner-Freigabe dieser Spezifikation ersetzt das verlangte cluetec-Review nicht.",
+      "evidence_types": [
+        "REVIEW_BINDING",
+        "IMPACT_GRAPH"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-017"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-018",
+      "topic": "MERGE",
+      "shall": "Automatisches Dossier und menschlicher Prüfbericht MÜSSEN als unterscheidbare Originale in ein gemeinsames, deterministisch erzeugtes Versandmanifest einfließen; beide Auditspuren und sämtliche Gegenäußerungen bleiben nachvollziehbar.",
+      "acceptance": "Widersprüche, kritische offene Findings oder unklare Zuordnung verhindern READY_FOR_SUBMISSION; kein KI-Überschreiben menschlicher Findings.",
+      "evidence_types": [
+        "JOINT_DOSSIER_MANIFEST"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-018"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-019",
+      "topic": "ROUTING",
+      "shall": "Zuständige öffentliche Stellen, mögliche benannte Stellen und notwendige Registrierungsportale MÜSSEN aus der konkreten Rechtsrolle, Jurisdiktion, Produktkategorie und Verfahrensart abgeleitet und amtlich verifiziert werden.",
+      "acceptance": "Keine pauschale Massenmail an alle Behörden und kein erfundener Empfänger; je Ziel stehen Zuständigkeit, Rechtsgrund, Fälligkeit und erlaubte Inhalte fest.",
+      "evidence_types": [
+        "VERIFIED_RECIPIENT_REGISTRY"
+      ],
+      "legal_refs": [
+        "Art.43",
+        "Art.49",
+        "Art.70",
+        "Art.71",
+        "Art.73",
+        "Art.74"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-019"
+      ],
+      "expanded_legal_refs": [
+        "Art.43",
+        "Art.49",
+        "Art.70",
+        "Art.71",
+        "Art.73",
+        "Art.74"
+      ]
+    },
+    {
+      "id": "CLA-020",
+      "topic": "FORMAL_ROUTE",
+      "shall": "Das Versandpaket MUSS das jeweils vorgesehene Verfahren, Format, Sprache, Identitäts-/Signaturanforderungen, Vertretung und amtliche Einreichungsstelle erfüllen.",
+      "acceptance": "Ein gewöhnlicher Mailversand wird nicht als Portalregistrierung behandelt; ein neutrales Partnerreview wird nicht als gesetzlich erforderliche Notified-Body-Bewertung ausgegeben.",
+      "evidence_types": [
+        "PROCEDURE_PROFILE",
+        "SIGNATURE_VALIDATION"
+      ],
+      "legal_refs": [
+        "Art.43",
+        "Art.44",
+        "Art.47",
+        "Art.49"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-020"
+      ],
+      "expanded_legal_refs": [
+        "Art.43",
+        "Art.44",
+        "Art.47",
+        "Art.49"
+      ]
+    },
+    {
+      "id": "CLA-021",
+      "topic": "JOINT_RELEASE",
+      "shall": "Vor der regulären gemeinsamen Einreichung MÜSSEN QIKVRT-Prüfung, erforderliches neutrales menschliches Review, Erklärungsbefugnisse, Rechte, Empfängerkreis und die Paket-/Sendefreigaben aller betroffenen Absender gültig vorliegen.",
+      "acceptance": "READY_FOR_SUBMISSION setzt beide eingefrorenen Arbeitsergebnisse und erforderliche zustimmende Entscheidungen voraus; es erzeugt selbst noch keinen externen Effekt.",
+      "evidence_types": [
+        "SUBMISSION_AUTHORIZATION"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-021"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-022",
+      "topic": "ONE_SHOT",
+      "shall": "Ein einzelner authentifizierter Startauftrag MUSS die bereits vollständig vorbereitete gemeinsame Sendung über den bestehenden autorisierten Runtime-/Transputer-Pfad dauerhaft übernehmen und ohne wiederholtes Owner-Anstoßen bis zu einem nachgewiesenen Endzustand führen.",
+      "acceptance": "Doppelklick, Verbindungsabbruch und Clientwechsel führen zum selben Work-Unit-Status; ein nicht zugelassener oder ungebundener Executor sendet nichts.",
+      "evidence_types": [
+        "ADMISSION_RECEIPT",
+        "WORK_UNIT_STATUS"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-022"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-023",
+      "topic": "EAP",
+      "shall": "Alle geschützten Freigaben MÜSSEN die bestehende IETF-EFFECT_ACK-v1-Fünf-Zustands-Semantik und Consumer-Validierung verwenden; nur ein gültiges EFFECT_ACK_DONE darf die konkret gebundene reguläre Folgeaktion freigeben.",
+      "acceptance": "NACK, CONTINUE, ISOLATE, BLOCK, Timeout, Replay oder ungültige Bindung führen nicht zur regulären Freigabe; keine neue Wire-Semantik.",
+      "evidence_types": [
+        "EFFECT_ACK_RECORD",
+        "CONSUMER_VALIDATION"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-023"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-024",
+      "topic": "OUTBOX",
+      "shall": "Versandaufträge, Writer-Fencing, Berechtigung, Empfängerfassungen, Versuch und Beobachtung MÜSSEN vor beziehungsweise nach dem Netzwerkeffekt im ursprünglichen zulässigen Journal dauerhaft gesichert werden.",
+      "acceptance": "Crash an jeder Versandgrenze bewahrt bestätigte Zustände; historische Kopien erhalten keine erfundene Writer-Zulassung.",
+      "evidence_types": [
+        "DURABLE_OUTBOX",
+        "FENCING_PROOF"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-024"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-025",
+      "topic": "DEDUP",
+      "shall": "Je Empfänger und Einreichung MUSS eine stabile Identität aus Work Unit, Subject, freigegebenem Paket-Digest, Verfahrensversion und Zielidentität bestehen; vorhandene Provider-Idempotenz ist zu nutzen.",
+      "acceptance": "Wiederholte Startbefehle lösen keine bewiesenermaßen bereits erfolgte Einreichung erneut aus. Ein nicht idempotenter externer Dienst erhält keine unbelegte Exactly-once-Garantie.",
+      "evidence_types": [
+        "IDEMPOTENCY_RECORD"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-025"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-026",
+      "topic": "AMBIGUITY",
+      "shall": "Bei unklarer Netzantwort MUSS zunächst der autoritative externe Transaktions-/Empfangszustand abgefragt werden; ohne sichere Auflösung bleibt der Fall INDETERMINATE und ein blinder erneuter Versand gesperrt.",
+      "acceptance": "Verlorenes ACK wird nicht als Fehlschlag mit automatischem Doppelversand und nicht als erfolgreiche Zustellung behandelt.",
+      "evidence_types": [
+        "RECONCILIATION_EVIDENCE"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-026"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-027",
+      "topic": "PARTIAL",
+      "shall": "Mehrere Zielstellen MÜSSEN eigene Zustände und Quittungen behalten; Teilerfolg wird sichtbar fortgeführt, bereits erfolgte irreversible Sendungen werden nicht als rückgängig gemacht dargestellt.",
+      "acceptance": "Ausfall einer Stelle erzeugt PARTIALLY_DELIVERED; keine Behauptung einer atomaren behördenübergreifenden Transaktion.",
+      "evidence_types": [
+        "PER_RECIPIENT_RESULT_SET"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-027"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-028",
+      "topic": "READBACK",
+      "shall": "Einreichungsabschluss MUSS durch eine frische, Ziel-/Paket-gebundene amtliche oder providerseitige Empfangsbestätigung und soweit möglich unabhängigen Readback belegt sein.",
+      "acceptance": "HTTP-202, SMTP-Annahme, lokale Speicherung und EFFECT_ACK-Freigabe allein beweisen weder behördlichen Empfang noch sachliche Genehmigung.",
+      "evidence_types": [
+        "RECEIPT",
+        "INDEPENDENT_READBACK"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-028"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-029",
+      "topic": "DEADLINES",
+      "shall": "Fristen, Aufbewahrung und Reaktionspflichten MÜSSEN aus dem gültigen Rechtsstand und konkreten Verfahren berechnet, überwacht und verantwortlich eskaliert werden.",
+      "acceptance": "Ein ausstehendes Partnerreview darf eine gesondert bestehende dringende Meldepflicht nicht unsichtbar verzögern; dafür ist rechtzeitig ein eigenständig legitimierter Notfall-/Meldepfad vorzubereiten, ohne automatische Selbstfreigabe.",
+      "evidence_types": [
+        "DEADLINE_REGISTER",
+        "ESCALATION_RECEIPT"
+      ],
+      "legal_refs": [
+        "Art.18",
+        "Art.19",
+        "Art.20",
+        "Art.21",
+        "Art.73",
+        "Art.111",
+        "Art.113"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-029"
+      ],
+      "expanded_legal_refs": [
+        "Art.18",
+        "Art.19",
+        "Art.20",
+        "Art.21",
+        "Art.73",
+        "Art.111",
+        "Art.113"
+      ]
+    },
+    {
+      "id": "CLA-030",
+      "topic": "RIGHTS",
+      "shall": "Haftung, Safety/Security, Datenschutz, Patente, Erfinderschaft, bestehende Lizenzen und daraus folgende Zahlungsansprüche MÜSSEN separat rollen-, produkt-, zeit- und rechtsordnungsbezogen erfasst und respektiert werden.",
+      "acceptance": "Ein unbezahlter Pilot ist weder ein pauschaler Haftungsverzicht noch Patentverzicht oder automatische freie Lizenz; widersprüchliche Rechte sperren die betreffende Nutzung.",
+      "evidence_types": [
+        "RIGHTS_AND_RESPONSIBILITY_MATRIX"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-030"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-031",
+      "topic": "FREE_OFFER",
+      "shall": "Ingolf Lohmann MUSS seine eigenen Pilotbeiträge in diesem sowie im zuvor angebotenen Auditmaßnahmen-Pilot unentgeltlich anbieten; Umfang und Rechte sind im jeweiligen Pilotvertrag festzuhalten.",
+      "acceptance": "Eigene vereinbarte Pilotleistung: 0 EUR. Gesetzliche oder Drittanbieter-/Lizenzgebühren werden nicht aufgehoben und nur nach bestehender vertraglicher Bindung beziehungsweise konkreter Kostenfreigabe ausgelöst.",
+      "evidence_types": [
+        "PILOT_OFFER",
+        "COST_REGISTER"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-031"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-032",
+      "topic": "OWNER_ROLES",
+      "shall": "Die von Ingolf Lohmann erklärten Rollen Principal, Code Owner, Product Owner, presserechtlich Verantwortlicher und Safety/Security-Verantwortlicher MÜSSEN als Owner-Erklärung erhalten bleiben; gesetzliche Hersteller-, Anbieter-, Betreiber- und Vertretungsrollen sind gesondert zu prüfen.",
+      "acceptance": "Weder das JSON noch ein Modell weist einer anderen Person eine Rechtsrolle zu oder ersetzt die tatsächliche Rollen-/Mandatsprüfung.",
+      "evidence_types": [
+        "OWNER_DECLARATION",
+        "LEGAL_ROLE_ASSESSMENT"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-032"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-033",
+      "topic": "RE_ENGINEERING",
+      "shall": "Unklarheiten MÜSSEN mit stabiler ID, Faktenlage, Auswirkung, Zuständigkeit, nächstem Schritt, Prüfkriterium und Abhängigkeiten im bestehenden Backlog bearbeitet werden; deterministische zugelassene Folgeschritte laufen autonom weiter.",
+      "acceptance": "Fehlende Tatsachen werden recherchiert oder gezielt zur verantwortlichen Entscheidung eskaliert; kein Default-PASS und kein verdecktes Erfinden von Rechtsauslegung oder Partnerwillen.",
+      "evidence_types": [
+        "OPEN_ISSUE",
+        "ADR",
+        "CLOSURE_RECEIPT"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-033"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-034",
+      "topic": "REUSE",
+      "shall": "Das Pilotvorhaben MUSS vorhandene AI-Act-Register, Evidenz-Gate, EAP-Kern, TEMDD-Ledger, Terminal, Selbsthosting-, Review- und Continuation-Verträge erweitern, statt einen parallelen Executor, neue Wire-Zustände oder einen neuen Client-Timer einzuführen.",
+      "acceptance": "Integration nennt bestehenden Pfad, nötige Erweiterung und Regressionen; nicht vorhandene Bindungen bleiben OPEN.",
+      "evidence_types": [
+        "REUSE_MAP",
+        "INTEGRATION_DIFF"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-034"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-035",
+      "topic": "SECURITY",
+      "shall": "Eingehende Dokumente und Modellvorschläge MÜSSEN als Daten behandelt werden; Rollenprüfung, Mandantentrennung, Schlüsselreferenzen, Malware-/Injection-Prüfung und feste Zielfreigaben schützen den Vorgang.",
+      "acceptance": "Prompt-Injection in einem Prüfbericht kann keine Empfänger ändern, Gates überspringen, Geheimnisse auslesen oder eine Sendung auslösen.",
+      "evidence_types": [
+        "THREAT_MODEL",
+        "SECURITY_TESTS"
+      ],
+      "legal_refs": [
+        "Art.15",
+        "Art.78"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-035"
+      ],
+      "expanded_legal_refs": [
+        "Art.15",
+        "Art.78"
+      ]
+    },
+    {
+      "id": "CLA-036",
+      "topic": "VALIDATION",
+      "shall": "Die Abnahme MUSS positive und negative fachliche, rechtliche, technische und Betriebsfälle umfassen, einschließlich Ausfall-/Wiederanlaufmatrix auf der tatsächlichen Zielumgebung.",
+      "acceptance": "Ein Dry Run ruft keine produktive Einreichung auf; Zeit-/Last-/Recovery-Ziele und Prüfbedingungen werden vor Ergebnismessung festgelegt.",
+      "evidence_types": [
+        "TEST_PLAN",
+        "LIVE_ADAPTER_ACCEPTANCE"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-036"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-037",
+      "topic": "CHANGE",
+      "shall": "Änderungen an Code, Modell, Daten, Deployment, Rechtsstand, Review oder Zielfassung MÜSSEN über einen Impact-Graph zu den betroffenen Prüfungen und Freigaben zurückverfolgt werden.",
+      "acceptance": "Bestandene Prüfungen werden nicht ungeprüft auf neue Subjects übertragen; ein Widerruf verhindert noch nicht erfolgte Sendungen und erhält bereits erfolgte als Geschichte.",
+      "evidence_types": [
+        "CHANGE_IMPACT",
+        "REVOCATION_RECORD"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-037"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-038",
+      "topic": "STANDARDS",
+      "shall": "Bei Nutzung von EN 18286:2026 oder anderer Normen MÜSSEN aktuelle amtliche Fundstelle, genaue Ausgabe, Abdeckung und rechtmäßiger Textzugang gebunden werden.",
+      "acceptance": "Die harmonisierte Normroute ersetzt weder die vollständige Anwendbarkeitsprüfung noch Nachweise außerhalb ihrer Abdeckung; geschützter Normtext wird nicht unberechtigt veröffentlicht.",
+      "evidence_types": [
+        "STANDARDS_APPLICABILITY_MATRIX"
+      ],
+      "legal_refs": [
+        "Art.17",
+        "Art.40"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-038"
+      ],
+      "expanded_legal_refs": [
+        "Art.17",
+        "Art.40"
+      ]
+    },
+    {
+      "id": "CLA-039",
+      "topic": "FOLLOW_UP",
+      "shall": "Nach dem einmaligen Start MUSS die zugelassene Runtime Rückfragen, Ablehnungen, Fristen und Folgeaufgaben nachvollziehbar in denselben Prozess zurückführen; sachliche Behördenentscheidungen bleiben extern belegt.",
+      "acceptance": "Forget bedeutet keine wiederholte Bedienung des Clients, nicht Vergessen gesetzlicher Verantwortung oder automatische positive Behördenentscheidung.",
+      "evidence_types": [
+        "FOLLOW_UP_WORK_UNIT",
+        "AUTHORITY_DECISION"
+      ],
+      "legal_refs": [
+        "Art.20",
+        "Art.21",
+        "Art.72",
+        "Art.73"
+      ],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-039"
+      ],
+      "expanded_legal_refs": [
+        "Art.20",
+        "Art.21",
+        "Art.72",
+        "Art.73"
+      ]
+    },
+    {
+      "id": "CLA-040",
+      "topic": "PUBLICATION",
+      "shall": "Patentkritische Offenlegung, neue Publikation, Änderung bestehender Lizenztexte und Veröffentlichung von Auditinhalten MÜSSEN eigene ziel- und inhaltsgebundene Entscheidungen behalten.",
+      "acceptance": "Die Freigabe dieses Requirements veröffentlicht keine Erfindung, versendet keine Akten und ändert keine bestehende Lizenz.",
+      "evidence_types": [
+        "DISCLOSURE_AUTHORIZATION"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-040"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-041",
+      "topic": "PROVENANCE",
+      "shall": "Jedes erzeugte Arbeitsergebnis MUSS menschliche und künstlich-kognitive Beiträge, Werkzeug-/Modellversion, Quellmaterial und Prüfbasis unterscheiden, ohne Geheimnisse oder interne vertrauliche Gedankengänge offenzulegen.",
+      "acceptance": "Die Übernahme eines Vorschlags durch den Owner macht dessen Entstehung nicht nachträglich rein menschlich.",
+      "evidence_types": [
+        "ARTIFACT_PROVENANCE"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-041"
+      ],
+      "expanded_legal_refs": []
+    },
+    {
+      "id": "CLA-042",
+      "topic": "STATUS",
+      "shall": "Spezifikationsvollständigkeit, implementierte Kontrollen, Review, Sendefreigabe, tatsächlicher Empfang und Rechtskonformität MÜSSEN getrennte Statusfelder behalten.",
+      "acceptance": "Der aktuelle Datensatz bleibt REQUIREMENTS_SPECIFIED_EXECUTION_NOT_ESTABLISHED und COMPLIANCE_NOT_ESTABLISHED bis zu eigenständigen Nachweisen.",
+      "evidence_types": [
+        "STATUS_RECORD"
+      ],
+      "legal_refs": [],
+      "state": "SPECIFIED_NOT_IMPLEMENTATION_VERIFIED",
+      "acceptance_case_ids": [
+        "AT-042"
+      ],
+      "expanded_legal_refs": []
+    }
+  ],
+  "audit_tracks": [
+    {
+      "id": "A",
+      "subject": "Exakt festgelegte QIKVRT-Speicher-/KI-/Workflow-Funktionen",
+      "automated_work": "QIKVRT: Pflichtenabgleich, Beweiskette, Dokumente, Versandvorbereitung",
+      "human_review": "Benannte neutrale Menschen bei cluetec; Kompetenz und Interessenkonflikte zu dokumentieren",
+      "partner_result": "Originaler Prüfbericht mit Findings, Entscheidung und signierter Aktenbindung"
+    },
+    {
+      "id": "B",
+      "subject": "Von cluetec ausdrücklich zugelassene Auditprodukte, KI-Funktionen oder Audit-/Freigabekontrollen",
+      "automated_work": "QIKVRT: gegen festgelegten Prüfumfang gerichtete automatisierte Auditierung",
+      "human_review": "Benannte, vom jeweils geprüften Werk unabhängige verantwortliche Menschen; erforderliche fachrechtliche Bewertung bleibt gesondert",
+      "partner_result": "Eigene Nachweise, Findings, Gegenäußerungen und Zustimmungen von cluetec"
+    }
+  ],
+  "document_contract": {
+    "required_for_each": [
+      "artifact_id",
+      "type",
+      "subject_ref",
+      "legal_baseline_ref",
+      "requirement_ids",
+      "evidence_refs",
+      "version",
+      "content_sha256",
+      "provenance",
+      "classification",
+      "open_findings",
+      "review_refs"
+    ],
+    "generated_only_when_applicable": [
+      "classification_memo",
+      "requirements_controls_evidence_matrix",
+      "risk_management_file",
+      "data_and_model_governance_file",
+      "technical_documentation_annex_IV",
+      "logging_and_retention_file",
+      "instructions_and_human_oversight_file",
+      "accuracy_robustness_cybersecurity_file",
+      "QMS_and_internal_audit_file",
+      "post_market_and_incident_plans",
+      "FRIA_or_DPIA_if_triggered",
+      "EU_declaration_draft_if_required",
+      "registration_form_if_required",
+      "authority_cover_letter",
+      "machine_report_A",
+      "machine_report_B",
+      "independent_human_review",
+      "findings_and_responses",
+      "rights_licenses_costs_matrix",
+      "joint_submission_manifest",
+      "per_recipient_payload",
+      "delivery_and_follow_up_record"
+    ],
+    "draft_is_not_signed_declaration": true
+  },
+  "workflow": {
+    "temdd_chain": [
+      "COMPILE",
+      "BIND",
+      "RESOLVE",
+      "EXECUTE",
+      "TEST",
+      "OBSERVE",
+      "READBACK",
+      "ACCEPT",
+      "EFFECT_ACK_DONE"
+    ],
+    "project_states": [
+      "OFFERED",
+      "SCOPING",
+      "APPLICABILITY_OPEN",
+      "CONTROLS_AND_EVIDENCE",
+      "DOCUMENTS_PREPARED",
+      "HUMAN_REVIEW_REQUIRED",
+      "REWORK_REQUIRED",
+      "JOINT_DOSSIER_FROZEN",
+      "READY_FOR_SUBMISSION",
+      "ADMITTED_FOR_DISPATCH",
+      "DISPATCHING",
+      "PARTIALLY_DELIVERED",
+      "INDETERMINATE",
+      "DELIVERY_CONFIRMED",
+      "FOLLOW_UP_OPEN",
+      "CLOSED_FOR_DECLARED_SCOPE"
+    ],
+    "project_states_are_not_new_EAP_wire_states": true,
+    "EAP_states": [
+      "EFFECT_NACK",
+      "EFFECT_ACK_CONTINUE",
+      "EFFECT_ACK_DONE",
+      "EFFECT_ACK_ISOLATE",
+      "EFFECT_ACK_BLOCK"
+    ],
+    "ordinary_release_rule": "Only a schema-, origin-, policy-, freshness-, chain- and subject-validated EFFECT_ACK_DONE may authorize the exact protected action.",
+    "joint_filing_gate": [
+      "subject_frozen",
+      "applicability_and_procedure_resolved",
+      "all_applicable_required_evidence_valid",
+      "required_human_reviews_valid",
+      "critical_findings_closed",
+      "rights_and_disclosure_allowed",
+      "recipient_and_channel_verified",
+      "signatures_and_representation_valid",
+      "joint_package_hash_bound",
+      "sender_specific_final_authorizations_valid",
+      "existing_native_writer_and_executor_admitted"
+    ],
+    "delivery_done_rule": "Every required recipient has a fresh exact-subject bound receipt/readback or an explicit legally reviewed no-filing disposition. Unknown/partial is not delivery done.",
+    "regulatory_acceptance_rule": "Only an actual competent authority decision supports its own exact legal scope. Receipt does not establish substantive acceptance."
+  },
+  "one_shot_contract": {
+    "kind": "PROPOSED_OPERATION_CONTRACT_NOT_AN_IMPLEMENTED_CLI",
+    "operation": "submit_reviewed_joint_dossier",
+    "input_required": [
+      "work_unit_id",
+      "joint_manifest_sha256",
+      "recipient_registry_sha256",
+      "authorization_refs",
+      "idempotency_key"
+    ],
+    "input_at_this_stage": {
+      "work_unit_id": "QIKVRT_CLUETEC_RECIPROCAL_AI_ACT_PILOT_20261023_V1",
+      "joint_manifest_sha256": null,
+      "recipient_registry_sha256": null,
+      "authorization_refs": [],
+      "idempotency_key": null
+    },
+    "transport_binding": "Resolve through existing admitted Terminal / Transputer contract; no invented endpoint or parallel scheduler",
+    "return_required": [
+      "admission_receipt",
+      "durable_work_unit_ref",
+      "per_recipient_status",
+      "verified_receipt_refs",
+      "unresolved_follow_up"
+    ],
+    "forget_semantics": "Client may disconnect after durable admission; authorized native execution, reconciliation, deadlines and escalation remain accountable.",
+    "global_atomicity_promised": false,
+    "unconditional_external_exactly_once_promised": false,
+    "blind_retry_allowed": false
+  },
+  "open_decisions": [
+    {
+      "id": "OD-01",
+      "topic": "Partnerannahme, zwei Auditgegenstände und Berechtigungen",
+      "owner": "Owner und benannter cluetec-Vertragspartner",
+      "resolve": "Schriftliches Pilotmandat und tatsächliche Zugriffs-/Prüfobjektfreigabe binden",
+      "blocks": [
+        "PARTNER_ACCESS",
+        "HUMAN_REVIEW",
+        "SUBMISSION"
+      ]
+    },
+    {
+      "id": "OD-02",
+      "topic": "Rechtsentitäten, Verwendungszwecke, KI-Einordnung und Rollen",
+      "owner": "Produktverantwortliche und qualifizierter Legal/Compliance-Reviewer",
+      "resolve": "Vorhandene system-boundary/classification-memorandum-Register anhand tatsächlicher Konfiguration vervollständigen",
+      "blocks": [
+        "FINAL_APPLICABILITY",
+        "SUBMISSION"
+      ]
+    },
+    {
+      "id": "OD-03",
+      "topic": "Menschliche Reviewer, Qualifikation, Mandat und Neutralität",
+      "owner": "cluetec und jeweilige Gegenpartei",
+      "resolve": "Identitäten, Konflikterklärungen und Reviewvertrag verifizieren",
+      "blocks": [
+        "JOINT_DOSSIER_FREEZE",
+        "SUBMISSION"
+      ]
+    },
+    {
+      "id": "OD-04",
+      "topic": "Zuständige Stellen und Verfahrensprofile",
+      "owner": "Verantwortlicher der jeweiligen meldenden Rechtsentität",
+      "resolve": "Amtliche Zuständigkeits-/Registerquellen und Portal-, Signatur-, Sprach- und Vertretungsregeln verifizieren",
+      "blocks": [
+        "SUBMISSION"
+      ]
+    },
+    {
+      "id": "OD-05",
+      "topic": "Haftung, Patente, Lizenzen, Datenrechte, Normzugang, Drittgebühren",
+      "owner": "Rechteinhaber und qualifizierte Vertrags-/Rechtsprüfung",
+      "resolve": "Bestehende Rechte beider Pilotangebote erfassen; begrenzte Pilotnutzung und Kostenfreigaben dokumentieren",
+      "blocks": [
+        "RESTRICTED_DATA_ACCESS",
+        "DISCLOSURE",
+        "SUBMISSION"
+      ]
+    },
+    {
+      "id": "OD-06",
+      "topic": "Native Host-, Journal-, Writer- und Versandadapter-Bindung",
+      "owner": "Autorisierter QIKVRT-Betreiber",
+      "resolve": "Bestehenden Runtime-Pfad mit echter Admission, Credentials-Referenzen und unabhängigen Readbacks nachweisen",
+      "blocks": [
+        "EXECUTION",
+        "SUBMISSION"
+      ]
+    },
+    {
+      "id": "OD-07",
+      "topic": "Messziele, Fehlerannahmen und Fristen",
+      "owner": "Pilotpartner mit Compliance-/Operations-Verantwortung",
+      "resolve": "Numerische Laufzeit-, Qualitäts-, Review-, RTO-/Kapazitätsziele und verfahrensabhängige Fristen vor Testbeginn vereinbaren",
+      "blocks": [
+        "OPERATIONAL_ACCEPTANCE"
+      ]
+    },
+    {
+      "id": "OD-08",
+      "topic": "Vollständiger amtlicher Rechtskorpus und untergliederte Pflichten",
+      "owner": "Regulatory-Engineering mit qualifiziertem Review",
+      "resolve": "Index samt 2026-Ergänzungen gegen amtliche Volltexte abgleichen und auf Absatz-/Buchstaben-/Anhängepunktebene vervollständigen",
+      "blocks": [
+        "COVERAGE_COMPLETE",
+        "SUBMISSION"
+      ]
+    }
+  ],
+  "integration": {
+    "target_work_unit": "state/work_units/QIKVRT_CLUETEC_RECIPROCAL_AI_ACT_PILOT_20261023_V1.json",
+    "target_document": "docs/regulatory/pilots/cluetec/REQUIREMENTS_DE.md",
+    "extend_existing_register": "docs/regulatory/AI_ACT_REQUIREMENTS_CONTROL_EVIDENCE_REGISTER.md",
+    "reuse_gate": "tools/qikvrt_eu_ai_act_evidence_gate.py",
+    "reuse_eap": "src/qikvrt_effect_ack.py",
+    "reuse_native_runtime": "src/qikvrt_temdd_event_ledger.py",
+    "reuse_terminal": "src/qikvrt_effect_ack_http_terminal.py",
+    "reuse_host": "runtime/self-host/MESH_ACTIVATION.json",
+    "reuse_governance": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "reuse_continuation": "tools/ai_handoff.py --client-receipt",
+    "new_runtime_executor": false,
+    "new_wire_protocol": false,
+    "new_client_timer": false,
+    "gate_extension_required": "Das bestehende Dokumentkonsistenz-Gate um Pilot-Referenzen und neue Negativfälle ergänzen; bloßes Marker-/Regex-PASS niemals als inhaltliches Audit ausgeben.",
+    "implementation_status": "SPECIFIED_NOT_IMPLEMENTED_BY_THIS_PACKAGE"
+  },
+  "acceptance_status": {
+    "requirements_package": "STRUCTURAL_CHECKS_PASS",
+    "implementation": "NOT_VERIFIED",
+    "neutral_human_review": "NOT_PERFORMED",
+    "partner_acceptance": "NOT_EVIDENCED",
+    "compliance": "COMPLIANCE_NOT_ESTABLISHED",
+    "authority_submission": "NOT_SENT",
+    "legal_conformity_assessment": "NOT_PERFORMED",
+    "global_effect_ack_done": false
+  },
+  "rights_preservation": {
+    "existing_licenses_unchanged": true,
+    "no_automatic_license_grant": true,
+    "statutory_responsibility_not_waived": true,
+    "patent_sensitive_data_publication_requires_separate_release": true
+  },
+  "legal_inventory_ref": "docs/regulatory/pilots/cluetec/LEGAL_SCOPE_INDEX.json",
+  "acceptance_plan_ref": "docs/regulatory/pilots/cluetec/ACCEPTANCE_CASES.json",
+  "reference_resolution": "Repository-relative paths; the ZIP preserves the proposed repository hierarchy.",
+  "record_contracts": {
+    "applicability_decision": {
+      "required": [
+        "record_id",
+        "subject_ref",
+        "legal_source_ref",
+        "provision_locator",
+        "version_and_effective_date",
+        "facts_refs",
+        "decision",
+        "rationale",
+        "accountable_reviewer_ref",
+        "decision_time",
+        "evidence_refs"
+      ],
+      "decision_enum": [
+        "APPLICABLE",
+        "NOT_APPLICABLE_WITH_REASONS",
+        "OPEN"
+      ],
+      "unreviewed_default": "OPEN"
+    },
+    "human_review": {
+      "required": [
+        "review_id",
+        "reviewer_identity_ref",
+        "organization_ref",
+        "qualification_ref",
+        "mandate_ref",
+        "independence_and_conflicts",
+        "scope",
+        "reviewed_artifact_digests",
+        "findings",
+        "decision",
+        "decision_time",
+        "signature_validation_ref"
+      ],
+      "decision_enum": [
+        "APPROVED_FOR_DECLARED_SCOPE",
+        "CHANGES_REQUIRED",
+        "REJECTED",
+        "CONFLICT_UNRESOLVED"
+      ],
+      "machine_generated_approval_is_valid": false
+    },
+    "recipient_procedure": {
+      "required": [
+        "recipient_id",
+        "legal_entity",
+        "jurisdiction",
+        "competence_source_ref",
+        "procedure_id",
+        "official_endpoint_ref",
+        "verified_at",
+        "authorized_sender_ref",
+        "required_form_and_language",
+        "signature_and_representation_profile",
+        "permitted_payload_classification",
+        "deadline_rule_ref",
+        "receipt_and_status_query_profile"
+      ],
+      "free_text_model_output_is_verified_target": false
+    },
+    "joint_manifest": {
+      "required": [
+        "manifest_id",
+        "work_unit_id",
+        "subject_manifest_digest",
+        "legal_baseline_digest",
+        "audit_A_artifact_digests",
+        "audit_B_artifact_digests",
+        "human_review_refs",
+        "findings_dispositions",
+        "per_recipient_payload_digests",
+        "rights_release_refs",
+        "authorization_refs",
+        "manifest_digest"
+      ],
+      "artifact_originals_preserved": true
+    },
+    "submission_authorization": {
+      "required": [
+        "authorization_id",
+        "authorized_actor_ref",
+        "representation_ref",
+        "work_unit_id",
+        "joint_manifest_digest",
+        "recipient_registry_digest",
+        "permitted_action",
+        "validity_window",
+        "revocation_status",
+        "authenticated_authorization_evidence"
+      ],
+      "instruction_to_write_this_requirement_is_final_dossier_authorization": false
+    },
+    "submission_transaction": {
+      "required": [
+        "transaction_id",
+        "work_unit_id",
+        "recipient_id",
+        "payload_digest",
+        "authorization_ref",
+        "idempotency_key",
+        "writer_fence_ref",
+        "durable_outbox_event_ref",
+        "attempt_id",
+        "provider_transaction_ref",
+        "status",
+        "receipt_refs",
+        "readback_refs",
+        "unresolved_actions"
+      ],
+      "status_enum": [
+        "NOT_SENT",
+        "ADMITTED",
+        "IN_FLIGHT",
+        "PROVIDER_ACCEPTED",
+        "RECEIPT_VERIFIED",
+        "REJECTED",
+        "INDETERMINATE"
+      ],
+      "provider_accepted_implies_substantive_authority_approval": false
+    }
+  },
+  "serialization_contract": {
+    "artifact_bytes": "UTF-8 with LF; SHA-256 over exact written bytes",
+    "EAP_wire": "Use the existing pinned protocol/version canonicalization and hash validation; do not treat a JSON serializer setting as independent proof of RFC 8785 conformance.",
+    "new_canonicalization_or_signature_scheme": false
+  },
+  "predecessor_package": {
+    "name": "QIKVRT_Cluetec_AI_Act_Pilot_Requirement_v1.zip",
+    "sha256": "ad7da59295c4cdca8dcee6baff58fe668930a7bfdce64feed868569a07407560",
+    "status": "SAVED_TO_PERSONAL_ONEDRIVE_ROOT; METADATA_READBACK_CONFIRMED; RAW_DOWNLOAD_HTTP403_SERVICE_READONLY"
+  }
+}

@@ -336,6 +336,12 @@ def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
                 rf"/repos/{repository}/(?:git/(?:blobs|trees|commits|refs(?:/heads/[^%]+)?)"
                 r"|issues(?:/\d+(?:/comments)?)?|pulls(?:/\d+(?:/(?:reviews|merge))?)?)",
                 endpoint.path) is not None)
+        source_graphql_route = (
+            action.get("subject") == subject and action.get("service") == "github"
+            and action.get("transport") == "GRAPHQL_FALLBACK"
+            and action.get("operation") == "markPullRequestReadyForReview"
+            and github_graphql_fallback_allowed(
+                action, load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")))
         journal_route = (
             endpoint.netloc == "qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site"
             and (endpoint.path == "/mcp" or re.fullmatch(r"/api/v1/tasks(?:/[a-z0-9-]+)?", endpoint.path))
@@ -344,7 +350,8 @@ def validate_specification_use(action: dict[str, Any], subject: dict[str, Any],
                 "qik_vrt_kognitiver_arbeitsraum_update_task")))
         verifier_route = historical_readonly_watchdog_retry(action, subject, endpoint, now=now)
         if (endpoint.scheme != "https" or endpoint.query or endpoint.fragment
-                or ".." in endpoint.path.split("/") or not (source_route or journal_route or verifier_route)):
+                or ".." in endpoint.path.split("/")
+                or not (source_route or source_graphql_route or journal_route or verifier_route)):
             fail("SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED")
         return
     if use != "CURRENT" or not claims or len(set(claims)) != len(claims):
@@ -1919,11 +1926,36 @@ def main() -> int:
                         help="Validate a non-secret client continuation receipt; no live-effect proof")
     mode.add_argument("--client-action", type=Path,
                       help="Check one declared action against current Owner routing decisions before any external call")
+    mode.add_argument("--cognition-audit", type=Path,
+                      help="Check a scoped human behavioral audit; no live effect or person authentication")
+    parser.add_argument("--audit-evidence-root", type=Path)
+    parser.add_argument("--audit-subject", type=Path)
+    parser.add_argument("--trusted-review-sha256", action="append", default=[])
     mode.add_argument("--formal-proof-gate", type=Path, help="Require seven exact-input proof receipts and original logs")
     mode.add_argument("--formal-proof-run", type=Path, help="Run the pinned local proof/bridge path into a fresh directory")
     parser.add_argument("--own-lean-root", type=Path)
     parser.add_argument("--external-lean-root", type=Path)
     args = parser.parse_args()
+    if args.cognition_audit is not None:
+        from src.qikvrt_cognition_audit import assess_cognition_audit, MAX_DOCUMENT
+        if args.audit_evidence_root is None or args.audit_subject is None:
+            parser.error("--cognition-audit requires --audit-evidence-root and --audit-subject")
+        try:
+            with args.cognition_audit.open("rb") as stream:
+                raw = stream.read(MAX_DOCUMENT + 1)
+            result = assess_cognition_audit(
+                raw, evidence_root=args.audit_evidence_root,
+                expected_subject=json.loads(args.audit_subject.read_text(encoding="utf-8")),
+                now=int(dt.datetime.now(dt.timezone.utc).timestamp()),
+                trusted_review_sha256=args.trusted_review_sha256)
+            print(json.dumps({"outcome": result.outcome, "audit_sha256": result.audit_sha256,
+                              "reasons": result.reasons, "scope": "HUMAN_AUDIT_DOCUMENTARY_BINDING",
+                              "live_effect_verified": False}, sort_keys=True))
+            return 0 if result.admissible else 2
+        except (OSError, ValueError, UnicodeError):
+            print(json.dumps({"outcome": "UNVERIFIED", "reasons": ["AUDIT_READ_UNAVAILABLE"],
+                              "live_effect_verified": False}, sort_keys=True))
+            return 2
     if args.formal_proof_gate is not None:
         formal_proof_gate(args.formal_proof_gate)
         return 0

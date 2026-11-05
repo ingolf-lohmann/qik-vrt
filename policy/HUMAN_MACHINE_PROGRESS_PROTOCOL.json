@@ -628,7 +628,26 @@
       "historical_receipts_are_not_fresh_action_admission": true,
       "validator_authenticates_sources_or_proves_inventory_completeness": false,
       "source_gate_is_not_native_adoption_or_productive_effect": true,
-      "historical_exact_scope": "SOURCE_REPAIR_ONLY"
+      "historical_exact_scope": "SOURCE_REPAIR_ONLY",
+      "historical_exact_graphql_source_operation": {
+        "operation": "markPullRequestReadyForReview",
+        "requires_existing_pinned_owner_fallback": true,
+        "same_exact_subject_required": true,
+        "rest_effect_must_be": "NOT_ATTEMPTED",
+        "other_graphql_or_runtime_effects_admitted": false
+      }
+    },
+    "human_cognition_audit": {
+      "machine_policy": "policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json",
+      "human_contract": "docs/HUMAN_COGNITION_ADMISSIBILITY.md",
+      "human_form": "docs/audits/COGNITION_AUDIT_FORM_DE.md",
+      "implementation": "src/qikvrt_cognition_audit.py",
+      "audit_schema": "schemas/human_cognition_audit.schema.json",
+      "validator": "tools/ai_handoff.py --cognition-audit",
+      "source_presence_is_runtime_adoption": false,
+      "required_for_cognition_admission_claim": true,
+      "promise_is_proof": false,
+      "all_seven_criteria_required": true
     }
   },
   "continuation_semantics": {

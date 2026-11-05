@@ -686,3 +686,21 @@ Draft-03; its conformance suite compares the published revision's fields. Do not
 rewrite a frozen proof-bearing source merely to relabel its revision. Companion
 HTTP-01 remains an unresolved archive candidate until original bytes and changes
 are reviewed; it is not a replacement core revision.
+
+### Historical source-only GraphQL readiness
+
+`HISTORICAL_EXACT` also retains the existing Owner-authorized
+`markPullRequestReadyForReview` fallback. The live guard requires the same exact
+subject, `GRAPHQL_FALLBACK`, the pinned original Owner decision, unavailable REST
+operation and `NOT_ATTEMPTED` REST effect. It authorizes no other GraphQL
+operation, runtime scope or current-specification claim. Authentication,
+platform permission and independent effect readback remain separate.
+
+## Human behavioral admissibility — Owner 5 November 2026
+
+The seven behavioral criteria and practical human audit are normative in
+[HUMAN_COGNITION_ADMISSIBILITY.md](HUMAN_COGNITION_ADMISSIBILITY.md), with
+`policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json` and the printable
+[audit form](audits/COGNITION_AUDIT_FORM_DE.md). Bind an actual human-reviewed
+behavioral history, preserve objections and correction successors, and keep
+source integration distinct from runtime adoption and observed effects.

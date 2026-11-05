@@ -169,7 +169,13 @@ def job_readback_budget(
                     raise ReflexiveWatchdogBlock("invalid run status")
                 _run_created_time(run)
                 _run_transition_time(run)
-            required = {run["id"] for run in _latest_by_name(runs)}
+            # A terminal skipped workflow has no executed job evidence to
+            # establish. Keep its exact metadata in the complete inventory;
+            # _gate_state_for_run still classifies absent execution UNTRUSTED.
+            # Never omit active, successful, failed or ambiguous runs this way.
+            required = {run["id"] for run in _latest_by_name(runs)
+                        if not (run["status"] == "completed"
+                                and run.get("conclusion") == "skipped")}
             required.update(run["id"] for run in runs if run["status"] in ACTIVE_STATUSES)
             metadata_only_ids = sorted(set(run_ids) - required)
             run_ids = sorted(required)

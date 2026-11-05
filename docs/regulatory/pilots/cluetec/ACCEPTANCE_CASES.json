@@ -1,0 +1,746 @@
+{
+  "schema": "qikvrt_cluetec_pilot_acceptance_plan_v1",
+  "work_unit_id": "QIKVRT_CLUETEC_RECIPROCAL_AI_ACT_PILOT_20261023_V1",
+  "scope": "Abnahmespezifikation, kein Bericht bestandener Implementierungs-/Betriebstests",
+  "cases": [
+    {
+      "id": "AT-001",
+      "requirement_ids": [
+        "CLA-001"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Die Spezifikation MUSS die Owner-Freigabe als Entwicklungs- und Vorbereitungsvollmacht erfassen; konkrete Behördensendungen benötigen die später eingefrorene, paket- und empfängergebundene Versandfreigabe.",
+      "negative_scenario": "Fehlende oder für andere Paketbytes erteilte Versandfreigabe.",
+      "oracle": "Ohne konkrete Paketfreigabe entsteht ausschließlich ein Entwurf; keine Nachricht verlässt das System.",
+      "required_evidence_types": [
+        "OWNER_INSTRUCTION",
+        "AUTHORIZATION_RECORD"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-002",
+      "requirement_ids": [
+        "CLA-002"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "cluetec MUSS den Pilotumfang, Zugriff und die benannten Prüfer selbst bestätigen; die Erklärung Ingolf Lohmanns DARF keine Zustimmung, Verpflichtung oder Zertifizierungsbefugnis von cluetec fingieren.",
+      "negative_scenario": "cluetec hat das Angebot nicht angenommen oder nur einen anderen Prüfgegenstand freigegeben.",
+      "oracle": "Fehlende Partnerbestätigung lässt das Partner-Gate OPEN; unabhängige Vorbereitung läuft weiter.",
+      "required_evidence_types": [
+        "PARTNER_ACCEPTANCE"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-003",
+      "requirement_ids": [
+        "CLA-003"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Für beide Auditspuren MÜSSEN Produkt, Zweck, Version, Komponenten, Modelle, Daten, Konfiguration, Betreiber, Rechtsentität und Deployment samt Repository-HEAD/TREE exakt gebunden sein.",
+      "negative_scenario": "Modellversion oder Deployment-Konfiguration wurde nach dem Freeze geändert.",
+      "oracle": "Eine Änderung am gebundenen Gegenstand invalidiert davon abhängige Nachweise und Freigaben.",
+      "required_evidence_types": [
+        "SUBJECT_MANIFEST"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-004",
+      "requirement_ids": [
+        "CLA-004"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Vor jeder Beurteilung und vor Versand MUSS der maßgebliche Rechtsstand aus amtlichen Quellen mit Fassung, Änderungsakten, Geltungsdaten, Abrufzeit und Digest bestimmt werden; Entwürfe sind getrennt zu behandeln.",
+      "negative_scenario": "Pipeline verwendet nur den ursprünglichen Rechtsstand von 2024 und übersieht einen 2026 hinzugefügten Artikel.",
+      "oracle": "Ein veralteter, widersprüchlicher oder nicht vollständig aufgelöster Rechtsstand sperrt den Konformitäts- und Versandabschluss.",
+      "required_evidence_types": [
+        "LEGAL_BASELINE",
+        "SOURCE_CAPTURE"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-005",
+      "requirement_ids": [
+        "CLA-005"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Sämtliche Artikel, Untergliederungen, Anhänge und anwendbaren Folgeakte MÜSSEN inventarisiert und nach Rolle, Produkt, Zweck, Gebiet und Zeit beurteilt werden. Ein begründetes N/A benötigt Tatsachen und verantwortliches Review.",
+      "negative_scenario": "Artikel 4a, 60a, 75a–75d oder Anhang XIV fehlen; alternativ bleibt ein Unterpunkt unbehandelt.",
+      "oracle": "Kein unbehandelter Rechtstextknoten; zusätzliche Artikel und Anhang XIV werden erkannt. OPEN zählt nie als N/A oder erfüllt.",
+      "required_evidence_types": [
+        "LEGAL_COVERAGE_MATRIX"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-006",
+      "requirement_ids": [
+        "CLA-006"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Die Anwendbarkeit MUSS für Speicherkomponente, KI-Funktionen, Auditwerkzeug und Gesamtsystem getrennt geprüft werden, einschließlich Betreiber-/Anbieter-/GPAI-Rollen, Hochrisikokriterien, Ausnahmen, Übergängen und gegebenenfalls sektoraler Produktvorschriften.",
+      "negative_scenario": "Deterministische Speicherkomponente wird allein wegen des Namens KI als Hochrisikosystem klassifiziert.",
+      "oracle": "Reine Speichertechnik oder SSO begründet keine pauschale KI- oder Hochrisikoeinstufung; eine offene Einordnung bleibt MORE_FACTS_REQUIRED.",
+      "required_evidence_types": [
+        "SIGNED_CLASSIFICATION"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-007",
+      "requirement_ids": [
+        "CLA-007"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Jede anwendbare Einzelpflicht MUSS auf Kontrollmaßnahme, Verantwortlichen, Implementierung, Test, Betriebsnachweis, Review und Dokumentabschnitt zurückverfolgt werden.",
+      "negative_scenario": "Ein bestandener Sicherheitstest betrifft eine andere Version oder hat keine Requirement-Zuordnung.",
+      "oracle": "Fehlende oder nicht zum Subject passende Nachweise bleiben OPEN beziehungsweise NOT_EVIDENCED.",
+      "required_evidence_types": [
+        "REQUIREMENT_CONTROL_EVIDENCE_GRAPH"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-008",
+      "requirement_ids": [
+        "CLA-008"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Formale Beweise, Modellprüfung, Test, Beobachtung, Rechtsquelle, Interpretation und Owner-Erklärung MÜSSEN getrennte Evidenzklassen behalten.",
+      "negative_scenario": "Ein Hash oder CI-Marker wird als behördliche oder rechtliche Konformitätsbestätigung ausgegeben.",
+      "oracle": "CI-PASS, Dokumenterzeugung, Hash, IETF-Veröffentlichung oder LLM-Konsens erzeugen keine allgemeine Rechtskonformität.",
+      "required_evidence_types": [
+        "TYPED_CLAIM_RECORD"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-009",
+      "requirement_ids": [
+        "CLA-009"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Alle objektiv maschinell prüfbaren Kontrollen und Dokumentationsschritte MÜSSEN reproduzierbar automatisiert werden; fachliche oder rechtliche Wertungen benötigen die benannte verantwortliche Reviewinstanz.",
+      "negative_scenario": "Ein Sprachmodell erzeugt eine menschliche Reviewentscheidung oder Unterschrift.",
+      "oracle": "Nicht maschinell entscheidbare Fragen werden mit Sachstand, Entscheidungskriterien und zuständigem Reviewer eskaliert; keine simulierten Signaturen.",
+      "required_evidence_types": [
+        "CHECK_REPORT",
+        "DECISION_REQUEST"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-010",
+      "requirement_ids": [
+        "CLA-010"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Nachweise für tatsächliche Betriebswirksamkeit, Safety, Security, Datenqualität und menschliche Aufsicht MÜSSEN am festgelegten System und unter offengelegten Testbedingungen entstehen.",
+      "negative_scenario": "Eine behauptete Feldwirksamkeit beruht ausschließlich auf einer synthetischen Fixture.",
+      "oracle": "Ein bloßer Architekturtext oder synthetischer Test schließt keine Feld- oder Human-Factors-Anforderung.",
+      "required_evidence_types": [
+        "OPERATIONAL_EVIDENCE"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-011",
+      "requirement_ids": [
+        "CLA-011"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Originale, Ableitungen und Korrekturen MÜSSEN über die bestehende QIKVRT-Persistenz mit Version, Provenienz, Integritätsprüfung, Zugriffsschutz und eigenständigem Readback erhalten bleiben.",
+      "negative_scenario": "Crash nach Journalbestätigung, Speichervollzustand oder veränderte historische Auditdatei.",
+      "oracle": "Manipulation, Verlust, vollgelaufener Speicher und Wiederherstellung werden getestet; historische Originale werden nicht überschrieben.",
+      "required_evidence_types": [
+        "NATIVE_EVENT",
+        "STORAGE_READBACK"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-012",
+      "requirement_ids": [
+        "CLA-012"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Personenbezogene Daten, Geschäftsgeheimnisse und patentkritische Inhalte MÜSSEN nach Zweckbindung und Empfängerkreis getrennt werden; öffentliche und nicht öffentliche Aktenfassungen sind gesondert freizugeben.",
+      "negative_scenario": "Ein öffentlicher Git-Commit oder Behördenpayload enthält fremde Mandantendaten beziehungsweise private Schlüssel.",
+      "oracle": "Ein Behördenadressat bedeutet keine Veröffentlichung; fremde Mandantendaten, Schlüssel und unnötige personenbezogene Daten gelangen nicht in öffentliche Repositories.",
+      "required_evidence_types": [
+        "DATA_RELEASE_MATRIX",
+        "REDACTION_REVIEW"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-013",
+      "requirement_ids": [
+        "CLA-013"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Das System MUSS alle aufgrund des Anwendbarkeitsentscheids benötigten Akten automatisch erzeugen: Einordnung, Risiken, Daten-/Modellgovernance, technische Dokumentation, Protokollierung, Anleitungen, Aufsicht, Sicherheit, QMS, Monitoring, Vorfälle, Korrekturen und erforderliche Erklärungs-/Registrierungsentwürfe.",
+      "negative_scenario": "Generierte EU-Konformitätserklärung wird ohne befugte Unterzeichnung als abgeschlossen markiert.",
+      "oracle": "Jedes Dokument besitzt Quelle, Subject, Version, Erzeuger, offene Punkte und nachgewiesene Inhalte; eine zu unterzeichnende Erklärung wird nicht als bereits unterzeichnet ausgegeben.",
+      "required_evidence_types": [
+        "DOCUMENT_SET_MANIFEST"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-014",
+      "requirement_ids": [
+        "CLA-014"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Spur A MUSS QIKVRT und sein automatisches Dossier durch benannte neutrale cluetec-Menschen prüfen lassen. Spur B MUSS im bestätigten Partnerumfang cluetec-Kontrollen beziehungsweise KI-Funktionen mit QIKVRT auditieren; jede Seite behält eigene Feststellungen, Verantwortliche und Antworten.",
+      "negative_scenario": "Auditspur B greift ohne Partnerfreigabe auf cluetec-Systeme zu oder übernimmt automatisch ein positives Ergebnis aus A.",
+      "oracle": "Wechselseitigkeit erzeugt weder Zugriffserlaubnis auf fremde Systeme noch gegenseitige automatische Selbstbestätigung.",
+      "required_evidence_types": [
+        "AUDIT_A",
+        "AUDIT_B",
+        "RESPONSE_RECORDS"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-015",
+      "requirement_ids": [
+        "CLA-015"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Das menschliche Review MUSS Identität, Qualifikation, Mandat, Unabhängigkeitserklärung, Interessenkonflikte, geprüfte Akten, Findings und Entscheidung enthalten. Gegenseitige Geschäftsbeziehungen sind offenzulegen und erforderlichenfalls durch einen unbefangenen zusätzlichen Reviewer zu beherrschen.",
+      "negative_scenario": "Reviewer ist alleiniger Autor der geprüften Arbeit oder hat einen ungeklärten Interessenkonflikt.",
+      "oracle": "Ein Entwickler prüft nicht allein seine eigene Arbeit; ungeklärte Konflikte oder fehlendes vorgeschriebenes menschliches Review sperren die reguläre gemeinsame Sendung.",
+      "required_evidence_types": [
+        "SIGNED_HUMAN_REVIEW"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-016",
+      "requirement_ids": [
+        "CLA-016"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Requirements Engineering, DevOps, Clean Coding, Pair Reviews und Tested Event Model Driven Development MÜSSEN für Änderungen verbindlich angewandt werden; technische Peer-Prüfung bleibt von neutralem Compliance-Review getrennt.",
+      "negative_scenario": "Codeänderung ohne Requirement-ID, Peer-Review oder zugehörigen negativen Testfall.",
+      "oracle": "Jede materielle Änderung hat Requirement-ID, Änderung, Pair-Review, Testfall und dispositionsgebundenen Readback.",
+      "required_evidence_types": [
+        "CHANGE_REVIEW_TEST_CHAIN"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-017",
+      "requirement_ids": [
+        "CLA-017"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Menschliche Entscheidungen MÜSSEN an die exakt geprüften Artefakt-Digests und den einschlägigen Scope gebunden sein; Änderungen an Inhalt, Empfängerfassung oder relevanter Regelung lösen eine dokumentierte Impact-Prüfung und nötige erneute Freigabe aus.",
+      "negative_scenario": "Nach Review wird ein Anhang oder die Empfängerfassung geändert und das alte Review weiterverwendet.",
+      "oracle": "Ein alter Kommentar oder eine Freigabe für andere Bytes autorisiert die neue Fassung nicht. Die Owner-Freigabe dieser Spezifikation ersetzt das verlangte cluetec-Review nicht.",
+      "required_evidence_types": [
+        "REVIEW_BINDING",
+        "IMPACT_GRAPH"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-018",
+      "requirement_ids": [
+        "CLA-018"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Automatisches Dossier und menschlicher Prüfbericht MÜSSEN als unterscheidbare Originale in ein gemeinsames, deterministisch erzeugtes Versandmanifest einfließen; beide Auditspuren und sämtliche Gegenäußerungen bleiben nachvollziehbar.",
+      "negative_scenario": "Kritisches Finding des menschlichen Reviews wird in der maschinellen Zusammenfassung verschwiegen.",
+      "oracle": "Widersprüche, kritische offene Findings oder unklare Zuordnung verhindern READY_FOR_SUBMISSION; kein KI-Überschreiben menschlicher Findings.",
+      "required_evidence_types": [
+        "JOINT_DOSSIER_MANIFEST"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-019",
+      "requirement_ids": [
+        "CLA-019"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Zuständige öffentliche Stellen, mögliche benannte Stellen und notwendige Registrierungsportale MÜSSEN aus der konkreten Rechtsrolle, Jurisdiktion, Produktkategorie und Verfahrensart abgeleitet und amtlich verifiziert werden.",
+      "negative_scenario": "LLM nennt die falsche nationale Behörde oder übernimmt eine freie E-Mail-Adresse aus einem Bericht.",
+      "oracle": "Keine pauschale Massenmail an alle Behörden und kein erfundener Empfänger; je Ziel stehen Zuständigkeit, Rechtsgrund, Fälligkeit und erlaubte Inhalte fest.",
+      "required_evidence_types": [
+        "VERIFIED_RECIPIENT_REGISTRY"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-020",
+      "requirement_ids": [
+        "CLA-020"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Das Versandpaket MUSS das jeweils vorgesehene Verfahren, Format, Sprache, Identitäts-/Signaturanforderungen, Vertretung und amtliche Einreichungsstelle erfüllen.",
+      "negative_scenario": "Notwendige Portalregistrierung wird durch eine gewöhnliche E-Mail oder eine unbefugte Unterzeichnung ersetzt.",
+      "oracle": "Ein gewöhnlicher Mailversand wird nicht als Portalregistrierung behandelt; ein neutrales Partnerreview wird nicht als gesetzlich erforderliche Notified-Body-Bewertung ausgegeben.",
+      "required_evidence_types": [
+        "PROCEDURE_PROFILE",
+        "SIGNATURE_VALIDATION"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-021",
+      "requirement_ids": [
+        "CLA-021"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Vor der regulären gemeinsamen Einreichung MÜSSEN QIKVRT-Prüfung, erforderliches neutrales menschliches Review, Erklärungsbefugnisse, Rechte, Empfängerkreis und die Paket-/Sendefreigaben aller betroffenen Absender gültig vorliegen.",
+      "negative_scenario": "Nur das maschinelle Dossier ist fertig, der neutrale Bericht beziehungsweise eine erforderliche Senderfreigabe fehlt.",
+      "oracle": "READY_FOR_SUBMISSION setzt beide eingefrorenen Arbeitsergebnisse und erforderliche zustimmende Entscheidungen voraus; es erzeugt selbst noch keinen externen Effekt.",
+      "required_evidence_types": [
+        "SUBMISSION_AUTHORIZATION"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-022",
+      "requirement_ids": [
+        "CLA-022"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Ein einzelner authentifizierter Startauftrag MUSS die bereits vollständig vorbereitete gemeinsame Sendung über den bestehenden autorisierten Runtime-/Transputer-Pfad dauerhaft übernehmen und ohne wiederholtes Owner-Anstoßen bis zu einem nachgewiesenen Endzustand führen.",
+      "negative_scenario": "Client trennt nach Admission die Verbindung und sendet denselben Startauftrag anschließend erneut.",
+      "oracle": "Doppelklick, Verbindungsabbruch und Clientwechsel führen zum selben Work-Unit-Status; ein nicht zugelassener oder ungebundener Executor sendet nichts.",
+      "required_evidence_types": [
+        "ADMISSION_RECEIPT",
+        "WORK_UNIT_STATUS"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-023",
+      "requirement_ids": [
+        "CLA-023"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Alle geschützten Freigaben MÜSSEN die bestehende IETF-EFFECT_ACK-v1-Fünf-Zustands-Semantik und Consumer-Validierung verwenden; nur ein gültiges EFFECT_ACK_DONE darf die konkret gebundene reguläre Folgeaktion freigeben.",
+      "negative_scenario": "Gültig aussehender DONE-String ohne Authentisierung; zusätzlich NACK/CONTINUE/ISOLATE/BLOCK, veralteter Token oder falscher Subject-Digest.",
+      "oracle": "NACK, CONTINUE, ISOLATE, BLOCK, Timeout, Replay oder ungültige Bindung führen nicht zur regulären Freigabe; keine neue Wire-Semantik.",
+      "required_evidence_types": [
+        "EFFECT_ACK_RECORD",
+        "CONSUMER_VALIDATION"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-024",
+      "requirement_ids": [
+        "CLA-024"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Versandaufträge, Writer-Fencing, Berechtigung, Empfängerfassungen, Versuch und Beobachtung MÜSSEN vor beziehungsweise nach dem Netzwerkeffekt im ursprünglichen zulässigen Journal dauerhaft gesichert werden.",
+      "negative_scenario": "Zwei Writer senden gleichzeitig oder der Prozess stirbt unmittelbar vor beziehungsweise nach dem Netzwerkeffekt.",
+      "oracle": "Crash an jeder Versandgrenze bewahrt bestätigte Zustände; historische Kopien erhalten keine erfundene Writer-Zulassung.",
+      "required_evidence_types": [
+        "DURABLE_OUTBOX",
+        "FENCING_PROOF"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-025",
+      "requirement_ids": [
+        "CLA-025"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Je Empfänger und Einreichung MUSS eine stabile Identität aus Work Unit, Subject, freigegebenem Paket-Digest, Verfahrensversion und Zielidentität bestehen; vorhandene Provider-Idempotenz ist zu nutzen.",
+      "negative_scenario": "Zweimaliger Start bei bereits durch amtliche Quittung belegter Einreichung.",
+      "oracle": "Wiederholte Startbefehle lösen keine bewiesenermaßen bereits erfolgte Einreichung erneut aus. Ein nicht idempotenter externer Dienst erhält keine unbelegte Exactly-once-Garantie.",
+      "required_evidence_types": [
+        "IDEMPOTENCY_RECORD"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-026",
+      "requirement_ids": [
+        "CLA-026"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Bei unklarer Netzantwort MUSS zunächst der autoritative externe Transaktions-/Empfangszustand abgefragt werden; ohne sichere Auflösung bleibt der Fall INDETERMINATE und ein blinder erneuter Versand gesperrt.",
+      "negative_scenario": "Dienst hat die Sendung möglicherweise angenommen, die Antwort ging verloren und der Status-Endpunkt ist nicht erreichbar.",
+      "oracle": "Verlorenes ACK wird nicht als Fehlschlag mit automatischem Doppelversand und nicht als erfolgreiche Zustellung behandelt.",
+      "required_evidence_types": [
+        "RECONCILIATION_EVIDENCE"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-027",
+      "requirement_ids": [
+        "CLA-027"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Mehrere Zielstellen MÜSSEN eigene Zustände und Quittungen behalten; Teilerfolg wird sichtbar fortgeführt, bereits erfolgte irreversible Sendungen werden nicht als rückgängig gemacht dargestellt.",
+      "negative_scenario": "Zielstelle A bestätigt, Zielstelle B ist nicht erreichbar; ein Gesamt-DONE wird beantragt.",
+      "oracle": "Ausfall einer Stelle erzeugt PARTIALLY_DELIVERED; keine Behauptung einer atomaren behördenübergreifenden Transaktion.",
+      "required_evidence_types": [
+        "PER_RECIPIENT_RESULT_SET"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-028",
+      "requirement_ids": [
+        "CLA-028"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Einreichungsabschluss MUSS durch eine frische, Ziel-/Paket-gebundene amtliche oder providerseitige Empfangsbestätigung und soweit möglich unabhängigen Readback belegt sein.",
+      "negative_scenario": "Nur HTTP-202, SMTP-250 oder lokales EFFECT_ACK_DONE liegen vor, aber keine Zielquittung.",
+      "oracle": "HTTP-202, SMTP-Annahme, lokale Speicherung und EFFECT_ACK-Freigabe allein beweisen weder behördlichen Empfang noch sachliche Genehmigung.",
+      "required_evidence_types": [
+        "RECEIPT",
+        "INDEPENDENT_READBACK"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-029",
+      "requirement_ids": [
+        "CLA-029"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Fristen, Aufbewahrung und Reaktionspflichten MÜSSEN aus dem gültigen Rechtsstand und konkreten Verfahren berechnet, überwacht und verantwortlich eskaliert werden.",
+      "negative_scenario": "Partnerreview bleibt aus, während eine eigenständige gesetzliche Meldefrist abläuft.",
+      "oracle": "Ein ausstehendes Partnerreview darf eine gesondert bestehende dringende Meldepflicht nicht unsichtbar verzögern; dafür ist rechtzeitig ein eigenständig legitimierter Notfall-/Meldepfad vorzubereiten, ohne automatische Selbstfreigabe.",
+      "required_evidence_types": [
+        "DEADLINE_REGISTER",
+        "ESCALATION_RECEIPT"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-030",
+      "requirement_ids": [
+        "CLA-030"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Haftung, Safety/Security, Datenschutz, Patente, Erfinderschaft, bestehende Lizenzen und daraus folgende Zahlungsansprüche MÜSSEN separat rollen-, produkt-, zeit- und rechtsordnungsbezogen erfasst und respektiert werden.",
+      "negative_scenario": "Gebührenfreier Pilot wird als Haftungs-/Patentverzicht oder als freie Lizenz an Drittcode ausgelegt.",
+      "oracle": "Ein unbezahlter Pilot ist weder ein pauschaler Haftungsverzicht noch Patentverzicht oder automatische freie Lizenz; widersprüchliche Rechte sperren die betreffende Nutzung.",
+      "required_evidence_types": [
+        "RIGHTS_AND_RESPONSIBILITY_MATRIX"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-031",
+      "requirement_ids": [
+        "CLA-031"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Ingolf Lohmann MUSS seine eigenen Pilotbeiträge in diesem sowie im zuvor angebotenen Auditmaßnahmen-Pilot unentgeltlich anbieten; Umfang und Rechte sind im jeweiligen Pilotvertrag festzuhalten.",
+      "negative_scenario": "Eigene Pilotbeiträge werden ohne neue Vereinbarung berechnet oder eine neue Fremdgebühr wird ohne zulässige Kostenbindung ausgelöst.",
+      "oracle": "Eigene vereinbarte Pilotleistung: 0 EUR. Gesetzliche oder Drittanbieter-/Lizenzgebühren werden nicht aufgehoben und nur nach bestehender vertraglicher Bindung beziehungsweise konkreter Kostenfreigabe ausgelöst.",
+      "required_evidence_types": [
+        "PILOT_OFFER",
+        "COST_REGISTER"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-032",
+      "requirement_ids": [
+        "CLA-032"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Die von Ingolf Lohmann erklärten Rollen Principal, Code Owner, Product Owner, presserechtlich Verantwortlicher und Safety/Security-Verantwortlicher MÜSSEN als Owner-Erklärung erhalten bleiben; gesetzliche Hersteller-, Anbieter-, Betreiber- und Vertretungsrollen sind gesondert zu prüfen.",
+      "negative_scenario": "Owner-Erklärung wird als Beweis einer gesetzlich vorgeschriebenen Herstellerrolle einer fremden Rechtsentität verwendet.",
+      "oracle": "Weder das JSON noch ein Modell weist einer anderen Person eine Rechtsrolle zu oder ersetzt die tatsächliche Rollen-/Mandatsprüfung.",
+      "required_evidence_types": [
+        "OWNER_DECLARATION",
+        "LEGAL_ROLE_ASSESSMENT"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-033",
+      "requirement_ids": [
+        "CLA-033"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Unklarheiten MÜSSEN mit stabiler ID, Faktenlage, Auswirkung, Zuständigkeit, nächstem Schritt, Prüfkriterium und Abhängigkeiten im bestehenden Backlog bearbeitet werden; deterministische zugelassene Folgeschritte laufen autonom weiter.",
+      "negative_scenario": "Eine unklare Zuständigkeit wird mit einem Default-PASS geschlossen oder ein unveränderter Fehler blind wiederholt.",
+      "oracle": "Fehlende Tatsachen werden recherchiert oder gezielt zur verantwortlichen Entscheidung eskaliert; kein Default-PASS und kein verdecktes Erfinden von Rechtsauslegung oder Partnerwillen.",
+      "required_evidence_types": [
+        "OPEN_ISSUE",
+        "ADR",
+        "CLOSURE_RECEIPT"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-034",
+      "requirement_ids": [
+        "CLA-034"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Das Pilotvorhaben MUSS vorhandene AI-Act-Register, Evidenz-Gate, EAP-Kern, TEMDD-Ledger, Terminal, Selbsthosting-, Review- und Continuation-Verträge erweitern, statt einen parallelen Executor, neue Wire-Zustände oder einen neuen Client-Timer einzuführen.",
+      "negative_scenario": "Ein neuer Client-Timer oder paralleler Executor ersetzt die nicht zugelassene native Writer-Bindung.",
+      "oracle": "Integration nennt bestehenden Pfad, nötige Erweiterung und Regressionen; nicht vorhandene Bindungen bleiben OPEN.",
+      "required_evidence_types": [
+        "REUSE_MAP",
+        "INTEGRATION_DIFF"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-035",
+      "requirement_ids": [
+        "CLA-035"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Eingehende Dokumente und Modellvorschläge MÜSSEN als Daten behandelt werden; Rollenprüfung, Mandantentrennung, Schlüsselreferenzen, Malware-/Injection-Prüfung und feste Zielfreigaben schützen den Vorgang.",
+      "negative_scenario": "Prüfbericht enthält eine Prompt-Injection, die Empfänger austauschen oder Geheimnisse übermitteln soll.",
+      "oracle": "Prompt-Injection in einem Prüfbericht kann keine Empfänger ändern, Gates überspringen, Geheimnisse auslesen oder eine Sendung auslösen.",
+      "required_evidence_types": [
+        "THREAT_MODEL",
+        "SECURITY_TESTS"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-036",
+      "requirement_ids": [
+        "CLA-036"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Die Abnahme MUSS positive und negative fachliche, rechtliche, technische und Betriebsfälle umfassen, einschließlich Ausfall-/Wiederanlaufmatrix auf der tatsächlichen Zielumgebung.",
+      "negative_scenario": "Ein Dry Run benutzt produktive Zugangsdaten mit tatsächlichem Einreichungseffekt.",
+      "oracle": "Ein Dry Run ruft keine produktive Einreichung auf; Zeit-/Last-/Recovery-Ziele und Prüfbedingungen werden vor Ergebnismessung festgelegt.",
+      "required_evidence_types": [
+        "TEST_PLAN",
+        "LIVE_ADAPTER_ACCEPTANCE"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-037",
+      "requirement_ids": [
+        "CLA-037"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Änderungen an Code, Modell, Daten, Deployment, Rechtsstand, Review oder Zielfassung MÜSSEN über einen Impact-Graph zu den betroffenen Prüfungen und Freigaben zurückverfolgt werden.",
+      "negative_scenario": "Reviewer widerruft die Freigabe vor noch ausstehendem Versand; der Worker sendet trotzdem.",
+      "oracle": "Bestandene Prüfungen werden nicht ungeprüft auf neue Subjects übertragen; ein Widerruf verhindert noch nicht erfolgte Sendungen und erhält bereits erfolgte als Geschichte.",
+      "required_evidence_types": [
+        "CHANGE_IMPACT",
+        "REVOCATION_RECORD"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-038",
+      "requirement_ids": [
+        "CLA-038"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Bei Nutzung von EN 18286:2026 oder anderer Normen MÜSSEN aktuelle amtliche Fundstelle, genaue Ausgabe, Abdeckung und rechtmäßiger Textzugang gebunden werden.",
+      "negative_scenario": "EN 18286 wird als vollständige AI-Act-Zertifizierung behandelt oder geschützter Normtext wird ins öffentliche Repo kopiert.",
+      "oracle": "Die harmonisierte Normroute ersetzt weder die vollständige Anwendbarkeitsprüfung noch Nachweise außerhalb ihrer Abdeckung; geschützter Normtext wird nicht unberechtigt veröffentlicht.",
+      "required_evidence_types": [
+        "STANDARDS_APPLICABILITY_MATRIX"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-039",
+      "requirement_ids": [
+        "CLA-039"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Nach dem einmaligen Start MUSS die zugelassene Runtime Rückfragen, Ablehnungen, Fristen und Folgeaufgaben nachvollziehbar in denselben Prozess zurückführen; sachliche Behördenentscheidungen bleiben extern belegt.",
+      "negative_scenario": "Ein Übermittlungs-Receipt wird als positive Sachentscheidung ausgelegt und eine behördliche Rückfrage ignoriert.",
+      "oracle": "Forget bedeutet keine wiederholte Bedienung des Clients, nicht Vergessen gesetzlicher Verantwortung oder automatische positive Behördenentscheidung.",
+      "required_evidence_types": [
+        "FOLLOW_UP_WORK_UNIT",
+        "AUTHORITY_DECISION"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-040",
+      "requirement_ids": [
+        "CLA-040"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Patentkritische Offenlegung, neue Publikation, Änderung bestehender Lizenztexte und Veröffentlichung von Auditinhalten MÜSSEN eigene ziel- und inhaltsgebundene Entscheidungen behalten.",
+      "negative_scenario": "Patentkritischer Anhang oder private Auditdaten werden aufgrund der allgemeinen Requirement-Freigabe öffentlich publiziert.",
+      "oracle": "Die Freigabe dieses Requirements veröffentlicht keine Erfindung, versendet keine Akten und ändert keine bestehende Lizenz.",
+      "required_evidence_types": [
+        "DISCLOSURE_AUTHORIZATION"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-041",
+      "requirement_ids": [
+        "CLA-041"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Jedes erzeugte Arbeitsergebnis MUSS menschliche und künstlich-kognitive Beiträge, Werkzeug-/Modellversion, Quellmaterial und Prüfbasis unterscheiden, ohne Geheimnisse oder interne vertrauliche Gedankengänge offenzulegen.",
+      "negative_scenario": "KI-generierter Prüftext wird nach Owner-Annahme als ausschließlich menschlich erstellt bezeichnet.",
+      "oracle": "Die Übernahme eines Vorschlags durch den Owner macht dessen Entstehung nicht nachträglich rein menschlich.",
+      "required_evidence_types": [
+        "ARTIFACT_PROVENANCE"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    },
+    {
+      "id": "AT-042",
+      "requirement_ids": [
+        "CLA-042"
+      ],
+      "given": "Exakter bestätigter Subject und kontrollierte Testumgebung; der erforderliche fachliche Reviewer ist benannt.",
+      "positive_scenario": "Spezifikationsvollständigkeit, implementierte Kontrollen, Review, Sendefreigabe, tatsächlicher Empfang und Rechtskonformität MÜSSEN getrennte Statusfelder behalten.",
+      "negative_scenario": "Strukturprüfung des Requirements setzt implementation_verified, compliance oder authority_submission auf einen Erfolgswert.",
+      "oracle": "Der aktuelle Datensatz bleibt REQUIREMENTS_SPECIFIED_EXECUTION_NOT_ESTABLISHED und COMPLIANCE_NOT_ESTABLISHED bis zu eigenständigen Nachweisen.",
+      "required_evidence_types": [
+        "STATUS_RECORD"
+      ],
+      "environment_binding_required": true,
+      "test_execution_status": "PLANNED_NOT_EXECUTED",
+      "actual_result": null,
+      "evidence_refs": []
+    }
+  ],
+  "implementation_tests_executed": 0,
+  "operational_acceptance_established": false
+}

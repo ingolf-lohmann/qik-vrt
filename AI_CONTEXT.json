@@ -139,6 +139,9 @@
   "required_read_order": [
     "AI",
     "AI_CONTEXT.json",
+    "docs/HUMAN_COGNITION_ADMISSIBILITY.md",
+    "policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json",
+    "docs/audits/COGNITION_AUDIT_FORM_DE.md",
     "docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
     "policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json",
     "state/charter/CHARTER_ADOPTION_V1.json",
@@ -368,5 +371,14 @@
     "rule_id": "QIKVRT_REMOTE_DELIVERY_REPORTING_R1_R5_20261031",
     "all_nodes_adopted": false,
     "productive_effect_inferred": false
+  },
+  "human_cognition_admissibility": {
+    "machine_policy": "policy/HUMAN_COGNITION_ADMISSIBILITY_V1.json",
+    "human_contract": "docs/HUMAN_COGNITION_ADMISSIBILITY.md",
+    "human_form": "docs/audits/COGNITION_AUDIT_FORM_DE.md",
+    "implementation": "src/qikvrt_cognition_audit.py",
+    "audit_schema": "schemas/human_cognition_audit.schema.json",
+    "validator": "tools/ai_handoff.py --cognition-audit",
+    "source_presence_is_runtime_adoption": false
   }
 }
