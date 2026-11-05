@@ -48,6 +48,8 @@ test('the actual install shell retains install failures and rejects missing afte
     try {
       const evidence = join(dir, 'evidence'), bin = join(dir, 'bin');
       mkdirSync(evidence); mkdirSync(bin);
+      // Local sudo double: reject a supervisor outside the privilege boundary.
+      writeFileSync(join(bin, 'sudo'), '#!/bin/sh\n[ "$1" = -n ] || exit 90\nshift\n[ "$1" = timeout ] || exit 91\nexec "$@"\n', { mode: 0o755 });
       writeFileSync(join(bin, 'timeout'), '#!/bin/sh\nexit "$QIKVRT_TEST_INSTALL_STATUS"\n', { mode: 0o755 });
       if (existingAfter) writeFileSync(join(evidence, 'APT_CACHE_AFTER.json'), 'original receipt');
       const result = spawnSync('bash', ['-c', script], {
@@ -137,7 +139,9 @@ test('workflow restores caches before installation and keeps the bounded origina
   const partial = leg.indexOf('sudo install -d -o _apt -g root -m 0700 "$archives/partial"');
   assert.ok(partial >= 0 && partial < positions[1], 'sandbox partial directory must exist before cache restore');
   const install = step(leg, 'Install WebKit system dependencies (bounded diagnosis)');
-  assert.match(install, /timeout --signal=TERM --kill-after=30s 12m .*playwright install-deps webkit/);
+  assert.match(install, /sudo -n timeout --signal=TERM --kill-after=30s 12m "\$node_binary" .*playwright\/cli\.js install-deps webkit/);
+  assert.match(install, /timeout-minutes: 14/);
+  assert.match(install, /node_binary="\$\(command -v node\)"/);
   assert.match(install, /if \[ "\$status" -eq 124 \]; then[^\n]*\n\s*exit "\$status"/);
   assert.match(install, /apt_cache_exact_hit=/);
 });
@@ -194,6 +198,8 @@ test('the actual install shell records the APT fetch line and keeps the install 
     try {
       const evidence = join(dir, 'evidence'), bin = join(dir, 'bin');
       mkdirSync(evidence); mkdirSync(bin);
+      // Local sudo double: reject a supervisor outside the privilege boundary.
+      writeFileSync(join(bin, 'sudo'), '#!/bin/sh\n[ "$1" = -n ] || exit 90\nshift\n[ "$1" = timeout ] || exit 91\nexec "$@"\n', { mode: 0o755 });
       writeFileSync(join(bin, 'timeout'),
         '#!/bin/sh\nprintf \'%s\\n\' "$QIKVRT_TEST_APT_LINE"\nexit "$QIKVRT_TEST_INSTALL_STATUS"\n', { mode: 0o755 });
       const result = spawnSync('bash', ['-c', script], {
@@ -209,3 +215,4 @@ test('the actual install shell records the APT fetch line and keeps the install 
     } finally { rmSync(dir, { recursive: true, force: true }); }
   }
 });
+

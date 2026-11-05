@@ -118,7 +118,7 @@ test('the original workflow retains installation failure and always uploads the 
   const workflow = readFileSync(new URL('../../../.github/workflows/qikvrt_ci.yml', import.meta.url), 'utf8');
   const leg = workflow.split('  offline_browser:')[1].split('  amo_unlisted:')[0];
   assert.match(leg, /if: \$\{\{ !cancelled\(\) && matrix.engine == 'webkit' \}\}/);
-  assert.match(leg, /timeout --signal=TERM --kill-after=30s 12m .*playwright install-deps webkit/);
+  assert.match(leg, /sudo -n timeout --signal=TERM --kill-after=30s 12m "\$node_binary" .*playwright\/cli\.js install-deps webkit/);
   assert.match(leg, /if \[ "\$status" -eq 124 \]; then[^\n]*\n\s*exit "\$status"/);
   assert.match(leg, /if: always\(\)[\s\S]*\/APT_DIAGNOSIS.json/);
   assert.match(leg, /EXPECTED_HEAD: \$\{\{ needs.test.outputs.tested_head \}\}/);

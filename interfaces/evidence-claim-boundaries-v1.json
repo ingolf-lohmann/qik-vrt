@@ -1,0 +1,105 @@
+{
+  "version": "1",
+  "title": "QIK-VRT Evidence Claim Boundaries",
+  "authority_base": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+  "principle": "Evidence MUST NOT be transferred across claim layers, repository heads, subjects, or runtime effects without an explicit bound proof for the target claim.",
+  "layers": [
+    {
+      "id": "MODEL",
+      "establishes": [
+        "architecture structure",
+        "definitions",
+        "model-local dependency relations"
+      ],
+      "does_not_establish": [
+        "kernel-checked theorem validity unless separately proved",
+        "cryptographic transition validity",
+        "implementation conformance",
+        "runtime or productive effect"
+      ]
+    },
+    {
+      "id": "FORMAL",
+      "establishes": [
+        "only the exact theorem statements accepted by the specified proof kernel for the bound source and dependencies"
+      ],
+      "required_evidence": [
+        "exact theorem source",
+        "exact dependency/toolchain identity",
+        "successful kernel check bound to the exact source"
+      ],
+      "does_not_establish": [
+        "implementation refinement unless separately proved",
+        "cryptographic authenticity",
+        "deployment conformance",
+        "runtime or productive effect"
+      ]
+    },
+    {
+      "id": "CRYPTO_PROTOCOL",
+      "establishes": [
+        "only the validated protocol transition and bindings explicitly checked by the implementation"
+      ],
+      "required_evidence": [
+        "canonical serialization",
+        "actual SHA-256 computation over bound bytes",
+        "input binding",
+        "policy binding",
+        "evidence binding",
+        "predecessor/chain binding",
+        "authentication",
+        "freshness/expiry",
+        "independent state re-derivation"
+      ],
+      "negative_controls": [
+        "length-only hash checks are insufficient",
+        "caller-supplied acknowledged=true is insufficient",
+        "list length alone is insufficient for clause completeness",
+        "duplicate clause identifiers MUST be rejected where uniqueness is required"
+      ],
+      "does_not_establish": [
+        "truth of referenced evidence merely from its digest",
+        "deployment conformance",
+        "public availability",
+        "productive effect"
+      ]
+    },
+    {
+      "id": "RUNTIME_EFFECT",
+      "establishes": [
+        "only the effect directly observed and independently read back for the exact runtime subject"
+      ],
+      "required_evidence": [
+        "exact runtime subject",
+        "bound prepare/commit or equivalent admitted transition",
+        "independent receipt/readback",
+        "principal/request/subject/input binding",
+        "epoch/freshness binding",
+        "native payload/body digest binding where applicable"
+      ],
+      "does_not_establish": [
+        "effects on another host, head, PR, subject, or environment",
+        "merge, deployment, publication, or EFFECT_ACK_DONE unless each is directly evidenced"
+      ]
+    }
+  ],
+  "forbidden_inferences": [
+    "MODEL -> FORMAL",
+    "MODEL -> CRYPTO_PROTOCOL",
+    "MODEL -> RUNTIME_EFFECT",
+    "FORMAL -> CRYPTO_PROTOCOL",
+    "FORMAL -> RUNTIME_EFFECT",
+    "CRYPTO_PROTOCOL -> RUNTIME_EFFECT",
+    "evidence between different Git heads without explicit rebinding",
+    "evidence between different PRs without explicit rebinding",
+    "test success -> productive EFFECT_ACK_DONE",
+    "hash presence -> evidence truth"
+  ],
+  "status_vocabulary": {
+    "UNVERIFIED": "No bound evidence for the claim.",
+    "VERIFIED_MODEL": "Model/architecture claim only.",
+    "VERIFIED_FORMAL": "Exact theorem/kernel claim only.",
+    "VERIFIED_CRYPTO_PROTOCOL": "Exact protocol/cryptographic transition only.",
+    "VERIFIED_RUNTIME_EFFECT": "Exact observed effect for the bound runtime subject only."
+  }
+}
