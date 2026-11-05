@@ -133,6 +133,16 @@ jobs:
           exit 1
       - name: Verify locked manuscript bytes and page count
         run: python3 scripts/verify_source_lock.py
+      - name: Verify canonical clause audit and its negative control
+        run: |
+          lake build QIKVRTEffectAck.CanonicalClauseAudit QIKVRTEffectAck.CanonicalClauseAuditAxiomAudit
+          lake env lean QIKVRTEffectAck/CanonicalClauseAuditAxiomAudit.lean
+          if lake env lean tests/FalseCanonicalClauseAudit.lean > .lake/build/canonical-clause-negative.log 2>&1; then
+            echo "BLOCK: false canonical clause audit was accepted"
+            exit 1
+          fi
+          grep -F "tactic 'decide' proved that the proposition" .lake/build/canonical-clause-negative.log
+          grep -F "is false" .lake/build/canonical-clause-negative.log
       - name: Verify completed claim graph materialization
         run: python3 scripts/materialize_completion.py --check
       - name: Verify completed human proof map

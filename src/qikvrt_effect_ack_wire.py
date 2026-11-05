@@ -242,7 +242,8 @@ def make_record(request: core.EffectAckRequest, policy: dict, *, previous_chain:
 
 
 def verify_release(chain: list[dict], *, authenticated: bool, latest_hash: str, policy: dict,
-                   required_evidence: dict[str, Any], observed_evidence: dict[str, Any]) -> dict:
+                   required_evidence: dict[str, Any], observed_evidence: dict[str, Any],
+                   input_payload: bytes | None = None, clause_validators=None) -> dict:
     record = verify_chain(chain)[-1]
     if authenticated is not True:
         raise WireError("AUTHENTICATED_AUTHORIZED_EVALUATOR_REQUIRED")
@@ -251,6 +252,18 @@ def verify_release(chain: list[dict], *, authenticated: bool, latest_hash: str, 
     if (record["policy_id"] != policy.get("policy_id") or record["policy_version"] != policy.get("policy_version")
             or record["policy_hash"] != digest(policy)):
         raise WireError("TRUSTED_POLICY_BINDING_MISMATCH")
+    if "canonical_storage" in policy:
+        # Policy-selected external evidence profile. Missing trusted validators
+        # cannot silently fall back to digest membership or the legacy path.
+        try:
+            from .qikvrt_canonical_clause_audit import verify_clause_evidence
+        except ImportError:
+            from qikvrt_canonical_clause_audit import verify_clause_evidence
+        profile_evidence = verify_clause_evidence(record, policy=policy,
+            payload=input_payload, observed_evidence=observed_evidence,
+            validators=clause_validators)
+        if canonical(required_evidence) != canonical(profile_evidence):
+            raise WireError("CANONICAL_PROFILE_REQUIRED_EVIDENCE_MISMATCH")
     if record["required_evidence_refs"] != sorted(required_evidence):
         raise WireError("POLICY_REQUIRED_EVIDENCE_MISMATCH")
     for ref, expected in required_evidence.items():

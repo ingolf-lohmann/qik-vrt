@@ -1,0 +1,121 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_CANONICAL_CLAUSE_AUDIT_20261105_V1",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+    "tree": "79ef4e99b05e38fab37957cb75547c616b619032"
+  },
+  "continuation_pr": 576,
+  "predecessor_pr_head": "de5c88d7ca001138ea2c73130896e94cb2200fb1",
+  "contributions": {
+    "human": "Ingolf Lohmann: explicitly authorized automatic composition of the supplied clause example and existing canonical temporal-memory/EAP architecture.",
+    "artificial_cognitive": "OpenAI Codex: implementation, model proofs, negative controls, tests and source integration."
+  },
+  "integration": [
+    "Existing revision-03 verify_release automatically enforces canonical_storage policies; direct calls cannot bypass named validators.",
+    "Exactly c1 through c14, real canonical SHA-256 bindings, immutable policy selection, both archive types, provenance and required evidence.",
+    "Five new conditional Lean connection theorems reuse original EAP and temporal-memory models. Original nine temporal-memory theorems remain unchanged.",
+    "All original PR576 canonicalization changes are preserved on the current Main source. Native manuscript workflow checks the new model and the false-proof control.",
+    "Historical Alpha-2 archive bytes remain unchanged; new modules are excluded from that closed release inventory."
+  ],
+  "source_sha256": {
+    ".github/workflows/qikvrt_manuscript_proof.yml": "197c1ae507b76f77237aff0bceb6c7f784b559e416539c9992a29e3f0a6ad5e5",
+    "Makefile": "5c661ece0cdfff1fe7c6cdee52a52ac98b56828d337f47d731babc033e9cb855",
+    "docs/ARCHITECTURE.md": "297db4f6b8d4405be97b418fc07ca72b8153172f02ca9d711bd21d926ceaa945",
+    "docs/CANONICAL_CLAUSE_AUDIT.md": "5b5f2909774d433574130c6a4bcfacf19176eac3f3d24b2d6ec15772064357cc",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalClauseAudit.lean": "d01ec03a2b42dd5000bd56c789f57aab41ab3ea16226e2cefcdd4d8b5e75e2dd",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CanonicalClauseAuditAxiomAudit.lean": "cbfcff6fb1ef31d12c7a44070da788c6ece122e83fba6bb27d034ce7960664ff",
+    "formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py": "595ec15fabb4702e69b161e2c489423ac2c77a7aeb3530473240a7109a587c76",
+    "formalization/QIKVRT_Formalization_v2.0/tests/FalseCanonicalClauseAudit.lean": "cd5687d635e7e5358f91d9ab72c578d50d6affd0e7146ef1f7511319de1190b8",
+    "policy/QIKVRT_CANONICAL_RECORD_V1.json": "eb4cd9de748983a9cda010cb2cb9487460371218bd6531859e0092a87dd35350",
+    "runtime/self-host/PACKAGE.json": "43744a24809f3895bcb828e4e66d32a6647236129f1b3bda0950fac70ab44679",
+    "src/qikvrt_canonical_clause_audit.py": "9697093ba073c10bd4ca1bc80e16602938c68c457131ac5add3bb4cfe1a9eddc",
+    "src/qikvrt_effect_ack.py": "6fdb3cda9fd2fdb6875f44897b12e3eda75f2f5f95b0e2381b30e48c5fc70253",
+    "src/qikvrt_effect_ack_wire.py": "a2cee4663e4c9aeaeeeb222e9bd62b2d353ebb3cbfc2ba3a461f6c7b64ec1a08",
+    "tests/test_canonical_clause_audit.py": "0b0a9687219bef77a4e396b65c789238b95883bb15cde1bfc624d04ae5aae7a9",
+    "tests/test_canonical_temporal_memory_publication.py": "fd25a7bc85535aa862c8b48421b4eeed54c59b6f99515b2923a4f40f359c7afa",
+    "tests/test_effect_ack_conformance.py": "ec52aa1d2894af90899fdcef2b9c070b44823627e439f222338eb20bf8283bb1",
+    "tests/test_effect_ack_scientific_bundle.sh": "4d784a3742af3fab9ce669fca2b5597395dab4dd3f8457b82e15d42e076863f1"
+  },
+  "verification": {
+    "make_test_exit": 0,
+    "unittest_cases": 2466,
+    "unittest_groups": 45,
+    "reported_skips": 7,
+    "new_profile_tests": 17,
+    "focused_profile_and_wire_tests": 31,
+    "lean": "4.19.0",
+    "new_theorems": 5,
+    "new_axioms_reported": [
+      "propext"
+    ],
+    "negative_false_clause_proof": "REJECTED_BY_KERNEL",
+    "historical_alpha2_archive_sha256": "500087f6aeee41787959cfc8902852503e2182019ae4f3e88f115e94a1f5e689",
+    "scope": "Local implementation/source checks, not a native hosted exact-candidate CI receipt."
+  },
+  "observed_and_repaired_failures": [
+    "The original consumer rejects a malformed 64-character evidence reference before record construction; the regression now verifies that real earlier boundary.",
+    "Lean 4.19 Bool.and_eq_true is equality, not an iff; proofs use the actual kernel API.",
+    "New formal modules entered the historical Alpha-2 package inventory; exact exclusions restore original archive identity.",
+    "Importing the new model through an historically pinned entrypoint invalidated the historical mutation-control source pin; original entrypoint bytes were preserved and the new model is enforced explicitly in the existing manuscript workflow.",
+    "Unix socket creation was denied by this runtime (EPERM). Original native in-process Runtime API and cold original Terminal readback succeeded without resetting or copying a journal."
+  ],
+  "native_intake": {
+    "scope": "OWN_ORIGINAL_IN_PROCESS_RUNTIME_AND_COLD_TERMINAL_READBACK",
+    "subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 576,
+      "head": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+      "tree": "79ef4e99b05e38fab37957cb75547c616b619032"
+    },
+    "event_id": "e29389f1fb63417f9f676cc43333935a:1",
+    "ledger_digest": "fa947ce80d5a7220c81bdb19d2788e351e66dfb448a78735fc7bfc9d869f927d",
+    "socket_transport": "EPERM",
+    "effect_ack_done": false
+  },
+  "evidence_files": {
+    "clause-negative-kernel.log": {
+      "bytes": 187,
+      "sha256": "310c8eeb19bd6639a118c7335a91ff3410b50ae5c31f6515b047892d3d85c7ae"
+    },
+    "clause-python-tests.log": {
+      "bytes": 5258,
+      "sha256": "c7ab0e39bf533d21a19fa426c86fccfb576317cb08abf82efd8de3b610612e8a"
+    },
+    "full-test-final.log": {
+      "bytes": 146700,
+      "sha256": "5cb4faa4223212c26d910a406281bae782be93dc46b2c248c8767a6bc4e4eb48"
+    },
+    "clause-lean-build.log": {
+      "bytes": 1457,
+      "sha256": "9efa320d9d92940d5c2ea79ea5a6a70c4b8354bc3de1db0ad7cc98092237ae24"
+    },
+    "full-test-accepted.log": {
+      "bytes": 487597,
+      "sha256": "0b01ebd9d5fa667f1945d5f3656fb91cb46cc12ee8b79ed6e43e5085734c21f4"
+    },
+    "native-intake.json": {
+      "bytes": 464,
+      "sha256": "723a89599efcc8be328011845a33d2da11347ad9c81658e5b31259c188d89447"
+    },
+    "full-test.log": {
+      "bytes": 94313,
+      "sha256": "cf44fb76ae299d347a99c8f1fdebfa7ebc71336c5e2a66f524e7cf3c9a6d40a0"
+    }
+  },
+  "open_obligations": [
+    "Hosted exact-candidate CI, protected governance and actual Main integration.",
+    "The real source-bound meanings and audited implementations of any deployed fourteen predicates; test arithmetic predicates are fixtures only.",
+    "A digest-keyed callback map is a trusted deployment binding, not authenticated code identity by itself.",
+    "Python/Lean refinement, complete deployment mediation and actual target effect readback remain separate.",
+    "Original Mirror outbox source/writer and authenticated peer return remain OPEN under issue669.",
+    "Originalhost/SSO/IONOS and exact raumzeitterminal.de delivery remain OPEN; prior native endpoint readback ready=false, HTTP525. All prior Owner commands and unresolved predecessor duties remain preserved."
+  ],
+  "claims": {
+    "productive_effect_ack_done": false,
+    "new_zenodo_publication": false,
+    "all_original_fourteen_semantic_clauses_proved": false,
+    "physical_retrocausality_proved": false
+  }
+}

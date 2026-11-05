@@ -164,6 +164,7 @@
     "runtime/toolchains/requirements-personal-auth-50.0.2.txt",
     "scripts/qikvrt_api_client.py",
     "src/qikvrt_api_handler.py",
+    "src/qikvrt_canonical_clause_audit.py",
     "src/qikvrt_effect_ack.py",
     "src/qikvrt_effect_ack_http_service.py",
     "src/qikvrt_effect_ack_http_terminal.py",

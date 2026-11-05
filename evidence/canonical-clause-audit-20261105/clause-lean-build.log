@@ -1,0 +1,17 @@
+ℹ [6/17] Replayed QIKVRTEffectAck.CanonicalClauseAuditAxiomAudit
+info: ././././QIKVRTEffectAck/CanonicalClauseAuditAxiomAudit.lean:4:0: 'QIKVRT.CanonicalClauseAudit.V1.all_clauses_requires_every_index' depends on axioms: [propext]
+info: ././././QIKVRTEffectAck/CanonicalClauseAuditAxiomAudit.lean:5:0: 'QIKVRT.CanonicalClauseAudit.V1.failed_clause_prevents_authorization' depends on axioms: [propext]
+info: ././././QIKVRTEffectAck/CanonicalClauseAuditAxiomAudit.lean:6:0: 'QIKVRT.CanonicalClauseAudit.V1.authorized_requires_original_eap' depends on axioms: [propext]
+info: ././././QIKVRTEffectAck/CanonicalClauseAuditAxiomAudit.lean:7:0: 'QIKVRT.CanonicalClauseAudit.V1.authorized_requires_recorded_and_recomputed_done' depends on axioms: [propext]
+info: ././././QIKVRTEffectAck/CanonicalClauseAuditAxiomAudit.lean:8:0: 'QIKVRT.CanonicalClauseAudit.V1.authorized_checks_are_sound' depends on axioms: [propext]
+✔ [7/17] Built QIKVRTEffectAck.Mediation
+✔ [8/17] Built QIKVRTFormalization.Process.Gates
+✔ [9/17] Built QIKVRTEffectAck.CausalDistance
+✔ [10/17] Built QIKVRTFormalization.Process.Factorization
+✔ [11/17] Built QIKVRTEffectAck.QuantumClassicalRuntime
+✔ [12/17] Built QIKVRTEffectAck.CausalDistanceTemporalBridge
+✔ [13/17] Built QIKVRTEffectAck.InformationBoundary
+✔ [14/17] Built QIKVRTEffectAck.CausalDistanceBoundaryChecks
+✔ [15/17] Built QIKVRTEffectAck.Claims
+✔ [16/17] Built QIKVRTEffectAck
+Build completed successfully.

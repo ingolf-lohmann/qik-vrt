@@ -1,0 +1,68 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_CANONICAL_RECORD_V1_20261022",
+  "recorded_at": "2026-10-22T14:17:25.129814+00:00",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "a8017ab67824f01ec4d215cf7af83b8b0779283c",
+    "tree": "94317a4da76fac49b63bb129badcbbd21471c092"
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann supplied the canonicalization rules, code proposal and five required test assertions.",
+    "artificial_cognitive": "OpenAI Codex extended the existing core, added fixed-vector and rejection tests, bound the required Make gate and repaired the current-versus-historical test binding.",
+    "authorization": "Current Owner instruction plus retained repository-internal continuation grant; no new authorization requested."
+  },
+  "profile": "QIKVRT_CANONICAL_RECORD_V1",
+  "source_sha256": {
+    "src/qikvrt_effect_ack.py": "6fdb3cda9fd2fdb6875f44897b12e3eda75f2f5f95b0e2381b30e48c5fc70253",
+    "tests/test_effect_ack_conformance.py": "ec52aa1d2894af90899fdcef2b9c070b44823627e439f222338eb20bf8283bb1",
+    "tests/test_effect_ack_scientific_bundle.sh": "4d784a3742af3fab9ce669fca2b5597395dab4dd3f8457b82e15d42e076863f1",
+    "tests/test_canonical_temporal_memory_publication.py": "fd25a7bc85535aa862c8b48421b4eeed54c59b6f99515b2923a4f40f359c7afa",
+    "policy/QIKVRT_CANONICAL_RECORD_V1.json": "eb4cd9de748983a9cda010cb2cb9487460371218bd6531859e0092a87dd35350"
+  },
+  "verified_delta": [
+    "Recursive NFC now includes Enum values; non-string keys and invalid UTF-8 strings fail closed. Existing NFC key-collision and integer-only rules are retained.",
+    "canonical_json preserves its string return type; canonical_json_bytes and compute_record_hash reuse that same serializer.",
+    "Required VERIFY_CANONICALIZATION is bound to make canonicalization-test and make test.",
+    "The existing ResponsibilityProtocol hash vector is unchanged. The hash wrapper covers all supplied fields; the protocol projection remains explicit.",
+    "A separate current runtime proof receipt is reproduced with the existing scientific-bundle proof; historical publication and signed bytes are not rewritten.",
+    "Historical repository bindings are verified against their recorded Git blob bytes; unavailable objects still fail closed."
+  ],
+  "verification": {
+    "canonicalization_tests": 18,
+    "focused_core_handler_security_tests": 82,
+    "historical_binding_and_authorization_tests": 25,
+    "make_test": "PASS",
+    "python_test_executions": 1741,
+    "python_groups": 38,
+    "ansi_c90_checks": 7864387,
+    "full_test_log_sha256": "6eb0b98cdbc4c3cba95cb6a6c474078b07788b64de9391cb77a99936f985d145",
+    "scope": "Local candidate content; independent hosted exact-head CI and governed integration remain separate.",
+    "observed_initial_failures": [
+      "Current runtime source invalidated the old scientific-report source binding; an attempted in-place refresh also invalidated frozen publication references. The original report and SHA index were restored byte-for-byte; current proof is a separate receipt.",
+      "The old temporal-memory publication test compared a historical core pin with the active path. Its test now reads the exact recorded historical Git blob.",
+      "The reconstructed local snapshot lacked a shallow boundary, causing git show -s to inspect unavailable parent objects. The local Git metadata now explicitly records the verified a8017ab6 snapshot as shallow. No tracked source or historical evidence was altered for that repair."
+    ]
+  },
+  "native_intake": {
+    "event_id": "57dc730734124f7db80d78c6257b34f1:1",
+    "ledger_digest": "3146016a5bc6de866edad8d66568a1437f11d8ef77f4bcdbd95621a41f0a188e",
+    "independent_terminal_readback": true,
+    "scope": "Own admitted local journal only; no Authority runtime writer or live peer exchange is inferred."
+  },
+  "boundaries": {
+    "main_integration": false,
+    "deployment": false,
+    "signature_authentication_proved_by_this_gate": false,
+    "cross_language_conformance": false,
+    "arbitrary_semantic_equivalence": false,
+    "historical_hash_migration": false,
+    "effect_ack_done": false
+  },
+  "open_obligations": [
+    "Fresh hosted exact-head CI; protected governed Main integration.",
+    "Original native host acceptance and authenticated peer/outbox return remain open.",
+    "Exact raumzeitterminal.de delivery remains separate; last observed HTTP525."
+  ]
+}

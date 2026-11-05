@@ -96,6 +96,24 @@ def git_blob_sha1(data: bytes) -> str:
     ).hexdigest()
 
 
+def bound_repository_bytes(item: dict[str, object]) -> bytes:
+    """A historical commit binding names its recorded blob, not today's path.
+
+    This reads local Git only. Missing historical objects fail closed; the
+    caller still verifies the recorded size, SHA-256 and Git blob identity.
+    Published binding records and their claim status remain unchanged.
+    """
+    if item.get("content_state") != "TRACKED_AT_REPOSITORY_BASE_COMMIT":
+        return (ROOT / item["path"]).read_bytes()
+    if not all(re.fullmatch(r"[0-9a-f]{40}", str(item.get(name, "")))
+               for name in ("git_commit", "git_blob_sha1")):
+        raise ValueError("exact historical commit and blob binding required")
+    return subprocess.check_output(
+        ["git", "cat-file", "blob", item["git_blob_sha1"]], cwd=ROOT,
+        stderr=subprocess.PIPE,
+    )
+
+
 def latex_citation_keys(text: str) -> list[str]:
     groups = re.findall(
         r"\\cite(?:\[[^]]*\])?(?:\[[^]]*\])?\{([^}]+)\}",
@@ -340,7 +358,7 @@ class CanonicalTemporalMemoryPublicationTests(unittest.TestCase):
                 self.assertNotIn("git_blob_sha1", item)
                 self.assertNotIn("size_bytes", item)
                 continue
-            data = bound_path.read_bytes()
+            data = bound_repository_bytes(item)
             self.assertEqual(item["size_bytes"], len(data), item["id"])
             self.assertEqual(
                 item["sha256"],
