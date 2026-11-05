@@ -260,7 +260,7 @@ origin-adapter-browser-test: origin-adapter-test
 
 .PHONY: self-host-container-test
 self-host-container-test: tool-cache-contract
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_container
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_container tests.test_frozen_build_apt
 
 test: self-host-container-test
 

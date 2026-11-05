@@ -4,10 +4,11 @@ name: QIKVRT reflexive repository watchdog
 
 on:
   workflow_dispatch:
+  issues:
+    types: [opened, reopened, closed]
   workflow_run:
     workflows:
       - "QIK-VRT autonomous bounded self-heal"
-      - "QIK-VRT autonomous draft-PR continuation"
       - "QIK-VRT expected-head promotion executor"
       - "QIKVRT workflow executor"
       - "QIKVRT live status watch"
@@ -38,26 +39,13 @@ on:
       - "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
       - "state/work_units/CONTINUOUS_GATEWATCH_NODE_LIVENESS_V1.json"
   pull_request:
-    paths:
-      - ".github/workflows/qikvrt_reflexive_repository_watchdog.yml"
-      - ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
-      - "tools/qikvrt_reflexive_repository_watchdog.py"
-      - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
-      - "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
-      - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
-      - "registry/NODE_DISCOVERY_POLICY.json"
-      - "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
-      - "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
-      - "qikvrt/runtime/onboarding/NODE_HEALTH.json"
-      - "tests/test_qikvrt_reflexive_repository_watchdog.py"
-      - "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
-      - "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json"
-      - "state/work_units/CONTINUOUS_GATEWATCH_NODE_LIVENESS_V1.json"
+    types: [opened, reopened, synchronize, ready_for_review, closed]
 
 permissions:
   actions: read
   contents: read
   pull-requests: read
+  issues: read
 
 concurrency:
   group: qikvrt-reflexive-watchdog-${{ github.repository }}-${{ github.event.pull_request.number || 'main' }}
@@ -118,7 +106,7 @@ jobs:
           fi
           observation_stage=BASELINE_READBACK
           previous_run="$(
-            gh api "repos/$REPOSITORY/actions/workflows/qikvrt_reflexive_repository_watchdog.yml/runs?status=completed&per_page=20" \
+            gh api "repos/$REPOSITORY/actions/workflows/qikvrt_reflexive_repository_watchdog.yml/runs?head_sha=$EXPECTED_HEAD&status=completed&per_page=20" \
               | jq -r --argjson current "$CURRENT_RUN_ID" \
                 '[.workflow_runs[] | select(.id != $current)][0].id // empty'
           )"
@@ -149,27 +137,74 @@ jobs:
             > "$root/authority-role-readback.json"
           jq -er '.main_head' "$root/authority-role-readback.json" \
             > "$root/observed-authority-main-head.txt"
+          observation_stage=OPEN_WORK_READBACK
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-work \
+            --repository "$REPOSITORY" --expect-head "$EXPECTED_HEAD" \
+            --pages-dir "$root/work-pages" --now "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --json > "$root/open-work.json"
           observation_stage=RUNS_READBACK
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-runs \
             --repository "$REPOSITORY" --expect-head "$EXPECTED_HEAD" \
-            --pages-dir "$root/run-pages" --json \
-            > "$root/current-runs.json"
+            --pages-dir "$root/run-pages" --json > "$root/current-runs.json"
 
-          # Preserve every run for topology checks. Read all active and latest
-          # workflow evidence within the unchanged 20-request job budget.
+          # Retain every run; jobs are needed for every active run and the latest
+          # run of each workflow. Admit their complete union before any jobs GET.
           observation_stage=JOBS_BUDGET_PREFLIGHT
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
-            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" --json \
+            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" \
+            --required-jobs-only --json \
             > "$root/job-readback-budget.json"
           observation_stage=JOBS_READBACK
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-jobs \
             --runs-file "$root/current-runs.json" --repository "$REPOSITORY" \
             --expect-head "$EXPECTED_HEAD" --jobs-dir "$root/jobs" --json \
             > "$root/job-readback.json"
+          observation_stage=JOBS_COMPLETENESS_PREFLIGHT
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py job-readback-budget \
+            --runs-file "$root/current-runs.json" --expect-head "$EXPECTED_HEAD" \
+            --required-jobs-only --jobs-dir "$root/jobs" --json \
+            > "$root/validated-job-readback-budget.json"
 
+
+      - name: Analyze the pre-deadlock state without mutation
+        id: analyze
+        env:
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.qikvrt/reflexive-repository-watchdog
+          trap 'rc=$?; printf "ANALYSIS\n" > "$root/failed-stage.txt"; printf "%s\n" "$rc" > "$root/failed-exit-code.txt"' ERR
+          head="$(cat "$root/observed-head.txt")"
+          tree="$(cat "$root/observed-tree.txt")"
+          scope="$(cat "$root/observation-scope.txt")"
+          now="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          args=(
+            analyze
+            --runs-file "$root/current-runs.json"
+            --work-file "$root/open-work.json"
+            --jobs-dir "$root/jobs"
+            --job-plan-file "$root/job-readback-budget.json"
+            --expect-head "$head"
+            --expect-tree "$tree"
+            --repository "$REPOSITORY"
+            --now "$now"
+            --observation-scope "$scope"
+            --node-liveness-dir qikvrt/runtime/onboarding
+            --authority-head-file "$root/observed-authority-main-head.txt"
+            --json
+          )
+          if test -s "$root/previous-receipt.json"; then
+            args+=(--baseline "$root/previous-receipt.json")
+          fi
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py "${args[@]}" \
+            > "$root/reflexive-watchdog-receipt.json"
+          cp "$root/reflexive-watchdog-receipt.json" "$root/gatewatch-receipt.json"
+          jq '{state, disposition, first_blocker, productive_edge, semantic_fingerprint}' \
+            "$root/reflexive-watchdog-receipt.json"
 
       - name: Preserve failed observation as machine-readable HOLD
-        if: failure() && steps.reobserve.outcome == 'failure'
+        if: failure() && (steps.reobserve.outcome == 'failure' || steps.analyze.outcome == 'failure')
         env:
           REPOSITORY: ${{ github.repository }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -197,38 +232,22 @@ jobs:
             > "$root/reflexive-watchdog-receipt.json"
           cp "$root/reflexive-watchdog-receipt.json" "$root/gatewatch-receipt.json"
 
-      - name: Analyze the pre-deadlock state without mutation
+      - name: Bind error analysis for the existing repair consumer
+        if: always()
         env:
-          REPOSITORY: ${{ github.repository }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          CURRENT_RUN_ATTEMPT: ${{ github.run_attempt }}
+          PRODUCER_EVENT: ${{ github.event_name }}
+          PARENT_WORKFLOW: ${{ github.event.workflow_run.name || '' }}
         shell: bash
         run: |
           set -euo pipefail
           root=.qikvrt/reflexive-repository-watchdog
-          head="$(cat "$root/observed-head.txt")"
-          tree="$(cat "$root/observed-tree.txt")"
-          scope="$(cat "$root/observation-scope.txt")"
-          now="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          args=(
-            analyze
-            --runs-file "$root/current-runs.json"
-            --jobs-dir "$root/jobs"
-            --expect-head "$head"
-            --expect-tree "$tree"
-            --repository "$REPOSITORY"
-            --now "$now"
-            --observation-scope "$scope"
-            --node-liveness-dir qikvrt/runtime/onboarding
-            --authority-head-file "$root/observed-authority-main-head.txt"
-            --json
-          )
-          if test -s "$root/previous-receipt.json"; then
-            args+=(--baseline "$root/previous-receipt.json")
-          fi
-          python3 -B tools/qikvrt_reflexive_repository_watchdog.py "${args[@]}" \
-            > "$root/reflexive-watchdog-receipt.json"
-          cp "$root/reflexive-watchdog-receipt.json" "$root/gatewatch-receipt.json"
-          jq '{state, disposition, first_blocker, productive_edge, semantic_fingerprint}' \
-            "$root/reflexive-watchdog-receipt.json"
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py repair-handoff \
+            --analysis-file "$root/reflexive-watchdog-receipt.json" \
+            --run-id "$CURRENT_RUN_ID" --run-attempt "$CURRENT_RUN_ATTEMPT" \
+            --event "$PRODUCER_EVENT" --parent-workflow "$PARENT_WORKFLOW" --json \
+            > "$root/error-analysis-handoff.json"
 
       - name: Verify reflexive prevention and mesh continuity contracts
         shell: bash
