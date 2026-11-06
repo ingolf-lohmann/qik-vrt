@@ -310,3 +310,10 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+# Native Universal Terminal / virtual Mega ST read-only cutover negative controls.
+.PHONY: megast-native-browser-cutover-test
+megast-native-browser-cutover-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_megast_native_browser_probe
+
+test: megast-native-browser-cutover-test
