@@ -46,6 +46,10 @@ class NativeCutoverGatewayTests(unittest.TestCase):
         source = host.read_text(encoding='utf-8')
         self.assertNotIn('ufw allow "$API_PORT/tcp"', source)
         self.assertIn('-H tcp://$PUBLIC_IP:$API_PORT', source)
+        self.assertIn('run ufw insert 1 allow from "$ADMIN_CIDR"', source)
+        self.assertIn('run ufw insert 2 deny "$API_PORT/tcp"', source)
+        self.assertLess(source.index('run ufw insert 1 allow'),
+                        source.index('run ufw insert 2 deny'))
         self.assertLess(source.index('run ufw --force enable'),
                         source.index('run systemctl restart docker'))
         for cidr, expected in (('', 'HOLD_ADMIN_CIDR_REQUIRED'),
