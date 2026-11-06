@@ -52,6 +52,21 @@ printf '%s' "$PUBLIC_IP" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$' || die "PUBL
 if [ -n "$NODE_ID" ]; then
     printf '%s' "$NODE_ID" | grep -Eq '^[A-Za-z0-9_.:-]{1,100}$' || die "NODE_ID_INVALID"
 fi
+if [ "$CERTS_ONLY" = 0 ]; then
+    # Fail closed before configuring a remotely reachable Docker daemon.
+    # Do not expose port 2376 to the entire Internet, even with mTLS.
+    [ -n "$ADMIN_CIDR" ] || die "ADMIN_CIDR_REQUIRED"
+    command -v python3 >/dev/null 2>&1 || die "PYTHON3_REQUIRED"
+    python3 - "$ADMIN_CIDR" <<'PY' || die "ADMIN_CIDR_INVALID"
+import ipaddress, sys
+try:
+    network = ipaddress.ip_network(sys.argv[1], strict=False)
+    if network.version != 4 or network.prefixlen < 24:
+        raise ValueError("IPv4 management subnet must be /24 or narrower")
+except ValueError:
+    raise SystemExit(1)
+PY
+fi
 if [ "$DRY_RUN" = 0 ] && [ "$CERTS_ONLY" = 0 ]; then
     [ "$(id -u)" = 0 ] || die "ROOT_REQUIRED"
     command -v apt-get >/dev/null 2>&1 || die "DEBIAN_FAMILY_HOST_REQUIRED"
@@ -59,9 +74,9 @@ fi
 
 if [ "$CERTS_ONLY" = 0 ]; then
 # 1. Docker Engine and tools (distribution packages; no curl|sh installers).
-if ! command -v docker >/dev/null 2>&1 || ! command -v openssl >/dev/null 2>&1; then
+if ! command -v docker >/dev/null 2>&1 || ! command -v openssl >/dev/null 2>&1 || ! command -v ufw >/dev/null 2>&1; then
     run apt-get update
-    run env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends docker.io openssl ca-certificates
+    run env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends docker.io openssl ca-certificates ufw
 fi
 fi
 
@@ -88,28 +103,33 @@ fi
 
 [ "$CERTS_ONLY" = 0 ] || { echo "QIKVRT_HOST_CERTS=READY $TLS_DIR"; exit 0; }
 
-# 3. Docker API: unix socket stays; TCP only with --tlsverify.
+# 3. Require the existing firewall to be configured BEFORE Docker TCP is
+# started.  A provider firewall alone is not inferred from source or DNS.
+# A missing firewall is a hold, not permission to expose port 2376.
+if [ "$DRY_RUN" = 0 ]; then
+    command -v ufw >/dev/null 2>&1 || die "UFW_REQUIRED_BEFORE_DOCKER_TCP"
+fi
+run ufw allow 22/tcp
+run ufw allow 80/tcp
+run ufw allow 443/tcp
+# Insert both rules above any previously existing broad allow on port 2376.
+# A narrow allow must precede the global deny in UFW's first-match order.
+run ufw insert 1 allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
+run ufw insert 2 deny "$API_PORT/tcp"
+run ufw --force enable
+
+# 4. Docker API: unix socket stays; TCP only with --tlsverify.
 run install -d -m 0755 /etc/systemd/system/docker.service.d
 if [ "$DRY_RUN" = 0 ]; then
     cat > /etc/systemd/system/docker.service.d/qikvrt-mtls.conf <<EOF
 [Service]
 ExecStart=
-ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:$API_PORT --tlsverify --tlscacert=$TLS_DIR/ca.pem --tlscert=$TLS_DIR/server-cert.pem --tlskey=$TLS_DIR/server-key.pem --containerd=/run/containerd/containerd.sock
+ExecStart=/usr/bin/dockerd -H fd:// -H tcp://$PUBLIC_IP:$API_PORT --tlsverify --tlscacert=$TLS_DIR/ca.pem --tlscert=$TLS_DIR/server-cert.pem --tlskey=$TLS_DIR/server-key.pem --containerd=/run/containerd/containerd.sock
 EOF
 fi
 run systemctl daemon-reload
 run systemctl enable --now docker
 run systemctl restart docker
-
-# 4. Firewall: SSH, HTTP/HTTPS for the public edge, mTLS API (optionally narrowed).
-if command -v ufw >/dev/null 2>&1; then
-    run ufw allow 22/tcp
-    run ufw allow 80/tcp
-    run ufw allow 443/tcp
-    if [ -n "$ADMIN_CIDR" ]; then run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
-    else run ufw allow "$API_PORT/tcp"; fi
-    run ufw --force enable
-fi
 
 # 5. Persistent owner state volume and private configuration directory.
 if [ "$DRY_RUN" = 1 ] || ! docker volume inspect "$STATE_VOLUME" >/dev/null 2>&1; then
@@ -121,7 +141,7 @@ run install -d -m 0700 "$CONFIG_DIR"
 DAEMON_ID="DRY-RUN"
 if [ "$DRY_RUN" = 0 ]; then
     DAEMON_ID=$(docker --tlsverify --tlscacert="$TLS_DIR/ca.pem" --tlscert="$TLS_DIR/client-cert.pem" \
-        --tlskey="$TLS_DIR/client-key.pem" -H "tcp://127.0.0.1:$API_PORT" info --format '{{.ID}}') \
+        --tlskey="$TLS_DIR/client-key.pem" -H "tcp://$PUBLIC_IP:$API_PORT" info --format '{{.ID}}') \
         || die "MTLS_DOCKER_API_SELF_CHECK_FAILED"
 fi
 [ -n "$NODE_ID" ] || NODE_ID="$DAEMON_ID"
