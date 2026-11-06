@@ -1,0 +1,61 @@
+{
+  "schema": "qikvrt-gemini-h6-source-binding-v1",
+  "claim_id": "QIKVRT-GEMINI-H6-SOURCE-BINDING-20261106-01",
+  "observed_at": "2026-11-06T13:13:15Z",
+  "channel": "communication/gemini/",
+  "scope": "PUBLIC_DOCUMENTARY_SOURCE_BINDING_NOT_PEER_DELIVERY",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "original_lean": {
+    "path": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean",
+    "source_commit": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+    "bytes": 27562,
+    "sha256": "2bfc26a7728b7a63cc9ecfb11981ff54d69b710b229259ec035f51acf8b7a1c3",
+    "git_blob_sha1": "0b3e8664b1d5a52b2c4c65f80633e512661a5c25",
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean",
+    "verification": "BASE64_ORIGINAL_BYTES_RETRIEVED_FROM_GITHUB_AND_SHA256_COMPUTED; MATCH_SHA256SUMS"
+  },
+  "historical_kernel_receipt": {
+    "path": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/H6_LOCAL_KERNEL_RECEIPT.json",
+    "receipt_identifier_field": "publication_id",
+    "receipt_identifier": "qikvrt-vrtcore-virtual-sphere-h6-v1",
+    "scope_id": "qikvrt-vrtcore-virtual-sphere-h6-local-exact-byte-candidate",
+    "bytes": 5872,
+    "sha256": "1fa18030b3f3bd59f9692cabd6d68929ab9dfd388db3521ea5bd9f132f17c55e",
+    "git_blob_sha1": "c85dd7ecb82499e6eebf5c3b3a10f60e4e2c8547",
+    "executed_at": "2026-08-02T10:43:57Z",
+    "state": "LOCAL_EXACT_BYTE_VIRTUAL_CLOSURE_VERIFIED",
+    "original_source_binding": "Goldkelch/qik-vrt local uncommitted candidate as declared in receipt; current Authority source bytes independently matched",
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/H6_LOCAL_KERNEL_RECEIPT.json",
+    "independent_external_reproduction": "OPEN"
+  },
+  "checksum_chain": {
+    "sha256sums_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/SHA256SUMS",
+    "package_root_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/PACKAGE_ROOT.sha256",
+    "package_root_declared_sha256_of_sha256sums": "ab540fc314b0314c9dd81528dd83ba6c8ab0a3aa10070302cdcb10b6241cbf37"
+  },
+  "user_reported_preparation_file": {
+    "bytes": 9824,
+    "sha256": "d8c726bebc9a6ffd3fe27cc25e0f4d55f137a0d1ed2594c8305430dd7bae990b",
+    "verification": "USER_REPORTED_NOT_INDEPENDENTLY_READ; DIFFERENT_FILE_FROM_LEAN_AND_KERNEL_RECEIPT"
+  },
+  "chat_share_context": {
+    "url": "https://chatgpt.com/share/6aedcf79-e9e0-83eb-8181-057a0d795348",
+    "full_original_http_bytes": "NOT_VERIFIED_BY_THIS_BINDING"
+  },
+  "claim_boundary": {
+    "formal_scope": "VIRTUAL_TRANSITION_SYSTEM_NOT_PHYSICAL_UNIVERSE",
+    "codec_scope": "List Bool; NO_EXTERNAL_BYTE_PARSER_THEOREM",
+    "effect_state": "EFFECT_ACK_CONTINUE",
+    "effect_ack_done": false,
+    "physical_closure": "OPEN",
+    "gemini_authenticated_peer_ack": "NOT_VERIFIED",
+    "original_host_deployment": "NOT_CLAIMED"
+  },
+  "evidence_refs": [
+    "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean",
+    "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/H6_LOCAL_KERNEL_RECEIPT.json",
+    "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/SHA256SUMS",
+    "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/PACKAGE_ROOT.sha256"
+  ],
+  "note": "This binding records source bytes and an existing historical receipt. It does not invent a new kernel receipt, claim a recent Lean run, authenticate a Gemini responder, or authorize production effects."
+}
