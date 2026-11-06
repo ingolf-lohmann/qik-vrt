@@ -609,6 +609,27 @@ ATTEMPT_PATTERN = re.compile(
 )
 
 
+def classify_rest_failure(stderr: str, status: str) -> str:
+    """Classify GitHub API failures using an allowlist; never expose error bodies.
+
+    An HTTP 403 alone is not evidence of missing repository permissions.
+    No classification authorizes a duplicate POST or an admission bypass.
+    """
+    message = stderr.lower()
+    if "secondary rate limit" in message or "abuse detection" in message:
+        return "SECONDARY_RATE_LIMIT"
+    if "rate limit exceeded" in message or "primary rate limit" in message:
+        return "PRIMARY_RATE_LIMIT"
+    if ("resource not accessible by integration" in message
+            or "integration does not have permission" in message
+            or "insufficient permissions" in message):
+        return "INTEGRATION_PERMISSION_DENIED"
+    if ("repository rule" in message or "protected branch" in message
+            or "push declined" in message):
+        return "REPOSITORY_POLICY_DENIED"
+    return "FORBIDDEN_CAUSE_UNVERIFIED" if status == "403" else "HTTP_FAILURE_UNCLASSIFIED"
+
+
 class GitHubREST:
     """Use only gh api; never gh pr, Git network transport or GraphQL."""
 
@@ -627,7 +648,7 @@ class GitHubREST:
         if result.returncode:
             match = re.search(r"HTTP ([0-9]{3})", result.stderr)
             code = match.group(1) if match else "AMBIGUOUS_TRANSPORT"
-            raise SelfHealBlock(f"REST {method} {path}: {code}; no automatic retry")
+            raise SelfHealBlock(f"REST {method} {path}: {code}; cause={classify_rest_failure(result.stderr, code)}; no automatic retry")
         return json.loads(result.stdout) if result.stdout.strip() else None
 
     def pages(self, path: str) -> list[Any]:
