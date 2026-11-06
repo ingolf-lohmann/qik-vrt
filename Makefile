@@ -310,3 +310,11 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+# Optional original-user-host adapter: inherited private env must not weaken bind policy.
+.PHONY: original-adapter-systemd-test
+original-adapter-systemd-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_original_adapter_systemd
+
+test: original-adapter-systemd-test
+self-host-test: original-adapter-systemd-test
