@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 HEX = re.compile(r"[0-9a-f]{64}\Z")
+GIT_OBJECT_ID = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})\\Z")
 IDENT = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9._-]{1,127}\Z")
 LICENSES = {"PolyForm-Noncommercial-1.0.0", "CC-BY-NC-ND-4.0", "Apache-2.0", "MIT"}
 NOTICE = "Required Notice: Copyright 2026 Ingolf Lohmann. Commercial use is not licensed without a separate written agreement from the rights holder."
