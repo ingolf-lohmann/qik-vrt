@@ -1,0 +1,82 @@
+{
+  "schema": "qikvrt_public_thesis_claims_v1",
+  "publication_date": "2026-11-06",
+  "author": "Ingolf Lohmann",
+  "author_role": "Principal",
+  "license": "CC-BY-NC-ND-4.0",
+  "doc_path": "docs/publications/2026-11-06-universal-transputer-terminal-one-minute/README.md",
+  "doc_git_blob_sha1": "2906859f0844dd0331f1811d394dc06561368865",
+  "ontology_scope": "author_proposed_physical_interpretation",
+  "formal_scope": "finite_specified_qikvrt_models_only",
+  "global_done_claim": false,
+  "internet_access_claim": "PUBLIC_SOURCE_AND_IETF_DRAFTS_AVAILABLE_NOT_PRODUCTION_RUNTIME_PROVEN",
+  "claims": [
+    {
+      "id": "UTT-20261106-001",
+      "text": "Schwarze Löcher bilden den universalen Transputer und das emergierende Universum ein universales Terminal.",
+      "epistemic_kind": "INTERPRETIVE",
+      "status": "OPEN_PHYSICAL_VALIDATION",
+      "evidence": [],
+      "non_claim": "Nicht als etablierte astrophysikalische Identität oder beobachtete Rekonstruktion infallender Information dargestellt."
+    },
+    {
+      "id": "UTT-20261106-002",
+      "text": "QIK-VRT modelliert endliche Informations- und Wirkungszustände in serialisierbaren, versionierten Repräsentationen.",
+      "epistemic_kind": "SOURCE_BOUND",
+      "status": "REPRODUCIBLE_WITH_DECLARED_MODEL_AND_TOOLCHAIN",
+      "evidence": [
+        {
+          "kind": "REPOSITORY",
+          "url": "https://github.com/ingolf-lohmann/qik-vrt",
+          "path": "README.md"
+        }
+      ],
+      "non_claim": "Keine universelle Rekonstruierbarkeit beliebiger physikalischer Information."
+    },
+    {
+      "id": "UTT-20261106-003",
+      "text": "EFFECT_ACK trennt den Transportbeleg von der nach Policy und Evidenz zulässigen Wirkungsfreigabe.",
+      "epistemic_kind": "NORMATIVE",
+      "status": "IETF_INDIVIDUAL_EXPERIMENTAL_DRAFT",
+      "evidence": [
+        {
+          "kind": "IETF_INTERNET_DRAFT",
+          "url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/",
+          "revision": "03"
+        }
+      ],
+      "non_claim": "Kein verabschiedeter IETF-Standard; kein unabhängiger Produktiv-Readback."
+    },
+    {
+      "id": "UTT-20261106-004",
+      "text": "Eine bestimmte produktive Wirkung ist vom Originalziel unabhängig bestätigt.",
+      "epistemic_kind": "OPEN",
+      "status": "AWAITING_ADMITTED_ORIGINAL_RUNTIME_READBACK",
+      "evidence": [],
+      "non_claim": "Keine Ableitung von EFFECT_ACK_DONE aus CI, Git-Commit, HTTP-Transport oder Autorenaussage."
+    },
+    {
+      "id": "UTT-20261106-005",
+      "text": "Die vollständige physikalische These ist aus den endlichen Modellbeweisen bewiesen.",
+      "epistemic_kind": "OPEN",
+      "status": "NOT_PROVED",
+      "evidence": [
+        {
+          "kind": "ZENODO_BIBLIOGRAPHIC_LOCATOR",
+          "url": "https://doi.org/10.5281/zenodo.21888130",
+          "full_external_content_independently_reviewed": false
+        }
+      ],
+      "non_claim": "Der kosmologische Anspruch wird nicht als QED-Satz eines endlichen Softwaremodells gewertet."
+    }
+  ],
+  "source_limits": {
+    "physical_external_validation": "NOT_ESTABLISHED",
+    "host_admission": "NOT_ESTABLISHED",
+    "protocol_internet_draft": "ACTIVE_INDIVIDUAL_EXPERIMENTAL_NOT_RFC",
+    "zenodo_archive_links": "SOURCE_REFERENCED_EXTERNAL_CONTENT_NOT_FULLY_REVERIFIED_THIS_TURN",
+    "original_software_history_preserved": true,
+    "owner_publication_authorization": true,
+    "authorization_not_transferable_to_other_principals": true
+  }
+}
