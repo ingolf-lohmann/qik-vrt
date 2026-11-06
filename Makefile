@@ -224,7 +224,7 @@ repository-monitor-test:
 
 .PHONY: temdd-event-ledger-test
 temdd-event-ledger-test: tool-cache-contract
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests/test_temdd_event_ledger.py tests/test_temdd_runtime_subject_binding.py
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests/test_temdd_event_ledger.py tests/test_temdd_runtime_subject_binding.py tests/test_temdd_receipt_invariants.py
 
 # The historical admission target is part of explicitly selected S1 runtimes.
 # Generic portable callers retain their existing platform contract.

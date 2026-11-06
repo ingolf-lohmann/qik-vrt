@@ -116,8 +116,26 @@ class SourceRecoveryTests(unittest.TestCase):
             current = (ROOT / f['restored_path']).read_bytes()
             if f['restored_path'] in changed:
                 entry = changed[f['restored_path']]
-                self.assertEqual(hashlib.sha256(current).hexdigest(), entry['successor_sha256'])
-                self.assertEqual(host.git_blob_digest(current), entry['successor_git_blob'])
+                if f['restored_path'] == 'src/qikvrt_temdd_event_ledger.py':
+                    # A new correction advances the successor, never the
+                    # historical original or its immutable 2026-10-13 receipt.
+                    newer = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261106_TEMDD_RECEIPT.json').read_bytes())
+                    self.assertEqual(newer['schema'], 'qikvrt-temdd-ledger-receipt-successor/v1')
+                    self.assertEqual(newer['restored_path'], f['restored_path'])
+                    self.assertEqual(newer['predecessor_receipt_path'],
+                                     'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json')
+                    self.assertIs(newer['predecessor_pass_transferred'], False)
+                    self.assertIs(newer['effect_ack_done'], False)
+                    self.assertEqual(newer['predecessor_sha256'], entry['successor_sha256'])
+                    self.assertEqual(newer['predecessor_git_blob'], entry['successor_git_blob'])
+                    preserved = (ROOT / newer['preserved_predecessor_path']).read_bytes()
+                    self.assertEqual(hashlib.sha256(preserved).hexdigest(), entry['successor_sha256'])
+                    self.assertEqual(host.git_blob_digest(preserved), entry['successor_git_blob'])
+                    self.assertEqual(hashlib.sha256(current).hexdigest(), newer['successor_sha256'])
+                    self.assertEqual(host.git_blob_digest(current), newer['successor_git_blob'])
+                else:
+                    self.assertEqual(hashlib.sha256(current).hexdigest(), entry['successor_sha256'])
+                    self.assertEqual(host.git_blob_digest(current), entry['successor_git_blob'])
                 raw = (ROOT / entry['historical_archive_path']).read_bytes()
             else: raw = current
             self.assertEqual(len(raw), f['bytes'], f['restored_path'])
