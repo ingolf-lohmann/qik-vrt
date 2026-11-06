@@ -1,0 +1,238 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "non_source_machine_readable_catalog"
+  },
+  "schema": "qikvrt_public_devops_artifact_index_v1",
+  "as_of_date": "2026-11-06",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_visibility": "public",
+  "pinned_source_main_commit_sha1": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+  "publication_state": "REVIEW_CANDIDATE_ON_PUBLIC_BRANCH_NOT_MAIN_RELEASE",
+  "intended_consumers": [
+    "people",
+    "read-only automated clients and artificial-cognitive systems"
+  ],
+  "source_evidence": "GitHub repository metadata and exact-commit Contents API; individual source file git blob identifiers",
+  "license_policy": {
+    "controlling_order": [
+      "third_party_provenance",
+      "specific_file_notice",
+      "current_software_license",
+      "current_non_source_license"
+    ],
+    "current_software": "PolyForm-Noncommercial-1.0.0",
+    "current_non_source": "CC-BY-NC-ND-4.0",
+    "exceptions": "Earlier valid Apache-2.0 grants, expressly scoped MIT code, and third-party rights remain unchanged",
+    "commercial_use": "Only to the extent already licensed by a specific applicable text; otherwise separate written authorization from Ingolf Lohmann",
+    "rights_source": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSE",
+    "public_access_is_not_commercial_authorization": true,
+    "operational_owner_acceptance_not_additional_condition_on_standard_public_license_grants": true,
+    "ai_training_or_production_use_not_granted_by_catalog": true
+  },
+  "artifact_integrity": {
+    "per_file_git_blob_sha1": "Compare local 'git hash-object <file>' with each git_blob_sha1",
+    "sha256_index": "SHA256SUMS.txt",
+    "canonical_repository_manifest": "REPOSITORY_FILE_MANIFEST.json",
+    "detached_manifest_digest": "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "note": "Git blob SHA-1 is an exact-byte source identity, not a substitute for the separately maintained SHA-256 evidence or CI verification"
+  },
+  "artifacts": [
+    {
+      "path": "AI",
+      "role": "Human and AI project bootstrap",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "dca02c44b10599853042d6c006bc7e7b0cdb9615",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/AI",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/AI",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/AI?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "role": "Machine-readable required reading order",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "f9ad0730461a27e0c300bf6622c2f2bba800a2bf",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/AI_CONTEXT.json",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/AI_CONTEXT.json",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/AI_CONTEXT.json?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "LICENSE",
+      "role": "Controlling mixed-license map",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSE",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSE",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/LICENSE?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "LICENSE.md",
+      "role": "License classification and exceptions",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "1968ef41e3ef02dc0ff8afc18d3d34b93df0c4a9",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSE.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSE.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/LICENSE.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "role": "Full current software license text",
+      "license_hint": "license-legal-text",
+      "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/LICENSES/PolyForm-Noncommercial-1.0.0.txt?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+      "role": "Full documentation license text",
+      "license_hint": "license-legal-text",
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSES/CC-BY-NC-ND-4.0.txt",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSES/CC-BY-NC-ND-4.0.txt",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/LICENSES/CC-BY-NC-ND-4.0.txt?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "LICENSES/Apache-2.0.txt",
+      "role": "Full historical Apache-2.0 license text",
+      "license_hint": "license-legal-text",
+      "git_blob_sha1": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSES/Apache-2.0.txt",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSES/Apache-2.0.txt",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/LICENSES/Apache-2.0.txt?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "COMMERCIAL_USE_POLICY.md",
+      "role": "Commercial rights boundary",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "1d9cd0db3f411d06cc358592bd1cb86aeb3dc39f",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/COMMERCIAL_USE_POLICY.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/COMMERCIAL_USE_POLICY.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/COMMERCIAL_USE_POLICY.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "LICENSE_TRANSITION.md",
+      "role": "Historic license transition record",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "928aec559bb87f0e2bce5c274fc82364849b78d8",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSE_TRANSITION.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/LICENSE_TRANSITION.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/LICENSE_TRANSITION.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "docs/CURRENT_AUTHORITY.md",
+      "role": "Versioned runtime and evidence authority map",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "679ffcb397334c219f19cb58eb6d27ce3f1aac54",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/CURRENT_AUTHORITY.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/CURRENT_AUTHORITY.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/docs/CURRENT_AUTHORITY.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "docs/devops/CONTINUATION_CONTRACT.md",
+      "role": "Repository continuation and publication gates",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "7147e4514ccbae61a99bdc98613199fe9b8bb55b",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/devops/CONTINUATION_CONTRACT.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/devops/CONTINUATION_CONTRACT.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/docs/devops/CONTINUATION_CONTRACT.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "docs/devops/TERMINAL_BRIDGE_ACCEPTANCE.md",
+      "role": "Universal Terminal admission conditions",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "82442843a35e4bb702ea470930a208ced2f6c47c",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/devops/TERMINAL_BRIDGE_ACCEPTANCE.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/devops/TERMINAL_BRIDGE_ACCEPTANCE.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/docs/devops/TERMINAL_BRIDGE_ACCEPTANCE.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "role": "Machine-verifiable-science charter",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "d6533d9be451f8ac922ef7c11cbf04900fa3066f",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "tools/qikvrt_integrity.py",
+      "role": "Deterministic manifest generation and verification tool",
+      "license_hint": "PolyForm-Noncommercial-1.0.0",
+      "git_blob_sha1": "e34cee6c960d13f276c15487ee9c564d05ae3bda",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/tools/qikvrt_integrity.py",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/tools/qikvrt_integrity.py",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/tools/qikvrt_integrity.py?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "role": "Repository CI workflow source",
+      "license_hint": "PolyForm-Noncommercial-1.0.0",
+      "git_blob_sha1": "61710d1a2e24d40fecef39405c0c79e0a4308562",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/.github/workflows/qikvrt_ci.yml",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/.github/workflows/qikvrt_ci.yml",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/.github/workflows/qikvrt_ci.yml?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "role": "Repository canonical content-tree manifest",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "8a131042667b955e9b8655406079b5bb855d152e",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/REPOSITORY_FILE_MANIFEST.json",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/REPOSITORY_FILE_MANIFEST.json",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/REPOSITORY_FILE_MANIFEST.json?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "role": "Detached SHA-256 manifest digest",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "c15a37044110fab96721423268ba7496c19a07a8",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/REPOSITORY_FILE_MANIFEST.json.sha256",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/REPOSITORY_FILE_MANIFEST.json.sha256",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/REPOSITORY_FILE_MANIFEST.json.sha256?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "role": "Canonical per-file checksum index",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "c59c24d108743e3c338096e1c7e4ae5d44627dd5",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/SHA256SUMS.txt",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/SHA256SUMS.txt",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/SHA256SUMS.txt?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    },
+    {
+      "path": "STATUS.md",
+      "role": "Scope-limited current status document",
+      "license_hint": "CC-BY-NC-ND-4.0",
+      "git_blob_sha1": "8cbd3871ad2c92a5e6d37ed5490b0ac60b6c122a",
+      "raw_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/STATUS.md",
+      "browser_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/37f8e4eb805292a31024a9e6213afc85d3a6a4a2/STATUS.md",
+      "api_contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/STATUS.md?ref=37f8e4eb805292a31024a9e6213afc85d3a6a4a2"
+    }
+  ],
+  "historical_download_examples": [
+    {
+      "kind": "historical_release_not_current_production",
+      "tag": "v2.13.4-node-r",
+      "release_url": "https://github.com/ingolf-lohmann/qik-vrt/releases/tag/v2.13.4-node-r",
+      "archive_url": "https://github.com/ingolf-lohmann/qik-vrt/releases/download/v2.13.4-node-r/qv2134_node.zip",
+      "sha256_sidecar_url": "https://github.com/ingolf-lohmann/qik-vrt/releases/download/v2.13.4-node-r/qv2134_node.zip.sha256",
+      "license": "Determine from release/tag and file-level notices; not reclassified by this index",
+      "verification": "Archive and sidecar were listed by the GitHub Releases API; byte validation not performed in this operation"
+    }
+  ],
+  "assertions": {
+    "public_repository_visibility_observed": true,
+    "anonymous_direct_http_readback": "UNVERIFIED_IN_THIS_OPERATION",
+    "source_files_verified_at_exact_commit_by_api": true,
+    "candidate_integrity_regeneration": "NOT_YET_VERIFIED",
+    "candidate_ci": "NOT_YET_VERIFIED",
+    "publication_zenodo": "NOT_PERFORMED",
+    "native_host_domain_runtime_effect": "NOT_VERIFIED",
+    "effect_ack_done": false,
+    "not_included": "No host credentials, account tokens, private workspace content, password vault data or runtime secrets"
+  }
+}
