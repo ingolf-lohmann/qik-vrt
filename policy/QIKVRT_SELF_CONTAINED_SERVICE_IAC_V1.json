@@ -1,0 +1,47 @@
+{
+  "schema": "qikvrt_self_contained_service_iac_v1",
+  "scope": "EVERY_SERVICE_OFFERING_INSTANCE",
+  "owner": "Ingolf Lohmann",
+  "status": "CANDIDATE_NOT_PRODUCTION_ADMITTED",
+  "required_package_paths": [
+    "AI",
+    "AI_CONTEXT.json",
+    "runtime/self-host/MESH_ACTIVATION.json",
+    "runtime/self-host/README.md",
+    "tools/qikvrt_self_host.py",
+    "tools/qikvrt_integrity.py",
+    "src/qikvrt_effect_ack.py",
+    "src/qikvrt_temdd_event_ledger.py"
+  ],
+  "required_roles": [
+    "universal_terminal",
+    "universal_transputer",
+    "effect_ack_gate",
+    "service_supervisor",
+    "independent_readback"
+  ],
+  "required_descriptors": [
+    "instance_id",
+    "service_id",
+    "source_head",
+    "source_tree",
+    "package_digest_sha256",
+    "deployment_adapter",
+    "runtime_roles",
+    "healthcheck",
+    "rollback",
+    "secret_refs",
+    "evidence_sink"
+  ],
+  "rules": {
+    "source": "pin exact immutable source HEAD and TREE; verify complete package digest before execution",
+    "reproducibility": "deploy/recover from the instance's packaged code and declared configuration; no implicit online mutable dependencies",
+    "portable": "provider-specific adapters may resolve externally, must be versioned and disclosed",
+    "secrets": "never embed secret values, credentials, signing keys, protected host identity or private certs in the instance package",
+    "admission": "configuration and tests cannot set EFFECT_ACK_DONE; require separately authorized host, native effect and independent original readback",
+    "recovery": "no replay of ambiguous irreversible effect; inspect original ledger and fence writers first",
+    "governance": "respect applicable owner license, code owner review, integrity trio and runtime admission"
+  },
+  "effect_ack_done": false,
+  "productive_admission": false
+}
