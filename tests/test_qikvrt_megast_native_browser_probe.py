@@ -40,6 +40,17 @@ def query(data, origin=ORIGIN, **kw):
 
 
 class NativeCutoverProbeTests(unittest.TestCase):
+    def test_gateway_source_never_forwards_anonymous_novnc(self):
+        # Static negative control runs even without nginx on portable CI.
+        from pathlib import Path
+        source = (Path(__file__).resolve().parents[1]
+                  / "deploy/universal-terminal/nginx.conf").read_text(encoding="utf-8")
+        marker = "location ^~ /qik-vrt/mesh/v1/terminal/ {"
+        self.assertEqual(source.count(marker), 1)
+        block = source.split(marker, 1)[1].split("}", 1)[0]
+        self.assertIn("return 403;", block)
+        self.assertNotIn("proxy_pass", block)
+
     def test_valid_shape_is_still_not_productive_cutover(self):
         r = query(fixture())
         self.assertEqual(r["classification"], "PUBLIC_TRANSPORT_OBSERVED_ONLY")
