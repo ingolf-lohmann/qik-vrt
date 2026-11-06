@@ -310,3 +310,10 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+# Provider-specific structural checks. No secrets, network or EAP effects.
+.PHONY: external-account-binding-test
+external-account-binding-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_external_account_binding_preflight
+
+test: external-account-binding-test
