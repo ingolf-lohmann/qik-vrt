@@ -12,7 +12,10 @@ Environment=QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED=1
 Environment=QIKVRT_PUBLICATION_REST_ENABLED=0
 Environment=QIKVRT_API_HOST=127.0.0.1
 EnvironmentFile=@QIKVRT_PRIVATE_ENV_FILE@
-ExecStart=@QIKVRT_PYTHON@ -B src/qikvrt_github_api_shim.py
+# Enforce loopback and disabled publication at the final exec boundary:
+# systemd EnvironmentFile= overrides Environment=, regardless of their order.
+# /usr/bin/env applies these non-secret invariants after loading private values.
+ExecStart=/usr/bin/env QIKVRT_API_HOST=127.0.0.1 QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED=1 QIKVRT_PUBLICATION_REST_ENABLED=0 @QIKVRT_PYTHON@ -B src/qikvrt_github_api_shim.py
 Restart=on-failure
 RestartSec=5s
 NoNewPrivileges=true
