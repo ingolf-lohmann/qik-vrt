@@ -52,6 +52,10 @@ printf '%s' "$PUBLIC_IP" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$' || die "PUBL
 if [ -n "$NODE_ID" ]; then
     printf '%s' "$NODE_ID" | grep -Eq '^[A-Za-z0-9_.:-]{1,100}$' || die "NODE_ID_INVALID"
 fi
+if [ "$CERTS_ONLY" = 0 ]; then
+    [ -n "$ADMIN_CIDR" ] || die "ADMIN_CIDR_REQUIRED_FOR_REMOTE_DOCKER_API"
+    command -v ufw >/dev/null 2>&1 || die "FIREWALL_REQUIRED_FOR_REMOTE_DOCKER_API"
+fi
 if [ "$DRY_RUN" = 0 ] && [ "$CERTS_ONLY" = 0 ]; then
     [ "$(id -u)" = 0 ] || die "ROOT_REQUIRED"
     command -v apt-get >/dev/null 2>&1 || die "DEBIAN_FAMILY_HOST_REQUIRED"
@@ -107,7 +111,7 @@ if command -v ufw >/dev/null 2>&1; then
     run ufw allow 80/tcp
     run ufw allow 443/tcp
     if [ -n "$ADMIN_CIDR" ]; then run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
-    else run ufw allow "$API_PORT/tcp"; fi
+    fi
     run ufw --force enable
 fi
 
