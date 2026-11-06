@@ -320,3 +320,11 @@ test: megast-native-browser-cutover-test
 
 # Run exact new negative controls even if the deterministic manifest is stale.
 integrity: megast-native-browser-cutover-test
+
+# Real nginx proxy regression; skips only when nginx is absent from a portable
+# developer machine. The static gateway-denial test above never skips.
+.PHONY: megast-novnc-gateway-integration-test
+megast-novnc-gateway-integration-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_temdd_public_proxy
+
+test: megast-novnc-gateway-integration-test
