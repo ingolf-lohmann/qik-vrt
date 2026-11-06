@@ -141,7 +141,7 @@ run install -d -m 0700 "$CONFIG_DIR"
 DAEMON_ID="DRY-RUN"
 if [ "$DRY_RUN" = 0 ]; then
     DAEMON_ID=$(docker --tlsverify --tlscacert="$TLS_DIR/ca.pem" --tlscert="$TLS_DIR/client-cert.pem" \
-        --tlskey="$TLS_DIR/client-key.pem" -H "tcp://127.0.0.1:$API_PORT" info --format '{{.ID}}') \
+        --tlskey="$TLS_DIR/client-key.pem" -H "tcp://$PUBLIC_IP:$API_PORT" info --format '{{.ID}}') \
         || die "MTLS_DOCKER_API_SELF_CHECK_FAILED"
 fi
 [ -n "$NODE_ID" ] || NODE_ID="$DAEMON_ID"
