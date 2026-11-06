@@ -317,3 +317,6 @@ megast-native-browser-cutover-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_megast_native_browser_probe
 
 test: megast-native-browser-cutover-test
+
+# Run exact new negative controls even if the deterministic manifest is stale.
+integrity: megast-native-browser-cutover-test
