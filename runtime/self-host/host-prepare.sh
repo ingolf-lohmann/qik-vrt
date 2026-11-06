@@ -51,6 +51,7 @@ done
 # Validate numeric IPv4 octets before generating TLS SANs and JSON.
 valid_ipv4() {
     printf '%s\n' "$1" | awk -F. '
+        NR != 1 { exit 1 }
         NF != 4 { exit 1 }
         { for (i = 1; i <= 4; i++) {
             if ($i !~ /^[0-9]+$/ || length($i) > 3 || $i + 0 > 255) exit 1
