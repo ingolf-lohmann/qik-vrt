@@ -6,6 +6,7 @@ import argparse
 import json
 import re
 from pathlib import Path
+from urllib.parse import urlsplit
 
 HEX = re.compile(r"[0-9a-f]{64}\Z")
 IDENT = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9._-]{1,127}\Z")
@@ -21,13 +22,25 @@ def evaluate(item):
         return {"status": "BLOCKED", "reason": "MISSING_REQUIRED_FIELD"}
     if not isinstance(item["id"], str) or not IDENT.fullmatch(item["id"]):
         return {"status": "BLOCKED", "reason": "INVALID_ID"}
-    if any(not isinstance(item[k], str) or not HEX.fullmatch(item[k]) for k in ("source_commit", "artifact_sha256")):
+    if not isinstance(item["source_commit"], str) or not GIT_OBJECT_ID.fullmatch(item["source_commit"]):
+        return {"status": "BLOCKED", "reason": "INVALID_GIT_OBJECT_ID"}
+    if not isinstance(item["artifact_sha256"], str) or not HEX.fullmatch(item["artifact_sha256"]):
         return {"status": "BLOCKED", "reason": "INVALID_DIGEST"}
     if item["license"] not in LICENSES:
         return {"status": "BLOCKED", "reason": "UNREVIEWED_LICENSE"}
     if item["required_notice"] != NOTICE:
         return {"status": "BLOCKED", "reason": "NOTICE_INVALID"}
-    if not isinstance(item["distribution_url"], str) or not item["distribution_url"].startswith("https://"):
+    url = item["distribution_url"]
+    try:
+        parsed = urlsplit(url) if isinstance(url, str) else None
+        valid_url = (parsed is not None and parsed.scheme == "https" and
+                     bool(parsed.hostname) and parsed.username is None and
+                     parsed.password is None and parsed.port in (None, 443) and
+                     bool(parsed.path and parsed.path != "/") and
+                     not parsed.fragment and not any(ch.isspace() for ch in url))
+    except ValueError:
+        valid_url = False
+    if not valid_url:
         return {"status": "BLOCKED", "reason": "URL_INVALID"}
     for gate in GATES:
         if item[gate] != "PASS":
@@ -42,14 +55,17 @@ def validate_catalog(catalog):
     records = catalog.get("artifacts")
     if not isinstance(records, list):
         return {"status": "BLOCKED", "reason": "INVALID_ARTIFACTS"}
+    if not records:
+        return {"status": "CANDIDATE_EMPTY", "artifacts_checked": 0, "results": []}
     ids, results = set(), []
     for item in records:
         outcome = evaluate(item)
         if isinstance(item, dict):
             ident = item.get("id")
-            if ident in ids:
-                outcome = {"status": "BLOCKED", "reason": "DUPLICATE_ID"}
-            ids.add(ident)
+            if isinstance(ident, str):
+                if ident in ids:
+                    outcome = {"status": "BLOCKED", "reason": "DUPLICATE_ID"}
+                ids.add(ident)
         results.append(outcome)
     return {"status": "METADATA_ELIGIBLE" if all(x["status"] == "METADATA_ELIGIBLE" for x in results) else "BLOCKED", "artifacts_checked": len(records), "results": results}
 
@@ -64,7 +80,7 @@ def main():
         return 2
     result = validate_catalog(value) if isinstance(value, dict) and "artifacts" in value else evaluate(value)
     print(json.dumps(result, sort_keys=True))
-    return 0 if result["status"] == "METADATA_ELIGIBLE" else 1
+    return 0 if result["status"] in {"METADATA_ELIGIBLE", "CANDIDATE_EMPTY"} else 1
 
 if __name__ == "__main__":
     raise SystemExit(main())
