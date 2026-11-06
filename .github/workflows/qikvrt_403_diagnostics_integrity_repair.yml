@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT PR403 diagnostic integrity regeneration
+
+on:
+  push:
+    branches:
+      - fix/qikvrt-403-diagnostics-20261106
+    paths-ignore:
+      - REPOSITORY_FILE_MANIFEST.json
+      - REPOSITORY_FILE_MANIFEST.json.sha256
+      - SHA256SUMS.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-pr403-integrity-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/fix/qikvrt-403-diagnostics-20261106'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact triggering head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Regenerate and check deterministic manifest trio
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git diff --check
+          git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          bad="$(git diff --cached --name-only | grep -vE '^(REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)$' || true)"
+          test -z "$bad"
+      - name: Commit only the generated integrity trio
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo "Integrity inventory already current"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'integrity: canonical trio for GitHub REST 403 diagnostics'
+          git push origin HEAD:refs/heads/fix/qikvrt-403-diagnostics-20261106
