@@ -5,7 +5,7 @@ from tools.qikvrt_public_artifact import NOTICE, evaluate, validate_catalog
 
 RECORD = {
     "id": "qikvrt-test-artifact",
-    "source_commit": "a" * 64,
+    "source_commit": "a" * 40,
     "artifact_sha256": "b" * 64,
     "license": "PolyForm-Noncommercial-1.0.0",
     "rights_review": "PASS",
@@ -38,7 +38,25 @@ class TestPublicArtifact(unittest.TestCase):
         self.assertEqual(validate_catalog({"schema": "qikvrt.public-artifacts-index.v1", "artifacts": [RECORD, RECORD]})["status"], "BLOCKED")
     def test_missing(self):
         self.assertEqual(evaluate({"id": "x"})["status"], "BLOCKED")
+    def test_sha256_git_object_id(self):
+        self.assertEqual(evaluate(dict(RECORD, source_commit="a" * 64))["status"], "METADATA_ELIGIBLE")
+    def test_invalid_git_object_id(self):
+        self.assertEqual(evaluate(dict(RECORD, source_commit="a" * 39))["status"], "BLOCKED")
+    def test_https_without_host(self):
+        self.assertEqual(evaluate(dict(RECORD, distribution_url="https:///artifact.zip"))["status"], "BLOCKED")
+    def test_url_credentials(self):
+        self.assertEqual(evaluate(dict(RECORD, distribution_url="https://user:pass@example.org/artifact.zip"))["status"], "BLOCKED")
+    def test_url_fragment(self):
+        self.assertEqual(evaluate(dict(RECORD, distribution_url="https://example.org/artifact.zip#fragment"))["status"], "BLOCKED")
+    def test_url_nonstandard_port(self):
+        self.assertEqual(evaluate(dict(RECORD, distribution_url="https://example.org:8443/artifact.zip"))["status"], "BLOCKED")
+    def test_non_string_license(self):
+        self.assertEqual(evaluate(dict(RECORD, license=["MIT"]))["status"], "BLOCKED")
+    def test_invalid_id_is_not_hashable(self):
+        broken = dict(RECORD, id=["not-a-string"])
+        outcome = validate_catalog({"schema": "qikvrt.public-artifacts-index.v1", "artifacts": [broken]})
+        self.assertEqual(outcome["status"], "BLOCKED")
     def test_empty_candidate(self):
-        self.assertEqual(validate_catalog({"schema": "qikvrt.public-artifacts-index.v1", "artifacts": []})["artifacts_checked"], 0)
+        self.assertEqual(validate_catalog({"schema": "qikvrt.public-artifacts-index.v1", "artifacts": []})["status"], "CANDIDATE_EMPTY")
 if __name__ == "__main__":
     unittest.main()
