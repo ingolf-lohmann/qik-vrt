@@ -113,3 +113,22 @@ productive EAP.
 **Acceptance:** native browser instead of TinyFish in QIK-VRT only when the
 original VM guest + terminal + domain + auth + EAP effect are separately
 proven. Until then `CUTOVER=HOLD`, `EFFECT_ACK_DONE=false` for this scope.
+
+## Historical source-preserving security overlay
+
+The source recovery receipts pin the original `nginx.conf`, `mesh-index.html`,
+and `tests/test_qikvrt_temdd_public_proxy.py` byte-for-byte. They are
+restored without modifications. Use only this *explicit*, separate Gateway
+override for the newly gated terminal cutover:
+
+```sh
+docker compose -f deploy/universal-terminal/compose.yaml \
+  -f deploy/universal-terminal/compose.native-cutover.yaml config
+```
+
+The overlay launches `native-cutover-gateway.sh` which uses
+`nginx-native-cutover.conf` and denies anonymous browser HTML and websocket
+at the gateway with HTTP 403. It is an opt-in, locally testable candidate;
+no deployment, original VM attestation, live SSO, provider login, or EAP
+effect is implied. Historical/legacy Gateway without this override is
+**not certified for public personal-browser access**.

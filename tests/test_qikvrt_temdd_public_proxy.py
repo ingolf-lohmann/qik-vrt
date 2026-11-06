@@ -172,27 +172,6 @@ class TEMDDPublicProxyTests(unittest.TestCase):
             code, _, _ = self.request(path)
             self.assertIn(code, (403, 404))
 
-    def test_public_novnc_html_and_websocket_are_denied_without_original_auth(self):
-        # Both HTML and Upgrade handshakes must be denied by nginx itself;
-        # neither a synthetic bearer nor a cookie can substitute native SSO.
-        tests = (
-            ('/qik-vrt/mesh/v1/terminal/vnc.html', {}),
-            ('/qik-vrt/mesh/v1/terminal/vnc.html?autoconnect=true',
-             {'Authorization': 'Bearer untrusted-fixture',
-              'Cookie': 'session=untrusted-fixture'}),
-            ('/qik-vrt/mesh/v1/terminal/websockify',
-             {'Connection': 'Upgrade', 'Upgrade': 'websocket',
-              'Sec-WebSocket-Key': 'dGhlIHNhbXBsZSBub25jZQ==',
-              'Sec-WebSocket-Version': '13'}),
-        )
-        for path, headers in tests:
-            with self.subTest(path=path):
-                before = len(self.backend.observations)
-                status, response_headers, _ = self.request(path, headers=headers)
-                self.assertEqual(status, 403)
-                self.assertEqual(len(self.backend.observations), before)
-                self.assertEqual(response_headers.get('Cache-Control'), 'no-store')
-
     def test_existing_landing_and_redirect_stay_unchanged(self):
         code, _, body = self.request('/AI/')
         self.assertEqual((code, body), (200, b'existing mesh landing page'))

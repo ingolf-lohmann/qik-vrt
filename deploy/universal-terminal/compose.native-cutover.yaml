@@ -1,0 +1,9 @@
+# Explicit local-only migration profile. The historical compose.yaml stays byte-exact.
+# docker compose -f deploy/universal-terminal/compose.yaml \
+#   -f deploy/universal-terminal/compose.native-cutover.yaml up -d
+# Does not enable public noVNC or authenticate external accounts.
+services:
+  qikvrt-gateway:
+    entrypoint:
+      - /bin/sh
+      - /opt/qikvrt/deploy/universal-terminal/native-cutover-gateway.sh

@@ -44,7 +44,7 @@ class NativeCutoverProbeTests(unittest.TestCase):
         # Static negative control runs even without nginx on portable CI.
         from pathlib import Path
         source = (Path(__file__).resolve().parents[1]
-                  / "deploy/universal-terminal/nginx.conf").read_text(encoding="utf-8")
+                  / "deploy/universal-terminal/nginx-native-cutover.conf").read_text(encoding="utf-8")
         marker = "location ^~ /qik-vrt/mesh/v1/terminal/ {"
         self.assertEqual(source.count(marker), 1)
         block = source.split(marker, 1)[1].split("}", 1)[0]
