@@ -17,7 +17,7 @@
 # is idempotent: existing certificates, volume and config are kept.
 #
 # Usage (as root on the VPS):
-#   sh host-prepare.sh --public-ip <IPv4> [--node-id <guid>] [--admin-cidr <cidr>] [--dry-run]
+#   sh host-prepare.sh --public-ip <IPv4> [--node-id <guid>] --admin-cidr <trusted-IPv4/CIDR> [--dry-run]
 # Test only the certificate step (no root): QIKVRT_HOST_TLS_DIR=<dir> sh host-prepare.sh --public-ip <IPv4> --certs-only
 set -eu
 
@@ -48,7 +48,30 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-printf '%s' "$PUBLIC_IP" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$' || die "PUBLIC_IPV4_REQUIRED"
+# Validate numeric IPv4 octets before generating TLS SANs and JSON.
+valid_ipv4() {
+    printf '%s\n' "$1" | awk -F. '
+        NF != 4 { exit 1 }
+        { for (i = 1; i <= 4; i++) {
+            if ($i !~ /^[0-9]+$/ || length($i) > 3 || $i + 0 > 255) exit 1
+          }
+        }
+    '
+}
+valid_ipv4 "$PUBLIC_IP" || die "PUBLIC_IPV4_REQUIRED"
+# Never open the Docker mTLS control port without an explicit narrow source.
+# --certs-only creates no listener and does not require a network policy.
+if [ "$CERTS_ONLY" = 0 ]; then
+    [ -n "$ADMIN_CIDR" ] || die "ADMIN_CIDR_REQUIRED"
+    ADMIN_IP="${ADMIN_CIDR%/*}"
+    ADMIN_PREFIX="${ADMIN_CIDR#*/}"
+    [ "$ADMIN_IP" != "$ADMIN_CIDR" ] || die "ADMIN_CIDR_INVALID"
+    valid_ipv4 "$ADMIN_IP" || die "ADMIN_CIDR_INVALID"
+    case "$ADMIN_PREFIX" in
+        ''|*[!0-9]*) die "ADMIN_CIDR_INVALID" ;;
+    esac
+    [ "${#ADMIN_PREFIX}" -le 2 ] && [ "$ADMIN_PREFIX" -ge 1 ] && [ "$ADMIN_PREFIX" -le 32 ] || die "ADMIN_CIDR_INVALID"
+fi
 if [ -n "$NODE_ID" ]; then
     printf '%s' "$NODE_ID" | grep -Eq '^[A-Za-z0-9_.:-]{1,100}$' || die "NODE_ID_INVALID"
 fi
@@ -106,8 +129,7 @@ if command -v ufw >/dev/null 2>&1; then
     run ufw allow 22/tcp
     run ufw allow 80/tcp
     run ufw allow 443/tcp
-    if [ -n "$ADMIN_CIDR" ]; then run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
-    else run ufw allow "$API_PORT/tcp"; fi
+    run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
     run ufw --force enable
 fi
 
