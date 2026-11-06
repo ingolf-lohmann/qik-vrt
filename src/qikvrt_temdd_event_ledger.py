@@ -313,7 +313,12 @@ class Ledger:
     def _decode(self, row):
         seq, binding, text, expected = row
         body = json.loads(text)
-        if binding != self.binding or body.get('subject') != self.subject or digest(body) != expected:
+        if (binding != self.binding or body.get('subject') != self.subject
+                or digest(body) != expected
+                or body.get('schema') != 'qikvrt_temdd_event_v1'
+                or body.get('evidence_transfer') != 'DENY'
+                or body.get('dod') is not False
+                or body.get('payload_digest') != digest(body.get('payload'))):
             raise Hold('LEDGER_READBACK_MISMATCH')
         return dict(body, id=f'{self.epoch}:{seq}', ledger_digest=expected)
 
