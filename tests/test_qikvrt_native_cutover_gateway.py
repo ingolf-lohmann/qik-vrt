@@ -40,6 +40,24 @@ class NativeCutoverGatewayTests(unittest.TestCase):
         self.assertIn('proxy_pass http://127.0.0.1:6080/;',
                       ORIGINAL.read_text(encoding='utf-8'))
 
+    def test_original_host_mtls_bootstrap_has_scoped_firewall_precondition(self):
+        """Reject unsafe host admission without touching the real VPS."""
+        host = ROOT / 'runtime/self-host/host-prepare.sh'
+        source = host.read_text(encoding='utf-8')
+        self.assertNotIn('ufw allow "$API_PORT/tcp"', source)
+        self.assertIn('-H tcp://$PUBLIC_IP:$API_PORT', source)
+        self.assertLess(source.index('run ufw --force enable'),
+                        source.index('run systemctl restart docker'))
+        for cidr, expected in (('', 'HOLD_ADMIN_CIDR_REQUIRED'),
+                               ('0.0.0.0/0', 'HOLD_ADMIN_CIDR_INVALID')):
+            command = ['sh', str(host), '--public-ip', '192.0.2.10', '--dry-run']
+            if cidr:
+                command += ['--admin-cidr', cidr]
+            check = subprocess.run(command, capture_output=True, text=True,
+                                   timeout=10)
+            self.assertEqual(check.returncode, 2, check.stdout + check.stderr)
+            self.assertIn(expected, check.stderr)
+
     def test_native_nginx_denies_html_and_websocket(self):
         nginx = shutil.which('nginx')
         if not nginx:
