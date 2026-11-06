@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: CC-BY-NC-ND-4.0
+# Run under the already admitted original user's systemd --user manager.
+# It must retain access to that user's original SSO session and Secret Service.
+[Unit]
+Description=QIK-VRT Original Production Environment REST Adapter
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=@QIKVRT_SEALED_PACKAGE_ROOT@
+Environment=QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED=1
+Environment=QIKVRT_PUBLICATION_REST_ENABLED=0
+Environment=QIKVRT_API_HOST=127.0.0.1
+EnvironmentFile=@QIKVRT_PRIVATE_ENV_FILE@
+# Enforce loopback and disabled publication at the final exec boundary:
+# systemd EnvironmentFile= overrides Environment=, regardless of their order.
+# /usr/bin/env applies these non-secret invariants after loading private values.
+ExecStart=/usr/bin/env QIKVRT_API_HOST=127.0.0.1 QIKVRT_PRODUCTION_ENVIRONMENT_ENABLED=1 QIKVRT_PUBLICATION_REST_ENABLED=0 @QIKVRT_PYTHON@ -B src/qikvrt_github_api_shim.py
+Restart=on-failure
+RestartSec=5s
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+# Do not isolate the original user's home/bus/Secret Service: this service
+# depends on existing OS-backed SSO, writer locks and private state journals.
+
+[Install]
+WantedBy=default.target
