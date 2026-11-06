@@ -74,9 +74,9 @@ fi
 
 if [ "$CERTS_ONLY" = 0 ]; then
 # 1. Docker Engine and tools (distribution packages; no curl|sh installers).
-if ! command -v docker >/dev/null 2>&1 || ! command -v openssl >/dev/null 2>&1; then
+if ! command -v docker >/dev/null 2>&1 || ! command -v openssl >/dev/null 2>&1 || ! command -v ufw >/dev/null 2>&1; then
     run apt-get update
-    run env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends docker.io openssl ca-certificates
+    run env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends docker.io openssl ca-certificates ufw
 fi
 fi
 
@@ -112,7 +112,10 @@ fi
 run ufw allow 22/tcp
 run ufw allow 80/tcp
 run ufw allow 443/tcp
-run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
+# Insert both rules above any previously existing broad allow on port 2376.
+# A narrow allow must precede the global deny in UFW's first-match order.
+run ufw insert 1 allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
+run ufw insert 2 deny "$API_PORT/tcp"
 run ufw --force enable
 
 # 4. Docker API: unix socket stays; TCP only with --tlsverify.
