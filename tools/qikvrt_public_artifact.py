@@ -26,7 +26,7 @@ def evaluate(item):
         return {"status": "BLOCKED", "reason": "INVALID_GIT_OBJECT_ID"}
     if not isinstance(item["artifact_sha256"], str) or not HEX.fullmatch(item["artifact_sha256"]):
         return {"status": "BLOCKED", "reason": "INVALID_DIGEST"}
-    if item["license"] not in LICENSES:
+    if not isinstance(item["license"], str) or item["license"] not in LICENSES:
         return {"status": "BLOCKED", "reason": "UNREVIEWED_LICENSE"}
     if item["required_notice"] != NOTICE:
         return {"status": "BLOCKED", "reason": "NOTICE_INVALID"}
