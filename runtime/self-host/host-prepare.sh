@@ -17,7 +17,7 @@
 # is idempotent: existing certificates, volume and config are kept.
 #
 # Usage (as root on the VPS):
-#   sh host-prepare.sh --public-ip <IPv4> [--node-id <guid>] [--admin-cidr <cidr>] [--dry-run]
+#   sh host-prepare.sh --public-ip <IPv4> [--node-id <guid>] --admin-cidr <trusted-IPv4/CIDR> [--dry-run]
 # Test only the certificate step (no root): QIKVRT_HOST_TLS_DIR=<dir> sh host-prepare.sh --public-ip <IPv4> --certs-only
 set -eu
 
@@ -48,7 +48,33 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-printf '%s' "$PUBLIC_IP" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$' || die "PUBLIC_IPV4_REQUIRED"
+# Validate numeric IPv4 octets before generating TLS SANs and JSON.
+valid_ipv4() {
+    printf '%s\n' "$1" | awk -F. '
+        NR != 1 { exit 1 }
+        NF != 4 { exit 1 }
+        { for (i = 1; i <= 4; i++) {
+            if ($i !~ /^[0-9]+$/ || length($i) > 3 || $i + 0 > 255) exit 1
+          }
+        }
+    '
+}
+valid_ipv4 "$PUBLIC_IP" || die "PUBLIC_IPV4_REQUIRED"
+# Never open the Docker mTLS control port without an explicit narrow source.
+# Restrict this setup path to a single IPv4 host or a small trusted /24-/32 network.
+# --certs-only creates no listener and does not require a network policy.
+if [ "$CERTS_ONLY" = 0 ]; then
+    [ -n "$ADMIN_CIDR" ] || die "ADMIN_CIDR_REQUIRED"
+    ADMIN_IP="${ADMIN_CIDR%/*}"
+    ADMIN_PREFIX="${ADMIN_CIDR#*/}"
+    [ "$ADMIN_IP" != "$ADMIN_CIDR" ] || die "ADMIN_CIDR_INVALID"
+    valid_ipv4 "$ADMIN_IP" || die "ADMIN_CIDR_INVALID"
+    case "$ADMIN_PREFIX" in
+        ''|*[!0-9]*) die "ADMIN_CIDR_INVALID" ;;
+    esac
+    [ "${#ADMIN_PREFIX}" -le 2 ] && [ "$ADMIN_PREFIX" -ge 24 ] && [ "$ADMIN_PREFIX" -le 32 ] || die "ADMIN_CIDR_INVALID"
+    command -v ufw >/dev/null 2>&1 || die "FIREWALL_REQUIRED_FOR_REMOTE_DOCKER_API"
+fi
 if [ -n "$NODE_ID" ]; then
     printf '%s' "$NODE_ID" | grep -Eq '^[A-Za-z0-9_.:-]{1,100}$' || die "NODE_ID_INVALID"
 fi
@@ -88,7 +114,14 @@ fi
 
 [ "$CERTS_ONLY" = 0 ] || { echo "QIKVRT_HOST_CERTS=READY $TLS_DIR"; exit 0; }
 
-# 3. Docker API: unix socket stays; TCP only with --tlsverify.
+# 3. Firewall: SSH, HTTP/HTTPS for the public edge, mTLS API (optionally narrowed).
+run ufw allow 22/tcp
+run ufw allow 80/tcp
+run ufw allow 443/tcp
+run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
+run ufw --force enable
+
+# 4. Docker API: unix socket stays; TCP only with --tlsverify.
 run install -d -m 0755 /etc/systemd/system/docker.service.d
 if [ "$DRY_RUN" = 0 ]; then
     cat > /etc/systemd/system/docker.service.d/qikvrt-mtls.conf <<EOF
@@ -100,16 +133,6 @@ fi
 run systemctl daemon-reload
 run systemctl enable --now docker
 run systemctl restart docker
-
-# 4. Firewall: SSH, HTTP/HTTPS for the public edge, mTLS API (optionally narrowed).
-if command -v ufw >/dev/null 2>&1; then
-    run ufw allow 22/tcp
-    run ufw allow 80/tcp
-    run ufw allow 443/tcp
-    if [ -n "$ADMIN_CIDR" ]; then run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
-    else run ufw allow "$API_PORT/tcp"; fi
-    run ufw --force enable
-fi
 
 # 5. Persistent owner state volume and private configuration directory.
 if [ "$DRY_RUN" = 1 ] || ! docker volume inspect "$STATE_VOLUME" >/dev/null 2>&1; then
