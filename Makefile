@@ -310,3 +310,10 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+# Independent, read-only virtual-to-native host-identity boundary gate.
+.PHONY: virtual-host-native-boundary
+virtual-host-native-boundary:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_virtual_host_native_boundary
+
+test: virtual-host-native-boundary
