@@ -114,7 +114,14 @@ fi
 
 [ "$CERTS_ONLY" = 0 ] || { echo "QIKVRT_HOST_CERTS=READY $TLS_DIR"; exit 0; }
 
-# 3. Docker API: unix socket stays; TCP only with --tlsverify.
+# 3. Firewall: SSH, HTTP/HTTPS for the public edge, mTLS API (optionally narrowed).
+run ufw allow 22/tcp
+run ufw allow 80/tcp
+run ufw allow 443/tcp
+run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
+run ufw --force enable
+
+# 4. Docker API: unix socket stays; TCP only with --tlsverify.
 run install -d -m 0755 /etc/systemd/system/docker.service.d
 if [ "$DRY_RUN" = 0 ]; then
     cat > /etc/systemd/system/docker.service.d/qikvrt-mtls.conf <<EOF
@@ -126,13 +133,6 @@ fi
 run systemctl daemon-reload
 run systemctl enable --now docker
 run systemctl restart docker
-
-# 4. Firewall: SSH, HTTP/HTTPS for the public edge, mTLS API (optionally narrowed).
-run ufw allow 22/tcp
-run ufw allow 80/tcp
-run ufw allow 443/tcp
-run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
-run ufw --force enable
 
 # 5. Persistent owner state volume and private configuration directory.
 if [ "$DRY_RUN" = 1 ] || ! docker volume inspect "$STATE_VOLUME" >/dev/null 2>&1; then
