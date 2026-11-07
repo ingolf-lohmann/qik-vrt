@@ -257,15 +257,24 @@ def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str
                 return False
             # These exact sources force the carrier step to perform authenticated
             # REST metadata and archive reads. No fixture/cache-only substitute.
-            pins = {".github/workflows/qikvrt_ci.yml": "e848529d8d4f938a7b7bcf502754579b82baf4493979ff90ac55a808e024feff",
-                    "tools/qikvrt_self_host_container.py": "174e1858cd5ff35f0b01f5d6487e2f78d8054d33ea0f8b6bc50b6b714784d613",
-                    "tools/qikvrt_self_host.py": "f332bd157258cf29f3f574329874d1dba7644f13d730becfe6dec9c8e693fdd7"}
-            for name, digest in pins.items():
-                source = ROOT / name
-                if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
-                    return False
-            steps = [step for step in job.get("steps", [])
-                     if step.get("name") == "Verify and reuse original PR494 Docker carrier"]
+            # Each bound source set is immutable and matched atomically with its
+            # exact job step. Do not combine old pins with the new successor path.
+            source_bindings = (
+                ({".github/workflows/qikvrt_ci.yml": "e848529d8d4f938a7b7bcf502754579b82baf4493979ff90ac55a808e024feff",
+                  "tools/qikvrt_self_host_container.py": "174e1858cd5ff35f0b01f5d6487e2f78d8054d33ea0f8b6bc50b6b714784d613",
+                  "tools/qikvrt_self_host.py": "f332bd157258cf29f3f574329874d1dba7644f13d730becfe6dec9c8e693fdd7"},
+                 "Verify and reuse original PR494 Docker carrier"),
+                ({".github/workflows/qikvrt_ci.yml": "7691ef22dafed9afc5c17298bedcc7610f4154178ec9c27de1fc21863886fd0d",
+                  "tools/qikvrt_self_host_container.py": "b8d8ffa4fadcccea123596bc88da119249ebd91909c2988da15a6ae8583d93b0",
+                  "tools/qikvrt_self_host.py": "4e987c507764f9536973172e53db209f60cb4c45b5e701aa33f51101c85c165c"},
+                 "Verify versioned PR494 dependency carrier successor"),
+            )
+            steps = []
+            for pins, step_name in source_bindings:
+                if all(not (ROOT / name).is_symlink() and (ROOT / name).is_file()
+                       and hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest
+                       for name, digest in pins.items()):
+                    steps.extend(step for step in job.get("steps", []) if step.get("name") == step_name)
             if len(steps) != 1 or steps[0].get("status") != "completed" or steps[0].get("conclusion") != "success":
                 return False
             def stamp(value):
