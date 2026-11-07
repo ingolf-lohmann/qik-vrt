@@ -61,6 +61,7 @@ valid_ipv4() {
 }
 valid_ipv4 "$PUBLIC_IP" || die "PUBLIC_IPV4_REQUIRED"
 # Never open the Docker mTLS control port without an explicit narrow source.
+# Restrict this setup path to a single IPv4 host or a small trusted /24-/32 network.
 # --certs-only creates no listener and does not require a network policy.
 if [ "$CERTS_ONLY" = 0 ]; then
     [ -n "$ADMIN_CIDR" ] || die "ADMIN_CIDR_REQUIRED"
@@ -71,7 +72,8 @@ if [ "$CERTS_ONLY" = 0 ]; then
     case "$ADMIN_PREFIX" in
         ''|*[!0-9]*) die "ADMIN_CIDR_INVALID" ;;
     esac
-    [ "${#ADMIN_PREFIX}" -le 2 ] && [ "$ADMIN_PREFIX" -ge 1 ] && [ "$ADMIN_PREFIX" -le 32 ] || die "ADMIN_CIDR_INVALID"
+    [ "${#ADMIN_PREFIX}" -le 2 ] && [ "$ADMIN_PREFIX" -ge 24 ] && [ "$ADMIN_PREFIX" -le 32 ] || die "ADMIN_CIDR_INVALID"
+    command -v ufw >/dev/null 2>&1 || die "FIREWALL_REQUIRED_FOR_REMOTE_DOCKER_API"
 fi
 if [ -n "$NODE_ID" ]; then
     printf '%s' "$NODE_ID" | grep -Eq '^[A-Za-z0-9_.:-]{1,100}$' || die "NODE_ID_INVALID"
@@ -126,13 +128,11 @@ run systemctl enable --now docker
 run systemctl restart docker
 
 # 4. Firewall: SSH, HTTP/HTTPS for the public edge, mTLS API (optionally narrowed).
-if command -v ufw >/dev/null 2>&1; then
-    run ufw allow 22/tcp
-    run ufw allow 80/tcp
-    run ufw allow 443/tcp
-    run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
-    run ufw --force enable
-fi
+run ufw allow 22/tcp
+run ufw allow 80/tcp
+run ufw allow 443/tcp
+run ufw allow from "$ADMIN_CIDR" to any port "$API_PORT" proto tcp
+run ufw --force enable
 
 # 5. Persistent owner state volume and private configuration directory.
 if [ "$DRY_RUN" = 1 ] || ! docker volume inspect "$STATE_VOLUME" >/dev/null 2>&1; then
