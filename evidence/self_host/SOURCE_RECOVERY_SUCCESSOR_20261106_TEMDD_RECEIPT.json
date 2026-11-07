@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt-temdd-ledger-receipt-successor/v1",
+  "restored_path": "src/qikvrt_temdd_event_ledger.py",
+  "predecessor_receipt_path": "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json",
+  "preserved_predecessor_path": "evidence/self_host/original-recovered/successors/qikvrt_temdd_event_ledger_before_receipt_validation_20261106.py",
+  "predecessor_sha256": "f70e328ae438c6464a051d0aaa247ad7e281812304e3461e1b28f0b9795ba75c",
+  "predecessor_git_blob": "941ff7626cfed58905ce890db0a55f581abd9c0a",
+  "successor_sha256": "6f5b0be0e18ed5dd374bd4ad5d27bff449f47b12d80220d7a5fc78de0a4cbdee",
+  "successor_git_blob": "65ea567769ebd61c5cf0f83ec0b72adc7fd9b295",
+  "preservation": "Immutable 2026-10-13 successor bytes copied by exact Git object identity, not edited or regenerated",
+  "correction": "Readback must reject forged reserved receipt claims even if its row digest is recomputed",
+  "predecessor_pass_transferred": false,
+  "effect_ack_done": false
+}

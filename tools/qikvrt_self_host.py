@@ -3996,6 +3996,7 @@ def main():
     parser.add_argument("--oci-archive", type=Path)
     parser.add_argument("--second-oci-archive", type=Path)
     parser.add_argument("--carrier-archive", type=Path, help="existing pinned GitHub delivery ZIP; otherwise download through original Actions REST")
+    parser.add_argument("--carrier-successor", action="store_true", help="explicitly select versioned dependency carrier, retaining original image pins and no predecessor acceptance")
     parser.add_argument("--tool-archive", type=Path, help="existing untrusted Skopeo cache; verify config and ordered layers before Docker load")
     parser.add_argument("--carrier-oci-archive", type=Path, help="create-only OCI transport preserving the verified original ZIP for the existing publisher")
     parser.add_argument("--production-binding", type=Path, help="existing protected Linux host binding; never credentials")

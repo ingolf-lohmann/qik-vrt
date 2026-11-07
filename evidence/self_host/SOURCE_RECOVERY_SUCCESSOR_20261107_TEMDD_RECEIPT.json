@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt-temdd-ledger-receipt-successor/v1",
+  "restored_path": "src/qikvrt_temdd_event_ledger.py",
+  "predecessor_receipt_path": "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261106_TEMDD_RECEIPT.json",
+  "preserved_predecessor_path": "evidence/self_host/original-recovered/successors/qikvrt_temdd_event_ledger_before_receipt_validation_20261107.py",
+  "predecessor_sha256": "6f5b0be0e18ed5dd374bd4ad5d27bff449f47b12d80220d7a5fc78de0a4cbdee",
+  "predecessor_git_blob": "65ea567769ebd61c5cf0f83ec0b72adc7fd9b295",
+  "successor_sha256": "2175479b82d887d0f324488fa9b7d8789b475e256079bf4fdf92cc1731c7190d",
+  "successor_git_blob": "8cffa345b08001ba8b0c7234e84ae470eab8200c",
+  "preservation": "Exact prior 2026-11-06 source bytes retained; earlier historical receipts remain unchanged",
+  "correction": "TEMDD replay rejects noncanonical receipt fields, malformed timestamps and invalid native events even when row digest is recomputed",
+  "predecessor_pass_transferred": false,
+  "effect_ack_done": false
+}
