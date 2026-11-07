@@ -103,21 +103,35 @@ class FrozenBuildAPT(unittest.TestCase):
 
     def test_original_carrier_and_new_image_have_separate_readback_artifacts(self):
         workflow = (ROOT / ".github/workflows/qikvrt_ci.yml").read_text()
-        original = workflow.split("- name: Preserve original frozen carrier separately\n", 1)[1].split("\n      - name:", 1)[0]
+        # The new transport is a pinned successor, not an acceptance of new
+        # source/image bytes or a transfer of historical productive claims.
+        original_identity = json.loads((ROOT / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
+        successor = json.loads((ROOT / "runtime/self-host/DELIVERY_SUCCESSOR_20261107.json").read_bytes())
+        selected = c.carrier_expected(ROOT, successor=True)
+        for key in ("source_head", "source_tree", "image_config_digest", "oci_manifest_digest"):
+            self.assertEqual(selected[key], original_identity[key])
+        self.assertEqual(selected["artifact_id"], successor["candidate"]["artifact_id"])
+        self.assertNotEqual(selected["artifact_id"], original_identity["artifact_id"])
+        self.assertIs(successor["claims"]["predecessor_pass_transferred"], False)
+        self.assertIs(successor["claims"]["effect_ack_done"], False)
+        self.assertIn("container-carrier --root . --carrier-successor", workflow)
+        versioned = workflow.split("- name: Preserve versioned frozen carrier separately\n", 1)[1].split("\n      - name:", 1)[0]
         result = workflow.split("- name: Preserve exact OCI image and non-secret original evidence\n", 1)[1].split("\n  container_publish:", 1)[0]
-        self.assertIn("if: always()", original)
-        self.assertIn("qikvrt-s1-original-carrier-", original)
-        self.assertIn("path: ${{ runner.temp }}/container-evidence/carrier-original.oci.tar", original)
-        self.assertIn("!${{ runner.temp }}/container-evidence/carrier-original.oci.tar", result)
+        self.assertIn("if: always()", versioned)
+        self.assertIn("qikvrt-s1-successor-carrier-", versioned)
+        self.assertIn("path: ${{ runner.temp }}/container-evidence/carrier-successor.oci.tar", versioned)
+        self.assertIn("!${{ runner.temp }}/container-evidence/carrier-successor.oci.tar", result)
         self.assertNotIn("!${{ runner.temp }}/container-evidence/image.oci.tar", result)
         self.assertIn("qikvrt-s1-container-", result)
         self.assertIn("include-hidden-files: true", result)
         publisher = workflow.split("\n  container_publish:", 1)[1].split("\n  container_deploy:", 1)[0]
-        self.assertIn("name: qikvrt-s1-original-carrier-${{ needs.container.outputs.head }}", publisher)
-        for artifact in ("qikvrt-s1-container-", "qikvrt-s1-original-carrier-"):
+        self.assertIn("name: qikvrt-s1-successor-carrier-${{ needs.container.outputs.head }}", publisher)
+        self.assertIn("container-carrier-archive-check --root . --carrier-successor", publisher)
+        for artifact in ("qikvrt-s1-container-", "qikvrt-s1-successor-carrier-"):
             self.assertIn("name: " + artifact + "${{ github.event.pull_request.head.sha || github.sha }}", result)
         self.assertIn("restore_artifact_package", result)
         self.assertIn("carrier_archive_check", result)
+        self.assertIn("carrier_expected(Path(\'.\'), successor=True)", result)
         readback = workflow.split("\n  container_public_readback:", 1)[1]
         self.assertIn("restore_artifact_package", readback)
         for marker in ("PYROUNDTRIP", "PYPACKAGE"):
