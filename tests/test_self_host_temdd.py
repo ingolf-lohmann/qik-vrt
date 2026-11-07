@@ -131,8 +131,20 @@ class SourceRecoveryTests(unittest.TestCase):
                     preserved = (ROOT / newer['preserved_predecessor_path']).read_bytes()
                     self.assertEqual(hashlib.sha256(preserved).hexdigest(), entry['successor_sha256'])
                     self.assertEqual(host.git_blob_digest(preserved), entry['successor_git_blob'])
-                    self.assertEqual(hashlib.sha256(current).hexdigest(), newer['successor_sha256'])
-                    self.assertEqual(host.git_blob_digest(current), newer['successor_git_blob'])
+                    # The 2026-11-06 successor is now an immutable predecessor.
+                    terminal = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261107_TEMDD_RECEIPT.json').read_bytes())
+                    self.assertEqual(terminal['schema'], 'qikvrt-temdd-ledger-receipt-successor/v1')
+                    self.assertEqual(terminal['predecessor_receipt_path'],
+                                     'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261106_TEMDD_RECEIPT.json')
+                    self.assertEqual(terminal['predecessor_sha256'], newer['successor_sha256'])
+                    self.assertEqual(terminal['predecessor_git_blob'], newer['successor_git_blob'])
+                    archived = (ROOT / terminal['preserved_predecessor_path']).read_bytes()
+                    self.assertEqual(hashlib.sha256(archived).hexdigest(), newer['successor_sha256'])
+                    self.assertEqual(host.git_blob_digest(archived), newer['successor_git_blob'])
+                    self.assertIs(terminal['predecessor_pass_transferred'], False)
+                    self.assertIs(terminal['effect_ack_done'], False)
+                    self.assertEqual(hashlib.sha256(current).hexdigest(), terminal['successor_sha256'])
+                    self.assertEqual(host.git_blob_digest(current), terminal['successor_git_blob'])
                 else:
                     self.assertEqual(hashlib.sha256(current).hexdigest(), entry['successor_sha256'])
                     self.assertEqual(host.git_blob_digest(current), entry['successor_git_blob'])

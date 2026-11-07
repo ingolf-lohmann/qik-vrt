@@ -40,6 +40,9 @@ class TemddReceiptInvariantTests(unittest.TestCase):
                     ('evidence_transfer', 'ALLOW'),
                     ('payload_digest', '0' * 64),
                     ('schema', 'forged_temdd_event_v1'),
+                    ('recorded_at', 'not-a-UTC-time'),
+                    ('kind', 'FORGED_KIND'),
+                    ('unrecognized_claim', 'EFFECT_ACK_DONE'),
                 ):
                     with self.subTest(field=field):
                         forged = dict(stored, **{field: value})
