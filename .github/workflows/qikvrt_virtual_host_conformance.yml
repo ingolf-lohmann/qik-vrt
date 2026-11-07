@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Isolated shell admission tests; no VPS, provider token, deployment or production effect.
+name: QIKVRT virtual host conformance
+
+on:
+  push:
+    branches:
+      - fix/host-prepare-network-admission-20261106
+  pull_request:
+    paths:
+      - runtime/self-host/host-prepare.sh
+      - tests/test_qikvrt_virtual_host_conformance.py
+      - .github/workflows/qikvrt_virtual_host_conformance.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  virtual-host:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - name: Verify isolated host-preparation admission
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONNOUSERSITE: "1"
+        shell: bash
+        run: |
+          set -euo pipefail
+          sh -n runtime/self-host/host-prepare.sh
+          python3 -B -m unittest -v tests.test_qikvrt_virtual_host_conformance
+          git diff --exit-code
