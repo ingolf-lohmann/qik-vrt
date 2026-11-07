@@ -22,7 +22,10 @@ def select_candidate(root: Path) -> dict:
     if not isinstance(record, dict) or set(record) != {
             "schema", "historical_predecessor", "candidate", "evidence", "claims"}:
         raise ValueError("RUNTIME_SUCCESSOR_SCHEMA_MISMATCH")
-    if record["schema"] != SCHEMA or record["claims"] != CLAIMS:
+    claims = record["claims"]
+    if (record["schema"] != SCHEMA or not isinstance(claims, dict)
+            or set(claims) != set(CLAIMS)
+            or any(claims[key] is not False for key in CLAIMS)):
         raise ValueError("RUNTIME_SUCCESSOR_UNADMITTED_CLAIMS")
     old = definition["runtime_delivery_baseline"]
     if record["historical_predecessor"] != old:

@@ -44,6 +44,8 @@ class RuntimeDeliverySuccessorTests(unittest.TestCase):
             ("same_digest", "candidate", "delivery_sha256",
              self.original_package["runtime_delivery_baseline"]["delivery_sha256"]),
             ("forged_review", "claims", "independent_review_verified", True),
+            ("numeric_zero_effect", "claims", "effect_ack_done", 0),
+            ("numeric_zero_review", "claims", "independent_review_verified", 0),
             ("forged_effect", "claims", "effect_ack_done", True),
             ("forged_pass", "claims", "predecessor_pass_transferred", True),
             ("forged_source", "evidence", "source_run_url",
