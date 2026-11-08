@@ -4,6 +4,9 @@ name: QIKVRT reflexive repository watchdog
 
 on:
   workflow_dispatch:
+  # Periodic recovery when no repository event is emitted; observation remains read-only.
+  schedule:
+    - cron: '*/15 * * * *'
   issues:
     types: [opened, reopened, closed]
   workflow_run:
