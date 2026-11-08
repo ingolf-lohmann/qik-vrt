@@ -73,7 +73,13 @@ jobs:
             sh tools/qikvrt_seed_node_revalidation.sh
             sh tools/qikvrt_seed_dashboard_publish.sh
           } 2>&1 | tee .qikvrt/seed-workflow/dashboard.log
-      - name: Collect provider-independent fail-closed evidence\n        shell: bash\n        run: |\n          set -euo pipefail\n          python3 -B -m unittest discover -s tests -p test_qikvrt_native_evidence.py -v\n          python3 -B tools/qikvrt_native_evidence.py --output .qikvrt/seed-workflow/native-evidence.json\n          sha256sum .qikvrt/seed-workflow/native-evidence.json > .qikvrt/seed-workflow/native-evidence.sha256\n      - name: Preserve local dashboard evidence without mutating the repository
+      - name: Collect provider-independent fail-closed evidence 
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest discover -s tests -p test_qikvrt_native_evidence.py -v
+          python3 -B tools/qikvrt_native_evidence.py --output .qikvrt/seed-workflow/native-evidence.json
+          sha256sum .qikvrt/seed-workflow/native-evidence.json > .qikvrt/seed-workflow/native-evidence.sha256\n      - name: Preserve local dashboard evidence without mutating the repository
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -82,7 +88,9 @@ jobs:
           retention-days: 30
           path: |
             .qikvrt/seed-workflow/dashboard.log
-            .qikvrt/seed-workflow/dashboard-exact-head-binding.json\n            .qikvrt/seed-workflow/native-evidence.json\n            .qikvrt/seed-workflow/native-evidence.sha256
+            .qikvrt/seed-workflow/dashboard-exact-head-binding.json
+            .qikvrt/seed-workflow/native-evidence.json
+            .qikvrt/seed-workflow/native-evidence.sha256
             docs/qikvrt_mesh_dashboard.html
             docs/QIKVRT_MESH_DASHBOARD.md
             registry/NODEMESH_INDEX.json
