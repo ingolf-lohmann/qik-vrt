@@ -584,10 +584,25 @@ class NativeClosureContinuationTests(unittest.TestCase):
             self.assertFalse(r['post_effect_verified'])
         self.assertEqual(self.api.mutations, [])
 
-    def test_repository_automation_has_no_timer_and_consumer_is_wired(self):
+    def test_repository_automation_has_only_separate_clock_and_consumer_is_wired(self):
         root = Path(__file__).resolve().parents[1]
+        clock_name = 'qikvrt_watchdog_periodic_wakeup.yml'
+        clock = root / '.github/workflows' / clock_name
+        self.assertTrue(clock.is_file())
+        scheduled = []
         for workflow in (root / '.github/workflows').glob('*.yml'):
-            self.assertNotRegex(workflow.read_text(), r'(?m)^\s*(?:-\s*)?(?:schedule|cron):', workflow.name)
+            content = workflow.read_text()
+            if re.search(r'(?m)^\s*(?:-\s*)?(?:schedule|cron):', content):
+                scheduled.append(workflow.name)
+        self.assertEqual(scheduled, [clock_name])
+        clock_source = clock.read_text()
+        self.assertIn("cron: '7,22,37,52 * * * *'", clock_source)
+        self.assertIn('WATCHDOG: qikvrt_reflexive_repository_watchdog.yml', clock_source)
+        self.assertIn('test "$default_branch" = main', clock_source)
+        self.assertIn(' -f ref=main', clock_source)
+        self.assertNotIn('actions/checkout', clock_source)
+        watchdog = (root / '.github/workflows/qikvrt_reflexive_repository_watchdog.yml').read_text()
+        self.assertNotRegex(watchdog, r'(?m)^\s*(?:-\s*)?(?:schedule|cron):')
         s = (root / M.NATIVE_WORKFLOW).read_text()
         self.assertLess(s.index('workflow-prepare'), s.index('name: qikvrt-pr-closure-intents'))
         self.assertLess(s.index('name: qikvrt-pr-closure-intents'), s.index('workflow-apply'))
