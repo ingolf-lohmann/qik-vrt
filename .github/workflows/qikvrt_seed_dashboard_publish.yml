@@ -12,6 +12,11 @@ on:
         type: string
   push:
     branches: [main]
+  pull_request:
+    paths:
+      - .github/workflows/qikvrt_seed_dashboard_publish.yml
+      - tools/qikvrt_native_evidence.py
+      - tests/test_qikvrt_native_evidence.py
 permissions:
   contents: read
 
