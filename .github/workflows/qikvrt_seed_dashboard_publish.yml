@@ -73,13 +73,14 @@ jobs:
             sh tools/qikvrt_seed_node_revalidation.sh
             sh tools/qikvrt_seed_dashboard_publish.sh
           } 2>&1 | tee .qikvrt/seed-workflow/dashboard.log
-      - name: Collect provider-independent fail-closed evidence 
+      - name: Collect provider-independent fail-closed evidence
         shell: bash
         run: |
           set -euo pipefail
           python3 -B -m unittest discover -s tests -p test_qikvrt_native_evidence.py -v
           python3 -B tools/qikvrt_native_evidence.py --output .qikvrt/seed-workflow/native-evidence.json
-          sha256sum .qikvrt/seed-workflow/native-evidence.json > .qikvrt/seed-workflow/native-evidence.sha256\n      - name: Preserve local dashboard evidence without mutating the repository
+          sha256sum .qikvrt/seed-workflow/native-evidence.json > .qikvrt/seed-workflow/native-evidence.sha256
+      - name: Preserve local dashboard evidence without mutating the repository
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
