@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+# Clock-only wakeup for the existing transition-driven, read-only watchdog.
+name: QIKVRT watchdog periodic wakeup
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: qikvrt-watchdog-clock-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  wake-up:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Dispatch trusted-main watchdog only when idle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          WATCHDOG: qikvrt_reflexive_repository_watchdog.yml
+        shell: bash
+        run: |
+          set -euo pipefail
+          # No checkout, repo-content execution, deployment, review or production action.
+          # A clock event may only activate the existing fail-closed main observer.
+          default_branch="$(gh api "repos/${REPOSITORY}" --jq '.default_branch')"
+          test "$default_branch" = main
+          for state in queued in_progress waiting requested pending; do
+            count="$(gh api "repos/${REPOSITORY}/actions/workflows/${WATCHDOG}/runs?status=${state}&per_page=1" --jq '.total_count')"
+            case "$count" in ''|*[!0-9]*) echo "INVALID_RUN_INVENTORY" >&2; exit 1;; esac
+            if [ "$count" -gt 0 ]; then
+              echo "NOOP: watchdog already active (${state}=${count})."
+              exit 0
+            fi
+          done
+          gh api --method POST "repos/${REPOSITORY}/actions/workflows/${WATCHDOG}/dispatches" -f ref=main
+          echo "DISPATCHED: transition-only watchdog main readback; no promotion or effect implied."
