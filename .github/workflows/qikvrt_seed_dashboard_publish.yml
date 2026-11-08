@@ -79,6 +79,7 @@ jobs:
             sh tools/qikvrt_seed_dashboard_publish.sh
           } 2>&1 | tee .qikvrt/seed-workflow/dashboard.log
       - name: Collect provider-independent fail-closed evidence
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
