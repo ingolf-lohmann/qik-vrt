@@ -203,8 +203,9 @@ export async function readOpenPullRequests({fetchImpl=null,maxPages=20}={}){
    items.push({number:r.number,head_sha:r.head.sha,draft:r.draft===true,
     state:r.state==='open'?'open':'unknown',url:'https://github.com/'+repository+'/pull/'+r.number});
   }
-  const link=response.headers?.get?.('link')||'';
-  if(!/(?:^|,)\s*<[^>]+>\s*;\s*rel="?next"?(?:\s*[,;]|$)/i.test(link)&&rows.length<100){
+  // A short page ends the inventory for both cached and direct GETs.
+  // A full page requires another bounded request; never assume completeness.
+  if(rows.length<100){
    return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:true,pages:pageReads,items,error:null,
     semantic_scope:'PUBLIC_REST_INVENTORY_NOT_EXACT_HEAD_CI_OR_PRODUCTIVE_EFFECT'};
   }
