@@ -604,6 +604,75 @@ def oci(path, head, tree):
                 "oci_archive_sha256": sha(Path(path).read_bytes())}
 
 
+def _carrier_unique_pairs(pairs):
+    value = dict(pairs)
+    require(len(value) == len(pairs), "DUPLICATE_VERSIONED_CARRIER_FIELD")
+    return value
+
+
+def carrier_expected(root, successor=False):
+    """Select an explicit source-bound dependency successor; never rewrite original pins."""
+    root = Path(root)
+    baseline = json.loads((root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
+    if not successor:
+        return baseline
+    contract = json.loads((root / "runtime/self-host/DELIVERY_SUCCESSOR_20261107.json").read_bytes(),
+                          object_pairs_hook=_carrier_unique_pairs)
+    predecessor = contract.get("historical_predecessor")
+    candidate = contract.get("candidate")
+    claims = contract.get("claims")
+    source_keys = ("artifact_bytes", "artifact_id", "artifact_sha256", "delivery_sha256",
+                   "repository", "run_id", "source_head", "source_tree")
+    scope = "DEPENDENCY_IMAGE_ONLY; RESEAL_CURRENT_SOURCE; NO_PREDECESSOR_PASS_TRANSFER"
+    require(baseline.get("schema") == "qikvrt-s1-frozen-container-carrier/v1" and
+            contract.get("schema") == "qikvrt-runtime-delivery-successor/v1" and
+            type(predecessor) is dict and type(candidate) is dict and type(claims) is dict,
+            "VERSIONED_CARRIER_CONTRACT_REQUIRED")
+    legacy = dict(baseline)
+    legacy["artifact_bytes"] = baseline["archive_bytes"]
+    legacy["artifact_sha256"] = baseline["archive_sha256"]
+    require(set(predecessor) == set(source_keys) | {"reuse_scope"} and
+            predecessor.get("reuse_scope") == scope and
+            all(type(predecessor[key]) is type(legacy[key]) and
+                predecessor[key] == legacy[key] for key in source_keys),
+            "IMMUTABLE_PREDECESSOR_CARRIER_BINDING_REQUIRED")
+    require(set(candidate) == set(source_keys) | {"reuse_scope", "attempt"} and
+            candidate.get("reuse_scope") == scope and
+            candidate["repository"] == baseline["repository"] == REPOSITORY and
+            candidate["source_head"] == baseline["source_head"] and
+            candidate["source_tree"] == baseline["source_tree"] and
+            candidate["run_id"] == baseline["run_id"] and
+            type(candidate["attempt"]) is int and candidate["attempt"] == 2 and
+            type(candidate["artifact_id"]) is int and candidate["artifact_id"] > 0 and
+            candidate["artifact_id"] != baseline["artifact_id"] and
+            type(candidate["artifact_bytes"]) is int and
+            0 < candidate["artifact_bytes"] <= ARTIFACT_MAX_BYTES and
+            all(type(candidate[key]) is str and re.fullmatch(r"[a-f0-9]{64}", candidate[key])
+                for key in ("artifact_sha256", "delivery_sha256")) and
+            candidate["artifact_sha256"] != baseline["archive_sha256"] and
+            candidate["delivery_sha256"] != baseline["delivery_sha256"],
+            "EXACT_VERSIONED_DEPENDENCY_SUCCESSOR_REQUIRED")
+    require(set(claims) == {"predecessor_pass_transferred", "host_admitted",
+                            "product_delivery_verified", "independent_review_verified",
+                            "effect_ack_done"} and all(value is False for value in claims.values()),
+            "VERSIONED_CARRIER_EFFECT_CLAIM_REFUSED")
+    evidence = contract.get("evidence", {})
+    require(type(evidence) is dict and evidence.get("source_run_url") ==
+            ("https://github.com/" + REPOSITORY + "/actions/runs/" +
+             str(candidate["run_id"]) + "/attempts/" + str(candidate["attempt"])),
+            "VERSIONED_CARRIER_PROVENANCE_REQUIRED")
+    expected = dict(baseline)
+    for key in ("artifact_id", "run_id", "delivery_sha256", "source_head", "source_tree"):
+        expected[key] = candidate[key]
+    expected["archive_bytes"] = candidate["artifact_bytes"]
+    expected["archive_sha256"] = candidate["artifact_sha256"]
+    expected.pop("artifact_expires_at", None)
+    expected["scope"] = scope
+    # The original image config, OCI manifest, source and sealed package pins
+    # remain unchanged; a different image must HOLD rather than inherit PASS.
+    return expected
+
+
 def carrier_download(expected, path):
     """Read original Actions artifact; never forward API auth to blob storage."""
     require(expected["repository"] == REPOSITORY and
@@ -1380,17 +1449,22 @@ def execute(args):
     elif operation == "context":
         result = context(args.root, args.output)
     elif operation == "carrier":
-        expected = json.loads((args.root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
+        expected = carrier_expected(args.root, getattr(args, "carrier_successor", False))
         with tempfile.TemporaryDirectory() as temporary:
             archive = args.carrier_archive or Path(temporary) / "original-delivery.zip"
             if not args.carrier_archive:
                 carrier_download(expected, archive)
             result = carrier_import(expected, archive, args.output)
             if getattr(args, "carrier_oci_archive", None):
-                result["original_archive_oci"] = carrier_archive(expected, archive, args.carrier_oci_archive)
+                result["versioned_archive_oci" if getattr(args, "carrier_successor", False) else "original_archive_oci"] = carrier_archive(expected, archive, args.carrier_oci_archive)
     elif operation == "carrier-archive-check":
-        expected = json.loads((args.root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
+        expected = carrier_expected(args.root, getattr(args, "carrier_successor", False))
         result = carrier_archive_check(expected, args.oci_archive)
+        if getattr(args, "carrier_successor", False):
+            result["state"] = "VERSIONED_DEPENDENCY_CARRIER_VERIFIED_NOT_PRODUCT_ACCEPTED"
+            result["scope"] = "VERSIONED_DEPENDENCY_IMAGE_ONLY"
+            result["predecessor_acceptance_transferred"] = False
+            result["public_production_verified"] = False
     elif operation == "oci-check":
         result = oci(args.oci_archive, args.expected_head, args.expected_tree)
         if args.second_oci_archive:

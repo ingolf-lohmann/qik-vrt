@@ -134,7 +134,8 @@ jobs:
                   redirected=super().redirect_request(request,fp,code,msg,headers,newurl)
                   if redirected is not None: redirected.remove_header('Authorization')
                   return redirected
-          baseline=json.load(open('runtime/self-host/PACKAGE.json'))['runtime_delivery_baseline']
+          from tools.qikvrt_runtime_delivery_successor import select_candidate
+          baseline=select_candidate(pathlib.Path('.'))
           url='https://api.github.com/repos/'+baseline['repository']+'/actions/artifacts/'+str(baseline['artifact_id'])+'/zip'
           target=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-baseline.zip'
           request=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
@@ -146,7 +147,8 @@ jobs:
           destination=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-baseline'
           with zipfile.ZipFile(target) as archive:
               names=archive.namelist()
-              if len(set(names))!=len(names) or any('/' in name or '\\' in name for name in names):
+              required={'runtime-image.tar.gz','package.tar','PACKAGE_BUILD_RECEIPT.json','RUNTIME_PACKAGE_READBACK.json','RUNTIME_IMAGE.json','LOADED_IMAGE.json','IMAGE_LOAD_READBACK.txt','DISTRIBUTION_PACKAGES.tsv','DELIVERY.json'}
+              if set(names)!=required or len(names)!=len(required):
                   raise SystemExit('UNSAFE_BASELINE_ARTIFACT')
               archive.extractall(destination)
           pin=baseline['delivery_sha256']
