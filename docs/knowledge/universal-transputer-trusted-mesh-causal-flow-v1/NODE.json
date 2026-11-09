@@ -308,6 +308,20 @@
       "real_transport": false,
       "authenticated_sender": false,
       "effect_ack_done": false
+    },
+    "mtls_reference": {
+      "scope": "TWO_OS_PROCESSES_ONE_HOST_LOOPBACK",
+      "transport": "MUTUAL_TLS",
+      "source": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/mtls_transport.py",
+      "tests": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/test_mtls_transport.py",
+      "verification": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/LOCAL_MTLS_VALIDATION_REPORT.json",
+      "test_count": 17,
+      "passed": 17,
+      "failed": 0,
+      "independent_network_hosts": false,
+      "real_domain": false,
+      "operational_native_mesh": false,
+      "effect_ack_done": false
     }
   }
 }

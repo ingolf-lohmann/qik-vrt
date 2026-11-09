@@ -1,0 +1,46 @@
+{
+  "schema": "qikvrt_mtls_local_validation_v1",
+  "scope": "TWO_OS_PROCESSES_ONE_LINUX_HOST_LOOPBACK",
+  "tested_at_local": "2026-11-09",
+  "tools": {
+    "python": "3.13.5",
+    "openssl": "3.5.5"
+  },
+  "sources": [
+    {
+      "path": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/mtls_transport.py",
+      "git_blob": "9b69e9b0a48d6f5b739ac631493ec91ca4e2a314",
+      "bytes": 6850,
+      "sha256": "3a1409e3829a421a0e838b070d1e1e7dbc0fbc219c7c9718a0ab7ece8324b426"
+    },
+    {
+      "path": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/test_mtls_transport.py",
+      "git_blob": "330cfdf6e8bf52056395ce2f50084b4a05fa486d",
+      "bytes": 10505,
+      "sha256": "243bda2c3b5574bb2857f2522ba1b2e5674ed0d9d882846927c1e462200fc914"
+    }
+  ],
+  "execution": {
+    "command": "python3 -B -m unittest discover -s docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1 -p 'test_mtls_transport.py' -v",
+    "passed": 17,
+    "failed": 0,
+    "errors": 0,
+    "status": "PASS",
+    "provenance": "LOCAL_CONTAINER_UNATTESTED"
+  },
+  "exclusions": {
+    "independently_deployed_hosts": false,
+    "external_mtls_ingress": false,
+    "github_exact_head_ci": false,
+    "third_party_review": false,
+    "originalhost_readback": false,
+    "effect_ack_done": false
+  },
+  "further_requirements": [
+    "independent hosts",
+    "authenticated non-loopback route",
+    "fresh exact-HEAD CI",
+    "independent host admission",
+    "effect_ack original readback"
+  ]
+}

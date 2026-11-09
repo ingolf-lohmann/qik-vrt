@@ -66,3 +66,16 @@ Leseschlüssel: [UT] universaler Transputer; [BI] bidirektionaler Medienfluss; [
 Der in Abschnitt 5 vorgeschlagene Zweiweg-Protokollversuch ist als **lokaler, begrenzter Referenzversuch** umgesetzt. Der Python-Kern liegt in `two_way_reference.py`, 14 Positiv-/Negativtests in `test_two_way_reference.py`, die Versuchsanleitung in `EXPERIMENT.md` und ein lokal gebundener Prüfbericht in `LOCAL_VALIDATION_REPORT.json`.
 
 Zweimalige lokale Python-3.13.5-Ausführung: **14/14 PASS**. Die exakten Quellbytes wurden vor der Git-Speicherung über ihre Git-Blob-SHAs gebunden; die ausführbaren Dateien werden beim Readback separat gegengeprüft. Die Testumgebung nutzt zwei getrennte Verzeichnisse innerhalb **eines** Prozesses: keine zwei Sicherheitsdomänen, kein Netzwerk, keine echte native Zulassung, keine unabhängige Produktivwirkung. Diese Erweiterung ändert die vorstehenden ursprünglichen Quellen- und Claim-Grenzen nicht.
+
+## 8. Authentifizierter mTLS-Transport (zwei lokale Prozesse)
+
+Ergänzung vom 09.11.2026: Die bisherige Zwei-Speicher-Referenz ist durch einen **wirklichen HTTPS-Transport zwischen zwei getrennten Python-Prozessen** erweitert. Der Server lauscht ausschließlich auf `127.0.0.1`, verwendet TLS mit beidseitig überprüften Zertifikaten und überprüft zusätzlich die zugelassene Client-Zertifikatsidentität. Es gibt getrennte Zustandsverzeichnisse für Sender und Empfänger.
+
+- Quellen: `mtls_transport.py` (lokaler mTLS-Server und -Client), `test_mtls_transport.py` (17 Tests, Test-CA wird temporär über OpenSSL erzeugt).
+- Reproduktion (Python 3.13+, OpenSSL): `python3 -B -m unittest discover -s docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1 -p 'test_mtls_transport.py' -v`.
+- Lokaler Testbefund: **17/17 PASS**, 0 Fehler. Geprüft: Zertifikats- und Knotenidentität, gegenseitige TLS-Validierung, echte Prozessgrenze, Originalbytes, persistierter Cold-Readback, Neustart/Replay, Gegenbeleg und negativ geänderte Payloads, Sequenzlücken, HEAD, Receipt, Admission.
+- Die **getesteten Dateien** sind an die Git-Blob-IDs `9b69e9b0a48d6f5b739ac631493ec91ca4e2a314` und `330cfdf6e8bf52056395ce2f50084b4a05fa486d` sowie die SHA-256-Werte im `LOCAL_MTLS_VALIDATION_REPORT.json` gebunden.
+
+**Geltungsgrenze:** Die Knoten liefen auf **demselben Linux-Host**, über dessen Loopback-Netzwerk, nicht auf zwei unabhängigen Maschinen oder Domains. Test-CA und private Zertifikatsschlüssel werden ausschließlich im temporären Testverzeichnis erzeugt und anschließend entfernt. Ein lokal erfolgreich abgeschlossener TLS-/Receipt-Round-Trip ist **keine QIK-VRT-Mesh-Admission, keine produktive Originalhost-EAP-Ausführung und kein Nachweis experimenteller Retrokausalität**. `effect_ack_done` bleibt `false`.
+
+**Next independent closure:** Verifikation auf zwei separat betriebenen Hosts mit tatsächlicher Netzwerkroute, unabhängiger Node-Zertifikatsbereitstellung/CA-Vertrauensgrenze und Originalhost-Readback. Dieser Schritt hängt von tatsächlich erreichbarer, autorisierter Infrastruktur ab, nicht von einer weiteren redaktionellen Freigabe.
