@@ -8,15 +8,52 @@ No externally deployed node is claimed by this module.
 from __future__ import annotations
 import argparse
 import http.client
+import ipaddress
+import socket
 import json
+import re
 import ssl
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
-from two_way_reference import Receiver, Sender, canonical, Refusal, ZERO
+from two_way_reference import Receiver, Sender, canonical, Refusal, ZERO, load_json
 
 MAX_BODY = 65536
+SHA_PATTERN = re.compile(r'[0-9a-f]{40}\Z')
+EVENT_PATTERN = re.compile(r'[A-Za-z0-9_-]{1,128}\Z')
+
+
+def is_loopback_binding(host: str) -> bool:
+    if host == 'localhost':
+        return True
+    try:
+        return ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        return False
+
+
+def require_remote_target(host: str, *, resolve=socket.getaddrinfo) -> None:
+    """Fail closed on a loopback/unspecified target or an unresolvable name.
+
+    This only checks routing prerequisites; it cannot establish a second
+    independent physical/administrative host.
+    """
+    if not host or host.lower() == 'localhost' or any(c in host for c in '/@?#'):
+        raise Refusal('REMOTE_HOST_NOT_ADMITTED')
+    try:
+        addrs = [info[4][0] for info in resolve(host, None, type=socket.SOCK_STREAM)]
+    except (OSError, ValueError):
+        raise Refusal('REMOTE_DNS_UNAVAILABLE') from None
+    if not addrs:
+        raise Refusal('REMOTE_DNS_UNAVAILABLE')
+    try:
+        ips = [ipaddress.ip_address(x) for x in addrs]
+    except ValueError:
+        raise Refusal('REMOTE_ADDRESS_INVALID') from None
+    if any(ip.is_loopback or ip.is_unspecified or ip.is_multicast for ip in ips):
+        raise Refusal('REMOTE_ADDRESS_NOT_INDEPENDENT')
+
 
 
 def certificate_common_name(cert: dict) -> str | None:
@@ -71,7 +108,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         if self.path == '/health':
             return self.respond(200, {'server': self.server.receiver.node_id, 'ready': True,
-                                      'effect_ack_done': False, 'scope': 'EPHEMERAL_LOCAL_TEST'})
+                                      'effect_ack_done': False, 'scope': self.server.test_scope})
         if not self.path.startswith('/v1/receipts/'):
             return self.respond(404, {'error': 'NO_SUCH_ROUTE'})
         event_id = self.path.removeprefix('/v1/receipts/')
@@ -85,8 +122,17 @@ class Handler(BaseHTTPRequestHandler):
         return self.respond(200, {'receipt': receipt, 'effect_ack_done': False})
 
 
-def serve(*, host, port, ca, cert, key, state, source_head, admitted):
+def serve(*, host, port, ca, cert, key, state, source_head, admitted,
+          remote_test_bind=False):
+    if not is_loopback_binding(host) and not (remote_test_bind and admitted):
+        raise Refusal('REMOTE_TEST_BIND_REQUIRES_EXPLICIT_ADMISSION')
+    if not SHA_PATTERN.fullmatch(source_head):
+        raise Refusal('INVALID_EXACT_SOURCE_HEAD')
+    if not (isinstance(port, int) and 0 < port < 65536):
+        raise Refusal('INVALID_LISTEN_PORT')
     server = HTTPServer((host, port), Handler)
+    server.test_scope = ('EXPERIMENTAL_REMOTE_TEST_NOT_MESH_ADMITTED'
+                         if not is_loopback_binding(host) else 'EPHEMERAL_LOCAL_TEST')
     server.daemon_threads = True
     server.peer_name = 'node-a'
     server.receiver = Receiver(Path(state), node_id='node-b', accepted_sender='node-a',
@@ -105,12 +151,14 @@ def serve(*, host, port, ca, cert, key, state, source_head, admitted):
 
 
 def request(*, port: int, ca: str, cert: str | None, key: str | None,
-            method: str, path: str, data: dict | None = None):
+            method: str, path: str, data: dict | None = None, host: str = "localhost"):
+    if not host or any(c in host for c in "/@?#"):
+        raise Refusal("INVALID_REMOTE_HOST")
     context = ssl.create_default_context(cafile=ca)
     context.minimum_version = ssl.TLSVersion.TLSv1_2
     if cert:
         context.load_cert_chain(cert, key)
-    client = http.client.HTTPSConnection('localhost', port, context=context, timeout=3)
+    client = http.client.HTTPSConnection(host, port, context=context, timeout=3)
     try:
         body = canonical(data) if data is not None else None
         client.request(method, path, body=body, headers={'Content-Type': 'application/json'} if body else {})
@@ -124,15 +172,65 @@ def request(*, port: int, ca: str, cert: str | None, key: str | None,
 
 
 def round_trip(*, root: Path, port: int, ca: str, cert: str, key: str,
-               head: str, event_id: str, kind: str, payload: bytes):
+               head: str, event_id: str, kind: str, payload: bytes,
+               host: str = "localhost", require_external_route: bool = False):
+    if not SHA_PATTERN.fullmatch(head) or not EVENT_PATTERN.fullmatch(event_id):
+        raise Refusal('INVALID_ROUND_TRIP_IDENTITY')
+    if require_external_route:
+        require_remote_target(host)
+        code, health = request(port=port, ca=ca, cert=cert, key=key,
+                               method="GET", path="/health", host=host)
+        if (code != 200 or health.get("server") != "node-b" or
+            health.get("ready") is not True or
+            health.get("effect_ack_done") is not False or
+            health.get("scope") != "EXPERIMENTAL_REMOTE_TEST_NOT_MESH_ADMITTED"):
+            raise Refusal("REMOTE_IDENTITY_OR_READINESS_NOT_VERIFIED")
     sender = Sender(root, node_id='node-a', receiver='node-b', source_head=head)
     event = sender.prepare(event_id=event_id, kind=kind, raw=payload)
     code, answer = request(port=port, ca=ca, cert=cert, key=key,
-                           method='POST', path='/v1/events', data=event)
+                           method='POST', path='/v1/events', data=event, host=host)
     if code != 200 or answer.get('effect_ack_done') is not False:
         raise Refusal('RECEIVER_NOT_VERIFIED')
     readback = lambda ident: request(port=port, ca=ca, cert=cert, key=key,
-                                    method='GET', path='/v1/receipts/' + ident)[1]['receipt']
+                                    method='GET', path='/v1/receipts/' + ident, host=host)[1]['receipt']
+    return sender.verify_return(event, readback)
+
+
+
+def replay_round_trip(*, root: Path, port: int, ca: str, cert: str, key: str,
+                      head: str, event_id: str, host: str = "localhost",
+                      require_external_route: bool = False):
+    """Retry exact persisted outbound event, never generating a new sequence.
+
+    The receiver independently checks idempotence and event bytes; an earlier
+    network acknowledgement cannot be promoted to a native effect receipt.
+    """
+    if not SHA_PATTERN.fullmatch(head) or not EVENT_PATTERN.fullmatch(event_id):
+        raise Refusal('INVALID_ROUND_TRIP_IDENTITY')
+    if require_external_route:
+        require_remote_target(host)
+        code, health = request(port=port, ca=ca, cert=cert, key=key,
+                               method="GET", path="/health", host=host)
+        if (code != 200 or health.get("server") != "node-b" or
+            health.get("ready") is not True or health.get("effect_ack_done") is not False or
+            health.get("scope") != "EXPERIMENTAL_REMOTE_TEST_NOT_MESH_ADMITTED"):
+            raise Refusal("REMOTE_IDENTITY_OR_READINESS_NOT_VERIFIED")
+    sender = Sender(root, node_id="node-a", receiver="node-b", source_head=head)
+    try:
+        events = load_json(sender.outbox).get("events", [])
+    except (OSError, KeyError, ValueError, TypeError):
+        raise Refusal("OUTBOX_NOT_READABLE") from None
+    matches = [e for e in events if e.get("event_id") == event_id]
+    if len(matches) != 1 or matches[0].get("source_head") != head:
+        raise Refusal("EXACT_PERSISTED_EVENT_NOT_FOUND")
+    event = matches[0]
+    code, answer = request(port=port, ca=ca, cert=cert, key=key,
+                           method="POST", path="/v1/events", data=event, host=host)
+    if code != 200 or answer.get("effect_ack_done") is not False:
+        raise Refusal("REPLAY_NOT_VERIFIED")
+    readback = lambda ident: request(port=port, ca=ca, cert=cert, key=key,
+                                    method="GET", path="/v1/receipts/" + ident,
+                                    host=host)[1]["receipt"]
     return sender.verify_return(event, readback)
 
 
@@ -142,18 +240,31 @@ def main():
     for name in ('ca', 'cert', 'key', 'state', 'head'):
         p.add_argument('--' + name, required=True)
     p.add_argument('--port', type=int, required=True)
+    p.add_argument('--bind-host', default='127.0.0.1')
+    p.add_argument('--connect-host', default='localhost')
+    p.add_argument('--remote-test-bind', action='store_true')
+    p.add_argument('--require-remote-peer', action='store_true')
     p.add_argument('--admitted', action='store_true')
     p.add_argument('--event-id', default='claim-1')
     p.add_argument('--payload', default='original claim')
     p.add_argument('--kind', default='CLAIM')
+    p.add_argument('--replay-existing', action='store_true')
     a = p.parse_args()
     if a.role == 'server':
-        serve(host='127.0.0.1', port=a.port, ca=a.ca, cert=a.cert, key=a.key,
-              state=a.state, source_head=a.head, admitted=a.admitted)
+        serve(host=a.bind_host, port=a.port, ca=a.ca, cert=a.cert, key=a.key,
+              state=a.state, source_head=a.head, admitted=a.admitted,
+              remote_test_bind=a.remote_test_bind)
     else:
-        result = round_trip(root=Path(a.state),port=a.port,ca=a.ca,cert=a.cert,
-                            key=a.key,head=a.head,event_id=a.event_id,
-                            kind=a.kind,payload=a.payload.encode('utf-8'))
+        if a.replay_existing:
+            result = replay_round_trip(root=Path(a.state),port=a.port,ca=a.ca,
+                                       cert=a.cert,key=a.key,head=a.head,
+                                       event_id=a.event_id,host=a.connect_host,
+                                       require_external_route=a.require_remote_peer)
+        else:
+            result = round_trip(root=Path(a.state),port=a.port,ca=a.ca,cert=a.cert,
+                                key=a.key,head=a.head,event_id=a.event_id,
+                                kind=a.kind,payload=a.payload.encode('utf-8'),
+                                host=a.connect_host,require_external_route=a.require_remote_peer)
         print(json.dumps(result, sort_keys=True))
 
 if __name__ == '__main__':

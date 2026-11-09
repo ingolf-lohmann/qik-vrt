@@ -79,3 +79,13 @@ Ergänzung vom 09.11.2026: Die bisherige Zwei-Speicher-Referenz ist durch einen 
 **Geltungsgrenze:** Die Knoten liefen auf **demselben Linux-Host**, über dessen Loopback-Netzwerk, nicht auf zwei unabhängigen Maschinen oder Domains. Test-CA und private Zertifikatsschlüssel werden ausschließlich im temporären Testverzeichnis erzeugt und anschließend entfernt. Ein lokal erfolgreich abgeschlossener TLS-/Receipt-Round-Trip ist **keine QIK-VRT-Mesh-Admission, keine produktive Originalhost-EAP-Ausführung und kein Nachweis experimenteller Retrokausalität**. `effect_ack_done` bleibt `false`.
 
 **Next independent closure:** Verifikation auf zwei separat betriebenen Hosts mit tatsächlicher Netzwerkroute, unabhängiger Node-Zertifikatsbereitstellung/CA-Vertrauensgrenze und Originalhost-Readback. Dieser Schritt hängt von tatsächlich erreichbarer, autorisierter Infrastruktur ab, nicht von einer weiteren redaktionellen Freigabe.
+
+## 9. Remote-Zwei-Host-Ausführungspfad, noch ohne fremde Host-Abnahme
+
+Die mTLS-Referenz erlaubt jetzt neben der unveränderten lokalen Loopback-Ausführung einen **ausdrücklich gateden** externen Testmodus mit `--bind-host`, `--remote-test-bind`, `--connect-host`, `--require-remote-peer` und `--replay-existing`. Damit sind ein tatsächlicher Host-B-Listener, Host-A-Connect, TLS-DNS/SAN-Prüfung und Replay des ursprünglichen Outbox-Ereignisses ohne neuen Sequenzpunkt technisch vorbereitet.
+
+Lokaler Regressionsbefund **34/34 PASS**: 17 frühere mTLS-Transporttests plus 17 neue Negativ-/Remote-Bereitschafts-Tests. Der verwendete lokale Zwei-Speicher-Abhängigkeitsstand ist **nicht byteidentisch** mit dem Authority-Blob; der Testbefund ist deswegen ausdrücklich **nicht als Exact-HEAD-CI** klassifiziert. Die endgültige neue Quellbindung sowie Host-/Provider-Inventur stehen in `TWO_HOST_READINESS_20261109.json`.
+
+Der neue Einstieg `TWO_HOST_RUNBOOK.md` enthält die auszuführenden Host-A/Host-B-Kommandos, den Operator- und PKI-Vertrag, das separate Replay-Verfahren und die vollständige externe Abnahmematrix. Da bei der aktuellen Providerprüfung **kein Paar nachgewiesener, gleichzeitig erreichbarer und zugelassener Hosts** bereitsteht (DigitalOcean: null Droplets; Railway: fünf Offline-Dienste mit ausstehender Konfiguration; Originalhost: HTTPS 525 und fehlender admitted Mesh-Runtime-Endpunkt), wurde **kein externes Bind, Deployment oder Remote-Receipt ausgeführt**.
+
+Die TLS-Kennung `EXPERIMENTAL_REMOTE_TEST_NOT_MESH_ADMITTED` schützt die Trennung zwischen Testtransport und produktivem Mesh/EAP. Erst unabhängige Host-Readbacks, Exact-HEAD-CI, Governance und Originalhost-Wirkungsbeleg können weitere Gates schließen. `EFFECT_ACK_DONE` bleibt offen beziehungsweise `false`.

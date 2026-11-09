@@ -1,0 +1,73 @@
+{
+  "schema": "qikvrt_two_host_remote_preparation_v1",
+  "observed_at_utc": "2026-11-09T21:05:00.286313+00:00",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "parent_branch": "knowledge/universal-transputer-mesh-causal-flow-20261109",
+  "parent_head": "0ca06ffd20d9666d2a0980e3279a681c32f1c7fc",
+  "scope": "REMOTE_EXECUTION_PATH_PREPARED_NOT_REMOTE_EXECUTION",
+  "source_files": [
+    {
+      "path": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/mtls_transport.py",
+      "bytes": 12499,
+      "sha256": "fe5759c1440d4d43e20b5d8d9c75ea3cf30a69075bf97b72f61e3d0cdc0cc29f",
+      "git_blob_sha1": "4bce44e48145823db42e2b99e459dc35dfce0917"
+    },
+    {
+      "path": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/test_two_host_admission.py",
+      "bytes": 6468,
+      "sha256": "dcff1deded4e2778ab9c12a689d0314257b7a2452176483251984aa522d71be5",
+      "git_blob_sha1": "90b6aa734a8b4ff56b19f09475d4fd5c5d70490c"
+    }
+  ],
+  "local_validation": {
+    "passed": 34,
+    "failed": 0,
+    "errors": 0,
+    "toolchain": {
+      "python": "3.13.5"
+    },
+    "command": "python3 -B -m unittest -q test_two_host_admission test_mtls_transport",
+    "dependency_source_local_git_blob": "4962abd29e09172f77c47f5839e85f2fb50b4936",
+    "dependency_source_authority_git_blob": "57a79e046e4b82c297152cc5fdfef75dd287c476",
+    "note": "Locally tested reference dependency differs in bytes from the current Authority version; this is a bounded local test only, not exact-head CI."
+  },
+  "infrastructure": {
+    "digitalocean": {
+      "accessible": true,
+      "droplets": 0
+    },
+    "railway": {
+      "project": "qikvrt-cloud-transputer",
+      "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+      "production_environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+      "services_total": 5,
+      "services_online": 0,
+      "staged_patch_change_count": 22,
+      "staged_patch_present": true
+    },
+    "originalhost": {
+      "origin": "https://raumzeitterminal.de",
+      "http_status": 525,
+      "observed_at_utc": "2026-11-09T20:49:04.313Z",
+      "native_available": false,
+      "operator_authorized": true,
+      "ready": false,
+      "effect_ack_done": false,
+      "open_gates": [
+        "ADMITTED_MESH_RUNTIME_ENDPOINT"
+      ]
+    }
+  },
+  "external_gates": {
+    "independent_hosts": false,
+    "authorized_nonloopback_route": false,
+    "mtls_across_hosts": false,
+    "exact_head_ci": false,
+    "independent_review": false,
+    "productive_originalhost_ack": false
+  },
+  "no_new_provider_or_hosts_created": true,
+  "no_host_configuration_modified": true,
+  "no_secrets_committed": true,
+  "next_gated_action": "Operator-admitted independent hosts with distinct persisted state and independently issued mTLS identities; run remote test commands and record cold readbacks."
+}

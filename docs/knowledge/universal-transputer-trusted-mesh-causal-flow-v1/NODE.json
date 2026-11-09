@@ -323,5 +323,32 @@
       "operational_native_mesh": false,
       "effect_ack_done": false
     }
+  },
+  "two_host_transport": {
+    "status": "REMOTE_EXECUTION_PATH_PREPARED_NOT_EXECUTED",
+    "carrier": "mtls_transport.py",
+    "negative_tests": "test_two_host_admission.py",
+    "runbook": "TWO_HOST_RUNBOOK.md",
+    "inventory": "TWO_HOST_READINESS_20261109.json",
+    "local_test_summary": {
+      "reported_pass": 34,
+      "fail": 0,
+      "exact_authority_dependency_bytes": false,
+      "exact_head_ci": false
+    },
+    "assessed_2026_11_09": {
+      "digitalocean_droplets": 0,
+      "railway_services": 5,
+      "railway_online_services": 0,
+      "railway_staged_patch_changes": 22,
+      "originalhost_http_status": 525,
+      "native_ready": false
+    },
+    "independent_hosts_verified": false,
+    "remote_mtls_verified": false,
+    "independent_pkix_identity_verified": false,
+    "host_eap_readback": false,
+    "effect_ack_done": false,
+    "interpretation": "Experimental remote transport entry points exist but no real two-host admission or effect proof."
   }
 }
