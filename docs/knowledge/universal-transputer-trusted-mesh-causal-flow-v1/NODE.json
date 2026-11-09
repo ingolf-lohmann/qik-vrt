@@ -1,0 +1,299 @@
+{
+  "schema": "qikvrt_knowledge_node_v1",
+  "id": "UNIVERSAL_TRANSPUTER_TRUSTED_MESH_CAUSAL_INFORMATION_FLOW_20261109_V1",
+  "title": "Universal Transputer – Trusted Mesh – Causal Information Flow",
+  "language": "de",
+  "status": "EDITORIAL_SYNTHESIS_CANDIDATE",
+  "authority": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_main_head": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
+    "source_main_tree": "79ef4e99b05e38fab37957cb75547c616b619032"
+  },
+  "provenance": {
+    "owner": "Ingolf Lohmann",
+    "editorial_synthesis": "ChatGPT",
+    "date": "2026-11-09",
+    "user_supplied_context": {
+      "sha256": "4f6b445688921dfad29d5ef4931ce24012593bfa29dde79d9932257b37446e3a",
+      "bytes": 5556,
+      "source_kind": "UPLOADED_USER_SYNTHESIS_NOT_REPUBLISHED_VERBATIM"
+    },
+    "scientific_review": "NOT_PERFORMED",
+    "productive_effect": "NOT_CLAIMED"
+  },
+  "source_files": [
+    {
+      "id": "UT",
+      "path": "docs/news/universaler-transputer/article.txt",
+      "blob": "2c1a979919292134c7d93b07f49a517c4d285d29",
+      "scope": "Autorenthese, universale Anschlussfähigkeit gegenüber Turing-Universalität und SFG-Grenze"
+    },
+    {
+      "id": "BI",
+      "path": "personal/ingolf-lohmann/entries/2026-09-30-owner-receipt-universal-media-bidirectionality.json",
+      "blob": "f7384c00b06177444afd02978b116f22427bf878",
+      "scope": "Owner-Statement; medienagnostischer bidirektionaler Fluss; Zeitkorridor nur Hypothese"
+    },
+    {
+      "id": "RC",
+      "path": "docs/publications/2026-08-02-causality-is-relation-vrtcore/README.md",
+      "blob": "2c294001d438df343b320249779fd0e5603c3992",
+      "scope": "Sequenz und kausale Brücke; formal nur Typ-/Syntax-Modell"
+    },
+    {
+      "id": "RCM",
+      "path": "docs/publications/2026-08-02-causality-is-relation-vrtcore/CLAIM_MATRIX.json",
+      "blob": "db1bb2f832b3342aa594c4e94190e023b0f47854",
+      "scope": "explizite Claim-Klassen und Kernel-Geltungsbereich"
+    },
+    {
+      "id": "QCE",
+      "path": "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/CLAIM_MATRIX.json",
+      "blob": "11fde22ea821af9367a8c67a695696be37e62374",
+      "scope": "klassischer Lichtkegel und offene QCE-Korrespondenz"
+    },
+    {
+      "id": "ROUND",
+      "path": "docs/publications/2026-08-07-universum-als-round-trip/README.md",
+      "blob": "7e679f4bd736ba191818e774fab103d03c22fc1f",
+      "scope": "publiziertes Original und identitätsgebundene Round-Trip-Quellen"
+    },
+    {
+      "id": "FORM",
+      "path": "docs/publications/2026-08-07-universum-als-round-trip/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+      "blob": "cc13b5530051ea7b7fe0eceae5558cd93f44611d",
+      "scope": "formale Modellresultate und offen gebliebene physikalische Messbindung"
+    },
+    {
+      "id": "MESH",
+      "path": "docs/monitor/README.md",
+      "blob": "b1e06afc86a04d9989150b3c1690389ac5723631",
+      "scope": "SSE, Identitäten, Sequenz, Quellenalter, Signaturen und Durable Replay"
+    },
+    {
+      "id": "OPS",
+      "path": "docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+      "blob": "8cff99025f51de3f6099fbed227eea488e75ea8e",
+      "scope": "Node-Handshakes, Identität und separate reale Admission"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "TERMINAL",
+      "kind": "architecture_concept",
+      "label": "Universales Terminal",
+      "claim": "Aufnahme, Interaktion, Beobachtung und Nachweisgrenze",
+      "source_ids": [
+        "UT",
+        "BI"
+      ]
+    },
+    {
+      "id": "TRANSPUTER",
+      "kind": "author_thesis",
+      "label": "Universaler Transputer",
+      "claim": "Verteilte Verarbeitung und Anschlussfähigkeit; Turing-Universalität nicht daraus bewiesen",
+      "source_ids": [
+        "UT"
+      ]
+    },
+    {
+      "id": "MESH",
+      "kind": "engineering_contract",
+      "label": "Trusted Mesh Repository",
+      "claim": "Identität, Payload-Hash, Events, Replay, Empfangs-/Anwendungsbelege, separate Zulassung",
+      "source_ids": [
+        "MESH",
+        "OPS"
+      ]
+    },
+    {
+      "id": "FLOW",
+      "kind": "engineering_hypothesis",
+      "label": "Bidirektionaler Informationsfluss",
+      "claim": "Rückmeldung durch Empfang, Prüfung und bestätigten Zustandswechsel",
+      "source_ids": [
+        "BI",
+        "MESH"
+      ]
+    },
+    {
+      "id": "DRIFT",
+      "kind": "editorial_synthesis",
+      "label": "Drei unabhängige Driftschutzebenen",
+      "claim": "Originalidentität, epistemischer Status, produktive Wirkung dürfen nicht kollabieren",
+      "source_ids": [
+        "BI",
+        "RCM",
+        "MESH"
+      ]
+    },
+    {
+      "id": "CAUSAL",
+      "kind": "formal_model_boundary",
+      "label": "Kausalrelation",
+      "claim": "Sequenz allein ist keine belegte kausale Brücke; physische Kausalität separat",
+      "source_ids": [
+        "RC",
+        "RCM"
+      ]
+    },
+    {
+      "id": "LIGHTCONE",
+      "kind": "source_bound_classical_physics",
+      "label": "Klassischer Lichtkegel",
+      "claim": "Kausaltrennung im Lorentz-Geometrie-Modell; QCE-Rekonstruktion offen",
+      "source_ids": [
+        "QCE",
+        "FORM"
+      ]
+    },
+    {
+      "id": "ROUNDTRIP",
+      "kind": "research_method",
+      "label": "Round Trip",
+      "claim": "Hypothese → Modell → unterscheidbarer Nachweis → Revision; keine Physikpromovierung durch Dateihash",
+      "source_ids": [
+        "ROUND",
+        "FORM"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "from": "TERMINAL",
+      "to": "TRANSPUTER",
+      "type": "INTERFACE_OF",
+      "status": "ARCHITECTURE_CONCEPT"
+    },
+    {
+      "from": "TRANSPUTER",
+      "to": "MESH",
+      "type": "EXCHANGES_VERSIONED_INFORMATION_VIA",
+      "status": "ENGINEERING_HYPOTHESIS"
+    },
+    {
+      "from": "MESH",
+      "to": "FLOW",
+      "type": "TRANSPORTS_WITH_REPLAY_AND_ACK",
+      "status": "BOUNDED_IMPLEMENTATION_SCOPE"
+    },
+    {
+      "from": "FLOW",
+      "to": "DRIFT",
+      "type": "REQUIRES_INDEPENDENT_CONTROLS",
+      "status": "EDITORIAL_SYNTHESIS"
+    },
+    {
+      "from": "FLOW",
+      "to": "CAUSAL",
+      "type": "MAY_PROVIDE_CAUSAL_BRIDGE_EVIDENCE",
+      "status": "CONDITIONAL_NOT_CAUSAL_PROOF"
+    },
+    {
+      "from": "CAUSAL",
+      "to": "LIGHTCONE",
+      "type": "PHYSICAL_SIGNALLING_MUST_RESPECT_CLASSICAL_MODEL",
+      "status": "MODEL_SCOPE"
+    },
+    {
+      "from": "ROUNDTRIP",
+      "to": "TRANSPUTER",
+      "type": "SEPARATES_THESIS_FROM_PROOF",
+      "status": "RESEARCH_METHOD"
+    }
+  ],
+  "drift_layers": [
+    {
+      "id": "D1",
+      "name": "IDENTITY",
+      "requires": [
+        "exact_source_ref",
+        "version",
+        "sha256",
+        "sender_identity"
+      ],
+      "refusal": "unbound or changed source"
+    },
+    {
+      "id": "D2",
+      "name": "EPISTEMIC",
+      "requires": [
+        "claim_id",
+        "claim_class",
+        "claim_scope",
+        "evidence_refs",
+        "counter_evidence"
+      ],
+      "refusal": "analogy or model result promoted to empirical truth"
+    },
+    {
+      "id": "D3",
+      "name": "EFFECT",
+      "requires": [
+        "admission_ref",
+        "execution_ref",
+        "independent_readback_ref",
+        "effect_ack"
+      ],
+      "refusal": "transport or GitHub status promoted to host effect"
+    }
+  ],
+  "open_hypotheses": [
+    {
+      "id": "OPEN-UT",
+      "text": "Physikalische Universalität oder Turing-Universalität aller Naturvorgänge",
+      "state": "OPEN"
+    },
+    {
+      "id": "OPEN-TIME",
+      "text": "Informationstransfer in die physikalische Vergangenheit",
+      "state": "OPEN_NO_EMPIRICAL_PROOF"
+    },
+    {
+      "id": "OPEN-QCE",
+      "text": "Rekonstruktion eines physikalischen Lichtkegels aus QCE",
+      "state": "OPEN"
+    },
+    {
+      "id": "OPEN-MESH",
+      "text": "Unabhängig zugelassenes produktives Mesh mit EAP",
+      "state": "OPEN"
+    },
+    {
+      "id": "OPEN-META",
+      "text": "Außerhalb dieser Quellen belegte Originale zu Pac-Man/Morse-Dreiecksskizze/blauem Licht",
+      "state": "NOT_LOCATED_IN_SCOPED_AUTHORITY_SOURCES"
+    }
+  ],
+  "forbidden_inferences": [
+    "VERSIONED_ACK_IMPLIES_BACKWARD_TIME_SIGNALLING",
+    "LEAN_FINITE_MODEL_IMPLIES_PHYSICAL_CORRESPONDENCE",
+    "GIT_SHA256_IMPLIES_TRUTH",
+    "REGISTERED_NODE_IMPLIES_LIVE_NODE",
+    "REPOSITORY_BRANCH_IMPLIES_MAIN_RELEASE",
+    "ANALOGY_IMPLIES_THEOREM",
+    "CI_PASS_IMPLIES_EFFECT_ACK_DONE"
+  ],
+  "next_experiment": {
+    "name": "MESSBARE_ZWEIWEG_VERIFIKATION",
+    "hypothesis": "Bei identitätsgebundenem Hin- und Rückweg bleiben alle akzeptierten Events, Gegenbelege und Empfangsbelege ohne stillschweigende Mutation rekonstruierbar.",
+    "metrics": [
+      "sequence_gaps",
+      "duplicate_detection",
+      "original_byte_sha256_match",
+      "acknowledgement_source_binding",
+      "replay_convergence",
+      "separate_effect_readback"
+    ],
+    "negative_controls": [
+      "missing_event",
+      "duplicate_id_changed_payload",
+      "wrong_head",
+      "stale_proof",
+      "missing_admission",
+      "unacknowledged_execution"
+    ],
+    "outcome": "A testable distributed-systems proposition; no physical retrocausality result."
+  }
+}
