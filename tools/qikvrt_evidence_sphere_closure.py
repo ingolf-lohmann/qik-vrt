@@ -54,7 +54,7 @@ def verify(sphere):
         if e.get("evidence_semantics") == "REFERENCE_ONLY_NO_EVIDENCE_TRANSFER":
             continue
         # Unknown evidence semantics cannot silently become an attestation.
-        if e.get("evidence_semantics") not in ("REFERENCE_ONLY_NO_EVIDENCE_TRANSFER",):
+        if e.get("evidence_semantics") not in ("REFERENCE_ONLY_NO_EVIDENCE_TRANSFER", "CANONICAL_INTERNAL_MONOTONICITY_RULE"):
             failures.append("UNADMITTED_EDGE_SEMANTICS:" + str(e.get("relation")))
     # Monotone fixed point: propagate ONLY explicitly admitted logical edges.
     # Reference-only edges must never be promoted into proof dependencies.
