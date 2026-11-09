@@ -1,0 +1,63 @@
+{
+  "schema": "qikvrt_two_way_local_validation/v1",
+  "experiment_id": "UNIVERSAL_TRANSPUTER_TRUSTED_MESH_CAUSAL_INFORMATION_FLOW_20261109_V1",
+  "classification": "LOCAL_SOFTWARE_TEST_ONLY",
+  "basis": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "branch": "knowledge/universal-transputer-mesh-causal-flow-20261109",
+    "parent_commit": "cd289c6fbc93ef293e4bbc101d4f9ddb3e15c87a",
+    "mode": "two storage directories within one Python process"
+  },
+  "files": [
+    {
+      "path": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/two_way_reference.py",
+      "git_blob": "57a79e046e4b82c297152cc5fdfef75dd287c476",
+      "sha256": "f50be59fff1939ebbeb3f13843bf0905dd67c1392901bfbc98a12d528cdebd4b",
+      "bytes": 8566
+    },
+    {
+      "path": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/test_two_way_reference.py",
+      "git_blob": "e44fb4b87add8d87b1cbfd757939ceef31b24fc2",
+      "sha256": "f5bd0cd0e2b8afba3991517f3abf0d479dfde2873480037f3b8394d36aa31eb4",
+      "bytes": 5296
+    }
+  ],
+  "execution": {
+    "command": "python3 -B -m unittest discover -s docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1 -p 'test_two_way_reference.py' -v",
+    "implementation_copy_run_in": "/mnt/data/qikvrt_two_way_proof",
+    "interpreter": "Python 3.13.5",
+    "platform": "Linux x86_64",
+    "passed": 14,
+    "failed": 0,
+    "errors": 0,
+    "local_repeated_runs": 2,
+    "status": "PASS"
+  },
+  "bound_checks": [
+    "original_payload_byte_sha256",
+    "durable_receiver_receipt_readback",
+    "restart_replay",
+    "counter_evidence_preservation",
+    "sequence_gap_refusal",
+    "duplicate_payload_substitution_refusal",
+    "source_head_refusal",
+    "stale_receipt_refusal",
+    "local_admission_refusal",
+    "missing_receipt_refusal",
+    "ledger_integrity_refusal",
+    "wrong_receiver_refusal",
+    "payload_hash_refusal",
+    "false_effect_ack_refusal",
+    "idempotent_replay"
+  ],
+  "gates": {
+    "exact_head_repository_ci": "NOT_EXECUTED_FOR_THIS_COMMIT",
+    "independent_remote_node": "NOT_EXECUTED",
+    "cryptographic_peer_authentication": "NOT_IMPLEMENTED",
+    "native_mesh": "NOT_EXECUTED",
+    "original_host_readback": "NOT_EXECUTED",
+    "effect_ack_done": false,
+    "scientific_external_review": "NOT_PERFORMED"
+  },
+  "interpretation": "A local, bounded reference experiment. This receipt is not an independent remote witness or production admission."
+}

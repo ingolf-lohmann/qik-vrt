@@ -60,3 +60,9 @@ Basis: Authority `ingolf-lohmann/qik-vrt`, Main `37f8e4eb805292a31024a9e6213afc8
 Zusätzliche Gesprächssynthese, 09.11.2026: bereitgestellter Text (5556 Originalbytes; SHA-256 `4f6b445688921dfad29d5ef4931ce24012593bfa29dde79d9932257b37446e3a`). Dessen Wortlaut wird nicht als vom Repository unabhängig verifizierte Primärquelle ausgegeben.
 
 Leseschlüssel: [UT] universaler Transputer; [BI] bidirektionaler Medienfluss; [RC/RCM] relationale Kausalität; [QCE] Lichtkegel/QCE; [ROUND/FORM] Round Trip; [MESH/OPS] verteilte Systeme. **Kein Claim- oder Effekt-Status wird durch dieses Dokument erhöht.**
+
+## 7. Durchgeführter Zwei-Speicher-Versuch
+
+Der in Abschnitt 5 vorgeschlagene Zweiweg-Protokollversuch ist als **lokaler, begrenzter Referenzversuch** umgesetzt. Der Python-Kern liegt in `two_way_reference.py`, 14 Positiv-/Negativtests in `test_two_way_reference.py`, die Versuchsanleitung in `EXPERIMENT.md` und ein lokal gebundener Prüfbericht in `LOCAL_VALIDATION_REPORT.json`.
+
+Zweimalige lokale Python-3.13.5-Ausführung: **14/14 PASS**. Die exakten Quellbytes wurden vor der Git-Speicherung über ihre Git-Blob-SHAs gebunden; die ausführbaren Dateien werden beim Readback separat gegengeprüft. Die Testumgebung nutzt zwei getrennte Verzeichnisse innerhalb **eines** Prozesses: keine zwei Sicherheitsdomänen, kein Netzwerk, keine echte native Zulassung, keine unabhängige Produktivwirkung. Diese Erweiterung ändert die vorstehenden ursprünglichen Quellen- und Claim-Grenzen nicht.

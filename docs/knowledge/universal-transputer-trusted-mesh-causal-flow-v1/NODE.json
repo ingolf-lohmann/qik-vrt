@@ -3,7 +3,7 @@
   "id": "UNIVERSAL_TRANSPUTER_TRUSTED_MESH_CAUSAL_INFORMATION_FLOW_20261109_V1",
   "title": "Universal Transputer – Trusted Mesh – Causal Information Flow",
   "language": "de",
-  "status": "EDITORIAL_SYNTHESIS_CANDIDATE",
+  "status": "EDITORIAL_SYNTHESIS_WITH_LOCAL_REFERENCE_EXPERIMENT",
   "authority": {
     "repository": "ingolf-lohmann/qik-vrt",
     "source_main_head": "37f8e4eb805292a31024a9e6213afc85d3a6a4a2",
@@ -294,6 +294,20 @@
       "missing_admission",
       "unacknowledged_execution"
     ],
-    "outcome": "A testable distributed-systems proposition; no physical retrocausality result."
+    "outcome": "A testable distributed-systems proposition; no physical retrocausality result.",
+    "implementation": {
+      "status": "LOCAL_14_TESTS_PASS",
+      "scope": "TWO_DIRECTORY_SINGLE_PROCESS_SIMULATOR",
+      "source_python": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/two_way_reference.py",
+      "test_python": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/test_two_way_reference.py",
+      "documentation": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/EXPERIMENT.md",
+      "validation_report": "docs/knowledge/universal-transputer-trusted-mesh-causal-flow-v1/LOCAL_VALIDATION_REPORT.json",
+      "test_count": 14,
+      "test_failure_count": 0,
+      "independent_host_readback": false,
+      "real_transport": false,
+      "authenticated_sender": false,
+      "effect_ack_done": false
+    }
   }
 }
