@@ -219,6 +219,7 @@ test: editorial-navigation-test
 repository-monitor-test:
 	node --test docs/monitor/workspace.test.mjs
 	node docs/monitor/observer.test.mjs
+	node --test docs/monitor/observer-pr-inventory.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
 

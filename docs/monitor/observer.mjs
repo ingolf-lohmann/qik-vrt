@@ -155,6 +155,65 @@ export async function snapshot(env={}){
  observer:'GitHub REST GET',scope:'Configured public repositories',workflow_success_is_effect_ack_done:false,
  actor_is_verified_human_or_model_identity:false,workflow_parent_inferred_from_time:false,events_api_latency_seconds:[30,21600]}};
 }
+
+/*
+ * Authority-only, provider-independent PR inventory for the existing S1 observer.
+ * This is an on-demand public GET. Incomplete pages never establish a complete set.
+ * GitHub observations are NOT native execution, IONOS admission or EFFECT_ACK.
+ */
+export async function readOpenPullRequests({fetchImpl=null,maxPages=20}={}){
+ if(!Number.isInteger(maxPages)||maxPages<1||maxPages>20)throw new Error('INVALID_INVENTORY_PAGE_LIMIT');
+ const repository='ingolf-lohmann/qik-vrt', items=[], seen=new Set(), pageReads=[];
+ for(let page=1;page<=maxPages;page++){
+  const endpoint='https://api.github.com/repos/'+repository+'/pulls?state=open&per_page=100&page='+page;
+  let rows;
+  if(fetchImpl===null){
+   // Reuse the existing source cache, backoff and single-flight fence.
+   // Never substitute stale cached content after an upstream error.
+   const source=await githubSource(repository,'/pulls?state=open&per_page=100&page='+page,300);
+   if(source.error||!Array.isArray(source.data)){
+    return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+     error:{code:source.error?.status?'HTTP_'+source.error.status:'SOURCE_UNAVAILABLE',page}};
+   }
+   rows=source.data;
+  }else{
+   let response;
+   try{
+    response=await fetchImpl(endpoint,{method:'GET',headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(12000)});
+   }catch(e){
+    return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+     error:{code:e?.name==='AbortError'?'ABORTED':'TRANSPORT_ERROR',page}};
+   }
+   if(!response.ok)return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+    error:{code:'HTTP_'+response.status,page}};
+   try{rows=await response.json()}catch{return {schema:'qikvrt-open-pr-inventory/v1',repository,
+    complete:false,pages:pageReads,items,error:{code:'INVALID_JSON',page}}}
+  }
+  if(!Array.isArray(rows)||rows.length>100||rows.some(r=>!Number.isSafeInteger(r?.number)||r.number<=0||
+     !/^[a-f0-9]{40}$/.test(r?.head?.sha||''))){
+   return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+    error:{code:'INVALID_PR_PAGE',page}};
+  }
+  const observed_at=new Date().toISOString();
+  pageReads.push({page,observed_at,count:rows.length});
+  for(const r of rows){
+   if(seen.has(r.number))return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,
+    pages:pageReads,items,error:{code:'DUPLICATE_PR_ACROSS_PAGES',page,number:r.number}};
+   seen.add(r.number);
+   items.push({number:r.number,head_sha:r.head.sha,draft:r.draft===true,
+    state:r.state==='open'?'open':'unknown',url:'https://github.com/'+repository+'/pull/'+r.number});
+  }
+  // A short page ends the inventory for both cached and direct GETs.
+  // A full page requires another bounded request; never assume completeness.
+  if(rows.length<100){
+   return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:true,pages:pageReads,items,error:null,
+    semantic_scope:'PUBLIC_REST_INVENTORY_NOT_EXACT_HEAD_CI_OR_PRODUCTIVE_EFFECT'};
+  }
+ }
+ return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+  error:{code:'PAGE_LIMIT_EXHAUSTED',max_pages:maxPages}};
+}
+
 export async function runDetails(repo,id,env={}){
  if(!REPOS.some(r=>r.name===repo)||!Number.isSafeInteger(id)||id<=0)throw new Error('Unzulässiger Lauf.');
  const path='/actions/runs/'+id+'/jobs?per_page=100';
@@ -171,6 +230,14 @@ const SECURITY={'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-ori
 export default{async fetch(request,env){
  const path=new URL(request.url).pathname;
  if(!['GET','HEAD'].includes(request.method))return new Response('Read-only observer',{status:405,headers:{...SECURITY,Allow:'GET, HEAD'}});
+
+ if(path==='/api/pr-inventory'){
+  if(request.method==='HEAD')return new Response(null,{headers:{...SECURITY,'content-type':'application/json','cache-control':'no-store'}});
+  const result=await readOpenPullRequests();
+  return Response.json(result,{status:result.complete?200:503,
+   headers:{...SECURITY,'cache-control':'no-store'}});
+ }
+
  if(path==='/api/activity')return new Response(request.method==='HEAD'?null:JSON.stringify(await snapshot(env)),{headers:{...SECURITY,'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
  if(path==='/api/run'){
  const params=new URL(request.url).searchParams,repo=params.get('repo'),rawId=params.get('id');
