@@ -44,6 +44,20 @@ class LosslessCodecTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             codec.encode(bytes(codec.MAX_PAYLOAD + 1))
 
+    def test_oversized_input_chunk_rejected(self):
+        decoder = codec.Decoder()
+        with self.assertRaisesRegex(ValueError, "input chunk too large"):
+            decoder.feed(bytes(codec.MAX_PAYLOAD + codec.HEADER + len(codec.END) + 1))
+
+    def test_invalid_start_marker(self):
+        with self.assertRaisesRegex(ValueError, "start"):
+            codec.Decoder().feed(b"XYZ")
+
+    def test_invalid_end_marker(self):
+        frame = codec.encode(b"abc")[:-3] + b"XXX"
+        with self.assertRaisesRegex(ValueError, "end"):
+            codec.Decoder().feed(frame)
+
     def test_fail_closed_ack(self):
         decoded = codec.Decoder().feed(codec.encode(b"effect"))[0]
         self.assertEqual(codec.acknowledge_effect(
