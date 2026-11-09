@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rfc version="3" docName="draft-lohmann-qikvrt-lossless-eap-00" category="exp" ipr="trust200902" submissionType="independent">
+<front>
+<title>QIK-VRT Lossless Framing and Effect Acknowledgement Boundaries</title>
+<seriesInfo name="Internet-Draft" value="draft-lohmann-qikvrt-lossless-eap-00"/>
+<author fullname="Ingolf Lohmann" initials="I." surname="Lohmann"><organization>Independent</organization></author>
+<date year="2026" month="11" day="09"/>
+<abstract><t>This document describes an experimental octet-framing protocol for lossless carriage of finite binary payloads and distinguishes frame delivery from verified execution effects. It does not grant access to protected resources or establish physical universality.</t></abstract>
+</front>
+<middle>
+<section numbered="true"><name>Introduction</name><t>Different physical media can transport digital representations when suitable transducers, channels and permissions exist. This document defines a candidate octet frame and an effect-verification boundary.</t></section>
+<section numbered="true"><name>Frame Format</name><t>All widths are octets. The start marker is three ASCII octets 0x30 0x30 0x31, not the three bits 001. The end marker is 0x31 0x30 0x30.</t>
+<artwork><![CDATA[
+3 octets: ASCII "001"
+8 octets: unsigned big-endian payload length N
+32 octets: SHA-256 digest of payload
+N octets: opaque payload (0 <= N <= 16777216)
+3 octets: ASCII "100"
+]]></artwork>
+<t>Payload contents are opaque and may contain the markers. Receivers reject malformed markers, oversized declared lengths, digest mismatch and truncated frames. SHA-256 is not sender authentication.</t></section>
+<section numbered="true"><name>Streaming</name><t>Frames may be concatenated and arbitrarily partitioned into transport chunks. Successful decoding establishes only byte recovery. Implementations must bound input chunks and buffering before use with untrusted streams.</t></section>
+<section numbered="true"><name>Effect Acknowledgement</name><t>The closing marker is not EFFECT_ACK_DONE. A trusted effect receipt requires authenticated principals, unique operation identifiers, durable idempotency, replay protection, writer fencing, an independently observed effect and a cryptographically bound receipt. The reference implementation does not yet implement these guarantees.</t></section>
+<section numbered="true"><name>Security Considerations</name><t>Authenticated transport, authorization, replay defense, quotas and verifier trust are required in production. This protocol cannot bypass encryption, firewalls or VPN access controls.</t></section>
+<section numbered="true"><name>IANA Considerations</name><t>This document requests no IANA actions.</t></section>
+</middle>
+<back><references><name>Informative References</name><reference anchor="QIKVRT" target="https://github.com/ingolf-lohmann/qik-vrt"><front><title>QIK-VRT Authority Repository</title><author fullname="Ingolf Lohmann" initials="I." surname="Lohmann"/><date year="2026"/></front></reference></references></back>
+</rfc>
