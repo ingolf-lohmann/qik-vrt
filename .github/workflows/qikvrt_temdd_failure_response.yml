@@ -1,0 +1,133 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Failure observation does not authorize deployment, write access or EFFECT_ACK_DONE.
+name: QIKVRT mandatory TEMDD failure response
+
+on:
+  workflow_run:
+    workflows:
+      - "QIKVRT CI"
+      - "QIKVRT productive TEMDD S1 carrier"
+      - "QIKVRT repository evidence materialization"
+      - "QIK-VRT autonomous bounded self-heal"
+    types: [completed]
+  pull_request:
+    paths:
+      - ".github/workflows/qikvrt_temdd_failure_response.yml"
+      - "tools/qikvrt_temdd_failure_response.py"
+      - "tests/test_qikvrt_temdd_failure_response.py"
+      - "docs/terminal/TEMDD_FAILED_CI_MANDATE.md"
+      - "Makefile"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate-contract:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Run mandatory TEMDD failure-model regressions
+        run: python3 -B -m unittest -v tests.test_qikvrt_temdd_failure_response
+
+  observe-failure:
+    if: >-
+      github.event_name == 'workflow_run' &&
+      (github.event.workflow_run.conclusion == 'failure' ||
+       github.event.workflow_run.conclusion == 'timed_out' ||
+       github.event.workflow_run.conclusion == 'cancelled' ||
+       github.event.workflow_run.conclusion == 'action_required')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out trusted rule implementation from main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Read original failed jobs without mutation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FAILED_RUN_ID: ${{ github.event.workflow_run.id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${FAILED_RUN_ID}/jobs?per_page=100" > "${RUNNER_TEMP}/failed-jobs.json"; then
+            printf '{}\n' > "${RUNNER_TEMP}/failed-jobs.json"
+          fi
+      - name: Check out same-repository failed source without credentials
+        if: github.event.workflow_run.head_repository.full_name == github.repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.event.workflow_run.head_sha }}
+          path: failed-source
+          persist-credentials: false
+      - name: Run bounded TEMDD regressions on exact failed source
+        if: github.event.workflow_run.head_repository.full_name == github.repository
+        shell: bash
+        run: |
+          set -uo pipefail
+          cd failed-source
+          git rev-parse --verify HEAD > "${RUNNER_TEMP}/temdd-test-head"
+          env -u GH_TOKEN -u GITHUB_TOKEN PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 \
+            python3 -B -m unittest -v tests.test_temdd_event_ledger tests.test_self_host_temdd \
+            > "${RUNNER_TEMP}/temdd-regressions.log" 2>&1
+          rc=$?
+          printf '%s\n' "$rc" > "${RUNNER_TEMP}/temdd-test-exit"
+          tail -n 35 "${RUNNER_TEMP}/temdd-regressions.log"
+          exit 0
+      - name: Emit immutable-observation model and fail-closed HOLD receipt
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual_head="$(cat "${RUNNER_TEMP}/temdd-test-head" 2>/dev/null || true)"
+          test_exit="$(cat "${RUNNER_TEMP}/temdd-test-exit" 2>/dev/null || true)"
+          python3 -B tools/qikvrt_temdd_failure_response.py \
+            --event "$GITHUB_EVENT_PATH" \
+            --jobs "${RUNNER_TEMP}/failed-jobs.json" \
+            --actual-head "$actual_head" \
+            --test-exit "$test_exit" \
+            --test-log "${RUNNER_TEMP}/temdd-regressions.log" \
+            --output "${RUNNER_TEMP}/temdd-failed-ci-receipt.json"
+      - name: Preserve failed-run TEMDD evidence independently
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-temdd-failed-ci-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+          path: |
+            ${{ runner.temp }}/failed-jobs.json
+            ${{ runner.temp }}/temdd-regressions.log
+            ${{ runner.temp }}/temdd-failed-ci-receipt.json
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Prevent green TEMDD receipt from admitting failed CI
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - "${RUNNER_TEMP}/temdd-failed-ci-receipt.json" <<'PY'
+          import json, sys
+          with open(sys.argv[1], encoding='utf-8') as stream:
+              receipt = json.load(stream)
+          assert receipt['state'] == 'HOLD'
+          assert receipt['release_admission'] == 'BLOCKED'
+          assert receipt['effect_ack_done'] is False
+          print('MANDATORY_TEMDD_HOLD: original failed CI/CD run remains unadmitted')
+          PY
+          exit 2
