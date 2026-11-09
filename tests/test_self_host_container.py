@@ -21,6 +21,69 @@ from tools import qikvrt_self_host_container as c
 HEAD, TREE = "a" * 40, "b" * 40
 
 
+class VersionedCarrierContract(unittest.TestCase):
+    """A new transport must retain immutable predecessor and image bindings."""
+
+    def fixture(self, directory):
+        repo = Path(__file__).resolve().parents[1] / "runtime/self-host"
+        root = Path(directory) / "runtime/self-host"
+        root.mkdir(parents=True)
+        original = json.loads((repo / "CONTAINER_CARRIER.json").read_bytes())
+        successor = json.loads((repo / "DELIVERY_SUCCESSOR_20261107.json").read_bytes())
+        (root / "CONTAINER_CARRIER.json").write_text(json.dumps(original))
+        (root / "DELIVERY_SUCCESSOR_20261107.json").write_text(json.dumps(successor))
+        return Path(directory), original, successor
+
+    def test_explicit_successor_keeps_original_image_and_source_pins(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, original, successor = self.fixture(directory)
+            self.assertEqual(c.carrier_expected(root), original)
+            selected = c.carrier_expected(root, successor=True)
+            candidate = successor["candidate"]
+            self.assertEqual(selected["artifact_id"], candidate["artifact_id"])
+            self.assertEqual(selected["archive_sha256"], candidate["artifact_sha256"])
+            self.assertEqual(selected["delivery_sha256"], candidate["delivery_sha256"])
+            for field in ("image_config_digest", "oci_manifest_digest",
+                          "package_manifest_sha256", "source_head", "source_tree"):
+                self.assertEqual(selected[field], original[field])
+            self.assertEqual(json.loads((root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes()), original)
+
+    def test_history_and_typed_claims_fail_closed(self):
+        import copy
+        changes = (
+            ("historical_predecessor", "artifact_sha256", "0" * 64),
+            ("historical_predecessor", "artifact_id", 0),
+            ("candidate", "artifact_id", 11521962723),
+            ("candidate", "artifact_bytes", 0),
+            ("candidate", "artifact_sha256", "g" * 64),
+            ("candidate", "source_head", "0" * 40),
+            ("candidate", "attempt", False),
+            ("candidate", "repository", "other/host"),
+            ("claims", "effect_ack_done", True),
+            ("claims", "effect_ack_done", 0),
+            ("claims", "independent_review_verified", "false"),
+            ("claims", "host_admitted", 0),
+        )
+        for section, field, value in changes:
+            with self.subTest(section=section, field=field, value=value), tempfile.TemporaryDirectory() as directory:
+                root, _, successor = self.fixture(directory)
+                bad = copy.deepcopy(successor)
+                bad[section][field] = value
+                (root / "runtime/self-host/DELIVERY_SUCCESSOR_20261107.json").write_text(json.dumps(bad))
+                with self.assertRaises(ValueError):
+                    c.carrier_expected(root, successor=True)
+
+    def test_duplicate_contract_key_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, _, successor = self.fixture(directory)
+            raw = json.dumps(successor)
+            raw = raw.replace('"schema": "qikvrt-runtime-delivery-successor/v1",',
+                              '"schema": "qikvrt-runtime-delivery-successor/v1", "schema": "other",', 1)
+            (root / "runtime/self-host/DELIVERY_SUCCESSOR_20261107.json").write_text(raw)
+            with self.assertRaisesRegex(ValueError, "DUPLICATE_VERSIONED_CARRIER_FIELD"):
+                c.carrier_expected(root, successor=True)
+
+
 class VerifiedToolCache(unittest.TestCase):
     """Exercise the original failure boundary and the untrusted cache path."""
 

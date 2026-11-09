@@ -1,0 +1,38 @@
+{
+  "schema": "qikvrt-runtime-delivery-successor/v1",
+  "historical_predecessor": {
+    "artifact_bytes": 382994793,
+    "artifact_id": 11521962723,
+    "artifact_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+    "delivery_sha256": "acd196b0c46318482fdcf23c63291b0cd4fef5168f49c72bcd9f6cb60ad747a5",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "reuse_scope": "DEPENDENCY_IMAGE_ONLY; RESEAL_CURRENT_SOURCE; NO_PREDECESSOR_PASS_TRANSFER",
+    "run_id": 37710500668,
+    "source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+    "source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3"
+  },
+  "candidate": {
+    "artifact_bytes": 383384043,
+    "artifact_id": 13562706664,
+    "artifact_sha256": "64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1",
+    "delivery_sha256": "bd8f5eef38a37f9b4f5a279af0390346bf6181f956f90eb83a3d69d9716dae13",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "run_id": 37710500668,
+    "attempt": 2,
+    "source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+    "source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3",
+    "reuse_scope": "DEPENDENCY_IMAGE_ONLY; RESEAL_CURRENT_SOURCE; NO_PREDECESSOR_PASS_TRANSFER"
+  },
+  "evidence": {
+    "source_run_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37710500668/attempts/2",
+    "observation": "2026-11-07T05:36:24Z",
+    "distinction": "Original artifact 11521962723 unavailable. Distinct ZIP and inner DELIVERY.json. No predecessor PASS transfer."
+  },
+  "claims": {
+    "predecessor_pass_transferred": false,
+    "host_admitted": false,
+    "product_delivery_verified": false,
+    "independent_review_verified": false,
+    "effect_ack_done": false
+  }
+}
