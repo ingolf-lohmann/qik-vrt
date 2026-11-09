@@ -161,22 +161,34 @@ export async function snapshot(env={}){
  * This is an on-demand public GET. Incomplete pages never establish a complete set.
  * GitHub observations are NOT native execution, IONOS admission or EFFECT_ACK.
  */
-export async function readOpenPullRequests({fetchImpl=fetch,maxPages=20}={}){
+export async function readOpenPullRequests({fetchImpl=null,maxPages=20}={}){
  if(!Number.isInteger(maxPages)||maxPages<1||maxPages>20)throw new Error('INVALID_INVENTORY_PAGE_LIMIT');
  const repository='ingolf-lohmann/qik-vrt', items=[], seen=new Set(), pageReads=[];
  for(let page=1;page<=maxPages;page++){
   const endpoint='https://api.github.com/repos/'+repository+'/pulls?state=open&per_page=100&page='+page;
-  let response, rows;
-  try{
-   response=await fetchImpl(endpoint,{method:'GET',headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(12000)});
-  }catch(e){
-   return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
-    error:{code:e?.name==='AbortError'?'ABORTED':'TRANSPORT_ERROR',page}};
+  let rows;
+  if(fetchImpl===null){
+   // Reuse the existing source cache, backoff and single-flight fence.
+   // Never substitute stale cached content after an upstream error.
+   const source=await githubSource(repository,'/pulls?state=open&per_page=100&page='+page,300);
+   if(source.error||!Array.isArray(source.data)){
+    return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+     error:{code:source.error?.status?'HTTP_'+source.error.status:'SOURCE_UNAVAILABLE',page}};
+   }
+   rows=source.data;
+  }else{
+   let response;
+   try{
+    response=await fetchImpl(endpoint,{method:'GET',headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(12000)});
+   }catch(e){
+    return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+     error:{code:e?.name==='AbortError'?'ABORTED':'TRANSPORT_ERROR',page}};
+   }
+   if(!response.ok)return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
+    error:{code:'HTTP_'+response.status,page}};
+   try{rows=await response.json()}catch{return {schema:'qikvrt-open-pr-inventory/v1',repository,
+    complete:false,pages:pageReads,items,error:{code:'INVALID_JSON',page}}}
   }
-  if(!response.ok)return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
-   error:{code:'HTTP_'+response.status,page}};
-  try{rows=await response.json()}catch{return {schema:'qikvrt-open-pr-inventory/v1',repository,
-   complete:false,pages:pageReads,items,error:{code:'INVALID_JSON',page}}}
   if(!Array.isArray(rows)||rows.length>100||rows.some(r=>!Number.isSafeInteger(r?.number)||r.number<=0||
      !/^[a-f0-9]{40}$/.test(r?.head?.sha||''))){
    return {schema:'qikvrt-open-pr-inventory/v1',repository,complete:false,pages:pageReads,items,
