@@ -1420,16 +1420,16 @@ jobs:
             --output "$RUNNER_TEMP/s1-context" --receipt "$RUNNER_TEMP/container-evidence/context.json"
           docker version > "$RUNNER_TEMP/container-evidence/docker-version.txt"
           docker buildx version > "$RUNNER_TEMP/container-evidence/buildx-version.txt"
-      - name: Verify and reuse original PR494 Docker carrier
+      - name: Verify versioned PR494 dependency carrier successor
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          python3 -B tools/qikvrt_self_host.py container-carrier --root . \
+          python3 -B tools/qikvrt_self_host.py container-carrier --root . --carrier-successor \
             --output "$RUNNER_TEMP/frozen-carrier" \
-            --carrier-oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
+            --carrier-oci-archive "$RUNNER_TEMP/container-evidence/carrier-successor.oci.tar" \
             --receipt "$RUNNER_TEMP/container-evidence/carrier.json"
-      - name: Two independent native terminal OCI builds from the original frozen carrier
+      - name: Two independent native terminal OCI builds from the pinned versioned carrier
         id: independent-builds
         run: |
           set -euo pipefail
@@ -1548,12 +1548,12 @@ jobs:
           path: ${{ runner.temp }}/container-evidence/s1-2.oci.tar
           if-no-files-found: warn
           retention-days: 30
-      - name: Preserve original frozen carrier separately
+      - name: Preserve versioned frozen carrier separately
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: qikvrt-s1-original-carrier-${{ github.event.pull_request.head.sha || github.sha }}
-          path: ${{ runner.temp }}/container-evidence/carrier-original.oci.tar
+          name: qikvrt-s1-successor-carrier-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-evidence/carrier-successor.oci.tar
           if-no-files-found: warn
           retention-days: 30
       - name: Preserve exact OCI image and non-secret original evidence
@@ -1563,7 +1563,7 @@ jobs:
           name: qikvrt-s1-container-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             ${{ runner.temp }}/container-evidence
-            !${{ runner.temp }}/container-evidence/carrier-original.oci.tar
+            !${{ runner.temp }}/container-evidence/carrier-successor.oci.tar
             !${{ runner.temp }}/container-evidence/s1-*.oci.tar
           include-hidden-files: true
           if-no-files-found: error
@@ -1573,10 +1573,10 @@ jobs:
         with:
           name: qikvrt-s1-container-${{ github.event.pull_request.head.sha || github.sha }}
           path: ${{ runner.temp }}/container-artifact-readback
-      - name: Read the actual uploaded original carrier back
+      - name: Read the actual uploaded versioned carrier back
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
-          name: qikvrt-s1-original-carrier-${{ github.event.pull_request.head.sha || github.sha }}
+          name: qikvrt-s1-successor-carrier-${{ github.event.pull_request.head.sha || github.sha }}
           path: ${{ runner.temp }}/container-artifact-readback
       - name: Verify the restored consumer inputs after the real archive round trip
         run: |
@@ -1595,8 +1595,8 @@ jobs:
           verify(p / 'public-package', pin, check_runtime=False)
           image = c.oci(p / 'image.oci.tar', head, tree)
           assert image['image_digest'] == original['image_digest']
-          expected = json.loads(Path('runtime/self-host/CONTAINER_CARRIER.json').read_bytes())
-          carrier = c.carrier_archive_check(expected, p / 'carrier-original.oci.tar')
+          expected = c.carrier_expected(Path('.'), successor=True)
+          carrier = c.carrier_archive_check(expected, p / 'carrier-successor.oci.tar')
           receipt = {'schema': 'qikvrt-s1-artifact-roundtrip/v1',
                      'state': 'ACTUAL_ARTIFACT_CONSUMER_INPUTS_VERIFIED',
                      'source_head': head, 'source_tree': tree, 'package': package,
@@ -1650,7 +1650,7 @@ jobs:
           path: ${{ runner.temp }}/container-evidence
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          name: qikvrt-s1-original-carrier-${{ needs.container.outputs.head }}
+          name: qikvrt-s1-successor-carrier-${{ needs.container.outputs.head }}
           path: ${{ runner.temp }}/container-evidence
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
         with:
@@ -1703,13 +1703,13 @@ jobs:
           PYREGISTRY
           done
           # Reuse this same admitted publisher/package and token scope. The
-          # original ZIP lives unchanged inside one deterministic OCI layer.
+          # versioned ZIP lives unchanged inside one deterministic OCI layer.
           # This publication does not activate a durable CI download source.
-          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . \
-            --oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
+          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . --carrier-successor \
+            --oci-archive "$RUNNER_TEMP/container-evidence/carrier-successor.oci.tar" \
             --receipt "$RUNNER_TEMP/carrier-publish-check.json"
           carrier_digest="$(python3 -c 'import json,os; print(json.load(open(os.environ["RUNNER_TEMP"]+"/carrier-publish-check.json"))["image_digest"])')"
-          carrier_tag="$(python3 -c 'import json; print("carrier-original-"+json.load(open("runtime/self-host/CONTAINER_CARRIER.json"))["archive_sha256"])')"
+          carrier_tag="$(python3 -c 'from pathlib import Path; from tools import qikvrt_self_host_container as c; print("carrier-successor-"+c.carrier_expected(Path("."), successor=True)["archive_sha256"])')"
           if docker buildx imagetools inspect "$image:$carrier_tag" --raw > "$RUNNER_TEMP/carrier-registry.json" 2> "$RUNNER_TEMP/carrier-registry-error"; then
             : # Verify an existing version; never replace it.
           else
@@ -1718,7 +1718,7 @@ jobs:
               --user "$(id -u):$(id -g)" --env HOME=/tmp \
               --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
               --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
-              --mount "type=bind,source=$RUNNER_TEMP/container-evidence/carrier-original.oci.tar,target=/carrier.oci.tar,readonly" \
+              --mount "type=bind,source=$RUNNER_TEMP/container-evidence/carrier-successor.oci.tar,target=/carrier.oci.tar,readonly" \
               "$publisher" copy --preserve-digests --dest-authfile /auth/config.json \
               oci-archive:/carrier.oci.tar "docker://$image:$carrier_tag"
             docker buildx imagetools inspect "$image:$carrier_tag" --raw > "$RUNNER_TEMP/carrier-registry.json"
@@ -1729,7 +1729,7 @@ jobs:
           raw=(Path(os.environ['RUNNER_TEMP'])/'carrier-registry.json').read_bytes()
           if 'sha256:'+hashlib.sha256(raw).hexdigest()!=os.environ['CARRIER_DIGEST']:
               raw=raw.removesuffix(b'\n')
-          assert 'sha256:'+hashlib.sha256(raw).hexdigest()==os.environ['CARRIER_DIGEST'], 'immutable original archive registry digest differs'
+          assert 'sha256:'+hashlib.sha256(raw).hexdigest()==os.environ['CARRIER_DIGEST'], 'immutable versioned archive registry digest differs'
           PYCARRIERDIGEST
           mkdir "$RUNNER_TEMP/carrier-registry-readback"
           docker run --rm --pull=never --read-only --cap-drop ALL --security-opt no-new-privileges:true \
@@ -1739,7 +1739,7 @@ jobs:
             --mount "type=bind,source=$RUNNER_TEMP/carrier-registry-readback,target=/readback" \
             "$publisher" copy --preserve-digests --src-authfile /auth/config.json \
             "docker://$image@$carrier_digest" oci-archive:/readback/carrier.oci.tar
-          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . \
+          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . --carrier-successor \
             --oci-archive "$RUNNER_TEMP/carrier-registry-readback/carrier.oci.tar" \
             --receipt "$RUNNER_TEMP/carrier-registry-readback.json"
           printf 'carrier_archive_image=%s@%s\n' "$image" "$carrier_digest" >> "$GITHUB_OUTPUT"
