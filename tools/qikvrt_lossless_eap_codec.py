@@ -76,9 +76,11 @@ class EffectReceipt:
 
 def acknowledge_effect(event_id: str, decoded: Decoded, *, authorized: bool,
                        executed: bool, independently_verified: bool) -> EffectReceipt:
-    """A verified effect must be supplied by an external trusted verifier."""
+    """Report HOLD until a separately authenticated durable EAP verifier exists.
+
+    These booleans are caller-supplied claims, not independent evidence.
+    No combination of them may elevate this reference codec to productive DONE.
+    """
     if not event_id:
         raise ValueError("event_id required")
-    state = ("EFFECT_ACK_DONE" if authorized and executed and independently_verified
-             else "EFFECT_ACK_HOLD")
-    return EffectReceipt(event_id, decoded.sha256, state)
+    return EffectReceipt(event_id, decoded.sha256, "EFFECT_ACK_HOLD")

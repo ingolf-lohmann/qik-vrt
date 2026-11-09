@@ -65,7 +65,18 @@ class LosslessCodecTests(unittest.TestCase):
             independently_verified=False).state, "EFFECT_ACK_HOLD")
         self.assertEqual(codec.acknowledge_effect(
             "e1", decoded, authorized=True, executed=True,
-            independently_verified=True).state, "EFFECT_ACK_DONE")
+            independently_verified=True).state, "EFFECT_ACK_HOLD")
+
+    def test_forged_boolean_claims_never_create_productive_ack(self):
+        decoded = codec.Decoder().feed(codec.encode(b"forgery-test"))[0]
+        for authorized in (False, True):
+            for executed in (False, True):
+                for independently_verified in (False, True):
+                    receipt = codec.acknowledge_effect(
+                        "forged-event", decoded, authorized=authorized,
+                        executed=executed, independently_verified=independently_verified)
+                    self.assertEqual(receipt.state, "EFFECT_ACK_HOLD")
+                    self.assertEqual(receipt.payload_sha256, decoded.sha256)
 
 
 if __name__ == "__main__":
