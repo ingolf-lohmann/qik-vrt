@@ -5,6 +5,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -36,7 +37,9 @@ def collect(root, host):
     try:
         head, tree = git("-C", str(root), "rev-parse", "HEAD"), git("-C", str(root), "rev-parse", "HEAD^{tree}")
         dirty = bool(git("-C", str(root), "status", "--porcelain"))
-        checks["exact_head_tree"] = evidence("confirmed", {"head": head, "tree": tree, "dirty": dirty},
+        exact = all(re.fullmatch(r"[a-f0-9]{40}", value) for value in (head, tree))
+        state = "unknown" if not exact else "open" if dirty else "confirmed"
+        checks["exact_head_tree"] = evidence(state, {"head": head, "tree": tree, "dirty": dirty},
                                                "local-git", "git rev-parse + status")
     except (OSError, subprocess.SubprocessError) as exc:
         checks["exact_head_tree"] = evidence("unknown", source="local-git", method="git rev-parse", error=type(exc).__name__)
@@ -54,9 +57,27 @@ def collect(root, host):
         url = f"https://api.github.com/repos/{REPO}/pulls/{number}"
         try:
             pr = http_json(url)
-            result["prs"][str(number)] = evidence("open" if pr.get("state") == "open" else "confirmed",
-                {"state": pr.get("state"), "draft": pr.get("draft"), "head": pr.get("head", {}).get("sha")},
-                url, "GitHub REST GET; status only, not review/CI admission")
+            if not isinstance(pr, dict) or not isinstance(pr.get("head"), dict):
+                raise ValueError("PR_PAYLOAD_INVALID")
+            status = pr.get("state")
+            merged_at = pr.get("merged_at")
+            if status == "open":
+                classification = "open"
+            elif status == "closed" and merged_at is None:
+                classification = "open"  # closed without merge is not integrated
+            elif status == "closed" and isinstance(merged_at, str):
+                # Only a well-formed GitHub merge timestamp confirms the merge
+                try:
+                    parsed = dt.datetime.fromisoformat(merged_at.replace("Z", "+00:00"))
+                    classification = "confirmed" if parsed.tzinfo is not None else "unknown"
+                except ValueError:
+                    classification = "unknown"
+            else:
+                classification = "unknown"
+            result["prs"][str(number)] = evidence(classification,
+                {"state": status, "draft": pr.get("draft"),
+                 "merged_at": merged_at, "head": pr["head"].get("sha")},
+                url, "GitHub REST GET; merge status only, not review/CI admission")
         except (OSError, ValueError, KeyError) as exc:
             result["prs"][str(number)] = evidence("unknown", source=url, method="GitHub REST GET", error=type(exc).__name__)
     try:
