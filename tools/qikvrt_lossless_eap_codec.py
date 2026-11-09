@@ -35,8 +35,7 @@ class Decoder:
     def feed(self, chunk: bytes) -> list[Decoded]:
         if not isinstance(chunk, bytes):
             raise TypeError("chunk must be bytes")
-        self._buffer.extend(chunk)
-        out: list[Decoded] = []
+        # Reject excessive caller chunks before allocation. A full frame is at most\n        # MAX_PAYLOAD + HEADER + len(END) octets; process multiple frames in slices.\n        if len(chunk) > MAX_PAYLOAD + HEADER + len(END):\n            raise ValueError("input chunk too large")\n        self._buffer.extend(chunk)\n        out: list[Decoded] = []
         while True:
             if len(self._buffer) >= len(START) and self._buffer[:3] != START:
                 raise ValueError("invalid start marker")
