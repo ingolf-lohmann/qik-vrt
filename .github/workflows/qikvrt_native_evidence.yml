@@ -1,0 +1,46 @@
+name: QIK-VRT Native Evidence Artifact (provider independent)
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - tools/qikvrt_native_evidence.py
+      - tests/test_qikvrt_native_evidence.py
+      - .github/workflows/qikvrt_native_evidence.yml
+permissions:
+  contents: read
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run offline fail-closed regression tests
+        run: python3 -B -m unittest discover -s tests -p test_qikvrt_native_evidence.py -v
+      - name: Produce local source-bound evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/native-evidence
+          python3 -B tools/qikvrt_native_evidence.py --output .qikvrt/native-evidence/snapshot.json
+          git rev-parse HEAD > .qikvrt/native-evidence/checkout-head.txt
+          git rev-parse HEAD^{tree} > .qikvrt/native-evidence/checkout-tree.txt
+          sha256sum .qikvrt/native-evidence/snapshot.json > .qikvrt/native-evidence/SHA256SUMS
+          python3 -B - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path(".qikvrt/native-evidence/snapshot.json")
+          obj = json.loads(p.read_text())
+          assert obj["dod"] == "OPEN/BLOCKED"
+          assert obj["checks"]["exact_head_tree"]["value"]["head"] == Path(".qikvrt/native-evidence/checkout-head.txt").read_text().strip()
+          assert obj["checks"]["exact_head_tree"]["value"]["tree"] == Path(".qikvrt/native-evidence/checkout-tree.txt").read_text().strip()
+          PY
+      - name: Preserve immutable-by-hash evidence as artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-native-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: .qikvrt/native-evidence/
