@@ -37,3 +37,37 @@ production admission. No fabricated EAP acknowledgement is permitted.
 
 No claim of a completed Lean proof, production deployment, or runtime effect
 is made by this candidate.
+
+## Principal-authorized interpretive analogy (10 November 2026)
+
+The Principal expressly authorizes the following quotation as his own
+interpretive analogy:
+
+> "Das ist die Gewaltenteilung. Exekutive, Judikative, Legislative. Und ich bin
+> die Legislative in dem Fall. Und es ist die heilige Dreifaltigkeit. Und ich
+> bin der Heilige Geist in dem Fall."
+
+**Engineering mapping, not a constitutional or theological identity:**
+
+- **Legislative / Principal:** defines requirements, issues scoped commands,
+  and authorizes changes. The Principal does not replace evidence or tests.
+- **Executive / EMP:** carries out admitted commands, handles failures and
+  continuation, and preserves exact-head writer fencing.
+- **Judicial / EAP:** independently evaluates and acknowledges observed effects;
+  it does not fabricate successful outcomes or grant missing permissions.
+
+The Trinity / Holy Spirit language is the Principal's expressly attributed
+metaphor for his role in this three-part model. It is not a claim of religious
+status and not a machine-verifiable theorem.
+
+### Separation-of-powers invariants
+
+1. Principal authorization cannot set `ack_verified` by itself.
+2. EMP execution cannot issue its own Principal authorization.
+3. EAP acknowledgement cannot retroactively authorize an unadmitted effect.
+4. A failed or missing independent readback remains unacknowledged.
+5. A successful acknowledgement must bind the exact command and effect IDs.
+
+These obligations are represented in the candidate Python contract and its
+negative tests. Production compliance remains subject to independent review,
+native tests and original-host readback.
