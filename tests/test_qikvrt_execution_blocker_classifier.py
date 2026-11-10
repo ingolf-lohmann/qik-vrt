@@ -29,6 +29,17 @@ class ExecutionBlockerClassifierTests(unittest.TestCase):
         result = MODULE.classify(observed("failure", [{"status": "completed"}]))
         self.assertEqual(result["findings"][0]["next_action"], "TEMDD_EXACT_HEAD_FAILURE_ANALYSIS")
 
+    def test_failed_run_without_jobs_is_not_silent_success(self):
+        result = MODULE.classify(observed("failure", []))
+        self.assertEqual(result["state"], "HOLD")
+        self.assertEqual(result["findings"][0]["category"], "FAILED_RUN_WITHOUT_JOB_EVIDENCE")
+        self.assertEqual(result["findings"][0]["next_action"], "CHECK_GITHUB_NATIVE_JOB_READBACK")
+
+    def test_cancelled_run_is_not_silent_success(self):
+        result = MODULE.classify(observed("cancelled", []))
+        self.assertEqual(result["state"], "HOLD")
+        self.assertEqual(result["findings"][0]["category"], "NON_SUCCESS_TERMINAL_RUN")
+
     def test_pending_is_not_claimed_as_deadlock(self):
         result = MODULE.classify(observed(None, [], status="pending"))
         self.assertEqual(result["findings"][0]["category"], "ACTIVE_UNPROVEN_PROGRESS")
