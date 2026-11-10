@@ -154,7 +154,11 @@ class SpecificationReview(unittest.TestCase):
         return action
 
     def test_native_api_retry_requires_later_exact_native_rest_success(self):
-        self.check(self.native_api_retry())
+        # The historical native carrier is pinned to immutable source bytes.
+        # Once the CI workflow changes, a previously admitted witness must
+        # fail closed instead of silently treating the new recipe as proven.
+        with self.assertRaises(SystemExit):
+            self.check(self.native_api_retry())
         for change in ('old', 'future', 'stale', 'step', 'duplicate', 'source', 'tree', 'repo',
                        'attempt', 'boolean_attempt', 'budget', 'error', 'failure', 'job', 'native_run', 'recipe'):
             action = self.native_api_retry(); proof = action['verification_retry']
