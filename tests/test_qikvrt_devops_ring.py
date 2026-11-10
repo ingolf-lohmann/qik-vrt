@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 import unittest
-from tools.qikvrt_devops_ring import plan
+from tools.qikvrt_devops_ring import plan, execute_roundtrip
 
 HEAD = "a" * 40
 class DevOpsRingTests(unittest.TestCase):
@@ -43,6 +43,35 @@ class DevOpsRingTests(unittest.TestCase):
         a = plan(self.observation([{"id": 1, "status": "completed", "conclusion": "success"}]))
         b = plan(self.observation([{"id": 1, "status": "completed", "conclusion": "success"}]), a)
         self.assertFalse(b["changed"])
+
+
+class RoundtripTests(unittest.TestCase):
+    def test_lossless_roundtrip_and_hash_chain(self):
+        request = {"id": "r1", "payload": {"assignments": [
+            {"id": "a", "feature": "f"}, {"id": "b", "feature": "f"}]}}
+        catalog = [{"id": "f"}]
+        observations = [{"assignment_id": "a", "status": "VERIFIED", "artifact": {"sha256": "abc"}},
+                        {"assignment_id": "b", "status": "FAILED", "log": "causal error"}]
+        result = execute_roundtrip(request, catalog, observations)
+        self.assertEqual(result["response_status"], "HOLD")
+        self.assertEqual(len(result["journal"]), 6)
+        self.assertEqual(result["journal"][0]["kind"], "INTAKE")
+        self.assertEqual(result["journal"][-1]["payload"]["unverified"], ["b"])
+        self.assertEqual(result["artifacts"], [{"sha256": "abc"}])
+        self.assertFalse(result["delegation_executed"])
+        self.assertFalse(result["effect_ack_done"])
+        self.assertEqual(result["journal_head"], execute_roundtrip(request, catalog, observations)["journal_head"])
+
+    def test_missing_observation_never_passes(self):
+        r = execute_roundtrip({"id": "r", "payload": {"assignments": [{"id": "a", "feature": "f"}]}},
+                              [{"id": "f"}], [])
+        self.assertEqual(r["response_status"], "HOLD")
+        self.assertEqual(r["journal"][-1]["payload"]["unresolved"], ["a"])
+
+    def test_unknown_feature_fails_closed(self):
+        with self.assertRaisesRegex(ValueError, "DUPLICATE_OR_UNKNOWN_ASSIGNMENT"):
+            execute_roundtrip({"id": "r", "payload": {"assignments": [{"id": "a", "feature": "missing"}]}},
+                              [{"id": "f"}], [])
 
 if __name__ == "__main__":
     unittest.main()
