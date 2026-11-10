@@ -35,6 +35,13 @@ class EvidenceMutationControls(unittest.TestCase):
         path.write_bytes(original)
         self.assertEqual(evidence.original.identity(path, self.root),
                          self.plan["source_bindings"][config])
+        # The immutable historical plan predates later entrypoint imports.
+        # In this isolated negative-test fixture only, rebind the copied
+        # baseline sources so a mutation is tested at the intended guard,
+        # rather than being masked by unrelated historical identity drift.
+        for raw in self.plan["source_bindings"]:
+            self.plan["source_bindings"][raw] = evidence.original.identity(
+                self.root / raw, self.root)
 
     def reject_before_execution(self, expected):
         (self.root / evidence.PLAN).write_text(json.dumps(self.plan))
