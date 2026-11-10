@@ -62,13 +62,16 @@ jobs:
       - name: Check out exact PR HEAD without persistent credentials
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head.ref || github.sha }}
           persist-credentials: false
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Verify source and immutable predecessor boundary
         shell: bash
         run: |
           set -euo pipefail
+          if test "${{ github.event_name }}" = "pull_request"; then
+            git merge-base --is-ancestor "${{ github.event.pull_request.head.sha }}" HEAD
+          fi
           python3 -B tools/qikvrt_integrity.py verify
           python3 -B -m unittest -v tests.test_s1_dependency_rebuild_candidate
           python3 - <<'PY'
