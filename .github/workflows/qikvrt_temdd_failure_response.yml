@@ -116,6 +116,50 @@ jobs:
             ${{ runner.temp }}/temdd-failed-ci-receipt.json
           retention-days: 90
           if-no-files-found: warn
+      - name: Publish execution transparency in GitHub run summary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/temdd-failed-ci-receipt.json" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          summary = pathlib.Path(sys.argv[1])
+          receipt_path = pathlib.Path(sys.argv[2])
+          lines = [
+              "## QIK-VRT TEMDD execution receipt",
+              "",
+              "| Question | Verified answer |",
+              "| --- | --- |",
+              "| Observer started? | YES — this GitHub Actions job executed |",
+          ]
+          try:
+              receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+              run_id = receipt.get("run_id")
+              head = receipt.get("source_head") or "UNKNOWN"
+              jobs = receipt.get("failed_jobs") or []
+              lines.extend([
+                  f"| Original run | {run_id if type(run_id) is int else 'UNKNOWN'} |",
+                  f"| Original source HEAD | \`{head}\` |",
+                  f"| Failed jobs observed | {len(jobs)} |",
+                  f"| Exact-source TEMDD regression | {receipt.get('temdd_regression', 'NOT_VERIFIED')} |",
+                  f"| Original failure repaired? | NO — {receipt.get('state', 'HOLD')} |",
+                  "| Autonomous repair launched? | NO — observer is read-only |",
+                  "| Independent continuation confirmed? | NO — separate watchdog/repair evidence required |",
+                  "| Release / effect ACK | BLOCKED / FALSE |",
+                  f"| Next action | {receipt.get('next_action', 'INVESTIGATE_MISSING_RECEIPT')} |",
+              ])
+          except (OSError, ValueError, TypeError):
+              lines.extend([
+                  "| Original receipt | UNAVAILABLE |",
+                  "| Repair / continuation | NOT VERIFIED |",
+                  "| Release / effect ACK | BLOCKED / FALSE |",
+                  "| Next action | INVESTIGATE_MISSING_RECEIPT |",
+              ])
+          summary.write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
       - name: Prevent green TEMDD receipt from admitting failed CI
         if: always()
         shell: bash
