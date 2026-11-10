@@ -1,0 +1,44 @@
+name: Issue 718 exact-branch integrity repair
+on:
+  push:
+    branches: [issue-agent/718]
+    paths:
+      - '.github/workflows/issue-718-integrity-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: issue-718-integrity-repair
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact triggering head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Regenerate canonical integrity trio and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git diff --check
+          git add -- REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo 'NOOP: canonical integrity already valid' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "qik-vrt-integrity[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix(issue-718): regenerate canonical repository integrity"
+          git push origin HEAD:refs/heads/issue-agent/718
+          echo "Committed exact regenerated integrity on issue-agent/718" >> "$GITHUB_STEP_SUMMARY"
