@@ -11,7 +11,7 @@ on:
       - 'docs/DEVOPS_RING_LOSSLESS_EKMP.md'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: qikvrt-ring-integrity-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          persist-credentials: false
+          persist-credentials: true
       - name: Generate deterministic integrity candidate and test ring
         shell: bash
         run: |
@@ -35,6 +35,25 @@ jobs:
           cp REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256 .qikvrt/ring-integrity-candidate/
           git diff -- REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256 > .qikvrt/ring-integrity-candidate/integrity.patch
           sha256sum .qikvrt/ring-integrity-candidate/* > .qikvrt/ring-integrity-candidate/SOURCE_SHA256SUMS.txt
+      - name: Commit verified integrity trio to the same PR branch with exact-head lease
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test "$PR_BRANCH" != main
+          git add -- REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256
+          if git diff --cached --quiet; then
+            echo "INTEGRITY_TRIO_UNCHANGED"
+            exit 0
+          fi
+          git -c user.name='qikvrt-integrity-bot' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'fix(integrity): regenerate exact-head deterministic manifest trio'
+          # Non-forced push: rejects concurrent changes and preserves review gates.
+          git push origin "HEAD:refs/heads/$PR_BRANCH"
+          echo "PR_BRANCH_UPDATED: exact original head verified; no main merge or release."
       - name: Preserve candidate without promoting it
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
