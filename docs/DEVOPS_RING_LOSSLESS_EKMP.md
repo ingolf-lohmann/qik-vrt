@@ -68,3 +68,47 @@ wird `OPEN` mit dem letzten belegten Cursor persistiert, statt eine
 Endlosschleife oder Erfolg zu behaupten. Die Fortsetzung übernimmt der
 bereits zugelassene DevOps-Kreis. Die Readback-Schleife ist read-only;
 Writer-Fencing, Admission, Governance und EAP bleiben unabhängig.
+
+
+## Allgemeiner IaC-Korrekturvertrag (Owner-Freigabe 2026-11-10)
+
+Diese Regel gilt für **jeden** zukünftigen Fehler, Bugfix, jede Änderung und
+jede neue Repository-Funktion, nicht nur für Issue #718:
+
+1. **Kausalität statt Symptombehandlung:** Den fehlschlagenden Originalschritt,
+   seinen Exact-HEAD/TREE, die ursprünglichen Logs und die verletzte
+   Invariante ermitteln. Bei CI/CD-Fehlern TEMDD anwenden.
+2. **Authority und bestehender Ausführungspfad:** Die Korrektur ausschließlich
+   im Authority-Repository `ingolf-lohmann/qik-vrt` am tatsächlich
+   ausführenden IaC-/Quellcode-Pfad vornehmen. Vorhandene Writer, Gatekeeper,
+   Validatoren und Fortsetzungsmechanismen wiederverwenden. Keine
+   zusätzlichen parallelen Steuerungen oder Timer als Ersatz für die Ursache.
+3. **Deterministische Rekonstruktion:** Der nächste zugelassene Lauf muss
+   aus den versionierten Quellen, festgelegten Eingaben und vorhandenen
+   Generatoren selbst die korrekten Artefakte erzeugen können. Abgeleitete
+   Manifest-/SHA-Dateien niemals manuell als angeblichen Beweis umschreiben.
+4. **Ein Writer, kausale Fortsetzung:** Bei jeder Mutation den aktuellen
+   Remote-HEAD/TREE und die Writer-Zulassung prüfen; konkurrierende Writes
+   fail-closed ablehnen. Nach dem kleinsten zulässigen Eingriff sofort die
+   vollständigen Tests, die kanonische Integritätsprüfung und den
+   unabhängigen Exact-Successor-Readback ausführen. Kein Erfolgstransfer von
+   einem alten HEAD.
+5. **Negativtests und Abnahme:** Die ursprüngliche Fehlerklasse durch einen
+   Regressionstest sowie negative/boundary cases abdecken. Governance,
+   unabhängige Reviews, Originalhost und EFFECT_ACK_DONE bleiben getrennte
+   Gates. Fehlende Evidenz bleibt UNKNOWN/BLOCK, niemals PASS.
+6. **Synchronous continuation:** Nach jeder Beobachtung den nächsten
+   unmittelbar ausführbaren kausalen Schritt auslösen, unabhängig blockierte
+   Arbeit weiterführen und nur an einer realen externen Ausführungsgrenze
+   stoppen. Ein Statusbericht oder Arbeitsauftrag allein ist keine
+   Implementierung und kein Abschluss.
+
+**Akzeptanzprädikat:** Eine Änderung ist erst wirksam abgeschlossen, wenn
+der neu erzeugte Exact-HEAD die spezifizierte Invariante durch native Tests
+besteht, die daraus hervorgegangenen Artefakte reproduzierbar sind und die
+beanspruchte Wirkung unabhängig zurückgelesen wurde. Ein erfolgreicher
+Teiltest ist keine Freigabe der sieben produktiven DoD-Gates.
+
+Diese Regel ist ein verbindlicher Repository-Vertrag; ihre Existenz allein
+beweist weder die Implementierung in allen Workflows noch eine produktive
+Wirkung.
