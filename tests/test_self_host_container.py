@@ -21,6 +21,55 @@ from tools import qikvrt_self_host_container as c
 HEAD, TREE = "a" * 40, "b" * 40
 
 
+class DurableCarrierReleaseBinding(unittest.TestCase):
+    """Ensure an exact release does not inherit acceptance or permit fallback."""
+
+    def fixture(self):
+        digest = "a" * 64
+        expected = dict(repository=c.REPOSITORY, archive_sha256=digest,
+            archive_bytes=101, source_head="b" * 40,
+            release_tag="qikvrt-pr494-candidate-sha256-" + digest,
+            release_asset_name="qikvrt-pr494-successor-" + digest[:8] + ".zip",
+            candidate_state="INTEGRITY_VERIFIED_NOT_PRODUCTION_ADMITTED")
+        release = dict(tag_name=expected["release_tag"], draft=True,
+            prerelease=False, target_commitish=expected["source_head"],
+            assets=[dict(id=42, name=expected["release_asset_name"],
+                size=101, digest="sha256:" + digest, state="uploaded")])
+        return expected, release
+
+    def test_exact_release_asset_is_selected_only_as_dependency(self):
+        expected, release = self.fixture()
+        self.assertEqual(c.durable_release_asset(expected, release), 42)
+
+    def test_wrong_release_tag_draft_target_count_digest_and_claim_fail_closed(self):
+        for kind in ("tag", "published", "target", "duplicate", "asset_name",
+                     "asset_size", "asset_digest", "asset_state", "source_claim"):
+            with self.subTest(kind=kind):
+                expected, release = self.fixture()
+                if kind == "tag": release["tag_name"] = "other"
+                elif kind == "published": release["draft"] = False
+                elif kind == "target": release["target_commitish"] = "c" * 40
+                elif kind == "duplicate": release["assets"].append(dict(release["assets"][0]))
+                elif kind == "asset_name": release["assets"][0]["name"] = "other.zip"
+                elif kind == "asset_size": release["assets"][0]["size"] += 1
+                elif kind == "asset_digest": release["assets"][0]["digest"] = "sha256:" + "c" * 64
+                elif kind == "asset_state": release["assets"][0]["state"] = "deleted"
+                elif kind == "source_claim": expected["candidate_state"] = "PRODUCTION_ADMITTED"
+                with self.assertRaises(ValueError):
+                    c.durable_release_asset(expected, release)
+
+    def test_release_failure_is_not_reinterpreted_as_actions_cache_miss(self):
+        expected, _ = self.fixture()
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {
+                "GITHUB_TOKEN": "fixture-token", "GITHUB_REPOSITORY": c.REPOSITORY}), \
+             patch.object(c, "durable_release_download", side_effect=ValueError("release failed")) as release, \
+             patch.object(c, "actions_archive_download") as legacy:
+            with self.assertRaisesRegex(ValueError, "release failed"):
+                c.carrier_download(expected, Path(directory) / "candidate.zip")
+            release.assert_called_once()
+            legacy.assert_not_called()
+
+
 class VerifiedToolCache(unittest.TestCase):
     """Exercise the original failure boundary and the untrusted cache path."""
 
