@@ -37,6 +37,8 @@ def decide(receipt):
         raise ValueError("unknown state or action")
     if type(receipt["effect_ack_done"]) is not bool:
         raise ValueError("effect acknowledgement must be boolean")
+    if receipt["state"] == "DONE" and receipt["effect_ack_done"]:
+        raise ValueError("unverified external effect acknowledgement: independent EAP verifier required")
     if receipt["state"] == "DONE" and not receipt["effect_ack_done"]:
         raise ValueError("DONE without independent effect acknowledgement")
     if receipt["effect_ack_done"] and receipt["state"] != "DONE":
@@ -69,7 +71,12 @@ def selftest():
     assert decide(base)["disposition"] == "CONTINUE"
     assert decide(dict(base, state="BLOCKED", blocker="AUTHORIZATION"))["disposition"] == "HOLD_EXTERNAL"
     assert decide(dict(base, state="BLOCKED", blocker="CI"))["disposition"] == "CONTINUE_DIAGNOSIS"
-    assert decide(dict(base, state="DONE", effect_ack_done=True))["disposition"] == "ACKNOWLEDGED"
+    try:
+        decide(dict(base, state="DONE", effect_ack_done=True))
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("unverified DONE accepted")
     for bad in (dict(base, state="DONE"), dict(base, repository="other/repo"),
                 dict(base, head_sha="bad"), dict(base, effect_ack_done="true")):
         try:
