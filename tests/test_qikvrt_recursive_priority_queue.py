@@ -52,6 +52,31 @@ class PriorityQueueTests(unittest.TestCase):
             select_next([unit("a"), unit("a")], writer_available=True,
                         exact_head="a" * 40)
 
+    def test_existing_controller_uses_priority_kernel(self):
+        from tools.qikvrt_autonomous_self_heal import rank_prs
+        def pr(n, labels):
+            return {"number": n, "state": "open", "draft": True,
+                    "body": "<!-- qikvrt-autonomous-self-heal:enabled -->",
+                    "labels": [{"name": x} for x in labels],
+                    "head": {"sha": "a" * 40, "ref": "branch-" + str(n),
+                             "repo": {"full_name": "owner/repo"}},
+                    "base": {"ref": "main", "repo": {"full_name": "owner/repo"}}}
+        ranked = rank_prs([pr(2, []), pr(3, ["qikvrt-priority:P0"])],
+                          "owner/repo", [], {})
+        self.assertEqual([x["pull_request"] for x in ranked], [3, 2])
+
+    def test_existing_controller_rejects_conflicting_priority(self):
+        from tools.qikvrt_autonomous_self_heal import SelfHealBlock, rank_prs
+        pr = {"number": 2, "state": "open", "draft": True,
+              "body": "<!-- qikvrt-autonomous-self-heal:enabled -->",
+              "labels": [{"name": "qikvrt-priority:P0"},
+                         {"name": "qikvrt-priority:P1"}],
+              "head": {"sha": "a" * 40, "ref": "b",
+                       "repo": {"full_name": "owner/repo"}},
+              "base": {"ref": "main", "repo": {"full_name": "owner/repo"}}}
+        with self.assertRaises(SelfHealBlock):
+            rank_prs([pr], "owner/repo", [], {})
+
     def test_boolean_attempt_is_rejected(self):
         bad = unit("a")
         bad["last_attempt"] = True
