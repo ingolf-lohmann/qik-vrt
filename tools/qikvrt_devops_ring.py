@@ -60,6 +60,62 @@ def plan(observation, previous=None):
             "tasks": tasks, "dispatch_executed": False, "effect_ack_done": False,
             "next_action": "trusted continuation consumer admission" if tasks else "next scheduled wakeup"}
 
+
+def execute_roundtrip(request, feature_catalog, observations):
+    """Pure synchronous roundtrip: each transition is a content-addressed journal event.
+
+    Runtime adapters own durable persistence and actual execution. This function
+    never fabricates an ACK or silently drops a worker result.
+    """
+    if not isinstance(request, dict) or not request.get("id") or not isinstance(request.get("payload"), dict):
+        raise ValueError("INVALID_INTAKE")
+    if not isinstance(feature_catalog, list) or not feature_catalog:
+        raise ValueError("EMPTY_FEATURE_CATALOG")
+    if not isinstance(observations, list):
+        raise ValueError("INVALID_OBSERVATIONS")
+    catalog = {}
+    for feature in feature_catalog:
+        if not isinstance(feature, dict) or not isinstance(feature.get("id"), str) or not feature.get("id"):
+            raise ValueError("INVALID_FEATURE")
+        if feature["id"] in catalog:
+            raise ValueError("DUPLICATE_FEATURE")
+        catalog[feature["id"]] = feature
+    journal = []
+    def record(kind, payload):
+        predecessor = journal[-1]["hash"] if journal else None
+        event = {"sequence": len(journal), "previous": predecessor, "kind": kind, "payload": payload}
+        event["hash"] = hashlib.sha256(canonical(event)).hexdigest()
+        journal.append(event)
+    record("INTAKE", request)
+    assignments = request["payload"].get("assignments")
+    if not isinstance(assignments, list):
+        raise ValueError("INVALID_ASSIGNMENTS")
+    dispatched = set()
+    for item in assignments:
+        if not isinstance(item, dict) or not isinstance(item.get("id"), str) or not isinstance(item.get("feature"), str):
+            raise ValueError("INVALID_ASSIGNMENT")
+        if item["id"] in dispatched or item["feature"] not in catalog:
+            raise ValueError("DUPLICATE_OR_UNKNOWN_ASSIGNMENT")
+        dispatched.add(item["id"])
+        record("DELEGATION_PLANNED", {"id": item["id"], "feature": item["feature"], "input": item.get("input")})
+    observed = set()
+    for observation in observations:
+        if not isinstance(observation, dict) or observation.get("assignment_id") not in dispatched:
+            raise ValueError("UNBOUND_OBSERVATION")
+        if observation["assignment_id"] in observed:
+            raise ValueError("DUPLICATE_OBSERVATION")
+        observed.add(observation["assignment_id"])
+        record("WORKER_OBSERVATION", observation)
+    unresolved = sorted(dispatched - observed)
+    failed = sorted(o["assignment_id"] for o in observations if o.get("status") != "VERIFIED")
+    record("CONSOLIDATION", {"unresolved": unresolved, "unverified": failed,
+                              "observation_count": len(observations)})
+    return {"schema": "qikvrt_synchronous_roundtrip_v1", "request_id": request["id"],
+            "journal": journal, "journal_head": journal[-1]["hash"],
+            "response_status": "VERIFIED" if not unresolved and not failed else "HOLD",
+            "delegation_executed": False, "effect_ack_done": False,
+            "artifacts": [o.get("artifact") for o in observations if o.get("artifact") is not None]}
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--observation", required=True)
