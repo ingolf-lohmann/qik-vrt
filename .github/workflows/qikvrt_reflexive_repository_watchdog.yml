@@ -187,10 +187,21 @@ jobs:
               data = path.read_bytes()
               content.append({"sha256": hashlib.sha256(data).hexdigest(),
                               "bytes": len(data)})
+          from datetime import datetime
+          def elapsed_seconds(run):
+              try:
+                  start = datetime.fromisoformat(run["run_started_at"].replace("Z", "+00:00"))
+                  end = datetime.fromisoformat(run["updated_at"].replace("Z", "+00:00"))
+                  return max(0.0, (end - start).total_seconds())
+              except (KeyError, TypeError, ValueError):
+                  return None
+          durations = [elapsed_seconds(run) for run in completed]
+          durations = [value for value in durations if value is not None]
           print(json.dumps({
               "schema": "qikvrt_optimization_metrics_v1",
               "head_sha": head,
               "completed_runs": len(completed),
+              "mean_completed_run_seconds": (sum(durations) / len(durations)) if durations else None,
               "successful_runs": len(succeeded),
               "automatic_completion_ratio": (len(succeeded) / len(completed)) if completed else None,
               "evidence_bytes": sum(item["bytes"] for item in content),
