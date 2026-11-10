@@ -45,15 +45,18 @@ def classify(observation: dict) -> dict:
         if conclusion in {"action_required", "startup_failure"} and not jobs:
             category = "EXECUTION_ADMISSION_BLOCKED"
             action = "CHECK_GITHUB_NATIVE_EXECUTION_ADMISSION"
-        elif conclusion in {"failure", "timed_out"} and jobs:
-            category = "EXECUTED_JOB_FAILURE"
-            action = "TEMDD_EXACT_HEAD_FAILURE_ANALYSIS"
+        elif conclusion in {"failure", "timed_out"}:
+            category = "EXECUTED_JOB_FAILURE" if jobs else "FAILED_RUN_WITHOUT_JOB_EVIDENCE"
+            action = "TEMDD_EXACT_HEAD_FAILURE_ANALYSIS" if jobs else "CHECK_GITHUB_NATIVE_JOB_READBACK"
         elif status in ACTIVE:
             category = "ACTIVE_UNPROVEN_PROGRESS"
             action = "OBSERVE_NEXT_NATIVE_TRANSITION"
         elif conclusion in {"action_required", "startup_failure"}:
             category = "EXECUTION_UNTRUSTED"
             action = "CHECK_GITHUB_NATIVE_EXECUTION_ADMISSION"
+        elif conclusion in {"cancelled", "skipped"}:
+            category = "NON_SUCCESS_TERMINAL_RUN"
+            action = "CHECK_EXACT_HEAD_RUN_DISPOSITION"
         else:
             continue
         findings.append({"run_id": item["id"], "category": category, "next_action": action})
