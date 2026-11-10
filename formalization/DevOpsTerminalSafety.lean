@@ -140,13 +140,13 @@ theorem incomplete_work_blocks_completion (s : State)
     (h : s.observed < s.requested) : ¬ evidenceComplete s := by
   intro hc
   have he := hc.2.1
-  omega
+  exact (Nat.ne_of_gt h) he
 
 theorem failed_work_blocks_completion (s : State)
     (h : s.failed > 0) : ¬ evidenceComplete s := by
   intro hc
   have hf := hc.2.2.1
-  omega
+  exact (Nat.ne_of_gt h) hf
 
 theorem external_ack_required (s : State) (ack : Bool)
     (h : mayClaimEffect s ack) : ack = true := h.2
