@@ -21,12 +21,28 @@
     "attempt": 2,
     "source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
     "source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3",
-    "reuse_scope": "DEPENDENCY_IMAGE_ONLY; RESEAL_CURRENT_SOURCE; NO_PREDECESSOR_PASS_TRANSFER"
+    "reuse_scope": "DEPENDENCY_IMAGE_ONLY; RESEAL_CURRENT_SOURCE; NO_PREDECESSOR_PASS_TRANSFER",
+    "image_config_digest": "sha256:a763c1e47e62a2f6b355d93cf37dca849c735c77080bf20c1b9531364cd23c4a",
+    "oci_manifest_digest": "sha256:eb5ba45fd58baeac4bd0ae76a1088d99764a90c0fa34d476f14930b2106d5459",
+    "package_manifest_sha256": "4dc167eecfb7c57d095b153867639ef700fd978527985e51cd65a729f8335cd2"
   },
   "evidence": {
     "source_run_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37710500668/attempts/2",
     "observation": "2026-11-07T05:36:24Z",
-    "distinction": "Original artifact 11521962723 unavailable. Distinct ZIP and inner DELIVERY.json. No predecessor PASS transfer."
+    "distinction": "Original artifact 11521962723 unavailable. Distinct ZIP and inner DELIVERY.json. No predecessor PASS transfer.",
+    "binary_readback": {
+      "classification": "LOCAL_OFFLINE_ARTIFACT_BYTE_VERIFICATION_NOT_PRODUCTION",
+      "observation_date": "2026-11-10",
+      "artifact_id": 13562706664,
+      "zip_sha256": "64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1",
+      "delivery_json_sha256": "bd8f5eef38a37f9b4f5a279af0390346bf6181f956f90eb83a3d69d9716dae13",
+      "verified_zip_members": 8,
+      "verified_content_addressed_oci_blobs": 16,
+      "verified_oci_layers": 7,
+      "independent_production_readback": false,
+      "effect_ack_done": false,
+      "distinction": "Successor carries DIFFERENT OCI image/config and sealed package bytes; historic predecessor remains immutable, no PASS transferred."
+    }
   },
   "claims": {
     "predecessor_pass_transferred": false,

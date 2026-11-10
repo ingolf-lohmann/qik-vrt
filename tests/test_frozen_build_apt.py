@@ -116,6 +116,10 @@ class FrozenBuildAPT(unittest.TestCase):
             self.assertEqual(candidate["source_tree"], baseline["source_tree"])
             self.assertIs(type(candidate["attempt"]), int)
             self.assertEqual(candidate["attempt"], 2)
+            for field in ("image_config_digest", "oci_manifest_digest", "package_manifest_sha256"):
+                self.assertNotEqual(candidate[field], baseline[field])
+            self.assertIn("oci-layout://$RUNNER_TEMP/frozen-carrier@" +
+                          candidate["oci_manifest_digest"], workflow)
             self.assertTrue(all(type(value) is bool and not value
                                 for value in successor["claims"].values()))
             kind, label = "successor", "versioned"

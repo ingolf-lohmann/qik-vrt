@@ -22,7 +22,7 @@ HEAD, TREE = "a" * 40, "b" * 40
 
 
 class VersionedCarrierContract(unittest.TestCase):
-    """A new transport must retain immutable predecessor and image bindings."""
+    """Distinct source-bound successor image pins never inherit old acceptance."""
 
     def fixture(self, directory):
         repo = Path(__file__).resolve().parents[1] / "runtime/self-host"
@@ -34,7 +34,7 @@ class VersionedCarrierContract(unittest.TestCase):
         (root / "DELIVERY_SUCCESSOR_20261107.json").write_text(json.dumps(successor))
         return Path(directory), original, successor
 
-    def test_explicit_successor_keeps_original_image_and_source_pins(self):
+    def test_explicit_successor_pins_distinct_image_and_original_source(self):
         with tempfile.TemporaryDirectory() as directory:
             root, original, successor = self.fixture(directory)
             self.assertEqual(c.carrier_expected(root), original)
@@ -43,9 +43,11 @@ class VersionedCarrierContract(unittest.TestCase):
             self.assertEqual(selected["artifact_id"], candidate["artifact_id"])
             self.assertEqual(selected["archive_sha256"], candidate["artifact_sha256"])
             self.assertEqual(selected["delivery_sha256"], candidate["delivery_sha256"])
-            for field in ("image_config_digest", "oci_manifest_digest",
-                          "package_manifest_sha256", "source_head", "source_tree"):
+            for field in ("source_head", "source_tree"):
                 self.assertEqual(selected[field], original[field])
+            for field in ("image_config_digest", "oci_manifest_digest", "package_manifest_sha256"):
+                self.assertEqual(selected[field], candidate[field])
+                self.assertNotEqual(selected[field], original[field])
             self.assertEqual(json.loads((root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes()), original)
 
     def test_history_and_typed_claims_fail_closed(self):
@@ -56,6 +58,10 @@ class VersionedCarrierContract(unittest.TestCase):
             ("candidate", "artifact_id", 11521962723),
             ("candidate", "artifact_bytes", 0),
             ("candidate", "artifact_sha256", "g" * 64),
+            ("candidate", "image_config_digest", "sha256:" + "0" * 64),
+            ("candidate", "oci_manifest_digest", "sha256:" + "0" * 64),
+            ("candidate", "package_manifest_sha256", "0" * 64),
+            ("candidate", "package_manifest_sha256", False),
             ("candidate", "source_head", "0" * 40),
             ("candidate", "attempt", False),
             ("candidate", "repository", "other/host"),
@@ -71,6 +77,15 @@ class VersionedCarrierContract(unittest.TestCase):
                 bad[section][field] = value
                 (root / "runtime/self-host/DELIVERY_SUCCESSOR_20261107.json").write_text(json.dumps(bad))
                 with self.assertRaises(ValueError):
+                    c.carrier_expected(root, successor=True)
+
+    def test_missing_successor_component_pin_is_rejected(self):
+        for field in ("image_config_digest", "oci_manifest_digest", "package_manifest_sha256"):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                root, _, successor = self.fixture(directory)
+                successor["candidate"].pop(field)
+                (root / "runtime/self-host/DELIVERY_SUCCESSOR_20261107.json").write_text(json.dumps(successor))
+                with self.assertRaisesRegex(ValueError, "EXACT_VERSIONED_DEPENDENCY_SUCCESSOR_REQUIRED"):
                     c.carrier_expected(root, successor=True)
 
     def test_duplicate_contract_key_is_rejected(self):

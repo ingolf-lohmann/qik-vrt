@@ -636,7 +636,8 @@ def carrier_expected(root, successor=False):
             all(type(predecessor[key]) is type(legacy[key]) and
                 predecessor[key] == legacy[key] for key in source_keys),
             "IMMUTABLE_PREDECESSOR_CARRIER_BINDING_REQUIRED")
-    require(set(candidate) == set(source_keys) | {"reuse_scope", "attempt"} and
+    require(set(candidate) == set(source_keys) | {"reuse_scope", "attempt",
+                "image_config_digest", "oci_manifest_digest", "package_manifest_sha256"} and
             candidate.get("reuse_scope") == scope and
             candidate["repository"] == baseline["repository"] == REPOSITORY and
             candidate["source_head"] == baseline["source_head"] and
@@ -650,7 +651,14 @@ def carrier_expected(root, successor=False):
             all(type(candidate[key]) is str and re.fullmatch(r"[a-f0-9]{64}", candidate[key])
                 for key in ("artifact_sha256", "delivery_sha256")) and
             candidate["artifact_sha256"] != baseline["archive_sha256"] and
-            candidate["delivery_sha256"] != baseline["delivery_sha256"],
+            candidate["delivery_sha256"] != baseline["delivery_sha256"] and
+            all(type(candidate[key]) is str and
+                re.fullmatch(r"sha256:[a-f0-9]{64}", candidate[key])
+                for key in ("image_config_digest", "oci_manifest_digest")) and
+            type(candidate["package_manifest_sha256"]) is str and
+            re.fullmatch(r"[a-f0-9]{64}", candidate["package_manifest_sha256"]) and
+            all(candidate[key] != baseline[key] for key in
+                ("image_config_digest", "oci_manifest_digest", "package_manifest_sha256")),
             "EXACT_VERSIONED_DEPENDENCY_SUCCESSOR_REQUIRED")
     require(set(claims) == {"predecessor_pass_transferred", "host_admitted",
                             "product_delivery_verified", "independent_review_verified",
@@ -662,14 +670,16 @@ def carrier_expected(root, successor=False):
              str(candidate["run_id"]) + "/attempts/" + str(candidate["attempt"])),
             "VERSIONED_CARRIER_PROVENANCE_REQUIRED")
     expected = dict(baseline)
-    for key in ("artifact_id", "run_id", "delivery_sha256", "source_head", "source_tree"):
+    for key in ("artifact_id", "run_id", "delivery_sha256", "source_head", "source_tree",
+                "image_config_digest", "oci_manifest_digest", "package_manifest_sha256"):
         expected[key] = candidate[key]
     expected["archive_bytes"] = candidate["artifact_bytes"]
     expected["archive_sha256"] = candidate["artifact_sha256"]
     expected.pop("artifact_expires_at", None)
     expected["scope"] = scope
-    # The original image config, OCI manifest, source and sealed package pins
-    # remain unchanged; a different image must HOLD rather than inherit PASS.
+    # Immutable historical pins remain in CONTAINER_CARRIER.json. The new image,
+    # OCI manifest and sealed package are separately pinned from inspected bytes;
+    # no predecessor test result or productive effect can be inherited.
     return expected
 
 
