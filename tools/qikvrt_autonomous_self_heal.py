@@ -711,7 +711,7 @@ def rank_prs(prs: Sequence[Mapping[str, Any]], repository: str,
     # The existing continuation controller remains the sole selector/writer.
     # Priority is admitted only from exact GitHub labels on eligible PRs;
     # ambiguous multi-priority labels fail closed instead of guessing.
-    from tools.qikvrt_recursive_priority_queue import QueueInvariantError, select_next
+    from tools.qikvrt_recursive_priority_queue import PRIORITIES, validate
     eligible = {int(pr["number"]): pr for pr in prs if eligible_pr(pr, repository)}
     units = []
     for item in result:
@@ -727,11 +727,11 @@ def rank_prs(prs: Sequence[Mapping[str, Any]], repository: str,
                       "priority": priority, "state": "QUEUED",
                       "head": item["head_sha"], "dependencies": [],
                       "last_attempt": item["rank"][1] if item["rank"][0] == 2 else 0})
-    # Cross-PR HEADs differ: select_next is used for validation and ordering
-    # per candidate, not for globally fencing all PRs to one subject.
-    by_number = {item["pull_request"]: item for item in result}
+    # Cross-PR HEADs differ: validate each immutable candidate subject,
+    # then retain the existing native writer claim and fairness receipts.
+    validate(units)
     return sorted(result, key=lambda item: (
-        ("P0", "P1", "P2", "P3", "P4").index(
+        PRIORITIES.index(
             next(unit["priority"] for unit in units if unit["id"] == str(item["pull_request"]))),
         tuple(item["rank"]), item["pull_request"]))
 
