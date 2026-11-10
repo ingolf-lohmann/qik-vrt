@@ -103,4 +103,60 @@ theorem unverified_ci_blocks_release (e : ClientReleaseEvidence)
   rw [h] at hc
   cases hc
 
+
+/- IaC ring safety abstraction. These proofs concern the transition model,
+   not a refinement proof of the Python implementation or deployed mesh. -/
+namespace Ring
+
+inductive Phase where
+  | intake | delegated | observed | consolidated | held
+  deriving DecidableEq, Repr
+
+structure State where
+  phase : Phase
+  requested : Nat
+  observed : Nat
+  failed : Nat
+  durableReceipt : Bool
+  deriving DecidableEq, Repr
+
+def evidenceComplete (s : State) : Prop :=
+  s.requested > 0 ∧
+  s.observed = s.requested ∧
+  s.failed = 0 ∧
+  s.durableReceipt = true
+
+def mayClaimEffect (s : State) (externalAck : Bool) : Prop :=
+  evidenceComplete s ∧ externalAck = true
+
+theorem missing_receipt_blocks_completion (s : State)
+    (h : s.durableReceipt = false) : ¬ evidenceComplete s := by
+  intro hc
+  have hr := hc.2.2.2
+  rw [h] at hr
+  cases hr
+
+theorem incomplete_work_blocks_completion (s : State)
+    (h : s.observed < s.requested) : ¬ evidenceComplete s := by
+  intro hc
+  have he := hc.2.1
+  omega
+
+theorem failed_work_blocks_completion (s : State)
+    (h : s.failed > 0) : ¬ evidenceComplete s := by
+  intro hc
+  have hf := hc.2.2.1
+  omega
+
+theorem external_ack_required (s : State) (ack : Bool)
+    (h : mayClaimEffect s ack) : ack = true := h.2
+
+theorem no_effect_without_ack (s : State) :
+    ¬ mayClaimEffect s false := by
+  intro h
+  have ha := external_ack_required s false h
+  cases ha
+
+end Ring
+
 end QIKVRT.DevOps
