@@ -21,7 +21,7 @@ def Width (b : Boundary) : Nat := b.stop - b.start
 theorem stop_eq_start_add_width (b : Boundary) :
     b.stop = b.start + Width b := by
   unfold Width
-  omega
+  exact (Nat.add_sub_of_le b.ordered).symm
 
 /-- The fixed endpoints determine a unique byte interval length. -/
 theorem same_fixpoints_same_width (a b : Boundary)
