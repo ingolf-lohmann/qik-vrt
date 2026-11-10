@@ -440,11 +440,15 @@ jobs:
           successor="$(git rev-parse --verify HEAD^{commit})"
           # Enumerate every page and bind each successor run to the exact
           # pushed SHA. A missing/blocked successor is not a success claim.
-          mapfile -t successor_runs < <(
-            gh api --paginate --slurp \
-              "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$successor&event=pull_request&per_page=100" \
-              --jq '[.[].workflow_runs[] | select(.head_sha == "'"$successor"'" and .conclusion == "action_required") | .id] | unique | .[]'
-          )
+          # Do not hide API failures in process substitution: a failed
+          # enumeration must fail the writer instead of looking like zero runs.
+          successor_inventory="$(mktemp)"
+          gh api --paginate --slurp \
+            "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$successor&event=pull_request&per_page=100" \
+            --jq '[.[].workflow_runs[] | select(.head_sha == "'"$successor"'" and .conclusion == "action_required") | .id] | unique | .[]' \
+            > "$successor_inventory"
+          mapfile -t successor_runs < "$successor_inventory"
+          rm -f "$successor_inventory"
           for run_id in "${successor_runs[@]}"; do
             test -n "$run_id" || continue
             gh api --method POST "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/rerun"
