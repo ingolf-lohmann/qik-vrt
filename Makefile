@@ -310,3 +310,10 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+# Mandatory TEMDD response regression is part of every complete CI test.
+.PHONY: temdd-failure-response-test
+temdd-failure-response-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_temdd_failure_response
+
+test: temdd-failure-response-test
