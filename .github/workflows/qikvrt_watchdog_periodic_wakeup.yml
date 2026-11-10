@@ -33,13 +33,13 @@ jobs:
           # A clock event may only activate the existing fail-closed main observer.
           default_branch="$(gh api "repos/${REPOSITORY}" --jq '.default_branch')"
           test "$default_branch" = main
-          for state in queued in_progress waiting requested pending; do
+          echo "RING_OBSERVE: checking existing watchdog activity and pending work"\n          for state in queued in_progress waiting requested pending; do
             count="$(gh api "repos/${REPOSITORY}/actions/workflows/${WATCHDOG}/runs?status=${state}&per_page=1" --jq '.total_count')"
             case "$count" in ''|*[!0-9]*) echo "INVALID_RUN_INVENTORY" >&2; exit 1;; esac
             if [ "$count" -gt 0 ]; then
-              echo "NOOP: watchdog already active (${state}=${count})."
+              echo "RING_IDLE: watchdog already active (${state}=${count}); no duplicate dispatch."\n              printf "### DevOps ring wakeup\\n\\n- State: ACTIVE_WATCHDOG\\n- Existing run state: %s\\n- Count: %s\\n- Next: next scheduled observation; no duplicate dispatch\\n- Production admission: NOT CLAIMED\\n" "$state" "$count" >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
           done
           gh api --method POST "repos/${REPOSITORY}/actions/workflows/${WATCHDOG}/dispatches" -f ref=main
-          echo "DISPATCHED: transition-only watchdog main readback; no promotion or effect implied."
+          echo "DISPATCHED: transition-only watchdog main readback; no promotion or effect implied."\n          printf "### DevOps ring wakeup\\n\\n- State: DISPATCH_REQUEST_ACCEPTED\\n- Target: trusted-main reflexive watchdog\\n- Next: verify separate watchdog run and its receipt\\n- Repair executed: NOT VERIFIED\\n- Production admission: NOT CLAIMED\\n" >> "$GITHUB_STEP_SUMMARY"
