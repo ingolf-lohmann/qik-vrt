@@ -610,6 +610,8 @@ def carrier_download(expected, path):
             os.environ.get("GITHUB_REPOSITORY") == REPOSITORY, "CARRIER_AUTHORITY_REQUIRED")
     token = os.environ.get("GITHUB_TOKEN")
     require(bool(token), "ACTIONS_READ_BINDING_REQUIRED")
+    if "reviewed_recovery_artifact" in expected:
+        return carrier_download_reviewed_recovery(expected, path, token)
     base = "https://api.github.com/repos/" + REPOSITORY + "/actions/artifacts/" + str(expected["artifact_id"])
     metadata = json.loads(get(base, token))
     require(metadata.get("expired") is False and
@@ -618,8 +620,6 @@ def carrier_download(expected, path):
             metadata.get("workflow_run", {}).get("id") == expected["run_id"] and
             metadata.get("workflow_run", {}).get("head_sha") == expected["source_head"],
             "ORIGINAL_CARRIER_ARTIFACT_BINDING_MISMATCH_OR_EXPIRED")
-    if "reviewed_recovery_artifact" in expected:
-        return carrier_download_reviewed_recovery(expected, path, token)
     actions_archive_download(expected["artifact_id"], expected["archive_bytes"], path, token)
 
 
