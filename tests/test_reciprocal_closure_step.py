@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import tempfile
 import unittest
 import zipfile
@@ -584,16 +585,74 @@ class NativeClosureContinuationTests(unittest.TestCase):
             self.assertFalse(r['post_effect_verified'])
         self.assertEqual(self.api.mutations, [])
 
-    def test_repository_automation_has_no_timer_and_consumer_is_wired(self):
+    def test_repository_automation_has_only_separate_clock_and_consumer_is_wired(self):
         root = Path(__file__).resolve().parents[1]
+        clock_name = 'qikvrt_watchdog_periodic_wakeup.yml'
+        clock = root / '.github/workflows' / clock_name
+        self.assertTrue(clock.is_file())
+        scheduled = []
         for workflow in (root / '.github/workflows').glob('*.yml'):
-            self.assertNotRegex(workflow.read_text(), r'(?m)^\s*(?:-\s*)?(?:schedule|cron):', workflow.name)
+            content = workflow.read_text()
+            if re.search(r'(?m)^\s*(?:-\s*)?(?:schedule|cron):', content):
+                scheduled.append(workflow.name)
+        self.assertEqual(scheduled, [clock_name])
+        clock_source = clock.read_text()
+        self.assertIn("cron: '7,22,37,52 * * * *'", clock_source)
+        self.assertIn('WATCHDOG: qikvrt_reflexive_repository_watchdog.yml', clock_source)
+        self.assertIn('test "$default_branch" = main', clock_source)
+        self.assertIn(' -f ref=main', clock_source)
+        self.assertNotIn('actions/checkout', clock_source)
+        watchdog = (root / '.github/workflows/qikvrt_reflexive_repository_watchdog.yml').read_text()
+        self.assertNotRegex(watchdog, r'(?m)^\s*(?:-\s*)?(?:schedule|cron):')
         s = (root / M.NATIVE_WORKFLOW).read_text()
         self.assertLess(s.index('workflow-prepare'), s.index('name: qikvrt-pr-closure-intents'))
         self.assertLess(s.index('name: qikvrt-pr-closure-intents'), s.index('workflow-apply'))
         self.assertIn('if: always()', s)
         review = (root / '.github/workflows/qikvrt_requested_review_executor.yml').read_text()
         self.assertIn('"QIKVRT productive TEMDD S1 carrier"', review)
+
+
+    def test_periodic_wakeup_dispatch_contract_with_mock_gh(self):
+        import subprocess
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / '.github/workflows/qikvrt_watchdog_periodic_wakeup.yml').read_text()
+        script = workflow.split('        run: |\n', 1)[1]
+        script = '\n'.join(line[10:] if line.startswith('          ') else line
+                           for line in script.splitlines()) + '\n'
+        with tempfile.TemporaryDirectory() as d:
+            stub = Path(d) / 'gh'
+            log = Path(d) / 'dispatch.log'
+            stub.write_text("""#!/usr/bin/env python3
+import os, sys
+from pathlib import Path
+args = ' '.join(sys.argv[1:])
+if '/dispatches' in args:
+    Path(os.environ['DISPATCH_LOG']).open('a').write(args + '\\n')
+elif 'repos/' in args and '/runs?' not in args:
+    print(os.environ.get('MOCK_BRANCH', 'main'))
+else:
+    print(os.environ.get('MOCK_COUNT', '0'))
+""")
+            stub.chmod(0o755)
+            base = dict(os.environ, PATH=d + os.pathsep + os.environ['PATH'],
+                        REPOSITORY='ingolf-lohmann/qik-vrt',
+                        WATCHDOG='qikvrt_reflexive_repository_watchdog.yml',
+                        DISPATCH_LOG=str(log))
+            for count, branch, expected_rc, expected_dispatches in (
+                    ('0', 'main', 0, 1),
+                    ('1', 'main', 0, 0),
+                    ('invalid', 'main', 1, 0),
+                    ('0', 'wrong', 1, 0)):
+                log.unlink(missing_ok=True)
+                env = dict(base, MOCK_COUNT=count, MOCK_BRANCH=branch)
+                result = subprocess.run(['bash', '-c', script], env=env,
+                                        capture_output=True, text=True)
+                self.assertEqual(result.returncode, expected_rc, result.stderr)
+                calls = log.read_text().splitlines() if log.exists() else []
+                self.assertEqual(len(calls), expected_dispatches)
+                if calls:
+                    self.assertIn('-f ref=main', calls[0])
+
 
 
 if __name__ == "__main__":

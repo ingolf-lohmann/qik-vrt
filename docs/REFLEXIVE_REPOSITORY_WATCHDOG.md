@@ -1,5 +1,55 @@
 # Reflexive repository Gatewatch and pre-deadlock admission
 
+## Open work and useful-progress continuity — Owner correction, 4 November 2026
+
+The existing watchdog must not infer idle from the absence of active workflow
+runs. Its native observation now includes `collect-work`, a GET-only inventory
+of open GitHub issues and pull requests. Collection is bounded to ten pages plus
+one first-page stability read. A short terminal page is required. Duplicate or
+foreign entries, an unstable first page, truncation, missing access, a stale
+inventory or a different subject cannot establish an empty queue. The existing
+twenty-request jobs budget remains unchanged. This inventory covers GitHub work;
+it does not claim completeness for private workspace tasks or other stores.
+
+`CONTINUATION_REQUIRED_OPEN_WORK` retains the exact pending item identities when
+no productive execution is observed. Missing inventory yields
+`PREEMPTIVE_HOLD_WORK_INVENTORY`, with unknown work state. Neither is quiescence,
+completion, permission to run issue text, or permission to bypass a blocker.
+The existing continuation consumer must triage the preserved obligations and
+continue only a safe, callable, already authorized successor. Protected external
+dependencies remain explicit holds with their causal next action.
+
+The useful-progress clock is cumulative within the same repository, HEAD, tree
+and observation scope. Receipts retain `last_progress_at` and terminal executed
+job/step markers. A new executed result advances the clock. Observer heartbeats,
+timestamps, run IDs, attempt numbers and an identical retry do not. Frequent
+observations therefore cannot renew the progress lease indefinitely. Marker
+history survives replacement of a run by an identical retry; stale or foreign
+bindings cannot supply progress. The age of the last observation is retained
+separately, so failure of the observer remains detectable.
+
+Open work or active execution without a new marker beyond the progress lease
+produces the existing no-progress hold and a concrete continuation edge. A
+baseline is necessary for that time comparison. A failed check records unknown
+live progress. Analysis and collection failures both produce a machine-readable
+observation-failure receipt.
+
+The previously implemented `repair-handoff` / `repair-consume` path is now wired
+between the existing workflows. The consumer independently reads the producer
+run, attempt and jobs, verifies the executed handoff step and exact analysis
+bytes, and retains the original input before selecting existing admitted work.
+It grants no writer authority. Producer artifacts are bounded and read as data;
+repair inputs live outside the checkout and are retained as artifacts.
+The watchdog does not subscribe to continuation completion, preventing a
+watchdog → continuation → watchdog feedback loop. Actual issue and PR events
+and existing workflow events carry observations; no timer is introduced.
+
+This is an executable detection and continuation obligation, not a proof of
+universal liveness. Main integration, native execution, available credentials,
+original-host admission and productive domain/EFFECT_ACK acceptance retain
+their separate evidence obligations.
+
+
 The adaptive repository monitor is extended by a read-only watchdog that observes its own repository instance at relevant source and workflow transitions. Its purpose is not to wait for a deadlock and then diagnose it. It models writer leases, runner pressure, exact-head execution evidence, and unchanged progress topology early enough to issue a deterministic `HOLD` before a second writer or replacement writer is admitted.
 
 ## Operational model
@@ -67,18 +117,51 @@ workflow, or treats its own terminality as gate success.
 
 ### Job-readback request budget
 
-The existing observation step validates the returned run page before requesting
-any jobs. The page must include an integer `total_count` equal to its returned
-run count, no truncation, and unique positive run IDs bound to the exact expected
-head. At most 20 per-run job requests are admitted. An incomplete inventory or a
-larger request budget produces `HOLD` with an empty request list and a retained
-`job-readback-budget.json`; it makes no per-run job request and does not sample
-the first 20 runs. The existing failure receipt records `JOBS_BUDGET_PREFLIGHT`,
-and pipeline progress remains unknown. A denied run or job GET stops the step;
+The existing controller's `collect-runs` command reads pages of 100 entries with
+at most ten original `gh api` GETs, retaining page bytes and stderr under
+`run-pages/`. It merges them into `current-runs.json` before requesting any jobs.
+Every page must report the same
+integer `total_count`; the combined inventory must match that count, contain no
+truncation or duplicate IDs, and bind every run to the expected head. Invalid
+names, statuses or timestamps also stop admission. This count check fails closed
+if the provider's own pagination/search limit prevents a complete inventory.
+
+`job-readback-budget --required-jobs-only` derives the exact job dependencies of
+the analyzer: the latest run of **each workflow name**, plus **every active run**,
+including an older active run with a newer completed successor. It never samples
+the first 20 runs. At most 20 per-run jobs GETs are admitted for this union; older
+completed runs remain in the full metadata inventory. Their normalized receipt
+entries explicitly have `jobs_observed=false` and `jobs=null`, rather than
+claiming an observed zero-job execution. Latest gate decisions and all writer,
+queue, liveness and stale-progress checks remain in force. The legacy budget CLI
+without this explicit option retains its all-run policy and historical format.
+
+An incomplete inventory or a union needing more than 20 job requests produces
+`HOLD` before any jobs GET. The failure receipt records `JOBS_BUDGET_PREFLIGHT`;
+pipeline progress remains unknown. A denied run or job GET stops the step;
 there is no automatic retry. Failure to download the prior receipt artifact also
 stops at `BASELINE_READBACK`, before any current run or job request. An HTTP 403
 on that earlier path cannot be ignored as an optional missing baseline.
-This is a bound on this step's per-run job reads,
+
+`collect-jobs` shares a hard budget of 20 actual jobs GETs across selected runs
+and their continuation pages, each with `per_page=100`. Budget exhaustion stops
+analysis; a 21st request is never issued. Page counts, identities and statuses
+are checked during collection. `JOBS_COMPLETENESS_PREFLIGHT` also requires the
+merged integer `total_count`
+to equal the returned job count and rejects malformed/duplicate jobs, mismatched
+run/head/attempt identities and active jobs on a terminal run. Analysis rederives
+the plan, verifies its inventory SHA-256, and requires exactly the selected job
+files. A missing file cannot become an empty successful observation. The original
+artifact, causal reproduction and bounded regression evidence for issue #682 are
+in `evidence/receipts/20261104-watchdog-run-inventory/`.
+
+Unknown job statuses count as untrusted evidence even in the gate evaluator;
+one successful job cannot hide another malformed or active job. The collector
+and numeric latest-run ordering from overlapping PR #683 are retained, together
+with its original evidence archive. The source histories converge in PR #684;
+native tests for predecessor heads do not accept the combined successor.
+
+This is a bound on this step's job-page reads,
 not a provider-wide quota controller or proof of live event delivery.
 
 ### Failure of the observer itself
@@ -104,7 +187,7 @@ writers. Main's 26 October delivery repair uses completion notifications and
 the active observation. The later Owner correction of 31 October removes the five-minute schedule.
 Readback of unfinished runs and unchanged heads occurs on actual state
 transitions; freshness budgets remain checks, not activation timers. The analyzer still evaluates
-every returned run and its jobs; no liveness, missing-evidence or stale-progress
+every returned run and the explicitly selected complete job inputs; no liveness, missing-evidence or stale-progress
 criterion is removed. This source configuration change does not establish a
 completed public-host observation or global deadlock freedom.
 
@@ -147,3 +230,75 @@ predecessor test or availability observation substitutes for those effects.
 No observation proves that the observer will receive another event. A quiet
 system with a lost event needs an independent observation before an observer
 failure can be detected; no timer-free global liveness guarantee is claimed.
+
+## Bounded acceptance and the native build stall
+
+The executable invariant is that OPEN or UNKNOWN work never permits silent
+idle. A finite acceptance matrix covers 1, 2 and 169 open items with no run,
+queued work, running work and terminal success, failure, cancellation, timeout
+and action-required states (24 combinations). Existing negative traces cover
+unchanged heartbeats, repeated identical failures, stale/wrong-source evidence,
+missing readback and analyzer failure. These checks do not prove unconditional
+liveness of an external service or permanent runtime availability.
+
+The original exact-head S1 jobs additionally exposed an actual dependency stall:
+job 126915921892 received package HTTP 503; job 126914575535 emitted only two
+InRelease fetches before its 35-minute cancellation. The successor retains the
+original frozen carrier, platform, signature verification, eight package
+versions and no-upgrade policy. FROZEN_BUILD_APT_V1.json locks every selected
+package's origin, path, size and SHA-256. The official Debian transport supplies
+only that set; new index entries cannot silently change a dependency. APT still
+verifies Debian signatures and package hashes against its original keyring.
+The guard rejects plan drift before download, verifies actual archive bytes
+before a no-download install, and checks installed versions afterward.
+
+Index fetch, binary fetch and install have absolute limits of 180, 180 and
+120 seconds, each with a 10-second termination grace; individual network waits
+are limited to 30 seconds and retries are zero. A failure stops the builder;
+it never manufactures a successful smoke test. The existing native CI must
+still execute the new source, reproduce both OCI builds and verify the actual
+terminal/restart before integration. Productive Originalhost, exact domain,
+peer adoption and EFFECT_ACK remain separate, independently observed effects.
+
+A budget-HOLD can itself stall the verifier. Preserve the failed run/attempt and
+its failure receipt. The existing client preflight permits only the frozen
+read-only repository-watchdog recipe (SHA-256 e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d)
+to resume through the existing failed-jobs REST operation after a complete new
+job plan demonstrably falls from above 20 requests to at most 20. The same
+head/tree, original failure stage, run ID and attempt are required. A changed
+recipe, another workflow, initial approval, unchanged/partial inventory, higher
+budget, publication, deployment and current-specification claims remain denied.
+This is a source-verification consistency check, not a provider authorization
+service or proof that a retry executed or its target passed.
+
+### Later native API recovery
+
+If the same frozen read-only observer instead fails at BASELINE_READBACK
+with the original installation-rate-limit403 log and failure receipt,
+`ai_handoff.py` accepts a single retry prerequisite from a later successful
+same-head/tree native S1 carrier REST step. It verifies the run/attempt/job,
+mandatory step, frozen CI and carrier source pins, strict time ordering,
+one-hour freshness and the complete unchanged20-request budget. This
+consistency check is not authentication or proof the observer recovered:
+its next actual execution and original artifact require independent readback.
+Other workflows, deployments, approvals and current-specification claims
+remain outside this historical source-verification route.
+
+### Validate the actual artifact consumer path
+
+The independent 49a2e377 artifact readback found two missing hidden package
+files and an omitted carrier download in the publication consumer. Source CI
+was green because those downstream publication effects were gated off.
+
+The existing S1 job now downloads both of its actual uploaded artifacts and
+checks the complete manifest-bound package, restores only verified original
+file modes, invokes the original package verifier, checks every referenced
+image blob and the original carrier ZIP. Its separate roundtrip receipt is
+required by that native job's success. The publication consumer downloads the
+separate carrier; the existing public-domain reader restores verified package
+modes before its original check. The same admission and production gates apply.
+
+These operations verify artifact transport and consumer inputs. They do not
+authorize publication, host admission, node renewal or productive EFFECT_ACK.
+After the local environment failed, new-source tests run in native CI; the
+previous local 135-case result remains historical, not successor acceptance.

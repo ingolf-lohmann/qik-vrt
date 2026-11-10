@@ -184,6 +184,27 @@ class PublicationAdapterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "OWNER_ONLY"):
             host.publication_request(self.request_path, self.pin)
 
+    def test_expired_reference_can_be_read_but_cannot_start_the_publisher(self):
+        self.registry["credentials"]["ZENODO_ACCESS_TOKEN"]["expires_at"] = "2000-01-01T00:00:00Z"
+        self.write(self.registry_path, host.raw_json(self.registry))
+        with mock.patch.object(host, "publication_private_bytes", wraps=host.publication_private_bytes) as read:
+            admitted = host.publication_request(self.request_path, self.pin, allow_expired_credentials=True)
+        self.assertEqual(admitted[0], self.request)
+        self.assertEqual({call.args[0] for call in read.call_args_list},
+                         {self.request_path, self.registry_path})
+        with mock.patch.object(host, "publication_invoke") as invoke:
+            with self.assertRaisesRegex(ValueError, "PUBLISHER_CREDENTIAL_EXPIRED"):
+                host.publication_resume(self.request_path, self.pin)
+            invoke.assert_not_called()
+        for field, value in (("expires_at", "2000-01-01T00:00:00"),
+                             ("origin", "https://foreign.invalid")):
+            with self.subTest(field=field):
+                changed = json.loads(json.dumps(self.registry))
+                changed["credentials"]["ZENODO_ACCESS_TOKEN"][field] = value
+                self.write(self.registry_path, host.raw_json(changed))
+                with self.assertRaises(ValueError):
+                    host.publication_request(self.request_path, self.pin, allow_expired_credentials=True)
+
     def test_secret_symlink_refused(self):
         source = Path(self.registry["credentials"]["GITHUB_TOKEN"]["source_path"])
         target = self.base / "elsewhere"

@@ -136,6 +136,16 @@ texts.
 
 ## Binding client continuation procedure
 
+Owner correction, 4 November 2026: open work must never be hidden by an idle
+runner or repeated monitoring. Apply the existing watchdog's
+`open_work_progress` contract in `state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json`.
+Preserve the cumulative useful-progress clock and the exact open-work inventory.
+Execute an admitted successor in the same work ring; when none is callable,
+retain the concrete blocker, retry condition and next causal repair. An active
+monitor, heartbeat, identical retry or saved task is not useful task progress.
+Missing inventory or a failed checker is UNKNOWN/HOLD, never an empty queue or
+completion. Native enforcement and each client's adoption need separate evidence.
+
 Ingolf Lohmann is Principal, Code Owner and Product Owner. His considered
 explicit approval is also his review, including on his own PR (18 October
 2026). Apply the exact Owner decision in the existing review policy and gate;

@@ -1,0 +1,14 @@
+test_real_workflow_paginates_all_213_runs_and_reads_the_exact_required_union (tests.test_qikvrt_reflexive_repository_watchdog.JobReadbackBudgetTests.test_real_workflow_paginates_all_213_runs_and_reads_the_exact_required_union) ... FAIL
+
+======================================================================
+FAIL: test_real_workflow_paginates_all_213_runs_and_reads_the_exact_required_union (tests.test_qikvrt_reflexive_repository_watchdog.JobReadbackBudgetTests.test_real_workflow_paginates_all_213_runs_and_reads_the_exact_required_union)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/0b3fcad776e7/watchdog-repair/tests/test_qikvrt_reflexive_repository_watchdog.py", line 791, in test_real_workflow_paginates_all_213_runs_and_reads_the_exact_required_union
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 2 != 0 :
+
+----------------------------------------------------------------------
+Ran 1 test in 0.118s
+
+FAILED (failures=1)
