@@ -1061,9 +1061,9 @@ class JobReadbackBudgetTests(unittest.TestCase):
             self.assertEqual(MODULE._gate_state_for_run(entry, {'1': entries}, required=True)['state'], 'UNTRUSTED')
 
     def test_run_pagination_budget_and_numeric_latest_tie_break(self):
-        result, requests, _ = self.collect(self.page(1001))
+        result, requests, _ = self.collect(self.page(3001))
         self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(len(requests), 10)
+        self.assertEqual(len(requests), 30)
         self.assertTrue(all(r['kind'] == 'runs' for r in requests))
         page = self.page(10)
         for entry in page['workflow_runs']:
