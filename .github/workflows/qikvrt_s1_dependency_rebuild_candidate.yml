@@ -1,0 +1,176 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# New source-bound S1 dependency-carrier candidate; never a historical PR494 substitute.
+name: QIKVRT new S1 dependency carrier two-build proof candidate
+
+on:
+  pull_request:
+    paths:
+      - 'runtime/self-host/Dockerfile'
+      - 'runtime/self-host/CONTAINER_CARRIER.json'
+      - '.github/workflows/qikvrt_s1_dependency_rebuild_candidate.yml'
+      - 'tests/test_s1_dependency_rebuild_candidate.py'
+      - 'tools/qikvrt_s1_dependency_layer_diff.py'
+      - 'docs/terminal/S1_DEPENDENCY_REBUILD_CANDIDATE_20261110.md'
+      - 'REPOSITORY_FILE_MANIFEST.json'
+      - 'SHA256SUMS.txt'
+      - 'REPOSITORY_FILE_MANIFEST.json.sha256'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-new-s1-dependency-candidate-${{ github.event.pull_request.head.ref || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  repair-candidate-integrity:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.number == 723
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Check out exact same-repository PR branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Regenerate canonical integrity trio and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo "INTEGRITY_ALREADY_CANONICAL"
+          else
+            git commit -m "fix(s1): regenerate canonical integrity trio after dependency normalization"
+            git push origin "HEAD:refs/heads/${{ github.event.pull_request.head.ref }}"
+          fi
+  two-independent-builds:
+    needs: repair-candidate-integrity
+    if: needs.repair-candidate-integrity.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Check out exact PR HEAD without persistent credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify source and immutable predecessor boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          if test "${{ github.event_name }}" = "pull_request"; then
+            git merge-base --is-ancestor "${{ github.event.pull_request.head.sha }}" HEAD
+          fi
+          python3 -B tools/qikvrt_integrity.py verify
+          python3 -B -m unittest -v tests.test_s1_dependency_rebuild_candidate
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          old = json.loads(Path("runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
+          assert old["schema"] == "qikvrt-s1-frozen-container-carrier/v1"
+          assert old["artifact_id"] == 11521962723
+          assert old["archive_sha256"] == "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695"
+          assert old["scope"].startswith("Reuse original dependency image bytes")
+          print("HISTORICAL_PR494_CONTRACT_PRESERVED")
+          PY
+      - name: Use pinned original Docker Buildx and BuildKit implementation
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+        with:
+          version: v0.38.0
+          driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
+      - name: Build separate dependency image twice without Docker layer cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          head="$(git rev-parse --verify HEAD)"
+          tree="$(git rev-parse --verify HEAD^{tree})"
+          epoch="$(git show -s --format=%ct HEAD)"
+          mkdir -p "$RUNNER_TEMP/s1-dependency-candidate"
+          for n in 1 2; do
+            docker buildx build --no-cache --pull --platform linux/amd64 \
+              --target s1-dependency-carrier-candidate \
+              --file runtime/self-host/Dockerfile \
+              --provenance=false --sbom=false \
+              --build-arg "QIKVRT_SOURCE_HEAD=$head" \
+              --build-arg "QIKVRT_SOURCE_TREE=$tree" \
+              --build-arg "SOURCE_DATE_EPOCH=$epoch" \
+              --output "type=oci,dest=$RUNNER_TEMP/s1-dependency-candidate/build-$n.oci.tar,compression=gzip,compression-level=9,rewrite-timestamp=true" \
+              .
+          done
+          set +e
+          python3 -B tools/qikvrt_self_host.py container-oci-check --root . \
+            --expected-head "$head" --expected-tree "$tree" \
+            --oci-archive "$RUNNER_TEMP/s1-dependency-candidate/build-1.oci.tar" \
+            --second-oci-archive "$RUNNER_TEMP/s1-dependency-candidate/build-2.oci.tar" \
+            --receipt "$RUNNER_TEMP/s1-dependency-candidate/oci-receipt.json"
+          check_status=$?
+          set -e
+          if test "$check_status" -ne 0; then
+            python3 -B tools/qikvrt_s1_dependency_layer_diff.py \
+              --first "$RUNNER_TEMP/s1-dependency-candidate/build-1.oci.tar" \
+              --second "$RUNNER_TEMP/s1-dependency-candidate/build-2.oci.tar" \
+              --oci-receipt "$RUNNER_TEMP/s1-dependency-candidate/oci-receipt.json" \
+              --output "$RUNNER_TEMP/s1-dependency-candidate/LAYER_DIFF.json"
+            exit "$check_status"
+          fi
+          python3 - "$RUNNER_TEMP/s1-dependency-candidate" "$head" "$tree" "$epoch" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1])
+          first,second=(root/f"build-{n}.oci.tar" for n in (1,2))
+          receipt=json.loads((root/"oci-receipt.json").read_bytes())
+          assert receipt["independent_rebuild_digest_equal"] is True
+          assert receipt["image_digest"] == receipt["independent_rebuild"]["image_digest"]
+          assert receipt["source_head"] == sys.argv[2] and receipt["source_tree"] == sys.argv[3]
+          def digest(p):
+              with p.open("rb") as f: return hashlib.file_digest(f,"sha256").hexdigest()
+          result={
+            "schema":"qikvrt_s1_new_dependency_candidate_v1",
+            "repository":"ingolf-lohmann/qik-vrt",
+            "source_head":sys.argv[2],"source_tree":sys.argv[3],
+            "source_date_epoch":int(sys.argv[4]),
+            "oci_image_digest":receipt["image_digest"],
+            "image_config_digest":receipt["image_config_digest"],
+            "two_build_image_digest_equal":True,
+            "first_oci_tar_sha256":digest(first),"second_oci_tar_sha256":digest(second),
+            "first_oci_tar_bytes":first.stat().st_size,
+            "second_oci_tar_bytes":second.stat().st_size,
+            "replaces_frozen_pr494":False,
+            "runtime_acceptance":"NOT_PERFORMED",
+            "historical_approval_transferred":False,
+            "release_admission":"BLOCKED",
+            "effect_ack_done":False
+          }
+          (root/"CANDIDATE_RECEIPT.json").write_text(json.dumps(result,sort_keys=True,indent=2)+"\n")
+          print("NEW_DEPENDENCY_CANDIDATE_TWO_BUILD_IMAGE_DIGEST_VERIFIED")
+          PY
+      - name: Preserve candidate receipt even if blocked
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        with:
+          name: qikvrt-s1-new-dependency-diagnostics-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/s1-dependency-candidate/oci-receipt.json
+            ${{ runner.temp }}/s1-dependency-candidate/LAYER_DIFF.json
+            ${{ runner.temp }}/s1-dependency-candidate/CANDIDATE_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Preserve independently verified candidate bytes, not activate them
+        if: success()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        with:
+          name: qikvrt-s1-new-dependency-oci-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/s1-dependency-candidate/build-1.oci.tar
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: error
