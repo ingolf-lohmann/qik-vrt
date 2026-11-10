@@ -1557,11 +1557,12 @@ jobs:
           head="$(git rev-parse HEAD)"
           tree="$(git rev-parse HEAD^{tree})"
           epoch="$(git show -s --format=%ct HEAD)"
+          carrier_digest="$(python3 -B -c 'import json,os,pathlib; p=pathlib.Path(os.environ["RUNNER_TEMP"])/"frozen-carrier/index.json"; m=json.loads(p.read_bytes())["manifests"]; assert len(m)==1, "SINGLE_FROZEN_CARRIER_MANIFEST_REQUIRED"; d=m[0]["digest"]; assert d.startswith("sha256:") and len(d)==71, "FROZEN_CARRIER_DIGEST_REQUIRED"; expected=json.loads(pathlib.Path("runtime/self-host/CONTAINER_CARRIER.json").read_bytes())["oci_manifest_digest"]; assert d==expected, "FROZEN_CARRIER_MANIFEST_PIN_MISMATCH"; assert (p.parent/"blobs/sha256"/d[7:]).is_file(), "FROZEN_CARRIER_BLOB_MISSING"; print(d)')"
           for build in 1 2; do
             docker buildx build --no-cache --platform linux/amd64 --target production-terminal \
               --file "$RUNNER_TEMP/s1-context/runtime/self-host/Dockerfile" \
               --provenance=false --sbom=false \
-              --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9" \
+              --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@$carrier_digest" \
               --build-arg QIKVRT_PRODUCTION_IMAGE=qikvrt-frozen-carrier \
               --build-arg QIKVRT_TERMINAL_PROFILE=temdd \
               --build-arg "SOURCE_DATE_EPOCH=$epoch" \
