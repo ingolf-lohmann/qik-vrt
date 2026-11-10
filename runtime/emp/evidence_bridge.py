@@ -17,7 +17,7 @@ def submit(db_path: str, objective: Objective, event_id: str) -> dict:
                         sort_keys=True, separators=(",", ":")).encode("utf-8")
     append(db_path, stream, event_id + ":intent", intent)
     result = admit(db_path, objective, event_id)
-    outcome = json.dumps({"event_id": event_id, "decision": result},
+    outcome = json.dumps({"event_id": event_id, "decision": {k: v for k, v in result.items() if k != "duplicate"}},
                          sort_keys=True, separators=(",", ":")).encode("utf-8")
     append(db_path, stream, event_id + ":outcome", outcome)
     return {"decision": result, "evidence": replay(db_path, stream),
