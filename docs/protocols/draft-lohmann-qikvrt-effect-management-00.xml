@@ -9,17 +9,17 @@
 <abstract><t>This document proposes an experimental Effect Management Protocol (EMP) to coordinate human-authorized objectives from planning through execution, observation, recovery, and independent effect acknowledgement. EMP complements, but does not replace, the QIK-VRT Effect Acknowledgement Protocol (EAP). This document is an initial proposal and does not claim an interoperable implementation.</t></abstract>
 </front>
 <middle>
-<section numbered="true" name="Introduction"><t>An acknowledgement of a completed effect does not itself specify how to achieve an authorized objective. EMP defines a constrained management lifecycle for that purpose. This draft is a candidate for technical discussion, not a deployed protocol specification.</t></section>
-<section numbered="true" name="Terminology"><dl>
+<section name="Introduction"><t>An acknowledgement of a completed effect does not itself specify how to achieve an authorized objective. EMP defines a constrained management lifecycle for that purpose. This draft is a candidate for technical discussion, not a deployed protocol specification.</t></section>
+<section name="Terminology"><dl>
 <dt>Principal</dt><dd>Human authority specifying and authorizing the objective.</dd>
 <dt>Objective</dt><dd>Desired effect and measurable acceptance predicate.</dd>
 <dt>Executor</dt><dd>Component performing delegated actions.</dd>
 <dt>Observer</dt><dd>Component collecting attributable evidence of resulting state.</dd>
 <dt>Writer epoch</dt><dd>Monotonic identifier used to fence stale effect writers.</dd>
 </dl><t>The key words MUST, MUST NOT, and SHOULD are to be interpreted as described in BCP 14 when, and only when, they appear in all capitals.</t></section>
-<section numbered="true" name="Objective Envelope"><t>An objective MUST bind a unique identifier, principal identity, authorization reference, target, measurable acceptance predicate, permitted operations, prohibited operations, policy version, resource bounds, deadline, revocation conditions, idempotency key, and writer epoch. Missing authorization MUST prevent effectful execution.</t></section>
-<section numbered="true" name="Lifecycle"><t>Permitted conceptual states are PROPOSED, AUTHORIZED, PLANNED, EXECUTING, OBSERVING, REPAIRING, BLOCKED, VERIFIED, and ABORTED. A transition to VERIFIED MUST require independent acknowledgement of the acceptance predicate through EAP. BLOCKED MUST record the blocking cause, an unblock predicate, and the next safe action. Revocation MUST prevent subsequent unauthorized execution.</t></section>
-<section numbered="true" name="Protocol Requirements"><ol>
+<section name="Objective Envelope"><t>An objective MUST bind a unique identifier, principal identity, authorization reference, target, measurable acceptance predicate, permitted operations, prohibited operations, policy version, resource bounds, deadline, revocation conditions, idempotency key, and writer epoch. Missing authorization MUST prevent effectful execution.</t></section>
+<section name="Lifecycle"><t>Permitted conceptual states are PROPOSED, AUTHORIZED, PLANNED, EXECUTING, OBSERVING, REPAIRING, BLOCKED, VERIFIED, and ABORTED. A transition to VERIFIED MUST require independent acknowledgement of the acceptance predicate through EAP. BLOCKED MUST record the blocking cause, an unblock predicate, and the next safe action. Revocation MUST prevent subsequent unauthorized execution.</t></section>
+<section name="Protocol Requirements"><ol>
 <li>Executors MUST NOT act outside delegated authorization.</li>
 <li>Success MUST NOT be asserted without independent observation and EAP verification.</li>
 <li>Implementations MUST durably journal transitions and reject stale writers using fencing.</li>
@@ -31,10 +31,10 @@
 <li>Failure evidence MUST be preserved for causal diagnosis.</li>
 <li>A generated statement or successful API response MUST NOT be treated as proof of the desired real-world effect.</li>
 </ol></section>
-<section numbered="true" name="Example"><t>A principal authorizes regeneration of a document bundle with verifiable hashes. EMP records the objective, delegates deterministic generation, and requests independent byte-level readback. If the acceptance predicate and EAP verification succeed, the objective transitions to VERIFIED. Otherwise it remains REPAIRING or BLOCKED with durable evidence.</t></section>
-<section numbered="true" name="Security Considerations"><t>Implementations need authenticated principal identities, least-privilege delegation, replay prevention, durable writer fencing, integrity-bound evidence, bounded retries, revocation, and separation of duties. Personal digital twins additionally require purpose limitation, consent, and data minimization. The precise authentication, cryptographic binding, and wire format are open design questions; this version is not suitable for interoperable production deployment.</t></section>
-<section numbered="true" name="IANA Considerations"><t>This document requests no IANA actions.</t></section>
-<section numbered="true" name="Open Issues"><t>Future versions need a canonical wire encoding, error registry, authentication profile, exact EAP version binding, formal threat model, test vectors, and an independently tested reference implementation. A patent-disclosure review is required before public submission.</t></section>
+<section name="Example"><t>A principal authorizes regeneration of a document bundle with verifiable hashes. EMP records the objective, delegates deterministic generation, and requests independent byte-level readback. If the acceptance predicate and EAP verification succeed, the objective transitions to VERIFIED. Otherwise it remains REPAIRING or BLOCKED with durable evidence.</t></section>
+<section name="Security Considerations"><t>Implementations need authenticated principal identities, least-privilege delegation, replay prevention, durable writer fencing, integrity-bound evidence, bounded retries, revocation, and separation of duties. Personal digital twins additionally require purpose limitation, consent, and data minimization. The precise authentication, cryptographic binding, and wire format are open design questions; this version is not suitable for interoperable production deployment.</t></section>
+<section name="IANA Considerations"><t>This document requests no IANA actions.</t></section>
+<section name="Open Issues"><t>Future versions need a canonical wire encoding, error registry, authentication profile, exact EAP version binding, formal threat model, test vectors, and an independently tested reference implementation. A patent-disclosure review is required before public submission.</t></section>
 </middle>
 <back><references><name>Normative References</name><reference anchor="RFC2119" target="https://www.rfc-editor.org/rfc/rfc2119"><front><title>Key words for use in RFCs to Indicate Requirement Levels</title><author fullname="Scott Bradner" initials="S." surname="Bradner"/><date year="1997" month="3"/></front><seriesInfo name="RFC" value="2119"/></reference><reference anchor="RFC8174" target="https://www.rfc-editor.org/rfc/rfc8174"><front><title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title><author fullname="Barry Leiba" initials="B." surname="Leiba"/><date year="2017" month="5"/></front><seriesInfo name="RFC" value="8174"/></reference></references></back>
 </rfc>
