@@ -72,4 +72,28 @@ theorem observed_effect_requires_readback
     {QR : Type} (qr : QR) (observed : QR → Prop)
     (hReadback : observed qr) : observed qr := hReadback
 
+/-! A failed or unverified transition cannot advance the accepted state.
+    Attempts and their evidence must be journaled separately by the implementation. -/
+def acceptedNext {State : Type} (current candidate : State)
+    (verified : Bool) : State :=
+  if verified then candidate else current
+
+theorem rejected_transition_preserves_state {State : Type}
+    (current candidate : State) :
+    acceptedNext current candidate false = current := by
+  rfl
+
+theorem verified_transition_accepts_candidate {State : Type}
+    (current candidate : State) :
+    acceptedNext current candidate true = candidate := by
+  rfl
+
+/-- The next accepted state becomes the next iteration's starting state;
+    no independent verification is inferred from a candidate alone. -/
+theorem rejected_successor_remains_previous_fixpoint {State : Type}
+    (current candidate nextCandidate : State) :
+    acceptedNext (acceptedNext current candidate false) nextCandidate false
+      = current := by
+  rfl
+
 end QIKVRT.EffectAck.TwoFixpoints
