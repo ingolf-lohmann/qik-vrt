@@ -21,6 +21,48 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
+      - name: Check out trusted main ring planner
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Collect bounded original inventory and lossless ring plan
+        id: ring
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/ring
+          head="$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+          gh api "repos/$REPOSITORY/actions/runs?per_page=100" > .qikvrt/ring/runs.json
+          gh api "repos/$REPOSITORY/issues?state=open&per_page=100" > .qikvrt/ring/issues.json\n          printf "%s\\n" "$head" > .qikvrt/ring/head.txt
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(".qikvrt/ring")
+          runs=json.loads((root/"runs.json").read_text())
+          issues=json.loads((root/"issues.json").read_text())
+          if not isinstance(runs,dict) or not isinstance(runs.get("workflow_runs"),list) or not isinstance(runs.get("total_count"),int):
+              raise SystemExit("HOLD: invalid runs inventory")
+          if runs["total_count"] > len(runs["workflow_runs"]) or len(issues) >= 100:
+              raise SystemExit("HOLD: inventory truncated; cannot claim lossless")
+          (root/"normalized.json").write_text(json.dumps({"repository":os.environ["REPOSITORY"],
+              "head":(root/"head.txt").read_text().strip(),
+              "runs":[{"id":r["id"],"status":r["status"],"conclusion":r.get("conclusion"),
+                       "head_sha":r.get("head_sha"),"url":r.get("html_url")} for r in runs["workflow_runs"]],
+              "work":[{"id":w["id"],"state":"open","url":w.get("html_url")} for w in issues]},
+              sort_keys=True))
+          PY
+          python3 tools/qikvrt_devops_ring.py --observation .qikvrt/ring/normalized.json --output .qikvrt/ring/receipt.json
+      - name: Preserve lossless ring receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-devops-ring-${{ github.run_id }}
+          path: .qikvrt/ring/
+          if-no-files-found: warn
       - name: Dispatch trusted-main watchdog only when idle
         env:
           GH_TOKEN: ${{ github.token }}
