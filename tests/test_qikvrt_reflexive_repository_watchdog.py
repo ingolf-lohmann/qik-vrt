@@ -1190,6 +1190,17 @@ class OpenWorkCollectionTests(unittest.TestCase):
             with self.assertRaisesRegex(MODULE.ReflexiveWatchdogBlock, "DUPLICATED"):
                 self.collect()
 
+    def test_open_work_paging_beyond_previous_ten_page_boundary(self):
+        pages = [self.entries(100, 1 + 100 * i) for i in range(11)]
+        terminal = self.entries(2, 1101)
+        with mock.patch.object(MODULE, "_readback_page",
+                               side_effect=pages + [terminal, pages[0]]) as read:
+            value = self.collect()
+        self.assertTrue(value["complete"])
+        self.assertFalse(value["truncated"])
+        self.assertEqual(value["total_count"], 1102)
+        self.assertEqual(read.call_count, 13)
+
     def test_inventory_budget_exhaustion_is_hold(self):
         pages = [self.entries(100, 1 + 100 * i) for i in range(MODULE.MAX_WORK_READBACK_PAGES)]
         with mock.patch.object(MODULE, "_readback_page", side_effect=pages) as read:
