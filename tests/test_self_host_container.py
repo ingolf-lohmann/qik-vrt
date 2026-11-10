@@ -872,6 +872,141 @@ class ContainerControls(unittest.TestCase):
             self.assertEqual(metadata.call_count, 1)
 
 
+    def reviewed_recovery_fixture(self, root):
+        import zipfile
+        original = root / "original.zip"
+        original.write_bytes(b"original-fixture-byte-pinned")
+        expected = {"schema": "qikvrt-s1-frozen-container-carrier/v1",
+                    "repository": c.REPOSITORY, "source_head": HEAD, "source_tree": TREE,
+                    "artifact_id": 11521962723, "run_id": 37710500668,
+                    "archive_bytes": original.stat().st_size,
+                    "archive_sha256": c.sha(original.read_bytes())}
+        wrapped = root / "original.oci.tar"
+        c.carrier_archive(expected, original, wrapped)
+        transport = root / "transport.zip"
+        with zipfile.ZipFile(transport, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.write(wrapped, "carrier-original.oci.tar")
+        pin = {"schema": "qikvrt-s1-original-oci-recovery-v1",
+               "repository": c.REPOSITORY, "run_id": 41944160618,
+               "head_sha": HEAD, "artifact_id": 13378557846,
+               "artifact_name": "qikvrt-s1-original-carrier-" + HEAD,
+               "transport_bytes": transport.stat().st_size,
+               "transport_sha256": c.sha(transport.read_bytes()),
+               "expires_at": "2026-12-05T01:04:44Z",
+               "member": "carrier-original.oci.tar",
+               "durability": "TEMPORARY_ACTIONS_BACKUP_ONLY_NO_PRODUCTION_ADMISSION"}
+        expected["reviewed_recovery_artifact"] = pin
+        metadata = {"id": pin["artifact_id"], "expired": False,
+                    "name": pin["artifact_name"], "expires_at": pin["expires_at"],
+                    "size_in_bytes": pin["transport_bytes"],
+                    "digest": "sha256:" + pin["transport_sha256"],
+                    "workflow_run": {"id": pin["run_id"], "head_sha": pin["head_sha"]}}
+        return expected, original.read_bytes(), transport.read_bytes(), metadata
+
+    def test_reviewed_oci_backup_restores_original_bytes_without_alternative_digest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pin, original, transport, metadata = self.reviewed_recovery_fixture(root)
+            output = root / "restored.zip"
+            with patch.dict(os.environ, {"GITHUB_REPOSITORY": c.REPOSITORY,
+                                          "GITHUB_TOKEN": "fixture-only"}), \
+                 patch.object(c, "get", return_value=json.dumps(metadata).encode()) as get, \
+                 patch.object(c, "actions_archive_download",
+                              side_effect=lambda _id, _size, destination, _token:
+                              destination.write_bytes(transport)) as download:
+                c.carrier_download(pin, output)
+                self.assertEqual(get.call_count, 1)
+                self.assertEqual(download.call_count, 1)
+            self.assertEqual(output.read_bytes(), original)
+            self.assertEqual(c.sha(output.read_bytes()), pin["archive_sha256"])
+            self.assertEqual(pin["artifact_id"], 11521962723)
+
+    def test_reviewed_oci_backup_rejects_metadata_drift_before_download(self):
+        for change in ("expired", "name", "digest", "expires_at", "head_sha"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                pin, original, transport, metadata = self.reviewed_recovery_fixture(root)
+                if change == "head_sha":
+                    metadata["workflow_run"]["head_sha"] = "f" * 40
+                elif change == "expired":
+                    metadata[change] = True
+                else:
+                    metadata[change] = "incorrect"
+                output = root / "restored.zip"
+                with patch.dict(os.environ, {"GITHUB_REPOSITORY": c.REPOSITORY,
+                                              "GITHUB_TOKEN": "fixture-only"}), \
+                     patch.object(c, "get", return_value=json.dumps(metadata).encode()), \
+                     patch.object(c, "actions_archive_download") as download:
+                    with self.assertRaisesRegex(ValueError, "BACKUP_EXPIRED_OR_DRIFTED"):
+                        c.carrier_download(pin, output)
+                    download.assert_not_called()
+                    self.assertFalse(output.exists())
+
+    def test_reviewed_oci_backup_rejects_modified_transport_without_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pin, original, transport, metadata = self.reviewed_recovery_fixture(root)
+            output = root / "restored.zip"
+            with patch.dict(os.environ, {"GITHUB_REPOSITORY": c.REPOSITORY,
+                                          "GITHUB_TOKEN": "fixture-only"}), \
+                 patch.object(c, "get", return_value=json.dumps(metadata).encode()), \
+                 patch.object(c, "actions_archive_download",
+                              side_effect=lambda _id, _size, destination, _token:
+                              destination.write_bytes(transport[:-1] + b"X")):
+                with self.assertRaisesRegex(ValueError, "BACKUP_TRANSPORT_DIGEST_MISMATCH"):
+                    c.carrier_download(pin, output)
+            self.assertFalse(output.exists())
+
+    def test_reviewed_oci_backup_rejects_invalid_inner_oci_after_valid_transport(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pin, original, transport, metadata = self.reviewed_recovery_fixture(root)
+            forged = root / "forged.zip"
+            with zipfile.ZipFile(forged, "w") as archive:
+                archive.writestr("carrier-original.oci.tar", b"forged-original-oci")
+            forged_bytes = forged.read_bytes()
+            pin["reviewed_recovery_artifact"]["transport_bytes"] = len(forged_bytes)
+            pin["reviewed_recovery_artifact"]["transport_sha256"] = c.sha(forged_bytes)
+            metadata["size_in_bytes"] = len(forged_bytes)
+            metadata["digest"] = "sha256:" + c.sha(forged_bytes)
+            output = root / "restored.zip"
+            with patch.dict(os.environ, {"GITHUB_REPOSITORY": c.REPOSITORY,
+                                          "GITHUB_TOKEN": "fixture-only"}), \
+                 patch.object(c, "get", return_value=json.dumps(metadata).encode()), \
+                 patch.object(c, "actions_archive_download",
+                              side_effect=lambda _id, _size, destination, _token:
+                              destination.write_bytes(forged_bytes)):
+                with self.assertRaises((ValueError, tarfile.TarError)):
+                    c.carrier_download(pin, output)
+            self.assertFalse(output.exists())
+
+    def test_reviewed_oci_backup_rejects_duplicate_artifact_member(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pin, original, transport, metadata = self.reviewed_recovery_fixture(root)
+            forged = root / "duplicate.zip"
+            with zipfile.ZipFile(forged, "w") as archive:
+                archive.writestr("carrier-original.oci.tar", b"one")
+                archive.writestr("carrier-original.oci.tar", b"two")
+            raw = forged.read_bytes()
+            pin["reviewed_recovery_artifact"]["transport_bytes"] = len(raw)
+            pin["reviewed_recovery_artifact"]["transport_sha256"] = c.sha(raw)
+            metadata["size_in_bytes"] = len(raw)
+            metadata["digest"] = "sha256:" + c.sha(raw)
+            output = root / "restored.zip"
+            with patch.dict(os.environ, {"GITHUB_REPOSITORY": c.REPOSITORY,
+                                          "GITHUB_TOKEN": "fixture-only"}), \
+                 patch.object(c, "get", return_value=json.dumps(metadata).encode()), \
+                 patch.object(c, "actions_archive_download",
+                              side_effect=lambda _id, _size, destination, _token:
+                              destination.write_bytes(raw)):
+                with self.assertRaisesRegex(ValueError, "SINGLE_BOUNDED_ORIGINAL_OCI"):
+                    c.carrier_download(pin, output)
+            self.assertFalse(output.exists())
+
+
     def test_docker_archive_load_preserves_original_oci_binding(self):
         from textwrap import dedent
         code = (Path(__file__).resolve().parents[1] / ".github/workflows/qikvrt_ci.yml").read_text().split("<<'PYLOAD'\n", 1)[1].split("\n          PYLOAD", 1)[0]
