@@ -6,7 +6,17 @@
   "claim_class": "CONDITIONAL_FORMAL_MODEL_AND_SOFTWARE_CONFORMANCE",
   "scientific_thesis": "Kognition ist ein rekonstruierbarer Regelkreis von Unterscheidung, Beobachtung, Modell, Entscheidung, autorisierter Handlung, unabhaengigem Wirkungsnachweis und bewahrter Erfahrung.",
   "roundtrip": [
-    "DISTINGUISH", "OBSERVE", "INFORM", "MODEL", "DECIDE", "AUTHORIZE", "ACT", "INDEPENDENT_EFFECT_READBACK", "PERSIST", "LEARN", "NEXT_DIFFERENCE"
+    "DISTINGUISH",
+    "OBSERVE",
+    "INFORM",
+    "MODEL",
+    "DECIDE",
+    "AUTHORIZE",
+    "ACT",
+    "INDEPENDENT_EFFECT_READBACK",
+    "PERSIST",
+    "LEARN",
+    "NEXT_DIFFERENCE"
   ],
   "model_evidence_flags": [
     "observationBound",
@@ -17,7 +27,6 @@
     "durableJournal",
     "writerFenced"
   ],
-  "lean_module": "QIKVRTFormalization.Cognition.EffectLearning",
   "leans_on": [
     "QIKVRTFormalization.Decision.ObservationSufficiency",
     "QIKVRTFormalization.WorldFormula.Relations"
@@ -35,5 +44,6 @@
     "AUTHORIZED_REVIEW_AND_GOVERNANCE",
     "ORIGINAL_HOST_READBACK_AND_DURABLE_WRITER_FENCING",
     "INDEPENDENT_EFFECT_ACK_READBACK"
-  ]
+  ],
+  "lean_source": "formalization/cognition_effect_learning_20261110/EffectLearning.lean"
 }

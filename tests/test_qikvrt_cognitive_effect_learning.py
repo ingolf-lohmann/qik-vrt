@@ -70,13 +70,15 @@ class CognitiveEffectLearningTests(unittest.TestCase):
 
     def test_proof_source_has_no_gaps_or_native_promotion(self):
         source = (Path(__file__).resolve().parents[1] /
-                  "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Cognition/EffectLearning.lean").read_text()
+                  "formalization/cognition_effect_learning_20261110/EffectLearning.lean").read_text()
         import re
         self.assertFalse(re.search(r"(?m)^\s*(sorry|admit|axiom)\b", source))
         self.assertIn("DecisionSufficiency.factorization_implies_sufficiency", source)
         self.assertIn("WorldFormula.every_stage_has_a_successor", source)
         self.assertIn("missing_independent_readback_blocks_learning", source)
         self.assertIn("missing_writer_fence_blocks_learning", source)
+        frozen = (Path(__file__).resolve().parents[1] / "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Cognition/EffectLearning.lean")
+        self.assertFalse(frozen.exists(), "FROZEN_V2_PACKAGE_MUTATED")
 
 
 if __name__ == "__main__":

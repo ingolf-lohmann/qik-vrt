@@ -55,7 +55,7 @@ theorem missing_writer_fence_blocks_learning (e : GateEvidence)
     (hMissing : e.writerFenced = false) :
     ¬ AdmissibleLearning e := by
   intro hLearning
-  have hFenced : e.writerFenced = true := hLearning.2.2.2.2.2
+  have hFenced : e.writerFenced = true := hLearning.2.2.2.2.2.2
   rw [hMissing] at hFenced
   cases hFenced
 
