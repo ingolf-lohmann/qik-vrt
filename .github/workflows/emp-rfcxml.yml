@@ -1,0 +1,43 @@
+name: EMP RFCXML conformance
+on:
+  pull_request:
+    paths:
+      - 'docs/protocols/draft-lohmann-qikvrt-effect-management-00.xml'
+      - '.github/workflows/emp-rfcxml.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: XML parse and required fields
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          p = 'docs/protocols/draft-lohmann-qikvrt-effect-management-00.xml'
+          root = ET.parse(p).getroot()
+          assert root.tag == 'rfc'
+          assert root.attrib['version'] == '3'
+          assert root.attrib['docName'] == 'draft-lohmann-qikvrt-effect-management-00'
+          sections = {s.attrib.get('name') for s in root.findall('./middle/section')}
+          assert {'Security Considerations', 'IANA Considerations', 'Protocol Requirements'} <= sections
+          print('RFCXML structure: PASS')
+          PY
+      - name: Install RFCXML validator
+        run: python -m pip install --disable-pip-version-check 'xml2rfc>=3,<4'
+      - name: Render RFCXML to text and HTML
+        run: |
+          mkdir -p /tmp/emp-validation
+          xml2rfc --text --out /tmp/emp-validation/draft.txt docs/protocols/draft-lohmann-qikvrt-effect-management-00.xml
+          xml2rfc --html --out /tmp/emp-validation/draft.html docs/protocols/draft-lohmann-qikvrt-effect-management-00.xml
+      - name: Upload validation renderings
+        uses: actions/upload-artifact@v4
+        with:
+          name: emp-rfcxml-renderings
+          path: /tmp/emp-validation/
