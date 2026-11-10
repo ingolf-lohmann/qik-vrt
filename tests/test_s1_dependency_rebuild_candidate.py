@@ -49,6 +49,41 @@ class S1DependencyCandidateTests(unittest.TestCase):
         self.assertEqual(source.count("actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"), 2)
         self.assertNotIn("043fb46d1a93c77aae656e75b540449e92b4886f43607fa02", source)
 
+    def test_data_only_layer_difference_and_no_false_promotion(self):
+        import io
+        import tarfile
+        from tools.qikvrt_s1_dependency_layer_diff import layer_records
+        # A tiny synthetic OCI outer tar with one gzip layer. Input is never extracted.
+        def example(data):
+            packed = io.BytesIO()
+            with tarfile.open(fileobj=packed, mode="w:gz") as layer:
+                member = tarfile.TarInfo("etc/test.conf")
+                member.size = len(data)
+                member.mtime = 0
+                layer.addfile(member, io.BytesIO(data))
+            payload = packed.getvalue()
+            import hashlib
+            digest = hashlib.sha256(payload).hexdigest()
+            with tempfile.TemporaryDirectory() as directory:
+                outer = Path(directory) / "oci.tar"
+                with tarfile.open(outer, mode="w") as archive:
+                    item = tarfile.TarInfo("blobs/sha256/" + digest)
+                    item.size = len(payload)
+                    archive.addfile(item, io.BytesIO(payload))
+                return layer_records(outer, "sha256:" + digest)
+        import tempfile
+        first = example(b"a")
+        second = example(b"b")
+        self.assertEqual(len(first), 1)
+        self.assertNotEqual(first["etc/test.conf"]["sha256"], second["etc/test.conf"]["sha256"])
+        self.assertEqual(first["etc/test.conf"]["bytes"], second["etc/test.conf"]["bytes"])
+
+    def test_layer_diff_preserved_when_oci_digest_is_not_equal(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("tools/qikvrt_s1_dependency_layer_diff.py", workflow)
+        self.assertIn("LAYER_DIFF.json", workflow)
+        self.assertIn('exit "$check_status"', workflow)
+
     def test_no_production_route_or_automatic_substitute(self):
         src = WORKFLOW.read_text(encoding="utf-8")
         forbidden = (

@@ -9,6 +9,7 @@ on:
       - 'runtime/self-host/CONTAINER_CARRIER.json'
       - '.github/workflows/qikvrt_s1_dependency_rebuild_candidate.yml'
       - 'tests/test_s1_dependency_rebuild_candidate.py'
+      - 'tools/qikvrt_s1_dependency_layer_diff.py'
       - 'docs/terminal/S1_DEPENDENCY_REBUILD_CANDIDATE_20261110.md'
       - 'REPOSITORY_FILE_MANIFEST.json'
       - 'SHA256SUMS.txt'
@@ -73,11 +74,22 @@ jobs:
               --output "type=oci,dest=$RUNNER_TEMP/s1-dependency-candidate/build-$n.oci.tar,compression=gzip,compression-level=9,rewrite-timestamp=true" \
               .
           done
+          set +e
           python3 -B tools/qikvrt_self_host.py container-oci-check --root . \
             --expected-head "$head" --expected-tree "$tree" \
             --oci-archive "$RUNNER_TEMP/s1-dependency-candidate/build-1.oci.tar" \
             --second-oci-archive "$RUNNER_TEMP/s1-dependency-candidate/build-2.oci.tar" \
             --receipt "$RUNNER_TEMP/s1-dependency-candidate/oci-receipt.json"
+          check_status=$?
+          set -e
+          if test "$check_status" -ne 0; then
+            python3 -B tools/qikvrt_s1_dependency_layer_diff.py \
+              --first "$RUNNER_TEMP/s1-dependency-candidate/build-1.oci.tar" \
+              --second "$RUNNER_TEMP/s1-dependency-candidate/build-2.oci.tar" \
+              --oci-receipt "$RUNNER_TEMP/s1-dependency-candidate/oci-receipt.json" \
+              --output "$RUNNER_TEMP/s1-dependency-candidate/LAYER_DIFF.json"
+            exit "$check_status"
+          fi
           python3 - "$RUNNER_TEMP/s1-dependency-candidate" "$head" "$tree" "$epoch" <<'PY'
           import hashlib,json,pathlib,sys
           root=pathlib.Path(sys.argv[1])
@@ -115,6 +127,7 @@ jobs:
           name: qikvrt-s1-new-dependency-diagnostics-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             ${{ runner.temp }}/s1-dependency-candidate/oci-receipt.json
+            ${{ runner.temp }}/s1-dependency-candidate/LAYER_DIFF.json
             ${{ runner.temp }}/s1-dependency-candidate/CANDIDATE_RECEIPT.json
           retention-days: 30
           if-no-files-found: warn

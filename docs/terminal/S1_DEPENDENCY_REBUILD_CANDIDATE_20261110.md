@@ -24,3 +24,7 @@ The source stage still resolves Debian packages from mutable repositories, so **
 No temporary Docker image, uploaded ZIP, or model success grants `EFFECT_ACK_DONE=true`. Until every applicable gate has succeeded: **OPEN/BLOCKED**.
 
 Reproduce scope: `python3 -B -m unittest -v tests.test_s1_dependency_rebuild_candidate`.
+
+## TEMDD delta from first independent build (2026-11-10)
+
+Run 42820137690, SHA-256-verified downloaded diagnostics 09e7789c92780db072872f35da02318db0036f3c180015dc32feb8153b1e0692: image digests ad811e2e... and 20bf7a28... disagree. Six of seven uncompressed OCI layer digests are equal; layer index 5 differs (94a8cc8d... vs e090e995...). All upstream base layers, source labels and recorded times agree. This is evidence of content or metadata drift inside the apt-install stage, not evidence that a package version changed. The successor diagnosis reads and SHA-binds both build archives and emits a bounded list of changed file paths, mode/timestamp metadata and hashes, **without extracting or executing them**. Until the causal path has been isolated and a new pair matches, the candidate remains HOLD.
