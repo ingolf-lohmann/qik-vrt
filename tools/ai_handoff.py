@@ -268,6 +268,13 @@ def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str
                   "tools/qikvrt_self_host_container.py": "b8d8ffa4fadcccea123596bc88da119249ebd91909c2988da15a6ae8583d93b0",
                   "tools/qikvrt_self_host.py": "4e987c507764f9536973172e53db209f60cb4c45b5e701aa33f51101c85c165c"},
                  "Verify versioned PR494 dependency carrier successor"),
+                # The 2026-11-10 corrected successor carries a DISTINCT verified
+                # package/OCI source set. Exact source triples are indivisible;
+                # old source bytes must not inherit this new successful-step name.
+                ({".github/workflows/qikvrt_ci.yml": "79fa8a43074041eca138be968be317819a5df91f56fb48537731cf41604d58b9",
+                  "tools/qikvrt_self_host_container.py": "8ce464049a35e4dd48eb2b411a8880439d67aa03694b7efc74cf375a96bba82e",
+                  "tools/qikvrt_self_host.py": "4e987c507764f9536973172e53db209f60cb4c45b5e701aa33f51101c85c165c"},
+                 "Verify versioned PR494 dependency carrier successor"),
             )
             steps = []
             for pins, step_name in source_bindings:
