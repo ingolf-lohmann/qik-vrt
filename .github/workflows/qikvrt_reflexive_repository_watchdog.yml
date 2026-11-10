@@ -166,6 +166,42 @@ jobs:
             > "$root/validated-job-readback-budget.json"
 
 
+      - name: Measure reproducible autonomy and storage efficiency
+        if: steps.reobserve.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.qikvrt/reflexive-repository-watchdog
+          python3 -B - <<'PY' > "$root/optimization-metrics.json"
+          import hashlib, json
+          from pathlib import Path
+          root = Path(".qikvrt/reflexive-repository-watchdog")
+          head = (root / "observed-head.txt").read_text().strip()
+          runs = json.loads((root / "current-runs.json").read_text())["workflow_runs"]
+          completed = [r for r in runs if r.get("status") == "completed"]
+          succeeded = [r for r in completed if r.get("conclusion") == "success"]
+          content = []
+          for path in sorted(root.rglob("*.json")):
+              if path.name == "optimization-metrics.json":
+                  continue
+              data = path.read_bytes()
+              content.append({"sha256": hashlib.sha256(data).hexdigest(),
+                              "bytes": len(data)})
+          print(json.dumps({
+              "schema": "qikvrt_optimization_metrics_v1",
+              "head_sha": head,
+              "completed_runs": len(completed),
+              "successful_runs": len(succeeded),
+              "automatic_completion_ratio": (len(succeeded) / len(completed)) if completed else None,
+              "evidence_bytes": sum(item["bytes"] for item in content),
+              "unique_content_bytes": sum({item["sha256"]: item["bytes"] for item in content}.values()),
+              "distinct_evidence_blobs": len({item["sha256"] for item in content}),
+              "observed_run_count": len(runs),
+              "effect_ack_done": False,
+              "metrics_are_observations_not_admission": True
+          }, sort_keys=True))
+          PY
+
       - name: Classify exact-head execution blockers for TEMDD
         if: steps.reobserve.outcome == 'success'
         shell: bash
