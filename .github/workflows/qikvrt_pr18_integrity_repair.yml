@@ -44,3 +44,19 @@ jobs:
           fi
           git commit -m "fix: regenerate repository integrity for live status watcher"
           git push origin HEAD:"${GITHUB_REF_NAME}"
+      - name: Detect platform-blocked successor execution (fail closed)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A successful integrity writer is not a successful downstream execution.
+          # Inspect the latest branch HEAD, never approve restricted workflows.
+          head="$(git ls-remote origin "refs/heads/${GITHUB_REF_NAME}" | cut -f1)"
+          test -n "$head"
+          echo "Observed branch HEAD: $head"
+          echo "Repository writer finished; downstream Exact-HEAD CI and governance must independently pass."
+          echo "GitHub action_required is a platform approval gate, not a retryable CI failure."
+          echo "Do not auto-commit, retry, merge, or claim EFFECT_ACK_DONE to bypass this gate."
+          printf "head=%s\\nwriter_run=%s\\nnext_gate=exact_head_ci_and_governance\\n" "$head" "$GITHUB_RUN_ID" >> "$GITHUB_STEP_SUMMARY"
