@@ -15,6 +15,11 @@ they contain no credential values and do not provision missing source material.
 GET accepts `schema=qikvrt-publication-rest/v1` and `request_id`. It runs original
 source/reference admission without reading provider secret values or invoking
 the publisher. It returns the source and private-request pins for the bound POST.
+GET retains access to the existing attempt when a provider reference has expired;
+`credential_metadata_current` reports that condition separately. This is not
+permission to invoke the publisher: POST and `publication-resume` still require
+unexpired references. The original SSO session, request/source pins, private-file
+checks and one-use journal guards remain required for readback.
 POST accepts only those pins, its stable request ID and `effect_accepted=true`;
 the same-origin native SSO guard and exact v2 candidate authorization remain
 mandatory. The original launcher obtains credentials through its protected

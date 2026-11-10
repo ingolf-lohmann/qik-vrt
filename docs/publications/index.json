@@ -1093,8 +1093,17 @@
       "state": "local_candidate_no_public_posting_observed",
       "boundary": "Local preparation or Zenodo-archived source; no public IETF posting found in the complete native person/author and submission readback. Not an additional published IETF document.",
       "candidate_locations": [
+        "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.xml",
         "original-archive:zenodo/21983644/draft-lohmann-qikvrt-effect-ack-http-01.xml"
-      ]
+      ],
+      "evidence_path": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.PROVENANCE.json",
+      "artifacts": {
+        "xml": {
+          "path": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.xml",
+          "bytes": 10307,
+          "sha256": "11fd502eeec40a017fab27572cb8e4cd59b6d0e1e4c68769aabe5a435dc34ac2"
+        }
+      }
     },
     {
       "id": "draft-lohmann-qikvrt-scientific-claim-assurance-00",

@@ -51,9 +51,20 @@ USER 10001:10001
 
 FROM ${QIKVRT_PRODUCTION_IMAGE} AS package-builder
 USER root
-ARG DEBIAN_SNAPSHOT=20261013T000000Z
-RUN printf 'Types: deb\nURIs: https://snapshot.debian.org/archive/debian/%s\nSuites: bookworm bookworm-updates\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\nCheck-Valid-Until: no\n\nTypes: deb\nURIs: https://snapshot.debian.org/archive/debian-security/%s\nSuites: bookworm-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\nCheck-Valid-Until: no\n' "$DEBIAN_SNAPSHOT" "$DEBIAN_SNAPSHOT" > /etc/apt/sources.list.d/debian.sources \
-    && apt-get update && apt-get install -y --no-upgrade --no-install-recommends git make \
+# The failed snapshot transport selected these exact eight package versions.
+# Keep Debian signature checks and reject index/byte/version drift. Fetch once
+# through the official live transport, then install only the verified archives.
+COPY tools/qikvrt_self_host_container.py /tmp/qikvrt-build-apt.py
+COPY runtime/self-host/FROZEN_BUILD_APT_V1.json /tmp/qikvrt-build-apt.json
+RUN printf 'Types: deb\nURIs: https://deb.debian.org/debian\nSuites: bookworm\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\nCheck-Valid-Until: no\n\nTypes: deb\nURIs: https://deb.debian.org/debian-security\nSuites: bookworm-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\nCheck-Valid-Until: no\n' > /etc/apt/sources.list.d/debian.sources \
+    && printf 'Acquire::Retries "0";\nAcquire::https::Timeout "30";\nAcquire::http::Timeout "30";\nAPT::Update::Error-Mode "any";\n' > /etc/apt/apt.conf.d/99qikvrt-frozen-build \
+    && timeout --signal=TERM --kill-after=10s 180s apt-get update \
+    && apt-get -o Acquire::ForceHash=sha256 --print-uris -y --no-upgrade --no-install-recommends install git make > /tmp/qikvrt-build-apt-plan \
+    && python3 -B -c 'import json,runpy; print(json.dumps(runpy.run_path("/tmp/qikvrt-build-apt.py")["frozen_apt_guard"]("plan","/tmp/qikvrt-build-apt.json","/tmp/qikvrt-build-apt-plan"),sort_keys=True))' \
+    && timeout --signal=TERM --kill-after=10s 180s apt-get -y --download-only --no-upgrade --no-install-recommends install git make \
+    && python3 -B -c 'import json,runpy; print(json.dumps(runpy.run_path("/tmp/qikvrt-build-apt.py")["frozen_apt_guard"]("archives","/tmp/qikvrt-build-apt.json","/var/cache/apt/archives"),sort_keys=True))' \
+    && timeout --signal=TERM --kill-after=10s 120s apt-get -y --no-download --no-upgrade --no-install-recommends install git make \
+    && python3 -B -c 'import json,runpy; print(json.dumps(runpy.run_path("/tmp/qikvrt-build-apt.py")["frozen_apt_guard"]("installed","/tmp/qikvrt-build-apt.json","/var/cache/apt/archives"),sort_keys=True))' \
     && git config --system --add safe.directory /source \
     && rm -rf /var/lib/apt/lists/* /var/log/apt/* /var/log/dpkg.log /var/log/alternatives.log
 WORKDIR /source

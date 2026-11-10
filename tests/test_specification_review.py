@@ -71,6 +71,113 @@ class SpecificationReview(unittest.TestCase):
                             subject=self.subject, scope='SOURCE_REPAIR_ONLY',
                             reason='repair frozen source only')))
 
+    def readonly_retry(self):
+        path = '.github/workflows/qikvrt_reflexive_repository_watchdog.yml'
+        original = Path(__file__).resolve().parents[1] / path
+        target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(original.read_bytes())
+        before = dict(schema='qikvrt_job_readback_budget_v1', expected_head_sha=self.subject['head'],
+            selection='LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1', state='HOLD',
+            first_blocker='JOB_READBACK_REQUEST_BUDGET_EXCEEDED', max_job_requests=20,
+            reported_run_count=22, returned_run_count=22, required_job_request_count=22,
+            inventory_sha256='a'*64, run_ids=[], metadata_only_run_ids=[])
+        after = dict(before, state='READY', first_blocker=None, required_job_request_count=20,
+            inventory_sha256='b'*64, run_ids=list(range(1,21)), metadata_only_run_ids=[21,22])
+        return dict(method='POST', service='github', transport='REST_API_ONLY',
+            tool='github_rerun_failed_workflow_run_jobs',
+            endpoint='https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/runs/7/rerun-failed-jobs',
+            specification_use='HISTORICAL_EXACT', specification_claims=[],
+            specification_basis=dict(subject=self.subject, scope='SOURCE_REPAIR_ONLY', reason='exact read-only source verification'),
+            verification_retry=dict(schema='qikvrt-readonly-watchdog-budget-recovery/v1',
+                run=dict(id=7, workflow_id=331355883, path=path, head_sha=self.subject['head'],
+                         status='completed', conclusion='failure', run_attempt=1),
+                failure_receipt=dict(schema='qikvrt_reflexive_observation_failure_receipt_v1',
+                    repository=self.subject['repository'],head_sha=self.subject['head'],tree_sha=self.subject['tree'],
+                    run_id=7,run_attempt=1,state='OBSERVATION_FAILED',disposition='HOLD',
+                    failure=dict(stage='JOBS_BUDGET_PREFLIGHT',exit_code=2),effect_ack_done=False),
+                previous_budget=before, current_budget=after))
+
+    def test_readonly_frozen_watchdog_retry_requires_actual_budget_recovery(self):
+        self.check(self.readonly_retry())
+
+    def test_readonly_retry_rejects_unchanged_or_over_budget_observation(self):
+        a = self.readonly_retry()
+        for change in ('same', 'over', 'incomplete', 'duplicate', 'raised_cap'):
+            x = copy.deepcopy(a); b = x['verification_retry']['current_budget']
+            if change == 'same': b['inventory_sha256'] = 'a'*64
+            if change == 'over': b['required_job_request_count'] = 22
+            if change == 'incomplete': b['returned_run_count'] = 21
+            if change == 'duplicate': b['run_ids'][0] = b['run_ids'][1]
+            if change == 'raised_cap': b['max_job_requests'] = 22
+            with self.subTest(change=change), self.assertRaises(SystemExit): self.check(x)
+
+    def test_readonly_retry_rejects_other_workflow_source_identity_and_approval(self):
+        a = self.readonly_retry()
+        for key, value in [('workflow_id', 1), ('path', '.github/workflows/deploy.yml'),
+                           ('head_sha', 'f'*40), ('conclusion', 'action_required'),
+                           ('id', 8), ('run_attempt', True), ('run_attempt', 2), ('status', 'in_progress')]:
+            x = copy.deepcopy(a); x['verification_retry']['run'][key] = value
+            with self.subTest(key=key), self.assertRaises(SystemExit): self.check(x)
+
+    def test_readonly_retry_cannot_dispatch_deploy_or_execute_a_changed_recipe(self):
+        a = self.readonly_retry()
+        for change in ('dispatch', 'query', 'tool', 'current_claim', 'recipe'):
+            x = copy.deepcopy(a)
+            if change == 'dispatch': x['endpoint'] = x['endpoint'].replace('/runs/7/rerun-failed-jobs', '/workflows/deploy/dispatches')
+            if change == 'query': x['endpoint'] += '?enable_debug_logging=true'
+            if change == 'tool': x['tool'] = 'github_rerun_workflow_job'
+            if change == 'current_claim': x['specification_claims'] = ['effect-ack']
+            if change == 'recipe':
+                p = self.root / x['verification_retry']['run']['path']; p.write_bytes(p.read_bytes() + b'\n# changed\n')
+            with self.subTest(change=change), self.assertRaises(SystemExit): self.check(x)
+
+    def native_api_retry(self):
+        action = self.readonly_retry()
+        for path in ('.github/workflows/qikvrt_ci.yml', 'tools/qikvrt_self_host_container.py', 'tools/qikvrt_self_host.py'):
+            target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((Path(__file__).resolve().parents[1] / path).read_bytes())
+        proof = action['verification_retry']; proof.pop('previous_budget')
+        proof['schema'] = 'qikvrt-readonly-watchdog-native-api-recovery/v1'
+        proof['failure_receipt'].update(failure=dict(stage='BASELINE_READBACK', exit_code=5),
+                                       observed_at='1970-01-01T00:15:00Z')
+        proof['failed_job'] = dict(id=70, run_id=7, run_attempt=1, head_sha=self.subject['head'], status='completed', conclusion='failure')
+        proof['failure_log_sha256'] = 'c'*64
+        proof['failure_log_excerpt'] = 'gh: API rate limit exceeded for installation (HTTP 403)'
+        proof['native_api_witness'] = dict(
+            run=dict(id=8, run_attempt=1, path='.github/workflows/qikvrt_ci.yml',
+                repository=dict(full_name=self.subject['repository']), head_sha=self.subject['head'],
+                head_commit=dict(tree_id=self.subject['tree']), status='completed', conclusion='success'),
+            job=dict(id=80, run_id=8, run_attempt=1, head_sha=self.subject['head'],
+                name='Linux S1 native terminal production and smoke', status='completed', conclusion='success',
+                completed_at='1970-01-01T00:16:40Z', steps=[dict(
+                    name='Verify and reuse original PR494 Docker carrier', status='completed', conclusion='success',
+                    started_at='1970-01-01T00:16:30Z', completed_at='1970-01-01T00:16:35Z')]))
+        return action
+
+    def test_native_api_retry_requires_later_exact_native_rest_success(self):
+        self.check(self.native_api_retry())
+        for change in ('old', 'future', 'stale', 'step', 'duplicate', 'source', 'tree', 'repo',
+                       'attempt', 'boolean_attempt', 'budget', 'error', 'failure', 'job', 'native_run', 'recipe'):
+            action = self.native_api_retry(); proof = action['verification_retry']
+            witness = proof['native_api_witness']; job = witness['job']; step = job['steps'][0]
+            if change == 'old': step['started_at'] = '1970-01-01T00:14:00Z'
+            if change == 'future': job['completed_at'] = '1970-01-01T00:20:00Z'
+            if change == 'step': step['conclusion'] = 'skipped'
+            if change == 'duplicate': job['steps'].append(copy.deepcopy(step))
+            if change == 'source': witness['run']['head_sha'] = 'f'*40
+            if change == 'tree': witness['run']['head_commit']['tree_id'] = 'f'*40
+            if change == 'repo': witness['run']['repository']['full_name'] = 'other/repo'
+            if change == 'attempt': proof['failed_job']['run_attempt'] = 2
+            if change == 'boolean_attempt': job['run_attempt'] = True
+            if change == 'budget': proof['current_budget']['max_job_requests'] = 21
+            if change == 'error': proof['failure_log_excerpt'] = 'unrelated HTTP 403'
+            if change == 'failure': proof['failure_receipt']['failure']['stage'] = 'SUBJECT_READBACK'
+            if change == 'job': job['conclusion'] = 'failure'
+            if change == 'native_run': witness['run']['conclusion'] = 'failure'
+            if change == 'recipe':
+                p = self.root / 'tools/qikvrt_self_host_container.py'; p.write_bytes(p.read_bytes() + b'\n')
+            with self.subTest(change=change), self.assertRaises(SystemExit):
+                self.check(action, now=5000 if change == 'stale' else 1001)
+
     def test_historical_label_cannot_bypass_currentness_for_productive_effect(self):
         for endpoint in ('https://raumzeitterminal.de/api/eap/effect',
                          'https://api.github.com/repos/other/repo/git/trees',
