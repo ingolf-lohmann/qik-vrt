@@ -128,18 +128,21 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B - <<'PY'
-          import hashlib,json,os,pathlib,urllib.request,zipfile
-          class ArtifactRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self,request,fp,code,msg,headers,newurl):
-                  redirected=super().redirect_request(request,fp,code,msg,headers,newurl)
-                  if redirected is not None: redirected.remove_header('Authorization')
-                  return redirected
+          import hashlib,json,os,pathlib,zipfile
+          from tools import qikvrt_self_host_container as carrier
           baseline=json.load(open('runtime/self-host/PACKAGE.json'))['runtime_delivery_baseline']
-          url='https://api.github.com/repos/'+baseline['repository']+'/actions/artifacts/'+str(baseline['artifact_id'])+'/zip'
+          frozen=json.load(open('runtime/self-host/CONTAINER_CARRIER.json'))
+          identity=('repository','source_head','source_tree','run_id','artifact_id',
+                    'archive_bytes','archive_sha256','delivery_sha256')
+          if any(baseline.get(field)!=frozen.get(field) for field in identity):
+              raise SystemExit('BASELINE_CARRIER_CONTRACT_DRIFT')
+          if frozen.get('reviewed_recovery_artifact',{}).get('durability') != 'TEMPORARY_ACTIONS_BACKUP_ONLY_NO_PRODUCTION_ADMISSION':
+              raise SystemExit('REVIEWED_ORIGINAL_BYTE_RECOVERY_REQUIRED')
           target=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-baseline.zip'
-          request=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
-          with urllib.request.build_opener(ArtifactRedirect()).open(request,timeout=60) as response,target.open('wb') as out:
-              while block:=response.read(4*1024*1024): out.write(block)
+          # Reuse the existing OCI verifier, original-byte readback and bounded
+          # GitHub artifact transport. Keep the historical PACKAGE pin immutable.
+          os.environ['GITHUB_TOKEN']=os.environ['GH_TOKEN']
+          carrier.carrier_download(frozen,target)
           with target.open('rb') as source: sha=hashlib.file_digest(source,'sha256').hexdigest()
           if target.stat().st_size!=baseline['artifact_bytes'] or sha!=baseline['artifact_sha256']:
               raise SystemExit('BASELINE_ARTIFACT_DIGEST_MISMATCH')
