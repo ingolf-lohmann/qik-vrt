@@ -2,6 +2,7 @@ import QIKVRTEffectAck.Model
 import QIKVRTEffectAck.Safety
 import QIKVRTEffectAck.Mediation
 import QIKVRTEffectAck.InformationBoundary
+import QIKVRTEffectAck.TwoFixpoints
 import QIKVRTEffectAck.Claims
 import QIKVRTEffectAck.QuantumClassicalRuntime
 import QIKVRTEffectAck.CanonicalTemporalMemory
