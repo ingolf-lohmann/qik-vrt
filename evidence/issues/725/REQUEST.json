@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "## Observed evidence (2026-11-10)\n- Authority repository `ingolf-lohmann/qik-vrt`; PR #724 successor HEAD `41beb9f4b3fc7f2e9f38169f8773b767d2dd881c`.\n- Integrity successor changed only `REPOSITORY_FILE_MANIFEST.json`, `.sha256`, and `SHA256SUMS.txt`.\n- Exact-HEAD QIKVRT CI run https://github.com/ingolf-lohmann/qik-vrt/actions/runs/42838374349: `completed/action_required`, `event=pull_request`, `actor=github-actions[bot]`, zero jobs. This is a native execution-admission boundary, **not** a failing test and not proof of a completed verification.\n- Predecessor CI https://github.com/ingolf-lohmann/qik-vrt/actions/runs/42836835041 was still `in_progress` at readback; preserve same-writer exclusivity.\n\n## Queue\nPriority **P1**; dependencies: P0 exclusive-writer/fixpoint reconciliation, GitHub native workflow admission. Dedupe key `qikvrt:P1:bot-origin-exact-head-admission`.\n\n## Next executable action\nInvestigate existing GitHub native approval/execution policy and use the existing authorized approval route for this exact run; do not create parallel controllers, timers or another unverified commit to force a trigger. Isolate the blocked gate and continue independent P2 host/Mesh diagnostics.\n\n## Acceptance criteria\n1. Native CI jobs actually execute against the exact successor HEAD/TREE.\n2. Full tests, integrity and governance receipts are independently read back.\n3. Independent review and release gates remain enforced; no merge, host effect or `EFFECT_ACK_DONE` claim until independently verified.\n\nStatus: OPEN / BLOCKED. No admission bypass is authorized.",
+  "created_at": "2026-11-10T14:55:20Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/725",
+  "issue_number": 725,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "P1: admit bot-origin Exact-HEAD CI after integrity successor (#724)",
+  "updated_at": "2026-11-10T14:55:20Z"
+}
