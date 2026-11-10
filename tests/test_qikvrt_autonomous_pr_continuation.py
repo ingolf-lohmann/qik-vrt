@@ -100,6 +100,41 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         self.assertNotIn("git checkout --theirs", source)
         self.assertNotIn("git merge --abort || true", source)
 
+    def test_watchdog_consumer_only_admits_successful_exact_main_producer(self) -> None:
+        from types import SimpleNamespace
+        source = CONTINUATION.read_text(encoding="utf-8")
+        guard = source.split("  continue-one-opted-in-draft:\n    # Reject", 1)[1]
+        guard = guard.split("\n    if: ", 1)[1].split("\n", 1)[0]
+        self.assertIn("github.event.workflow_run.head_sha == github.sha", guard)
+        self.assertIn("github.event.workflow_run.repository.full_name == github.repository", guard)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", guard)
+        self.assertIn("github.event.workflow_run.event != 'pull_request'", guard)
+        expression = guard.replace(" || ", " or ").replace(" && ", " and ")
+
+        def admitted(*, event_name="workflow_run", name="QIKVRT reflexive repository watchdog",
+                     conclusion="success", head_branch="main", head_sha=MAIN, main_sha=MAIN,
+                     source_repo=REPOSITORY, repository=REPOSITORY, producer_event="workflow_run"):
+            producer = SimpleNamespace(name=name, conclusion=conclusion, head_branch=head_branch,
+                                       head_sha=head_sha, event=producer_event,
+                                       repository=SimpleNamespace(full_name=source_repo))
+            github = SimpleNamespace(event_name=event_name, event=SimpleNamespace(workflow_run=producer),
+                                     sha=main_sha, repository=repository)
+            return bool(eval(expression, {"__builtins__": {}}, {"github": github}))
+
+        self.assertTrue(admitted())
+        self.assertTrue(admitted(producer_event="schedule"))
+        self.assertTrue(admitted(event_name="workflow_dispatch", conclusion="cancelled"))
+        self.assertTrue(admitted(name="QIKVRT CI", conclusion="failure"))
+        for invalid in (
+            {"conclusion": "cancelled"}, {"conclusion": "failure"}, {"conclusion": None},
+            {"producer_event": "pull_request"}, {"head_branch": "feature"},
+            {"head_sha": "b" * 40}, {"source_repo": "foreign/qik-vrt"},
+            {"repository": "foreign/qik-vrt"},
+        ):
+            with self.subTest(invalid=invalid):
+                self.assertFalse(admitted(**invalid))
+
+
     def test_continuation_shell_block_is_syntax_valid(self) -> None:
         source = CONTINUATION.read_text(encoding="utf-8")
         blocks = source.split("        run: |\n")[1:]
