@@ -50,6 +50,22 @@ theorem same_inputs_same_qr
     (seed64 : UInt64) (seed8 : UInt8) (payload : Bytes) :
     qr seed64 seed8 payload = qr seed64 seed8 payload := rfl
 
+/-- An implementation-level roundtrip and an independently established QR
+    injectivity premise compose into an injective serialized QR representation.
+    The premise on qr must be verified for the concrete payload domain; seeds
+    alone do not discharge it. This theorem asserts no cryptographic security. -/
+theorem codec_qr_injective_of_roundtrip
+    {Element Bytes QR : Type}
+    (encode : Element → Bytes) (decode : Bytes → Element)
+    (qr : UInt64 → UInt8 → Bytes → QR)
+    (seed64 : UInt64) (seed8 : UInt8)
+    (hRoundtrip : ∀ e, decode (encode e) = e)
+    (hQrInjective : Function.Injective (qr seed64 seed8)) :
+    Function.Injective (fun e => qr seed64 seed8 (encode e)) := by
+  intro a b h
+  apply codec_roundtrip_implies_injective encode decode hRoundtrip
+  exact hQrInjective h
+
 /-- EAP acceptance cannot be inferred from a QR value alone:
     an independent observation hypothesis is explicitly required. -/
 theorem observed_effect_requires_readback
