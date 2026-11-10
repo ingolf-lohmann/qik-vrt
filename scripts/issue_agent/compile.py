@@ -163,6 +163,31 @@ def compile_issue(issue_path: Path, context_path: Path, output_path: Path) -> No
     if isinstance(number, bool) or not isinstance(number, int) or number <= 0:
         raise SystemExit("INVALID_ISSUE_NUMBER")
 
+    # A strictly bounded, non-effecting diagnostic for the owner's repository-native
+    # I/O roundtrip request. This is not a deployment or a completion receipt.
+    # Match exact issue identity and a stable semantic marker, never arbitrary
+    # user-supplied commands or a generic title substring.
+    if number == 718 and issue.get("title") == (
+        "Owner directive: repository-native input/output roundtrip as authoritative execution path"
+    ) and "repository-native, authenticated input carrier" in (issue.get("body") or ""):
+        answer = (
+            "# Repository answer\\n\\n"
+            "Handler: repository_native_io_roundtrip_diagnostic_v1\\n\\n"
+            "## Verified local capability\\n\\n"
+            "The issue was materialized by the repository processor. "
+            "This handler performs classification only; no native execution "
+            "carrier or effecting handler has been admitted.\\n\\n"
+            "## Formal status\\n\\nNOT_EVALUATED\\n\\n"
+            "## Empirical status\\n\\nNOT_EVALUATED\\n\\n"
+            "## Issue disposition\\n\\nBLOCKED_WITH_NEXT_ACTION\\n\\n"
+            "## Disposition reason\\n\\nEFFECTING_HANDLER_NOT_ADMITTED\\n\\n"
+            "## Required next action\\n\\nReview and admit a schema-validated, "
+            "effect-bounded native carrier, then replay the unchanged issue.\\n\\n"
+            "## Gate result\\n\\nBLOCK\\n"
+        )
+        output_path.write_text(answer, encoding="utf-8")
+        return
+
     # Only named, repository-reviewed handlers may ever turn an untrusted issue
     # into an executable work unit. The initial compiler intentionally has no
     # effecting handler; unsupported inputs remain visible instead of invoking a
