@@ -171,19 +171,19 @@ def compile_issue(issue_path: Path, context_path: Path, output_path: Path) -> No
         "Owner directive: repository-native input/output roundtrip as authoritative execution path"
     ) and "repository-native, authenticated input carrier" in (issue.get("body") or ""):
         answer = (
-            "# Repository answer\\n\\n"
-            "Handler: repository_native_io_roundtrip_diagnostic_v1\\n\\n"
-            "## Verified local capability\\n\\n"
+            "# Repository answer\n\n"
+            "Handler: repository_native_io_roundtrip_diagnostic_v1\n\n"
+            "## Verified local capability\n\n"
             "The issue was materialized by the repository processor. "
             "This handler performs classification only; no native execution "
-            "carrier or effecting handler has been admitted.\\n\\n"
-            "## Formal status\\n\\nNOT_EVALUATED\\n\\n"
-            "## Empirical status\\n\\nNOT_EVALUATED\\n\\n"
-            "## Issue disposition\\n\\nBLOCKED_WITH_NEXT_ACTION\\n\\n"
-            "## Disposition reason\\n\\nEFFECTING_HANDLER_NOT_ADMITTED\\n\\n"
-            "## Required next action\\n\\nReview and admit a schema-validated, "
-            "effect-bounded native carrier, then replay the unchanged issue.\\n\\n"
-            "## Gate result\\n\\nBLOCK\\n"
+            "carrier or effecting handler has been admitted.\n\n"
+            "## Formal status\n\nNOT_EVALUATED\n\n"
+            "## Empirical status\n\nNOT_EVALUATED\n\n"
+            "## Issue disposition\n\nBLOCKED_WITH_NEXT_ACTION\n\n"
+            "## Disposition reason\n\nEFFECTING_HANDLER_NOT_ADMITTED\n\n"
+            "## Required next action\n\nReview and admit a schema-validated, "
+            "effect-bounded native carrier, then replay the unchanged issue.\n\n"
+            "## Gate result\n\nBLOCK\n"
         )
         output_path.write_text(answer, encoding="utf-8")
         return
