@@ -71,3 +71,16 @@ status and not a machine-verifiable theorem.
 These obligations are represented in the candidate Python contract and its
 negative tests. Production compliance remains subject to independent review,
 native tests and original-host readback.
+
+## Product ownership and accountability
+
+Attributed Principal statement, authorized for publication by Ingolf Lohmann
+(10 November 2026):
+
+> "Das ist der berufliche Sinn und Zweck eines Product Owners. Mein Name ist
+> Ingolf Lohmann. Freigabe erteilt."
+
+Operational interpretation: the Product Owner sets intended value, acceptance
+criteria, priorities and authorized scope; the EMP implements within admitted
+constraints; the EAP independently verifies observed outcomes. Owner approval
+is not a substitute for passing tests, independent review, or effect evidence.
