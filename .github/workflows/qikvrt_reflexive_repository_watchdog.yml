@@ -227,6 +227,8 @@ jobs:
           runs = json.loads((root / "current-runs.json").read_text())["workflow_runs"]
           observed = []
           for run in runs:
+              if run.get("head_sha") != head:
+                  continue
               jobs_file = root / "jobs" / f"{run['id']}.json"
               jobs = json.loads(jobs_file.read_text())["jobs"] if jobs_file.exists() else []
               observed.append({key: run.get(key) for key in
