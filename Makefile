@@ -310,3 +310,9 @@ native-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_archive
 
 test: native-archive-test
+
+# Three-fixpoint contract: mandatory in the existing native CI `make test` path.
+.PHONY: three-fixpoint-conformance-test
+test: three-fixpoint-conformance-test
+three-fixpoint-conformance-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_three_fixpoint
