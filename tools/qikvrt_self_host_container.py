@@ -614,7 +614,7 @@ def durable_release_asset(expected, release):
             "DURABLE_CARRIER_EXPLICIT_SOURCE_REQUIRED")
     require(isinstance(release, dict) and release.get("tag_name") == tag and
             release.get("target_commitish") == expected["source_head"] and
-            release.get("draft") is True and release.get("prerelease") is False,
+            release.get("draft") is False and release.get("prerelease") is True,
             "DURABLE_CARRIER_RELEASE_IDENTITY_MISMATCH")
     assets = release.get("assets")
     require(isinstance(assets, list) and len(assets) == 1 and isinstance(assets[0], dict),

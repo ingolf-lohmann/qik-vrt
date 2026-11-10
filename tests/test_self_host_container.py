@@ -31,8 +31,8 @@ class DurableCarrierReleaseBinding(unittest.TestCase):
             release_tag="qikvrt-pr494-candidate-sha256-" + digest,
             release_asset_name="qikvrt-pr494-successor-" + digest[:8] + ".zip",
             candidate_state="INTEGRITY_VERIFIED_NOT_PRODUCTION_ADMITTED")
-        release = dict(tag_name=expected["release_tag"], draft=True,
-            prerelease=False, target_commitish=expected["source_head"],
+        release = dict(tag_name=expected["release_tag"], draft=False,
+            prerelease=True, target_commitish=expected["source_head"],
             assets=[dict(id=42, name=expected["release_asset_name"],
                 size=101, digest="sha256:" + digest, state="uploaded")])
         return expected, release
@@ -47,7 +47,7 @@ class DurableCarrierReleaseBinding(unittest.TestCase):
             with self.subTest(kind=kind):
                 expected, release = self.fixture()
                 if kind == "tag": release["tag_name"] = "other"
-                elif kind == "published": release["draft"] = False
+                elif kind == "published": release["draft"] = True
                 elif kind == "target": release["target_commitish"] = "c" * 40
                 elif kind == "duplicate": release["assets"].append(dict(release["assets"][0]))
                 elif kind == "asset_name": release["assets"][0]["name"] = "other.zip"

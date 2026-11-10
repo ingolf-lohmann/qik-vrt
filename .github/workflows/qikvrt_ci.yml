@@ -92,7 +92,17 @@ jobs:
           assert candidate["source_head"] == "4bdda5c7534a2c4fbac224015179492a4b624b3a"
           assert candidate["source_tree"] == "05e1a0b0605bcf2c2c177ceda98f112552fe02a3"
           archive = Path(os.environ["RUNNER_TEMP"]) / "qikvrt-release-staging" / candidate["release_asset_name"]
-          c.carrier_download(candidate, archive)
+          # Publisher reads the exact Actions candidate; consumer reads only the
+          # separately published release. Do not collapse these provenance paths.
+          token = os.environ["GITHUB_TOKEN"]
+          uri = "https://api.github.com/repos/" + c.REPOSITORY + "/actions/artifacts/" + str(candidate["artifact_id"])
+          metadata = json.loads(c.get(uri, token))
+          assert metadata.get("expired") is False
+          assert metadata.get("size_in_bytes") == candidate["archive_bytes"]
+          assert metadata.get("digest") == "sha256:" + candidate["archive_sha256"]
+          assert metadata.get("workflow_run", {}).get("id") == candidate["run_id"]
+          assert metadata.get("workflow_run", {}).get("head_sha") == candidate["source_head"]
+          c.actions_archive_download(candidate["artifact_id"], candidate["archive_bytes"], archive, token)
           result = c.carrier_import(candidate, archive, Path(os.environ["RUNNER_TEMP"]) / "qikvrt-carrier-tested")
           assert result["state"] == "ORIGINAL_FROZEN_CARRIER_VERIFIED"
           assert result["scope"] == "DEPENDENCY_IMAGE_ONLY"
@@ -136,7 +146,25 @@ jobs:
             --pattern "$name" --dir "$RUNNER_TEMP/qikvrt-release-readback" --clobber=false
           echo '64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1  '"$RUNNER_TEMP/qikvrt-release-readback/$name" | sha256sum --check --status
           test "$(stat -c '%s' "$RUNNER_TEMP/qikvrt-release-readback/$name")" = "383384043"
-          echo 'DRAFT_RELEASE_EXACT_BYTES_READBACK_VERIFIED_NO_PRODUCTION_EFFECT'
+          # Publish verified candidate bytes as a non-production prerelease.
+          # This is not a host deploy or a release admission claim.
+          gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false --prerelease
+          python3 -B - <<'PY_READBACK'
+          import json, os, subprocess
+          tag = 'qikvrt-pr494-candidate-sha256-64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1'
+          raw = subprocess.check_output(['gh','api','repos/ingolf-lohmann/qik-vrt/releases/tags/'+tag], text=True)
+          release = json.loads(raw)
+          assert release['draft'] is False and release['prerelease'] is True
+          assert release['tag_name'] == tag
+          assert release['target_commitish'] == '4bdda5c7534a2c4fbac224015179492a4b624b3a'
+          assert len(release['assets']) == 1
+          asset = release['assets'][0]
+          assert asset['name'] == 'qikvrt-pr494-successor-64822d5f.zip'
+          assert asset['size'] == 383384043
+          assert asset['digest'] == 'sha256:64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1'
+          print('PRERELEASE_METADATA_EXACT_SHA256_BOUND_NO_PRODUCTION_EFFECT')
+          PY_READBACK
+          echo 'PRERELEASE_EXACT_BYTES_READBACK_VERIFIED_NO_PRODUCTION_EFFECT'
   test:
     outputs:
       tested_head: ${{ steps.tested_subject.outputs.head }}

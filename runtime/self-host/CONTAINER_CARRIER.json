@@ -13,7 +13,7 @@
   "oci_manifest_digest": "sha256:eb5ba45fd58baeac4bd0ae76a1088d99764a90c0fa34d476f14930b2106d5459",
   "package_manifest_sha256": "4dc167eecfb7c57d095b153867639ef700fd978527985e51cd65a729f8335cd2",
   "artifact_expires_at": "2026-12-07T05:36:18Z",
-  "scope": "Distinct SHA-256 verified draft-release dependency image only. No predecessor PASS or productive effect is transferred.",
+  "scope": "Distinct SHA-256 verified prerelease dependency image only. No predecessor PASS or productive effect is transferred.",
   "evidence_pr_origin": 732,
   "candidate_state": "INTEGRITY_VERIFIED_NOT_PRODUCTION_ADMITTED",
   "release_tag": "qikvrt-pr494-candidate-sha256-64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1",
