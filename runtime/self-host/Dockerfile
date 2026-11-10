@@ -28,6 +28,18 @@ COPY deploy/universal-terminal/entrypoint.sh /usr/local/bin/qikvrt-universal-ter
 RUN chmod 0755 /usr/local/bin/qikvrt-universal-terminal
 ENV QIKVRT_FIREFOX_BINARY=/usr/lib/firefox/firefox
 USER 10001:10001
+# Owner-authorized, separately identified successor dependency candidate.
+# Not the expired PR494 archive; no release or productive EAP effect is inherited.
+# Only a two-build OCI digest comparison can admit this candidate as evidence.
+FROM runtime AS s1-dependency-carrier-candidate
+ARG QIKVRT_SOURCE_HEAD
+ARG QIKVRT_SOURCE_TREE
+LABEL org.opencontainers.image.source="https://github.com/ingolf-lohmann/qik-vrt" \
+      org.opencontainers.image.revision="$QIKVRT_SOURCE_HEAD" \
+      de.qikvrt.source-tree="$QIKVRT_SOURCE_TREE" \
+      de.qikvrt.carrier-scope="NEW_DEPENDENCY_CANDIDATE_NOT_PR494"
+USER 10001:10001
+
 FROM ${QIKVRT_DEPENDENCY_IMAGE} AS delivery-runtime
 FROM delivery-runtime AS test
 USER root
