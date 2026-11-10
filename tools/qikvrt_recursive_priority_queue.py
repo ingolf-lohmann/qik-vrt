@@ -30,9 +30,9 @@ def validate(units: Sequence[Mapping[str, Any]]) -> dict[str, Mapping[str, Any]]
             raise QueueInvariantError("duplicate or missing dedupe key")
         if unit.get("priority") not in PRIORITIES or unit.get("state") not in ACTIVE:
             raise QueueInvariantError("invalid priority or state")
-        if not isinstance(unit.get("last_attempt", 0), int) or unit.get("last_attempt", 0) < 0:
+        if type(unit.get("last_attempt", 0)) is not int or unit.get("last_attempt", 0) < 0:
             raise QueueInvariantError("invalid attempt ordinal")
-        if not isinstance(unit.get("dependencies", []), list):
+        if not isinstance(unit.get("dependencies", []), list) or len(set(unit.get("dependencies", []))) != len(unit.get("dependencies", [])):
             raise QueueInvariantError("invalid dependencies")
         by_id[ident] = unit
         keys.add(key)
