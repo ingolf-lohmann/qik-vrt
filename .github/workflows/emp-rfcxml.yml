@@ -25,7 +25,7 @@ jobs:
           assert root.tag == 'rfc'
           assert root.attrib['version'] == '3'
           assert root.attrib['docName'] == 'draft-lohmann-qikvrt-effect-management-00'
-          sections = {s.attrib.get('name') for s in root.findall('./middle/section')}
+          sections = {s.findtext('name') for s in root.findall('./middle/section')}
           assert {'Security Considerations', 'IANA Considerations', 'Protocol Requirements'} <= sections
           print('RFCXML structure: PASS')
           PY
