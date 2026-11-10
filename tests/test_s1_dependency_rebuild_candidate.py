@@ -44,6 +44,11 @@ class S1DependencyCandidateTests(unittest.TestCase):
             with self.subTest(value=required):
                 self.assertIn(required, source)
 
+    def test_action_is_pinned_to_repository_verified_upload_ref(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertEqual(source.count("actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"), 2)
+        self.assertNotIn("043fb46d1a93c77aae656e75b540449e92b4886f43607fa02", source)
+
     def test_no_production_route_or_automatic_substitute(self):
         src = WORKFLOW.read_text(encoding="utf-8")
         forbidden = (
