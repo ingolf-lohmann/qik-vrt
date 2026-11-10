@@ -1,0 +1,29 @@
+name: QIKVRT offline origin security regression
+on:
+  pull_request:
+    paths:
+      - 'docs/monitor/offline/static-server.mjs'
+      - 'docs/monitor/offline/static-server.test.mjs'
+      - '.github/workflows/qikvrt_offline_origin_regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  node-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify source binding
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA" || {
+            echo "GitHub synthetic merge HEAD: check original PR source separately"
+          }
+          git status --porcelain
+      - name: Run provider-independent origin regression
+        run: node --test docs/monitor/offline/static-server.test.mjs
