@@ -66,7 +66,6 @@ def roundtrip(root, commit, output):
             restored = json.loads(serialized)
             raw = base64.b64decode(restored["data_b64"], validate=True)
             path = base64.b64decode(restored["path_b64"], validate=True)
-            oid = git(root, "hash-object", "--stdin") if False else None
             # Git blob identity is computed on original bytes, not decoded text.
             git_oid = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
             if git_oid != item["oid"] or base64.b64encode(path).decode() != item["path_b64"]:
