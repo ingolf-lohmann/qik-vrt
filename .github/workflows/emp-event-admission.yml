@@ -1,0 +1,33 @@
+name: EMP workflow event admission
+on:
+  workflow_run:
+    workflows:
+      - EMP RFCXML conformance
+      - EMP transition conformance
+    types: [completed]
+permissions:
+  contents: read
+jobs:
+  admit:
+    if: ${{ github.event.repository.full_name == 'ingolf-lohmann/qik-vrt' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Process completed event (read-only, fail-closed)
+        env:
+          EVENT_PATH: ${{ github.event_path }}
+        run: |
+          python -m runtime.emp.workflow_event --event "$EVENT_PATH" --db "$RUNNER_TEMP/emp.sqlite" --output "$RUNNER_TEMP/emp-decision.json"
+          cat "$RUNNER_TEMP/emp-decision.json"
+      - name: Publish decision evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: emp-decision-${{ github.event.workflow_run.id }}
+          path: ${{ runner.temp }}/emp-decision.json
+          retention-days: 30
