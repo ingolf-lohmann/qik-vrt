@@ -132,10 +132,13 @@ jobs:
           from tools import qikvrt_self_host_container as carrier
           baseline=json.load(open('runtime/self-host/PACKAGE.json'))['runtime_delivery_baseline']
           frozen=json.load(open('runtime/self-host/CONTAINER_CARRIER.json'))
-          identity=('repository','source_head','source_tree','run_id','artifact_id',
-                    'archive_bytes','archive_sha256','delivery_sha256')
-          if any(baseline.get(field)!=frozen.get(field) for field in identity):
+          identity=('repository','source_head','source_tree','run_id','artifact_id','delivery_sha256')
+          if any(field not in baseline or field not in frozen or baseline[field]!=frozen[field] for field in identity):
               raise SystemExit('BASELINE_CARRIER_CONTRACT_DRIFT')
+          # PACKAGE uses artifact_* for the Actions ZIP; CARRIER uses archive_*.
+          for package_field,carrier_field in (('artifact_bytes','archive_bytes'),('artifact_sha256','archive_sha256')):
+              if package_field not in baseline or carrier_field not in frozen or baseline[package_field]!=frozen[carrier_field]:
+                  raise SystemExit('BASELINE_CARRIER_CONTRACT_DRIFT:'+package_field)
           if frozen.get('reviewed_recovery_artifact',{}).get('durability') != 'TEMPORARY_ACTIONS_BACKUP_ONLY_NO_PRODUCTION_ADMISSION':
               raise SystemExit('REVIEWED_ORIGINAL_BYTE_RECOVERY_REQUIRED')
           target=pathlib.Path(os.environ['RUNNER_TEMP'])/'qikvrt-baseline.zip'
