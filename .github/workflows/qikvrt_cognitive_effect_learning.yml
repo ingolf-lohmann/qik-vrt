@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Read-only CI for an abstract cognitive learning predicate, not runtime deployment.
+name: QIKVRT cognitive effect learning formal candidate
+
+on:
+  pull_request:
+    paths:
+      - 'formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Cognition/EffectLearning.lean'
+      - 'policy/QIKVRT_COGNITIVE_EFFECT_LEARNING_V1.json'
+      - 'tools/qikvrt_cognitive_effect_learning.py'
+      - 'tests/test_qikvrt_cognitive_effect_learning.py'
+      - 'docs/research/COGNITIVE_EFFECT_LEARNING_FORMAL_BINDING_20261110.md'
+      - '.github/workflows/qikvrt_cognitive_effect_learning.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  abstract-kernel-conformance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Read candidate without retaining credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pinned
+        with:
+          persist-credentials: false
+      - name: Verify fail-closed model and policy
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest -v tests.test_qikvrt_cognitive_effect_learning
+          python3 -B tools/qikvrt_cognitive_effect_learning.py
+      - name: Install exact repository Lean toolchain and check base project
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # pinned
+        with:
+          lake-package-directory: formalization/QIKVRT_Formalization_v2.0
+          test: false
+      - name: Check new proof against existing kernel modules
+        run: |
+          set -euo pipefail
+          cd formalization/QIKVRT_Formalization_v2.0
+          lake build QIKVRTFormalization.Cognition.EffectLearning
+          if grep -En '^[[:space:]]*(sorry|admit|axiom)[[:space:]]' QIKVRTFormalization/Cognition/EffectLearning.lean; then
+            echo 'UNADMITTED_LEAN_GAP'
+            exit 1
+          fi
+          echo 'FORMAL_MODEL_SOURCE_CHECKED; NO_PRODUCTION_EFFECT_CLAIM'

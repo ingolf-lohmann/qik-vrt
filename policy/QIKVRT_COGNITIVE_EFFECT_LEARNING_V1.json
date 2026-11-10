@@ -1,0 +1,39 @@
+{
+  "schema": "qikvrt_cognitive_effect_learning_policy_v1",
+  "authority": "ingolf-lohmann/qik-vrt",
+  "owner": "Ingolf Lohmann",
+  "declared_on": "2026-11-10",
+  "claim_class": "CONDITIONAL_FORMAL_MODEL_AND_SOFTWARE_CONFORMANCE",
+  "scientific_thesis": "Kognition ist ein rekonstruierbarer Regelkreis von Unterscheidung, Beobachtung, Modell, Entscheidung, autorisierter Handlung, unabhaengigem Wirkungsnachweis und bewahrter Erfahrung.",
+  "roundtrip": [
+    "DISTINGUISH", "OBSERVE", "INFORM", "MODEL", "DECIDE", "AUTHORIZE", "ACT", "INDEPENDENT_EFFECT_READBACK", "PERSIST", "LEARN", "NEXT_DIFFERENCE"
+  ],
+  "model_evidence_flags": [
+    "observationBound",
+    "modelBound",
+    "decisionAuthorized",
+    "receiptAuthenticated",
+    "independentEffectReadback",
+    "durableJournal",
+    "writerFenced"
+  ],
+  "lean_module": "QIKVRTFormalization.Cognition.EffectLearning",
+  "leans_on": [
+    "QIKVRTFormalization.Decision.ObservationSufficiency",
+    "QIKVRTFormalization.WorldFormula.Relations"
+  ],
+  "effect_ack_done": false,
+  "release_admission": "BLOCKED",
+  "native_execution": "NOT_PERFORMED",
+  "independent_physical_validation": "NOT_PERFORMED",
+  "competitive_superiority_over_all_systems": "NOT_PROVEN",
+  "workflow_purpose": "SOURCE_TEST_AND_LEAN_KERNEL_ONLY",
+  "boundary": "Declared booleans are inputs to a pure formal model, not authenticated runtime observations; no claimed productive EAP transition or physical cognition proof.",
+  "required_next_evidence": [
+    "NATIVE_EXACT_HEAD_CI",
+    "MANIFEST_SHA256_REGENERATION_AND_VERIFICATION",
+    "AUTHORIZED_REVIEW_AND_GOVERNANCE",
+    "ORIGINAL_HOST_READBACK_AND_DURABLE_WRITER_FENCING",
+    "INDEPENDENT_EFFECT_ACK_READBACK"
+  ]
+}
