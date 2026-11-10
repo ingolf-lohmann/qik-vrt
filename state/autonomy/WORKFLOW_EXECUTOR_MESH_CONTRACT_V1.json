@@ -132,7 +132,7 @@
       "repository": "ingolf-lohmann/qik-vrt",
       "requires_native_main_protection": true,
       "schema": "qikvrt-owner-amo-request/v1",
-      "statement": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt dafür, dass sie es von nun an fortwährend tut.",
+      "statement": "Ja, wenn sie das bisher noch nicht tut, dann sorgen wir jetzt daf\u00fcr, dass sie es von nun an fortw\u00e4hrend tut.",
       "unchanged_failed_effect": "NOOP",
       "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
       "workflow": "qikvrt_ci.yml"
@@ -153,7 +153,7 @@
     "repository": "ingolf-lohmann/qik-vrt",
     "requires_successful_exact_subject_test": true,
     "schema": "qikvrt-owner-tested-ci-handoff/v1",
-    "statement": "Ja, genau dafür ist die Continuous Integration Continuous Development Pipeline in der Linux-Distribution ja gedacht, diesen Teil zu übernehmen. Freigabe erteilt.",
+    "statement": "Ja, genau daf\u00fcr ist die Continuous Integration Continuous Development Pipeline in der Linux-Distribution ja gedacht, diesen Teil zu \u00fcbernehmen. Freigabe erteilt.",
     "unchanged_failed_effect": "NOOP",
     "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
     "workflow": ".github/workflows/qikvrt_ci.yml"
@@ -248,6 +248,7 @@
     "max_queued_productive_runs": 2,
     "max_simultaneous_active_writers": 1,
     "observation_cadence": "PT5M",
+    "observation_cadence_scope": "FRESHNESS_BUDGET_ON_OBSERVATION_NOT_AN_ACTIVATION_TIMER",
     "observation_failure": {
       "disposition": "HOLD",
       "historical_evidence_transfer": false,
@@ -264,6 +265,23 @@
       "QIKVRT workflow executor",
       "QIKVRT live status watch"
     ],
+    "open_work_progress": {
+      "collector": "tools/qikvrt_reflexive_repository_watchdog.py collect-work",
+      "consumer": "tools/qikvrt_autonomous_self_heal.py:repair-consume",
+      "enabled": true,
+      "existing_authorization_and_writer_guards_preserved": true,
+      "heartbeat_resets_progress_clock": false,
+      "identical_retry_resets_progress_clock": false,
+      "inventory_required_before_quiescence": true,
+      "inventory_source": "OPEN_GITHUB_ISSUES_AND_PULL_REQUESTS",
+      "maximum_pages": 10,
+      "missing_or_stale_inventory": "HOLD_UNKNOWN_NOT_EMPTY",
+      "open_work_without_executor": "CONTINUATION_REQUIRED_OPEN_WORK",
+      "progress_clock": "CUMULATIVE_EXACT_SUBJECT_EXECUTED_JOB_AND_STEP_MARKERS",
+      "short_terminal_page_required": true,
+      "stable_first_page_required": true,
+      "universal_liveness_proved": false
+    },
     "platform_minimum_schedule": "NONE_STATE_TRANSITIONS_ONLY",
     "prevention_states": [
       "PREEMPTIVE_HOLD_COMPETING_WRITERS",
@@ -276,7 +294,9 @@
       "PREEMPTIVE_HOLD_OBSERVATION_CADENCE_BREACH",
       "UNTRUSTED_EXECUTION_GAP",
       "SAFE_PROGRESS",
-      "QUIESCENT_OBSERVATION"
+      "QUIESCENT_OBSERVATION",
+      "PREEMPTIVE_HOLD_WORK_INVENTORY",
+      "CONTINUATION_REQUIRED_OPEN_WORK"
     ],
     "progress_evidence": [
       "EXACT_HEAD_AND_TREE",
@@ -286,7 +306,10 @@
       "EXACT_HEAD_TRUSTED_GATE_MATRIX",
       "NODE_LOCAL_LIVENESS_RECORDS",
       "AUTHORITY_HEAD_REOBSERVATION",
-      "PREVIOUS_REFLEXIVE_RECEIPT_FINGERPRINT"
+      "PREVIOUS_REFLEXIVE_RECEIPT_FINGERPRINT",
+      "COMPLETE_OPEN_WORK_INVENTORY",
+      "CUMULATIVE_LAST_USEFUL_PROGRESS_TIMESTAMP",
+      "EXECUTED_STEP_AND_JOB_MARKERS_WITHOUT_HEARTBEAT_METADATA"
     ],
     "progress_lease_seconds": 900,
     "queue_lease_seconds": 600,
@@ -299,8 +322,7 @@
     ],
     "work_unit_path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
     "workflow_path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
-    "writer_lease_seconds": 1200,
-    "observation_cadence_scope": "FRESHNESS_BUDGET_ON_OBSERVATION_NOT_AN_ACTIVATION_TIMER"
+    "writer_lease_seconds": 1200
   },
   "schema": "qikvrt_workflow_executor_mesh_contract_v1",
   "workflow_inventory": {
@@ -319,44 +341,44 @@
     "root": ".github/workflows"
   },
   "workspace_task_intake": {
-    "schema": "qikvrt-workspace-task-intake/v1",
-    "enabled": true,
-    "origin": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site",
-    "audience": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/api/v1/authority",
-    "workflow": ".github/workflows/qikvrt_workflow_executor.yml",
-    "scope": "VERSIONED_TASK_COORDINATION_ONLY",
-    "service_identity": "GITHUB_ACTIONS_OIDC_RS256",
     "allowed_events": [
       "push",
       "workflow_dispatch",
       "schedule"
     ],
-    "owner": "Ingolf Lohmann",
+    "ambiguous_acceptance": "READBACK_BEFORE_ANY_SUCCESSOR_WRITE",
+    "audience": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/api/v1/authority",
     "authorization_source": "DIRECT_OWNER_INSTRUCTION_2026-11-01_CURRENT_SESSION",
+    "effect_ack_done": false,
+    "enabled": true,
+    "existing_schedules_changed": false,
+    "identity_cookie": "__Host-QIKVRT-Workflow-Identity",
+    "identity_header": "Cookie",
+    "independent_acceptance_readback_required": true,
+    "initial_observation": {
+      "historical_observation_only": true,
+      "sha256": "a8294344966f84937c60245d16c8c9f50ed24b93cdc3d81b444be5cf9bce7e4d",
+      "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
+      "version": 1
+    },
+    "new_executor_created": false,
+    "origin": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site",
+    "owner": "Ingolf Lohmann",
+    "productive_effect_authorized": false,
+    "schema": "qikvrt-workspace-task-intake/v1",
+    "scope": "VERSIONED_TASK_COORDINATION_ONLY",
+    "service_identity": "GITHUB_ACTIONS_OIDC_RS256",
     "statement": "Der n\u00e4chste technische Schritt ist deshalb die Integration des bestehenden gemeinsamen Arbeitsraums als zugelassene Ereignisquelle der Authority-Workflows, mit versionierter Aufgabenannahme und unabh\u00e4ngigem Readback. Das muss innerhalb der Repository-Regeln implementiert und gepr\u00fcft werden.",
+    "subsequent_versions": "SAME_ADMITTED_TASK_ID; COORDINATION_DATA_ONLY; NO_ADDITIONAL_EFFECT_AUTHORITY",
+    "task_or_version_change": "FRESH_VERSION_AND_DIGEST_REQUIRED; HOLD_IF_CHANGED_BETWEEN_READ_AND_ACCEPT",
+    "task_text_in_public_artifacts": false,
+    "task_text_is_executable_authority": false,
     "work_items": [
       {
         "id": "b50951b4-1194-431b-aa43-d81d262a19d3",
         "min_version": 1
       }
     ],
-    "task_text_is_executable_authority": false,
-    "task_text_in_public_artifacts": false,
-    "productive_effect_authorized": false,
-    "effect_ack_done": false,
-    "ambiguous_acceptance": "READBACK_BEFORE_ANY_SUCCESSOR_WRITE",
-    "task_or_version_change": "FRESH_VERSION_AND_DIGEST_REQUIRED; HOLD_IF_CHANGED_BETWEEN_READ_AND_ACCEPT",
-    "independent_acceptance_readback_required": true,
-    "existing_schedules_changed": false,
-    "new_executor_created": false,
-    "initial_observation": {
-      "task_id": "b50951b4-1194-431b-aa43-d81d262a19d3",
-      "version": 1,
-      "sha256": "a8294344966f84937c60245d16c8c9f50ed24b93cdc3d81b444be5cf9bce7e4d",
-      "historical_observation_only": true
-    },
-    "subsequent_versions": "SAME_ADMITTED_TASK_ID; COORDINATION_DATA_ONLY; NO_ADDITIONAL_EFFECT_AUTHORITY",
-    "identity_header": "Cookie",
-    "identity_cookie": "__Host-QIKVRT-Workflow-Identity"
+    "workflow": ".github/workflows/qikvrt_workflow_executor.yml"
   }
 }

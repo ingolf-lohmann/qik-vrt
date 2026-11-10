@@ -1661,6 +1661,80 @@ Historical files remain evidence of their own time and content. They do not
 override a current failure or expand the supported runtime scope.
 
 
+## `docs/DEVOPS_RING_LOSSLESS_EKMP.md`
+
+# QIK-VRT DevOps ring — lossless EKMP continuation contract
+
+Status: candidate, not admitted to main. Authority: ingolf-lohmann/qik-vrt.
+
+## Principle
+The ring is a succession of bounded executions, not a never-ending GitHub Actions job.
+A clock wakes the trusted-main observer. The observer collects open work and exact
+HEAD/TREE, workflows, jobs, and receipts. The existing bounded continuation consumer
+may act only on independently admitted work. Failure of one dependency MUST NOT
+erase unrelated runnable work. An empty queue yields an IDLE observation and the
+next clock wakeup, never an invented optimization commit.
+
+## Lossless projection
+Each original event retains repository, source HEAD/TREE (when observed), workflow
+run ID and attempt, job and step identity, timestamp, original URL, raw evidence
+artifact identifier and SHA-256 when available. A consolidated view is a derived
+index, never a replacement for the originals. Distinct events MUST NOT be
+coalesced merely because their descriptions, state or timestamps match. Missing
+identities remain UNKNOWN. No source is silently dropped to meet an API budget;
+the readback must instead report INCOMPLETE/HOLD.
+
+The effective-knowledge projection distinguishes:
+REQUESTED, STARTED, RUNNING, FAILED, HOLD, IDLE, PASSED, VERIFIED.
+PASSED describes a specific executed test, not production admission. VERIFIED
+requires independent readback of the claimed target effect. No derived
+projection can set EFFECT_ACK_DONE, release admission, reviewer approval or
+original-host readiness.
+
+## Continuation and scaling
+Work is keyed by immutable source identity plus causal dependency, not by
+display name. A lease allows at most one authorized repository writer.
+Independent read-only observations may scale without writer privilege.
+A failed work item produces a bounded TEMDD diagnostic handoff with original
+failure evidence; it does not globally freeze other independently admitted work.
+Retries require a changed input, transient-recovery evidence or an explicit
+bounded backoff; repeated identical attempts do not renew useful-progress time.
+
+## Acceptance
+1. Scheduled wakeup observed on main, followed by independently identified
+   trusted-main watchdog run and its original artifact receipt.
+2. Open-work and no-work scenarios preserve all input identities; IDLE still
+   has an observation receipt and a subsequent wakeup.
+3. A failed job produces a causal TEMDD handoff, while unrelated eligible work
+   can progress. Restart and replay do not duplicate effects.
+4. Integrity manifest/SHA, exact-successor CI and independent governance review
+   pass before main admission.
+5. Original-host, native EAP and global DoD remain separately fail-closed.
+
+This document records a contract, not proof of operational liveness.
+
+
+## Synchroner Readback-Kreis nach jedem Auftrag (Owner-Vorgabe 2026-11-10)
+
+Nach jedem an die Authority übergebenen Arbeitsauftrag kehrt der ausführende
+Controller **lesend** in den DevOps-Kreis zurück. Er liest den aktuellen
+Authority-HEAD/TREE, die **gesamte** beobachtbare Aktivität (auch fremde,
+nicht auftragsbezogene PRs, Workflows, Reviews und Änderungen), sowie
+zugehörige Log- und Artefaktreferenzen. Alle Beobachtungen erhalten
+Zeitstempel, Quellenbindung und eine verkettete Ereignisidentität. Der
+Auftrag wird erst dann einem beobachteten Ergebnis zugeordnet, wenn
+Auftrags-ID und Exact-HEAD/Run-/Artefaktreferenzen nachweisbar übereinstimmen.
+
+Bei nicht sichtbarem Auftrag ist das Ergebnis `PENDING_READBACK`, niemals
+`DONE`. Fremde Aktivitäten bleiben als Kontext und mögliche kausale
+Abhängigkeiten im Journal. Ein weiterer synchroner Lesedurchlauf darf
+nur bei vorhandenem Ausführungsbudget stattfinden; bei Erschöpfung
+wird `OPEN` mit dem letzten belegten Cursor persistiert, statt eine
+Endlosschleife oder Erfolg zu behaupten. Die Fortsetzung übernimmt der
+bereits zugelassene DevOps-Kreis. Die Readback-Schleife ist read-only;
+Writer-Fencing, Admission, Governance und EAP bleiben unabhängig.
+
+
 ## `docs/EFFECT_ACK_RELEASE_AUTOMATION.md`
 
 <!--
@@ -3241,128 +3315,6 @@ ein privates Repository oder direkt in die lokale Offline-Pipeline. Der
 auf den Ausgangsstand zurückgesetzt.
 
 
-## `docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md`
-
-# Privacy-preserving interaction archive
-
-QIK-VRT now defines a repository-native contract for preserving user inputs and
-machine outputs without placing plaintext conversations, audio transcripts,
-credentials, or decryption identities in the public source repository.
-
-## Architectural boundary
-
-The public `Goldkelch/qik-vrt` and `ingolf-lohmann/qik-vrt` repositories contain
-only the implementation, schemas, tests, documentation and integrity rules. An
-operational deployment writes interaction records into a **separately
-access-controlled archive repository or worktree** selected with
-`--archive-root`.
-
-The archive operator commits and replicates that encrypted archive through the
-private repository's normal Git policy; the public source repositories never
-receive those operational records.
-
-Each persisted interaction consists of:
-
-- a minimized JSON event envelope under `events/`;
-- an `age`-encrypted payload under `blobs/`;
-- SHA-256 bindings for plaintext and ciphertext;
-- a previous-event hash and canonical event hash;
-- an opaque conversation identifier, role, purpose, consent identity and
-  retention boundary.
-
-The archive contains no plaintext payload and no private decryption identity.
-A public repository must therefore never be used as the operational archive
-unless its ciphertext and metadata exposure has been separately approved.
-
-## Required properties
-
-1. **Explicit authorization:** append, export and retention tombstone operations
-   require distinct exact confirmation strings.
-2. **Data minimization:** names, email addresses and free-form subject metadata
-   are not required by the format. Deployments should use opaque identifiers.
-3. **Confidentiality:** payload encryption is delegated to the reviewed `age`
-   executable. QIK-VRT does not invent a custom cipher.
-4. **Integrity:** every event and ciphertext blob is SHA-256-bound; events form
-   an append-only hash chain.
-5. **Availability and reachability:** the archive is a normal repository tree
-   whose JSON envelopes and encrypted blobs can be replicated, backed up and
-   addressed by path and digest.
-6. **Machine readability:** event and export documents use canonical JSON
-   contracts.
-7. **Exportability:** an authorized holder of the `age` identity can export a
-   complete conversation or the entire archive as deterministic JSON.
-8. **Retention boundary:** a tombstone records a retention or restriction
-   decision without falsifying prior history. Effective erasure from Git history
-   requires separately governed history rewriting or cryptographic key
-   destruction; a tombstone alone is not erasure.
-
-## Append one user input
-
-```bash
-python3 -B tools/qikvrt_interaction_archive.py append \
-  --archive-root ../qik-vrt-private-interactions \
-  --content-file user-input.txt \
-  --recipient 'age1...' \
-  --conversation-id conversation-opaque-001 \
-  --role user \
-  --created-at '2026-07-25T08:00:00+02:00' \
-  --purpose scientific_interaction_continuity \
-  --consent-id consent-2026-07-25 \
-  --retention-until '2027-07-25T00:00:00Z' \
-  --confirm PERSIST_ENCRYPTED_INTERACTION
-```
-
-The same command with `--role assistant` persists the corresponding machine
-output. Tool and system events are also permitted when they are relevant to
-reconstructing the accountable interaction chain.
-
-## Verify
-
-```bash
-python3 -B tools/qikvrt_interaction_archive.py verify \
-  --archive-root ../qik-vrt-private-interactions
-```
-
-Any changed envelope, broken predecessor link, missing ciphertext or mismatched
-digest causes `BLOCK`.
-
-## Export on request
-
-```bash
-python3 -B tools/qikvrt_interaction_archive.py export \
-  --archive-root ../qik-vrt-private-interactions \
-  --identity-file ~/.config/age/keys.txt \
-  --conversation-id conversation-opaque-001 \
-  --request-id export-request-001 \
-  --output interaction-export.json \
-  --confirm EXPORT_AUTHORIZED_INTERACTIONS
-```
-
-The export includes the original envelopes and decrypted UTF-8 payloads. The
-export file is itself reported with SHA-256. It must be delivered only through
-an authorized channel and should not be committed to either public repository.
-
-## Retention tombstone
-
-```bash
-python3 -B tools/qikvrt_interaction_archive.py tombstone \
-  --archive-root ../qik-vrt-private-interactions \
-  --event-id event-user-0001 \
-  --authorization-id retention-request-001 \
-  --created-at '2026-07-25T09:00:00+02:00' \
-  --confirm RECORD_RETENTION_TOMBSTONE
-```
-
-## Non-claims
-
-This mechanism is not, by itself, legal compliance certification. Repository
-operators remain responsible for lawful basis, information duties, access
-control, retention schedules, key management, backup governance, data-subject
-requests and jurisdiction-specific obligations. The implementation establishes
-technical confidentiality, integrity, provenance and export primitives; it does
-not decide whether a particular processing purpose is lawful.
-
-
 ## `docs/QIKVRT_4AU1_PRODUCTIZATION_RELEASE_SEED.md`
 
 ﻿# QIK-VRT 4AU1 Productization Release
@@ -3455,6 +3407,38 @@ Status: `PASS_REQUESTED_BY_OWNER_INSTALLER`
 The Seed reads only authorized known Node entries. The Seed writes only to the Seed repository. Nodes write only to their own Node repository. No global scanning, no self propagation, and no remote mutation without authorization are part of this audit surface.
 
 
+## `docs/QIKVRT_COMMERCIAL_OFFERING.md`
+
+<!--
+SPDX-License-Identifier: CC-BY-NC-ND-4.0
+Copyright (c) 2026 Ingolf Lohmann.
+-->
+
+# QIK-VRT commercial licensing and services
+
+Current QIK-VRT-controlled software identified as
+`PolyForm-Noncommercial-1.0.0` is publicly licensed for the permitted
+noncommercial purposes defined by that standard license. Ordinary commercial
+use is reserved and requires a separate written commercial license from the
+rights holder.
+
+A separate agreement may cover one or more of:
+
+- commercial software use or integration;
+- hosted or managed operation;
+- implementation, support, training, and evidence preparation;
+- service levels, warranties, or indemnities;
+- trademark, certification, or endorsement rights.
+
+Earlier versions or files validly received under Apache-2.0 remain usable under
+their original Apache-2.0 grants. Documentation identified as
+CC-BY-NC-ND-4.0 and third-party material retain their own license scopes.
+
+Repository access, a technical test, an operational authorization, or silence
+does not create a commercial license. Any commercial permission must be
+separate and in writing.
+
+
 ## `docs/QIKVRT_GITHUB_APP_TARGET_BLUEPRINT.md`
 
 # QIK-VRT GitHub App Target Blueprint
@@ -3468,20 +3452,6 @@ Required target permissions:
 - Metadata: read
 
 The app must not write to foreign repositories. Each installed repository writes only to itself.
-
-
-## `docs/QIKVRT_MESH_DASHBOARD.md`
-
-# QIK-VRT Mesh Dashboard
-
-generated_utc: 2026-07-20T14:06:59Z  
-run_id: 29749197908  
-seed_repository: Goldkelch/qik-vrt  
-node_count: 1  
-active_count: 1  
-stale_count: 0
-
-HTML dashboard: docs/qikvrt_mesh_dashboard.html
 
 
 ## `docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md`

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import errno
 import base64
 import hashlib
 import hmac
@@ -2199,11 +2200,20 @@ def main() -> int:
     stack = ExitStack()
     try:
         handler, authority_sso = authority_sso_handler(stack, host, port)
-        server = ThreadingHTTPServer((host, port), handler)
-        server.authority_sso = authority_sso
     except Exception:
         stack.close()
         print("BLOCK original SSO profile/store/writer unavailable", file=sys.stderr)
+        return 2
+    try:
+        server = ThreadingHTTPServer((host, port), handler)
+        server.authority_sso = authority_sso
+    except Exception as exc:
+        stack.close()
+        reason = {errno.EADDRINUSE: "NATIVE_LISTENER_ADDRESS_IN_USE",
+                  errno.EACCES: "NATIVE_LISTENER_PERMISSION_DENIED",
+                  errno.EPERM: "NATIVE_LISTENER_PERMISSION_DENIED"}.get(
+                      exc.errno if isinstance(exc, OSError) else None, "NATIVE_LISTENER_UNAVAILABLE")
+        print("BLOCK " + reason, file=sys.stderr)
         return 2
     if host != "127.0.0.1":
         cert_file = os.environ.get("QIKVRT_TLS_CERT_FILE", "")
@@ -2213,10 +2223,16 @@ def main() -> int:
             server.server_close()
             stack.close()
             return 2
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        context.minimum_version = ssl.TLSVersion.TLSv1_2
-        context.load_cert_chain(certfile=cert_file, keyfile=key_file)
-        server.socket = context.wrap_socket(server.socket, server_side=True)
+        try:
+            context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+            context.minimum_version = ssl.TLSVersion.TLSv1_2
+            context.load_cert_chain(certfile=cert_file, keyfile=key_file)
+            server.socket = context.wrap_socket(server.socket, server_side=True)
+        except Exception:
+            server.server_close()
+            stack.close()
+            print("BLOCK NATIVE_TLS_CONFIGURATION_UNAVAILABLE", file=sys.stderr)
+            return 2
     print(json.dumps({"status": "PASS", "listening": f"{host}:{port}"}), flush=True)
     try:
         server.serve_forever()

@@ -1,0 +1,67 @@
+{
+  "schema": "qikvrt-watchdog-source-repair/v1",
+  "work_unit": "WATCHDOG_RUN_INVENTORY_REPAIR_20261104",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "e1ac5f52896b494eb9051f704a42d4554d4b7139",
+  "source_tree": "22095e5fb54a0e864660b5140829cb0ab78f826a",
+  "specification_use": "HISTORICAL_EXACT",
+  "scope": "SOURCE_REPAIR_ONLY",
+  "specification_currentness_claim": false,
+  "predecessor": {
+    "workspace_task": "10d08fcc-38c6-43c4-b675-4c4236768a5f",
+    "workspace_version": 3,
+    "historical_run": 41759139590,
+    "historical_head": "c6083135f3cb2723e849d7b4f9d7dee89898e5c6",
+    "owner_reported_reproduction": {
+      "stage": "JOBS_BUDGET_PREFLIGHT",
+      "exit_code": 2,
+      "first_blocker": "RUN_INVENTORY_INCOMPLETE",
+      "reported_run_count": 213,
+      "returned_run_count": 100,
+      "subsequent_analysis": "SKIPPED",
+      "journal_or_CAS_failure_established_by_this_run": false
+    }
+  },
+  "repair": {
+    "existing_controller": "tools/qikvrt_reflexive_repository_watchdog.py",
+    "existing_workflow": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+    "run_page_size": 100,
+    "maximum_run_page_requests": 10,
+    "maximum_job_page_requests": 20,
+    "full_run_topology_preserved": true,
+    "large_inventory_job_scope": "ALL_ACTIVE_AND_LATEST_PER_WORKFLOW_NAME",
+    "incomplete_or_over_budget_scope": "HOLD_BEFORE_ANALYSIS",
+    "job_identity": ["head_sha", "run_id", "run_attempt"],
+    "HTTP_denial": "STOP_WITHOUT_RETRY",
+    "raw_pages_and_stderr": "EXISTING_WORKFLOW_ARTIFACT",
+    "reuse_assessment": "Extended the existing watchdog. The executor's private _amo_run_pages has a fixed 20-row/1600-run AMO contract and neither a shared job-page budget nor retained page bytes; its native contract was left intact."
+  },
+  "review_route": {
+    "existing_branch": "ci/watchdog-job-readback-budget-20261102",
+    "branch_work": "Complete the existing budget repair with paginated topology and bounded selected job evidence.",
+    "target_completion": "INDEPENDENT_MAIN_INTEGRATION_READBACK_REQUIRED",
+    "branch_deletion_authorized": false
+  },
+  "acceptance": [
+    "213 run fixtures traverse three pages and reach analysis while retaining every topology entry",
+    "an older active run remains selected alongside all latest workflow runs",
+    "the actual recorded 356-run REST inventory yields a 13-run evidence closure within the unchanged budget",
+    "incomplete, duplicated, changed, wrong-source and over-budget inventories remain HOLD",
+    "job continuation pages count toward the total 20 HTTP requests",
+    "wrong job head, run or attempt cannot become trusted gate evidence",
+    "missing selected jobs and partial job pages cannot enter analysis",
+    "checker failures and HTTP 403 remain observation failures without retry"
+  ],
+  "attribution": {
+    "human": "Ingolf Lohmann: original diagnosis, correction of the causal claims and standing repair authorization.",
+    "artificial_cognitive": "OpenAI Codex: current source inspection, implementation, isolated regression tests and source-bound evidence reconciliation."
+  },
+  "open_obligations": [
+    "Native exact-candidate CI and independent branch/Main integration readback",
+    "No inference of a native journal or CAS failure from the historical skipped analysis",
+    "Original Mirror outbox source and authenticated peer exchange remain separate",
+    "Originalhost credential delivery, runtime admission and raumzeitterminal.de acceptance remain separate"
+  ],
+  "runtime_admission_verified": false,
+  "effect_ack_done": false
+}
