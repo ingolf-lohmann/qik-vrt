@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "Owner-approved architecture proposal — 2026-11-10. Priority P0, subject to existing safety and governance gates.\n\nSeparate EMP (Effect Management Protocol) from EAP (Effect Acknowledgement Protocol). EAP independently validates actual effects; EMP orchestrates authorized work to attain them.\n\nHuman principal defines desired effect, measurable acceptance predicate, scope, authorization, priority, budget, stop/reversal constraints.\n\nLifecycle: PROPOSED -> AUTHORIZED -> PLANNED -> EXECUTING -> OBSERVING -> REPAIRING/BLOCKED/VERIFIED/ABORTED. VERIFIED only with independent EAP evidence.\n\nSafety invariants: no effect without authorization; single fenced writer per objective/epoch; durable journal and idempotent replay; no false success; bounded retries; TEMDD on failed CI/CD; preserve independent progress despite blocked dependencies; exact HEAD/TREE, SHA256, review and original-host gates; human revocation and irreversible-action boundaries.\n\nDeliverables: versioned EMP spec and typed objective schema; Lean transition model and safety proofs with implementation binding; durable reference executor and writer fencing; negative tests for unauthorized effects, stale writer, missing ACK, bad hash, CI failure, replay, deadlock, cancellation; end-to-end broken manifest -> repair -> hash readback -> EAP acknowledgement.\n\nAcceptance: demonstrate verified authorized effect or persist precise external blocking condition. No automatic merge without existing governance. No claim EMP implemented, production ready, or EFFECT_ACK_DONE until independently evidenced.",
+  "created_at": "2026-11-10T18:01:31Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/729",
+  "issue_number": 729,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "[P0] EMP: human-authorized Effect Management Protocol with EAP-verified closed-loop execution",
+  "updated_at": "2026-11-10T18:01:31Z"
+}
