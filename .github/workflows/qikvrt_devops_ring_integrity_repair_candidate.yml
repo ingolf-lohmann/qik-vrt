@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Candidate-only deterministic integrity regeneration. No repository writes.
+name: QIKVRT DevOps ring integrity repair candidate
+on:
+  pull_request:
+    paths:
+      - 'tools/qikvrt_devops_ring.py'
+      - 'tests/test_qikvrt_devops_ring.py'
+      - '.github/workflows/qikvrt_watchdog_periodic_wakeup.yml'
+      - '.github/workflows/qikvrt_devops_ring_integrity_repair_candidate.yml'
+      - 'docs/DEVOPS_RING_LOSSLESS_EKMP.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: qikvrt-ring-integrity-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  regenerate-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Generate deterministic integrity candidate and test ring
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest -v tests.test_qikvrt_devops_ring
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          mkdir -p .qikvrt/ring-integrity-candidate
+          cp REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256 .qikvrt/ring-integrity-candidate/
+          git diff -- REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256 > .qikvrt/ring-integrity-candidate/integrity.patch
+          sha256sum .qikvrt/ring-integrity-candidate/* > .qikvrt/ring-integrity-candidate/SOURCE_SHA256SUMS.txt
+      - name: Preserve candidate without promoting it
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-ring-integrity-candidate-${{ github.run_id }}
+          path: .qikvrt/ring-integrity-candidate/
+          if-no-files-found: warn
