@@ -44,6 +44,127 @@ permissions:
   contents: write
 
 jobs:
+  s1_durable_carrier_candidate:
+    name: Immutable exact-byte S1 dependency candidate staging (not production)
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.number == 732 &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.actor == 'ingolf-lohmann'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    concurrency:
+      group: qikvrt-pr494-carrier-sha256-64822d5f
+      cancel-in-progress: false
+    steps:
+      - name: Check out exact owner candidate without inherited credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Verify current PR subject and immutable historical source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "ingolf-lohmann/qik-vrt"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test "$(gh api repos/ingolf-lohmann/qik-vrt/pulls/732 --jq '.head.sha')" = "$EXPECTED_HEAD"
+          mkdir -p "$RUNNER_TEMP/qikvrt-release-staging"
+          python3 -B - <<'PY_RELEASE'
+          import hashlib, json, os
+          from pathlib import Path
+          from tools import qikvrt_self_host_container as c
+
+          root = Path.cwd()
+          candidate = json.loads((root / "runtime/self-host/CONTAINER_CARRIER_CANDIDATE_20261110.json").read_bytes())
+          assert candidate["candidate_state"] == "INTEGRITY_VERIFIED_NOT_PRODUCTION_ADMITTED"
+          assert candidate["repository"] == os.environ["GITHUB_REPOSITORY"]
+          assert candidate["source_head"] == "4bdda5c7534a2c4fbac224015179492a4b624b3a"
+          assert candidate["source_tree"] == "05e1a0b0605bcf2c2c177ceda98f112552fe02a3"
+          archive = Path(os.environ["RUNNER_TEMP"]) / "qikvrt-release-staging" / candidate["release_asset_name"]
+          # Publisher reads the exact Actions candidate; consumer reads only the
+          # separately published release. Do not collapse these provenance paths.
+          token = os.environ["GITHUB_TOKEN"]
+          uri = "https://api.github.com/repos/" + c.REPOSITORY + "/actions/artifacts/" + str(candidate["artifact_id"])
+          metadata = json.loads(c.get(uri, token))
+          assert metadata.get("expired") is False
+          assert metadata.get("size_in_bytes") == candidate["archive_bytes"]
+          assert metadata.get("digest") == "sha256:" + candidate["archive_sha256"]
+          assert metadata.get("workflow_run", {}).get("id") == candidate["run_id"]
+          assert metadata.get("workflow_run", {}).get("head_sha") == candidate["source_head"]
+          c.actions_archive_download(candidate["artifact_id"], candidate["archive_bytes"], archive, token)
+          result = c.carrier_import(candidate, archive, Path(os.environ["RUNNER_TEMP"]) / "qikvrt-carrier-tested")
+          assert result["state"] == "ORIGINAL_FROZEN_CARRIER_VERIFIED"
+          assert result["scope"] == "DEPENDENCY_IMAGE_ONLY"
+          assert result["predecessor_acceptance_transferred"] is False
+          assert result["public_production_verified"] is False
+          with archive.open("rb") as fp:
+              assert hashlib.file_digest(fp, "sha256").hexdigest() == candidate["archive_sha256"]
+          assert archive.stat().st_size == candidate["archive_bytes"]
+          (archive.parent / "verification.json").write_text(json.dumps({
+              "schema": "qikvrt-candidate-publish/v1",
+              "artifact_id": candidate["artifact_id"],
+              "archive_sha256": candidate["archive_sha256"],
+              "archive_bytes": candidate["archive_bytes"],
+              "source_head": candidate["source_head"],
+              "source_tree": candidate["source_tree"],
+              "public_production_verified": False,
+              "effect_ack_done": False
+          }, sort_keys=True) + "\n")
+          print("EXACT_DEPENDENCY_CANDIDATE_VERIFIED_NO_PASS_TRANSFER")
+          PY_RELEASE
+      - name: Create-only draft release and independently verify its bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag='qikvrt-pr494-candidate-sha256-64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1'
+          name='qikvrt-pr494-successor-64822d5f.zip'
+          archive="$RUNNER_TEMP/qikvrt-release-staging/$name"
+          test "$(gh api repos/ingolf-lohmann/qik-vrt/pulls/732 --jq '.head.sha')" = "$EXPECTED_HEAD"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" "$archive#$name" --repo "$GITHUB_REPOSITORY" \
+              --draft --title 'QIK-VRT PR494 exact-byte successor candidate (not production)' \
+              --notes 'Exact-byte dependency-image candidate; source PR494 head 4bdda5c7; SHA256 64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1. Does not transfer predecessor PASS, authorize Main merge or prove production effectiveness.' \
+              --target '4bdda5c7534a2c4fbac224015179492a4b624b3a'
+          fi
+          mkdir -p "$RUNNER_TEMP/qikvrt-release-readback"
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" \
+            --pattern "$name" --dir "$RUNNER_TEMP/qikvrt-release-readback" --clobber=false
+          echo '64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1  '"$RUNNER_TEMP/qikvrt-release-readback/$name" | sha256sum --check --status
+          test "$(stat -c '%s' "$RUNNER_TEMP/qikvrt-release-readback/$name")" = "383384043"
+          # Publish verified candidate bytes as a non-production prerelease.
+          # This is not a host deploy or a release admission claim.
+          gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false --prerelease
+          python3 -B - <<'PY_READBACK'
+          import json, os, subprocess
+          tag = 'qikvrt-pr494-candidate-sha256-64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1'
+          raw = subprocess.check_output(['gh','api','repos/ingolf-lohmann/qik-vrt/releases/tags/'+tag], text=True)
+          release = json.loads(raw)
+          assert release['draft'] is False and release['prerelease'] is True
+          assert release['tag_name'] == tag
+          assert release['target_commitish'] == '4bdda5c7534a2c4fbac224015179492a4b624b3a'
+          assert len(release['assets']) == 1
+          asset = release['assets'][0]
+          assert asset['name'] == 'qikvrt-pr494-successor-64822d5f.zip'
+          assert asset['size'] == 383384043
+          assert asset['digest'] == 'sha256:64822d5f64709192c659ac5264e2c33265e1f494917eaab535293b344d4016a1'
+          print('PRERELEASE_METADATA_EXACT_SHA256_BOUND_NO_PRODUCTION_EFFECT')
+          PY_READBACK
+          echo 'PRERELEASE_EXACT_BYTES_READBACK_VERIFIED_NO_PRODUCTION_EFFECT'
   test:
     outputs:
       tested_head: ${{ steps.tested_subject.outputs.head }}
@@ -1436,11 +1557,12 @@ jobs:
           head="$(git rev-parse HEAD)"
           tree="$(git rev-parse HEAD^{tree})"
           epoch="$(git show -s --format=%ct HEAD)"
+          carrier_digest="$(python3 -B -c 'import json,os,pathlib; p=pathlib.Path(os.environ["RUNNER_TEMP"])/"frozen-carrier/index.json"; m=json.loads(p.read_bytes())["manifests"]; assert len(m)==1, "SINGLE_FROZEN_CARRIER_MANIFEST_REQUIRED"; d=m[0]["digest"]; assert d.startswith("sha256:") and len(d)==71, "FROZEN_CARRIER_DIGEST_REQUIRED"; expected=json.loads(pathlib.Path("runtime/self-host/CONTAINER_CARRIER.json").read_bytes())["oci_manifest_digest"]; assert d==expected, "FROZEN_CARRIER_MANIFEST_PIN_MISMATCH"; assert (p.parent/"blobs/sha256"/d[7:]).is_file(), "FROZEN_CARRIER_BLOB_MISSING"; print(d)')"
           for build in 1 2; do
             docker buildx build --no-cache --platform linux/amd64 --target production-terminal \
               --file "$RUNNER_TEMP/s1-context/runtime/self-host/Dockerfile" \
               --provenance=false --sbom=false \
-              --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9" \
+              --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@$carrier_digest" \
               --build-arg QIKVRT_PRODUCTION_IMAGE=qikvrt-frozen-carrier \
               --build-arg QIKVRT_TERMINAL_PROFILE=temdd \
               --build-arg "SOURCE_DATE_EPOCH=$epoch" \
