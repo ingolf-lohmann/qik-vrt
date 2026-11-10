@@ -112,7 +112,7 @@ def execute_roundtrip(request, feature_catalog, observations):
                               "observation_count": len(observations)})
     return {"schema": "qikvrt_synchronous_roundtrip_v1", "request_id": request["id"],
             "journal": journal, "journal_head": journal[-1]["hash"],
-            "response_status": "VERIFIED" if not unresolved and not failed else "HOLD",
+            "response_status": "EVIDENCE_COMPLETE" if dispatched and not unresolved and not failed else "HOLD",
             "delegation_executed": False, "effect_ack_done": False,
             "artifacts": [o.get("artifact") for o in observations if o.get("artifact") is not None]}
 
