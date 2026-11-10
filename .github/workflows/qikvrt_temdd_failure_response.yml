@@ -142,7 +142,7 @@ jobs:
               jobs = receipt.get("failed_jobs") or []
               lines.extend([
                   f"| Original run | {run_id if type(run_id) is int else 'UNKNOWN'} |",
-                  f"| Original source HEAD | \`{head}\` |",
+                  f"| Original source HEAD | {head} |",
                   f"| Failed jobs observed | {len(jobs)} |",
                   f"| Exact-source TEMDD regression | {receipt.get('temdd_regression', 'NOT_VERIFIED')} |",
                   f"| Original failure repaired? | NO — {receipt.get('state', 'HOLD')} |",
