@@ -187,6 +187,16 @@ native acceptance to their own fresh evidence. Preserve the existing licenses.
 Repository evidence is canonical. Chat and model memory are non-authoritative transport context.
 
 BLOCKING REPAIR PRIORITY — OWNER 2026-10-25
+OPEN-WORK STALL CORRECTION — OWNER 2026-11-04
+Use the existing reflexive watchdog's open_work_progress contract in
+state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json. No active runner is not
+an empty queue. Preserve cumulative last useful progress across observations;
+timestamps, heartbeats and identical retries do not reset that clock. Open work
+requires the next safe, callable, authorized successor through the existing
+continuation consumer. Otherwise retain the concrete causal blocker and repair;
+never substitute another monitoring confirmation. Missing checks remain UNKNOWN.
+This source rule alone proves neither client adoption nor uninterrupted runtime.
+
 Failures that prevent further admitted work have the highest and exclusive
 priority. Defer all unrelated work and optimization until their verified repair.
 Reuse the existing native repair paths. In the existing client transition plan,

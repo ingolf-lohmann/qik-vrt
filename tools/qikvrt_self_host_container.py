@@ -18,6 +18,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import shutil
 import ssl
 import stat
@@ -206,6 +207,84 @@ def sha(raw):
 def require(condition, code):
     if not condition:
         raise ValueError(code)
+
+
+def frozen_apt_guard(phase, lock_path, evidence_path):
+    """Check the original eight build packages; never fetch or install them.
+
+    APT retains its Debian-keyring signature and package-hash verification.
+    A live signed index is only transport: its selected package set must match
+    the frozen versions, names, sizes and SHA-256 values before downloading.
+    Verify the downloaded bytes independently before the no-download install.
+    """
+    lock = json.loads(Path(lock_path).read_bytes())
+    require(lock.get("schema") == "qikvrt-frozen-build-apt/v1", "FROZEN_APT_LOCK_REQUIRED")
+    packages = lock.get("packages")
+    origins = {"debian": "https://deb.debian.org/debian",
+               "debian-security": "https://deb.debian.org/debian-security"}
+    require(lock.get("origins") == origins and isinstance(packages, list) and len(packages) == 8,
+            "FROZEN_APT_PACKAGE_SET_REQUIRED")
+    by_hash = {}
+    for package in packages:
+        require(isinstance(package, dict) and
+                isinstance(package.get("name"), str) and
+                re.fullmatch(r"[a-z0-9][a-z0-9+.-]*", package["name"]) and
+                isinstance(package.get("version"), str) and
+                re.fullmatch(r"[A-Za-z0-9.+:~_-]+", package["version"]) and
+                package.get("archive") in origins and
+                isinstance(package.get("filename"), str) and
+                re.fullmatch(r"pool/[A-Za-z0-9.+_/-]+\.deb", package["filename"]) and
+                ".." not in Path(package["filename"]).parts and
+                type(package.get("bytes")) is int and 0 < package["bytes"] <= 16 * 1024**2 and
+                isinstance(package.get("sha256"), str) and
+                re.fullmatch(r"[a-f0-9]{64}", package["sha256"]), "FROZEN_APT_LOCK_INVALID")
+        require(package["sha256"] not in by_hash, "FROZEN_APT_DUPLICATE_PACKAGE")
+        by_hash[package["sha256"]] = package
+    require(len({p["name"] for p in packages}) == 8, "FROZEN_APT_DUPLICATE_PACKAGE")
+    seen = set()
+    if phase == "plan":
+        raw = Path(evidence_path).read_bytes()
+        require(len(raw) <= 64 * 1024, "FROZEN_APT_PLAN_TOO_LARGE")
+        for line in raw.decode().splitlines():
+            if not line.startswith("'"):
+                continue  # APT's ordinary, non-executable explanatory output.
+            fields = shlex.split(line)
+            require(len(fields) == 4 and re.fullmatch(r"SHA256:[a-f0-9]{64}", fields[3]),
+                    "FROZEN_APT_STRONG_HASH_REQUIRED")
+            digest = fields[3][7:]
+            require(digest in by_hash and digest not in seen, "FROZEN_APT_PLAN_DRIFT")
+            package = by_hash[digest]
+            url = urllib.parse.urlsplit(fields[0])
+            expected = origins[package["archive"]] + "/" + package["filename"]
+            require(url.scheme == "https" and url.netloc == "deb.debian.org" and
+                    not url.query and not url.fragment and
+                    urllib.parse.unquote(fields[0]) == expected and
+                    fields[2] == str(package["bytes"]) and
+                    re.fullmatch(r"[A-Za-z0-9.+%:~_-]+\.deb", fields[1]),
+                    "FROZEN_APT_PLAN_DRIFT")
+            seen.add(digest)
+    elif phase == "archives":
+        for path in Path(evidence_path).glob("*.deb"):
+            require(not path.is_symlink() and path.is_file() and path.stat().st_size <= 16 * 1024**2,
+                    "FROZEN_APT_REGULAR_ARCHIVE_REQUIRED")
+            raw = path.read_bytes()
+            digest = sha(raw)
+            require(digest in by_hash and digest not in seen and
+                    len(raw) == by_hash[digest]["bytes"], "FROZEN_APT_ARCHIVE_MISMATCH")
+            seen.add(digest)
+    elif phase == "installed":
+        names = sorted(p["name"] for p in packages)
+        raw = subprocess.check_output(["dpkg-query", "-W", "-f=${Package}\t${Version}\n", *names], timeout=15)
+        actual = dict(line.split("\t", 1) for line in raw.decode().splitlines())
+        require(actual == {p["name"]: p["version"] for p in packages}, "FROZEN_APT_INSTALLED_VERSION_DRIFT")
+        seen = set(by_hash)
+    else:
+        raise ValueError("FROZEN_APT_PHASE_INVALID")
+    require(seen == set(by_hash), "FROZEN_APT_PACKAGE_SET_INCOMPLETE")
+    return {"schema": "qikvrt-frozen-build-apt-guard/v1", "state": "EXACT_FROZEN_BUILD_PACKAGES_VERIFIED",
+            "phase": phase, "lock_sha256": sha(Path(lock_path).read_bytes()),
+            "packages": [{k: p[k] for k in ("name", "version", "bytes", "sha256")} for p in packages],
+            "apt_signature_and_hash_verification_required": True, "effect_ack_done": False}
 
 
 def write_receipt(path, result, *, create_only=False):
@@ -440,6 +519,48 @@ def context(root, output):
     command("git", "-C", str(output), "diff", "--quiet", "HEAD", "--")
     return {"state": "SEALED_BUILD_CONTEXT", "source_head": head, "source_tree": tree,
             "source_date_epoch": epoch, "credential_material_included": False}
+
+
+def restore_artifact_package(package, expected, head, tree):
+    """Verify downloaded bytes before restoring manifest-bound file modes.
+
+    Archive extraction can normalize permissions. No missing, extra, changed
+    or linked file is repaired or accepted by this mode restoration.
+    """
+    package = Path(package)
+    require(package.is_dir() and not package.is_symlink()
+            and not any(p.is_symlink() for p in package.parents), "ARTIFACT_PACKAGE_DIRECTORY_REQUIRED")
+    manifest = package / "MANIFEST.json"
+    require(manifest.is_file() and not manifest.is_symlink(), "ARTIFACT_PACKAGE_MANIFEST_REQUIRED")
+    raw = manifest.read_bytes()
+    require(sha(raw) == _artifact_pin(expected), "ARTIFACT_PACKAGE_MANIFEST_PIN_MISMATCH")
+    value = json.loads(raw)
+    require(value.get("schema") == "qikvrt-self-host-package/v1" and value.get("effect_ack_done") is False
+            and value.get("source_head") == head and value.get("source_tree") == tree,
+            "ARTIFACT_PACKAGE_SOURCE_MISMATCH")
+    files = value.get("files")
+    require(isinstance(files, dict) and files, "ARTIFACT_PACKAGE_INVENTORY_REQUIRED")
+    require(not any(p.is_symlink() for p in package.rglob("*")), "ARTIFACT_PACKAGE_LINK_FORBIDDEN")
+    actual = {p.relative_to(package).as_posix() for p in package.rglob("*") if p.is_file()}
+    require(actual == set(files) | {"MANIFEST.json"}, "ARTIFACT_PACKAGE_INVENTORY_MISMATCH")
+    modes = []
+    for name, entry in files.items():
+        path = Path(name)
+        require(not path.is_absolute() and ".." not in path.parts and path.as_posix() == name
+                and isinstance(entry, dict) and entry.get("mode") in ("100644", "100755"),
+                "ARTIFACT_PACKAGE_ENTRY_INVALID")
+        target = package / path
+        raw = target.read_bytes()
+        require(type(entry.get("bytes")) is int and len(raw) == entry["bytes"]
+                and sha(raw) == _artifact_pin(entry.get("sha256")), "ARTIFACT_PACKAGE_BYTES_MISMATCH")
+        modes.append((target, 0o755 if entry["mode"] == "100755" else 0o644))
+    # Validate the complete byte inventory before changing any permissions.
+    for target, mode in modes:
+        target.chmod(mode)
+        require(stat.S_IMODE(target.stat().st_mode) == mode, "ARTIFACT_PACKAGE_MODE_RESTORE_FAILED")
+    return {"state": "ARTIFACT_PACKAGE_BYTES_AND_MODES_VERIFIED", "source_head": head,
+            "source_tree": tree, "manifest_sha256": expected, "files_verified": len(files),
+            "public_production_verified": False, "effect_ack_done": False}
 
 
 def oci(path, head, tree):
