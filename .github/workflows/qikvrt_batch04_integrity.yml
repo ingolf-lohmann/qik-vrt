@@ -358,9 +358,7 @@ jobs:
           make test repository-monitor-test self-host-test
           python3 tools/qikvrt_integrity.py verify
       - name: Commit materialized repository evidence
-        # Integrity evidence may need persistence even when external archive
-        # admission is NOOP. The full repository gates must still pass.
-        if: ${{ success() && steps.repository_gates.outcome == 'success' && steps.repository_integrity.outcome == 'success' }}
+        if: ${{ success() && steps.archive_preflight.outputs.admitted == 'true' }}
         shell: bash
         run: |
           set -euo pipefail
