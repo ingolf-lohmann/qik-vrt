@@ -52,6 +52,23 @@ class PriorityQueueTests(unittest.TestCase):
             select_next([unit("a"), unit("a")], writer_available=True,
                         exact_head="a" * 40)
 
+    def test_boolean_attempt_is_rejected(self):
+        bad = unit("a")
+        bad["last_attempt"] = True
+        with self.assertRaises(QueueInvariantError):
+            select_next([bad], writer_available=True, exact_head="a" * 40)
+
+    def test_duplicate_dependency_is_rejected(self):
+        with self.assertRaises(QueueInvariantError):
+            select_next([unit("a", "P0", "VERIFIED"),
+                         unit("b", dependencies=["a", "a"])],
+                        writer_available=True, exact_head="a" * 40)
+
+    def test_non_string_dependency_is_rejected(self):
+        with self.assertRaises(QueueInvariantError):
+            select_next([unit("a", dependencies=[{}])],
+                        writer_available=True, exact_head="a" * 40)
+
     def test_identical_event_replay_is_idempotent(self):
         event = {"event_id": "one", "evidence_sha256": "f" * 64}
         self.assertEqual(consolidate([event, event]), [event])
