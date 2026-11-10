@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Execute codec regression suite
-        run: python3 -B -m unittest tests.test_qikvrt_repository_roundtrip tests.test_qikvrt_continuation_journal tests.test_qikvrt_recursive_priority_queue
+        run: python3 -B -m unittest tests.test_qikvrt_repository_roundtrip tests.test_qikvrt_continuation_journal tests.test_qikvrt_recursive_priority_queue tests.test_qikvrt_universal_transputer
       - name: Serialize and independently deserialize every tracked blob
         shell: bash
         run: |
