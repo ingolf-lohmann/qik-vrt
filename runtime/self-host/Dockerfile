@@ -12,7 +12,12 @@ COPY --from=node-runtime /usr/local/bin/node /usr/local/bin/node
 RUN apt-get update && apt-get install -y --no-install-recommends \
       firefox-esr libstdc++6 novnc websockify x11-utils x11vnc xvfb ca-certificates \
     && dpkg-query -W -f='${Package}\t${Version}\n' > /usr/local/share/qikvrt-distribution-packages.tsv \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && : > /etc/machine-id \
+    && if test -e /var/lib/dbus/machine-id && ! test -L /var/lib/dbus/machine-id; then : > /var/lib/dbus/machine-id; fi \
+    && rm -rf /var/cache/fontconfig/* /var/cache/ldconfig/aux-cache \
+    && find /var/log/apt -maxdepth 1 -type f -exec truncate -s 0 {} + \
+    && truncate -s 0 /var/log/dpkg.log /var/log/alternatives.log
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1
 # This is a provisioned dependency image. Operators transfer a separately
 # frozen package and private config/volume; no mutable checkout at runtime.
