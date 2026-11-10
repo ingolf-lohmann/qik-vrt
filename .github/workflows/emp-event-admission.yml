@@ -7,11 +7,12 @@ on:
     types: [completed]
 permissions:
   contents: read
+  actions: read
 jobs:
   admit:
     if: ${{ github.event.repository.full_name == 'ingolf-lohmann/qik-vrt' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,9 +26,20 @@ jobs:
         run: |
           python -m runtime.emp.workflow_event --event "$EVENT_PATH" --db "$RUNNER_TEMP/emp.sqlite" --output "$RUNNER_TEMP/emp-decision.json"
           cat "$RUNNER_TEMP/emp-decision.json"
+      - name: Diagnose failed workflow jobs (bounded pagination)
+        if: ${{ github.event.workflow_run.conclusion != 'success' }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          python -m runtime.emp.ci_diagnose "$RUN_ID" "$RUNNER_TEMP/emp-temdd.json"
       - name: Publish decision evidence
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: emp-decision-${{ github.event.workflow_run.id }}
-          path: ${{ runner.temp }}/emp-decision.json
+          path: |
+            ${{ runner.temp }}/emp-decision.json
+            ${{ runner.temp }}/emp-temdd.json
+          if-no-files-found: error
           retention-days: 30
