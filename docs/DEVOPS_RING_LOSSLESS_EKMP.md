@@ -47,3 +47,24 @@ bounded backoff; repeated identical attempts do not renew useful-progress time.
 5. Original-host, native EAP and global DoD remain separately fail-closed.
 
 This document records a contract, not proof of operational liveness.
+
+
+## Synchroner Readback-Kreis nach jedem Auftrag (Owner-Vorgabe 2026-11-10)
+
+Nach jedem an die Authority übergebenen Arbeitsauftrag kehrt der ausführende
+Controller **lesend** in den DevOps-Kreis zurück. Er liest den aktuellen
+Authority-HEAD/TREE, die **gesamte** beobachtbare Aktivität (auch fremde,
+nicht auftragsbezogene PRs, Workflows, Reviews und Änderungen), sowie
+zugehörige Log- und Artefaktreferenzen. Alle Beobachtungen erhalten
+Zeitstempel, Quellenbindung und eine verkettete Ereignisidentität. Der
+Auftrag wird erst dann einem beobachteten Ergebnis zugeordnet, wenn
+Auftrags-ID und Exact-HEAD/Run-/Artefaktreferenzen nachweisbar übereinstimmen.
+
+Bei nicht sichtbarem Auftrag ist das Ergebnis `PENDING_READBACK`, niemals
+`DONE`. Fremde Aktivitäten bleiben als Kontext und mögliche kausale
+Abhängigkeiten im Journal. Ein weiterer synchroner Lesedurchlauf darf
+nur bei vorhandenem Ausführungsbudget stattfinden; bei Erschöpfung
+wird `OPEN` mit dem letzten belegten Cursor persistiert, statt eine
+Endlosschleife oder Erfolg zu behaupten. Die Fortsetzung übernimmt der
+bereits zugelassene DevOps-Kreis. Die Readback-Schleife ist read-only;
+Writer-Fencing, Admission, Governance und EAP bleiben unabhängig.
