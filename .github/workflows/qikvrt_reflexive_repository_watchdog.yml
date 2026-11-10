@@ -166,6 +166,23 @@ jobs:
             > "$root/validated-job-readback-budget.json"
 
 
+      - name: Classify exact-head execution blockers for TEMDD
+        if: steps.reobserve.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.qikvrt/reflexive-repository-watchdog
+          jq -n --arg head "$(cat "$root/observed-head.txt")" \
+            --slurpfile runs "$root/current-runs.json" \
+            --arg jobs_dir "$root/jobs" \
+            '{expected_head_sha: $head, runs: [($runs[0].workflow_runs // [])[] |
+              {id, head_sha, status, conclusion, jobs: []}]}' \
+            > "$root/execution-blocker-observation.json"
+          python3 -B tools/qikvrt_execution_blocker_classifier.py \
+            "$root/execution-blocker-observation.json" \
+            > "$root/execution-blocker-classification.json"
+          jq '{state, findings, effect_ack_done}' "$root/execution-blocker-classification.json"
+
       - name: Analyze the pre-deadlock state without mutation
         id: analyze
         env:
