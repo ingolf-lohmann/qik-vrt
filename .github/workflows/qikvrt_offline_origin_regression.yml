@@ -1,0 +1,24 @@
+name: QIKVRT offline origin security regression
+on:
+  pull_request:
+    paths:
+      - 'docs/monitor/offline/static-server.mjs'
+      - 'docs/monitor/offline/static-server.test.mjs'
+      - '.github/workflows/qikvrt_offline_origin_regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  node-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Run provider-independent origin regression
+        run: node --test docs/monitor/offline/static-server.test.mjs

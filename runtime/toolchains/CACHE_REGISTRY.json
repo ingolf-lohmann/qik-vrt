@@ -424,15 +424,16 @@
         ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
         ".github/workflows/qikvrt_formalization_and_audio.yml",
         ".github/workflows/qikvrt_global_completion.yml",
+        ".github/workflows/qikvrt_offline_origin_regression.yml",
         ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
         ".github/workflows/qikvrt_publication_router.yml",
         ".github/workflows/qikvrt_temdd.yml",
+        ".github/workflows/qikvrt_universal_ontology_formalization.yml",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "runtime/offline/browser-tests/webkit-apt-cache.test.mjs",
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tests/test_workflow_action_runtime_pins.py",
-        "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_universal_ontology_formalization.yml"
+        "tools/offline-audio-transcription/package-lock.json"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
