@@ -1,5 +1,3 @@
-import QIKVRTCausalGeometry.CausalGeometry
-
 /-!
 # Conditional causal + volume reconstruction interface
 
