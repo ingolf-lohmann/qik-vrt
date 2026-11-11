@@ -83,7 +83,8 @@ def selftest():
         pass
     else:
         raise AssertionError("unverified DONE accepted")
-    for bad in (dict(base, state="DONE"), dict(base, repository="other/repo"),
+    for bad in (dict(base, state="DONE"), dict(base, state=[]),
+                dict(base, next_action={}), dict(base, repository="other/repo"),
                 dict(base, head_sha="bad"), dict(base, effect_ack_done="true")):
         try:
             decide(bad)
@@ -105,9 +106,11 @@ def main():
         receipt = json.load(sys.stdin)
         print(json.dumps(decide(receipt), sort_keys=True, separators=(",", ":")))
         return 0
-    except (ValueError, json.JSONDecodeError) as exc:
-        print(json.dumps({"schema": "qikvrt_client_decision_v1", "disposition": "HOLD_INVALID",
-                          "effect_ack_done": False, "error": str(exc)}, sort_keys=True))
+    except (ValueError, TypeError, KeyError, json.JSONDecodeError) as exc:
+        print(json.dumps({"schema": "qikvrt_client_decision_v1",
+                          "disposition": "CONTINUE_DIAGNOSIS",
+                          "next_action": None, "effect_ack_done": False,
+                          "blocker": "INVALID_RECEIPT", "error": str(exc)}, sort_keys=True))
         return 2
 
 
