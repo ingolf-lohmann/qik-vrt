@@ -13,7 +13,7 @@ import sys
 SHA = re.compile(r"^[0-9a-f]{40}$")
 STATES = {"OPEN", "RUNNING", "BLOCKED", "DONE"}
 ACTIONS = {"READBACK", "REPAIR", "TEST", "REVIEW", "MERGE", "DEPLOY", "VERIFY"}
-BLOCKERS = {"AUTHORIZATION", "INTEGRITY", "CI", "REVIEW", "HOST", "RUNTIME", "UNKNOWN"}
+BLOCKERS = {"AUTHORIZATION", "INTEGRITY", "CI", "REVIEW", "HOST", "RUNTIME", "UNKNOWN", "WORKFLOW_APPROVAL"}
 
 
 def decide(receipt):
@@ -46,7 +46,8 @@ def decide(receipt):
     if receipt["state"] == "BLOCKED":
         if receipt.get("blocker") not in BLOCKERS:
             raise ValueError("blocked state requires typed blocker")
-        disposition = "HOLD_EXTERNAL" if receipt["blocker"] == "AUTHORIZATION" else "CONTINUE_DIAGNOSIS"
+        disposition = ("HOLD_EXTERNAL" if receipt["blocker"] in {"AUTHORIZATION", "WORKFLOW_APPROVAL"}
+                       else "CONTINUE_DIAGNOSIS")
     elif receipt["state"] == "DONE":
         disposition = "ACKNOWLEDGED"
     else:
@@ -71,6 +72,7 @@ def selftest():
     assert decide(base)["disposition"] == "CONTINUE"
     assert decide(dict(base, state="BLOCKED", blocker="AUTHORIZATION"))["disposition"] == "HOLD_EXTERNAL"
     assert decide(dict(base, state="BLOCKED", blocker="CI"))["disposition"] == "CONTINUE_DIAGNOSIS"
+    assert decide(dict(base, state="BLOCKED", blocker="WORKFLOW_APPROVAL"))["disposition"] == "HOLD_EXTERNAL"
     try:
         decide(dict(base, state="DONE", effect_ack_done=True))
     except ValueError:
