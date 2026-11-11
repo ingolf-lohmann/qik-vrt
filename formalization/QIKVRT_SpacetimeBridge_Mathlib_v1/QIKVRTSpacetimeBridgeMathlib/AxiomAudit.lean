@@ -1,5 +1,12 @@
 import QIKVRTSpacetimeBridgeMathlib.RealVolumeLaw
+import QIKVRTSpacetimeBridgeMathlib.PoissonMoments
 
 #print axioms QIKVRT.SpacetimeBridge.MathlibV1.scale_eq_of_same_real_volume_density
 #print axioms QIKVRT.SpacetimeBridge.MathlibV1.realVolumeDensity_pos
 #print axioms QIKVRT.SpacetimeBridge.MathlibV1.scale_eq_of_same_local_density
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.poisson_mass_normalized
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.poisson_first_moment_hasSum
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.poisson_expectation_eq_rate
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.poisson_second_moment_hasSum
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.poisson_second_moment_eq
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.poisson_variance_eq_rate
