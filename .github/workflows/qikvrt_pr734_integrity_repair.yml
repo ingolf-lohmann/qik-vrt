@@ -22,6 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -B tools/qikvrt_client_continuation.py --self-test
+          python3 -B tests/test_qikvrt_client_continuation.py
           python3 -B tools/qikvrt_integrity.py generate
           python3 -B tools/qikvrt_integrity.py verify
       - name: Commit integrity trio only when changed
