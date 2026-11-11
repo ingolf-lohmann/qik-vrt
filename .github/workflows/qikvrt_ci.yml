@@ -176,6 +176,11 @@ jobs:
             test_status=$?
             set -e
 
+            # Cache coverage depends on the current lock and registry. Render
+            # and verify it before materializing the repository manifest;
+            # otherwise the successor test repeats the predecessor's RED.
+            python3 tools/qikvrt_tool_cache.py render
+            python3 tools/qikvrt_tool_cache.py verify
             python3 tools/qikvrt_integrity.py generate
             python3 tools/qikvrt_integrity.py verify
 
