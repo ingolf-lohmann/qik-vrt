@@ -1594,6 +1594,41 @@ def validate_progress(context: dict[str, Any]) -> str:
     return owner_check
 
 
+def validate_repository_roles(context: dict[str, Any]) -> tuple[str, str]:
+    """Fail closed unless context role projections match the normative policy."""
+    policy_path = "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+    policy = load_json(ROOT / policy_path)
+    upstream = policy.get("canonical_upstream")
+    mirror = policy.get("mirror")
+    succession = policy.get("authority_succession")
+    retired = succession.get("retired_authorities") if isinstance(succession, dict) else None
+    if (policy.get("schema") != "qikvrt_canonical_upstream_remote_v1"
+            or policy.get("status") != "NORMATIVE"
+            or not isinstance(upstream, dict) or upstream.get("repository") != "ingolf-lohmann/qik-vrt"
+            or upstream.get("role") != "AUTHORITY"
+            or not isinstance(mirror, dict) or mirror.get("repository") != "Goldkelch/qik-vrt"
+            or mirror.get("role") != "MIRROR" or not isinstance(retired, list)
+            or not any(isinstance(item, dict) and item.get("repository") == "Goldkelch/qik-vrt"
+                       and item.get("authority_eligibility") == "REVOKED_IRREVERSIBLY" for item in retired)):
+        fail("NORMATIVE_REPOSITORY_ROLE_POLICY_INVALID")
+    project = require(context, "project", dict)
+    canonicality = require(project, "canonicality", dict)
+    repositories = canonicality.get("repositories")
+    if (canonicality.get("mode") != "symmetric-canonical" or not isinstance(repositories, list)
+            or set(repositories) != {"Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt"}):
+        fail("SCOPED_SYMMETRIC_CANONICALITY_CONTRACT_INVALID")
+    guard = require(project, "repository_role_guard", dict)
+    expected = {"source_of_truth": policy_path + "#/canonical_upstream",
+        "authority_repository": upstream["repository"], "authority_role": upstream["role"],
+        "mirror_repository": mirror["repository"], "mirror_role": mirror["role"],
+        "former_authority_eligibility": "REVOKED_IRREVERSIBLY", "conflict_disposition": "HOLD",
+        "exact_head_and_tree_required": True, "reobserve_after_every_effect": True}
+    if any(guard.get(key) != value for key, value in expected.items()):
+        fail("REPOSITORY_ROLE_CONTEXT_DRIFT")
+    if policy_path not in require(context, "required_read_order", list):
+        fail("REPOSITORY_ROLE_POLICY_MISSING_FROM_REQUIRED_READ_ORDER")
+    return upstream["repository"], mirror["repository"]
+
 def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
     registry_name = require(context, "adapter_registry", str)
     registry = load_json(ROOT / registry_name)
@@ -1601,6 +1636,13 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
         fail("unsupported AI adapter registry schema")
     if require(registry, "canonical_entrypoint", str) != "AI":
         fail("AI adapter registry must bind canonical entrypoint AI")
+    contract = registry.get("required_shared_contract")
+    if (not isinstance(contract, dict)
+            or contract.get("repository_role_policy") != "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+            or contract.get("tool_selection_policy") != "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/tool_selection"
+            or contract.get("preflight") != "python3 -B tools/ai_handoff.py --client-action <non-secret-action.json>"
+            or contract.get("acknowledgement_required_for_node_adoption") is not True):
+        fail("AI_ADAPTER_SHARED_CONTRACT_INVALID")
     adapters = require(registry, "adapters", list)
     if not adapters:
         fail("AI adapter registry must contain at least one adapter")
@@ -1609,8 +1651,16 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
         if not isinstance(adapter, dict):
             fail("every AI adapter entry must be an object")
         path = require(adapter, "path", str)
-        if not (ROOT / path).is_file():
+        target = ROOT / path
+        if not target.is_file():
             missing.append(path)
+            continue
+        try:
+            adapter_text = target.read_text(encoding="utf-8")
+        except (OSError, UnicodeError):
+            fail("AI_ADAPTER_UNREADABLE:" + path)
+        if "AI_CONTEXT.json" not in adapter_text or "AI" not in adapter_text:
+            fail("AI_ADAPTER_DOES_NOT_BIND_SHARED_ENTRYPOINT:" + path)
     if missing:
         fail("missing AI adapter files: " + ", ".join(sorted(missing)))
     return registry_name, len(adapters)
@@ -1977,6 +2027,7 @@ def main() -> int:
     if missing:
         fail("missing required files: " + ", ".join(missing))
 
+    authority_repository, mirror_repository = validate_repository_roles(context)
     registry_name, adapter_count = validate_adapters(context)
     projection_check = validate_progress(context)
 
@@ -1991,6 +2042,8 @@ def main() -> int:
     print(f"GIT_COMMIT={git_value('rev-parse', 'HEAD')}")
     print("CANONICAL_MODE=" + str(canonicality.get("mode", "unknown")))
     print("CANONICAL_REPOSITORIES=" + ",".join(repositories))
+    print("AUTHORITY_REPOSITORY=" + authority_repository)
+    print("MIRROR_REPOSITORY=" + mirror_repository)
     print("READ_ORDER=" + " -> ".join(read_order))
     print(f"AI_ADAPTER_REGISTRY={registry_name}")
     print(f"AI_ADAPTER_COUNT={adapter_count}")
