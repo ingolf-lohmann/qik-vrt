@@ -1061,9 +1061,9 @@ class JobReadbackBudgetTests(unittest.TestCase):
             self.assertEqual(MODULE._gate_state_for_run(entry, {'1': entries}, required=True)['state'], 'UNTRUSTED')
 
     def test_run_pagination_budget_and_numeric_latest_tie_break(self):
-        result, requests, _ = self.collect(self.page(1001))
+        result, requests, _ = self.collect(self.page(3001))
         self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(len(requests), 10)
+        self.assertEqual(len(requests), 30)
         self.assertTrue(all(r['kind'] == 'runs' for r in requests))
         page = self.page(10)
         for entry in page['workflow_runs']:
@@ -1189,6 +1189,17 @@ class OpenWorkCollectionTests(unittest.TestCase):
         with mock.patch.object(MODULE, "_readback_page", side_effect=[self.entries(100), self.entries(1)]):
             with self.assertRaisesRegex(MODULE.ReflexiveWatchdogBlock, "DUPLICATED"):
                 self.collect()
+
+    def test_open_work_paging_beyond_previous_ten_page_boundary(self):
+        pages = [self.entries(100, 1 + 100 * i) for i in range(11)]
+        terminal = self.entries(2, 1101)
+        with mock.patch.object(MODULE, "_readback_page",
+                               side_effect=pages + [terminal, pages[0]]) as read:
+            value = self.collect()
+        self.assertTrue(value["complete"])
+        self.assertFalse(value["truncated"])
+        self.assertEqual(value["total_count"], 1102)
+        self.assertEqual(read.call_count, 13)
 
     def test_inventory_budget_exhaustion_is_hold(self):
         pages = [self.entries(100, 1 + 100 * i) for i in range(MODULE.MAX_WORK_READBACK_PAGES)]
