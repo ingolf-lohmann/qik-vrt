@@ -1,0 +1,28 @@
+{
+  "schema": "qikvrt_repository_continuation_standard_v1",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "scope": "all repository work units, workflows, writers, and client adapters",
+  "default_behavior": "REENTER_SAME_WRITER",
+  "invariants": [
+    "Every unfinished work unit has stable work_unit_id, writer_id, exact_head_sha and durable successor receipt",
+    "A context boundary, tool return, failed CI, API rate limit or workflow transition is not completion",
+    "A successor must read back its predecessor and verify writer, work unit, exact head and integrity before continuing",
+    "Unresolved predecessors cannot be overwritten or silently dropped",
+    "External authorization and workflow admission remain fail-closed; no retry may bypass these gates",
+    "Merge, deployment, and effect acknowledgement require independent verified evidence",
+    "Every failed CI must produce TEMDD diagnosis and a typed next action",
+    "A retry must be bounded, idempotent, rate-limit-aware and must not create unbounded workflow cascades"
+  ],
+  "states": [
+    "OPEN",
+    "RUNNING",
+    "BLOCKED",
+    "DONE"
+  ],
+  "done_requires": [
+    "independent_effect_ack",
+    "seven_dod_gates"
+  ],
+  "implementation_status": "PARTIAL",
+  "admission": "BLOCKED"
+}
