@@ -66,6 +66,6 @@ theorem scale_eq_of_same_calibrated_count
       calibratedCount baseDensity omega2 dimension) :
     omega1 = omega2 := by
   apply scale_eq_of_same_volume_factor dimension omega1 omega2 hd h1 h2
-  exact Nat.mul_left_cancel hcount
+  exact Nat.mul_left_cancel hbase hcount
 
 end QIKVRT.SpacetimeBridge.V1.VolumeLaw
