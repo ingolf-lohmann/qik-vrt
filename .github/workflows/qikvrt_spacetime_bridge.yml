@@ -1,0 +1,77 @@
+name: QIK-VRT spacetime bridge formal verification
+
+on:
+  push:
+    paths:
+      - "formalization/QIKVRT_SpacetimeBridge_v1/**"
+      - "formalization/QIKVRT_CausalGeometry_v1/**"
+      - "docs/research/2026-11-11-lean-geometric-reconstruction/SPACETIME_BRIDGE_REVIEW.md"
+      - ".github/workflows/qikvrt_spacetime_bridge.yml"
+  pull_request:
+    paths:
+      - "formalization/QIKVRT_SpacetimeBridge_v1/**"
+      - "formalization/QIKVRT_CausalGeometry_v1/**"
+      - "docs/research/2026-11-11-lean-geometric-reconstruction/SPACETIME_BRIDGE_REVIEW.md"
+      - ".github/workflows/qikvrt_spacetime_bridge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-spacetime-bridge-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lean-kernel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: formalization/QIKVRT_SpacetimeBridge_v1
+    steps:
+      - name: Check out exact candidate head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: formalization/QIKVRT_SpacetimeBridge_v1
+          test: false
+      - name: Build the spacetime bridge
+        run: lake build QIKVRTSpacetimeBridge
+      - name: Reject proof escapes
+        run: |
+          lake env lean -E hasSorry QIKVRTSpacetimeBridge/SpacetimeBridge.lean
+          lake env lean -E hasSorry QIKVRTSpacetimeBridge/VolumeLaw.lean
+      - name: Run Poisson sprinkling reference tests
+        run: |
+          python3 ../../tools/causal_sprinkling_demo.py --density 20 --trials 200 --epsilon 0.25 --seed 20261111
+          python3 -m unittest discover -s ../../tools -p 'test_causal_sprinkling_demo.py'
+      - name: Audit theorem dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean QIKVRTSpacetimeBridge/AxiomAudit.lean > .lake/build/spacetime-bridge-axioms.log
+          python3 - <<'PY'
+          from pathlib import Path
+          output = Path(".lake/build/spacetime-bridge-axioms.log").read_text()
+          expected = [
+              "QIKVRT.SpacetimeBridge.V1.causal_volume_reconstruct",
+              "QIKVRT.SpacetimeBridge.V1.rejection_exceeds_tolerance",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.conformalVolumeFactor_mul",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_of_same_volume_factor",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_one_of_unit_volume_factor",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_of_same_calibrated_count",
+          ]
+          for name in expected:
+              if name not in output:
+                  raise SystemExit("BLOCK missing axiom audit: " + name)
+          for line in output.splitlines():
+              if any(name in line for name in expected):
+                  if "does not depend on any axioms" not in line:
+                      raise SystemExit("BLOCK unexpected axiom dependency: " + line)
+          print("PASS: all spacetime bridge and volume-law theorems are axiom-free")
+          PY

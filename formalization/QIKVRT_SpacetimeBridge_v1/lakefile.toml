@@ -1,0 +1,6 @@
+name = "QIKVRTSpacetimeBridge"
+version = "1.0.0"
+defaultTargets = ["QIKVRTSpacetimeBridge"]
+
+[[lean_lib]]
+name = "QIKVRTSpacetimeBridge"
