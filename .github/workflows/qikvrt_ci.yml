@@ -120,6 +120,37 @@ jobs:
             printf 'head=%s\ntree=%s\n' "$initial_head" "$initial_tree" >> "$GITHUB_OUTPUT"
           fi
           exit "$status"
+      - name: Persist same-writer diagnostic successor on failed initial suite
+        if: always() && steps.full_test.outcome == 'failure'
+        env:
+          QIKVRT_SUBJECT_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/runtime/diagnostic-successor
+          python3 -B - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from tools.qikvrt_client_continuation import decide
+          from tools.qikvrt_diagnostic_successor import materialize
+
+          receipt = {
+              "schema": "qikvrt_client_continuation_v1",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "work_unit_id": "ci-" + os.environ["GITHUB_RUN_ID"],
+              "writer_id": "github-actions-" + os.environ["GITHUB_RUN_ID"],
+              "head_sha": os.environ["QIKVRT_SUBJECT_HEAD"],
+              "state": "BLOCKED",
+              "blocker": "CI",
+              "next_action": "READBACK",
+              "effect_ack_done": False,
+          }
+          decision = decide(receipt)
+          root = Path(".qikvrt/runtime/diagnostic-successor")
+          materialize(receipt, decision, root)
+          PY
+
       - name: Upload audit
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
