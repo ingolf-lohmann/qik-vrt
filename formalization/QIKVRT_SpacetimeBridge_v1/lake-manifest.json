@@ -1,17 +1,7 @@
 {
   "version": "1.1.0",
   "packagesDir": ".lake/packages",
-  "packages": [
-    {
-      "type": "path",
-      "scope": "",
-      "name": "QIKVRTCausalGeometry",
-      "manifestFile": "lake-manifest.json",
-      "inherited": false,
-      "dir": "../QIKVRT_CausalGeometry_v1",
-      "configFile": "lakefile.toml"
-    }
-  ],
+  "packages": [],
   "name": "QIKVRTSpacetimeBridge",
   "lakeDir": ".lake"
 }
