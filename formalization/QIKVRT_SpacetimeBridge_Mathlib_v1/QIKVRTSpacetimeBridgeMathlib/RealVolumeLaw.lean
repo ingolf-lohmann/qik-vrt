@@ -19,15 +19,19 @@ ontological interpretation. The classifications below are metadata, not
 theorems about the truth of the classified claims.
 -/
 
-/-- Project-level evidence categories. These are labels, not proof rules.
-Kept outside the audited theorem namespace so generated datatype support
-declarations do not pollute the theorem axiom audit. -/
-inductive QIKVRT.EvidenceStatus where
-  | kernelChecked
-  | formalizedModelStatement
-  | openFormalObligation
-  | interpretiveClaim
-  deriving DecidableEq, Repr
+/-- Project-level evidence categories. These are string labels, not
+proof rules or propositions. Using strings avoids introducing inductive
+datatype support declarations into the axiom-audit dependency graph. -/
+abbrev QIKVRT.EvidenceStatus := String
+
+namespace QIKVRT.EvidenceStatus
+
+def kernelChecked : QIKVRT.EvidenceStatus := "kernelChecked"
+def formalizedModelStatement : QIKVRT.EvidenceStatus := "formalizedModelStatement"
+def openFormalObligation : QIKVRT.EvidenceStatus := "openFormalObligation"
+def interpretiveClaim : QIKVRT.EvidenceStatus := "interpretiveClaim"
+
+end QIKVRT.EvidenceStatus
 
 namespace QIKVRT.SpacetimeBridge.MathlibV1
 
