@@ -59,7 +59,9 @@ def decide(receipt):
         "writer_id": receipt["writer_id"],
         "head_sha": receipt["head_sha"],
         "disposition": disposition,
-        "next_action": None if disposition == "ACKNOWLEDGED" else receipt["next_action"],
+        "next_action": (None if disposition in {"ACKNOWLEDGED", "HOLD_EXTERNAL"}
+                        else receipt["next_action"]),
+        "blocked_on": (receipt["blocker"] if disposition == "HOLD_EXTERNAL" else None),
         "effect_ack_done": receipt["effect_ack_done"],
     }
 
@@ -72,7 +74,9 @@ def selftest():
     assert decide(base)["disposition"] == "CONTINUE"
     assert decide(dict(base, state="BLOCKED", blocker="AUTHORIZATION"))["disposition"] == "HOLD_EXTERNAL"
     assert decide(dict(base, state="BLOCKED", blocker="CI"))["disposition"] == "CONTINUE_DIAGNOSIS"
-    assert decide(dict(base, state="BLOCKED", blocker="WORKFLOW_APPROVAL"))["disposition"] == "HOLD_EXTERNAL"
+    approval = decide(dict(base, state="BLOCKED", blocker="WORKFLOW_APPROVAL"))
+    assert approval["disposition"] == "HOLD_EXTERNAL"
+    assert approval["next_action"] is None and approval["blocked_on"] == "WORKFLOW_APPROVAL"
     try:
         decide(dict(base, state="DONE", effect_ack_done=True))
     except ValueError:
