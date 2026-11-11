@@ -6,17 +6,17 @@ name: QIK-VRT causal geometry integration
 on:
   push:
     paths:
-      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/**"
+      - "formalization/QIKVRT_CausalGeometry_v1/**"
+      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean"
       - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean"
-      - "formalization/QIKVRT_Formalization_v2.0/lean-toolchain"
       - "tools/verify_causal_geometry_registration.py"
       - "docs/research/2026-11-11-lean-geometric-reconstruction/**"
       - ".github/workflows/qikvrt_causal_geometry_integration.yml"
   pull_request:
     paths:
-      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/**"
+      - "formalization/QIKVRT_CausalGeometry_v1/**"
+      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/CausalDistance.lean"
       - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean"
-      - "formalization/QIKVRT_Formalization_v2.0/lean-toolchain"
       - "tools/verify_causal_geometry_registration.py"
       - "docs/research/2026-11-11-lean-geometric-reconstruction/**"
       - ".github/workflows/qikvrt_causal_geometry_integration.yml"
@@ -35,7 +35,7 @@ jobs:
     timeout-minutes: 30
     defaults:
       run:
-        working-directory: formalization/QIKVRT_Formalization_v2.0
+        working-directory: formalization/QIKVRT_CausalGeometry_v1
     steps:
       - name: Check out exact candidate head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -55,23 +55,23 @@ jobs:
 
       - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
         with:
-          lake-package-directory: formalization/QIKVRT_Formalization_v2.0
+          lake-package-directory: formalization/QIKVRT_CausalGeometry_v1
           test: false
 
-      - name: Enforce source-to-core registration
+      - name: Enforce source-to-core registration and historical byte lock
         run: python3 ../../tools/verify_causal_geometry_registration.py
 
-      - name: Build the integrated Lean library
-        run: lake build QIKVRTEffectAck
+      - name: Build the dependent geometry library
+        run: lake build QIKVRTCausalGeometry
 
       - name: Reject proof escapes in the new module
-        run: lake env lean -E hasSorry QIKVRTEffectAck/CausalGeometry.lean
+        run: lake env lean -E hasSorry QIKVRTCausalGeometry/CausalGeometry.lean
 
       - name: Execute and enforce exact theorem axiom inventory
         shell: bash
         run: |
           set -euo pipefail
-          lake env lean QIKVRTEffectAck/CausalGeometryAxiomAudit.lean > .lake/build/causal-geometry-axioms.log
+          lake env lean QIKVRTCausalGeometry/AxiomAudit.lean > .lake/build/causal-geometry-axioms.log
           python3 - <<'PY'
           import re
           from pathlib import Path
@@ -94,7 +94,7 @@ jobs:
           allowed = {"propext", "Classical.choice", "Quot.sound"}
           output = Path(".lake/build/causal-geometry-axioms.log").read_text()
           pattern = re.compile(
-              r"^'(?P<name>[^']+)' (?:does not depend on any axioms|"
+              r"^.*?'(?P<name>[^']+)' (?:does not depend on any axioms|"
               r"depends on axioms: \[(?P<axioms>[^]]*)\])$",
               re.MULTILINE,
           )
