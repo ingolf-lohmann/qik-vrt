@@ -62,10 +62,11 @@ theorem causalOrder_strictPartialOrder {V : Type u}
       Before order.graph b c → Before order.graph a c) :=
   ⟨before_irreflexive order.acyclic, fun _ _ _ => before_transitive⟩
 
-/-- A finite-interval witness is represented constructively by a Finset
-    together with an exact membership specification. -/
+/-- Local finiteness is witnessed by a finite list and an exact membership
+    specification. A list may contain each event at most once by convention;
+    the equivalence below fixes the represented interval as a set. -/
 structure LocalFinite {V : Type u} (r : V → V → Prop) where
-  interval : V → V → Finset V
+  interval : V → V → List V
   mem_interval_iff : ∀ a b x,
     x ∈ interval a b ↔ r a x ∧ r x b
 
@@ -74,7 +75,7 @@ structure LocallyFiniteCausalOrder (V : Type u) extends CausalOrder V where
   locallyFinite : LocalFinite (Before graph)
 
 def causalInterval {V : Type u} (order : LocallyFiniteCausalOrder V)
-    (a b : V) : Finset V :=
+    (a b : V) : List V :=
   order.locallyFinite.interval a b
 
 theorem causalInterval_membership {V : Type u}
@@ -83,12 +84,12 @@ theorem causalInterval_membership {V : Type u}
       Before order.graph a x ∧ Before order.graph x b :=
   order.locallyFinite.mem_interval_iff a b x
 
-/-- The causal interval has a finite, explicitly enumerable representation.
-    Its finiteness is a field of the supplied LocalFinite structure, not a
+/-- The causal interval has a finite, explicitly enumerable list
+    representation. Local finiteness is a supplied model hypothesis, not a
     consequence of acyclicity alone. -/
 theorem causalInterval_finite {V : Type u}
     (order : LocallyFiniteCausalOrder V) (a b : V) :
-    ∃ s : Finset V, s = causalInterval order a b :=
+    ∃ xs : List V, xs = causalInterval order a b :=
   ⟨causalInterval order a b, rfl⟩
 
 /-- A typed Round-Trip pair. decode is total; canonical restricts the
@@ -112,7 +113,7 @@ theorem roundTrip_rightInverse_onCanonical {α : Type u} {β : Type v}
 
 theorem roundTrip_encode_injective {α : Type u} {β : Type v}
     (rt : RoundTrip α β) :
-    Function.Injective rt.encode := by
+    ∀ {x y}, rt.encode x = rt.encode y → x = y := by
   intro x y h
   calc
     x = rt.decode (rt.encode x) := (rt.decode_encode x).symm
