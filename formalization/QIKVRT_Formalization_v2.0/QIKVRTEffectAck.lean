@@ -8,8 +8,6 @@ import QIKVRTEffectAck.CanonicalTemporalMemory
 import QIKVRTEffectAck.CausalDistance
 import QIKVRTEffectAck.CausalDistanceTemporalBridge
 import QIKVRTEffectAck.CausalDistanceBoundaryChecks
-import QIKVRTEffectAck.CausalGeometry
-import QIKVRTEffectAck.CausalGeometryAxiomAudit
 
 /-!
 # QIK-VRT EFFECT_ACK Draft-01 and quantum-classical runtime formalization
@@ -20,7 +18,7 @@ quantum-classical runtime assurance model separate from the 62-page manuscript
 claim graph.
 
 The EFFECT_ACK checked scope is the abstract decision and authorization core of
-draft-lohmann-qikvrt-effect-ack-01, Sections 3, 4.1, 4.2 and 14. The
+`draft-lohmann-qikvrt-effect-ack-01`, Sections 3, 4.1, 4.2 and 14. The
 quantum-classical article scope proves only properties of its abstract runtime,
 evidence, uncertainty, gate, backend-envelope and effect-acknowledgement model.
 The canonical-temporal-memory article additionally proves that a validated
@@ -32,9 +30,4 @@ adapters, quantum mechanics, hardware noise, calibration, error correction,
 fresh-record discovery, complete deployment mediation and physical safety
 remain outside unconditional kernel results unless represented as explicit
 hypotheses.
-
-The causal geometry extension imports the established weighted-path layer and
-adds conditional strict-order, finite-interval, Round-Trip identity and
-relation-preservation theorems. Acyclicity and local finiteness are explicit
-hypotheses. No Lorentzian or physical-spacetime reconstruction is claimed.
 -/
