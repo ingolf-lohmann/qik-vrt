@@ -94,7 +94,7 @@ jobs:
           output = Path(".lake/build/causal-geometry-axioms.log").read_text()
           pattern = re.compile(
               r"^'(?P<name>[^']+)' (?:does not depend on any axioms|"
-              r"depends on axioms: \\[(?P<axioms>[^]]*)\\])$",
+              r"depends on axioms: \[(?P<axioms>[^]]*)\])$",
               re.MULTILINE,
           )
           reports = {}
