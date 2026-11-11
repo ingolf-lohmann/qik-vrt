@@ -41,7 +41,7 @@ def fail(message: str) -> None:
 
 
 def git_blob_sha1(data: bytes) -> str:
-    header = f"blob {len(data)}\\0".encode()
+    header = f"blob {len(data)}\0".encode()
     return hashlib.sha1(header + data).hexdigest()
 
 
