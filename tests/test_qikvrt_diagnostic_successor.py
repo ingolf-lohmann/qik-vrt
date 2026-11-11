@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from tools.qikvrt_client_continuation import decide
-from tools.qikvrt_diagnostic_successor import materialize
+from tools.qikvrt_diagnostic_successor import materialize, resume
 
 
 class DiagnosticSuccessorTests(unittest.TestCase):
@@ -28,6 +28,24 @@ class DiagnosticSuccessorTests(unittest.TestCase):
             self.assertEqual(record["next_action"], "READBACK")
             self.assertEqual(record["status"], "OPEN")
             self.assertFalse(record["effect_ack_done"])
+
+    def test_reentry_from_persisted_receipt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            materialize(self.receipt, decide(self.receipt), directory)
+            result = resume(directory, "writer-1", "unit-1", "a" * 40)
+            self.assertEqual(result["state"], "CONTINUE_DIAGNOSIS")
+            self.assertEqual(result["next_action"], "READBACK")
+            with self.assertRaises(ValueError):
+                resume(directory, "writer-1", "unit-1", "b" * 40)
+
+    def test_reentry_rejects_corrupted_effect(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = materialize(self.receipt, decide(self.receipt), directory)
+            record = json.loads(path.read_text())
+            record["effect_ack_done"] = True
+            path.write_text(json.dumps(record))
+            with self.assertRaises(ValueError):
+                resume(directory, "writer-1", "unit-1", "a" * 40)
 
     def test_external_gate_remains_nonexecuting(self):
         with tempfile.TemporaryDirectory() as directory:
