@@ -41,7 +41,8 @@ def decide(receipt):
         raise ValueError("missing writer identity")
     if not isinstance(receipt["head_sha"], str) or not SHA.fullmatch(receipt["head_sha"]):
         raise ValueError("invalid exact head")
-    if (not isinstance(receipt["state"], str) or not isinstance(receipt["next_action"], str)\n            or receipt["state"] not in STATES or receipt["next_action"] not in ACTIONS):
+    if (not isinstance(receipt["state"], str) or not isinstance(receipt["next_action"], str)
+            or receipt["state"] not in STATES or receipt["next_action"] not in ACTIONS):
         raise ValueError("unknown state or action")
     if type(receipt["effect_ack_done"]) is not bool:
         raise ValueError("effect acknowledgement must be boolean")
