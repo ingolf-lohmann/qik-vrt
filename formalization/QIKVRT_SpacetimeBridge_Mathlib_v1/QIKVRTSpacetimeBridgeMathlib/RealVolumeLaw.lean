@@ -19,15 +19,19 @@ ontological interpretation. The classifications below are metadata, not
 theorems about the truth of the classified claims.
 -/
 
-namespace QIKVRT.SpacetimeBridge.MathlibV1
-
-/-- Project-level evidence categories. These are labels, not proof rules. -/
-inductive EvidenceStatus where
+/-- Project-level evidence categories. These are labels, not proof rules.
+Kept outside the audited theorem namespace so generated datatype support
+declarations do not pollute the theorem axiom audit. -/
+inductive QIKVRT.EvidenceStatus where
   | kernelChecked
   | formalizedModelStatement
   | openFormalObligation
   | interpretiveClaim
   deriving DecidableEq, Repr
+
+namespace QIKVRT.SpacetimeBridge.MathlibV1
+
+open QIKVRT
 
 /-- The scalar positive-real power injectivity result has a kernel-checked proof. -/
 def scalarScaleInjectivityEvidence : EvidenceStatus := .kernelChecked
