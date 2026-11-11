@@ -45,7 +45,7 @@ for declaration in policy["axiom_audit_required"]:
 
 # Require the normative boundary to remain documented.
 for phrase in (
-    "does not by itself establish",
+    "It does not by itself establish",
     "Open formal obligation",
     "Interpretive claim",
     "must first be specified and proved",
