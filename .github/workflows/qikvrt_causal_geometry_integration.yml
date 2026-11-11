@@ -88,6 +88,7 @@ jobs:
               "QIKVRT.CausalGeometry.V1.roundTrip_encode_injective",
               "QIKVRT.CausalGeometry.V1.roundTrip_relation_iff",
               "QIKVRT.CausalGeometry.V1.roundTrip_relation_preserved",
+              "QIKVRT.CausalGeometry.V1.emptyGraph_path_endpoints",
               "QIKVRT.CausalGeometry.V1.emptyGraph_distinct_events_incomparable",
           }
           allowed = {"propext", "Classical.choice", "Quot.sound"}
