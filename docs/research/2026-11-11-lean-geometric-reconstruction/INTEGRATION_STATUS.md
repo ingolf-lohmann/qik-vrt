@@ -2,32 +2,33 @@
 
 Date: 2026-11-11
 
-## Result
+## Current implementation
 
-The first implementation tranche is proposed in PR #740:
+The first implementation tranche is proposed in PR #740 as a separate
+dependent Lean package:
 
-- `QIKVRTEffectAck.CausalGeometry` is imported by the existing EFFECT_ACK
-  library root.
-- Its axiom inventory is explicit in
-  `QIKVRTEffectAck/CausalGeometryAxiomAudit.lean`.
-- `tools/verify_causal_geometry_registration.py` checks that declarations,
-  axiom-audit entries and root imports remain synchronized.
-- `.github/workflows/qikvrt_causal_geometry_integration.yml` runs on changes
-  to the research specification as well as the formal Lean source, builds the
-  integrated library, rejects proof escapes and checks the exact theorem
-  inventory and allowed foundational axioms.
+- Package: `formalization/QIKVRT_CausalGeometry_v1`
+- Entry point: `QIKVRTCausalGeometry.lean`
+- Geometry module: `QIKVRTCausalGeometry/CausalGeometry.lean`
+- Axiom inventory: `QIKVRTCausalGeometry/AxiomAudit.lean`
+- Dependency: the existing `QIKVRT_Formalization_v2.0` package, specifically
+  its established `QIKVRTEffectAck.CausalDistance` module.
 
-Exact-head verification succeeded on commit
-`aa1fcf6072c2549d66d603c35234ac4cab61a33c`, workflow run
-`42995491959` (QIK-VRT causal geometry integration, run #14):
-- full `QIKVRTEffectAck` library build: success;
-- source-to-core registration guard: success;
-- `hasSorry` check on the new module: success;
-- axiom audit: 13 theorem declarations, foundational axioms only, no
-  project-defined axioms.
+The original EFFECT_ACK entry point is restored byte-for-byte to its
+historically bound Git blob
+`3ba05628fd377a54f71936d4bc6bfc1b969a5695`. The original Lake project,
+CausalDistance source and historical kernel receipts are not rewritten.
 
-The PR remains draft and is not merged into main. CI success is not human
-mathematical review, merge authorization, publication, or physical validation.
+An earlier iteration imported the new module directly into the old EFFECT_ACK
+entry point. Although its Lean build and 13-theorem axiom audit succeeded, the
+repository-wide historical CausalDistance verifier correctly rejected the
+changed entry-point hash. That iteration is superseded. The current separate
+package preserves the old source boundary while depending on the same checked
+core module.
+
+The dedicated workflow and registration guard are being re-run against this
+separate-package layout. No current-head verification claim is made until that
+run succeeds.
 
 ## Why the work did not happen automatically before
 
@@ -57,18 +58,23 @@ evidence that the Lean kernel had silently omitted already-encoded theorems.
 
 ## Preventive control
 
-The new workflow watches both the research specification and the formalization
-source paths. Its registration verifier fails closed if the geometry module,
-the root imports, the theorem inventory or the axiom audit are missing or
-diverge. A research-only change in this scoped workstream now invokes the
-geometry gate, and it cannot pass if the corresponding Lean integration is
-absent.
+The new workflow watches the research specification and the dependent package
+source paths. Its registration verifier checks the exact theorem inventory,
+the matching axiom audit, the import of CausalDistance, the local Lake
+dependency, the pinned Lean version, and the unchanged historical EFFECT_ACK
+entry-point blob. The workflow builds the dependent package, rejects proof
+escapes and checks the axiom inventory on the exact PR head.
+
+A research-only change in this scoped workstream now invokes the geometry gate,
+and it cannot pass if the dependent Lean package or its source/audit
+registration is absent. The guard also blocks future edits that silently
+change the hash-locked original EFFECT_ACK entry point.
 
 The control verifies source registration and CI execution. It does not
 automatically author proofs, choose physical assumptions, or promote physical
 claims. Future geometry work must still be encoded, reviewed and kernel-checked.
 
-## Formal scope now covered by the implementation tranche
+## Formal scope proposed in the implementation tranche
 
 - strict precedence from positive directed paths;
 - transitivity without assuming a total order;
