@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIK-VRT causal geometry integration
+
+on:
+  push:
+    paths:
+      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/**"
+      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean"
+      - "formalization/QIKVRT_Formalization_v2.0/lean-toolchain"
+      - "tools/verify_causal_geometry_registration.py"
+      - "docs/research/2026-11-11-lean-geometric-reconstruction/**"
+      - ".github/workflows/qikvrt_causal_geometry_integration.yml"
+  pull_request:
+    paths:
+      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/**"
+      - "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck.lean"
+      - "formalization/QIKVRT_Formalization_v2.0/lean-toolchain"
+      - "tools/verify_causal_geometry_registration.py"
+      - "docs/research/2026-11-11-lean-geometric-reconstruction/**"
+      - ".github/workflows/qikvrt_causal_geometry_integration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-causal-geometry-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-head-lean-kernel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: formalization/QIKVRT_Formalization_v2.0
+    steps:
+      - name: Check out exact candidate head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Bind exact source head
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}"
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$expected"
+          echo "EXACT_HEAD=$actual"
+
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: formalization/QIKVRT_Formalization_v2.0
+          test: false
+
+      - name: Enforce source-to-core registration
+        run: python3 ../../tools/verify_causal_geometry_registration.py
+
+      - name: Build the integrated Lean library
+        run: lake build QIKVRTEffectAck
+
+      - name: Reject proof escapes in the new module
+        run: lake env lean -E hasSorry QIKVRTEffectAck/CausalGeometry.lean
+
+      - name: Execute and enforce exact theorem axiom inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean QIKVRTEffectAck/CausalGeometryAxiomAudit.lean > .lake/build/causal-geometry-axioms.log
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          expected = {
+              "QIKVRT.CausalGeometry.V1.before_transitive",
+              "QIKVRT.CausalGeometry.V1.before_irreflexive",
+              "QIKVRT.CausalGeometry.V1.before_asymmetric",
+              "QIKVRT.CausalGeometry.V1.causalOrder_strictPartialOrder",
+              "QIKVRT.CausalGeometry.V1.causalInterval_membership",
+              "QIKVRT.CausalGeometry.V1.causalInterval_finite",
+              "QIKVRT.CausalGeometry.V1.roundTrip_leftInverse",
+              "QIKVRT.CausalGeometry.V1.roundTrip_rightInverse_onCanonical",
+              "QIKVRT.CausalGeometry.V1.roundTrip_encode_injective",
+              "QIKVRT.CausalGeometry.V1.roundTrip_relation_iff",
+              "QIKVRT.CausalGeometry.V1.roundTrip_relation_preserved",
+              "QIKVRT.CausalGeometry.V1.emptyGraph_distinct_events_incomparable",
+          }
+          allowed = {"propext", "Classical.choice", "Quot.sound"}
+          output = Path(".lake/build/causal-geometry-axioms.log").read_text()
+          pattern = re.compile(
+              r"^'(?P<name>[^']+)' (?:does not depend on any axioms|"
+              r"depends on axioms: \\[(?P<axioms>[^]]*)\\])$",
+              re.MULTILINE,
+          )
+          reports = {}
+          for match in pattern.finditer(output):
+              name = match.group("name")
+              axioms = {
+                  value.strip()
+                  for value in (match.group("axioms") or "").split(",")
+                  if value.strip()
+              }
+              if name in reports:
+                  raise SystemExit("BLOCK duplicate axiom report: " + name)
+              reports[name] = axioms
+          if set(reports) != expected:
+              raise SystemExit(
+                  "BLOCK theorem/audit mismatch; missing="
+                  + repr(sorted(expected - set(reports)))
+                  + "; extra=" + repr(sorted(set(reports) - expected))
+              )
+          for name, axioms in reports.items():
+              if not axioms <= allowed:
+                  raise SystemExit(f"BLOCK forbidden axioms for {name}: {sorted(axioms - allowed)}")
+          print(f"PASS exact kernel axiom audit: {len(reports)} theorems")
+          print("FOUNDATIONAL_AXIOMS_ONLY=true")
+          PY
