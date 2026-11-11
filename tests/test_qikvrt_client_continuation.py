@@ -67,6 +67,19 @@ class ContinuationContractTests(unittest.TestCase):
                 self.assertEqual(code, 2)
                 self.assertFalse(result["effect_ack_done"])
 
+    def test_malformed_json_is_diagnostic_not_completion(self):
+        process = subprocess.run(
+            [sys.executable, "-B", str(PROGRAM)],
+            input='{"state":', text=True, capture_output=True,
+            timeout=10, check=False,
+        )
+        self.assertEqual(process.returncode, 2)
+        result = json.loads(process.stdout)
+        self.assertEqual(result["disposition"], "CONTINUE_DIAGNOSIS")
+        self.assertEqual(result["blocker"], "INVALID_RECEIPT")
+        self.assertIsNone(result["next_action"])
+        self.assertFalse(result["effect_ack_done"])
+
     def test_invalid_receipts_do_not_crash_or_ack(self):
         for changes in ({"head_sha": "bad"}, {"state": []},
                         {"next_action": {}}, {"effect_ack_done": "true"},
