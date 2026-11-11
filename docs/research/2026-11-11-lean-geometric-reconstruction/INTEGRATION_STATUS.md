@@ -17,8 +17,17 @@ The first implementation tranche is proposed in PR #740:
   integrated library, rejects proof escapes and checks the exact theorem
   inventory and allowed foundational axioms.
 
-This is a proposal pending CI and review. It is not yet a kernel-verified
-receipt and is not merged into main.
+Exact-head verification succeeded on commit
+`aa1fcf6072c2549d66d603c35234ac4cab61a33c`, workflow run
+`42995491959` (QIK-VRT causal geometry integration, run #14):
+- full `QIKVRTEffectAck` library build: success;
+- source-to-core registration guard: success;
+- `hasSorry` check on the new module: success;
+- axiom audit: 13 theorem declarations, foundational axioms only, no
+  project-defined axioms.
+
+The PR remains draft and is not merged into main. CI success is not human
+mathematical review, merge authorization, publication, or physical validation.
 
 ## Why the work did not happen automatically before
 
@@ -51,8 +60,9 @@ evidence that the Lean kernel had silently omitted already-encoded theorems.
 The new workflow watches both the research specification and the formalization
 source paths. Its registration verifier fails closed if the geometry module,
 the root imports, the theorem inventory or the axiom audit are missing or
-diverge. A research-only change in this scoped workstream can no longer pass
-the geometry gate as if the corresponding Lean integration existed.
+diverge. A research-only change in this scoped workstream now invokes the
+geometry gate, and it cannot pass if the corresponding Lean integration is
+absent.
 
 The control verifies source registration and CI execution. It does not
 automatically author proofs, choose physical assumptions, or promote physical
