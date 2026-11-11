@@ -8,9 +8,38 @@ For a positive real scale Ω and positive real dimension d, the scalar
 volume multiplier Ω^d is injective in Ω. This file formalizes that
 order-theoretic step over ℝ. It does not formalize a smooth metric,
 the determinant identity, or Radon–Nikodym uniqueness.
+
+## Evidence boundary
+
+Lean's kernel checks derivations of propositions in the declared formal
+environment. Such checking establishes the encoded theorem relative to its
+definitions, imports, and axioms. It does not, by itself, establish empirical
+truth, completeness of a physical model, or universal validity of an
+ontological interpretation. The classifications below are metadata, not
+theorems about the truth of the classified claims.
 -/
 
 namespace QIKVRT.SpacetimeBridge.MathlibV1
+
+/-- Project-level evidence categories. These are labels, not proof rules. -/
+inductive EvidenceStatus where
+  | kernelChecked
+  | formalizedModelStatement
+  | openFormalObligation
+  | interpretiveClaim
+  deriving DecidableEq, Repr
+
+/-- The scalar positive-real power injectivity result has a kernel-checked proof. -/
+def scalarScaleInjectivityEvidence : EvidenceStatus := .kernelChecked
+
+/-- The smooth geometric and measure-theoretic bridge remains an open obligation. -/
+def smoothMeasureBridgeEvidence : EvidenceStatus := .openFormalObligation
+
+/-- Poisson probability-model results are not established by the scalar density proof. -/
+def poissonProbabilityEvidence : EvidenceStatus := .openFormalObligation
+
+/-- Universal ontological applicability is an interpretation, not a Lean theorem here. -/
+def universalOntologyEvidence : EvidenceStatus := .interpretiveClaim
 
 /-- The scalar real-valued volume-density multiplier for scale Ω
 and positive real dimension d. -/
