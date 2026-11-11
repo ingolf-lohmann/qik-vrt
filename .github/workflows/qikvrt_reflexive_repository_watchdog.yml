@@ -267,6 +267,14 @@ jobs:
           }
           path = materialize(receipt, decide(receipt), root / "diagnostic-successor")
           print("Persisted diagnostic successor:", path, "failed_stage:", stage)
+          # Independently reopen the durable bytes and enforce exact writer/head fencing.
+          from tools.qikvrt_diagnostic_successor import resume
+          replay = resume(root / "diagnostic-successor",
+                          receipt["writer_id"], receipt["work_unit_id"],
+                          receipt["head_sha"])
+          if replay["state"] != "CONTINUE_DIAGNOSIS" or replay["next_action"] != "READBACK":
+              raise ValueError("same-writer recovery replay not admitted")
+          print("Verified recovery readback:", replay["writer_id"], replay["head_sha"])
           PY
 
       - name: Bind error analysis for the existing repair consumer
