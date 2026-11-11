@@ -25,6 +25,7 @@ EXPECTED = {
     "roundTrip_encode_injective",
     "roundTrip_relation_iff",
     "roundTrip_relation_preserved",
+    "emptyGraph_path_endpoints",
     "emptyGraph_distinct_events_incomparable",
 }
 NAMESPACE = "QIKVRT.CausalGeometry.V1"
