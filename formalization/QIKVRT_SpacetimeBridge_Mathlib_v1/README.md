@@ -1,5 +1,8 @@
 # QIK-VRT Spacetime Bridge — Mathlib extension v1
 
+> **Repository evidence record:** [QIK-VRT Evidence Compliance Record](../../../EVIDENCE_COMPLIANCE.md). Consult this record for current verification status; a pending or failed CI run is not a pass.
+
+
 ## Evidence boundary (normative)
 
 The Lean kernel checks formal derivations relative to the declarations and
