@@ -1,0 +1,31 @@
+name: QIKVRT completion and REST handoff admission
+on:
+  push:
+    branches:
+      - fix/owner-mandate-evidence-bridge-20261111
+  pull_request:
+    paths:
+      - 'tools/qikvrt_completion_admission.py'
+      - 'tools/qikvrt_rest_handoff.py'
+      - 'tools/qikvrt_writer_authority_inventory.py'
+      - 'tests/test_qikvrt_completion_admission.py'
+      - 'tests/test_qikvrt_rest_handoff.py'
+      - 'tests/test_qikvrt_writer_authority_inventory.py'
+      - '.github/workflows/qikvrt_completion_admission.yml'
+permissions:
+  contents: read
+jobs:
+  completion-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Fail-closed admission and handoff tests
+        run: |
+          python3 -B -m unittest -v tests.test_qikvrt_completion_admission tests.test_qikvrt_rest_handoff tests.test_qikvrt_writer_authority_inventory tests.test_qikvrt_continuation_bootstrap_receipt
+      - name: Writer authority remains unproven
+        run: |
+          python3 -B - <<'PY'
+          from tools.qikvrt_writer_authority_inventory import *
+          import inspect
+          print('Writer inventory must remain fail closed until actual enforcement is proven')
+          PY
