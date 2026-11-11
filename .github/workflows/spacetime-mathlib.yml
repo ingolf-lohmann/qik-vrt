@@ -1,0 +1,30 @@
+name: Spacetime Mathlib extension
+
+on:
+  push:
+    branches:
+      - research/mathlib-real-volume-law-2026-11-11
+  pull_request:
+    paths:
+      - "formalization/QIKVRT_SpacetimeBridge_Mathlib_v1/**"
+      - ".github/workflows/spacetime-mathlib.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mathlib-build-and-axiom-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@bd5cb0b830eda614ce3fc186d8429b9409b16c47 # v1.7.0
+        with:
+          lake-package-directory: formalization/QIKVRT_SpacetimeBridge_Mathlib_v1
+          build: true
+          test: false
+          axiom-audit: true
+          axiom-audit-root: QIKVRTSpacetimeBridgeMathlib
