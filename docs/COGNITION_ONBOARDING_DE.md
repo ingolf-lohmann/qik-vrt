@@ -36,3 +36,19 @@ Der Zenodo-Forschungsstand dokumentiert **neun Lean-Theoreme zu vier Claims** ei
 Das [Publikationsprotokoll](PUBLICATION_HANDOFF_COGNITION_V1.md) beschreibt Zenodo, IETF und zusätzliche Medien getrennt. **Eine PR-Veröffentlichung ist kein Zenodo-Deposit und keine IETF-Einreichung.** Neue Nachfolger müssen Versionsidentität, Änderungsvermerk, unveränderte Originalquellen, Rechte, maschinenlesbare Belege und ein eigenes Ziel-Readback erhalten.
 
 **Leitformel:** Nicht glauben müssen, sondern nachsehen können.
+
+## Öffentlicher Einstieg in neun Sprachen
+
+Der vorhandene [Repository-Monitor](monitor/index.html#public-entry) enthält
+denselben öffentlichen Einstieg auf Deutsch, Englisch, Französisch, Russisch,
+Türkisch, Rumänisch, Italienisch, Spanisch und brasilianischem Portugiesisch
+(`pt-BR`). Die vollständigen Texte stehen im bestehenden maschinenlesbaren
+Manifest unter `public_entry.translations`. Die übrige Monitor-Oberfläche
+bleibt in ihrer bisherigen Sprache; dies ist keine vollständige Übersetzung
+aller dynamischen Betriebsanzeigen.
+
+Authority ist ausschließlich `ingolf-lohmann/qik-vrt`; `Goldkelch/qik-vrt`
+bleibt Mirror. Lesen erteilt keine Mitgliedschaft. Lizenzakzeptanz ersetzt
+weder Authentifizierung noch Berechtigungsprüfung. Einreichung, Wissensübernahme,
+native Ausführung und bestätigte Wirkung bleiben getrennte Vorgänge.
+Diese Quellenergänzung belegt keine Veröffentlichung oder produktive Abnahme.

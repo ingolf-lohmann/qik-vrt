@@ -1,10 +1,17 @@
 {
   "schema": "qikvrt-cognition-onboarding-manifest/v1",
   "manifest_id": "qikvrt-cognition-evidence-entry-2026-11-05",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "language": [
     "de",
-    "en"
+    "en",
+    "fr",
+    "ru",
+    "tr",
+    "ro",
+    "it",
+    "es",
+    "pt-BR"
   ],
   "principal": {
     "name": "Ingolf Lohmann",
@@ -181,5 +188,150 @@
     "ietf_new_revision": false,
     "native_mesh_connection": false,
     "production_effect": false
+  },
+  "public_entry": {
+    "schema": "qikvrt-public-entry/v1",
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "mirror_repository": "Goldkelch/qik-vrt",
+    "role_policy": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "default_locale": "de",
+    "opening_grants_membership": false,
+    "licence_acceptance_alone_grants_write": false,
+    "submission_is_automatic_adoption": false,
+    "private_knowledge_control_changes_ethics": false,
+    "implementation_is_automatically_open_source": false,
+    "implementation_basis": {
+      "head": "58a75ba5c171e88dc56e528ea69f266c9e618cbd",
+      "tree": "e5713849aa64f2bbaef031320ec3b5015c20e6d0",
+      "scope": "EXACT_SOURCE_REPAIR_NOT_CURRENT_SPECIFICATION_OR_DEPLOYMENT_ACCEPTANCE"
+    },
+    "translations": {
+      "de": {
+        "name": "Deutsch",
+        "title": "QIK-VRT verstehen und prüfen",
+        "purpose": "QIK-VRT verbindet Menschen und künstliche Kognitionen über nachvollziehbare Quellen, kontrollierte Wissensübernahme und überprüfbare Wirkungen. Der Universale Transputer verarbeitet zugelassene Arbeit; das Universale Terminal nimmt Eingaben an und macht deren Nachweise lesbar.",
+        "authority": "Einzige maßgebliche Authority: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt ist ausschließlich Mirror. Erreichbarkeit, Sprache und historische Links ändern diese Rollen nicht.",
+        "access": "Öffentliche Informationen können ohne Anmeldung gelesen werden. Das Öffnen einer Seite erteilt keine Mitgliedschaft, Schreibrechte oder Ausführungsbefugnisse. Eine Registrierung als passiver Leser erfordert ausdrückliche Zustimmung und eine bestätigte Aufnahme.",
+        "licence": "Schreibzugriff setzt Lizenzakzeptanz, die erforderliche Authentifizierung und eine zugelassene Berechtigung voraus. Einreichungsrecht bedeutet keine automatische Wissensübernahme: Das Framework prüft neue Erkenntnisse und entscheidet über ihre Integration.",
+        "private": "Eine entsprechende kommerzielle Lizenz ermöglicht die Kontrolle über den privaten Wissensbestand und dessen Zugriffe innerhalb der vereinbarten Rechte. Öffentlich lesbare Architektur macht die konkrete Implementierung nicht automatisch Open Source.",
+        "ethics": "Menschenfreundlichkeit, Menschenwürde und die Bindung an Kants kategorischen Imperativ gelten auch für kommerzielle Instanzen. Transparenz und Auditierbarkeit sind Anforderungen; die Konformität mit dem EU AI Act muss für die konkrete Implementierung gesondert nachgewiesen werden.",
+        "evidence": "Quelle, Autorisierung, Ausführung und Wirkung werden getrennt geprüft. Ein erfolgreicher Test oder eine gespeicherte Eingabe belegt keine Auslieferung. Fehlende Zielnachweise bleiben offen oder unbekannt. Der aktuelle Betriebszustand steht im Leitstand.",
+        "responsible": "Urheber, Architekt, Product Owner und redaktionell Verantwortlicher: Ingolf Lohmann. Diese Angabe ersetzt kein vollständiges Impressum. Die Betriebs- und Anbieterangaben müssen vor der produktiven Veröffentlichung geprüft und vervollständigt werden.",
+        "sources": "Quellen und REST-Vertrag",
+        "terminal": "Vorhandenes Terminal öffnen"
+      },
+      "en": {
+        "name": "English",
+        "title": "Understand and verify QIK-VRT",
+        "purpose": "QIK-VRT connects people and artificial cognitions through traceable sources, controlled knowledge adoption and verifiable effects. The Universal Transputer processes admitted work; the Universal Terminal accepts input and makes its evidence readable.",
+        "authority": "Sole authoritative repository: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt is a mirror only. Availability, language and historical links do not change these roles.",
+        "access": "Public information can be read without signing in. Opening a page grants no membership, write access or execution authority. Registration as a passive reader requires explicit consent and confirmed admission.",
+        "licence": "Write access requires licence acceptance, the required authentication and an admitted permission. Permission to submit does not mean automatic knowledge adoption: the framework reviews new findings and decides whether to integrate them.",
+        "private": "An appropriate commercial licence permits control over the private knowledge base and its access within the agreed rights. A publicly readable architecture does not automatically make the concrete implementation open source.",
+        "ethics": "Human friendliness, human dignity and adherence to Kant's categorical imperative also apply to commercial instances. Transparency and auditability are requirements; EU AI Act compliance must be demonstrated separately for the concrete implementation.",
+        "evidence": "Source, authorization, execution and effect are verified separately. A passing test or stored input does not prove delivery. Missing target evidence remains open or unknown. The dashboard shows the current operational state.",
+        "responsible": "Author, architect, Product Owner and person responsible for editorial content: Ingolf Lohmann. This statement does not replace a complete legal notice. Operator and provider details must be checked and completed before production publication.",
+        "sources": "Sources and REST contract",
+        "terminal": "Open the existing terminal"
+      },
+      "fr": {
+        "name": "Français",
+        "title": "Comprendre et vérifier QIK-VRT",
+        "purpose": "QIK-VRT relie les personnes et les cognitions artificielles par des sources traçables, une intégration contrôlée des connaissances et des effets vérifiables. Le Transputer universel traite les travaux admis ; le Terminal universel reçoit les entrées et rend leurs preuves lisibles.",
+        "authority": "Seul dépôt faisant autorité : ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt est uniquement un miroir. La disponibilité, la langue et les liens historiques ne changent pas ces rôles.",
+        "access": "Les informations publiques sont consultables sans connexion. Ouvrir une page ne confère ni appartenance, ni droit d’écriture, ni pouvoir d’exécution. L’inscription comme lecteur passif exige un consentement explicite et une admission confirmée.",
+        "licence": "L’écriture exige l’acceptation de la licence, l’authentification requise et une autorisation admise. Le droit de soumettre ne signifie pas une intégration automatique : le framework examine les nouvelles connaissances et décide de leur intégration.",
+        "private": "Une licence commerciale appropriée permet de contrôler la base de connaissances privée et ses accès dans les limites des droits convenus. Une architecture publiquement lisible ne rend pas automatiquement son implémentation concrète open source.",
+        "ethics": "L’orientation au service de l’humain, la dignité humaine et le respect de l’impératif catégorique de Kant s’appliquent aussi aux instances commerciales. Transparence et auditabilité sont des exigences ; la conformité au règlement européen sur l’IA doit être démontrée séparément pour l’implémentation concrète.",
+        "evidence": "Source, autorisation, exécution et effet sont vérifiés séparément. Un test réussi ou une entrée enregistrée ne prouve pas la livraison. Les preuves manquantes concernant la cible restent ouvertes ou inconnues. Le tableau de bord présente l’état opérationnel actuel.",
+        "responsible": "Auteur, architecte, Product Owner et responsable éditorial : Ingolf Lohmann. Cette mention ne remplace pas des mentions légales complètes. Les coordonnées de l’exploitant et du fournisseur doivent être vérifiées et complétées avant la publication en production.",
+        "sources": "Sources et contrat REST",
+        "terminal": "Ouvrir le terminal existant"
+      },
+      "ru": {
+        "name": "Русский",
+        "title": "Понять и проверить QIK-VRT",
+        "purpose": "QIK-VRT объединяет людей и искусственные когнитивные системы посредством прослеживаемых источников, контролируемого включения знаний и проверяемых результатов действий. Универсальный транспьютер обрабатывает допущенные задания; универсальный терминал принимает ввод и делает доказательства доступными для чтения.",
+        "authority": "Единственный авторитетный репозиторий: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt является только зеркалом. Доступность, язык и исторические ссылки не меняют эти роли.",
+        "access": "Публичную информацию можно читать без входа в систему. Открытие страницы не предоставляет членство, право записи или полномочия на выполнение действий. Регистрация пассивного читателя требует явного согласия и подтверждённого допуска.",
+        "licence": "Запись требует принятия лицензии, необходимой аутентификации и допущенного разрешения. Право подачи не означает автоматического включения знаний: фреймворк проверяет новые сведения и решает, включать ли их.",
+        "private": "Соответствующая коммерческая лицензия позволяет контролировать частную базу знаний и доступ к ней в пределах согласованных прав. Публичная доступность архитектуры не делает конкретную реализацию автоматически открытым исходным кодом.",
+        "ethics": "Ориентация на благо человека, человеческое достоинство и приверженность категорическому императиву Канта распространяются и на коммерческие экземпляры. Прозрачность и возможность аудита являются требованиями; соответствие Регламенту ЕС об искусственном интеллекте должно доказываться отдельно для конкретной реализации.",
+        "evidence": "Источник, авторизация, выполнение и результат проверяются отдельно. Успешный тест или сохранённый ввод не доказывают поставку. Отсутствующие доказательства по целевой системе остаются открытыми или неизвестными. Панель показывает текущее эксплуатационное состояние.",
+        "responsible": "Автор, архитектор, Product Owner и ответственный за редакционные материалы: Ингольф Ломан (Ingolf Lohmann). Это указание не заменяет полные юридические сведения. Данные оператора и поставщика необходимо проверить и дополнить до публикации в рабочей среде.",
+        "sources": "Источники и контракт REST",
+        "terminal": "Открыть существующий терминал"
+      },
+      "tr": {
+        "name": "Türkçe",
+        "title": "QIK-VRT’yi anlayın ve doğrulayın",
+        "purpose": "QIK-VRT, izlenebilir kaynaklar, kontrollü bilgi aktarımı ve doğrulanabilir etkiler aracılığıyla insanları ve yapay biliş sistemlerini birbirine bağlar. Evrensel Transputer kabul edilmiş işleri işler; Evrensel Terminal girdileri alır ve bunların kanıtlarını okunabilir kılar.",
+        "authority": "Tek yetkili kaynak deposu: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt yalnızca aynadır. Erişilebilirlik, dil ve geçmiş bağlantılar bu rolleri değiştirmez.",
+        "access": "Herkese açık bilgiler oturum açmadan okunabilir. Bir sayfayı açmak üyelik, yazma hakkı veya yürütme yetkisi vermez. Pasif okuyucu olarak kayıt, açık rıza ve doğrulanmış kabul gerektirir.",
+        "licence": "Yazma erişimi, lisansın kabulünü, gerekli kimlik doğrulamayı ve kabul edilmiş bir yetkiyi gerektirir. Bilgi sunma hakkı, bilginin otomatik olarak benimsenmesi anlamına gelmez: çerçeve yeni bilgileri inceler ve bütünleştirmeye karar verir.",
+        "private": "Uygun bir ticari lisans, kararlaştırılmış haklar kapsamında özel bilgi tabanı ve erişimleri üzerinde kontrol sağlar. Mimariyi herkesin okuyabilmesi, somut uygulamayı otomatik olarak açık kaynak yapmaz.",
+        "ethics": "İnsan yararını gözetme, insan onuru ve Kant’ın kategorik buyruğuna bağlılık ticari örnekler için de geçerlidir. Şeffaflık ve denetlenebilirlik gerekliliktir; AB Yapay Zekâ Tüzüğü’ne uygunluk somut uygulama için ayrıca kanıtlanmalıdır.",
+        "evidence": "Kaynak, yetkilendirme, yürütme ve etki ayrı ayrı doğrulanır. Başarılı bir test veya kaydedilmiş girdi teslimatı kanıtlamaz. Hedefe ilişkin eksik kanıtlar açık veya bilinmiyor olarak kalır. Gösterge paneli güncel işletim durumunu gösterir.",
+        "responsible": "Eser sahibi, mimar, Product Owner ve yayın içeriğinden sorumlu kişi: Ingolf Lohmann. Bu bilgi eksiksiz bir yasal künyenin yerini tutmaz. İşletmeci ve hizmet sağlayıcı bilgileri üretim ortamında yayımdan önce doğrulanmalı ve tamamlanmalıdır.",
+        "sources": "Kaynaklar ve REST sözleşmesi",
+        "terminal": "Mevcut terminali aç"
+      },
+      "ro": {
+        "name": "Română",
+        "title": "Înțelegeți și verificați QIK-VRT",
+        "purpose": "QIK-VRT conectează oamenii și cognițiile artificiale prin surse trasabile, integrarea controlată a cunoștințelor și efecte verificabile. Transputerul universal procesează lucrările admise; Terminalul universal primește datele de intrare și face lizibile dovezile lor.",
+        "authority": "Unicul depozit cu autoritate: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt este exclusiv o oglindă. Disponibilitatea, limba și legăturile istorice nu schimbă aceste roluri.",
+        "access": "Informațiile publice pot fi citite fără autentificare. Deschiderea unei pagini nu acordă calitatea de membru, drepturi de scriere sau autoritate de execuție. Înregistrarea ca cititor pasiv necesită consimțământ explicit și admitere confirmată.",
+        "licence": "Accesul la scriere necesită acceptarea licenței, autentificarea cerută și o permisiune admisă. Dreptul de a propune informații nu implică integrarea lor automată: frameworkul examinează noile cunoștințe și decide asupra integrării.",
+        "private": "O licență comercială corespunzătoare permite controlul asupra bazei private de cunoștințe și al accesului, în limitele drepturilor convenite. O arhitectură accesibilă public nu transformă automat implementarea concretă în software cu sursă deschisă.",
+        "ethics": "Orientarea în folosul omului, demnitatea umană și respectarea imperativului categoric al lui Kant se aplică și instanțelor comerciale. Transparența și posibilitatea auditării sunt cerințe; conformitatea cu Regulamentul UE privind inteligența artificială trebuie demonstrată separat pentru implementarea concretă.",
+        "evidence": "Sursa, autorizarea, execuția și efectul sunt verificate separat. Un test reușit sau o intrare stocată nu dovedește livrarea. Dovezile lipsă despre țintă rămân deschise sau necunoscute. Tabloul de bord prezintă starea operațională actuală.",
+        "responsible": "Autor, arhitect, Product Owner și responsabil editorial: Ingolf Lohmann. Această mențiune nu înlocuiește informațiile juridice complete. Datele operatorului și ale furnizorului trebuie verificate și completate înainte de publicarea în producție.",
+        "sources": "Surse și contract REST",
+        "terminal": "Deschideți terminalul existent"
+      },
+      "it": {
+        "name": "Italiano",
+        "title": "Comprendere e verificare QIK-VRT",
+        "purpose": "QIK-VRT collega persone e cognizioni artificiali mediante fonti tracciabili, integrazione controllata delle conoscenze ed effetti verificabili. Il Transputer universale elabora il lavoro ammesso; il Terminale universale riceve gli input e ne rende leggibili le prove.",
+        "authority": "Unico repository autorevole: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt è esclusivamente un mirror. Disponibilità, lingua e collegamenti storici non modificano questi ruoli.",
+        "access": "Le informazioni pubbliche possono essere lette senza accedere. Aprire una pagina non conferisce appartenenza, diritti di scrittura o autorità di esecuzione. La registrazione come lettore passivo richiede consenso esplicito e ammissione confermata.",
+        "licence": "La scrittura richiede accettazione della licenza, autenticazione prevista e un permesso ammesso. Il diritto di proporre informazioni non comporta l’integrazione automatica delle conoscenze: il framework esamina i nuovi risultati e decide se integrarli.",
+        "private": "Una licenza commerciale appropriata consente il controllo della base di conoscenze privata e dei suoi accessi entro i diritti concordati. Un’architettura pubblicamente leggibile non rende automaticamente open source l’implementazione concreta.",
+        "ethics": "L’orientamento al bene dell’uomo, la dignità umana e il rispetto dell’imperativo categorico di Kant valgono anche per le istanze commerciali. Trasparenza e verificabilità mediante audit sono requisiti; la conformità al regolamento europeo sull’IA deve essere dimostrata separatamente per l’implementazione concreta.",
+        "evidence": "Fonte, autorizzazione, esecuzione ed effetto sono verificati separatamente. Un test superato o un input memorizzato non dimostra la consegna. Le prove mancanti sulla destinazione restano aperte o sconosciute. Il pannello mostra lo stato operativo attuale.",
+        "responsible": "Autore, architetto, Product Owner e responsabile editoriale: Ingolf Lohmann. Questa indicazione non sostituisce un’informativa legale completa. I dati del gestore e del fornitore devono essere verificati e completati prima della pubblicazione in produzione.",
+        "sources": "Fonti e contratto REST",
+        "terminal": "Aprire il terminale esistente"
+      },
+      "es": {
+        "name": "Español",
+        "title": "Comprender y verificar QIK-VRT",
+        "purpose": "QIK-VRT conecta a personas y cogniciones artificiales mediante fuentes trazables, incorporación controlada de conocimientos y efectos verificables. El Transputer universal procesa los trabajos admitidos; el Terminal universal recibe las entradas y permite leer sus pruebas.",
+        "authority": "Único repositorio con autoridad: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt es exclusivamente un espejo. La disponibilidad, el idioma y los enlaces históricos no cambian estas funciones.",
+        "access": "La información pública se puede leer sin iniciar sesión. Abrir una página no concede pertenencia, derechos de escritura ni autoridad de ejecución. El registro como lector pasivo requiere consentimiento explícito y admisión confirmada.",
+        "licence": "La escritura exige aceptar la licencia, la autenticación requerida y un permiso admitido. El derecho a presentar información no implica su incorporación automática: el framework examina los nuevos conocimientos y decide si los integra.",
+        "private": "Una licencia comercial adecuada permite controlar la base de conocimientos privada y sus accesos dentro de los derechos acordados. Una arquitectura de lectura pública no convierte automáticamente la implementación concreta en código abierto.",
+        "ethics": "La orientación al servicio de las personas, la dignidad humana y la adhesión al imperativo categórico de Kant también se aplican a las instancias comerciales. La transparencia y la auditabilidad son requisitos; el cumplimiento del Reglamento europeo de IA debe demostrarse por separado para la implementación concreta.",
+        "evidence": "La fuente, la autorización, la ejecución y el efecto se verifican por separado. Una prueba superada o una entrada almacenada no demuestra la entrega. La falta de pruebas sobre el destino permanece abierta o desconocida. El panel muestra el estado operativo actual.",
+        "responsible": "Autor, arquitecto, Product Owner y responsable editorial: Ingolf Lohmann. Esta indicación no sustituye un aviso legal completo. Los datos del operador y del proveedor deben verificarse y completarse antes de la publicación en producción.",
+        "sources": "Fuentes y contrato REST",
+        "terminal": "Abrir el terminal existente"
+      },
+      "pt-BR": {
+        "name": "Português (Brasil)",
+        "title": "Entenda e verifique o QIK-VRT",
+        "purpose": "O QIK-VRT conecta pessoas e cognições artificiais por meio de fontes rastreáveis, incorporação controlada de conhecimento e efeitos verificáveis. O Transputer Universal processa os trabalhos admitidos; o Terminal Universal recebe as entradas e torna suas evidências legíveis.",
+        "authority": "Único repositório de autoridade: ingolf-lohmann/qik-vrt. Goldkelch/qik-vrt é exclusivamente um espelho. Disponibilidade, idioma e links históricos não alteram esses papéis.",
+        "access": "As informações públicas podem ser lidas sem fazer login. Abrir uma página não concede participação, direitos de escrita nem autoridade de execução. O cadastro como leitor passivo exige consentimento explícito e admissão confirmada.",
+        "licence": "A escrita exige aceitação da licença, a autenticação necessária e uma permissão admitida. O direito de enviar informações não implica incorporação automática do conhecimento: o framework examina as novas informações e decide sobre sua integração.",
+        "private": "Uma licença comercial adequada permite controlar a base de conhecimento privada e seus acessos dentro dos direitos acordados. Uma arquitetura disponível para leitura pública não torna automaticamente a implementação concreta de código aberto.",
+        "ethics": "A orientação em benefício das pessoas, a dignidade humana e a adesão ao imperativo categórico de Kant também se aplicam às instâncias comerciais. Transparência e possibilidade de auditoria são requisitos; a conformidade com o Regulamento de IA da UE deve ser demonstrada separadamente para a implementação concreta.",
+        "evidence": "Fonte, autorização, execução e efeito são verificados separadamente. Um teste aprovado ou uma entrada armazenada não comprova a entrega. A falta de evidências sobre o destino permanece em aberto ou desconhecida. O painel apresenta o estado operacional atual.",
+        "responsible": "Autor, arquiteto, Product Owner e responsável editorial: Ingolf Lohmann. Esta indicação não substitui um aviso legal completo. Os dados do operador e do fornecedor devem ser verificados e completados antes da publicação em produção.",
+        "sources": "Fontes e contrato REST",
+        "terminal": "Abrir o terminal existente"
+      }
+    }
   }
 }
