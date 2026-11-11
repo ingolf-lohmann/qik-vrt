@@ -23,7 +23,7 @@ def fail(message: str) -> None:
 policy = json.loads(POLICY.read_text(encoding="utf-8"))
 source = SOURCE.read_text(encoding="utf-8")
 audit = AUDIT.read_text(encoding="utf-8")
-readme = re.sub(r"\\s+", " ", README.read_text(encoding="utf-8"))
+readme = re.sub(r"\s+", " ", README.read_text(encoding="utf-8"))
 
 if policy.get("schema_version") != 1:
     fail("unsupported evidence-status.json schema_version")
