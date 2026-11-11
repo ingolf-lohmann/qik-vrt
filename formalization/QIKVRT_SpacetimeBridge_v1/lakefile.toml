@@ -1,0 +1,10 @@
+name = "QIKVRTSpacetimeBridge"
+version = "1.0.0"
+defaultTargets = ["QIKVRTSpacetimeBridge"]
+
+[[require]]
+name = "QIKVRTCausalGeometry"
+path = "../QIKVRT_CausalGeometry_v1"
+
+[[lean_lib]]
+name = "QIKVRTSpacetimeBridge"
