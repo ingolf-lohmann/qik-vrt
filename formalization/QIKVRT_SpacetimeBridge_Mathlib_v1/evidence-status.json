@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "formalization/QIKVRT_SpacetimeBridge_Mathlib_v1",
+  "statuses": {
+    "scalarScaleInjectivityEvidence": "kernelChecked",
+    "smoothMeasureBridgeEvidence": "openFormalObligation",
+    "poissonProbabilityEvidence": "openFormalObligation",
+    "universalOntologyEvidence": "interpretiveClaim"
+  },
+  "axiom_audit_required": [
+    "scalarScaleInjectivityEvidence",
+    "smoothMeasureBridgeEvidence",
+    "poissonProbabilityEvidence",
+    "universalOntologyEvidence",
+    "scale_eq_of_same_real_volume_density",
+    "realVolumeDensity_pos",
+    "scale_eq_of_same_local_density"
+  ]
+}

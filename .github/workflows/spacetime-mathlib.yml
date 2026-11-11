@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - research/mathlib-real-volume-law-clean-2026-11-11
+      - 'policy/**'
   pull_request:
     paths:
       - "formalization/QIKVRT_SpacetimeBridge_Mathlib_v1/**"
@@ -21,6 +22,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Enforce repository evidence policy
+        run: python3 formalization/QIKVRT_SpacetimeBridge_Mathlib_v1/scripts/check_evidence_policy.py
       - name: Install pinned Lean toolchain and resolve dependencies
         working-directory: formalization/QIKVRT_SpacetimeBridge_Mathlib_v1
         shell: bash
