@@ -1,0 +1,38 @@
+name: QIKVRT PR734 integrity repair
+on:
+  push:
+    branches:
+      - repair/qikvrt-client-follow-writer-20261111
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: qikvrt-pr734-integrity-repair
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: repair/qikvrt-client-follow-writer-20261111
+          persist-credentials: true
+      - name: Regenerate and verify integrity on exact branch
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_client_continuation.py --self-test
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+      - name: Commit integrity trio only when changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo "Integrity already verified."
+            exit 0
+          fi
+          git commit -m "fix(integrity): regenerate PR734 deterministic integrity trio"
+          git push origin HEAD:repair/qikvrt-client-follow-writer-20261111
