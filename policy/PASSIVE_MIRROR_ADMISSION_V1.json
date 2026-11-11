@@ -1,0 +1,87 @@
+{
+  "schema": "qikvrt-passive-mirror-admission-v1",
+  "status": "NORMATIVE_DESIGN_PENDING_RUNTIME_IMPLEMENTATION",
+  "owner": "Ingolf Lohmann",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "authority_role_source": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+  "entrypoint": {
+    "canonical_repository_entry": "AI",
+    "public_runtime_entry_required": true,
+    "requirement": "A single Authority-controlled HTTPS entrypoint must serve the public onboarding page and submit consented admission requests to the Authority.",
+    "github_blob_click_is_not_telemetry": true
+  },
+  "terminology": {
+    "passive_mirror_client": "A registered client instance with read-only access to explicitly public or separately granted information; not a Git repository Mirror and not an Authority peer.",
+    "repository_mirror": "The separately governed Git repository Goldkelch/qik-vrt."
+  },
+  "lifecycle": [
+    "UNOBSERVED",
+    "ENTRY_REQUEST_OBSERVED",
+    "CONSENT_PRESENTED",
+    "CONSENTED_ADMISSION_REQUEST",
+    "AUTHORITY_REVIEW_PENDING",
+    "PASSIVE_READER_ADMITTED",
+    "SUSPENDED",
+    "REVOKED"
+  ],
+  "consent": {
+    "required_before_client_registration": true,
+    "no_membership_from_page_view_alone": true,
+    "no_hidden_fingerprinting": true,
+    "no_collection_of_credentials_or_provider_secrets": true,
+    "explain_recorded_fields_and_retention_before_submit": true,
+    "withdrawal_supported": true
+  },
+  "telemetry": {
+    "page_view": "Aggregate, privacy-minimized server telemetry only where the hosting platform exposes it; never claim every click is observed.",
+    "admission_request": "Explicit POST after informed user consent, with request_id, timestamp, entrypoint_version, client_type_claim, and requested_scope.",
+    "do_not_store": [
+      "raw_ip",
+      "full_user_agent",
+      "cross_site_identifiers",
+      "provider_credentials",
+      "conversation_content"
+    ],
+    "client_type_is_self_asserted_until_verified": true
+  },
+  "access": {
+    "default_role": "PASSIVE_READER",
+    "write_access": false,
+    "execution_access": false,
+    "authority_policy_mutation": false,
+    "access_scope": "Public repository and explicitly published mesh documents only, unless a separate grant is recorded.",
+    "repository_credentials_never_distributed": true
+  },
+  "admission": {
+    "authority_decision_required": true,
+    "registry_path": "registry/passive_mirror_clients/",
+    "receipt_schema": "qikvrt-passive-mirror-admission-receipt-v1",
+    "require_exact_authority_head_and_tree": true,
+    "require_durable_request_and_decision_readback": true,
+    "unknown_or_conflicting_state": "HOLD"
+  },
+  "security": {
+    "transport": "HTTPS",
+    "csrf_and_origin_validation_required": true,
+    "request_size_limit_required": true,
+    "rate_limiting_required": true,
+    "replay_protection_required": true,
+    "public_response_must_not_disclose_private_registry_data": true
+  },
+  "deployment_gates": [
+    "Authority-controlled public HTTPS host is identified and under Owner control",
+    "Consent UI and admission endpoint are deployed",
+    "POST request is durably recorded by Authority and independently read back",
+    "Admission receipt is bound to exact Authority head and tree",
+    "Read-only scope is enforced by the serving layer",
+    "Privacy, abuse, retention, withdrawal and failure tests pass",
+    "Fresh external request and readback are verified"
+  ],
+  "non_claims": [
+    "A GitHub blob or raw URL cannot report every click to the Authority.",
+    "A page view does not identify a person or prove that an AI client loaded or understood the content.",
+    "A client is not admitted merely by opening the entrypoint.",
+    "A registered passive reader is not a Git repository Mirror, Authority, writer, or executor.",
+    "This contract does not claim that the endpoint or public host is deployed."
+  ]
+}
