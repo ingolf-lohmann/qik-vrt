@@ -87,9 +87,8 @@ jobs:
           local_head="$(git rev-parse --verify HEAD^{commit})"
           test "$local_head" = "$EXPECTED_HEAD"
           observation_stage=SUBJECT_READBACK
-          # The event's exact subject is already bound by the checked-out commit.
-          # Avoid an extra unactionable GitHub API request before collecting evidence.
-          # Subsequent authority and job readbacks remain independently verified.
+          # Live subject validation remains mandatory; API rate-limit failures
+          # are recorded as observation failures, never as success.
           if test "$EVENT_NAME" = pull_request; then
             live_head="$(gh api "repos/$REPOSITORY/pulls/$EVENT_PR" --jq '.head.sha')"
           else
