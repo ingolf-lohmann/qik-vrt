@@ -26,9 +26,17 @@ changed entry-point hash. That iteration is superseded. The current separate
 package preserves the old source boundary while depending on the same checked
 core module.
 
-The dedicated workflow and registration guard are being re-run against this
-separate-package layout. No current-head verification claim is made until that
-run succeeds.
+Exact-head verification of the separate-package layout succeeded on commit
+`a0b858c664c22639be4e355855e223e28ccdd9df`, dedicated workflow run
+`42996066793` (QIK-VRT causal geometry integration, run #36):
+- dependent package build: success;
+- source registration and historical entry-point byte-lock: success;
+- `hasSorry` check: success;
+- axiom audit: 13 theorem declarations, foundational axioms only, no
+  project-defined axioms.
+
+The PR remains draft and is not merged into main. CI success is not human
+mathematical review, merge authorization, publication, or physical validation.
 
 ## Why the work did not happen automatically before
 
