@@ -1,4 +1,9 @@
 import QIKVRTSpacetimeBridge.SpacetimeBridge
+import QIKVRTSpacetimeBridge.VolumeLaw
 
 #print axioms QIKVRT.SpacetimeBridge.V1.causal_volume_reconstruct
 #print axioms QIKVRT.SpacetimeBridge.V1.rejection_exceeds_tolerance
+#print axioms QIKVRT.SpacetimeBridge.V1.VolumeLaw.conformalVolumeFactor_mul
+#print axioms QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_of_same_volume_factor
+#print axioms QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_one_of_unit_volume_factor
+#print axioms QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_of_same_calibrated_count
