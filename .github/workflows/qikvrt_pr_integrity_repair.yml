@@ -54,8 +54,9 @@ jobs:
           test -z "$(git status --porcelain)"
           # Bind the target to an open same-repository PR, not an arbitrary branch.
           GH_TOKEN="${{ github.token }}" gh api --paginate "repos/${{ github.repository }}/pulls?state=open&per_page=100" \
-            --jq '.[] | select(.head.ref == env.TARGET_BRANCH and .head.sha == env.EXPECTED_HEAD and .head.repo.full_name == "${{ github.repository }}") | .number' \
-            | grep -Eq '^[0-9]+
+            --jq '.[] | [.head.ref, .head.sha, .head.repo.full_name] | @tsv' \
+            | awk -F '\t' -v branch="$TARGET_BRANCH" -v head="$EXPECTED_HEAD" -v repo="${{ github.repository }}" \
+                '$1 == branch && $2 == head && $3 == repo {found=1} END {exit !found}'
       - name: Deterministically regenerate and verify
         shell: bash
         run: |
