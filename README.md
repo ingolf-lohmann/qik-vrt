@@ -1,5 +1,8 @@
 # QIK-VRT
 
+> **Evidence compliance:** [QIK-VRT Evidence Compliance Record](EVIDENCE_COMPLIANCE.md) — current verification status and exact acceptance conditions. The Mathlib extension's evidence policy is normative; open obligations and interpretations are never promoted to proved results.
+
+
 <!-- qikvrt-machine-verifiable-science-charter-binding:v1 -->
 ## Charta einer maschinenprüfbaren Wissenschaft
 
