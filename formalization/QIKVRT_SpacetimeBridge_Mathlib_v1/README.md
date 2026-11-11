@@ -22,10 +22,12 @@ uniqueness, or the passage from almost-everywhere equality to everywhere
 equality. The scalar density definition is a separate formal step, not a
 claim that those measure-theoretic obligations have been discharged.
 
-Poisson PMF normalization, factorial moments, expectation, variance,
-Chebyshev bounds, and sprinkling convergence are subsequent milestones.
-They must be proved from Mathlib probability/measure APIs without project
-axioms or placeholders; no such result is claimed here.
+Poisson normalization and the first two real-valued raw moments are now
+formalized in `PoissonMoments.lean`: the weighted-series expectation is
+`r`, the second raw moment is `r^2 + r`, and the variance computed from
+these raw moments is `r`. The exact-head CI status is tracked in PR #744.
+A full random-variable model, Chebyshev bounds, and sprinkling convergence
+remain subsequent milestones.
 
 ## Verification
 
