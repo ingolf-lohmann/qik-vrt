@@ -44,7 +44,7 @@ The authoritative machine-readable classifications are in `evidence-status.json`
 - Policy branch: `policy/enforce-evidence-boundary-2026-11-11`
 - Last inspected run before the current datatype-isolation correction: [GitHub Actions run #43008323505](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43008323505)
 - In that run the policy script passed and the Lean/Mathlib build completed. The axiom audit then rejected generated support declarations for `EvidenceStatus` (`lcUnreachable` and `lcProof`). This is a real audit failure, not a passing proof certificate.
-- The datatype has since been moved outside the audited theorem namespace to avoid auditing compiler-generated datatype support as project theorem dependencies. This correction is **not yet verified** by a completed run.
+- The datatype has since been moved outside the audited theorem namespace to avoid auditing compiler-generated datatype support as project theorem dependencies. The policy check passed again on commit `752d84b77d1037c972a0590fd62633f30a999a82`; the corresponding [GitHub Actions run #43012037805](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43012037805) was still in progress at the time this record was updated. The datatype correction and full axiom audit therefore remain **not yet verified**.
 
 **Acceptance condition:** this record may be changed to **PASS** only after a single identified commit has a successful policy check, Lean/Mathlib build, and axiom audit, with the resulting run URL and exact commit SHA recorded here. Until then, the status remains **PENDING**.
 
