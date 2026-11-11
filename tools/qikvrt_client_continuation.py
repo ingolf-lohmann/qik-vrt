@@ -33,7 +33,7 @@ def decide(receipt):
         raise ValueError("missing writer identity")
     if not isinstance(receipt["head_sha"], str) or not SHA.fullmatch(receipt["head_sha"]):
         raise ValueError("invalid exact head")
-    if receipt["state"] not in STATES or receipt["next_action"] not in ACTIONS:
+    if (not isinstance(receipt["state"], str) or not isinstance(receipt["next_action"], str)\n            or receipt["state"] not in STATES or receipt["next_action"] not in ACTIONS):
         raise ValueError("unknown state or action")
     if type(receipt["effect_ack_done"]) is not bool:
         raise ValueError("effect acknowledgement must be boolean")
@@ -44,7 +44,7 @@ def decide(receipt):
     if receipt["effect_ack_done"] and receipt["state"] != "DONE":
         raise ValueError("effect acknowledgement conflicts with state")
     if receipt["state"] == "BLOCKED":
-        if receipt.get("blocker") not in BLOCKERS:
+        if not isinstance(receipt.get("blocker"), str) or receipt["blocker"] not in BLOCKERS:
             raise ValueError("blocked state requires typed blocker")
         disposition = ("HOLD_EXTERNAL" if receipt["blocker"] in {"AUTHORIZATION", "WORKFLOW_APPROVAL"}
                        else "CONTINUE_DIAGNOSIS")
@@ -60,7 +60,7 @@ def decide(receipt):
         "head_sha": receipt["head_sha"],
         "disposition": disposition,
         "next_action": (None if disposition in {"ACKNOWLEDGED", "HOLD_EXTERNAL"}
-                        else receipt["next_action"]),
+                        else ("READBACK" if disposition == "CONTINUE_DIAGNOSIS" else receipt["next_action"])),
         "blocked_on": (receipt["blocker"] if disposition == "HOLD_EXTERNAL" else None),
         "effect_ack_done": receipt["effect_ack_done"],
     }
