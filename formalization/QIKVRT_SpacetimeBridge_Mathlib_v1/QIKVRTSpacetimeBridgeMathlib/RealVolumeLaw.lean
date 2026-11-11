@@ -14,7 +14,7 @@ namespace QIKVRT.SpacetimeBridge.MathlibV1
 
 /-- The scalar real-valued volume-density multiplier for scale Ω
 and positive real dimension d. -/
-def realVolumeDensity (omega dimension : ℝ) : ℝ :=
+noncomputable def realVolumeDensity (omega dimension : ℝ) : ℝ :=
   omega ^ dimension
 
 /-- Equal positive-real volume multipliers identify the positive
