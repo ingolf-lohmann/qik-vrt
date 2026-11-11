@@ -41,7 +41,7 @@ offline-browser-install-diagnosis-test: tool-cache-contract
 	node --test runtime/offline/browser-tests/apt-diagnosis.test.mjs runtime/offline/browser-tests/webkit-apt-cache.test.mjs
 
 test: offline-browser-install-diagnosis-test
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_client_continuation tests.test_qikvrt_diagnostic_successor
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_client_continuation tests.test_qikvrt_diagnostic_successor tests.test_qikvrt_writer_observer
 
 offline-browser-test: offline-browser-precheck
 	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs
