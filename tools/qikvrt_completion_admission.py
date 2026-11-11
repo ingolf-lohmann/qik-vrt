@@ -28,3 +28,23 @@ def completion_admitted(evidence: object) -> bool:
 
 def completion_disposition(evidence: object) -> str:
     return "ADMITTED" if completion_admitted(evidence) else "HOLD"
+
+def completion_receipt_admitted(receipt: object, *, head: str, tree: str) -> bool:
+    """Bind a completion receipt to an exact Git object pair, not just booleans.
+
+    A mutable 'passed' flag or a successful CI on another commit is insufficient.
+    """
+    import re
+    if not isinstance(receipt, dict) or type(head) is not str or type(tree) is not str:
+        return False
+    if not re.fullmatch(r"[0-9a-f]{40}", head) or not re.fullmatch(r"[0-9a-f]{40}", tree):
+        return False
+    if receipt.get("schema") != "qikvrt-completion-admission/v1":
+        return False
+    if receipt.get("repository") != "ingolf-lohmann/qik-vrt":
+        return False
+    if receipt.get("head") != head or receipt.get("tree") != tree:
+        return False
+    if receipt.get("effect_ack_done") is not True:
+        return False
+    return completion_admitted(receipt.get("evidence"))
