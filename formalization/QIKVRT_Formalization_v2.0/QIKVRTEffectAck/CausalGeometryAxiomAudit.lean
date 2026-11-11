@@ -11,4 +11,5 @@ import QIKVRTEffectAck.CausalGeometry
 #print axioms QIKVRT.CausalGeometry.V1.roundTrip_encode_injective
 #print axioms QIKVRT.CausalGeometry.V1.roundTrip_relation_iff
 #print axioms QIKVRT.CausalGeometry.V1.roundTrip_relation_preserved
+#print axioms QIKVRT.CausalGeometry.V1.emptyGraph_path_endpoints
 #print axioms QIKVRT.CausalGeometry.V1.emptyGraph_distinct_events_incomparable
