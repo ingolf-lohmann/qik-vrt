@@ -41,7 +41,7 @@ jobs:
         with:
           ref: ${{ inputs.expected_head }}
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
       - name: Verify exact branch binding before regeneration
         env:
           TARGET_BRANCH: ${{ inputs.branch }}
@@ -52,6 +52,43 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
           test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$EXPECTED_HEAD"
           test -z "$(git status --porcelain)"
+          # Bind the target to an open same-repository PR, not an arbitrary branch.
+          GH_TOKEN="${{ github.token }}" gh api --paginate "repos/${{ github.repository }}/pulls?state=open&per_page=100" \
+            --jq '.[] | select(.head.ref == env.TARGET_BRANCH and .head.sha == env.EXPECTED_HEAD and .head.repo.full_name == "${{ github.repository }}") | .number' \
+            | grep -Eq '^[0-9]+
+      - name: Deterministically regenerate and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git add -- REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256
+          for changed in $(git diff --name-only); do
+            case "$changed" in
+              REPOSITORY_FILE_MANIFEST.json|SHA256SUMS.txt|REPOSITORY_FILE_MANIFEST.json.sha256) ;;
+              *) echo "Unexpected generator mutation: $changed" >&2; exit 2 ;;
+            esac
+          done
+      - name: Commit once and push with exact-head lease
+        env:
+          TARGET_BRANCH: ${{ inputs.branch }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo "Integrity already canonical at exact HEAD"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix(integrity): regenerate canonical manifest from exact PR head"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$EXPECTED_HEAD"
+          # Credentials are supplied only to this bounded push step, never checkout.
+          git -c http.extraheader="AUTHORIZATION: basic $(printf "x-access-token:%s" "$GH_TOKEN" | base64 -w0)" push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
+
       - name: Deterministically regenerate and verify
         shell: bash
         run: |
