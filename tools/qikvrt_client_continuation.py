@@ -7,6 +7,7 @@ The client never promotes an unverified effect into a completion.
 """
 import argparse
 import json
+from pathlib import Path
 import re
 import sys
 
@@ -23,6 +24,13 @@ def decide(receipt):
                 "head_sha", "state", "next_action", "effect_ack_done")
     if any(key not in receipt for key in required):
         raise ValueError("missing mandatory receipt fields")
+    policy_path = Path(__file__).resolve().parents[1] / "policy" / "REPOSITORY_CONTINUATION_STANDARD_V1.json"
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    if (policy.get("schema") != "qikvrt_repository_continuation_standard_v1"
+            or policy.get("authority_repository") != "ingolf-lohmann/qik-vrt"
+            or policy.get("default_behavior") != "REENTER_SAME_WRITER"
+            or policy.get("admission") != "BLOCKED"):
+        raise ValueError("repository continuation standard invalid or missing")
     if receipt["schema"] != "qikvrt_client_continuation_v1":
         raise ValueError("unknown schema")
     if receipt["repository"] != "ingolf-lohmann/qik-vrt":
