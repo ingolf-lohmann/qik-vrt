@@ -36,6 +36,15 @@ def invoke(data):
 
 
 class ContinuationContractTests(unittest.TestCase):
+    def test_repository_wide_continuation_standard(self):
+        policy = json.loads((ROOT / "policy" /
+            "REPOSITORY_CONTINUATION_STANDARD_V1.json").read_text())
+        self.assertEqual(policy["authority_repository"], "ingolf-lohmann/qik-vrt")
+        self.assertEqual(policy["default_behavior"], "REENTER_SAME_WRITER")
+        self.assertEqual(policy["admission"], "BLOCKED")
+        self.assertIn("all repository work units", policy["scope"])
+        self.assertGreaterEqual(len(policy["invariants"]), 7)
+
     def test_running_continues_same_writer(self):
         code, result = invoke(receipt())
         self.assertEqual(code, 0)
