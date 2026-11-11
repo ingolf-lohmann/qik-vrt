@@ -5,13 +5,13 @@ on:
     paths:
       - "formalization/QIKVRT_SpacetimeBridge_v1/**"
       - "formalization/QIKVRT_CausalGeometry_v1/**"
-      - "docs/research/2026-11-11-lean-geometric-reconstruction/SPACETIME_BRIDGE_REVIEW.md"
+      - "docs/research/2026-11-11-lean-geometric-reconstruction/**"
       - ".github/workflows/qikvrt_spacetime_bridge.yml"
   pull_request:
     paths:
       - "formalization/QIKVRT_SpacetimeBridge_v1/**"
       - "formalization/QIKVRT_CausalGeometry_v1/**"
-      - "docs/research/2026-11-11-lean-geometric-reconstruction/SPACETIME_BRIDGE_REVIEW.md"
+      - "docs/research/2026-11-11-lean-geometric-reconstruction/**"
       - ".github/workflows/qikvrt_spacetime_bridge.yml"
   workflow_dispatch:
 
