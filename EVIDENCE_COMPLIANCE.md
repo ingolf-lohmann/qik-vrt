@@ -1,6 +1,6 @@
 # QIK-VRT Evidence Compliance Record
 
-**Record status: PENDING — full Lean axiom-audit revalidation required.**
+**Record status: PASS — Mathlib extension evidence controls passed on commit `065ad950c541ab8fbf862ad39601e3ddb44459e3`.**
 
 This record is the repository's prominent, auditable statement of what has and has not been demonstrated for the Mathlib spacetime extension. It is not a self-certification of universal scientific or ontological truth.
 
@@ -41,12 +41,22 @@ The authoritative machine-readable classifications are in `evidence-status.json`
 ## Verification record
 
 - Repository: `ingolf-lohmann/qik-vrt`
+- Pull request: [#746](https://github.com/ingolf-lohmann/qik-vrt/pull/746) (draft; not merged at time of verification)
 - Policy branch: `policy/enforce-evidence-boundary-2026-11-11`
-- Last inspected run before the current datatype-isolation correction: [GitHub Actions run #43008323505](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43008323505)
-- In that run the policy script passed and the Lean/Mathlib build completed. The axiom audit then rejected generated support declarations for `EvidenceStatus` (`lcUnreachable` and `lcProof`). This is a real audit failure, not a passing proof certificate.
-- The datatype has since been moved outside the audited theorem namespace to avoid auditing compiler-generated datatype support as project theorem dependencies. The policy check passed again on commit `752d84b77d1037c972a0590fd62633f30a999a82`; the corresponding [GitHub Actions run #43012037805](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43012037805) was still in progress at the time this record was updated. The datatype correction and full axiom audit therefore remain **not yet verified**.
+- Exact verified commit: `065ad950c541ab8fbf862ad39601e3ddb44459e3`
+- Successful workflow: [Spacetime Mathlib extension run #43013144965](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43013144965)
+- The single job `mathlib-build-and-axiom-audit` completed successfully. Its individual steps show:
+  1. **Evidence policy check — success.**
+  2. **Pinned Lean toolchain and dependency installation — success.**
+  3. **Lean/Mathlib build — success** (`Build completed successfully.`).
+  4. **Axiom audit — success** (`audited 33 declaration(s) under 'QIKVRTSpacetimeBridgeMathlib'; all within the allowlist [propext, Classical.choice, Quot.sound]`).
+- The four evidence metadata declarations were each reported as having no axiom dependencies. The three mathematical declarations were reported with the allowlisted dependencies `propext`, `Classical.choice`, and `Quot.sound`.
+- This resolves the earlier audit failure caused by generated inductive support declarations: the evidence labels now use string-backed categories, and the axiom-audit tool accepted all 33 declarations in the audited package.
+- A separate general workflow, [QIKVRT CI run #43013144967](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43013144967), failed at `Enforce terminal tested-fixpoint disposition`; its preceding full compile, launcher, protocol, handler, security and TCP/IP tests passed. This separate workflow is not one of the three Mathlib-extension acceptance checks above and is not represented as passing.
+- Earlier failed audit run: [#43012119174](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43012119174), on the prior commit, rejected generated `EvidenceStatus` support declarations. It is retained here as historical failure evidence, not hidden.
+- **Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` covered by this workflow. This is not a repository-wide proof of compliance.
 
-**Acceptance condition:** this record may be changed to **PASS** only after a single identified commit has a successful policy check, Lean/Mathlib build, and axiom audit, with the resulting run URL and exact commit SHA recorded here. Until then, the status remains **PENDING**.
+The three acceptance checks were completed successfully on the same exact commit and in the same workflow run. The PASS designation above records that bounded CI result; it does not certify empirical claims, completeness of the physical model, or universal ontological applicability.
 
 ## Governance limitation
 
