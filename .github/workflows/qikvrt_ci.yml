@@ -44,6 +44,22 @@ permissions:
   contents: write
 
 jobs:
+  completion-admission-contract:
+    name: Fail-closed completion admission regression
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Reject false DONE without independent evidence
+        run: |
+          python3 -B -m unittest -v tests.test_qikvrt_completion_admission tests.test_qikvrt_continuation_bootstrap_receipt
+          python3 -B - <<'PY'
+          from tools.qikvrt_completion_admission import completion_disposition
+          assert completion_disposition({'analysis':'complete','commit':'present'}) == 'HOLD'
+          PY
   test:
     outputs:
       tested_head: ${{ steps.tested_subject.outputs.head }}
