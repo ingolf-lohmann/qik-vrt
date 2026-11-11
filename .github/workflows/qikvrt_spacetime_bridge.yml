@@ -43,7 +43,13 @@ jobs:
       - name: Build the spacetime bridge
         run: lake build QIKVRTSpacetimeBridge
       - name: Reject proof escapes
-        run: lake env lean -E hasSorry QIKVRTSpacetimeBridge/SpacetimeBridge.lean
+        run: |
+          lake env lean -E hasSorry QIKVRTSpacetimeBridge/SpacetimeBridge.lean
+          lake env lean -E hasSorry QIKVRTSpacetimeBridge/VolumeLaw.lean
+      - name: Run Poisson sprinkling reference tests
+        run: |
+          python3 ../../tools/causal_sprinkling_demo.py --density 20 --trials 200 --epsilon 0.25 --seed 20261111
+          python3 -m unittest discover -s ../../tools -p 'test_causal_sprinkling_demo.py'
       - name: Audit theorem dependencies
         shell: bash
         run: |
@@ -55,6 +61,10 @@ jobs:
           expected = [
               "QIKVRT.SpacetimeBridge.V1.causal_volume_reconstruct",
               "QIKVRT.SpacetimeBridge.V1.rejection_exceeds_tolerance",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.conformalVolumeFactor_mul",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_of_same_volume_factor",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_one_of_unit_volume_factor",
+              "QIKVRT.SpacetimeBridge.V1.VolumeLaw.scale_eq_of_same_calibrated_count",
           ]
           for name in expected:
               if name not in output:
@@ -63,5 +73,5 @@ jobs:
               if any(name in line for name in expected):
                   if "does not depend on any axioms" not in line:
                       raise SystemExit("BLOCK unexpected axiom dependency: " + line)
-          print("PASS: both spacetime bridge theorems are axiom-free")
+          print("PASS: all spacetime bridge and volume-law theorems are axiom-free")
           PY
