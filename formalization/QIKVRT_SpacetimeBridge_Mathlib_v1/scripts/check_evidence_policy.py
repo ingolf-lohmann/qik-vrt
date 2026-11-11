@@ -7,7 +7,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 PACKAGE = ROOT / "formalization/QIKVRT_SpacetimeBridge_Mathlib_v1"
 POLICY = PACKAGE / "evidence-status.json"
 SOURCE = PACKAGE / "QIKVRTSpacetimeBridgeMathlib/RealVolumeLaw.lean"
