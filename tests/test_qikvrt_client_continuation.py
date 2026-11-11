@@ -51,6 +51,16 @@ class ContinuationContractTests(unittest.TestCase):
                 self.assertEqual(result["disposition"], "CONTINUE_DIAGNOSIS")
                 self.assertFalse(result["effect_ack_done"])
 
+    def test_blocked_internal_effect_actions_become_readback(self):
+        for action in ("MERGE", "DEPLOY", "REPAIR"):
+            with self.subTest(action=action):
+                code, result = invoke(receipt(
+                    state="BLOCKED", blocker="CI", next_action=action))
+                self.assertEqual(code, 0)
+                self.assertEqual(result["disposition"], "CONTINUE_DIAGNOSIS")
+                self.assertEqual(result["next_action"], "READBACK")
+                self.assertFalse(result["effect_ack_done"])
+
     def test_external_gates_never_execute(self):
         for blocker in ("AUTHORIZATION", "WORKFLOW_APPROVAL"):
             with self.subTest(blocker=blocker):
