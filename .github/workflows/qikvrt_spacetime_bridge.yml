@@ -69,9 +69,17 @@ jobs:
           for name in expected:
               if name not in output:
                   raise SystemExit("BLOCK missing axiom audit: " + name)
+          allowed = {"propext", "Classical.choice", "Quot.sound"}
           for line in output.splitlines():
-              if any(name in line for name in expected):
-                  if "does not depend on any axioms" not in line:
-                      raise SystemExit("BLOCK unexpected axiom dependency: " + line)
-          print("PASS: all spacetime bridge and volume-law theorems are axiom-free")
+              if not any(name in line for name in expected):
+                  continue
+              if "does not depend on any axioms" in line:
+                  continue
+              if "depends on axioms: [" not in line:
+                  raise SystemExit("BLOCK unrecognized axiom report: " + line)
+              actual = set(line.split("depends on axioms: [", 1)[1].split("]", 1)[0].split(", "))
+              actual.discard("")
+              if not actual <= allowed:
+                  raise SystemExit("BLOCK unapproved axioms: " + line)
+          print("PASS: spacetime bridge and volume-law theorems use foundational Lean axioms only")
           PY
