@@ -59,7 +59,12 @@ jobs:
           python3 -B tools/qikvrt_integrity.py generate
           python3 -B tools/qikvrt_integrity.py verify
           git add -- REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256
-          test -z "$(git status --porcelain --untracked-files=no | grep -vE '^([ MARCUD?!]{2}) (REPOSITORY_FILE_MANIFEST.json|SHA256SUMS.txt|REPOSITORY_FILE_MANIFEST.json.sha256)$' || true)"
+          for changed in $(git diff --name-only); do
+            case "$changed" in
+              REPOSITORY_FILE_MANIFEST.json|SHA256SUMS.txt|REPOSITORY_FILE_MANIFEST.json.sha256) ;;
+              *) echo "Unexpected generator mutation: $changed" >&2; exit 2 ;;
+            esac
+          done
       - name: Commit once and push with exact-head lease
         env:
           TARGET_BRANCH: ${{ inputs.branch }}
@@ -74,5 +79,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "fix(integrity): regenerate canonical manifest from exact PR head"
-          git push --force-with-lease="refs/heads/$TARGET_BRANCH:$EXPECTED_HEAD" origin "HEAD:refs/heads/$TARGET_BRANCH"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$EXPECTED_HEAD"
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
           test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
