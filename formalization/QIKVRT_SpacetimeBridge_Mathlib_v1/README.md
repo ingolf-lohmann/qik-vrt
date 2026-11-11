@@ -37,6 +37,10 @@ lake exe cache get
 lake build
 ```
 
-The dedicated GitHub Actions workflow runs the package build and kernel axiom
-audit on the exact pull-request head. Until that exact workflow succeeds,
-this extension is an unverified draft.
+The dedicated exact-head GitHub Actions run #43000271891 succeeded on commit
+`55c3b3f8f4031b989776d76057bda551d113a999`: `lake build` passed and the
+kernel axiom audit checked all four package declarations, each within the
+foundational allowlist (`propext`, `Classical.choice`, `Quot.sound`). This
+verifies the scalar real-power and density results only. The smooth-metric
+determinant identity, Radon–Nikodym steps, Poisson moments, and continuum
+convergence remain open. The PR remains a draft pending review.
