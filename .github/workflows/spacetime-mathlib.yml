@@ -30,6 +30,7 @@ jobs:
             https://raw.githubusercontent.com/leanprover/elan/f8c0c5006c15328ba2e0890707e898be10528887/elan-init.sh \
             | sh -s -- -y --default-toolchain leanprover/lean4:v4.19.0 --no-modify-path
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.elan/bin:$PATH"
           lake update
       - uses: leanprover/lean-action@bd5cb0b830eda614ce3fc186d8429b9409b16c47 # v1.7.0
         with:
