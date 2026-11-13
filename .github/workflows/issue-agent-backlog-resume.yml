@@ -28,7 +28,7 @@ jobs:
   resume:
     # Native workflow completion is a causal event, not a timer.
     # The admission check below rejects unchanged issue inputs.
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issues' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issues' || github.event_name == 'workflow_run'
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
@@ -61,6 +61,7 @@ jobs:
 
           resumed=0
           skipped_unchanged=0
+          pending_handoff=0
           skipped_final=0
           blocked_missing_status=0
 
@@ -105,7 +106,15 @@ jobs:
               continue
             fi
             if [ "$(jq -r '.execute' "$input/ADMISSION.json")" != true ]; then
-              echo "issue=$issue state=NOOP reason=unchanged_causal_input"
+              # Unchanged source is not terminal. Recover the existing handoff
+              # only when no equivalent processor is already active.
+              active="$(gh api "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/runs?status=in_progress&per_page=100" --jq --arg branch "$branch" '[.workflow_runs[] | select(.head_branch == $branch)] | length')"
+              if [ "$active" -gt 0 ]; then
+                echo "issue=$issue state=CONTINUATION_ACTIVE"
+                pending_handoff=$((pending_handoff + 1))
+                continue
+              fi
+              echo "issue=$issue state=CONTINUATION_REQUIRED reason=unchanged_causal_input"
               skipped_unchanged=$((skipped_unchanged + 1))
               continue
             fi
@@ -121,7 +130,8 @@ jobs:
             echo "## Issue-agent backlog resume"
             echo
             echo "- resumed: $resumed"
-            echo "- unchanged causal inputs: $skipped_unchanged"
+            echo "- unchanged causal inputs requiring continuation: $skipped_unchanged"
+            echo "- active processor observations: $pending_handoff"
             echo "- final/awaiting auto-finish: $skipped_final"
             echo "- missing status blockers: $blocked_missing_status"
           } >> "$GITHUB_STEP_SUMMARY"
