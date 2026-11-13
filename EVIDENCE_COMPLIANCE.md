@@ -1,6 +1,6 @@
 # QIK-VRT Evidence Compliance Record
 
-**Record status: PASS — Mathlib extension evidence controls passed on exact commit `99a293e1bce94f57eb82020009775b4137e9c3ba` in workflow [#43016983959](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43016983959).**
+**Record status: PASS — Mathlib extension evidence controls passed on exact commit `89653507bf8d6d6da28cf3a80dc6ee9cdd6b83ae` in workflow [#43215557270](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43215557270).**
 
 This record is the repository's prominent, auditable statement of what has and has not been demonstrated for the Mathlib spacetime extension. It is not a self-certification of universal scientific or ontological truth.
 
@@ -84,3 +84,27 @@ This record and CI checks make the policy inspectable and testable. They do not,
 - This separate repository-integrity failure is not one of the three checks in `spacetime-mathlib.yml`; it is recorded transparently and is **not** represented as passing. No repository-wide PASS is claimed.
 
 The PASS designation remains strictly limited to the Mathlib extension paths and declarations exercised by this workflow. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
+
+
+## Latest exact-head verification — 2026-11-12
+
+- Repository: `ingolf-lohmann/qik-vrt`
+- Pull request: [#746](https://github.com/ingolf-lohmann/qik-vrt/pull/746) (open, draft, not merged at verification time)
+- Branch: `policy/enforce-evidence-boundary-2026-11-11`
+- Exact verified commit: `89653507bf8d6d6da28cf3a80dc6ee9cdd6b83ae`
+- Root tree: `f7d84d99379b68cd8960e8994d2353b9a09e6dc8`
+- Successful workflow: [Spacetime Mathlib extension run #43215557270](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43215557270)
+- Job: `mathlib-build-and-axiom-audit` (job ID `131173762344`) — success. The job steps and full log were inspected; the workflow checked out the exact commit above.
+- **Evidence policy check — success.** Log: “Evidence policy check passed: ledger, Lean metadata, axiom audit, normative README boundary, and no placeholders/project axioms.”
+- **Pinned Lean toolchain and dependency installation — success.** Lean `v4.19.0`; Mathlib revision `c44e0c8ee63ca166450922a373c7409c5d26b00b`; `leanprover/lean-action` pinned to `bd5cb0b830eda614ce3fc186d8429b9409b16c47`.
+- **Lean/Mathlib build — success.** Log: `Build completed successfully.`
+- **Axiom audit — success.** Log: `axiom-audit: audited 33 declaration(s) under 'QIKVRTSpacetimeBridgeMathlib'; all within the allowlist [propext, Classical.choice, Quot.sound].` The audit command completed successfully.
+- The policy check, pinned build, and axiom audit all ran in the same job on this same exact commit. The three requested acceptance checks therefore pass together on `89653507bf8d6d6da28cf3a80dc6ee9cdd6b83ae`.
+
+### Separate repository-wide CI status on this commit
+
+- [QIKVRT CI run #43215557245](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43215557245) failed in job `test`. The full compile, launcher, protocol, handler, security, and TCP/IP tests passed, but `tools/qikvrt_integrity.py verify` reported: `BLOCK repository manifest differs from deterministic regeneration`.
+- The log reports `added=["EVIDENCE_COMPLIANCE.md"]` and stale stored manifest records for `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1/QIKVRTSpacetimeBridgeMathlib/RealVolumeLaw.lean` and `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1/README.md`. The terminal tested-fixpoint disposition then failed. This is a separate repository-integrity issue, not one of the three Mathlib-extension checks; it is not represented as passing.
+- **Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by this workflow. This does not establish repository-wide compliance.
+
+The PASS designation is limited to the Mathlib extension. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
