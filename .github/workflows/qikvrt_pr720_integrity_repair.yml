@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT PR720 bounded integrity self-repair
+on:
+  push:
+    branches:
+      - fix/mesh-execution-blocker-classifier-20261110
+    paths-ignore:
+      - REPOSITORY_FILE_MANIFEST.json
+      - REPOSITORY_FILE_MANIFEST.json.sha256
+      - SHA256SUMS.txt
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: qikvrt-pr720-integrity-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  regenerate:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/fix/mesh-execution-blocker-classifier-20261110'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: fix/mesh-execution-blocker-classifier-20261110
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Regenerate, verify, and test
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_execution_blocker_classifier
+          git diff --check
+      - name: Commit only deterministic integrity outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'qik-vrt-integrity[bot]'
+          git config user.email 'qik-vrt-integrity[bot]@users.noreply.github.com'
+          git add -- REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo 'No integrity delta'
+            exit 0
+          fi
+          git commit -m 'fix(integrity): regenerate deterministic PR720 metadata'
+          git push origin HEAD:refs/heads/fix/mesh-execution-blocker-classifier-20261110
