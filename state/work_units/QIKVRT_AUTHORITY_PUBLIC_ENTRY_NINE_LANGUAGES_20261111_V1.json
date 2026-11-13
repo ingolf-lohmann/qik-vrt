@@ -1,0 +1,106 @@
+{
+  "schema": "qikvrt-work-unit/v1",
+  "id": "QIKVRT_AUTHORITY_PUBLIC_ENTRY_NINE_LANGUAGES_20261111_V1",
+  "principal": "Ingolf Lohmann",
+  "human_contribution": "Authority/Mirror roles, access and licence requirements, selective knowledge adoption, private commercial knowledge control, ethical principles, nine-language delivery and continuation authorization.",
+  "artificial_contribution": "OpenAI Codex: source reconciliation, translations, existing-monitor rendering, regression tests and admitted REST source publication.",
+  "observed_at_utc": "2026-11-11T09:13:03.866015+00:00",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "existing_pull_request": 688,
+  "source_successor": {
+    "head": "41d00505f2c0e466b6b045496abfccae9b805ddf",
+    "tree": "dfc1d058fe25e10dad0b79e2d21bd8b178c87bd7",
+    "first_parent": "0562c64996c309f879421245c7a45dcf5477926b",
+    "second_parent_main": "58a75ba5c171e88dc56e528ea69f266c9e618cbd",
+    "remote_public_entry_text_equal": true
+  },
+  "verification": {
+    "client_action_preflight": "VALID_READY_ROUTING_METADATA_ONLY",
+    "public_entry_original": "REJECTED_MISSING_ENTRY",
+    "existing_observer_contract": "PASS",
+    "existing_monitor_and_mesh_file_tests": {
+      "passed": 37,
+      "failed": 0
+    },
+    "public_entry_behavior_tests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "devops_ring_tests_after_exact_workflow_repair": {
+      "passed": 11,
+      "failed": 0
+    },
+    "full_local_make_test": "UNVERIFIED_PARTIAL_SOURCE_TREE_FIRST_MISSING_C90_SOURCE",
+    "native_ci_at_source_successor": {
+      "run_id": 42992644116,
+      "job_id": 130428983363,
+      "full_compile_test_step": "SUCCESS",
+      "overall": "IN_PROGRESS_AT_OBSERVATION"
+    },
+    "native_materializer": {
+      "run_id": 42992644577,
+      "job_id": 130428985536,
+      "integrity_regeneration_step": "SUCCESS",
+      "overall": "IN_PROGRESS_AT_OBSERVATION"
+    }
+  },
+  "temdd_repair": {
+    "observed_failure_run": 42992635974,
+    "workflow": ".github/workflows/qikvrt_devops_ring_integrity_repair_candidate.yml",
+    "inherited_main_blob": "176d7bca48baf37bb3277915e63a6f252c376eac",
+    "reproduced_defects": [
+      "escaped_newlines_collapse_trigger_paths",
+      "escaped_newlines_and_quotes_skip_separate_remote_lease_and_push_steps"
+    ],
+    "existing_repair_source_pr": 717,
+    "existing_repair_source_head": "45d346c6ed7dec77230d50437027f07da0ad0351",
+    "reused_scope": "Only the existing corrected integrity workflow, not the other PR717 changes.",
+    "negative_tests": "Two regression tests reject the original workflow; repaired workflow preserves exact-remote-head check and non-forced push. A changed remote head causes no push."
+  },
+  "predecessor": {
+    "library_file_id": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+    "version": 48,
+    "archive_sha256": "bb11f25da1db86582730522897554cd2ebfff86ece41b6ac216e4704c5a845c1",
+    "original_receipt_member": "session-mesh-harmonization-20261020/CLIENT_CONTINUATION.json",
+    "original_receipt_sha256": "42993db6cc88acbddc6bff9744afc4d25d86035a351e0e2d448212cd0bc0bce5",
+    "historical_work_records": 350,
+    "historical_knowledge_records": 379,
+    "handling": "Original archive and receipt remain unchanged; this task does not close or replace their duties or transfer writer admission."
+  },
+  "open_work": [
+    {
+      "id": "EXACT_HEAD_NATIVE_CI_AND_INTEGRITY",
+      "state": "OPEN",
+      "next": "Follow the existing CI/materializer successor and independently read back the resulting branch head, tree, full tests and integrity before any merge."
+    },
+    {
+      "id": "PUBLIC_DOMAIN_AND_ORIGINAL_RUNTIME",
+      "state": "OPEN",
+      "evidence": "Existing authenticated operator connection reports ready=false, ADMITTED_MESH_RUNTIME_ENDPOINT missing, HTTPS 525.",
+      "next": "Use the original admitted host/startup/attachment path when its exact identity and private binding are available; preserve native admission and writer fencing."
+    },
+    {
+      "id": "FULL_INTERFACE_TRANSLATION",
+      "state": "OPEN",
+      "next": "Translate the remaining dynamic monitor interface through its existing presentation path; the current candidate translates the public information entry only."
+    },
+    {
+      "id": "LEGAL_OPERATOR_DETAILS",
+      "state": "OPEN",
+      "next": "Resolve the complete authorized operator/provider details from the existing repository sources before productive publication; do not invent an address."
+    },
+    {
+      "id": "PR588_AND_PR717_REMAINING_DUTIES",
+      "state": "OPEN",
+      "next": "Continue their current source/review and protected acceptance paths; this limited change does not claim complete supersession or closure."
+    },
+    {
+      "id": "NATIVE_MIRROR_ACK_AND_WRITER",
+      "state": "OPEN",
+      "next": "Resume only the original admitted journals and peer contracts; archive copying, tests and source writes confer no writer admission or actual peer reply."
+    }
+  ],
+  "ordinary_release": false,
+  "effect_ack_done": false,
+  "state": "SOURCE_CANDIDATE_WITH_OPEN_ACCEPTANCE"
+}
