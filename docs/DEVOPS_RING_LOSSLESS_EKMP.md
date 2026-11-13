@@ -68,3 +68,39 @@ wird `OPEN` mit dem letzten belegten Cursor persistiert, statt eine
 Endlosschleife oder Erfolg zu behaupten. Die Fortsetzung übernimmt der
 bereits zugelassene DevOps-Kreis. Die Readback-Schleife ist read-only;
 Writer-Fencing, Admission, Governance und EAP bleiben unabhängig.
+
+## Stall repair bound to 13 November 2026
+
+Observed Main is `014bbb095a20680c4851e62575ee932d7a45b206`, tree
+`d867b5b5df4f76be4daa0c575e0d5bde9e03aeaf`. Watchdog run `43215795672`
+stopped at JOBS_BUDGET_PREFLIGHT: 2,500 reported exact-head runs versus 1,000
+returned. GitHub caps a filtered run search at 1,000 results. Increasing page
+numbers alone cannot restore completeness. The existing collector now partitions
+larger inventories into disjoint UTC creation intervals, verifies every identity
+and partition count, rechecks the root page, and holds on drift, duplicates,
+unpartitionable single-second overflow or its total 64-request budget. The
+existing 20-request job budget remains unchanged.
+
+Wakeup run `43382241445` returned success after finding seven queued watchdogs.
+Fresh repository readback places those queued watchdogs in September/October,
+on older heads. A queued record is not current useful progress. The existing
+wakeup now requires a fresh exact-head record within the original queue/progress
+lease. Stale, foreign-head, future or unreadable activity yields HOLD and no
+dispatch. It neither cancels the original run nor grants another writer. Its
+clock and a green wakeup remain observation only, never autonomous completion.
+
+The ring planner preserves `action_required` and `startup_failure` as explicit
+admission-repair tasks. They cannot turn into an empty IDLE queue. Status
+deduplication suppresses redundant notifications, not diagnosis of an unresolved
+failure. An unknown cause requires its original log/checkpoint; after a verified
+repair, immediately reassess the original work and continue admitted successors.
+
+Continuation run `43215795637` has a separate unresolved immutable-tree write
+for PR #459. Its original checkpoint and ambiguous-effect readback duty remain
+open; this repair must not repeat that POST, reset its intent or mint a writer.
+PR #743/#747 workflow approval, complete successor CI, canonical integrity
+regeneration, protected host/SSO admission, TLS and independent EAP acceptance
+remain separate gates. Source saving and fixture tests establish neither Main
+integration nor unattended execution. The Principal's authorization persists;
+do not request it again or replace a missing operation with another scheduler.
+

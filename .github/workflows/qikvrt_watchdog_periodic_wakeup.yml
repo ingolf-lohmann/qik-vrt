@@ -27,6 +27,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
           WATCHDOG: qikvrt_reflexive_repository_watchdog.yml
+          QUEUE_LEASE_SECONDS: '600'
+          PROGRESS_LEASE_SECONDS: '900'
         shell: bash
         run: |
           set -euo pipefail
@@ -34,12 +36,29 @@ jobs:
           # A clock event may only activate the existing fail-closed main observer.
           default_branch="$(gh api "repos/${REPOSITORY}" --jq '.default_branch')"
           test "$default_branch" = main
+          expected_head="$(gh api "repos/${REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "${#expected_head}" -eq 40
+          case "$expected_head" in *[!0-9a-f]*) exit 2;; esac
           echo "RING_OBSERVE: checking existing watchdog activity and pending work"
           for state in queued in_progress waiting requested pending; do
-            count="$(gh api "repos/${REPOSITORY}/actions/workflows/${WATCHDOG}/runs?status=${state}&per_page=1" --jq '.total_count')"
+            activity="$(gh api "repos/${REPOSITORY}/actions/workflows/${WATCHDOG}/runs?status=${state}&per_page=1")"
+            count="$(jq -er '.total_count | select(type == "number" and . >= 0 and . == floor)' <<< "$activity")"
             case "$count" in ''|*[!0-9]*) echo "INVALID_RUN_INVENTORY" >&2; exit 1;; esac
             if [ "$count" -gt 0 ]; then
-              echo "RING_IDLE: watchdog already active (${state}=${count}); no duplicate dispatch."
+              jq -e --arg state "$state" --arg head "$expected_head" '
+                .workflow_runs | length == 1 and
+                (.[0].status == $state and .[0].head_sha == $head)
+              ' <<< "$activity" >/dev/null || { echo "UNVERIFIED_WATCHDOG_ACTIVITY" >&2; exit 2; }
+              created="$(jq -er '.workflow_runs[0].created_at' <<< "$activity")"
+              started="$(date -u -d "$created" +%s)" || { echo "INVALID_WATCHDOG_CREATION_TIME" >&2; exit 2; }
+              age=$(( $(date -u +%s) - started ))
+              lease="$QUEUE_LEASE_SECONDS"
+              if [ "$state" = in_progress ]; then lease="$PROGRESS_LEASE_SECONDS"; fi
+              if [ "$age" -lt 0 ] || [ "$age" -ge "$lease" ]; then
+                echo "STALE_WATCHDOG_ACTIVITY: state=$state age=$age lease=$lease; HOLD; preserve run; no dispatch." >&2
+                exit 2
+              fi
+              echo "RING_ACTIVE: fresh exact-head watchdog (${state}=${count}); no duplicate dispatch."
               if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
                 printf "### DevOps ring wakeup\\n\\n- State: ACTIVE_WATCHDOG\\n- Existing run state: %s\\n- Count: %s\\n- Next: next scheduled observation; no duplicate dispatch\\n- Production admission: NOT CLAIMED\\n" "$state" "$count" >> "$GITHUB_STEP_SUMMARY"
               fi
@@ -51,3 +70,4 @@ jobs:
           if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
             printf "### DevOps ring wakeup\\n\\n- State: DISPATCH_REQUEST_ACCEPTED\\n- Target: trusted-main reflexive watchdog\\n- Next: verify separate watchdog run and its receipt\\n- Repair executed: NOT VERIFIED\\n- Production admission: NOT CLAIMED\\n" >> "$GITHUB_STEP_SUMMARY"
           fi
+
