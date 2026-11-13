@@ -108,7 +108,7 @@ jobs:
             if [ "$(jq -r '.execute' "$input/ADMISSION.json")" != true ]; then
               # Unchanged source is not terminal. Recover the existing handoff
               # only when no equivalent processor is already active.
-              active="$(gh api "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/runs?status=in_progress&per_page=100" --jq --arg branch "$branch" '[.workflow_runs[] | select(.head_branch == $branch)] | length')"
+              active="$(gh api "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/runs?status=in_progress&per_page=100" | jq --arg branch "$branch" '[.workflow_runs[] | select(.head_branch == $branch)] | length')"
               if [ "$active" -gt 0 ]; then
                 echo "issue=$issue state=CONTINUATION_ACTIVE"
                 pending_handoff=$((pending_handoff + 1))
