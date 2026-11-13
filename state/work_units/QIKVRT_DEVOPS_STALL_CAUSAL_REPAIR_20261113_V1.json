@@ -1,0 +1,231 @@
+{
+  "schema": "qikvrt-work-unit-evidence/v1",
+  "work_unit_id": "QIKVRT_DEVOPS_STALL_CAUSAL_REPAIR_20261113_V1",
+  "status": "SOURCE_CANDIDATE_TESTED_PRODUCTIVE_ACCEPTANCE_OPEN",
+  "observed_at": "2026-11-13T08:38:45.138006+00:00",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "principal_authorization": {
+    "source": "CURRENT_AUTHENTICATED_CHAT",
+    "owner": "Ingolf Lohmann",
+    "original_text": "Kläre die Ursachen. Wieso es nicht weitergeht. Und sorge dafür, dass dieser Zustand in Zukunft vermieden wird und die vollständige Autonomie der Abarbeitung ohne mein Zutun komplettiert und zu Ende geführt wird. Prinzipalfreigabe erteilt. Ingolf Lohmann",
+    "original_utf8_sha256": "5dff8e2ce6196fe13bb3edd69bddd422427962e7f5281799c03883f4c53632b8",
+    "request_permission_again": false
+  },
+  "source_subject": {
+    "main_head": "014bbb095a20680c4851e62575ee932d7a45b206",
+    "main_tree": "d867b5b5df4f76be4daa0c575e0d5bde9e03aeaf",
+    "existing_pr": 747,
+    "candidate_predecessor": "fa8681060fc405953945cf41ac7e79d2e50b4499",
+    "candidate_predecessor_tree": "6c13264ab2c4f6d60702890549353257a49f8d37"
+  },
+  "verified_findings": [
+    {
+      "cause": "FILTERED_RUN_SEARCH_CAP_AND_UNPARTITIONED_PAGINATION",
+      "run_id": 43215795672,
+      "artifact_id": 13944160574,
+      "artifact_sha256": "02f929bfb7ba4154ee207783ce71eeac9598eaa81c36a2783733d3de351247a5",
+      "failed_stage": "JOBS_BUDGET_PREFLIGHT",
+      "reported_runs": 2500,
+      "returned_runs": 1000,
+      "red": "Original source rejects complete 2500-run fixture under GitHub 1000-result cap.",
+      "repair": "Disjoint creation-time search intervals, exact identities, count reconciliation, root reobservation and total request bound."
+    },
+    {
+      "cause": "UNQUALIFIED_QUEUED_HISTORY_CLASSIFIED_AS_ACTIVE",
+      "run_id": 43382241445,
+      "observed_output": "RING_IDLE: watchdog already active (queued=7); no duplicate dispatch.",
+      "fresh_queued_watchdog_dates": [
+        "2026-10-07",
+        "2026-10-02",
+        "2026-09-13"
+      ],
+      "red": "Original shell returns zero for stale queued fixture; repaired shell returns HOLD without any POST.",
+      "repair": "Observe exact Main identity and original queue/progress leases before activity can suppress continuation."
+    },
+    {
+      "cause": "ADMISSION_FAILURE_OMITTED_FROM_RING_TASKS",
+      "predecessor_pr_heads": {
+        "743": "2e0c2611d9ec6329a71aa8403adc5291e044c902",
+        "747": "fa8681060fc405953945cf41ac7e79d2e50b4499"
+      },
+      "workflow_runs_each": 13,
+      "conclusion": "action_required",
+      "pr747_ci_run": 43201155261,
+      "pr747_ci_job_count": 0,
+      "repair": "Preserve explicit workflow-admission repair tasks; never infer IDLE from unexecuted workflows."
+    }
+  ],
+  "verification": {
+    "watchdog_tests": {
+      "passed": 61,
+      "command": "python3 -m unittest discover -s tests -p test_qikvrt_reflexive_repository_watchdog.py -v"
+    },
+    "ring_tests": {
+      "passed": 15,
+      "command": "python3 -m unittest discover -s tests -p test_qikvrt_devops_ring.py -v"
+    },
+    "red_reproductions": [
+      "1000-result filtered run search cap",
+      "stale queued wakeup false-green"
+    ],
+    "existing_client_action_cli": "positive HISTORICAL_EXACT source-repair admission and negative SPECIFICATION_USE_REQUIRED verified",
+    "full_make_test": "NOT_EXECUTED_PARTIAL_SOURCE_MATERIALIZATION",
+    "canonical_integrity_regeneration": "OPEN_REQUIRES_COMPLETE_EXACT_SUCCESSOR_CHECKOUT",
+    "native_exact_head_ci": "OPEN",
+    "main_integration": false
+  },
+  "changed_source_sha256": {
+    "tools/qikvrt_reflexive_repository_watchdog.py": "b515e7f55dadf75dc82171e807fe9286b8c4cad3b243ba8cd39f8b2d2bb41403",
+    "tests/test_qikvrt_reflexive_repository_watchdog.py": "7da179fea68f14251f6f51821386064d28de9053da8cda0e7dfaaf8c50faf049",
+    "tools/qikvrt_devops_ring.py": "43e4ca674005bd6c9561cd8e457e11d44b1e5f7674bc893c4cbf4547f2faa680",
+    "tests/test_qikvrt_devops_ring.py": "8fafbc5daa3ede9b7bb59df0cb945cc3c6d72b0bd911f02924fbfe8ff98c0989",
+    ".github/workflows/qikvrt_watchdog_periodic_wakeup.yml": "c6e2d4b63594b26a17c1c369bb1203c16a6330b8af963d9b5ec272d2eaf12360",
+    "docs/DEVOPS_RING_LOSSLESS_EKMP.md": "f1e6d8972228e275281c423c8c96f34e902f33beb26be91a9bf9dbd27ec163ea"
+  },
+  "evidence_log_sha256": {
+    "evidence/receipts/20261113-devops-stall-repair/ring-tests.log": "f126a90924053014200c080945e858d17515fc9225d5b629eb3aabe365490637",
+    "evidence/receipts/20261113-devops-stall-repair/watchdog-tests.log": "5dba61690e8c3878c5dee080b27aaa04da274cc5e7b21633177d30b96d4a5f2b",
+    "evidence/receipts/20261113-devops-stall-repair/client-preflight-negative.log": "477fe15324b0da831d7a53d70e39c54c6fb2fce640c04eef7246fe1a53e90132",
+    "evidence/receipts/20261113-devops-stall-repair/client-preflight-positive.log": "623fb1b8fa9a4c122f69a808403afdade7a85db5ede7b4238d67f6628454fd02",
+    "evidence/receipts/20261113-devops-stall-repair/wakeup-regression-red.log": "edde008160468cd6f9b8832eb99f91b5f2f5468d1ccfa0cbe3bbf53cef3c8347"
+  },
+  "open_obligations": [
+    {
+      "id": "UNRESOLVED_PR459_IMMUTABLE_TREE_WRITE",
+      "run_id": 43215795637,
+      "expected_tree": "75a46204f59666fe96af83101df614ccc3d830f5",
+      "fresh_tree_readback": "HTTP_404",
+      "underlying_post_cause": "UNESTABLISHED",
+      "next_action": "Recover original attempt and independently read back exact immutable objects; do not repeat ambiguous POST or reset writer/intent."
+    },
+    {
+      "id": "EXACT_SUCCESSOR_CI_AND_INTEGRITY",
+      "next_action": "Materialize complete exact candidate through existing admitted REST executor, use canonical integrity generator and complete full make test plus unchanged applicable CI."
+    },
+    {
+      "id": "GITHUB_INITIAL_WORKFLOW_ADMISSION",
+      "capability": "REST_INITIAL_WORKFLOW_APPROVAL_OPERATION_NOT_EXPOSED",
+      "inspected_routes": [
+        "connected GitHub REST tools",
+        "original src/qikvrt_github_api_shim.py",
+        "original 127.0.0.1:8766 listener"
+      ],
+      "local_listener": "CONNECTION_REFUSED",
+      "local_registered_profile_binding": "UNAVAILABLE_IN_THIS_CLIENT_NOT_A_CLAIM_ABOUT_ORIGINAL_HOST",
+      "next_action": "Restore original admitted REST/SSO executor binding and applicable initial approval operation; no substitute rerun or token export."
+    },
+    {
+      "id": "ORIGINAL_HOST_NATIVE_EAP_ACCEPTANCE",
+      "public_domain": "https://raumzeitterminal.de/",
+      "http_status": 525,
+      "operator_authorized": true,
+      "native_ready": false,
+      "gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+      "next_action": "Reconnect original protected host/SSO/material binding, then original-host mTLS and native EAP readback."
+    },
+    {
+      "id": "ORIGINAL_JOURNAL_AND_PEER_CONTINUITY",
+      "archive_identity": "libfile_8ff514ee33a08191a6573ae98c5acb5a",
+      "latest_observed_version": 48,
+      "archive_native_use_proof": "NOT_MATERIALIZED_IN_THIS_RUN",
+      "workspace_inventory": {
+        "returned": 250,
+        "reported": 261,
+        "complete": false
+      },
+      "all_node_adoption": "UNVERIFIED"
+    }
+  ],
+  "preserved_original_checkpoint": {
+    "artifact_id": 13945108135,
+    "run_id": 43215795637,
+    "zip_sha256": "875c32f03fedc0192218a82db56db8d3e7211e6b60b17e1540b3647c257b389a",
+    "original_zip_base64": "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",
+    "all_six_member_digests_verified": true,
+    "copied_native_journals": "READ_ONLY_NO_WRITER_ADMISSION_TRANSFER"
+  },
+  "provenance": {
+    "human": "Problem statement, goal, authorization and prior project rules: Ingolf Lohmann",
+    "artificial": "Source diagnosis, candidate implementation, isolated regressions and this evidence receipt: Codex",
+    "joint": "Owner-authorized technical repair; attribution remains separate"
+  },
+  "boundaries": {
+    "new_site": false,
+    "new_controller": false,
+    "new_scheduler": false,
+    "new_owner_permission_request": false,
+    "writer_transfer": false,
+    "production_effect_claim": false,
+    "effect_ack_done": false,
+    "zero_recurrence_guarantee": false,
+    "all_client_adoption_verified": false
+  },
+  "append_only_successors": [
+    {
+      "observed_at": "2026-11-13T08:45:59.635622+00:00",
+      "predecessor_commit": "dcde652a82f28f23b1739eba849f609906a3f012",
+      "integrity_successor_commit": "2e5fd77ee8d5b90c06940cc71b9b919afc729bb6",
+      "integrity_successor_tree": "5834337bec3a497573dea2b7c6874b495d324ecb",
+      "integrity_run": 43395019306,
+      "integrity_job": 131783735940,
+      "integrity_generation_verification_and_branch_readback": "VERIFIED",
+      "ci_run": 43395019025,
+      "ci_job": 131783735402,
+      "complete_test_outcome": "FAILURE_MANIFEST_DRIFT_NOT_PASS",
+      "misleading_step_conclusion": "success due to continue-on-error; actual FULL_TEST_OUTCOME=failure",
+      "same_writer_reentry": "FAIL_CLOSED_REMOTE_HEAD_CHANGED",
+      "source_diagnosis": "Dedicated integrity workflow independently pushed the same branch before existing CI could re-enter its exact subject. Both per-writer fences were preserved; duplicate writers caused loss of continuity.",
+      "causal_repair": "Existing integrity candidate is read-only and artifact-only; unchanged existing CI owns canonical integrity repair and complete successor retests. No new trigger, proxy commit, approval bypass or executor.",
+      "negative_regression": "Real local bare Git: predecessor candidate push changes the remote CI subject; corrected candidate leaves remote subject unchanged.",
+      "targeted_tests": {
+        "watchdog": 61,
+        "ring_wakeup_writer": 17,
+        "full_make_test": "NOT_PASSED_NATIVE_LOG_VERIFIED"
+      },
+      "successor_initial_ci_admission": {
+        "runs": 13,
+        "conclusion": "action_required",
+        "head": "2e5fd77ee8d5b90c06940cc71b9b919afc729bb6"
+      },
+      "native_observation": {
+        "snapshot_id": "9b26ee89-2c7c-44ad-b540-fccb63020b18",
+        "snapshot_sha256": "98610b45c143330c0947cbafbf69fb71b84850581a075d0390002d7ffbe0a41d",
+        "byte_verified": true,
+        "domain_status": 525,
+        "main_head": "014bbb095a20680c4851e62575ee932d7a45b206",
+        "main_tree": "d867b5b5df4f76be4daa0c575e0d5bde9e03aeaf"
+      },
+      "remaining_duties": [
+        "Full exact-successor CI and canonical integrity verification",
+        "All required CI/review/governance dispositions bound to actual successor",
+        "Original host protected binding, mTLS, native runtime and independent EAP acceptance"
+      ],
+      "effect_ack_done": false
+    },
+    {
+      "observed_at": "2026-11-13T08:55:38.358413+00:00",
+      "predecessor_commit": "b4df3c81f005b88f17ac79fe3ad1a4dcdb4819da",
+      "predecessor_tree": "3070e52c5da496946dd3f0eff31fb0b3139f9b4b",
+      "native_ci_run": 43395919888,
+      "native_ci_job": 131786661238,
+      "native_ci_outcome": "FAILURE",
+      "original_failure": "tests.test_reciprocal_closure_step.NativeClosureContinuationTests.test_periodic_wakeup_dispatch_contract_with_mock_gh: AssertionError 1 != 0",
+      "suite_result": "259 cases, one failed; full suite did not pass",
+      "diagnosis": "Original gh fixture returns branch name for newly required Main ref GET and scalar counts for raw run-inventory GET. New live contract requires exact head and structured activity.",
+      "repair": "Adapt existing fixture to the exact REST payload and original queue/progress leases, preserving all four original assertions; malformed count returns explicit failure. No admission or fence relaxed.",
+      "isolated_regression": "Exact existing test method extracted with AST without replacement imports; RED before repair, GREEN for all four original cases after repair.",
+      "targeted_result": "61 watchdog + 17 ring/wakeup/writer + 1 original integration method = 79 methods; not a full native successor CI PASS",
+      "original_native_log": {
+        "path": "evidence/receipts/20261113-devops-stall-repair/native-ci-43395919888.log.gz",
+        "encoding": "gzip(original UTF-8 log bytes)",
+        "bytes": 750684,
+        "sha256": "0d99e3d5c87e2d8604f2e5c30f0e5346c0a2e38888c7a356be08622f6206a9da",
+        "compressed_bytes": 122233,
+        "restore": "gzip decompress; verify original SHA-256 before use"
+      },
+      "original_ci_workflow": "UNCHANGED",
+      "same_writer_original_ci": "Must re-run exact corrected subject under existing native admission and gates",
+      "effect_ack_done": false
+    }
+  ]
+}

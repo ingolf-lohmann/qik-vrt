@@ -18,9 +18,10 @@ import json
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
+from urllib.parse import urlencode
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +33,7 @@ EXECUTED_FAILURE_CONCLUSIONS = frozenset({"failure", "timed_out"})
 GATEWATCH_SCOPES = frozenset({"MAIN", "PULL_REQUEST_MAIN", "PULL_REQUEST_STACKED"})
 MAX_JOB_READBACK_REQUESTS = 20
 MAX_RUN_READBACK_PAGES = 10
+MAX_RUN_READBACK_REQUESTS = 64
 MAX_WORK_READBACK_PAGES = 10
 READBACK_PAGE_SIZE = 100
 GATEWATCH_STATES = frozenset(
@@ -274,9 +276,104 @@ def _repository(value: str) -> str:
 def collect_runs(*, repository: str, expected_head: str, directory: Path) -> dict[str, Any]:
     endpoint = (f"repos/{_repository(repository)}/actions/runs?head_sha="
                 + _head_sha(expected_head, "expected head"))
-    value, _ = _collect_pages(endpoint, "workflow_runs", directory,
-                              max_requests=MAX_RUN_READBACK_PAGES, expected_head=expected_head)
-    return value
+    # GitHub caps each filtered search at 1,000 results, even when total_count
+    # is larger. More page numbers cannot recover that missing history. Split
+    # the original exact-head search into disjoint, inclusive UTC intervals.
+    requests = 0
+    reported = None
+    first = None
+    collected: list[Mapping[str, Any]] = []
+    seen: set[int] = set()
+
+    def read(query: str, page: int) -> Mapping[str, Any]:
+        nonlocal requests
+        if requests >= MAX_RUN_READBACK_REQUESTS:
+            raise ValueError("READBACK_REQUEST_BUDGET_EXCEEDED")
+        requests += 1
+        value = _readback_page(f"{query}&per_page={READBACK_PAGE_SIZE}&page={page}",
+                               directory / f"{requests}.json")
+        count, runs = value.get("total_count"), value.get("workflow_runs")
+        if type(count) is not int or count < 0 or not isinstance(runs, list):
+            raise ValueError("READBACK_PAGE_INVALID")
+        if value.get("truncated", False) is not False:
+            raise ValueError("READBACK_INVENTORY_CHANGED_OR_TRUNCATED")
+        if len(runs) != min(READBACK_PAGE_SIZE, max(0, count - (page - 1) * READBACK_PAGE_SIZE)):
+            raise ValueError("READBACK_INVENTORY_INCOMPLETE")
+        ids = set()
+        for run in runs:
+            if (not isinstance(run, Mapping) or type(run.get("id")) is not int
+                    or run["id"] <= 0 or run["id"] in ids
+                    or run.get("head_sha") != expected_head):
+                raise ValueError("READBACK_ENTRY_INVALID_OR_DUPLICATED")
+            ids.add(run["id"])
+        return value
+
+    def created(run: Mapping[str, Any]) -> datetime:
+        try:
+            stamp = _timestamp(run.get("created_at"), "run creation")
+        except ReflexiveWatchdogBlock as exc:
+            raise ValueError("READBACK_ENTRY_INVALID_OR_DUPLICATED") from exc
+        if stamp.microsecond:
+            raise ValueError("RUN_TIME_PARTITION_PRECISION_UNSUPPORTED")
+        return stamp
+
+    def visit(lower: datetime | None, upper: datetime | None,
+              seed: Mapping[str, Any] | None = None) -> int:
+        query = endpoint
+        if lower is not None or upper is not None:
+            interval = (f"{_iso(lower)}..{_iso(upper)}" if lower is not None and upper is not None
+                        else f">={_iso(lower)}" if lower is not None else f"<={_iso(upper)}")
+            query += "&" + urlencode({"created": interval})
+        page = seed if seed is not None else read(query, 1)
+        count = page["total_count"]
+        if count > MAX_RUN_READBACK_PAGES * READBACK_PAGE_SIZE:
+            sample = read(query, MAX_RUN_READBACK_PAGES)
+            if sample["total_count"] != count:
+                raise ValueError("READBACK_INVENTORY_CHANGED_OR_TRUNCATED")
+            pivot = min(created(run) for run in sample["workflow_runs"]) + timedelta(seconds=1)
+            newest = max(created(run) for run in page["workflow_runs"])
+            if pivot > newest:
+                pivot = newest
+            if ((lower is not None and pivot <= lower)
+                    or (upper is not None and pivot > upper)
+                    or pivot < datetime(1970, 1, 1, tzinfo=timezone.utc)):
+                raise ValueError("RUN_TIME_PARTITION_UNSPLITTABLE")
+            left = visit(lower, pivot - timedelta(seconds=1))
+            right = visit(pivot, upper)
+            if left + right != count:
+                raise ValueError("READBACK_INVENTORY_CHANGED_OR_TRUNCATED")
+            return count
+        for number in range(1, max(1, (count + READBACK_PAGE_SIZE - 1) // READBACK_PAGE_SIZE) + 1):
+            value = page if number == 1 else read(query, number)
+            if value["total_count"] != count:
+                raise ValueError("READBACK_INVENTORY_CHANGED_OR_TRUNCATED")
+            for run in value["workflow_runs"]:
+                if lower is not None or upper is not None:
+                    stamp = created(run)
+                    if ((lower is not None and stamp < lower)
+                            or (upper is not None and stamp > upper)):
+                        raise ValueError("READBACK_ENTRY_OUTSIDE_TIME_PARTITION")
+                if run["id"] in seen:
+                    raise ValueError("READBACK_ENTRY_INVALID_OR_DUPLICATED")
+                seen.add(run["id"])
+                collected.append(run)
+        return count
+
+    blocker = None
+    try:
+        first = read(endpoint, 1)
+        reported = first["total_count"]
+        visit(None, None, first)
+        if (reported > MAX_RUN_READBACK_PAGES * READBACK_PAGE_SIZE
+                and read(endpoint, 1) != first):
+            raise ValueError("READBACK_INVENTORY_CHANGED_OR_TRUNCATED")
+        if len(collected) != reported:
+            raise ValueError("READBACK_INVENTORY_INCOMPLETE")
+    except ValueError as exc:
+        blocker = str(exc)
+    return {"total_count": reported, "workflow_runs": collected,
+            "truncated": blocker is not None, "first_blocker": blocker,
+            "page_requests": requests}
 
 
 def collect_work(*, repository: str, expected_head: str, directory: Path,
@@ -1730,3 +1827,4 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

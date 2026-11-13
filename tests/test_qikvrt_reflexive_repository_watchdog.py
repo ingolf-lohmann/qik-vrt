@@ -1063,7 +1063,7 @@ class JobReadbackBudgetTests(unittest.TestCase):
     def test_run_pagination_budget_and_numeric_latest_tie_break(self):
         result, requests, _ = self.collect(self.page(1001))
         self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(len(requests), 10)
+        self.assertLessEqual(len(requests), MODULE.MAX_RUN_READBACK_REQUESTS)
         self.assertTrue(all(r['kind'] == 'runs' for r in requests))
         page = self.page(10)
         for entry in page['workflow_runs']:
@@ -1085,6 +1085,104 @@ class JobReadbackBudgetTests(unittest.TestCase):
         for key, bad in [('head_sha', TREE), ('run_id', 2), ('run_attempt', 2)]:
             with self.assertRaises(MODULE.ReflexiveWatchdogBlock):
                 MODULE.validate_job_plan(page, {'1': [{**valid, key: bad}]}, plan, expected_head=HEAD)
+
+
+class LargeRunInventoryTests(unittest.TestCase):
+    def inventory(self, count=2500, *, same_second=False):
+        start = datetime(2026, 11, 12, tzinfo=timezone.utc)
+        return [run(i, f"workflow-{i % 10}", "completed",
+                    (start + timedelta(seconds=0 if same_second else i // 3)).isoformat(),
+                    (start + timedelta(seconds=900)).isoformat(), "success")
+                for i in range(count, 0, -1)]
+
+    def collect(self, runs, *, corrupt=None, budget=None):
+        from urllib.parse import parse_qs, urlsplit
+        requests = []
+        def read(endpoint, destination):
+            requests.append(endpoint)
+            query = parse_qs(urlsplit(endpoint).query)
+            self.assertEqual(query['head_sha'], [HEAD])
+            page = int(query['page'][0])
+            self.assertLessEqual(page, 10, 'GitHub filtered searches cap at 1,000 results')
+            selected = runs
+            interval = query.get('created', [None])[0]
+            if interval:
+                stamp = lambda text: datetime.fromisoformat(text.replace('Z', '+00:00'))
+                if '..' in interval:
+                    lo, hi = map(stamp, interval.split('..'))
+                    selected = [r for r in runs if lo <= stamp(r['created_at']) <= hi]
+                elif interval.startswith('>='):
+                    selected = [r for r in runs if stamp(r['created_at']) >= stamp(interval[2:])]
+                else:
+                    selected = [r for r in runs if stamp(r['created_at']) <= stamp(interval[2:])]
+            result = {'total_count': len(selected),
+                      'workflow_runs': selected[(page - 1) * 100:page * 100]}
+            return corrupt(result, endpoint, len(requests)) if corrupt else result
+        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(MODULE, '_readback_page', side_effect=read):
+            if budget is None:
+                value = MODULE.collect_runs(repository='example/qik-vrt', expected_head=HEAD,
+                                            directory=pathlib.Path(temporary))
+            else:
+                with mock.patch.object(MODULE, 'MAX_RUN_READBACK_REQUESTS', budget):
+                    value = MODULE.collect_runs(repository='example/qik-vrt', expected_head=HEAD,
+                                                directory=pathlib.Path(temporary))
+        return value, requests
+
+    def test_2500_runs_are_complete_across_disjoint_time_queries(self):
+        runs = self.inventory()
+        result, requests = self.collect(runs)
+        self.assertFalse(result['truncated'], result)
+        self.assertEqual(result['total_count'], 2500)
+        self.assertEqual({r['id'] for r in result['workflow_runs']}, set(range(1, 2501)))
+        self.assertEqual(len(result['workflow_runs']), 2500)
+        self.assertTrue(any('created=' in query for query in requests))
+        self.assertLessEqual(len(requests), 64)
+        plan = MODULE.job_readback_budget(result, expected_head=HEAD, required_jobs_only=True)
+        self.assertEqual(plan['state'], 'READY')
+        self.assertFalse(plan['effect_ack_done'])
+
+    def test_single_second_overflow_holds_without_retry_or_missing_success(self):
+        result, requests = self.collect(self.inventory(1001, same_second=True))
+        self.assertTrue(result['truncated'])
+        self.assertEqual(result['first_blocker'], 'RUN_TIME_PARTITION_UNSPLITTABLE')
+        self.assertLessEqual(len(requests), 5)
+
+    def test_total_request_budget_remains_bounded(self):
+        result, requests = self.collect(self.inventory(), budget=3)
+        self.assertTrue(result['truncated'])
+        self.assertEqual(result['first_blocker'], 'READBACK_REQUEST_BUDGET_EXCEEDED')
+        self.assertEqual(len(requests), 3)
+
+    def test_exactly_1000_runs_in_one_second_keep_the_older_run(self):
+        runs = self.inventory(1001, same_second=True)
+        runs[-1]['created_at'] = '2026-11-11T23:59:59Z'
+        result, _ = self.collect(runs)
+        self.assertFalse(result['truncated'], result)
+        self.assertEqual(len(result['workflow_runs']), 1001)
+
+    def test_partition_count_drift_and_wrong_head_remain_unverified(self):
+        def drift(value, endpoint, count):
+            if 'created=' in endpoint:
+                value['total_count'] += 1
+            return value
+        def foreign(value, endpoint, count):
+            if 'created=' in endpoint and value['workflow_runs']:
+                value['workflow_runs'][0] = {**value['workflow_runs'][0], 'head_sha': TREE}
+            return value
+        for corrupt in (drift, foreign):
+            result, _ = self.collect(self.inventory(), corrupt=corrupt)
+            self.assertTrue(result['truncated'])
+            self.assertNotEqual(MODULE.job_readback_budget(result, expected_head=HEAD,
+                             required_jobs_only=True)['state'], 'READY')
+
+    def test_changed_root_readback_rejects_snapshot(self):
+        def mutate(value, endpoint, count):
+            if count > 1 and 'created=' not in endpoint and 'page=1&' in endpoint + '&':
+                value['workflow_runs'][0] = {**value['workflow_runs'][0], 'run_attempt': 2}
+            return value
+        result, _ = self.collect(self.inventory(), corrupt=mutate)
+        self.assertTrue(result['truncated'])
+        self.assertEqual(result['first_blocker'], 'READBACK_INVENTORY_CHANGED_OR_TRUNCATED')
 
 
 class OpenWorkCollectionTests(unittest.TestCase):
@@ -1212,3 +1310,4 @@ class OpenWorkCollectionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
