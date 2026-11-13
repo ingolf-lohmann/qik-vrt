@@ -105,6 +105,37 @@ class EffectAckHttpTerminalContractTests(unittest.TestCase):
             terminal.parse_effect_ack_request("v=2, mode=prepare")
 
 
+class OriginalCarrierRecoveryConsumerTests(unittest.TestCase):
+    """Firefox EAP consumer must never substitute an unverified Actions artifact."""
+
+    def test_firefox_workflow_reuses_exact_original_oci_recovery(self) -> None:
+        source = (ROOT / '.github/workflows/qikvrt_effect_ack_http_terminal.yml').read_text()
+        block = source.split(
+            '      - name: Retrieve and verify existing sealed dependency delivery', 1)[1]
+        block = block.split('      - name: Build isolated Firefox and noVNC dependency carrier', 1)[0]
+        self.assertIn('carrier.carrier_download(frozen,target)', block)
+        self.assertIn('baseline.get(field)!=frozen.get(field)', block)
+        self.assertIn('BASELINE_CARRIER_CONTRACT_DRIFT', block)
+        self.assertIn('BASELINE_ARTIFACT_DIGEST_MISMATCH', block)
+        self.assertIn('REVIEWED_ORIGINAL_BYTE_RECOVERY_REQUIRED', block)
+        self.assertNotIn("baseline['artifact_id']+'/zip'", block)
+        self.assertNotIn('urllib.request.Request(url', block)
+
+    def test_original_runtime_pin_is_not_replaced_by_new_artifact(self) -> None:
+        baseline = json.loads((ROOT / 'runtime/self-host/PACKAGE.json').read_bytes())['runtime_delivery_baseline']
+        carrier = json.loads((ROOT / 'runtime/self-host/CONTAINER_CARRIER.json').read_bytes())
+        fields = ('repository', 'source_head', 'source_tree', 'run_id', 'artifact_id',
+                  'archive_bytes', 'archive_sha256', 'delivery_sha256')
+        for field in fields:
+            with self.subTest(field=field):
+                self.assertEqual(baseline[field], carrier[field])
+        backup = carrier['reviewed_recovery_artifact']
+        self.assertNotEqual(backup['artifact_id'], baseline['artifact_id'])
+        self.assertEqual(backup['durability'], 'TEMPORARY_ACTIONS_BACKUP_ONLY_NO_PRODUCTION_ADMISSION')
+        self.assertEqual(baseline['archive_sha256'],
+                         '5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695')
+
+
 class FirefoxAuthorityRegressionTests(unittest.TestCase):
     """Run the real adapter with bounded browser/HTTP fixtures, without effects."""
 

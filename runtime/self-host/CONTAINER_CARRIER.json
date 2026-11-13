@@ -13,6 +13,19 @@
   "oci_manifest_digest": "sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9",
   "package_manifest_sha256": "6160a6fec7ec9a5f002bdc537fb8693f6c766a6891989d05af8e239b79cf7f4e",
   "artifact_expires_at": "2026-11-07T01:08:00Z",
+  "reviewed_recovery_artifact": {
+    "schema": "qikvrt-s1-original-oci-recovery-v1",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "run_id": 41944160618,
+    "head_sha": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+    "artifact_id": 13378557846,
+    "artifact_name": "qikvrt-s1-original-carrier-49a2e37707a676040746cec468886e2a9c9e9dcc",
+    "transport_bytes": 377733146,
+    "transport_sha256": "6898cb71fc343bb5b1a9f9b1c9f922f8bb06c82428bbbfbf5eb9024a0c630138",
+    "expires_at": "2026-12-05T01:04:44Z",
+    "member": "carrier-original.oci.tar",
+    "durability": "TEMPORARY_ACTIONS_BACKUP_ONLY_NO_PRODUCTION_ADMISSION"
+  },
   "scope": "Reuse original dependency image bytes, not predecessor application acceptance. After expiry an admitted durable exact-byte source is required; never silently rebuild or select a different artifact.",
   "attribution": "Ingolf Lohmann: existing implementation and authorized product requirement; OpenAI Codex: original-byte verification and CI connection"
 }

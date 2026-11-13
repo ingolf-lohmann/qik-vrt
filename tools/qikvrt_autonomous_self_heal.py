@@ -609,6 +609,29 @@ ATTEMPT_PATTERN = re.compile(
 )
 
 
+def _safe_rest_failure_category(code: str, stderr: str) -> str:
+    """Finite diagnostics only: never emit raw provider bytes or credentials.
+
+    A category never conveys permission to retry or grants a writer lease.
+    """
+    message = stderr[:8192].casefold()
+    if code == "422":
+        if any(term in message for term in (
+                "secondary rate limit", "abuse detection", "abuse rate limit",
+                "spammed", "spam detected")):
+            return "ABUSE_OR_SECONDARY_RATE_LIMIT"
+        if any(term in message for term in (
+                "reference has been taken", "ref has been taken",
+                "already exists", "reference already exists")):
+            return "REFERENCE_ALREADY_EXISTS"
+        if "validation failed" in message or "unprocessable entity" in message:
+            return "VALIDATION_REJECTED"
+        return "UNCLASSIFIED_422"
+    if code in {"403", "429"} and ("rate limit" in message or "abuse" in message):
+        return "RATE_LIMIT_HOLD"
+    return "UNCLASSIFIED_GITHUB_ERROR"
+
+
 class GitHubREST:
     """Use only gh api; never gh pr, Git network transport or GraphQL."""
 
@@ -627,7 +650,10 @@ class GitHubREST:
         if result.returncode:
             match = re.search(r"HTTP ([0-9]{3})", result.stderr)
             code = match.group(1) if match else "AMBIGUOUS_TRANSPORT"
-            raise SelfHealBlock(f"REST {method} {path}: {code}; no automatic retry")
+            category = _safe_rest_failure_category(code, result.stderr)
+            raise SelfHealBlock(
+                f"REST {method} {path}: {code}; category={category}; no automatic retry"
+            )
         return json.loads(result.stdout) if result.stdout.strip() else None
 
     def pages(self, path: str) -> list[Any]:

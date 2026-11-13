@@ -130,11 +130,32 @@ class SpecificationReview(unittest.TestCase):
                 p = self.root / x['verification_retry']['run']['path']; p.write_bytes(p.read_bytes() + b'\n# changed\n')
             with self.subTest(change=change), self.assertRaises(SystemExit): self.check(x)
 
+    def historical_carrier_source(self, current):
+        """Reconstruct only the recorded historical source used by this fixture.
+
+        Never change the production SHA-256 pin. This test validates a historical
+        native REST witness, not admission of the current S1 recovery source.
+        """
+        start, end = b"def carrier_download(expected, path):", b"def actions_archive_download("
+        assert current.count(start) == current.count(end) == 1
+        before, following = current.split(start, 1)
+        assert following.count(end) == 1
+        _, after = following.split(end, 1)
+        original = "def carrier_download(expected, path):\n    \"\"\"Read original Actions artifact; never forward API auth to blob storage.\"\"\"\n    require(expected[\"repository\"] == REPOSITORY and\n            os.environ.get(\"GITHUB_REPOSITORY\") == REPOSITORY, \"CARRIER_AUTHORITY_REQUIRED\")\n    token = os.environ.get(\"GITHUB_TOKEN\")\n    require(bool(token), \"ACTIONS_READ_BINDING_REQUIRED\")\n    base = \"https://api.github.com/repos/\" + REPOSITORY + \"/actions/artifacts/\" + str(expected[\"artifact_id\"])\n    metadata = json.loads(get(base, token))\n    require(metadata.get(\"expired\") is False and\n            metadata.get(\"size_in_bytes\") == expected[\"archive_bytes\"] and\n            metadata.get(\"digest\") == \"sha256:\" + expected[\"archive_sha256\"] and\n            metadata.get(\"workflow_run\", {}).get(\"id\") == expected[\"run_id\"] and\n            metadata.get(\"workflow_run\", {}).get(\"head_sha\") == expected[\"source_head\"],\n            \"ORIGINAL_CARRIER_ARTIFACT_BINDING_MISMATCH_OR_EXPIRED\")\n    actions_archive_download(expected[\"artifact_id\"], expected[\"archive_bytes\"], path, token)\n\n\n".encode("utf-8")
+        recovered = before + original + end + after
+        assert hashlib.sha256(recovered).hexdigest() == (
+            "174e1858cd5ff35f0b01f5d6487e2f78d8054d33ea0f8b6bc50b6b714784d613"
+        ), "HISTORICAL_NATIVE_REST_FIXTURE_DRIFT"
+        return recovered
+
     def native_api_retry(self):
         action = self.readonly_retry()
         for path in ('.github/workflows/qikvrt_ci.yml', 'tools/qikvrt_self_host_container.py', 'tools/qikvrt_self_host.py'):
             target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes((Path(__file__).resolve().parents[1] / path).read_bytes())
+            content = (Path(__file__).resolve().parents[1] / path).read_bytes()
+            if path == 'tools/qikvrt_self_host_container.py':
+                content = self.historical_carrier_source(content)
+            target.write_bytes(content)
         proof = action['verification_retry']; proof.pop('previous_budget')
         proof['schema'] = 'qikvrt-readonly-watchdog-native-api-recovery/v1'
         proof['failure_receipt'].update(failure=dict(stage='BASELINE_READBACK', exit_code=5),
@@ -152,6 +173,14 @@ class SpecificationReview(unittest.TestCase):
                     name='Verify and reuse original PR494 Docker carrier', status='completed', conclusion='success',
                     started_at='1970-01-01T00:16:30Z', completed_at='1970-01-01T00:16:35Z')]))
         return action
+
+    def test_updated_s1_source_cannot_impersonate_historical_api_witness(self):
+        action = self.native_api_retry()
+        target = self.root / 'tools/qikvrt_self_host_container.py'
+        target.write_bytes((Path(__file__).resolve().parents[1] /
+                            'tools/qikvrt_self_host_container.py').read_bytes())
+        with self.assertRaises(SystemExit):
+            self.check(action)
 
     def test_native_api_retry_requires_later_exact_native_rest_success(self):
         self.check(self.native_api_retry())

@@ -610,6 +610,8 @@ def carrier_download(expected, path):
             os.environ.get("GITHUB_REPOSITORY") == REPOSITORY, "CARRIER_AUTHORITY_REQUIRED")
     token = os.environ.get("GITHUB_TOKEN")
     require(bool(token), "ACTIONS_READ_BINDING_REQUIRED")
+    if "reviewed_recovery_artifact" in expected:
+        return carrier_download_reviewed_recovery(expected, path, token)
     base = "https://api.github.com/repos/" + REPOSITORY + "/actions/artifacts/" + str(expected["artifact_id"])
     metadata = json.loads(get(base, token))
     require(metadata.get("expired") is False and
@@ -619,6 +621,109 @@ def carrier_download(expected, path):
             metadata.get("workflow_run", {}).get("head_sha") == expected["source_head"],
             "ORIGINAL_CARRIER_ARTIFACT_BINDING_MISMATCH_OR_EXPIRED")
     actions_archive_download(expected["artifact_id"], expected["archive_bytes"], path, token)
+
+
+def carrier_download_reviewed_recovery(expected, path, token):
+    """Use only a reviewed, expiring exact-byte OCI backup; no silent rebuild.
+
+    A GitHub Actions ZIP is transport, not a durable admitted registry source.
+    The original artifact/OCI digests and source identity remain authoritative.
+    """
+    backup = expected["reviewed_recovery_artifact"]
+    fields = {"schema", "repository", "run_id", "head_sha", "artifact_id",
+              "artifact_name", "transport_bytes", "transport_sha256",
+              "expires_at", "member", "durability"}
+    require(isinstance(backup, dict) and set(backup) == fields and
+            backup["schema"] == "qikvrt-s1-original-oci-recovery-v1" and
+            backup["repository"] == expected["repository"] == REPOSITORY and
+            backup["durability"] == "TEMPORARY_ACTIONS_BACKUP_ONLY_NO_PRODUCTION_ADMISSION" and
+            type(backup["run_id"]) is int and backup["run_id"] > 0 and
+            type(backup["artifact_id"]) is int and backup["artifact_id"] > 0 and
+            isinstance(backup["head_sha"], str) and
+            re.fullmatch(r"[a-f0-9]{40}", backup["head_sha"]) and
+            backup["artifact_name"] == "qikvrt-s1-original-carrier-" + backup["head_sha"] and
+            type(backup["transport_bytes"]) is int and
+            0 < backup["transport_bytes"] <= ARTIFACT_MAX_BYTES and
+            isinstance(backup["transport_sha256"], str) and
+            re.fullmatch(r"[a-f0-9]{64}", backup["transport_sha256"]) and
+            backup["member"] == "carrier-original.oci.tar" and
+            isinstance(backup["expires_at"], str) and
+            re.fullmatch(r"20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",
+                         backup["expires_at"]), "REVIEWED_ORIGINAL_OCI_BACKUP_PIN_REQUIRED")
+    require(not Path(path).exists() and not Path(path).is_symlink(),
+            "CREATE_ONLY_ORIGINAL_CARRIER_RECOVERY_REQUIRED")
+    metadata = json.loads(get("https://api.github.com/repos/" + REPOSITORY +
+                              "/actions/artifacts/" + str(backup["artifact_id"]), token))
+    require(metadata.get("id") == backup["artifact_id"] and
+            metadata.get("expired") is False and
+            metadata.get("name") == backup["artifact_name"] and
+            metadata.get("expires_at") == backup["expires_at"] and
+            metadata.get("size_in_bytes") == backup["transport_bytes"] and
+            metadata.get("digest") == "sha256:" + backup["transport_sha256"] and
+            isinstance(metadata.get("workflow_run"), dict) and
+            metadata["workflow_run"].get("id") == backup["run_id"] and
+            metadata["workflow_run"].get("head_sha") == backup["head_sha"],
+            "REVIEWED_ORIGINAL_OCI_BACKUP_EXPIRED_OR_DRIFTED")
+    # No primary 404 retry and no fallback to an unreviewed producer.
+    with tempfile.TemporaryDirectory() as temporary:
+        transport = Path(temporary) / "recovery-transport.zip"
+        oci = Path(temporary) / backup["member"]
+        actions_archive_download(backup["artifact_id"], backup["transport_bytes"],
+                                 transport, token)
+        with transport.open("rb") as original:
+            require(transport.stat().st_size == backup["transport_bytes"] and
+                    hashlib.file_digest(original, "sha256").hexdigest() ==
+                    backup["transport_sha256"], "REVIEWED_BACKUP_TRANSPORT_DIGEST_MISMATCH")
+        with zipfile.ZipFile(transport) as zipped:
+            members = zipped.infolist()
+            require(len(members) == 1 and members[0].filename == backup["member"] and
+                    members[0].is_dir() is False and
+                    ((members[0].external_attr >> 16) & 0o170000) != 0o120000 and
+                    0 < members[0].file_size <= expected["archive_bytes"] + 8 * 1024**2,
+                    "SINGLE_BOUNDED_ORIGINAL_OCI_BACKUP_MEMBER_REQUIRED")
+            with zipped.open(members[0]) as reader, oci.open("xb") as writer:
+                remaining = members[0].file_size
+                while remaining:
+                    chunk = reader.read(min(1024**2, remaining))
+                    require(bool(chunk), "ORIGINAL_OCI_BACKUP_TRUNCATED")
+                    writer.write(chunk)
+                    remaining -= len(chunk)
+                require(not reader.read(1), "ORIGINAL_OCI_BACKUP_EXTRA_BYTES")
+        # Existing native verifier authenticates OCI descriptors, original
+        # producer identity, one layer, and the exact original delivery SHA.
+        carrier_archive_check(expected, oci)
+        with tarfile.open(oci, "r:*") as archive:
+            descriptor = json.loads(archive.extractfile("index.json").read())["manifests"][0]
+            manifest = json.loads(archive.extractfile(
+                "blobs/sha256/" + descriptor["digest"][7:]).read())
+            layer = "blobs/sha256/" + manifest["layers"][0]["digest"][7:]
+            with archive.extractfile(layer) as layer_stream, tarfile.open(
+                    fileobj=layer_stream, mode="r|") as payload:
+                member = payload.next()
+                require(member is not None and member.isfile() and
+                        member.name == "original-delivery.zip" and
+                        member.size == expected["archive_bytes"] and
+                        member.mode == 0o444 and member.uid == member.gid == member.mtime == 0,
+                        "EXACT_ORIGINAL_DELIVERY_BACKUP_MEMBER_REQUIRED")
+                target = Path(path)
+                try:
+                    with payload.extractfile(member) as source, target.open("xb") as writer:
+                        current = hashlib.sha256()
+                        remaining = expected["archive_bytes"]
+                        while remaining:
+                            chunk = source.read(min(1024**2, remaining))
+                            require(bool(chunk), "ORIGINAL_DELIVERY_BACKUP_TRUNCATED")
+                            writer.write(chunk)
+                            current.update(chunk)
+                            remaining -= len(chunk)
+                        require(not source.read(1) and
+                                current.hexdigest() == expected["archive_sha256"],
+                                "ORIGINAL_DELIVERY_BACKUP_SHA256_MISMATCH")
+                    require(payload.next() is None, "SINGLE_ORIGINAL_DELIVERY_BACKUP_REQUIRED")
+                except BaseException:
+                    if target.is_file() and not target.is_symlink():
+                        target.unlink()
+                    raise
 
 
 def actions_archive_download(artifact_id, archive_bytes, path, token):

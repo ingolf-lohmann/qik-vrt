@@ -100,6 +100,41 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         self.assertNotIn("git checkout --theirs", source)
         self.assertNotIn("git merge --abort || true", source)
 
+    def test_watchdog_consumer_only_admits_successful_exact_main_producer(self) -> None:
+        from types import SimpleNamespace
+        source = CONTINUATION.read_text(encoding="utf-8")
+        guard = source.split("  continue-one-opted-in-draft:\n    # Reject", 1)[1]
+        guard = guard.split("\n    if: ", 1)[1].split("\n", 1)[0]
+        self.assertIn("github.event.workflow_run.head_sha == github.sha", guard)
+        self.assertIn("github.event.workflow_run.repository.full_name == github.repository", guard)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", guard)
+        self.assertIn("github.event.workflow_run.event != 'pull_request'", guard)
+        expression = guard.replace(" || ", " or ").replace(" && ", " and ")
+
+        def admitted(*, event_name="workflow_run", name="QIKVRT reflexive repository watchdog",
+                     conclusion="success", head_branch="main", head_sha=MAIN, main_sha=MAIN,
+                     source_repo=REPOSITORY, repository=REPOSITORY, producer_event="workflow_run"):
+            producer = SimpleNamespace(name=name, conclusion=conclusion, head_branch=head_branch,
+                                       head_sha=head_sha, event=producer_event,
+                                       repository=SimpleNamespace(full_name=source_repo))
+            github = SimpleNamespace(event_name=event_name, event=SimpleNamespace(workflow_run=producer),
+                                     sha=main_sha, repository=repository)
+            return bool(eval(expression, {"__builtins__": {}}, {"github": github}))
+
+        self.assertTrue(admitted())
+        self.assertTrue(admitted(producer_event="schedule"))
+        self.assertTrue(admitted(event_name="workflow_dispatch", conclusion="cancelled"))
+        self.assertTrue(admitted(name="QIKVRT CI", conclusion="failure"))
+        for invalid in (
+            {"conclusion": "cancelled"}, {"conclusion": "failure"}, {"conclusion": None},
+            {"producer_event": "pull_request"}, {"head_branch": "feature"},
+            {"head_sha": "b" * 40}, {"source_repo": "foreign/qik-vrt"},
+            {"repository": "foreign/qik-vrt"},
+        ):
+            with self.subTest(invalid=invalid):
+                self.assertFalse(admitted(**invalid))
+
+
     def test_continuation_shell_block_is_syntax_valid(self) -> None:
         source = CONTINUATION.read_text(encoding="utf-8")
         blocks = source.split("        run: |\n")[1:]
@@ -381,6 +416,48 @@ class FairSelfHealHandoffIntegrationTests(unittest.TestCase):
         self.assertFalse(result["main_activation_verified"])
         self.assertFalse(result["EFFECT_ACK_DONE"])
         self.assertFalse(result["PREDECESSOR_EVIDENCE_TRANSFER"])
+
+
+class RESTFailureDiagnosticsTests(unittest.TestCase):
+    """Provider failures never leak stderr and never authorize a second write."""
+
+    def failure(self, stderr, code="422"):
+        credential = "sensitive-example-token-should-not-escape"
+        response = subprocess.CompletedProcess(
+            ["gh"], 1, stdout="", stderr=stderr + "\nBearer " + credential)
+        with mock.patch.object(controller.subprocess, "run", return_value=response) as runner:
+            with self.assertRaises(controller.SelfHealBlock) as caught:
+                controller.GitHubREST(REPOSITORY).call(
+                    "POST", "git/refs",
+                    {"ref": controller.CONTINUATION_REFS + "turns/250", "sha": MAIN})
+            self.assertEqual(runner.call_count, 1)
+        message = str(caught.exception)
+        self.assertIn("REST POST git/refs: " + code, message)
+        self.assertIn("no automatic retry", message)
+        self.assertNotIn(credential, message)
+        self.assertNotIn("Bearer", message)
+        return message
+
+    def test_existing_reference_422_stays_diagnostic(self):
+        self.assertIn("category=REFERENCE_ALREADY_EXISTS",
+                      self.failure("gh: Reference has been taken (HTTP 422)"))
+
+    def test_secondary_rate_limit_422_stays_hold(self):
+        self.assertIn("category=ABUSE_OR_SECONDARY_RATE_LIMIT",
+                      self.failure("gh: endpoint has been spammed (HTTP 422)"))
+
+    def test_validation_422_is_not_an_existing_reference(self):
+        self.assertIn("category=VALIDATION_REJECTED",
+                      self.failure("gh: Validation Failed (HTTP 422)"))
+
+    def test_unclassified_422_does_not_echo_provider_text(self):
+        result = self.failure("gh: private invalid response (HTTP 422)")
+        self.assertIn("category=UNCLASSIFIED_422", result)
+        self.assertNotIn("private invalid response", result)
+
+    def test_403_rate_limit_does_not_become_approval(self):
+        self.assertIn("category=RATE_LIMIT_HOLD",
+                      self.failure("gh: API rate limit exceeded (HTTP 403)", "403"))
 
 
 class FairContinuationRegressionTests(unittest.TestCase):
