@@ -1,0 +1,17 @@
+test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture (red_integrity_writer.RoundtripTests.test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture) ... FAIL
+
+======================================================================
+FAIL: test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture (red_integrity_writer.RoundtripTests.test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/95d3d2838279/qik-vrt/tests/test_qikvrt_devops_ring.py", line 165, in test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture
+    self.assertEqual(observed, expected, 'Candidate writer invalidates existing CI same-writer fence')
+AssertionError: '5e91d39b18609b97809ecd072d8e54f8f2be5ef7' != 'f3d619abe3ff29132927febcadcaf7c754fbacb4'
+- 5e91d39b18609b97809ecd072d8e54f8f2be5ef7
++ f3d619abe3ff29132927febcadcaf7c754fbacb4
+ : Candidate writer invalidates existing CI same-writer fence
+
+----------------------------------------------------------------------
+Ran 1 test in 0.076s
+
+FAILED (failures=1)

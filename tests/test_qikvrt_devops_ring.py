@@ -132,6 +132,52 @@ else: print('main')
 
 
 class RoundtripTests(unittest.TestCase):
+    def test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture(self):
+        root = Path(__file__).resolve().parents[1]
+        source = (root / '.github/workflows/qikvrt_devops_ring_integrity_repair_candidate.yml').read_text()
+        marker = '      - name: Commit verified integrity trio to the same PR branch with exact-head lease\n'
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            remote, writer = folder / 'remote.git', folder / 'writer'
+            def git(*args, cwd=folder):
+                return subprocess.check_output(['git', *args], cwd=cwd, stderr=subprocess.DEVNULL, text=True).strip()
+            git('init', '--bare', str(remote))
+            git('init', str(writer))
+            git('config', 'user.name', 'fixture', cwd=writer)
+            git('config', 'user.email', 'fixture@example.invalid', cwd=writer)
+            for path in ('REPOSITORY_FILE_MANIFEST.json', 'SHA256SUMS.txt', 'REPOSITORY_FILE_MANIFEST.json.sha256'):
+                (writer / path).write_text('original\n')
+            git('add', '.', cwd=writer)
+            git('commit', '-m', 'original fixture', cwd=writer)
+            git('branch', '-M', 'repair-fixture', cwd=writer)
+            git('remote', 'add', 'origin', str(remote), cwd=writer)
+            git('push', 'origin', 'HEAD', cwd=writer)
+            expected = git('rev-parse', 'HEAD', cwd=writer)
+            (writer / 'REPOSITORY_FILE_MANIFEST.json').write_text('generated candidate\n')
+            if marker in source:
+                step = source.split(marker, 1)[1].split('      - name:', 1)[0]
+                body = textwrap.dedent(step.split('        run: |\n', 1)[1])
+                result = subprocess.run(['bash', '-c', body], cwd=writer,
+                    env={**os.environ, 'EXPECTED_HEAD': expected, 'PR_BRANCH': 'repair-fixture'},
+                    capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, 0, result.stderr)
+            observed = git('ls-remote', '--heads', 'origin', 'refs/heads/repair-fixture', cwd=writer).split()[0]
+            self.assertEqual(observed, expected, 'Candidate writer invalidates existing CI same-writer fence')
+
+    def test_integrity_candidate_keeps_validation_without_branch_write_authority(self):
+        root = Path(__file__).resolve().parents[1]
+        source = (root / '.github/workflows/qikvrt_devops_ring_integrity_repair_candidate.yml').read_text()
+        self.assertIn('contents: read', source)
+        self.assertIn('persist-credentials: false', source)
+        self.assertIn('python3 -B tools/qikvrt_integrity.py generate', source)
+        self.assertIn('python3 -B tools/qikvrt_integrity.py verify', source)
+        self.assertIn('tests.test_qikvrt_devops_ring', source)
+        self.assertIn('actions/upload-artifact@', source)
+        self.assertNotIn('git push', source)
+        ci = (root / '.github/workflows/qikvrt_ci.yml').read_text()
+        self.assertIn('Same-writer successor re-entry to tested fixpoint', ci)
+        self.assertIn('test "$remote" = "$subject"', ci)
+
     def test_lossless_roundtrip_and_hash_chain(self):
         request = {"id": "r1", "payload": {"assignments": [
             {"id": "a", "feature": "f"}, {"id": "b", "feature": "f"}]}}

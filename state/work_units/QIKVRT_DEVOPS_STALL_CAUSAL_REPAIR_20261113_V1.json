@@ -159,5 +159,48 @@
     "effect_ack_done": false,
     "zero_recurrence_guarantee": false,
     "all_client_adoption_verified": false
-  }
+  },
+  "append_only_successors": [
+    {
+      "observed_at": "2026-11-13T08:45:59.635622+00:00",
+      "predecessor_commit": "dcde652a82f28f23b1739eba849f609906a3f012",
+      "integrity_successor_commit": "2e5fd77ee8d5b90c06940cc71b9b919afc729bb6",
+      "integrity_successor_tree": "5834337bec3a497573dea2b7c6874b495d324ecb",
+      "integrity_run": 43395019306,
+      "integrity_job": 131783735940,
+      "integrity_generation_verification_and_branch_readback": "VERIFIED",
+      "ci_run": 43395019025,
+      "ci_job": 131783735402,
+      "complete_test_outcome": "FAILURE_MANIFEST_DRIFT_NOT_PASS",
+      "misleading_step_conclusion": "success due to continue-on-error; actual FULL_TEST_OUTCOME=failure",
+      "same_writer_reentry": "FAIL_CLOSED_REMOTE_HEAD_CHANGED",
+      "source_diagnosis": "Dedicated integrity workflow independently pushed the same branch before existing CI could re-enter its exact subject. Both per-writer fences were preserved; duplicate writers caused loss of continuity.",
+      "causal_repair": "Existing integrity candidate is read-only and artifact-only; unchanged existing CI owns canonical integrity repair and complete successor retests. No new trigger, proxy commit, approval bypass or executor.",
+      "negative_regression": "Real local bare Git: predecessor candidate push changes the remote CI subject; corrected candidate leaves remote subject unchanged.",
+      "targeted_tests": {
+        "watchdog": 61,
+        "ring_wakeup_writer": 17,
+        "full_make_test": "NOT_PASSED_NATIVE_LOG_VERIFIED"
+      },
+      "successor_initial_ci_admission": {
+        "runs": 13,
+        "conclusion": "action_required",
+        "head": "2e5fd77ee8d5b90c06940cc71b9b919afc729bb6"
+      },
+      "native_observation": {
+        "snapshot_id": "9b26ee89-2c7c-44ad-b540-fccb63020b18",
+        "snapshot_sha256": "98610b45c143330c0947cbafbf69fb71b84850581a075d0390002d7ffbe0a41d",
+        "byte_verified": true,
+        "domain_status": 525,
+        "main_head": "014bbb095a20680c4851e62575ee932d7a45b206",
+        "main_tree": "d867b5b5df4f76be4daa0c575e0d5bde9e03aeaf"
+      },
+      "remaining_duties": [
+        "Full exact-successor CI and canonical integrity verification",
+        "All required CI/review/governance dispositions bound to actual successor",
+        "Original host protected binding, mTLS, native runtime and independent EAP acceptance"
+      ],
+      "effect_ack_done": false
+    }
+  ]
 }

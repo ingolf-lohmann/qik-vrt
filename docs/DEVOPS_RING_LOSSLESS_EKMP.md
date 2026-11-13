@@ -104,3 +104,15 @@ remain separate gates. Source saving and fixture tests establish neither Main
 integration nor unattended execution. The Principal's authorization persists;
 do not request it again or replace a missing operation with another scheduler.
 
+Fresh execution of candidate `dcde652a82f28f23b1739eba849f609906a3f012`
+exposed an additional competing writer: integrity run `43395019306` pushed
+`2e5fd77ee8d5b90c06940cc71b9b919afc729bb6` before CI run `43395019025`
+could re-enter its own exact subject. Its unchanged same-writer fence correctly
+stopped. The candidate-only workflow now retains generation, verification,
+tests and artifact upload with read-only contents permission and no retained
+Git credential or branch push. Existing CI remains the sole integrity writer
+and retains its complete retest/readback loop. A real local Git regression
+reproduces the predecessor writer collision and verifies the correction.
+Always inspect `steps.full_test.outcome` and original logs: a step recorded as
+successful through continue-on-error is not a passed complete test gate.
+
