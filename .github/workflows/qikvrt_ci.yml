@@ -147,6 +147,24 @@ jobs:
 
           subject="$(git rev-parse --verify HEAD^{commit})"
           test "$subject" = "$EXPECTED_HEAD"
+          # A queued run may start after a prior same-branch writer has
+          # advanced the PR. Never attempt to push from the stale event head.
+          # Re-enter at the current remote subject, then execute all gates
+          # against that exact subject; no predecessor result is inherited.
+          observed_remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+          test -n "$observed_remote"
+          if test "$observed_remote" != "$subject"; then
+            echo "QIKVRT_STALE_EVENT_HEAD event=$subject current=$observed_remote"
+            git fetch --no-tags origin "refs/heads/$TARGET_REF"
+            test "$(git rev-parse --verify FETCH_HEAD^{commit})" = "$observed_remote"
+            git reset --hard "$observed_remote"
+            test "$(git rev-parse --verify HEAD^{commit})" = "$observed_remote"
+            # The initial suite belongs to the old event and is not reusable.
+            INITIAL_FULL_TEST_OUTCOME=stale
+            INITIAL_TESTED_HEAD=
+            INITIAL_TESTED_TREE=
+            subject="$observed_remote"
+          fi
 
           # Reuse only the successful complete gate for this exact unchanged
           # subject. Missing proof, integrity drift or a changed ref retains
