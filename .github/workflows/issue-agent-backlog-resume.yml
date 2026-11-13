@@ -51,12 +51,10 @@ jobs:
             [[ "$REQUESTED_ISSUE" =~ ^[1-9][0-9]*$ ]]
             issues="$REQUESTED_ISSUE"
           else
-            issues="$(gh pr list \
-              --repo "$REPOSITORY" \
-              --state open \
-              --limit 200 \
-              --json headRefName \
-              --jq '.[] | select(.headRefName | startswith("issue-agent/")) | .headRefName | split("/")[1]')"
+            # Discover all open issues, not only issues with an existing PR.
+            # Pagination is explicit; pull requests are excluded by GitHub issue shape.
+            issues="$(gh api --paginate "repos/$REPOSITORY/issues?state=open&per_page=100" \
+              --jq '.[] | select(has("pull_request") | not) | .number' | sort -nu)"
           fi
 
           resumed=0
@@ -64,12 +62,22 @@ jobs:
           pending_handoff=0
           skipped_final=0
           blocked_missing_status=0
+          new_issues=0
 
           for issue in $issues; do
             [[ "$issue" =~ ^[1-9][0-9]*$ ]]
             branch="issue-agent/$issue"
             status_url="repos/$REPOSITORY/contents/evidence/issues/$issue/STATUS.json?ref=$branch"
 
+            if ! gh api "repos/$REPOSITORY/git/ref/heads/$branch" >/dev/null 2>&1; then
+              # New issue: the native issue processor owns branch creation.
+              jq -n --arg issue "$issue" '{ref:"main",inputs:{issue_number:$issue}}' > "$RUNNER_TEMP/dispatch-new-$issue.json"
+              gh api --method POST "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/dispatches" \
+                --input "$RUNNER_TEMP/dispatch-new-$issue.json"
+              echo "issue=$issue state=NEW_ISSUE_DISPATCHED"
+              new_issues=$((new_issues + 1))
+              continue
+            fi
             if ! status_json="$(gh api -H 'Accept: application/vnd.github.raw+json' "$status_url" 2>/dev/null)"; then
               echo "issue=$issue state=BLOCK reason=missing_status"
               blocked_missing_status=$((blocked_missing_status + 1))
@@ -130,6 +138,7 @@ jobs:
             echo "## Issue-agent backlog resume"
             echo
             echo "- resumed: $resumed"
+            echo "- newly dispatched issues: $new_issues"
             echo "- unchanged causal inputs requiring continuation: $skipped_unchanged"
             echo "- active processor observations: $pending_handoff"
             echo "- final/awaiting auto-finish: $skipped_final"
