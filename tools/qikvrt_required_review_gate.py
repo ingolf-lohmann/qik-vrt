@@ -291,8 +291,11 @@ def _evaluate_principal_review(pr: Mapping[str, Any], reviews: Sequence[Mapping[
     owner_reviews = [item for item in reviews if isinstance(item.get("user"), Mapping)
                      and str(item["user"].get("login", "")).casefold() == owner.casefold()]
     marked = lambda item: isinstance(item.get("body"), str) and item["body"].startswith(PRINCIPAL_REVIEW_MARKER)
-    exact = [item for item in owner_reviews if item.get("commit_id") == head_sha
-             and (marked(item) or item.get("state") in {"CHANGES_REQUESTED", "DISMISSED"})]
+    # Keep stale marked Principal decisions in the ordering: a newer decision
+    # anchored to an older head must not be silently ignored in favour of an
+    # older current-head approval. Ordinary unmarked comments remain irrelevant.
+    candidates = [item for item in owner_reviews
+                  if marked(item) or item.get("state") in {"CHANGES_REQUESTED", "DISMISSED"}]
 
     def result(state: str, blocker: str | None, detail: str, review: Mapping[str, Any] | None = None) -> dict[str, Any]:
         value = _block(gate_state=state, blocker=blocker, detail=detail, pr_number=number,
@@ -303,11 +306,13 @@ def _evaluate_principal_review(pr: Mapping[str, Any], reviews: Sequence[Mapping[
                      review_id=review.get("id") if review else None)
         return value
 
-    if not exact:
-        stale = any(marked(item) and item.get("commit_id") != head_sha for item in owner_reviews)
-        return result(PENDING, "OWNER_PRINCIPAL_REVIEW_STALE" if stale else "OWNER_PRINCIPAL_REVIEW_MISSING",
+    if not candidates:
+        return result(PENDING, "OWNER_PRINCIPAL_REVIEW_MISSING",
                       "record the already authorized Principal review on the current PR head; no renewed human permission is required")
-    latest = max(exact, key=_review_sort_key)
+    latest = max(candidates, key=_review_sort_key)
+    if latest.get("commit_id") != head_sha:
+        return result(PENDING, "OWNER_PRINCIPAL_REVIEW_STALE",
+                      "the latest Principal decision is anchored to a different PR head", latest)
     actor = latest["user"]
     if (actor.get("type") != "User" or isinstance(actor.get("id"), bool)
             or actor.get("id") != configured["principal_github_id"]):

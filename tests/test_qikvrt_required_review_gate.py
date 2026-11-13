@@ -449,6 +449,18 @@ class PrincipalReviewGateTests(unittest.TestCase):
             with self.subTest(field=field, value=value):
                 self.assertEqual(self.evaluate([self.review(payload_changes={field: value})])["first_blocker"], "OWNER_PRINCIPAL_REVIEW_INVALID")
 
+    def test_newer_stale_principal_decision_supersedes_older_current_head_approval(self):
+        current = self.review(id=7, submitted_at="2026-10-18T04:20:00Z")
+        stale_payload = {"head_sha": "c" * 40}
+        stale = self.review(id=8, submitted_at="2026-10-18T04:21:00Z",
+                            payload_changes=stale_payload, commit_id="c" * 40)
+        for reviews in ([current, stale], [stale, current]):
+            with self.subTest(order=[item["id"] for item in reviews]):
+                result = self.evaluate(reviews)
+                self.assertEqual(result["gate_state"], "pending")
+                self.assertEqual(result["first_blocker"], "OWNER_PRINCIPAL_REVIEW_STALE")
+                self.assertEqual(result["review_id"], 8)
+
     def test_head_and_base_drift_invalidate_the_record_without_new_permission_request(self):
         pr = self.pr(); pr["head"]["sha"] = "c" * 40
         self.assertEqual(self.evaluate([self.review()], pr)["first_blocker"], "OWNER_PRINCIPAL_REVIEW_STALE")
