@@ -201,6 +201,31 @@
         "Original host protected binding, mTLS, native runtime and independent EAP acceptance"
       ],
       "effect_ack_done": false
+    },
+    {
+      "observed_at": "2026-11-13T08:55:38.358413+00:00",
+      "predecessor_commit": "b4df3c81f005b88f17ac79fe3ad1a4dcdb4819da",
+      "predecessor_tree": "3070e52c5da496946dd3f0eff31fb0b3139f9b4b",
+      "native_ci_run": 43395919888,
+      "native_ci_job": 131786661238,
+      "native_ci_outcome": "FAILURE",
+      "original_failure": "tests.test_reciprocal_closure_step.NativeClosureContinuationTests.test_periodic_wakeup_dispatch_contract_with_mock_gh: AssertionError 1 != 0",
+      "suite_result": "259 cases, one failed; full suite did not pass",
+      "diagnosis": "Original gh fixture returns branch name for newly required Main ref GET and scalar counts for raw run-inventory GET. New live contract requires exact head and structured activity.",
+      "repair": "Adapt existing fixture to the exact REST payload and original queue/progress leases, preserving all four original assertions; malformed count returns explicit failure. No admission or fence relaxed.",
+      "isolated_regression": "Exact existing test method extracted with AST without replacement imports; RED before repair, GREEN for all four original cases after repair.",
+      "targeted_result": "61 watchdog + 17 ring/wakeup/writer + 1 original integration method = 79 methods; not a full native successor CI PASS",
+      "original_native_log": {
+        "path": "evidence/receipts/20261113-devops-stall-repair/native-ci-43395919888.log.gz",
+        "encoding": "gzip(original UTF-8 log bytes)",
+        "bytes": 750684,
+        "sha256": "0d99e3d5c87e2d8604f2e5c30f0e5346c0a2e38888c7a356be08622f6206a9da",
+        "compressed_bytes": 122233,
+        "restore": "gzip decompress; verify original SHA-256 before use"
+      },
+      "original_ci_workflow": "UNCHANGED",
+      "same_writer_original_ci": "Must re-run exact corrected subject under existing native admission and gates",
+      "effect_ack_done": false
     }
   ]
 }

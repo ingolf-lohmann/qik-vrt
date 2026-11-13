@@ -42,7 +42,7 @@ jobs:
           echo "RING_OBSERVE: checking existing watchdog activity and pending work"
           for state in queued in_progress waiting requested pending; do
             activity="$(gh api "repos/${REPOSITORY}/actions/workflows/${WATCHDOG}/runs?status=${state}&per_page=1")"
-            count="$(jq -er '.total_count | select(type == "number" and . >= 0 and . == floor)' <<< "$activity")"
+            count="$(jq -er '.total_count | select(type == "number" and . >= 0 and . == floor)' <<< "$activity")" || { echo "INVALID_RUN_INVENTORY" >&2; exit 1; }
             case "$count" in ''|*[!0-9]*) echo "INVALID_RUN_INVENTORY" >&2; exit 1;; esac
             if [ "$count" -gt 0 ]; then
               jq -e --arg state "$state" --arg head "$expected_head" '

@@ -623,20 +623,31 @@ class NativeClosureContinuationTests(unittest.TestCase):
             stub = Path(d) / 'gh'
             log = Path(d) / 'dispatch.log'
             stub.write_text("""#!/usr/bin/env python3
-import os, sys
+import json, os, sys
+from datetime import datetime, timezone
 from pathlib import Path
 args = ' '.join(sys.argv[1:])
 if '/dispatches' in args:
     Path(os.environ['DISPATCH_LOG']).open('a').write(args + '\\n')
+elif '/git/ref/heads/main' in args:
+    print('b' * 40)
 elif 'repos/' in args and '/runs?' not in args:
     print(os.environ.get('MOCK_BRANCH', 'main'))
 else:
-    print(os.environ.get('MOCK_COUNT', '0'))
+    count = os.environ.get('MOCK_COUNT', '0')
+    if not count.isdecimal():
+        print(json.dumps({'total_count': count, 'workflow_runs': []}))
+    else:
+        state = args.split('status=')[1].split('&')[0]
+        runs = [] if count == '0' else [{'id': 1, 'head_sha': 'b' * 40,
+            'status': state, 'created_at': datetime.now(timezone.utc).isoformat()}]
+        print(json.dumps({'total_count': int(count), 'workflow_runs': runs}))
 """)
             stub.chmod(0o755)
             base = dict(os.environ, PATH=d + os.pathsep + os.environ['PATH'],
                         REPOSITORY='ingolf-lohmann/qik-vrt',
                         WATCHDOG='qikvrt_reflexive_repository_watchdog.yml',
+                        QUEUE_LEASE_SECONDS='600', PROGRESS_LEASE_SECONDS='900',
                         DISPATCH_LOG=str(log))
             for count, branch, expected_rc, expected_dispatches in (
                     ('0', 'main', 0, 1),
@@ -657,3 +668,4 @@ else:
 
 if __name__ == "__main__":
     unittest.main()
+
