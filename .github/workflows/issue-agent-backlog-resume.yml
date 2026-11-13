@@ -28,7 +28,7 @@ jobs:
   resume:
     # Native workflow completion is a causal event, not a timer.
     # The admission check below rejects unchanged issue inputs.
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issues' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issues' || github.event_name == 'workflow_run'
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
@@ -51,24 +51,32 @@ jobs:
             [[ "$REQUESTED_ISSUE" =~ ^[1-9][0-9]*$ ]]
             issues="$REQUESTED_ISSUE"
           else
-            issues="$(gh pr list \
-              --repo "$REPOSITORY" \
-              --state open \
-              --limit 200 \
-              --json headRefName \
-              --jq '.[] | select(.headRefName | startswith("issue-agent/")) | .headRefName | split("/")[1]')"
+            # Discover all open issues, not only issues with an existing PR.
+            # Pagination is explicit; pull requests are excluded by GitHub issue shape.
+            issues="$(gh api --paginate "repos/$REPOSITORY/issues?state=open&per_page=100" \
+              --jq '.[] | select(has("pull_request") | not) | .number' | sort -nu)"
           fi
 
           resumed=0
           skipped_unchanged=0
           skipped_final=0
           blocked_missing_status=0
+          new_issues=0
 
           for issue in $issues; do
             [[ "$issue" =~ ^[1-9][0-9]*$ ]]
             branch="issue-agent/$issue"
             status_url="repos/$REPOSITORY/contents/evidence/issues/$issue/STATUS.json?ref=$branch"
 
+            if ! gh api "repos/$REPOSITORY/git/ref/heads/$branch" >/dev/null 2>&1; then
+              # New issue: the native issue processor owns branch creation.
+              jq -n --arg issue "$issue" '{ref:"main",inputs:{issue_number:$issue}}' > "$RUNNER_TEMP/dispatch-new-$issue.json"
+              gh api --method POST "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/dispatches" \
+                --input "$RUNNER_TEMP/dispatch-new-$issue.json"
+              echo "issue=$issue state=NEW_ISSUE_DISPATCHED"
+              new_issues=$((new_issues + 1))
+              continue
+            fi
             if ! status_json="$(gh api -H 'Accept: application/vnd.github.raw+json' "$status_url" 2>/dev/null)"; then
               echo "issue=$issue state=BLOCK reason=missing_status"
               blocked_missing_status=$((blocked_missing_status + 1))
@@ -105,7 +113,13 @@ jobs:
               continue
             fi
             if [ "$(jq -r '.execute' "$input/ADMISSION.json")" != true ]; then
-              echo "issue=$issue state=NOOP reason=unchanged_causal_input"
+              # An unchanged issue still requires the existing processor to
+              # independently recover its persisted review handoff. Its native
+              # per-issue concurrency and exact-HEAD readback fence the writer.
+              jq -n --arg issue "$issue" '{ref:"main",inputs:{issue_number:$issue}}' > "$input/DISPATCH.json"
+              gh api --method POST "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/dispatches" \
+                --input "$input/DISPATCH.json"
+              echo "issue=$issue state=HANDOFF_RECOVERY_DISPATCHED reason=unchanged_causal_input"
               skipped_unchanged=$((skipped_unchanged + 1))
               continue
             fi
@@ -121,7 +135,8 @@ jobs:
             echo "## Issue-agent backlog resume"
             echo
             echo "- resumed: $resumed"
-            echo "- unchanged causal inputs: $skipped_unchanged"
+            echo "- newly dispatched issues: $new_issues"
+            echo "- unchanged causal inputs dispatched for handoff recovery: $skipped_unchanged"
             echo "- final/awaiting auto-finish: $skipped_final"
             echo "- missing status blockers: $blocked_missing_status"
           } >> "$GITHUB_STEP_SUMMARY"
