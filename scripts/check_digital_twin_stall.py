@@ -278,8 +278,10 @@ def main():
     if not args.evidence:
         parser.error("provide evidence JSON or --self-test")
     with open(args.evidence, encoding="utf-8") as f:
-        record = json.load(f)\n        result = evaluate(record)
-    result["successor"] = select_successor(result, record)\n    print(json.dumps(result, sort_keys=True))
+        record = json.load(f)
+        result = evaluate(record)
+    result["successor"] = select_successor(result, record)
+    print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "VERIFIED" else 2
 
 
