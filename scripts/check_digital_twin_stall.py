@@ -17,6 +17,8 @@ EXPECTED_SITE = "appgprj_6ae30a1da6248191aac4823d1fa9c108"
 def evaluate(record):
     """Return a stable state and reasons; never conflate evidence-store and UI writes."""
     reasons = []
+    if record.get("github_workflow_conclusion") == "action_required":
+        reasons.append("GITHUB_WORKFLOW_ADMISSION_REQUIRED")
     if record.get("site_project_id") != EXPECTED_SITE:
         reasons.append("SITE_IDENTITY_UNVERIFIED")
     if record.get("request_repeated") and not record.get("verified_ui_delta"):
@@ -134,6 +136,12 @@ class RegressionTests(unittest.TestCase):
         self.assertEqual(next_step["disposition"], "REPAIR_REQUIRED")
         self.assertEqual(next_step["step"], "REPAIR_EXISTING_SITES_ADAPTER_AND_READBACK")
         self.assertFalse(next_step["effect_verified"])
+
+    def test_admission_blocks_otherwise_valid_evidence(self):
+        r = self.valid()
+        r["github_workflow_conclusion"] = "action_required"
+        self.assertIn("GITHUB_WORKFLOW_ADMISSION_REQUIRED", evaluate(r)["reasons"])
+        self.assertEqual(select_successor(evaluate(r), r)["disposition"], "EXTERNAL_ADMISSION_REQUIRED")
 
     def test_github_admission_never_bypassed(self):
         r = self.valid()
