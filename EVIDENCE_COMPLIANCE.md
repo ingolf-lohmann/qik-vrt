@@ -108,3 +108,82 @@ The PASS designation remains strictly limited to the Mathlib extension paths and
 - **Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by this workflow. This does not establish repository-wide compliance.
 
 The PASS designation is limited to the Mathlib extension. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
+
+
+## Proof-preservation contract for autonomous execution and context transitions (2026-11-14)
+
+**Purpose:** Preserve the exact logical obligations behind the Owner's completed
+operational specification across ChatGPT context switches, repository writers,
+CI runners, and native runtime restarts. This section is a proof-obligation
+register, **not** a claim that the obligations below have been discharged by
+the Lean kernel.
+
+**Authority and scope:** `ingolf-lohmann/qik-vrt` only. The already established
+Mathlib proof and axiom-audit evidence above remains scoped to its exact commit;
+changing this document does not extend that proof to the new commit.
+
+### Abstract transition system to formalize in Lean
+
+Define a state `S` with a finite or otherwise well-founded set of persistent
+work units, immutable evidence references, a repository exact HEAD/TREE,
+exclusive writer identity and fencing epoch, admitted capabilities, durable
+continuation receipts, effect receipts, and independent readback observations.
+Define `Step : S → S → Prop`, `Crash : S → S → Prop`, and
+`Recover : S → S → Prop` with explicitly specified atomicity and durability
+assumptions. Separate **requested**, **prepared**, **executed**,
+**independently acknowledged**, and **closed** states.
+
+Required properties (formal statements must be fixed before proofs):
+
+1. **Safety / no false completion.** For every reachable state and work unit,
+   `Closed(w)` implies an admitted execution receipt, independently matched
+   effect/readback evidence for the same work unit and exact version, and
+   satisfied governance/CI/host gates. A stored instruction, issue, PR, or
+   D1 observation alone cannot satisfy this implication.
+2. **Single writer / fencing.** No two conflicting effects may be committed
+   under the same admitted writer epoch; any stale or mismatched epoch is
+   rejected. This requires an explicit atomic compare-and-swap or equivalent
+   serialization assumption at the authoritative effect boundary.
+3. **Crash-safe continuation.** For every durable active work unit, a crash
+   followed by recovery reconstructs either its unique next idempotent step
+   or an explicit blocked state with a recoverable dependency; a context
+   switch cannot silently turn `Active` into `Closed`.
+4. **Replay safety.** Re-execution of an admitted idempotency key cannot
+   produce a second distinct externally visible effect. Distinguish
+   at-least-once dispatch from exactly-once *effect* semantics; the latter
+   requires downstream deduplication or transactional acknowledgment.
+5. **Version binding.** An effect receipt for one HEAD/TREE, work-unit
+   revision, or fencing epoch cannot discharge an obligation for another.
+6. **Dependency and priority discipline.** A work unit is eligible only if
+   its dependencies and writer gate are satisfied. P0 preempts P1–P4,
+   except where a higher-priority unit is blocked; fair scheduling among
+   eligible equal-priority units requires an explicit fairness assumption.
+7. **Conditional progress.** Under stated assumptions of recurring scheduler
+   activation, durable storage, eventually available admitted capabilities,
+   and eventual completion of external dependencies, every continuously
+   eligible work unit eventually progresses to a verified fixed point.
+   **Unconditional liveness is not derivable** when CI approval, Site editor,
+   original host, Mesh endpoint, or third-party acknowledgment is unavailable.
+
+### Required refinement / traceability
+
+For each property, retain a stable specification identifier, exact Lean
+declaration path, theorem statement, imported axiom audit, toolchain and
+dependency pin, Exact-HEAD/TREE, successful CI run and job IDs, executable
+negative/crash-restart/replay tests, and a mapping to the concrete repository
+and original-host state transitions. Mark any missing link **OPEN**.
+
+A successful Lean kernel check proves only the encoded proposition relative
+to its axioms and imports. Proving that the concrete Python, GitHub Actions,
+REST, EMP and EAP implementation refines the Lean transition system requires
+a separate, reviewable refinement argument and executable evidence. Neither
+kernel acceptance nor a test suite by itself proves the whole production
+system correct.
+
+**Current disposition:** The seven obligations above are specified here as
+proof targets; **no new Lean theorem, kernel acceptance, refinement proof,
+repository-wide CI pass, deployment, or EFFECT_ACK_DONE is asserted** by this
+documentation change. Preserve all earlier exact-commit evidence unchanged.
+Regenerate repository integrity artifacts only using the canonical generator
+after all tracked changes and cache coverage updates, then independently
+verify the resulting exact HEAD.
