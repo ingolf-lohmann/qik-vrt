@@ -73,7 +73,7 @@ class SpecificationReview(unittest.TestCase):
 
     def readonly_retry(self):
         path = '.github/workflows/qikvrt_reflexive_repository_watchdog.yml'
-        original = Path(__file__).resolve().parents[1] / path
+        original = Path(__file__).resolve().parent / 'fixtures/historical_qikvrt_reflexive_repository_watchdog.yml'
         target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(original.read_bytes())
         before = dict(schema='qikvrt_job_readback_budget_v1', expected_head_sha=self.subject['head'],
             selection='LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1', state='HOLD',
