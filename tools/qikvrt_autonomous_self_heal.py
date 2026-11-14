@@ -986,6 +986,8 @@ def create_rest_tree(api: GitHubREST, payload: Mapping[str, Any], expected: str)
             return value
         except (SelfHealBlock, subprocess.TimeoutExpired, KeyError, TypeError, ValueError) as readback:
             raise SelfHealBlock("REST tree creation unresolved; expected_tree=" + expected
+                                + "; readback_error_type=" + type(readback).__name__
+                                + "; readback_error=" + str(readback)[:500]
                                 + "; retain original attempt; readback only, no repeated POST") from readback
 
 
