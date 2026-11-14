@@ -80,6 +80,38 @@ def evaluate(record):
     return {"status": "VERIFIED", "reasons": []}
 
 
+def select_successor(result, record):
+    """Deterministic fail-closed next step; no implied external authorization."""
+    reasons = result["reasons"]
+    if not reasons:
+        return {"disposition": "DONE", "step": "NONE", "requires_external_admission": False}
+    if "EXACT_HEAD_DRIFT_OR_UNKNOWN" in reasons or "CONTEXT_REENTRY_REVALIDATION_REQUIRED" in reasons:
+        step = "REOBSERVE_EXACT_HEAD_AND_FENCE"
+    elif "CAPABILITY_BLOCKED" in reasons:
+        step = "REPAIR_EXISTING_SITES_ADAPTER_AND_READBACK"
+    elif "UI_PERSISTENCE_UNVERIFIED" in reasons or "UI_READBACK_MISMATCH" in reasons:
+        step = "VERIFY_EXISTING_SITES_WRITE_AND_INDEPENDENT_READBACK"
+    elif "SUCCESSOR_EXECUTION_UNVERIFIED" in reasons or "CONTEXT_HANDOFF_BLOCKED" in reasons:
+        step = "EXECUTE_FENCED_SUCCESSOR_AND_RECORD_RECEIPT"
+    elif "EMP_EXECUTION_UNVERIFIED" in reasons or "EAP_EFFECT_UNVERIFIED" in reasons:
+        step = "EXECUTE_ADMITTED_EMP_AND_VERIFY_EAP"
+    else:
+        step = "REPAIR_FIRST_UNVERIFIED_GATE"
+    # GitHub workflow approval is a platform permission, never a token to invent.
+    admission = record.get("github_workflow_conclusion") == "action_required"
+    if admission:
+        step = "AWAIT_GITHUB_MAINTAINER_ADMISSION_THEN_REOBSERVE"
+    return {
+        "disposition": "EXTERNAL_ADMISSION_REQUIRED" if admission else "REPAIR_REQUIRED",
+        "step": step,
+        "requires_external_admission": admission,
+        "source_head": record.get("source_head"),
+        "writer_fence": record.get("current_writer_fence"),
+        "work_unit_id": record.get("work_unit_id"),
+        "effect_verified": False,
+    }
+
+
 class RegressionTests(unittest.TestCase):
     def valid(self):
         return {
@@ -93,6 +125,33 @@ class RegressionTests(unittest.TestCase):
             "emp_execution_receipt": {"id": "emp"},
             "independent_eap_ack": {"id": "eap"},
         }
+
+    def test_blocked_requires_action_not_done(self):
+        r = self.valid()
+        r["editor_available"] = False
+        outcome = evaluate(r)
+        next_step = select_successor(outcome, r)
+        self.assertEqual(next_step["disposition"], "REPAIR_REQUIRED")
+        self.assertEqual(next_step["step"], "REPAIR_EXISTING_SITES_ADAPTER_AND_READBACK")
+        self.assertFalse(next_step["effect_verified"])
+
+    def test_github_admission_never_bypassed(self):
+        r = self.valid()
+        r.update(github_workflow_conclusion="action_required", sites_write_receipt=None)
+        step = select_successor(evaluate(r), r)
+        self.assertEqual(step["disposition"], "EXTERNAL_ADMISSION_REQUIRED")
+        self.assertTrue(step["requires_external_admission"])
+        self.assertFalse(step["effect_verified"])
+
+    def test_head_drift_prioritized_over_adapter(self):
+        r = self.valid()
+        r.update(readback_head="f" * 40, editor_available=False)
+        self.assertEqual(select_successor(evaluate(r), r)["step"],
+                         "REOBSERVE_EXACT_HEAD_AND_FENCE")
+
+    def test_verified_has_no_successor(self):
+        r = self.valid()
+        self.assertEqual(select_successor(evaluate(r), r)["disposition"], "DONE")
 
     def test_positive_fixture(self):
         self.assertEqual(evaluate(self.valid())["status"], "VERIFIED")
@@ -211,8 +270,8 @@ def main():
     if not args.evidence:
         parser.error("provide evidence JSON or --self-test")
     with open(args.evidence, encoding="utf-8") as f:
-        result = evaluate(json.load(f))
-    print(json.dumps(result, sort_keys=True))
+        record = json.load(f)\n        result = evaluate(record)
+    result["successor"] = select_successor(result, record)\n    print(json.dumps(result, sort_keys=True))
     return 0 if result["status"] == "VERIFIED" else 2
 
 
