@@ -14,7 +14,7 @@ def validate(previous, candidate):
     """Accept a successor only if the acknowledged effect prefix remains intact."""
     required = ("source_head", "source_tree", "writer_fence", "effect_id",
                 "effect_sha256", "readback_sha256", "sequence")
-    if any(not candidate.get(k) for k in required):
+    if not isinstance(candidate, dict) or any(not candidate.get(k) for k in required):
         return False, "MISSING_EFFECT_BINDING"
     if type(candidate["sequence"]) is not int or candidate["sequence"] < 1:
         return False, "INVALID_SEQUENCE"
@@ -47,14 +47,23 @@ def validate(previous, candidate):
         return False, "NON_MONOTONIC_SEQUENCE"
     if candidate.get("previous_receipt_sha256") != hashlib.sha256(canonical(previous)).hexdigest():
         return False, "BROKEN_RECEIPT_CHAIN"
-    if candidate["writer_fence"] == previous["writer_fence"] and candidate["effect_id"] == previous["effect_id"]:
+    if candidate["effect_id"] == previous["effect_id"]:
         return False, "DUPLICATE_EFFECT"
+    if candidate["source_head"] != previous["source_head"] or candidate["source_tree"] != previous["source_tree"]:
+        return False, "SOURCE_PIN_CHANGED"
+    if candidate["writer_fence"] != previous["writer_fence"] and candidate.get("fence_handoff_receipt_sha256") != hashlib.sha256(canonical(previous)).hexdigest():
+        return False, "UNVERIFIED_FENCE_HANDOFF"
     return True, "SUCCESSOR_CONFIRMED"
 
 
 def validate_chain_entry(receipt):
-    ok, reason = validate(None, {**receipt, "sequence": 1, "previous_receipt_sha256": None})
-    return ok, reason
+    if not isinstance(receipt, dict):
+        return False, "INVALID_PREDECESSOR"
+    if type(receipt.get("sequence")) is not int or receipt["sequence"] < 1:
+        return False, "INVALID_PREDECESSOR_SEQUENCE"
+    # This verifies receipt shape only; full ancestry and authentic signatures must
+    # be verified against the trusted journal before production admission.
+    return validate(None, {**receipt, "sequence": 1, "previous_receipt_sha256": None})
 
 
 def main():
