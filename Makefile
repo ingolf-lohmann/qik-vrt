@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
 
+# Pin the default target explicitly; later included make fragments must not select tests.
+.DEFAULT_GOAL := compile
+
 PYTHON ?= python3
 # unittest durations are available from Python 3.12; retain older runtimes.
 UNITTEST_TIMING ?= $(shell $(PYTHON) -c "import sys; print('--durations=20' if sys.version_info >= (3, 12) else '')")
