@@ -60,6 +60,21 @@ def evaluate(record):
             or not successor.get("evidence_sha256")
         ):
             reasons.append("SUCCESSOR_EXECUTION_MISMATCH")
+    # A complete specification is not a kernel proof or an implementation
+    # refinement. Missing proof links are first-class, durable blockers.
+    if record.get("formal_claims_in_scope"):
+        for claim in record["formal_claims_in_scope"]:
+            if not isinstance(claim, dict) or not claim.get("specification_id"):
+                reasons.append("PROOF_TRACEABILITY_MISSING")
+                continue
+            if not claim.get("lean_declaration") or not claim.get("kernel_checked_exact_head"):
+                reasons.append("LEAN_PROOF_UNVERIFIED")
+            if not claim.get("axiom_audit_receipt"):
+                reasons.append("AXIOM_AUDIT_UNVERIFIED")
+            if not claim.get("implementation_refinement_receipt"):
+                reasons.append("IMPLEMENTATION_REFINEMENT_UNVERIFIED")
+    elif record.get("formal_proof_required"):
+        reasons.append("PROOF_OBLIGATION_REGISTER_MISSING")
     if reasons:
         return {"status": "BLOCKED", "reasons": reasons}
     return {"status": "VERIFIED", "reasons": []}
@@ -134,7 +149,7 @@ class RegressionTests(unittest.TestCase):
                  continuation_receipt={"work_unit_id": "748", "head": "a" * 40,
                                        "tree": "b" * 40, "writer_fence": "lease-1",
                                        "next_idempotent_step": "verify", "evidence_sha256": "c" * 64})
-        self.assertEqual(evaluate(r)["status"], "VERIFIED")
+        self.assertIn("SUCCESSOR_EXECUTION_UNVERIFIED", evaluate(r)["reasons"])
 
     def test_handoff_receipt_without_successor_is_not_recovery(self):
         r = self.valid()
@@ -154,6 +169,30 @@ class RegressionTests(unittest.TestCase):
                                               "writer_fence": "other", "step": "verify",
                                               "evidence_sha256": "d" * 64})
         self.assertIn("SUCCESSOR_EXECUTION_MISMATCH", evaluate(r)["reasons"])
+
+    def test_proof_requirement_without_register_fails_closed(self):
+        r = self.valid()
+        r["formal_proof_required"] = True
+        self.assertIn("PROOF_OBLIGATION_REGISTER_MISSING", evaluate(r)["reasons"])
+
+    def test_kernel_evidence_without_refinement_is_insufficient(self):
+        r = self.valid()
+        r["formal_claims_in_scope"] = [{
+            "specification_id": "QIK-AUTONOMY-SAFETY-1",
+            "lean_declaration": "QIKVRT.Autonomy.noFalseCompletion",
+            "kernel_checked_exact_head": "a" * 40,
+            "axiom_audit_receipt": {"sha256": "b" * 64},
+        }]
+        self.assertIn("IMPLEMENTATION_REFINEMENT_UNVERIFIED", evaluate(r)["reasons"])
+
+    def test_claim_without_kernel_proof_is_not_verified(self):
+        r = self.valid()
+        r["formal_claims_in_scope"] = [{
+            "specification_id": "QIK-AUTONOMY-SAFETY-1",
+            "implementation_refinement_receipt": {"sha256": "b" * 64},
+        }]
+        self.assertIn("LEAN_PROOF_UNVERIFIED", evaluate(r)["reasons"])
+        self.assertIn("AXIOM_AUDIT_UNVERIFIED", evaluate(r)["reasons"])
 
     def test_wrong_site_identity(self):
         r = self.valid()
