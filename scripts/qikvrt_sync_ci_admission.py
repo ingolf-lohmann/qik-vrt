@@ -48,7 +48,8 @@ def execute(repo, ref, expected, token, deadline_seconds=900, interval=10):
         raise AdmissionError("invalid repository")
     if not SHA.fullmatch(expected):
         raise AdmissionError("expected exact 40-digit commit SHA")
-    if not re.fullmatch(r"[A-Za-z0-9_./-]+", ref) or ".." in ref:
+    if (not re.fullmatch(r"[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*", ref)
+            or ".." in ref or ref.startswith("-")):
         raise AdmissionError("invalid ref")
     base = "/repos/" + repo
     def head():
