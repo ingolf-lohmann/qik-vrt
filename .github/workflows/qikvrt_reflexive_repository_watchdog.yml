@@ -68,6 +68,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Verify digital-twin deadlock and context-recovery regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B scripts/check_digital_twin_stall.py --self-test
+
       - name: Reobserve exact head, tree, runs, jobs, and previous reflexive receipt
         id: reobserve
         env:
