@@ -69,7 +69,8 @@ def evaluate(record):
             if not isinstance(claim, dict) or not claim.get("specification_id"):
                 reasons.append("PROOF_TRACEABILITY_MISSING")
                 continue
-            if not claim.get("lean_declaration") or not claim.get("kernel_checked_exact_head"):
+            if (not claim.get("lean_declaration") or not claim.get("kernel_checked_exact_head")
+                    or claim["kernel_checked_exact_head"] != record.get("source_head")):
                 reasons.append("LEAN_PROOF_UNVERIFIED")
             if not claim.get("axiom_audit_receipt"):
                 reasons.append("AXIOM_AUDIT_UNVERIFIED")
@@ -284,6 +285,28 @@ class RegressionTests(unittest.TestCase):
         }]
         self.assertIn("LEAN_PROOF_UNVERIFIED", evaluate(r)["reasons"])
         self.assertIn("AXIOM_AUDIT_UNVERIFIED", evaluate(r)["reasons"])
+
+    def test_stale_kernel_proof_is_not_current_head_proof(self):
+        r = self.valid()
+        r["formal_claims_in_scope"] = [{
+            "specification_id": "QIK-AUTONOMY-SAFETY-1",
+            "lean_declaration": "QIKVRT.Autonomy.noFalseCompletion",
+            "kernel_checked_exact_head": "f" * 40,
+            "axiom_audit_receipt": {"sha256": "b" * 64},
+            "implementation_refinement_receipt": {"sha256": "c" * 64},
+        }]
+        self.assertIn("LEAN_PROOF_UNVERIFIED", evaluate(r)["reasons"])
+
+    def test_matching_kernel_head_still_requires_other_gates(self):
+        r = self.valid()
+        r["formal_claims_in_scope"] = [{
+            "specification_id": "QIK-AUTONOMY-SAFETY-1",
+            "lean_declaration": "QIKVRT.Autonomy.noFalseCompletion",
+            "kernel_checked_exact_head": "a" * 40,
+            "axiom_audit_receipt": {"sha256": "b" * 64},
+        }]
+        self.assertIn("IMPLEMENTATION_REFINEMENT_UNVERIFIED", evaluate(r)["reasons"])
+        self.assertNotIn("LEAN_PROOF_UNVERIFIED", evaluate(r)["reasons"])
 
     def test_wrong_site_identity(self):
         r = self.valid()
