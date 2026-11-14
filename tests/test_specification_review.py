@@ -71,9 +71,18 @@ class SpecificationReview(unittest.TestCase):
                             subject=self.subject, scope='SOURCE_REPAIR_ONLY',
                             reason='repair frozen source only')))
 
+    def test_historical_watchdog_fixture_is_pinned_and_live_workflow_is_separate(self):
+        historical = Path(__file__).resolve().parent / 'fixtures/historical_qikvrt_reflexive_repository_watchdog.yml'
+        live = Path(__file__).resolve().parents[1] / '.github/workflows/qikvrt_reflexive_repository_watchdog.yml'
+        expected = 'e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d'
+        self.assertEqual(hashlib.sha256(historical.read_bytes()).hexdigest(), expected)
+        self.assertTrue(live.is_file())
+        self.assertNotEqual(live.resolve(), historical.resolve())
+        self.assertNotEqual(hashlib.sha256(live.read_bytes()).hexdigest(), expected)
+
     def readonly_retry(self):
         path = '.github/workflows/qikvrt_reflexive_repository_watchdog.yml'
-        original = Path(__file__).resolve().parents[1] / path
+        original = Path(__file__).resolve().parent / 'fixtures/historical_qikvrt_reflexive_repository_watchdog.yml'
         target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(original.read_bytes())
         before = dict(schema='qikvrt_job_readback_budget_v1', expected_head_sha=self.subject['head'],
             selection='LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1', state='HOLD',

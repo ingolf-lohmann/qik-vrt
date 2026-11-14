@@ -83,6 +83,7 @@ TRANSIENT_PREFIXES = (
     ".qikvrt/toolchains/",
     ".qikvrt/cache/",
     ".qikvrt/release/",
+    ".qikvrt/reflexive-repository-watchdog/",
 )
 # Role-local node liveness is rewritten on a schedule by the node's own
 # lifecycle writer (tools/qikvrt_mirror_node_lifecycle.sh).  It reports that a

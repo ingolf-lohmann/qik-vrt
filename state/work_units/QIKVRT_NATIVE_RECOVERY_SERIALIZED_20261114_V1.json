@@ -1,0 +1,112 @@
+{
+  "schema": "qikvrt_serialized_work_unit_v1",
+  "work_unit_id": "QIKVRT_NATIVE_RECOVERY_SERIALIZED_20261114_V1",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "principal_authorization": "OWNER_AUTHORIZED_2026-11-14",
+  "state": "OPEN_FAIL_CLOSED",
+  "purpose": "Single serialized repository-native recovery of universal Transputer and universal Terminal without ChatGPT as a liveness dependency",
+  "references": [
+    "runtime/self-host/CREDENTIAL_DISCOVERY_INDEX.md",
+    "docs/DEVOPS_AUTONOMY_WITHOUT_CHATGPT.md",
+    "runtime/self-host/README.md",
+    "runtime/self-host/MESH_ACTIVATION.json",
+    "tools/qikvrt_self_host.py",
+    "tools/qikvrt_authority_credentials.py",
+    "scripts/check_digital_twin_stall.py"
+  ],
+  "serial_execution": {
+    "single_writer": true,
+    "lease_and_fence_required": true,
+    "exact_head_tree_revalidation": true,
+    "successor_reentry": "DURABLE_RECEIPT_WITH_NEXT_IDEMPOTENT_STEP",
+    "on_blocked_lane": "RETAIN_BLOCKER_AND_EXECUTE_NEXT_INDEPENDENT_ADMITTED_LANE",
+    "no_parallel_controller": true,
+    "steps": [
+      {
+        "id": "01_DISCOVER",
+        "operation": "RESOLVE_EXISTING_PROTECTED_MATERIAL_BY_REFERENCE_ONLY",
+        "accept": "VALID_ORIGINAL_BINDING_AND_INDEPENDENT_PINS",
+        "failure": "MATERIAL_UNAVAILABLE"
+      },
+      {
+        "id": "02_HOST",
+        "operation": "READ_ORIGINAL_HOST_IDENTITY_VIA_PROTECTED_MTLS",
+        "accept": "EXACT_DAEMON_NODE_VOLUME_CONFIG_IMAGE_AND_HEAD_TREE_BINDING",
+        "failure": "ORIGINAL_HOST_NOT_ADMITTED"
+      },
+      {
+        "id": "03_RESTORE",
+        "operation": "REUSE_EXISTING_S1_STOPPED_CONTAINER_RECOVERY",
+        "accept": "FENCED_NATIVE_RUNTIME_RUNNING_WITH_PERSISTENT_LEDGER",
+        "failure": "NATIVE_RECOVERY_NOT_VERIFIED"
+      },
+      {
+        "id": "04_TEST",
+        "operation": "TEMDD_RED_GREEN_NEGATIVE_RESTART_REPLAY_FENCE_AND_UNCHANGED_EXACT_HEAD_CI",
+        "accept": "ALL_EXACT_HEAD_CHECKS_AND_REVIEWS_ADMITTED",
+        "failure": "CI_OR_REVIEW_OPEN"
+      },
+      {
+        "id": "05_TERMINAL",
+        "operation": "VERIFY_UNIVERSAL_TRANSPUTER_AND_TERMINAL_NATIVE_REST_PREPARE_COMMIT_READBACK",
+        "accept": "EXACT_EVENT_LEDGER_EPOCH_DIGEST_NONCE_AND_TERMINAL_RECEIPTS",
+        "failure": "NATIVE_INPUT_ACCEPTANCE_UNVERIFIED"
+      },
+      {
+        "id": "06_PUBLIC",
+        "operation": "INDEPENDENT_HTTPS_TLS_MESH_AND_EXISTING_SITES_WRITE_READBACK",
+        "accept": "ORIGINAL_DOMAIN_AND_EXISTING_SITE_ID_WITH_MATCHING_PERSISTENCE_DIGEST",
+        "failure": "UI_PERSISTENCE_UNVERIFIED"
+      },
+      {
+        "id": "07_EAP",
+        "operation": "MATCH_PRINCIPAL_EMP_AND_INDEPENDENT_EAP_EFFECT_RECEIPTS",
+        "accept": "EFFECT_ACK_DONE_TRUE_WITH_EXACT_SOURCE_AND_EFFECT_BINDING",
+        "failure": "EAP_EFFECT_UNVERIFIED"
+      }
+    ],
+    "on_terminal_step": "PERSIST_FINAL_RECEIPT_AND_ENQUEUE_NEXT_MONITOR_WORK_UNIT_AT_SAME_FENCE_BEFORE_YIELD",
+    "on_failure": "PERSIST_CAUSAL_FAILURE_AND_NEXT_IDEMPOTENT_REPAIR_STEP_BEFORE_YIELD",
+    "on_context_loss": "RECONSTRUCT_FROM_DURABLE_RECEIPT_AND_INDEPENDENT_READBACK_NOT_CHAT_HISTORY",
+    "no_chatgpt_liveness_dependency": true,
+    "monitor_successor": {
+      "trigger": "EXISTING_REPOSITORY_NATIVE_WATCHDOG_OR_HOST_SUPERVISOR",
+      "work_unit_id": "QIKVRT_CONTINUOUS_PRODUCTION_MONITOR",
+      "required_readbacks": [
+        "EXACT_MAIN_HEAD_TREE",
+        "ORIGINALHOST_MTLS",
+        "MESH_RUNTIME",
+        "DOMAIN_TLS",
+        "EXISTING_SITES_PERSISTENCE",
+        "EMP_EAP_RECEIPTS"
+      ],
+      "on_delta": "ENQUEUE_SERIAL_REPAIR_SUCCESSOR",
+      "on_no_delta": "PERSIST_HEARTBEAT_AND_NEXT_MONITOR_SUCCESSOR",
+      "on_trigger_unavailable": "LIVENESS_UNVERIFIED_FAIL_CLOSED"
+    }
+  },
+  "receipt_contract": {
+    "required": [
+      "work_unit_id",
+      "source_head",
+      "source_tree",
+      "writer_fence",
+      "step_id",
+      "action",
+      "outcome",
+      "evidence_sha256",
+      "next_idempotent_step",
+      "observed_at"
+    ],
+    "separate_effect_proof_required": true,
+    "successor_execution_required": true
+  },
+  "observed_blockers_at_creation": [
+    "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "EXACT_HEAD_CI_FAILURE",
+    "MANIFEST_DRIFT"
+  ],
+  "effect_ack_done": false,
+  "completion_claim": "NOT_CLAIMED_UNTIL_ACTUAL_SUCCESSOR_EXECUTION_READBACK",
+  "security": "REFERENCES_ONLY_NO_SECRET_VALUES"
+}
