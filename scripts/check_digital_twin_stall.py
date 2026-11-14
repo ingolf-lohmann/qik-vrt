@@ -35,6 +35,16 @@ def evaluate(record):
         reasons.append("EMP_EXECUTION_UNVERIFIED")
     if not record.get("independent_eap_ack"):
         reasons.append("EAP_EFFECT_UNVERIFIED")
+    if record.get("active_work_unit") and record.get("context_transition"):
+        receipt = record.get("continuation_receipt")
+        if not isinstance(receipt, dict):
+            reasons.append("CONTEXT_HANDOFF_BLOCKED")
+        else:
+            required = ("work_unit_id", "head", "tree", "writer_fence", "next_idempotent_step", "evidence_sha256")
+            if any(not receipt.get(k) for k in required):
+                reasons.append("CONTEXT_HANDOFF_BLOCKED")
+            elif receipt["head"] != record.get("source_head") or receipt.get("writer_fence") != record.get("current_writer_fence"):
+                reasons.append("CONTEXT_REENTRY_REVALIDATION_REQUIRED")
     if reasons:
         return {"status": "BLOCKED", "reasons": reasons}
     return {"status": "VERIFIED", "reasons": []}
@@ -89,6 +99,27 @@ class RegressionTests(unittest.TestCase):
         r = self.valid()
         r["sites_readback_receipt"]["digest"] = "d" * 64
         self.assertIn("UI_READBACK_MISMATCH", evaluate(r)["reasons"])
+
+    def test_context_switch_without_receipt(self):
+        r = self.valid()
+        r.update(active_work_unit=True, context_transition=True)
+        self.assertIn("CONTEXT_HANDOFF_BLOCKED", evaluate(r)["reasons"])
+
+    def test_context_switch_with_stale_fence(self):
+        r = self.valid()
+        r.update(active_work_unit=True, context_transition=True, current_writer_fence="new",
+                 continuation_receipt={"work_unit_id": "748", "head": "a" * 40,
+                                       "tree": "b" * 40, "writer_fence": "old",
+                                       "next_idempotent_step": "verify", "evidence_sha256": "c" * 64})
+        self.assertIn("CONTEXT_REENTRY_REVALIDATION_REQUIRED", evaluate(r)["reasons"])
+
+    def test_context_switch_with_valid_receipt(self):
+        r = self.valid()
+        r.update(active_work_unit=True, context_transition=True, current_writer_fence="lease-1",
+                 continuation_receipt={"work_unit_id": "748", "head": "a" * 40,
+                                       "tree": "b" * 40, "writer_fence": "lease-1",
+                                       "next_idempotent_step": "verify", "evidence_sha256": "c" * 64})
+        self.assertEqual(evaluate(r)["status"], "VERIFIED")
 
     def test_wrong_site_identity(self):
         r = self.valid()
