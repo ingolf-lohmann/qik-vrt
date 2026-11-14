@@ -2,6 +2,10 @@
 
 **Index only. Never store secret values, token bodies, private keys, personal tokens, raw environment dumps or private material in this file.** The existence of a variable name or source-code resolver does not prove a currently provisioned credential. GitHub Actions secrets and variables, OS Secret Service and original host private files are separate protected stores; this repository contains their **contracts and references**, not necessarily their readable values.
 
+## Canonical serialized recovery work unit
+
+The single ordered, fail-closed recovery contract is [`state/work_units/QIKVRT_NATIVE_RECOVERY_SERIALIZED_20261114_V1.json`](../../state/work_units/QIKVRT_NATIVE_RECOVERY_SERIALIZED_20261114_V1.json). It binds credential discovery, original host recovery, exact-HEAD tests, native Transputer/Terminal readback, existing Sites persistence and independent EMP/EAP acceptance into one fenced successor chain. It is an executable-work specification, **not** proof that an executor has consumed it or that a productive effect occurred.
+
 ## Deterministic lookup order
 
 | Need | Existing authoritative contract / consumer | Provisioning or protected source | Verification |
