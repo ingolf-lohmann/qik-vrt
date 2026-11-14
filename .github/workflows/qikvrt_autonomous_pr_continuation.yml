@@ -53,6 +53,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # An early checkout failure must retain a machine-readable, fail-closed
+          # receipt rather than cascading into a missing-artifact error.
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
+            repair_root="$RUNNER_TEMP/qikvrt-watchdog-repair-input"
+            mkdir -p "$repair_root"
+            record_bootstrap_failure() {
+              rc=$?
+              if (( rc != 0 )); then
+                printf '{"schema":"qikvrt-continuation-bootstrap-failure/v1","stage":"exact-main-checkout","exit_code":%d,"admitted":false}\n' "$rc" > "$repair_root/bootstrap-failure.json"
+              fi
+            }
+            trap record_bootstrap_failure EXIT
+          fi
           live_main="$(gh api --method GET "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
           gh api --method GET \
             "repos/${GITHUB_REPOSITORY}/contents/tools/qikvrt_autonomous_self_heal.py?ref=${live_main}" \
