@@ -187,3 +187,29 @@ documentation change. Preserve all earlier exact-commit evidence unchanged.
 Regenerate repository integrity artifacts only using the canonical generator
 after all tracked changes and cache coverage updates, then independently
 verify the resulting exact HEAD.
+
+
+## Latest exact-head verification — 2026-11-14 (PR #746)
+
+- Repository: `ingolf-lohmann/qik-vrt`
+- Pull request: [#746](https://github.com/ingolf-lohmann/qik-vrt/pull/746) (open, draft, not merged at verification time)
+- Branch: `policy/enforce-evidence-boundary-2026-11-11`
+- Exact verified commit: `29d28da357644c45d1b7224e813eed5faac7f286`
+- Root tree: `eeecac5a834ea427c4e970ed7b7b30420923426b`
+- Successful workflow: [Spacetime Mathlib extension run #43587000856](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43587000856)
+- Job: `mathlib-build-and-axiom-audit` (job ID `132423549565`) — success. The job steps and decoded log were inspected; the run's `head_sha` equals the exact commit above.
+- **Evidence policy check — success.** The job step `Enforce repository evidence policy` completed successfully. Log: “Evidence policy check passed: ledger, Lean metadata, axiom audit, normative README boundary, and no placeholders/project axioms.”
+- **Pinned Lean toolchain and dependency installation — success.** Lean `v4.19.0`; Mathlib checked out at revision `c44e0c8ee63ca166450922a373c7409c5d26b00b`. The Lean action is pinned to `bd5cb0b830eda614ce3fc186d8429b9409b16c47`.
+- **Lean/Mathlib build — success.** The build log reports `Build completed successfully.`
+- **Axiom audit — success.** The log reports: `axiom-audit: audited 33 declaration(s) under 'QIKVRTSpacetimeBridgeMathlib'; all within the allowlist [propext, Classical.choice, Quot.sound].` The audit command completed successfully.
+- The evidence-policy step, pinned Lean/Mathlib build, and Axiom-Audit step all completed successfully in this same job and workflow run on the same exact commit, `29d28da357644c45d1b7224e813eed5faac7f286`.
+- **Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by `.github/workflows/spacetime-mathlib.yml`. This is not a repository-wide compliance result.
+
+### Separate repository-wide CI status on this commit
+
+- [QIKVRT CI run #43587000803](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/43587000803), also on `29d28da357644c45d1b7224e813eed5faac7f286`, failed in job `test`.
+- The full compile, launcher, protocol, handler, security and TCP/IP test step succeeded. The subsequent `tools/qikvrt_integrity.py verify` step failed with `BLOCK repository manifest differs from deterministic regeneration`.
+- The log reports `added=["EVIDENCE_COMPLIANCE.md"]` and stale manifest records for `README.md`, `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1/QIKVRTSpacetimeBridgeMathlib/RealVolumeLaw.lean`, and `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1/README.md`. The terminal tested-fixpoint disposition consequently failed.
+- This repository-integrity failure is separate from the three Mathlib-extension acceptance checks above and is not represented as passing. The canonical generator requires a complete checkout and verification; no manifest values were edited manually.
+
+The PASS designation is limited to the Mathlib extension. It does not prove empirical truth, universal ontology, complete physical-model validity, repository-wide compliance, GitHub branch protection, or acceptance by third parties.
