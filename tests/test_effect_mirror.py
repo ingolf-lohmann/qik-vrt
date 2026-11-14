@@ -56,6 +56,38 @@ class MirrorTests(unittest.TestCase):
         second["previous_receipt_sha256"] = "0" * 64
         self.assertFalse(validate(first, second)[0])
 
+    def test_source_drift_rejected(self):
+        first = receipt()
+        second = receipt(2)
+        second["previous_receipt_sha256"] = hashlib.sha256(canonical(first)).hexdigest()
+        second["source_head"] = "f" * 40
+        self.assertEqual(validate(first, second)[1], "SOURCE_PIN_CHANGED")
+
+    def test_fence_takeover_requires_handoff(self):
+        first = receipt()
+        second = receipt(2)
+        second["previous_receipt_sha256"] = hashlib.sha256(canonical(first)).hexdigest()
+        second["writer_fence"] = "lease-2"
+        self.assertEqual(validate(first, second)[1], "UNVERIFIED_FENCE_HANDOFF")
+        second["fence_handoff_receipt_sha256"] = second["previous_receipt_sha256"]
+        self.assertTrue(validate(first, second)[0])
+
+    def test_duplicate_effect_with_new_fence_rejected(self):
+        first = receipt()
+        second = receipt(2)
+        second["previous_receipt_sha256"] = hashlib.sha256(canonical(first)).hexdigest()
+        second["writer_fence"] = "lease-2"
+        second["fence_handoff_receipt_sha256"] = second["previous_receipt_sha256"]
+        second["effect_id"] = first["effect_id"]
+        self.assertEqual(validate(first, second)[1], "DUPLICATE_EFFECT")
+
+    def test_invalid_predecessor_sequence_rejected(self):
+        first = receipt()
+        first["sequence"] = 0
+        second = receipt(2)
+        second["previous_receipt_sha256"] = hashlib.sha256(canonical(first)).hexdigest()
+        self.assertEqual(validate(first, second)[1], "INVALID_PREDECESSOR_SEQUENCE")
+
     def test_duplicate_effect_rejected(self):
         first = receipt()
         second = copy.deepcopy(first)
