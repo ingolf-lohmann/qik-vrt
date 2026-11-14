@@ -101,12 +101,25 @@ def select_successor(result, record):
         step = "REPAIR_FIRST_UNVERIFIED_GATE"
     # GitHub workflow approval is a platform permission, never a token to invent.
     admission = record.get("github_workflow_conclusion") == "action_required"
+    # Admission blocks the GitHub lane only. Preserve independently actionable
+    # repair work instead of turning the whole DevOps queue into a global HOLD.
+    independent_steps = []
+    if "EXACT_HEAD_DRIFT_OR_UNKNOWN" in reasons or "CONTEXT_REENTRY_REVALIDATION_REQUIRED" in reasons:
+        independent_steps.append("REOBSERVE_EXACT_HEAD_AND_FENCE")
+    if "CAPABILITY_BLOCKED" in reasons:
+        independent_steps.append("REPAIR_EXISTING_SITES_ADAPTER_AND_READBACK")
+    if "UI_PERSISTENCE_UNVERIFIED" in reasons or "UI_READBACK_MISMATCH" in reasons:
+        independent_steps.append("VERIFY_EXISTING_SITES_WRITE_AND_INDEPENDENT_READBACK")
+    if "CONTEXT_HANDOFF_BLOCKED" in reasons or "SUCCESSOR_EXECUTION_UNVERIFIED" in reasons:
+        independent_steps.append("EXECUTE_FENCED_SUCCESSOR_AND_RECORD_RECEIPT")
     if admission:
-        step = "AWAIT_GITHUB_MAINTAINER_ADMISSION_THEN_REOBSERVE"
+        step = independent_steps[0] if independent_steps else "AWAIT_GITHUB_MAINTAINER_ADMISSION_THEN_REOBSERVE"
     return {
         "disposition": "EXTERNAL_ADMISSION_REQUIRED" if admission else "REPAIR_REQUIRED",
         "step": step,
         "requires_external_admission": admission,
+        "independent_steps": independent_steps,
+        "blocked_lane": "GITHUB_WORKFLOW_ADMISSION" if admission else None,
         "source_head": record.get("source_head"),
         "writer_fence": record.get("current_writer_fence"),
         "work_unit_id": record.get("work_unit_id"),
@@ -149,6 +162,17 @@ class RegressionTests(unittest.TestCase):
         step = select_successor(evaluate(r), r)
         self.assertEqual(step["disposition"], "EXTERNAL_ADMISSION_REQUIRED")
         self.assertTrue(step["requires_external_admission"])
+        self.assertFalse(step["effect_verified"])
+
+    def test_admission_does_not_globally_stop_independent_lanes(self):
+        r = self.valid()
+        r.update(github_workflow_conclusion="action_required", editor_available=False,
+                 sites_write_receipt=None)
+        step = select_successor(evaluate(r), r)
+        self.assertEqual(step["disposition"], "EXTERNAL_ADMISSION_REQUIRED")
+        self.assertEqual(step["blocked_lane"], "GITHUB_WORKFLOW_ADMISSION")
+        self.assertEqual(step["step"], "REPAIR_EXISTING_SITES_ADAPTER_AND_READBACK")
+        self.assertIn("VERIFY_EXISTING_SITES_WRITE_AND_INDEPENDENT_READBACK", step["independent_steps"])
         self.assertFalse(step["effect_verified"])
 
     def test_head_drift_prioritized_over_adapter(self):
