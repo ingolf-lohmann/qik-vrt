@@ -308,7 +308,7 @@ jobs:
             git diff --cached --quiet && exit 0
             git commit -m "fix(integrity): apply exact-head canonical regeneration (#749)"
             GH_TOKEN="${{ github.token }}" gh auth setup-git
-            git push origin HEAD:refs/heads/fix/digital-twin-stall-regression-748
+            GH_TOKEN="${{ github.token }}" git push origin HEAD:refs/heads/fix/digital-twin-stall-regression-748
             printf '%s\n' COMMITTED_TO_PR_BRANCH > "$root/integrity-repair/disposition.txt"
           fi
           fi
