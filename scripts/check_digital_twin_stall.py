@@ -45,6 +45,21 @@ def evaluate(record):
                 reasons.append("CONTEXT_HANDOFF_BLOCKED")
             elif receipt["head"] != record.get("source_head") or receipt.get("writer_fence") != record.get("current_writer_fence"):
                 reasons.append("CONTEXT_REENTRY_REVALIDATION_REQUIRED")
+    # A handoff receipt is not an execution receipt: require a distinct successor
+    # observation before claiming recovery. Missing successor remains fail-closed.
+    if record.get("active_work_unit") and record.get("context_transition"):
+        successor = record.get("successor_execution_receipt")
+        continuation = record.get("continuation_receipt")
+        if not isinstance(successor, dict):
+            reasons.append("SUCCESSOR_EXECUTION_UNVERIFIED")
+        elif not isinstance(continuation, dict) or (
+            successor.get("work_unit_id") != continuation.get("work_unit_id")
+            or successor.get("source_head") != record.get("source_head")
+            or successor.get("writer_fence") != record.get("current_writer_fence")
+            or successor.get("step") != continuation.get("next_idempotent_step")
+            or not successor.get("evidence_sha256")
+        ):
+            reasons.append("SUCCESSOR_EXECUTION_MISMATCH")
     if reasons:
         return {"status": "BLOCKED", "reasons": reasons}
     return {"status": "VERIFIED", "reasons": []}
@@ -120,6 +135,25 @@ class RegressionTests(unittest.TestCase):
                                        "tree": "b" * 40, "writer_fence": "lease-1",
                                        "next_idempotent_step": "verify", "evidence_sha256": "c" * 64})
         self.assertEqual(evaluate(r)["status"], "VERIFIED")
+
+    def test_handoff_receipt_without_successor_is_not_recovery(self):
+        r = self.valid()
+        r.update(active_work_unit=True, context_transition=True, current_writer_fence="lease-1",
+                 continuation_receipt={"work_unit_id": "748", "head": "a" * 40,
+                                       "tree": "b" * 40, "writer_fence": "lease-1",
+                                       "next_idempotent_step": "verify", "evidence_sha256": "c" * 64})
+        self.assertIn("SUCCESSOR_EXECUTION_UNVERIFIED", evaluate(r)["reasons"])
+
+    def test_handoff_successor_wrong_writer_is_blocked(self):
+        r = self.valid()
+        r.update(active_work_unit=True, context_transition=True, current_writer_fence="lease-1",
+                 continuation_receipt={"work_unit_id": "748", "head": "a" * 40,
+                                       "tree": "b" * 40, "writer_fence": "lease-1",
+                                       "next_idempotent_step": "verify", "evidence_sha256": "c" * 64},
+                 successor_execution_receipt={"work_unit_id": "748", "source_head": "a" * 40,
+                                              "writer_fence": "other", "step": "verify",
+                                              "evidence_sha256": "d" * 64})
+        self.assertIn("SUCCESSOR_EXECUTION_MISMATCH", evaluate(r)["reasons"])
 
     def test_wrong_site_identity(self):
         r = self.valid()
