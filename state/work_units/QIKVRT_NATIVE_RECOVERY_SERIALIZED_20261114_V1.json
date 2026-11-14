@@ -64,7 +64,26 @@
         "accept": "EFFECT_ACK_DONE_TRUE_WITH_EXACT_SOURCE_AND_EFFECT_BINDING",
         "failure": "EAP_EFFECT_UNVERIFIED"
       }
-    ]
+    ],
+    "on_terminal_step": "PERSIST_FINAL_RECEIPT_AND_ENQUEUE_NEXT_MONITOR_WORK_UNIT_AT_SAME_FENCE_BEFORE_YIELD",
+    "on_failure": "PERSIST_CAUSAL_FAILURE_AND_NEXT_IDEMPOTENT_REPAIR_STEP_BEFORE_YIELD",
+    "on_context_loss": "RECONSTRUCT_FROM_DURABLE_RECEIPT_AND_INDEPENDENT_READBACK_NOT_CHAT_HISTORY",
+    "no_chatgpt_liveness_dependency": true,
+    "monitor_successor": {
+      "trigger": "EXISTING_REPOSITORY_NATIVE_WATCHDOG_OR_HOST_SUPERVISOR",
+      "work_unit_id": "QIKVRT_CONTINUOUS_PRODUCTION_MONITOR",
+      "required_readbacks": [
+        "EXACT_MAIN_HEAD_TREE",
+        "ORIGINALHOST_MTLS",
+        "MESH_RUNTIME",
+        "DOMAIN_TLS",
+        "EXISTING_SITES_PERSISTENCE",
+        "EMP_EAP_RECEIPTS"
+      ],
+      "on_delta": "ENQUEUE_SERIAL_REPAIR_SUCCESSOR",
+      "on_no_delta": "PERSIST_HEARTBEAT_AND_NEXT_MONITOR_SUCCESSOR",
+      "on_trigger_unavailable": "LIVENESS_UNVERIFIED_FAIL_CLOSED"
+    }
   },
   "receipt_contract": {
     "required": [
@@ -84,9 +103,10 @@
   },
   "observed_blockers_at_creation": [
     "ADMITTED_MESH_RUNTIME_ENDPOINT",
-    "GITHUB_WORKFLOW_ADMISSION_REQUIRED"
+    "EXACT_HEAD_CI_FAILURE",
+    "MANIFEST_DRIFT"
   ],
   "effect_ack_done": false,
-  "completion_claim": "NOT_CLAIMED",
+  "completion_claim": "NOT_CLAIMED_UNTIL_ACTUAL_SUCCESSOR_EXECUTION_READBACK",
   "security": "REFERENCES_ONLY_NO_SECRET_VALUES"
 }
