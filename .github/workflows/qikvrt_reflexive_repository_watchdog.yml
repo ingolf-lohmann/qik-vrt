@@ -272,6 +272,23 @@ jobs:
             tests.test_qikvrt_workflow_executor_mesh_contract \
             tests.test_seed_workflows
 
+      - name: Materialize canonical integrity repair candidate (no unreviewed push)
+        if: always() && github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.qikvrt/reflexive-repository-watchdog
+          mkdir -p "$root/integrity-repair"
+          if PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify > "$root/integrity-repair/before.txt" 2>&1; then
+            printf '%s\n' ALREADY_CANONICAL > "$root/integrity-repair/disposition.txt"
+          else
+            printf '%s\n' REGENERATION_REQUIRED > "$root/integrity-repair/disposition.txt"
+            PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py generate > "$root/integrity-repair/generate.txt" 2>&1
+            PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify > "$root/integrity-repair/after.txt" 2>&1
+            git diff --binary -- REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt > "$root/integrity-repair/canonical.patch"
+            test -s "$root/integrity-repair/canonical.patch"
+          fi
+
       - name: Preserve the exact-head pre-deadlock receipt
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
