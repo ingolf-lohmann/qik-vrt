@@ -43,7 +43,7 @@ on:
 
 permissions:
   actions: read
-  contents: read
+  contents: write
   pull-requests: read
   issues: read
 
@@ -293,6 +293,24 @@ jobs:
             fi
             git diff --binary -- REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt > "$root/integrity-repair/canonical.patch"
             test -s "$root/integrity-repair/canonical.patch"
+          # Single-writer, exact-head fenced PR repair. No main push or merge.
+          if test "${{ github.event.pull_request.number }}" = 749 &&
+             test "${{ github.event.pull_request.head.repo.full_name }}" = "$GITHUB_REPOSITORY" &&
+             test "${{ github.event.pull_request.head.ref }}" = "fix/digital-twin-stall-regression-748" &&
+             test "$(cat "$root/integrity-repair/disposition.txt")" = REGENERATION_REQUIRED; then
+            expected="${{ github.event.pull_request.head.sha }}"
+            test "$(git rev-parse HEAD)" = "$expected"
+            remote_head="$(git ls-remote origin refs/heads/fix/digital-twin-stall-regression-748 | cut -f1)"
+            test "$remote_head" = "$expected"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+            git diff --cached --quiet && exit 0
+            git commit -m "fix(integrity): apply exact-head canonical regeneration (#749)"
+            GH_TOKEN="${{ github.token }}" gh auth setup-git
+            git push origin HEAD:refs/heads/fix/digital-twin-stall-regression-748
+            printf '%s\n' COMMITTED_TO_PR_BRANCH > "$root/integrity-repair/disposition.txt"
+          fi
           fi
 
       - name: Preserve the exact-head pre-deadlock receipt
