@@ -1,0 +1,14 @@
+test_old_queued_run_cannot_report_success_or_trigger_another_run (test_red_wakeup.WatchdogWakeupTests.test_old_queued_run_cannot_report_success_or_trigger_another_run) ... FAIL
+
+======================================================================
+FAIL: test_old_queued_run_cannot_report_success_or_trigger_another_run (test_red_wakeup.WatchdogWakeupTests.test_old_queued_run_cannot_report_success_or_trigger_another_run)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/95d3d2838279/qik-vrt/tests/test_qikvrt_devops_ring.py", line 105, in test_old_queued_run_cannot_report_success_or_trigger_another_run
+    self.assertEqual(result.returncode,2,result.stderr)
+AssertionError: 0 != 2 : 
+
+----------------------------------------------------------------------
+Ran 1 test in 0.069s
+
+FAILED (failures=1)

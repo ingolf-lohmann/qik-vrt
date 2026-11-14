@@ -35,6 +35,8 @@ def plan(observation, previous=None):
     evidence.sort(key=lambda e: (e["kind"], e["id"]))
     active = [r for r in runs if r.get("status") in ("queued", "in_progress", "waiting", "pending", "requested")]
     failed = [r for r in runs if r.get("status") == "completed" and r.get("conclusion") in ("failure", "timed_out", "cancelled")]
+    admission = [r for r in runs if r.get("status") == "completed" and
+                 r.get("conclusion") in ("action_required", "startup_failure")]
     invalid = [r for r in runs if r.get("status") not in STATES or
                (r.get("status") == "completed" and not isinstance(r.get("conclusion"), str))]
     if invalid:
@@ -45,6 +47,9 @@ def plan(observation, previous=None):
     tasks = [{"kind": "TEMDD_DIAGNOSE", "run_id": str(r["id"]), "status": "HOLD",
               "requires": "original failed step, exact head and causal change"}
              for r in failed]
+    tasks += [{"kind": "WORKFLOW_ADMISSION_REPAIR", "run_id": str(r["id"]),
+               "status": "HOLD", "requires": "original exact-head admission; no substitute rerun"}
+              for r in admission]
     tasks += [{"kind": "CONTINUATION_CANDIDATE", "work_id": str(w["id"]),
                "status": "REQUIRES_ADMISSION"} for w in pending]
     tasks.sort(key=lambda t: (t["kind"], t.get("run_id", t.get("work_id", ""))))
@@ -139,3 +144,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

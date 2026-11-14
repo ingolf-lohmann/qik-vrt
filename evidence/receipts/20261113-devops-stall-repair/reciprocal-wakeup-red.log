@@ -1,0 +1,14 @@
+test_periodic_wakeup_dispatch_contract_with_mock_gh (builtins.NativeClosureContinuationTests.test_periodic_wakeup_dispatch_contract_with_mock_gh) ... FAIL
+
+======================================================================
+FAIL: test_periodic_wakeup_dispatch_contract_with_mock_gh (builtins.NativeClosureContinuationTests.test_periodic_wakeup_dispatch_contract_with_mock_gh)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_reciprocal_closure_step.py", line 650, in test_periodic_wakeup_dispatch_contract_with_mock_gh
+    self.assertEqual(result.returncode, expected_rc, result.stderr)
+AssertionError: 1 != 0 : 
+
+----------------------------------------------------------------------
+Ran 1 test in 0.100s
+
+FAILED (failures=1)

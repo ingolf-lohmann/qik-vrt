@@ -1,0 +1,22 @@
+test_duplicate_fails_closed (test_qikvrt_devops_ring.DevOpsRingTests.test_duplicate_fails_closed) ... ok
+test_failure_does_not_hide_independent_work (test_qikvrt_devops_ring.DevOpsRingTests.test_failure_does_not_hide_independent_work) ... ok
+test_idle_is_not_effect (test_qikvrt_devops_ring.DevOpsRingTests.test_idle_is_not_effect) ... ok
+test_missing_inventory_fails_closed (test_qikvrt_devops_ring.DevOpsRingTests.test_missing_inventory_fails_closed) ... ok
+test_permutation_is_lossless (test_qikvrt_devops_ring.DevOpsRingTests.test_permutation_is_lossless) ... ok
+test_replay_does_not_renew_progress (test_qikvrt_devops_ring.DevOpsRingTests.test_replay_does_not_renew_progress) ... ok
+test_unexecuted_admission_never_becomes_an_idle_queue (test_qikvrt_devops_ring.DevOpsRingTests.test_unexecuted_admission_never_becomes_an_idle_queue) ... ok
+test_integrity_candidate_keeps_validation_without_branch_write_authority (test_qikvrt_devops_ring.RoundtripTests.test_integrity_candidate_keeps_validation_without_branch_write_authority) ... ok
+test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture (test_qikvrt_devops_ring.RoundtripTests.test_integrity_candidate_preserves_ci_writer_head_in_real_git_fixture) ... ok
+test_lossless_roundtrip_and_hash_chain (test_qikvrt_devops_ring.RoundtripTests.test_lossless_roundtrip_and_hash_chain) ... ok
+test_missing_observation_never_passes (test_qikvrt_devops_ring.RoundtripTests.test_missing_observation_never_passes) ... ok
+test_unknown_feature_fails_closed (test_qikvrt_devops_ring.RoundtripTests.test_unknown_feature_fails_closed) ... ok
+test_empty_activity_preserves_one_existing_observer_dispatch (test_qikvrt_devops_ring.WatchdogWakeupTests.test_empty_activity_preserves_one_existing_observer_dispatch) ... ok
+test_foreign_head_and_invalid_creation_remain_unknown (test_qikvrt_devops_ring.WatchdogWakeupTests.test_foreign_head_and_invalid_creation_remain_unknown) ... ok
+test_fresh_queued_run_is_observed_without_duplicate_dispatch (test_qikvrt_devops_ring.WatchdogWakeupTests.test_fresh_queued_run_is_observed_without_duplicate_dispatch) ... ok
+test_old_queued_run_cannot_report_success_or_trigger_another_run (test_qikvrt_devops_ring.WatchdogWakeupTests.test_old_queued_run_cannot_report_success_or_trigger_another_run) ... ok
+test_wakeup_leases_match_existing_watchdog_contract (test_qikvrt_devops_ring.WatchdogWakeupTests.test_wakeup_leases_match_existing_watchdog_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.648s
+
+OK
