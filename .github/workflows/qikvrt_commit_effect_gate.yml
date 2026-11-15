@@ -1,0 +1,33 @@
+name: QIK-VRT COMMIT effect gate regressions
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/commit_effect_gate.py'
+      - 'tests/test_commit_effect_gate.py'
+      - '.github/workflows/qikvrt_commit_effect_gate.yml'
+  push:
+    paths:
+      - 'scripts/commit_effect_gate.py'
+      - 'tests/test_commit_effect_gate.py'
+      - '.github/workflows/qikvrt_commit_effect_gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  commit-effect-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact workflow HEAD
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute fail-closed COMMIT regressions
+        run: python -m unittest discover -s tests -p test_commit_effect_gate.py -v
