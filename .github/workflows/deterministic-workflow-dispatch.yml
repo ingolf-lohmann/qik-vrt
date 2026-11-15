@@ -15,12 +15,27 @@ on:
 permissions:
   actions: write
   contents: read
+concurrency:
+  # Serialize dispatches per repository and target ref; never cancel an active writer.
+  group: deterministic-dispatch-${{ github.repository }}-${{ inputs.ref }}
+  cancel-in-progress: false
+
 jobs:
   dispatch-and-verify:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - name: Reject cross-repository or stale dispatch context
+        shell: bash
+        env:
+          TARGET_REPOSITORY: ${{ github.repository }}
+          TARGET_REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          test "$TARGET_REPOSITORY" = "ingolf-lohmann/qik-vrt"
+          git check-ref-format --branch "$TARGET_REF"
+          git ls-remote --exit-code origin "refs/heads/$TARGET_REF" >/dev/null
       - name: Dispatch workflow and verify resulting run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
