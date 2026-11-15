@@ -41,3 +41,13 @@ A success response MUST be mechanically gated on the persisted EAP receipt. An a
 - Repeated COMMIT with same intent ID: idempotent result, not duplicate commit.
 
 Acceptance requires production-path wiring, exact-HEAD CI passing these tests, and independent runtime EAP readback. This text alone does not implement the enforcement.
+
+## Non-terminating read-only acceptance observation (continuation contract)
+
+An observer run is a **bounded readback**, not completion of the overarching acceptance assignment. The observer MUST persist or recover the last independently evidenced exact HEAD, run IDs, gate outcomes, and unresolved repair obligations through the existing authority-repository evidence mechanism. It MUST NOT interpret the end of a chat turn, successful isolated regression workflow, or an unchanged HEAD as termination.
+
+For every subsequent readback, compare the latest PR HEAD and main HEAD against the prior evidenced baseline; enumerate the COMMIT gate implementation, regression execution, full exact-HEAD CI, production writer integration, reviews, merge/main promotion, original-host runtime and independent EMP/EAP effect receipt. Classify each criterion as CONFIRMED, OPEN, UNKNOWN or ASSERTED_ONLY. Progress bars MUST represent named, independently verifiable acceptance predicates with a stable denominator, not elapsed time, number of commits, or speculative percentages.
+
+**Termination predicate:** the observation may report COMPLETE only if all required predicates are independently CONFIRMED for the relevant exact integrated HEAD, including successful full CI, admitted writer integration, authorized merge/main integration, and independently read-back productive EAP acknowledgment. Any failed, missing, stale, skipped, or unknown gate keeps `CONTINUATION_REQUIRED` and the outstanding repair path visible. An isolated successful COMMIT regression is progress, never final acceptance.
+
+The observer is read-only and must not itself dispatch CI, merge, deploy, create a parallel controller, or claim a continuous execution capability it does not have. Scheduling and continuation must use an already authorized observation mechanism; its availability and last run must be checked rather than presumed. If the mechanism is unavailable, report the interruption as a monitoring defect, not as successful completion. This clause does not itself install or verify a scheduler.
