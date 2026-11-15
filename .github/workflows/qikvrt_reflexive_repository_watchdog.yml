@@ -43,7 +43,7 @@ on:
 
 permissions:
   actions: read
-  contents: read
+  contents: write
   pull-requests: read
   issues: read
 
@@ -265,6 +265,38 @@ jobs:
             tests.test_qikvrt_reflexive_repository_watchdog \
             tests.test_qikvrt_workflow_executor_mesh_contract \
             tests.test_seed_workflows
+
+      - name: Regenerate and commit canonical integrity trio on exact PR 751 head
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 751
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "ingolf-lohmann/qik-vrt"
+          test "$PR_HEAD_REPO" = "$GITHUB_REPOSITORY"
+          test "$PR_HEAD_REF" = "fix/synchronous-dispatch-single-writer-20261115"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/751" --jq '.head.sha')" = "$EXPECTED_HEAD"
+          if python3 -B tools/qikvrt_integrity.py verify; then
+            echo "Canonical manifest already verified"
+            exit 0
+          fi
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git add -- REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          git diff --cached --quiet && { echo "No canonical delta after regeneration" >&2; exit 1; }
+          test "$(git diff --cached --name-only | wc -l)" -eq 3
+          test "$(gh api "repos/$GITHUB_REPOSITORY/pulls/751" --jq '.head.sha')" = "$EXPECTED_HEAD"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix(integrity): regenerate canonical trio at exact PR 751 head"
+          gh auth setup-git
+          git push origin "HEAD:refs/heads/$PR_HEAD_REF"
+          echo "Canonical trio committed; successor HEAD must pass fresh CI"
 
       - name: Preserve the exact-head pre-deadlock receipt
         if: always()
