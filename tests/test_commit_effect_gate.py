@@ -88,5 +88,28 @@ class CommitEffectGateTests(unittest.TestCase):
     def test_missing_writer_lease(self):
         self.assertFalse(validate(sample(writer_lease_id=""))[0])
 
+class CommitObservationContractTests(unittest.TestCase):
+    """Prevent regression to chat-turn completion of an open acceptance."""
+
+    @classmethod
+    def setUpClass(cls):
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        cls.contract = (root / "docs/commit-execution-evidence-contract-749.md").read_text(encoding="utf-8")
+
+    def test_chat_turn_is_not_acceptance_completion(self):
+        self.assertIn("end of a chat turn", self.contract)
+        self.assertIn("not termination", self.contract)
+
+    def test_independent_productive_eap_is_required(self):
+        self.assertIn("independently read-back productive EAP acknowledgment", self.contract)
+
+    def test_unknown_gate_requires_continuation(self):
+        self.assertIn("CONTINUATION_REQUIRED", self.contract)
+        self.assertIn("UNKNOWN", self.contract)
+
+    def test_observer_is_read_only(self):
+        self.assertIn("must not itself dispatch CI, merge, deploy", self.contract)
+
 if __name__ == "__main__":
     unittest.main()
