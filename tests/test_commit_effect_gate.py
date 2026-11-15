@@ -55,6 +55,27 @@ class CommitEffectGateTests(unittest.TestCase):
     def test_duplicate_success_event_rejected(self):
         self.assertFalse(validate(sample(events=BASE["events"] + [{"state": "EFFECT_VERIFIED"}]))[0])
 
+    def test_missing_intent_id(self):
+        self.assertFalse(validate(sample(intent_id=""))[0])
+
+    def test_missing_exact_head(self):
+        self.assertFalse(validate(sample(exact_head=""))[0])
+
+    def test_missing_commit_sha(self):
+        self.assertFalse(validate(sample(commit_sha=""))[0])
+
+    def test_missing_readback_sha(self):
+        self.assertFalse(validate(sample(readback_sha=""))[0])
+
+    def test_invalid_event_state(self):
+        self.assertFalse(validate(sample(events=[{"state": "RECEIVED"}, {"state": "DONE"}]))[0])
+
+    def test_missing_received_event(self):
+        self.assertFalse(validate(sample(events=[{"state": "PERSISTED"}]))[0])
+
+    def test_executing_without_admission(self):
+        self.assertFalse(validate(sample(events=[{"state": "RECEIVED"}, {"state": "PERSISTED"}, {"state": "EXECUTING"}]))[0])
+
     def test_missing_writer_lease(self):
         self.assertFalse(validate(sample(writer_lease_id=""))[0])
 
