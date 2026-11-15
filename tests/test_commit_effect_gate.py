@@ -76,6 +76,15 @@ class CommitEffectGateTests(unittest.TestCase):
     def test_executing_without_admission(self):
         self.assertFalse(validate(sample(events=[{"state": "RECEIVED"}, {"state": "PERSISTED"}, {"state": "EXECUTING"}]))[0])
 
+    def test_malformed_exact_head(self):
+        self.assertEqual(validate(sample(exact_head="not-a-sha"))[1], "invalid_commit_identity")
+
+    def test_malformed_commit_sha(self):
+        self.assertEqual(validate(sample(commit_sha="not-a-sha"))[1], "invalid_commit_identity")
+
+    def test_malformed_readback_sha(self):
+        self.assertEqual(validate(sample(readback_sha="not-a-sha"))[1], "invalid_commit_identity")
+
     def test_missing_writer_lease(self):
         self.assertFalse(validate(sample(writer_lease_id=""))[0])
 
