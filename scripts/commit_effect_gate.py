@@ -6,6 +6,7 @@ The existing writer must persist records and invoke this gate at its output boun
 """
 import argparse
 import json
+import re
 import sys
 
 STATES = ("RECEIVED", "PERSISTED", "ADMITTED", "EXECUTING",
@@ -45,6 +46,9 @@ def validate(record):
     if not all(isinstance(record.get(k), str) and record[k] for k in
                ("commit_sha", "readback_sha", "eap_receipt_id", "writer_lease_id")):
         return False, "missing_effect_evidence"
+    if not all(re.fullmatch(r"[0-9a-f]{40}", record[k]) for k in
+               ("exact_head", "commit_sha", "readback_sha")):
+        return False, "invalid_commit_identity"
     if record["commit_sha"] != record["readback_sha"]:
         return False, "commit_readback_mismatch"
     if record["authority_repo"] != "ingolf-lohmann/qik-vrt":
