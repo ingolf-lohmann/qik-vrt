@@ -51,3 +51,13 @@ For every subsequent readback, compare the latest PR HEAD and main HEAD against 
 **Termination predicate:** the observation may report COMPLETE only if all required predicates are independently CONFIRMED for the relevant exact integrated HEAD, including successful full CI, admitted writer integration, authorized merge/main integration, and independently read-back productive EAP acknowledgment. Any failed, missing, stale, skipped, or unknown gate keeps `CONTINUATION_REQUIRED` and the outstanding repair path visible. An isolated successful COMMIT regression is progress, never final acceptance.
 
 The observer is read-only and must not itself dispatch CI, merge, deploy, create a parallel controller, or claim a continuous execution capability it does not have. Scheduling and continuation must use an already authorized observation mechanism; its availability and last run must be checked rather than presumed. If the mechanism is unavailable, report the interruption as a monitoring defect, not as successful completion. This clause does not itself install or verify a scheduler.
+
+## No-delta reporting and autonomous repair handoff
+
+A readback with no material change in exact HEAD, CI outcome, review/merge status, writer integration, runtime acceptance or EAP receipt is a **NO_DELTA observation**, not a new user decision point. Preserve the evidence and unresolved repair obligation in the existing continuation mechanism, but do not repeatedly request Principal confirmation or send the same blocker as a fresh alert. This suppression concerns notifications only; it MUST NOT suppress subsequent authorized checks or hide a stalled repair.
+
+On a changed failure, new blocker, demonstrated progress, required Principal-only decision, or independently verified completion, publish the precise delta and its source. Otherwise advance the already-authorized, existing DevOps repair path where admissible; if execution is technically unavailable, retain `CONTINUATION_REQUIRED` with the specific blocked action and do not claim autonomous progress.
+
+The next cycle MUST re-read the latest exact HEAD before comparing results, treat superseded runs as historical, and use the current exact-HEAD test result for acceptance. A failed newly added regression is actionable diagnostic evidence, never a PASS and never permission to bypass the gate. Full autonomy remains a measured acceptance target, not a status inferred from repeated COMMITs or unchanged reports.
+
+This is a reporting and continuation **contract**. It does not by itself prove scheduler operation, production writer wiring, or independently acknowledged effect.
