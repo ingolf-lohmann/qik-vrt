@@ -21,3 +21,23 @@ For every COMMIT request:
 Given a valid COMMIT instruction, the system must not return only a verbal authorization confirmation. It must either produce a verified commit readback or an evidenced, specific non-execution result. A read-only fetch cannot satisfy a write request. Never report `EFFECT_ACK_DONE` without independent EAP evidence.
 
 This document records the requirement only. Wiring into the existing synchronous DevOps loop, executable regression tests, CI and production acceptance remain separate, verifiable work.
+
+
+## Mandatory architectural enforcement (not a conversational convention)
+Every authorized actionable instruction must be durably admitted to the existing authority-repository workflow before it can be acknowledged as accepted for execution. Chat memory, UI state, and assistant prose are never authoritative storage.
+
+The existing single-writer DevOps loop MUST implement a durable state machine:
+`RECEIVED -> PERSISTED -> ADMITTED -> EXECUTING -> EFFECT_VERIFIED`, with explicit `BLOCKED` / `REPAIR_REQUIRED` branches and an append-only evidence trail. Transitions must be idempotent under replay, correlated by stable intent ID, fenced against stale writers, and bound to exact HEAD and Principal authorization. A blocked request must remain discoverable and actionable across session loss; no silent dropping, no invented completion, and no parallel scheduler.
+
+A success response MUST be mechanically gated on the persisted EAP receipt. An acknowledgement of intent, a commit SHA, a CI dispatch, or a Sites write alone MUST NOT mark completion. The absence of an admissible write must produce a durable failure/repair record where technically possible; if persistence itself is unavailable, report this explicitly and do not claim acceptance.
+
+## Required executable negative regressions
+- Authorized COMMIT with read-only processing: reject success; preserve outstanding intent.
+- Session interruption after admission: restart/replay finds the same intent without duplicate effects.
+- GitHub 403, zero-job/action_required CI, or unavailable writer: keep repair required, never DONE.
+- HEAD drift or stale writer lease: reject stale execution and re-admit against current evidence.
+- Commit without independent EAP receipt: remain pending, never DONE.
+- Persistence unavailable: no accepted/complete acknowledgement.
+- Repeated COMMIT with same intent ID: idempotent result, not duplicate commit.
+
+Acceptance requires production-path wiring, exact-HEAD CI passing these tests, and independent runtime EAP readback. This text alone does not implement the enforcement.
