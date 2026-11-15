@@ -650,7 +650,12 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertIn("cancel-in-progress: false", workflow)
         self.assertNotIn("cancel-in-progress: true", workflow)
         self.assertIn("actions: read", workflow)
-        self.assertIn("contents: read", workflow)
+        # The PR 751 integrity writer requires scoped write permission.
+        # Its authority, branch and exact-HEAD guards remain mandatory.
+        self.assertIn("contents: write", workflow)
+        self.assertIn("github.event.pull_request.number == 751", workflow)
+        self.assertIn('test "$PR_HEAD_REPO" = "$GITHUB_REPOSITORY"', workflow)
+        self.assertIn('test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"', workflow)
         self.assertIn("qikvrt_reflexive_repository_watchdog.py", workflow)
         self.assertIn("qikvrt-reflexive-repository-watchdog-", workflow)
         self.assertIn("QIKVRT CI", workflow)
