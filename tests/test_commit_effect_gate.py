@@ -111,5 +111,16 @@ class CommitObservationContractTests(unittest.TestCase):
     def test_observer_is_read_only(self):
         self.assertIn("must not itself dispatch CI, merge, deploy", self.contract)
 
+    def test_no_delta_does_not_terminate_observation(self):
+        self.assertIn("NO_DELTA observation", self.contract)
+        self.assertIn("MUST NOT suppress subsequent authorized checks", self.contract)
+
+    def test_duplicate_blockers_do_not_require_new_principal_decision(self):
+        self.assertIn("do not repeatedly request Principal confirmation", self.contract)
+
+    def test_failed_new_regression_never_counts_as_pass(self):
+        self.assertIn("never a PASS", self.contract)
+
+
 if __name__ == "__main__":
     unittest.main()
