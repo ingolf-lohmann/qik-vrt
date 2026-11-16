@@ -86,13 +86,19 @@ class S1DependencyCandidateTests(unittest.TestCase):
 
     def test_no_production_route_or_automatic_substitute(self):
         src = WORKFLOW.read_text(encoding="utf-8")
+        # The repair job is an explicitly scoped source-integrity writer;
+        # the OCI candidate job must remain read-only and non-productive.
+        self.assertIn("github.event.pull_request.number == 723", src)
+        self.assertIn("python3 -B tools/qikvrt_integrity.py generate", src)
+        self.assertIn('git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt', src)
+        candidate = src.split("  two-independent-builds:", 1)[1]
         forbidden = (
             "container-deploy", "git push", "gh release create", "docker login",
             "GITHUB_TOKEN:", "contents: write", "pull_request_target:", "docker/build-push-action",
         )
         for value in forbidden:
             with self.subTest(forbidden=value):
-                self.assertNotIn(value, src)
+                self.assertNotIn(value, candidate)
 
 
 if __name__ == "__main__":
