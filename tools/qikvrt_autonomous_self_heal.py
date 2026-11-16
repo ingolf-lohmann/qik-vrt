@@ -708,7 +708,32 @@ def rank_prs(prs: Sequence[Mapping[str, Any]], repository: str,
         rank = (2, last[number], "") if number in last else ((1, 0, max(legacy)) if legacy else (0, 0, ""))
         result.append({"pull_request": number, "head_ref": pr["head"]["ref"],
                        "head_sha": pr["head"]["sha"], "base_ref": "main", "rank": list(rank)})
-    return sorted(result, key=lambda item: (tuple(item["rank"]), item["pull_request"]))
+    # The existing continuation controller remains the sole selector/writer.
+    # Priority is admitted only from exact GitHub labels on eligible PRs;
+    # ambiguous multi-priority labels fail closed instead of guessing.
+    from tools.qikvrt_recursive_priority_queue import PRIORITIES, validate
+    eligible = {int(pr["number"]): pr for pr in prs if eligible_pr(pr, repository)}
+    units = []
+    for item in result:
+        number = item["pull_request"]
+        labels = {label.get("name") for label in eligible[number].get("labels", [])}
+        levels = [level for level in ("P0", "P1", "P2", "P3", "P4")
+                  if "qikvrt-priority:" + level in labels]
+        if len(levels) > 1:
+            raise SelfHealBlock("conflicting native priority labels")
+        priority = levels[0] if levels else "P3"
+        # Historical attempt ordering remains authoritative within a priority.
+        units.append({"id": str(number), "dedupe_key": "pr:" + str(number),
+                      "priority": priority, "state": "QUEUED",
+                      "head": item["head_sha"], "dependencies": [],
+                      "last_attempt": item["rank"][1] if item["rank"][0] == 2 else 0})
+    # Cross-PR HEADs differ: validate each immutable candidate subject,
+    # then retain the existing native writer claim and fairness receipts.
+    validate(units)
+    return sorted(result, key=lambda item: (
+        PRIORITIES.index(
+            next(unit["priority"] for unit in units if unit["id"] == str(item["pull_request"]))),
+        tuple(item["rank"]), item["pull_request"]))
 
 
 def observe_pr_plan(api: GitHubREST) -> dict[str, Any]:
