@@ -5,7 +5,7 @@ on:
   issues:
     types: [opened, edited, reopened, labeled]
   workflow_run:
-    workflows: ["QIKVRT CI"]
+    workflows: ["QIKVRT CI", "Autonomous issue processing"]
     types: [completed]
   workflow_dispatch:
     inputs:
@@ -57,6 +57,23 @@ jobs:
               --limit 200 \
               --json headRefName \
               --jq '.[] | select(.headRefName | startswith("issue-agent/")) | .headRefName | split("/")[1]')"
+          fi
+
+          # A completed processor must hand off to the next unclaimed issue,
+          # not only retry branches that already have issue-agent PRs.
+          # Bounded to one new issue per run; existing causal admissions remain intact.
+          if [ -z "${REQUESTED_ISSUE:-}" ] && [ -z "$issues" ]; then
+            candidate="$(gh issue list --repo "$REPOSITORY" --state open --limit 100 \
+              --json number,labels --jq '[.[] | select(any(.labels[]?; .name == "p0" or .name == "P0"))] | sort_by(.number) | .[0].number // empty')"
+            if [ -n "$candidate" ]; then
+              existing="$(gh pr list --repo "$REPOSITORY" --state all --limit 200 \
+                --json headRefName --jq --arg branch "issue-agent/$candidate" '[.[] | select(.headRefName == $branch)] | length')"
+              if [ "$existing" = 0 ]; then
+                gh api --method POST "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/dispatches" \
+                  -f ref=main -f "inputs[issue_number]=$candidate"
+                echo "issue=$candidate state=DISPATCHED reason=unclaimed_p0_backlog"
+              fi
+            fi
           fi
 
           resumed=0
