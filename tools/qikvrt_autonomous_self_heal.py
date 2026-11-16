@@ -1288,6 +1288,59 @@ def route_repair_receipt(receipt: Mapping[str, Any], *, repository: str,
             "repair_executed": False, "effect_ack_done": False}
 
 
+
+def persist_repair_route(api: GitHubREST, receipt: Mapping[str, Any],
+                         inbox: pathlib.Path, route: Mapping[str, Any]) -> dict[str, Any]:
+    """Preserve verified repair input in the existing immutable Git receipt lane."""
+    unit = route["work_unit_id"]
+    raw = (inbox / (unit + ".json")).read_bytes()
+    if len(raw) > 8 * 1024 * 1024 or hashlib.sha256(raw).hexdigest() != receipt.get("inbox_sha256"):
+        raise SelfHealBlock("repair inbox byte binding differs")
+    envelope = json.loads(raw.decode("utf-8"))
+    canonical = lambda value: (json.dumps(value, ensure_ascii=False,
+        sort_keys=True, indent=2, allow_nan=False) + "\n").encode("utf-8")
+    if raw != canonical(envelope) or envelope.get("work_unit_id") != unit:
+        raise SelfHealBlock("repair envelope identity or canonical bytes differ")
+    if (envelope.get("schema") != "qikvrt_error_analysis_handoff_v1"
+            or envelope.get("state") != "REPAIR_INPUT_REQUIRED"
+            or envelope.get("subject") != route["subject"]
+            or envelope.get("origin") != receipt.get("origin")
+            or envelope.get("effect_permission") is not False
+            or envelope.get("analysis_sha256") != receipt.get("analysis_sha256")
+            or envelope.get("hop_count") != 1):
+        raise SelfHealBlock("source-bound repair envelope drift")
+    analysis = envelope.get("analysis_utf8")
+    if not isinstance(analysis, str) or hashlib.sha256(analysis.encode()).hexdigest() != receipt["analysis_sha256"]:
+        raise SelfHealBlock("repair analysis byte digest differs")
+    identity = hashlib.sha256(canonical({
+        "subject": route["subject"], "origin": receipt["origin"],
+        "analysis_sha256": receipt["analysis_sha256"]})).hexdigest()
+    if identity != unit:
+        raise SelfHealBlock("repair work-unit identity differs")
+    head = route["subject"]["head"]
+    if (api.ref("refs/heads/main") or {}).get("object", {}).get("sha") != head:
+        raise SelfHealBlock("main moved before durable repair binding")
+    blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+    saved = api.call("POST", "git/blobs", {
+        "content": base64.b64encode(raw).decode(), "encoding": "base64"})
+    if saved.get("sha") != blob:
+        raise SelfHealBlock("repair Git object SHA differs")
+    readback = api.call("GET", f"git/blobs/{blob}")
+    if (readback.get("sha") != blob or readback.get("encoding") != "base64"
+            or base64.b64decode(readback.get("content", "")) != raw):
+        raise SelfHealBlock("persisted Git repair byte readback differs")
+    reference = CONTINUATION_REFS + "work-units/" + unit
+    api.create_once(reference, blob)
+    if (api.ref(reference) or {}).get("object", {}).get("sha") != blob:
+        raise SelfHealBlock("durable repair reference readback differs")
+    if (api.ref("refs/heads/main") or {}).get("object", {}).get("sha") != head:
+        raise SelfHealBlock("main drift after persistence; no writer claim")
+    return dict(route, persistent_ref=reference, blob_sha=blob,
+                inbox_sha256=receipt["inbox_sha256"], persistence_readback_verified=True,
+                writer_claim=None, lease=None, fencing_token=None,
+                writer_admitted=False, repair_executed=False, effect_ack_done=False)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation", "repair-consume", "repair-route"))
@@ -1323,8 +1376,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "repair-route":
             if not all((args.receipt, args.repository_name, args.expected_head, args.expected_tree)):
                 raise SelfHealBlock("exact consumer receipt and repair subject required")
-            result = route_repair_receipt(_load_json(args.receipt, "repair consumer receipt"),
+            receipt = _load_json(args.receipt, "repair consumer receipt")
+            result = route_repair_receipt(receipt,
                 repository=args.repository_name, head=args.expected_head, tree=args.expected_tree)
+            if result["state"] == "REPAIR_HANDLER_REQUIRED":
+                if args.inbox is None:
+                    raise SelfHealBlock("durable repair route requires consumer inbox")
+                result = persist_repair_route(GitHubREST(args.repository_name),
+                    receipt, args.inbox, result)
         elif args.command == "ci-continuation":
             result = ci_continuation_receipt(args.repository, args.reference,
                 args.test_outcome, args.repository_name, args.event,
