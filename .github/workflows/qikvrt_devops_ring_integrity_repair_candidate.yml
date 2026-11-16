@@ -64,6 +64,21 @@ jobs:
           test "$(git rev-parse "refs/remotes/origin/$PR_BRANCH")" = "$EXPECTED_HEAD"
           git push origin "HEAD:refs/heads/$PR_BRANCH"
           echo "PR_BRANCH_UPDATED: exact original head verified; no main merge or release."
+      - name: Dispatch canonical CI on verified successor HEAD
+        if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'push' && github.ref == 'refs/heads/fix/digital-twin-stall-regression-748') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$PR_BRANCH" != main
+          successor_head="$(git rev-parse HEAD)"
+          remote_head="$(git ls-remote origin "refs/heads/$PR_BRANCH" | cut -f1)"
+          test -n "$remote_head"
+          test "$remote_head" = "$successor_head"
+          gh workflow run qikvrt_ci.yml --ref "$PR_BRANCH"
+          echo "CI_SUCCESSOR_DISPATCH_REQUESTED: $successor_head"
       - name: Preserve candidate without promoting it
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
