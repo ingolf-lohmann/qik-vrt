@@ -1247,9 +1247,50 @@ def consume_repair_input(envelope: Mapping[str, Any], source: Mapping[str, Any],
             "effect_ack_done": False}
 
 
+def route_repair_receipt(receipt: Mapping[str, Any], *, repository: str,
+                         head: str, tree: str) -> dict[str, Any]:
+    """Gate verified predecessor work before unrelated PR rotation.
+
+    Neither this receipt nor its route grants writer authority, proves a
+    cause, or acknowledges a downstream deployment effect.
+    """
+    if not isinstance(receipt, Mapping) or not re.fullmatch(r"[0-9a-f]{40}", head) \
+            or not re.fullmatch(r"[0-9a-f]{40}", tree) \
+            or not isinstance(repository, str) or repository.count("/") != 1:
+        raise SelfHealBlock("invalid exact repair route subject")
+    identity = receipt.get("work_unit_id")
+    if not isinstance(identity, str) or re.fullmatch(r"[0-9a-f]{64}", identity) is None \
+            or receipt.get("effect_ack_done") is not False:
+        raise SelfHealBlock("unbound work unit or unverified effect claim")
+    if receipt.get("state") == "NOOP":
+        return {"schema": "qikvrt_repair_route_v1", "state": "NO_REPAIR_REQUIRED",
+                "work_unit_id": identity, "allow_pr_rotation": True,
+                "writer_admitted": False, "effect_ack_done": False}
+    if (receipt.get("schema") != "qikvrt_repair_consumer_receipt_v1"
+            or receipt.get("state") not in {"ADMITTED_ANALYSIS_HOLD", "DUPLICATE_READBACK"}
+            or receipt.get("subject") != {"repository": repository, "head": head, "tree": tree}
+            or receipt.get("consumer") != "tools/qikvrt_autonomous_self_heal.py"
+            or receipt.get("analysis_admitted") is not True
+            or receipt.get("inbox_readback_verified") is not True
+            or receipt.get("writer_admitted") is not False
+            or receipt.get("repair_executed") is not False
+            or receipt.get("gap_closed") is not False
+            or receipt.get("cause_closed") is not False
+            or receipt.get("repair_complete") is not False
+            or receipt.get("gap_priority") != "OWNER_HIGHEST"
+            or receipt.get("cause_priority") != "OWNER_HIGHEST"):
+        raise SelfHealBlock("repair route rejected unverified or promoted consumer receipt")
+    return {"schema": "qikvrt_repair_route_v1", "state": "REPAIR_HANDLER_REQUIRED",
+            "work_unit_id": identity, "subject": dict(receipt["subject"]),
+            "first_blocker": receipt.get("first_blocker"),
+            "next_action": "ESTABLISH_CAUSE_AND_MATCH_EXISTING_ALLOWLISTED_REPAIR",
+            "allow_pr_rotation": False, "writer_admitted": False,
+            "repair_executed": False, "effect_ack_done": False}
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation", "repair-consume"))
+    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation", "repair-consume", "repair-route"))
     parser.add_argument("--repository", type=pathlib.Path, default=ROOT)
     parser.add_argument("--reference")
     parser.add_argument("--binding", type=pathlib.Path)
@@ -1259,6 +1300,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--event")
     parser.add_argument("--run-id", type=int)
     parser.add_argument("--run-attempt", type=int)
+    parser.add_argument("--receipt", type=pathlib.Path)
     parser.add_argument("--envelope", type=pathlib.Path)
     parser.add_argument("--source-run", type=pathlib.Path)
     parser.add_argument("--source-jobs", type=pathlib.Path)
@@ -1278,6 +1320,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                 _load_json(args.source_run, "producer run"),
                 _load_json(args.source_jobs, "producer jobs"), repository=args.repository_name,
                 head=args.expected_head, tree=args.expected_tree, inbox=args.inbox)
+        elif args.command == "repair-route":
+            if not all((args.receipt, args.repository_name, args.expected_head, args.expected_tree)):
+                raise SelfHealBlock("exact consumer receipt and repair subject required")
+            result = route_repair_receipt(_load_json(args.receipt, "repair consumer receipt"),
+                repository=args.repository_name, head=args.expected_head, tree=args.expected_tree)
         elif args.command == "ci-continuation":
             result = ci_continuation_receipt(args.repository, args.reference,
                 args.test_outcome, args.repository_name, args.event,

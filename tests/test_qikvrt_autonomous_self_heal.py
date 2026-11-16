@@ -279,6 +279,54 @@ class RepairInputTests(unittest.TestCase):
               producer_event='workflow_run', parent_workflow='QIK-VRT autonomous draft-PR continuation')
         self.assertEqual(env['state'], 'NOOP')
 
+    def test_repair_route_prioritizes_unresolved_work_unit(self):
+        _, _, env, source, jobs = self.fixture()
+        with tempfile.TemporaryDirectory() as inbox:
+            receipt = self.consume(env, source, jobs, inbox)
+            decision = MODULE.route_repair_receipt(receipt,
+                repository="ingolf-lohmann/qik-vrt", head="a"*40, tree="b"*40)
+        self.assertEqual(decision["work_unit_id"], env["work_unit_id"])
+        self.assertEqual(decision["state"], "REPAIR_HANDLER_REQUIRED")
+        self.assertFalse(decision["allow_pr_rotation"])
+        self.assertFalse(decision["writer_admitted"])
+        self.assertFalse(decision["effect_ack_done"])
+
+    def test_repair_route_noop_can_resume_pr_rotation(self):
+        receipt = {"state": "NOOP", "work_unit_id": "c"*64, "effect_ack_done": False}
+        decision = MODULE.route_repair_receipt(receipt,
+            repository="ingolf-lohmann/qik-vrt", head="a"*40, tree="b"*40)
+        self.assertEqual(decision["state"], "NO_REPAIR_REQUIRED")
+        self.assertTrue(decision["allow_pr_rotation"])
+        self.assertFalse(decision["writer_admitted"])
+
+    def test_repair_route_rejects_stale_subject_and_forged_effects(self):
+        import copy
+        _, _, env, source, jobs = self.fixture()
+        with tempfile.TemporaryDirectory() as inbox:
+            receipt = self.consume(env, source, jobs, inbox)
+        for key, value in (
+            ("writer_admitted", True), ("effect_ack_done", True),
+            ("inbox_readback_verified", False), ("state", "CLAIMED"),
+            ("subject", {"repository": "other/repo", "head": "a"*40, "tree": "b"*40}),
+        ):
+            with self.subTest(key=key):
+                changed = copy.deepcopy(receipt); changed[key] = value
+                with self.assertRaises(MODULE.SelfHealBlock):
+                    MODULE.route_repair_receipt(changed,
+                        repository="ingolf-lohmann/qik-vrt", head="a"*40, tree="b"*40)
+        with self.assertRaises(MODULE.SelfHealBlock):
+            MODULE.route_repair_receipt(receipt,
+                repository="ingolf-lohmann/qik-vrt", head="d"*40, tree="b"*40)
+
+    def test_workflow_routes_repair_before_generic_pr_selection(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml").read_text()
+        self.assertLess(workflow.index("tools/qikvrt_autonomous_self_heal.py repair-consume"),
+                        workflow.index("tools/qikvrt_autonomous_self_heal.py repair-route"))
+        self.assertLess(workflow.index("tools/qikvrt_autonomous_self_heal.py repair-route"),
+                        workflow.index("Select and record one fair exact opted-in draft PR"))
+        self.assertIn("unrelated PR rotation is not its execution", workflow)
+
+
     def test_inbox_conflict_does_not_overwrite_predecessor(self):
         _, _, env, source, jobs = self.fixture()
         with tempfile.TemporaryDirectory() as inbox:
