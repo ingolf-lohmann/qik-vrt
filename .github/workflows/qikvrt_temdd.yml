@@ -41,10 +41,12 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p "$RUNNER_TEMP"
+          printf "S1 admission started for %s\n" "$EXPECTED_HEAD" > "$RUNNER_TEMP/temdd-s1-tests.log"
           python3 -B tools/qikvrt_tool_cache.py verify
           sh tools/bootstrap-runtime.sh --check-only --profile self-host --adapter none
           python3 -B tools/qikvrt_integrity.py verify
-          make temdd-event-ledger-test self-host-test 2>&1 | tee "$RUNNER_TEMP/temdd-s1-tests.log"
+          make temdd-event-ledger-test self-host-test 2>&1 | tee -a "$RUNNER_TEMP/temdd-s1-tests.log"
           git diff --exit-code
           python3 -B - <<'PY' > "$RUNNER_TEMP/temdd-s1-binding.json"
           import hashlib,json,os,subprocess
@@ -57,6 +59,34 @@ jobs:
             'scope':'EXECUTED_ORIGINAL_AND_PORTABLE_NATIVE_CONTROLS; NO_DEPLOYMENT',
             'predecessor_evidence_transfer':False,'effect_ack_done':False},sort_keys=True))
           PY
+      - name: Materialize fail-closed binding on early failure
+        if: ${{ always() }}
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP"
+          if [ ! -f "$RUNNER_TEMP/temdd-s1-tests.log" ]; then
+            printf 'PRE_TEST_FAILURE: tests not reached\n' > "$RUNNER_TEMP/temdd-s1-tests.log"
+          fi
+          if [ ! -f "$RUNNER_TEMP/temdd-s1-binding.json" ]; then
+            python3 - <<'PY' > "$RUNNER_TEMP/temdd-s1-binding.json"
+          import json, os, subprocess
+          def git(*args):
+              try:
+                  return subprocess.check_output(['git', *args], text=True, stderr=subprocess.DEVNULL).strip()
+              except Exception:
+                  return None
+          print(json.dumps({'schema':'qikvrt-temdd-s1-native-gate/v1',
+                            'source_head':git('rev-parse','HEAD'),
+                            'source_tree':git('rev-parse','HEAD^{tree}'),
+                            'expected_head':os.environ['EXPECTED_HEAD'],
+                            'run_id':os.environ['GITHUB_RUN_ID'],
+                            'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+                            'scope':'EARLY_FAILURE_TESTS_NOT_PROVEN',
+                            'effect_ack_done':False}, sort_keys=True))
+          PY
+          fi
       - name: Preserve native execution and exact source binding
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
