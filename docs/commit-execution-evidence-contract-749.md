@@ -44,7 +44,7 @@ Acceptance requires production-path wiring, exact-HEAD CI passing these tests, a
 
 ## Non-terminating read-only acceptance observation (continuation contract)
 
-An observer run is a **bounded readback**, not completion of the overarching acceptance assignment. The observer MUST persist or recover the last independently evidenced exact HEAD, run IDs, gate outcomes, and unresolved repair obligations through the existing authority-repository evidence mechanism. It MUST NOT interpret the end of a chat turn, successful isolated regression workflow, or an unchanged HEAD as termination.
+An observer run is a **bounded readback**, not completion of the overarching acceptance assignment. The end of a chat turn is not termination of that assignment. The observer MUST persist or recover the last independently evidenced exact HEAD, run IDs, gate outcomes, and unresolved repair obligations through the existing authority-repository evidence mechanism. It MUST NOT interpret the end of a chat turn, successful isolated regression workflow, or an unchanged HEAD as termination.
 
 For every subsequent readback, compare the latest PR HEAD and main HEAD against the prior evidenced baseline; enumerate the COMMIT gate implementation, regression execution, full exact-HEAD CI, production writer integration, reviews, merge/main promotion, original-host runtime and independent EMP/EAP effect receipt. Classify each criterion as CONFIRMED, OPEN, UNKNOWN or ASSERTED_ONLY. Progress bars MUST represent named, independently verifiable acceptance predicates with a stable denominator, not elapsed time, number of commits, or speculative percentages.
 

@@ -50,6 +50,13 @@ def validate(record):
     # A lease label cannot substitute for a positive writer fencing token.
     if type(record.get("writer_fencing_token")) is not int or record["writer_fencing_token"] < 1:
         return False, "missing_writer_fencing"
+    if not all(re.fullmatch(r"[0-9a-f]{40}", record[k]) for k in
+               ("exact_head", "commit_sha", "readback_sha")):
+        return False, "invalid_commit_identity"
+    if record["commit_sha"] != record["readback_sha"]:
+        return False, "commit_readback_mismatch"
+    if record["authority_repo"] != "ingolf-lohmann/qik-vrt":
+        return False, "wrong_authority"
     # Check binding, not provenance. The caller still has to authenticate this
     # observation independently; this JSON record is not an EAP effect proof.
     ack = record.get("eap_readback")
@@ -59,13 +66,6 @@ def validate(record):
             or ack.get("writer_claim_id") != record["writer_claim_id"]
             or ack.get("writer_fencing_token") != record["writer_fencing_token"]):
         return False, "unbound_eap_readback"
-    if not all(re.fullmatch(r"[0-9a-f]{40}", record[k]) for k in
-               ("exact_head", "commit_sha", "readback_sha")):
-        return False, "invalid_commit_identity"
-    if record["commit_sha"] != record["readback_sha"]:
-        return False, "commit_readback_mismatch"
-    if record["authority_repo"] != "ingolf-lohmann/qik-vrt":
-        return False, "wrong_authority"
     return True, "effect_verified"
 
 def main():
