@@ -30,6 +30,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: write
+      actions: write
     steps:
       - name: Check out exact same-repository PR branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -53,6 +54,22 @@ jobs:
             git commit -m "fix(s1): regenerate canonical integrity trio after dependency normalization"
             git push origin "HEAD:refs/heads/${{ github.event.pull_request.head.ref }}"
           fi
+      - name: Continue with canonical CI on verified successor branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          successor="$(git rev-parse --verify HEAD^{commit})"
+          remote="$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | awk 'NR == 1 { print $1 }')"
+          test -n "$remote"
+          test "$successor" = "$remote"
+          # workflow_dispatch is explicitly permitted to start another workflow
+          # when issued with GITHUB_TOKEN; ordinary bot pushes are not.
+          gh workflow run qikvrt_ci.yml --ref "$TARGET_BRANCH"
+          echo "CANONICAL_CI_DISPATCH_REQUESTED successor=$successor"
+          echo "DISPATCH_IS_NOT_A_CI_SUCCESS_RECEIPT"
   two-independent-builds:
     needs: repair-candidate-integrity
     if: needs.repair-candidate-integrity.result == 'success'
