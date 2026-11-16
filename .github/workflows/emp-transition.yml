@@ -1,0 +1,21 @@
+name: EMP transition conformance
+on:
+  pull_request:
+    paths:
+      - 'runtime/emp/**'
+      - 'tests/test_emp_*.py'
+      - '.github/workflows/emp-transition.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  transition-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - name: Fail-closed EMP transition and journal regression
+        run: python -m unittest discover -s tests -p 'test_emp_*.py' -v

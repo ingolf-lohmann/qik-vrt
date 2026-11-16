@@ -1,0 +1,24 @@
+name: EMP lossless integration conformance
+on:
+  pull_request:
+    paths:
+      - 'runtime/emp/**'
+      - 'tests/test_emp_*.py'
+      - '.github/workflows/emp-lossless-integration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lossless-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - name: Run lossless EMP integration and regression suite
+        run: |
+          python -m unittest -v             tests.test_emp_lossless_consolidation             tests.test_emp_evidence_bridge             tests.test_emp_repository_plan             tests.test_emp_eap_integration
