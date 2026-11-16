@@ -87,6 +87,8 @@ jobs:
           local_head="$(git rev-parse --verify HEAD^{commit})"
           test "$local_head" = "$EXPECTED_HEAD"
           observation_stage=SUBJECT_READBACK
+          # Live subject validation remains mandatory; API rate-limit failures
+          # are recorded as observation failures, never as success.
           if test "$EVENT_NAME" = pull_request; then
             live_head="$(gh api "repos/$REPOSITORY/pulls/$EVENT_PR" --jq '.head.sha')"
           else
@@ -231,6 +233,49 @@ jobs:
             --failed-stage "$stage" --exit-code "$exit_code" --json \
             > "$root/reflexive-watchdog-receipt.json"
           cp "$root/reflexive-watchdog-receipt.json" "$root/gatewatch-receipt.json"
+
+      - name: Persist same-writer recovery successor after failed observation
+        if: failure() && (steps.reobserve.outcome == 'failure' || steps.analyze.outcome == 'failure')
+        env:
+          REPOSITORY: ${{ github.repository }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          CURRENT_RUN_ATTEMPT: ${{ github.run_attempt }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import os
+          from pathlib import Path
+          from tools.qikvrt_client_continuation import decide
+          from tools.qikvrt_diagnostic_successor import materialize
+
+          root = Path(".qikvrt/reflexive-repository-watchdog")
+          stage = (root / "failed-stage.txt").read_text().strip()
+          run = os.environ["CURRENT_RUN_ID"]
+          attempt = os.environ["CURRENT_RUN_ATTEMPT"]
+          receipt = {
+              "schema": "qikvrt_client_continuation_v1",
+              "repository": os.environ["REPOSITORY"],
+              "work_unit_id": "watchdog-" + run + "-" + attempt,
+              "writer_id": "reflexive-watchdog-" + run,
+              "head_sha": os.environ["EXPECTED_HEAD"],
+              "state": "BLOCKED",
+              "blocker": "CI",
+              "next_action": "READBACK",
+              "effect_ack_done": False,
+          }
+          path = materialize(receipt, decide(receipt), root / "diagnostic-successor")
+          print("Persisted diagnostic successor:", path, "failed_stage:", stage)
+          # Independently reopen the durable bytes and enforce exact writer/head fencing.
+          from tools.qikvrt_diagnostic_successor import resume
+          replay = resume(root / "diagnostic-successor",
+                          receipt["writer_id"], receipt["work_unit_id"],
+                          receipt["head_sha"])
+          if replay["state"] != "CONTINUE_DIAGNOSIS" or replay["next_action"] != "READBACK":
+              raise ValueError("same-writer recovery replay not admitted")
+          print("Verified recovery readback:", replay["writer_id"], replay["head_sha"])
+          PY
 
       - name: Bind error analysis for the existing repair consumer
         if: always()
