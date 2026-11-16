@@ -662,3 +662,29 @@ when an original completion has no PR selector. This replaces the old timer
 repair of that observation gap; each selected PR still receives fresh identity,
 review, rule and exact-head checks. A partial candidate scan cannot declare
 quiescence while an admitted later successor remains uninspected.
+
+## Permanent CI continuity invariant — 2026-11-16
+
+The repository's existing full Continuous Integration pipeline is the canonical,
+repeatable software-development gate. Neither an exact-head verification
+receiver nor a repository-dispatch event replaces any required native CI job,
+test, review, or original-host acceptance.
+
+A repository-native continuation event is only an ingress mechanism. Its
+consumer must bind the requested PR, base, HEAD and TREE to a fresh readback,
+then dispatch the existing canonical CI through an authorized native entry
+point. A distinct verification status is supplemental evidence, not a substitute
+for a successful canonical CI run on the same exact tested subject.
+
+After an authorized writer changes a PR HEAD, the previous CI result is
+historical. The writer must persist a successor work unit and either establish
+a newly started canonical CI run with actual jobs, or persist an explicit
+admission HOLD and executable repair intent. A 204 dispatch response alone,
+a zero-job action_required registration, a bot commit, or a successful
+supplemental verification does not satisfy the transition.
+
+Do not introduce a GitHub App dependency, weaken branch protection, mint
+synthetic green statuses, or bypass the existing CI. Keep writer fencing,
+CAS, integrity regeneration, independent readback, and all productive EAP
+gates unchanged. A local HOLD must not silently terminate unrelated admitted
+work; the original blocked work unit remains open until its own effect receipt.

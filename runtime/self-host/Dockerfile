@@ -12,7 +12,12 @@ COPY --from=node-runtime /usr/local/bin/node /usr/local/bin/node
 RUN apt-get update && apt-get install -y --no-install-recommends \
       firefox-esr libstdc++6 novnc websockify x11-utils x11vnc xvfb ca-certificates \
     && dpkg-query -W -f='${Package}\t${Version}\n' > /usr/local/share/qikvrt-distribution-packages.tsv \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && : > /etc/machine-id \
+    && if test -e /var/lib/dbus/machine-id && ! test -L /var/lib/dbus/machine-id; then : > /var/lib/dbus/machine-id; fi \
+    && rm -rf /var/cache/fontconfig/* /var/cache/ldconfig/aux-cache \
+    && find /var/log/apt -maxdepth 1 -type f -exec truncate -s 0 {} + \
+    && truncate -s 0 /var/log/dpkg.log /var/log/alternatives.log
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1
 # This is a provisioned dependency image. Operators transfer a separately
 # frozen package and private config/volume; no mutable checkout at runtime.
@@ -28,6 +33,18 @@ COPY deploy/universal-terminal/entrypoint.sh /usr/local/bin/qikvrt-universal-ter
 RUN chmod 0755 /usr/local/bin/qikvrt-universal-terminal
 ENV QIKVRT_FIREFOX_BINARY=/usr/lib/firefox/firefox
 USER 10001:10001
+# Owner-authorized, separately identified successor dependency candidate.
+# Not the expired PR494 archive; no release or productive EAP effect is inherited.
+# Only a two-build OCI digest comparison can admit this candidate as evidence.
+FROM runtime AS s1-dependency-carrier-candidate
+ARG QIKVRT_SOURCE_HEAD
+ARG QIKVRT_SOURCE_TREE
+LABEL org.opencontainers.image.source="https://github.com/ingolf-lohmann/qik-vrt" \
+      org.opencontainers.image.revision="$QIKVRT_SOURCE_HEAD" \
+      de.qikvrt.source-tree="$QIKVRT_SOURCE_TREE" \
+      de.qikvrt.carrier-scope="NEW_DEPENDENCY_CANDIDATE_NOT_PR494"
+USER 10001:10001
+
 FROM ${QIKVRT_DEPENDENCY_IMAGE} AS delivery-runtime
 FROM delivery-runtime AS test
 USER root
