@@ -16,6 +16,16 @@ BASE = {
     "readback_sha": "b" * 40,
     "eap_receipt_id": "eap-749",
     "writer_lease_id": "lease-749",
+    "writer_identity": "existing-writer",
+    "writer_claim_id": "claim-749",
+    "writer_fencing_token": 7,
+    "eap_readback": {
+        "effect_ack_done": True,
+        "receipt_id": "eap-749",
+        "commit_sha": "b" * 40,
+        "writer_claim_id": "claim-749",
+        "writer_fencing_token": 7,
+    },
 }
 
 def sample(**changes):
@@ -87,6 +97,46 @@ class CommitEffectGateTests(unittest.TestCase):
 
     def test_missing_writer_lease(self):
         self.assertFalse(validate(sample(writer_lease_id=""))[0])
+
+    def test_missing_writer_identity_rejected(self):
+        self.assertEqual(validate(sample(writer_identity=""))[1], "missing_effect_evidence")
+
+    def test_missing_claim_id_rejected(self):
+        self.assertEqual(validate(sample(writer_claim_id=""))[1], "missing_effect_evidence")
+
+    def test_zero_fence_rejected(self):
+        self.assertEqual(validate(sample(writer_fencing_token=0))[1], "missing_writer_fencing")
+
+    def test_boolean_fence_rejected(self):
+        self.assertEqual(validate(sample(writer_fencing_token=True))[1], "missing_writer_fencing")
+
+    def test_unbound_eap_receipt_rejected(self):
+        evidence = dict(BASE["eap_readback"], receipt_id="foreign")
+        self.assertEqual(validate(sample(eap_readback=evidence))[1], "unbound_eap_readback")
+
+    def test_unbound_eap_commit_rejected(self):
+        evidence = dict(BASE["eap_readback"], commit_sha="c" * 40)
+        self.assertEqual(validate(sample(eap_readback=evidence))[1], "unbound_eap_readback")
+
+    def test_unbound_eap_claim_rejected(self):
+        evidence = dict(BASE["eap_readback"], writer_claim_id="foreign")
+        self.assertEqual(validate(sample(eap_readback=evidence))[1], "unbound_eap_readback")
+
+    def test_eap_ack_false_rejected(self):
+        evidence = dict(BASE["eap_readback"], effect_ack_done=False)
+        self.assertEqual(validate(sample(eap_readback=evidence))[1], "unbound_eap_readback")
+
+    def test_unbound_eap_fence_rejected(self):
+        evidence = dict(BASE["eap_readback"], writer_fencing_token=6)
+        self.assertEqual(validate(sample(eap_readback=evidence))[1], "unbound_eap_readback")
+
+    def test_repair_must_reenter_persistence_before_admission(self):
+        chain = [
+            {"state": "RECEIVED"}, {"state": "PERSISTED"},
+            {"state": "REPAIR_REQUIRED"}, {"state": "ADMITTED"},
+            {"state": "EXECUTING"}, {"state": "EFFECT_VERIFIED"},
+        ]
+        self.assertEqual(validate(sample(events=chain))[1], "illegal_state_transition")
 
 class CommitObservationContractTests(unittest.TestCase):
     """Prevent regression to chat-turn completion of an open acceptance."""

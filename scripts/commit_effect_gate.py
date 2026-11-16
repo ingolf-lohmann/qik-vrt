@@ -17,7 +17,7 @@ TRANSITIONS = {
     "ADMITTED": {"EXECUTING", "BLOCKED", "REPAIR_REQUIRED"},
     "EXECUTING": {"EFFECT_VERIFIED", "BLOCKED", "REPAIR_REQUIRED"},
     "BLOCKED": {"PERSISTED", "REPAIR_REQUIRED"},
-    "REPAIR_REQUIRED": {"PERSISTED", "ADMITTED"},
+    "REPAIR_REQUIRED": {"PERSISTED"},
     "EFFECT_VERIFIED": set(),
 }
 
@@ -44,8 +44,21 @@ def validate(record):
     if previous != "EFFECT_VERIFIED":
         return False, "effect_not_verified"
     if not all(isinstance(record.get(k), str) and record[k] for k in
-               ("commit_sha", "readback_sha", "eap_receipt_id", "writer_lease_id")):
+               ("commit_sha", "readback_sha", "eap_receipt_id", "writer_lease_id",
+                "writer_identity", "writer_claim_id")):
         return False, "missing_effect_evidence"
+    # A lease label cannot substitute for a positive writer fencing token.
+    if type(record.get("writer_fencing_token")) is not int or record["writer_fencing_token"] < 1:
+        return False, "missing_writer_fencing"
+    # Check binding, not provenance. The caller still has to authenticate this
+    # observation independently; this JSON record is not an EAP effect proof.
+    ack = record.get("eap_readback")
+    if (not isinstance(ack, dict) or ack.get("effect_ack_done") is not True
+            or ack.get("receipt_id") != record["eap_receipt_id"]
+            or ack.get("commit_sha") != record["commit_sha"]
+            or ack.get("writer_claim_id") != record["writer_claim_id"]
+            or ack.get("writer_fencing_token") != record["writer_fencing_token"]):
+        return False, "unbound_eap_readback"
     if not all(re.fullmatch(r"[0-9a-f]{40}", record[k]) for k in
                ("exact_head", "commit_sha", "readback_sha")):
         return False, "invalid_commit_identity"
