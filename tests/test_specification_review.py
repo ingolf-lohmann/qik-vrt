@@ -134,7 +134,13 @@ class SpecificationReview(unittest.TestCase):
         action = self.readonly_retry()
         for path in ('.github/workflows/qikvrt_ci.yml', 'tools/qikvrt_self_host_container.py', 'tools/qikvrt_self_host.py'):
             target = self.root / path; target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes((Path(__file__).resolve().parents[1] / path).read_bytes())
+            # Replay the original historical source, never today's changed CI recipe.
+            frozen = {'.github/workflows/qikvrt_ci.yml':
+                      'tests/fixtures/qikvrt_ci_native_api_20261104.yml',
+                      'tools/qikvrt_self_host_container.py':
+                      'tests/fixtures/qikvrt_self_host_container_native_api_20261104.py'}
+            origin = Path(__file__).resolve().parents[1] / frozen.get(path, path)
+            target.write_bytes(origin.read_bytes())
         proof = action['verification_retry']; proof.pop('previous_budget')
         proof['schema'] = 'qikvrt-readonly-watchdog-native-api-recovery/v1'
         proof['failure_receipt'].update(failure=dict(stage='BASELINE_READBACK', exit_code=5),

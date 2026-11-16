@@ -604,12 +604,93 @@ def oci(path, head, tree):
                 "oci_archive_sha256": sha(Path(path).read_bytes())}
 
 
+def durable_release_asset(expected, release):
+    """Accept only the separately SHA-256-pinned draft release; no earlier PASS."""
+    digest = _artifact_pin(expected.get("archive_sha256"))
+    tag = "qikvrt-pr494-candidate-sha256-" + digest
+    require(expected.get("release_tag") == tag and
+            expected.get("release_asset_name") == "qikvrt-pr494-successor-" + digest[:8] + ".zip" and
+            expected.get("candidate_state") == "INTEGRITY_VERIFIED_NOT_PRODUCTION_ADMITTED",
+            "DURABLE_CARRIER_EXPLICIT_SOURCE_REQUIRED")
+    require(isinstance(release, dict) and release.get("tag_name") == tag and
+            release.get("target_commitish") == expected["source_head"] and
+            release.get("draft") is False and release.get("prerelease") is True,
+            "DURABLE_CARRIER_RELEASE_IDENTITY_MISMATCH")
+    assets = release.get("assets")
+    require(isinstance(assets, list) and len(assets) == 1 and isinstance(assets[0], dict),
+            "DURABLE_CARRIER_SINGLE_ASSET_REQUIRED")
+    asset = assets[0]
+    require(asset.get("name") == expected["release_asset_name"] and
+            type(asset.get("id")) is int and asset["id"] > 0 and
+            type(asset.get("size")) is int and asset["size"] == expected["archive_bytes"] and
+            asset.get("digest") == "sha256:" + digest and asset.get("state") == "uploaded",
+            "DURABLE_CARRIER_RELEASE_ASSET_PIN_MISMATCH")
+    return asset["id"]
+
+
+def durable_release_download(expected, path, token):
+    """Read only an exact Release asset; never forward GitHub API credentials."""
+    require(expected["repository"] == REPOSITORY and
+            os.environ.get("GITHUB_REPOSITORY") == REPOSITORY and
+            isinstance(token, str) and bool(token), "DURABLE_CARRIER_AUTHORITY_REQUIRED")
+    tag = expected.get("release_tag")
+    require(isinstance(tag, str) and
+            re.fullmatch(r"qikvrt-pr494-candidate-sha256-[a-f0-9]{64}", tag),
+            "DURABLE_CARRIER_TAG_INVALID")
+    url = "https://api.github.com/repos/" + REPOSITORY + "/releases/tags/" + tag
+    metadata = json.loads(get(url, token))
+    asset_id = durable_release_asset(expected, metadata)
+    endpoint = "https://api.github.com/repos/" + REPOSITORY + "/releases/assets/" + str(asset_id)
+    request = urllib.request.Request(endpoint, headers={
+        "Authorization": "Bearer " + token, "Accept": "application/octet-stream",
+        "X-GitHub-Api-Version": "2022-11-28"})
+    class CaptureRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *args, **kwargs):
+            return None
+    target = Path(path)
+    require(not target.exists(), "CREATE_ONLY_DURABLE_CARRIER_ARCHIVE_REQUIRED")
+    complete = False
+    try:
+        try:
+            source = urllib.request.build_opener(CaptureRedirect()).open(request, timeout=30)
+        except urllib.error.HTTPError as response:
+            require(response.code == 302, "DURABLE_CARRIER_ASSET_REDIRECT_REQUIRED")
+            location = response.headers.get("Location", "")
+            parsed = urllib.parse.urlsplit(location)
+            require(parsed.scheme == "https" and parsed.hostname and
+                    not parsed.username and not parsed.password and
+                    parsed.hostname.endswith((".blob.core.windows.net",
+                        ".actions.githubusercontent.com", ".githubusercontent.com",
+                        ".s3.amazonaws.com")), "DURABLE_CARRIER_SIGNED_BLOB_ORIGIN_REQUIRED")
+            source = urllib.request.build_opener(NoRedirect()).open(location, timeout=90)
+        with source, target.open("xb") as output:
+            remaining = expected["archive_bytes"]
+            require(type(remaining) is int and 0 < remaining <= ARTIFACT_MAX_BYTES,
+                    "DURABLE_CARRIER_SIZE_REQUIRED")
+            hasher = hashlib.sha256()
+            while remaining:
+                raw = source.read(min(1024 ** 2, remaining))
+                require(bool(raw), "DURABLE_CARRIER_TRUNCATED")
+                output.write(raw); hasher.update(raw); remaining -= len(raw)
+            require(not source.read(1), "DURABLE_CARRIER_EXTRA_BYTES")
+        require(hasher.hexdigest() == _artifact_pin(expected["archive_sha256"]),
+                "DURABLE_CARRIER_SHA256_MISMATCH")
+        complete = True
+    except (OSError, urllib.error.URLError):
+        raise ValueError("DURABLE_CARRIER_READ_NOT_ADMITTED") from None
+    finally:
+        if not complete:
+            target.unlink(missing_ok=True)
+
+
 def carrier_download(expected, path):
-    """Read original Actions artifact; never forward API auth to blob storage."""
+    """Read exact owner-admitted dependency bytes; never silently substitute."""
     require(expected["repository"] == REPOSITORY and
             os.environ.get("GITHUB_REPOSITORY") == REPOSITORY, "CARRIER_AUTHORITY_REQUIRED")
     token = os.environ.get("GITHUB_TOKEN")
     require(bool(token), "ACTIONS_READ_BINDING_REQUIRED")
+    if "release_tag" in expected or "release_asset_name" in expected:
+        return durable_release_download(expected, path, token)
     base = "https://api.github.com/repos/" + REPOSITORY + "/actions/artifacts/" + str(expected["artifact_id"])
     metadata = json.loads(get(base, token))
     require(metadata.get("expired") is False and
