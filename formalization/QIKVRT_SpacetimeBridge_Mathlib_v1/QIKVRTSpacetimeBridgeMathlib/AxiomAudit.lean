@@ -1,0 +1,5 @@
+import QIKVRTSpacetimeBridgeMathlib.RealVolumeLaw
+
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.scale_eq_of_same_real_volume_density
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.realVolumeDensity_pos
+#print axioms QIKVRT.SpacetimeBridge.MathlibV1.scale_eq_of_same_local_density
