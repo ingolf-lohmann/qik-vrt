@@ -150,7 +150,10 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         feedback = MODULE.repair_handoff(MODULE.canonical_json_bytes(value),
                     run_id=22, run_attempt=1, producer_event="workflow_run",
                     parent_workflow="QIK-VRT autonomous draft-PR continuation")
-        self.assertEqual(feedback["state"], "NOOP")
+        self.assertEqual(feedback["state"], "REPAIR_INPUT_REQUIRED")
+        self.assertFalse(feedback["effect_permission"])
+        self.assertFalse(feedback["effect_ack_done"])
+        self.assertNotEqual(feedback["work_unit_id"], handoff["work_unit_id"])
 
     def test_unreadable_queue_cannot_be_called_empty(self):
         value = MODULE.analyze({"workflow_runs": []}, {}, expected_head=HEAD,

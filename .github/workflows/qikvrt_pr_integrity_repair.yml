@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+# Explicit, bounded exact-HEAD integrity repair; never a parallel watchdog.
+name: QIKVRT exact-head PR integrity repair
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Existing same-repository PR head branch
+        required: true
+        type: string
+      expected_head:
+        description: Exact 40-character SHA of the authorized PR head
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-integrity-repair-${{ inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Validate bounded branch and exact SHA
+        env:
+          TARGET_BRANCH: ${{ inputs.branch }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TARGET_BRANCH" =~ ^[a-zA-Z0-9][a-zA-Z0-9._/-]*$ ]] || exit 2
+          [[ "$TARGET_BRANCH" != *..* && "$TARGET_BRANCH" != */.lock && "$TARGET_BRANCH" != main ]] || exit 2
+          [[ "$EXPECTED_HEAD" =~ ^[0-9a-f]{40}$ ]] || exit 2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.expected_head }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact branch binding before regeneration
+        env:
+          TARGET_BRANCH: ${{ inputs.branch }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$EXPECTED_HEAD"
+          test -z "$(git status --porcelain)"
+          # Bind the target to an open same-repository PR, not an arbitrary branch.
+          GH_TOKEN="${{ github.token }}" gh api --paginate "repos/${{ github.repository }}/pulls?state=open&per_page=100" \
+            --jq '.[] | [.head.ref, .head.sha, .head.repo.full_name] | @tsv' \
+            | awk -F '\t' -v branch="$TARGET_BRANCH" -v head="$EXPECTED_HEAD" -v repo="${{ github.repository }}" \
+                '$1 == branch && $2 == head && $3 == repo {found=1} END {exit !found}'
+      - name: Deterministically regenerate and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git add -- REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256
+          for changed in $(git diff --name-only); do
+            case "$changed" in
+              REPOSITORY_FILE_MANIFEST.json|SHA256SUMS.txt|REPOSITORY_FILE_MANIFEST.json.sha256) ;;
+              *) echo "Unexpected generator mutation: $changed" >&2; exit 2 ;;
+            esac
+          done
+      - name: Commit once and push with exact-head lease
+        env:
+          TARGET_BRANCH: ${{ inputs.branch }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo "Integrity already canonical at exact HEAD"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix(integrity): regenerate canonical manifest from exact PR head"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$EXPECTED_HEAD"
+          # Credentials are supplied only to this bounded push step, never checkout.
+          git -c http.extraheader="AUTHORIZATION: basic $(printf "x-access-token:%s" "$GH_TOKEN" | base64 -w0)" push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
+
+      - name: Deterministically regenerate and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git add -- REPOSITORY_FILE_MANIFEST.json SHA256SUMS.txt REPOSITORY_FILE_MANIFEST.json.sha256
+          for changed in $(git diff --name-only); do
+            case "$changed" in
+              REPOSITORY_FILE_MANIFEST.json|SHA256SUMS.txt|REPOSITORY_FILE_MANIFEST.json.sha256) ;;
+              *) echo "Unexpected generator mutation: $changed" >&2; exit 2 ;;
+            esac
+          done
+      - name: Commit once and push with exact-head lease
+        env:
+          TARGET_BRANCH: ${{ inputs.branch }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo "Integrity already canonical at exact HEAD"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix(integrity): regenerate canonical manifest from exact PR head"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$EXPECTED_HEAD"
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          test "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"

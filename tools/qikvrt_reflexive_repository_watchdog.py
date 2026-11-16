@@ -1534,10 +1534,10 @@ def repair_handoff(analysis_bytes: bytes, *, run_id: int, run_attempt: int,
     subject = {"repository": _string(analysis.get("repository"), "repository"),
                "head": _head_sha(analysis.get("head_sha"), "head"),
                "tree": _head_sha(analysis.get("tree_sha"), "tree")}
-    # A consumer completion must not recursively manufacture another work ring.
-    feedback = (producer_event == "workflow_run" and
-                parent_workflow == "QIK-VRT autonomous draft-PR continuation")
-    needed = analysis.get("disposition") == "HOLD" and not feedback
+    # Consumer feedback is still open work when the observation is HOLD.
+    # Keep the existing idempotent inbox handoff; do not dispatch a new
+    # workflow recursively or grant effect permission on consumer completion.
+    needed = analysis.get("disposition") == "HOLD"
     digest = sha256_bytes(analysis_bytes)
     origin = {"run_id": _positive_int(run_id, "producer run"),
               "run_attempt": _positive_int(run_attempt, "producer attempt"),
