@@ -7,6 +7,8 @@ EFFECT_ACK_C90_CFLAGS ?= -std=c90 -pedantic -Wall -Wextra -Werror
 
 .PHONY: test compile effect-ack-core-compile effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract tool-cache-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher unit conformance security license seed e2e integrity run-api clean
 
+.DEFAULT_GOAL := compile
+
 .PHONY: chsh-reference-test
 chsh-reference-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_chsh_benchmark
