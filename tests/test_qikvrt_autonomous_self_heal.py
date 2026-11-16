@@ -21,6 +21,65 @@ SPEC.loader.exec_module(MODULE)
 
 
 class AutonomousSelfHealTests(unittest.TestCase):
+    def test_ref_422_readback_cannot_claim_writer_ownership(self):
+        api = MODULE.GitHubREST("ingolf-lohmann/qik-vrt")
+        ref, sha = "refs/qikvrt/pr-continuation/turns/399", "a" * 40
+        observed = {"ref": ref, "object": {"sha": sha}}
+        with mock.patch.object(api, "ref", side_effect=[None, observed]) as reads:
+            with mock.patch.object(
+                api, "call",
+                side_effect=MODULE.SelfHealBlock("REST POST git/refs: 422; no automatic retry"),
+            ) as posts:
+                with self.assertRaisesRegex(
+                    MODULE.SelfHealBlock, "readback=EXACT_MATCH; writer_admitted=false"
+                ):
+                    api.create_once(ref, sha)
+                self.assertEqual(posts.call_count, 1)
+                self.assertEqual(reads.call_count, 2)
+
+    def test_422_missing_ref_remains_hold_without_repeat_post(self):
+        api = MODULE.GitHubREST("ingolf-lohmann/qik-vrt")
+        with mock.patch.object(api, "ref", side_effect=[None, None]):
+            with mock.patch.object(
+                api, "call",
+                side_effect=MODULE.SelfHealBlock("REST POST git/refs: 422; no automatic retry"),
+            ) as posts:
+                with self.assertRaisesRegex(MODULE.SelfHealBlock, "readback=NOT_FOUND"):
+                    api.create_once("refs/qikvrt/pr-continuation/turns/399", "a" * 40)
+                posts.assert_called_once()
+
+    def test_existing_run_without_attempt_remains_partial_claim_hold(self):
+        api = mock.Mock()
+        api.create_once.return_value = False
+        api.pages.return_value = []
+        plan = {"selected": {"head_sha": "a" * 40}, "base_sha": "b" * 40}
+        with mock.patch.object(MODULE, "reobserve_selection", return_value={}):
+            receipt = MODULE.claim_pr_plan(api, plan, 43947332314)
+        self.assertEqual(receipt["state"], "PARTIAL_RUN_CLAIM_HOLD")
+        self.assertIsNone(receipt["prior_attempt_ref"])
+        self.assertFalse(receipt["writer_admitted"])
+        self.assertFalse(receipt["effect_ack_done"])
+        self.assertIsNone(receipt["selected"])
+        api.create_once.assert_called_once_with(
+            "refs/qikvrt/pr-continuation/runs/43947332314", "b" * 40
+        )
+        api.pages.assert_called_once()
+
+    def test_existing_run_with_attempt_is_duplicate_noop_not_reexecution(self):
+        api = mock.Mock()
+        api.create_once.return_value = False
+        ref = ("refs/qikvrt/pr-continuation/attempts/"
+               "400-552-" + "a" * 40 + "-" + "b" * 40 + "-43948883031")
+        api.pages.return_value = [{"ref": ref, "object": {"sha": "a" * 40}}]
+        plan = {"selected": {"head_sha": "a" * 40}, "base_sha": "b" * 40}
+        with mock.patch.object(MODULE, "reobserve_selection", return_value={}):
+            receipt = MODULE.claim_pr_plan(api, plan, 43948883031)
+        self.assertEqual(receipt["state"], "DUPLICATE_RUN_NOOP")
+        self.assertEqual(receipt["prior_attempt_ref"], ref)
+        self.assertFalse(receipt["writer_admitted"])
+        self.assertIsNone(receipt["selected"])
+        api.create_once.assert_called_once()
+
     def test_expected_head_bound_promotion_is_exact_and_fail_closed(self) -> None:
         contract = MODULE.load_contract()
         delegation = MODULE.load_delegation()

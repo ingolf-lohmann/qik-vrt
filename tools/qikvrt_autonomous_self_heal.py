@@ -658,11 +658,14 @@ class GitHubREST:
             return False
         try:
             self.call("POST", "git/refs", {"ref": ref, "sha": sha})
-        except SelfHealBlock:
-            # Independent observation is safe. Even a matching ref cannot prove
-            # ownership after a timeout or a race; only a confirmed create can.
-            self.ref(ref)
-            raise
+        except SelfHealBlock as failure:
+            # Read back exactly once. A matching ref is evidence, not writer ownership.
+            observed = self.ref(ref)
+            readback = ("NOT_FOUND" if observed is None else
+                        "EXACT_MATCH" if observed.get("ref") == ref and
+                        observed.get("object", {}).get("sha") == sha else "CONFLICT")
+            raise SelfHealBlock(f"{failure}; immutable_ref={ref}; "
+                                f"readback={readback}; writer_admitted=false") from failure
         observed = self.ref(ref)
         if observed is None or observed.get("ref") != ref or observed.get("object", {}).get("sha") != sha:
             raise SelfHealBlock("immutable continuation receipt readback mismatch")
@@ -743,6 +746,31 @@ def reobserve_selection(api: GitHubREST, plan: Mapping[str, Any], head: str) -> 
     return pr
 
 
+def inspect_existing_run_claim(api: GitHubREST, plan: dict[str, Any],
+                               run_id: int, run_ref: str) -> dict[str, Any]:
+    """Read-only reconcile an existing Run claim; never acquire its missing refs.
+
+    A Run ref binds only Main, not the selected PR, owner or fencing epoch.
+    In particular an orphaned Turn is not a lease for a different run attempt.
+    """
+    attempts = api.pages("git/matching-refs/qikvrt/pr-continuation/attempts/")
+    bound = []
+    for item in attempts:
+        name = item.get("ref") or ""
+        match = ATTEMPT_PATTERN.fullmatch(name)
+        if (match is None or
+                item.get("object", {}).get("sha") != match.group(3)):
+            raise SelfHealBlock("invalid immutable attempt inventory")
+        if int(match.group(5)) == run_id:
+            bound.append(name)
+    if len(bound) > 1:
+        raise SelfHealBlock("ambiguous existing run attempt binding")
+    return dict(plan, selected=None, run_ref=run_ref,
+                state="DUPLICATE_RUN_NOOP" if bound else "PARTIAL_RUN_CLAIM_HOLD",
+                prior_attempt_ref=bound[0] if bound else None,
+                writer_admitted=False, effect_ack_done=False)
+
+
 def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[str, Any]:
     if run_id < 1:
         raise SelfHealBlock("native run identity is required")
@@ -752,7 +780,7 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
     reobserve_selection(api, plan, selected["head_sha"])
     run_ref = CONTINUATION_REFS + f"runs/{run_id}"
     if not api.create_once(run_ref, plan["base_sha"]):
-        return dict(plan, state="DUPLICATE_RUN_NOOP", selected=None)
+        return inspect_existing_run_claim(api, plan, run_id, run_ref)
     if not api.create_once(CONTINUATION_REFS + f"turns/{plan['turn_number']}", selected["head_sha"]):
         return dict(plan, state="CONTENDED_TURN_NOOP", selected=None)
     receipt = (CONTINUATION_REFS + f"attempts/{plan['turn_number']}-{selected['pull_request']}-"
