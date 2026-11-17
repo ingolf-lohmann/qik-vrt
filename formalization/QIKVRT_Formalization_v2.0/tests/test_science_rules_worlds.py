@@ -18,6 +18,8 @@ class ScienceRulesWorldsContractTests(unittest.TestCase):
         source = SOURCE.read_text(encoding='utf8')
         self.assertIn('import QIKVRTFormalization.WorldFormula.Relations', source)
         self.assertIsNone(re.search(r'(?m)^\s*(?:sorry|admit|axiom)\b', source))
+        self.assertNotIn('by_contra', source)
+        self.assertIn('Classical.byContradiction', source)
         for theorem in (
             'science_is_fiction_not_iff_science_rules_worlds',
             'verified_gate_science_rules_worlds',

@@ -54,8 +54,8 @@ theorem science_is_fiction_not_iff_science_rules_worlds
   classical
   constructor
   · intro exclusion state claim hAdmitted
-    by_contra hNotQualified
-    exact (exclusion state claim hNotQualified) hAdmitted
+    exact Classical.byContradiction (fun hNotQualified =>
+      (exclusion state claim hNotQualified) hAdmitted)
   · intro sound state claim hNotQualified hAdmitted
     exact hNotQualified (sound state claim hAdmitted)
 
