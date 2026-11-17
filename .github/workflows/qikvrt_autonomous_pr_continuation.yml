@@ -108,6 +108,27 @@ jobs:
             --expected-tree "$(git rev-parse --verify HEAD^{tree})" \
             --inbox "$root/inbox" > "$root/consumer-receipt.json"
 
+      - name: Route admitted repair work-unit before unrelated PR rotation
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
+        env:
+          WATCHDOG_REPAIR_ROOT: ${{ runner.temp }}/qikvrt-watchdog-repair-input
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$WATCHDOG_REPAIR_ROOT"
+          python3 -B tools/qikvrt_autonomous_self_heal.py repair-route \
+            --receipt "$root/consumer-receipt.json" --inbox "$root/inbox" \
+            --repository-name "$GITHUB_REPOSITORY" \
+            --expected-head "$(git rev-parse --verify HEAD^{commit})" \
+            --expected-tree "$(git rev-parse --verify HEAD^{tree})" \
+            > "$root/repair-route.json"
+          if ! jq -e '.state == "NO_REPAIR_REQUIRED" and .allow_pr_rotation == true' "$root/repair-route.json"; then
+            cat "$root/repair-route.json"
+            echo "BLOCK: predecessor repair work-unit requires an admitted handler; unrelated PR rotation is not its execution" >&2
+            exit 2
+          fi
+
       - name: Preserve the independently checked repair input
         if: always() && github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

@@ -21,6 +21,65 @@ SPEC.loader.exec_module(MODULE)
 
 
 class AutonomousSelfHealTests(unittest.TestCase):
+    def test_ref_422_readback_cannot_claim_writer_ownership(self):
+        api = MODULE.GitHubREST("ingolf-lohmann/qik-vrt")
+        ref, sha = "refs/qikvrt/pr-continuation/turns/399", "a" * 40
+        observed = {"ref": ref, "object": {"sha": sha}}
+        with mock.patch.object(api, "ref", side_effect=[None, observed]) as reads:
+            with mock.patch.object(
+                api, "call",
+                side_effect=MODULE.SelfHealBlock("REST POST git/refs: 422; no automatic retry"),
+            ) as posts:
+                with self.assertRaisesRegex(
+                    MODULE.SelfHealBlock, "readback=EXACT_MATCH; writer_admitted=false"
+                ):
+                    api.create_once(ref, sha)
+                self.assertEqual(posts.call_count, 1)
+                self.assertEqual(reads.call_count, 2)
+
+    def test_422_missing_ref_remains_hold_without_repeat_post(self):
+        api = MODULE.GitHubREST("ingolf-lohmann/qik-vrt")
+        with mock.patch.object(api, "ref", side_effect=[None, None]):
+            with mock.patch.object(
+                api, "call",
+                side_effect=MODULE.SelfHealBlock("REST POST git/refs: 422; no automatic retry"),
+            ) as posts:
+                with self.assertRaisesRegex(MODULE.SelfHealBlock, "readback=NOT_FOUND"):
+                    api.create_once("refs/qikvrt/pr-continuation/turns/399", "a" * 40)
+                posts.assert_called_once()
+
+    def test_existing_run_without_attempt_remains_partial_claim_hold(self):
+        api = mock.Mock()
+        api.create_once.return_value = False
+        api.pages.return_value = []
+        plan = {"selected": {"head_sha": "a" * 40}, "base_sha": "b" * 40}
+        with mock.patch.object(MODULE, "reobserve_selection", return_value={}):
+            receipt = MODULE.claim_pr_plan(api, plan, 43947332314)
+        self.assertEqual(receipt["state"], "PARTIAL_RUN_CLAIM_HOLD")
+        self.assertIsNone(receipt["prior_attempt_ref"])
+        self.assertFalse(receipt["writer_admitted"])
+        self.assertFalse(receipt["effect_ack_done"])
+        self.assertIsNone(receipt["selected"])
+        api.create_once.assert_called_once_with(
+            "refs/qikvrt/pr-continuation/runs/43947332314", "b" * 40
+        )
+        api.pages.assert_called_once()
+
+    def test_existing_run_with_attempt_is_duplicate_noop_not_reexecution(self):
+        api = mock.Mock()
+        api.create_once.return_value = False
+        ref = ("refs/qikvrt/pr-continuation/attempts/"
+               "400-552-" + "a" * 40 + "-" + "b" * 40 + "-43948883031")
+        api.pages.return_value = [{"ref": ref, "object": {"sha": "a" * 40}}]
+        plan = {"selected": {"head_sha": "a" * 40}, "base_sha": "b" * 40}
+        with mock.patch.object(MODULE, "reobserve_selection", return_value={}):
+            receipt = MODULE.claim_pr_plan(api, plan, 43948883031)
+        self.assertEqual(receipt["state"], "DUPLICATE_RUN_NOOP")
+        self.assertEqual(receipt["prior_attempt_ref"], ref)
+        self.assertFalse(receipt["writer_admitted"])
+        self.assertIsNone(receipt["selected"])
+        api.create_once.assert_called_once()
+
     def test_expected_head_bound_promotion_is_exact_and_fail_closed(self) -> None:
         contract = MODULE.load_contract()
         delegation = MODULE.load_delegation()
@@ -279,6 +338,54 @@ class RepairInputTests(unittest.TestCase):
               producer_event='workflow_run', parent_workflow='QIK-VRT autonomous draft-PR continuation')
         self.assertEqual(env['state'], 'NOOP')
 
+    def test_repair_route_prioritizes_unresolved_work_unit(self):
+        _, _, env, source, jobs = self.fixture()
+        with tempfile.TemporaryDirectory() as inbox:
+            receipt = self.consume(env, source, jobs, inbox)
+            decision = MODULE.route_repair_receipt(receipt,
+                repository="ingolf-lohmann/qik-vrt", head="a"*40, tree="b"*40)
+        self.assertEqual(decision["work_unit_id"], env["work_unit_id"])
+        self.assertEqual(decision["state"], "REPAIR_HANDLER_REQUIRED")
+        self.assertFalse(decision["allow_pr_rotation"])
+        self.assertFalse(decision["writer_admitted"])
+        self.assertFalse(decision["effect_ack_done"])
+
+    def test_repair_route_noop_can_resume_pr_rotation(self):
+        receipt = {"state": "NOOP", "work_unit_id": "c"*64, "effect_ack_done": False}
+        decision = MODULE.route_repair_receipt(receipt,
+            repository="ingolf-lohmann/qik-vrt", head="a"*40, tree="b"*40)
+        self.assertEqual(decision["state"], "NO_REPAIR_REQUIRED")
+        self.assertTrue(decision["allow_pr_rotation"])
+        self.assertFalse(decision["writer_admitted"])
+
+    def test_repair_route_rejects_stale_subject_and_forged_effects(self):
+        import copy
+        _, _, env, source, jobs = self.fixture()
+        with tempfile.TemporaryDirectory() as inbox:
+            receipt = self.consume(env, source, jobs, inbox)
+        for key, value in (
+            ("writer_admitted", True), ("effect_ack_done", True),
+            ("inbox_readback_verified", False), ("state", "CLAIMED"),
+            ("subject", {"repository": "other/repo", "head": "a"*40, "tree": "b"*40}),
+        ):
+            with self.subTest(key=key):
+                changed = copy.deepcopy(receipt); changed[key] = value
+                with self.assertRaises(MODULE.SelfHealBlock):
+                    MODULE.route_repair_receipt(changed,
+                        repository="ingolf-lohmann/qik-vrt", head="a"*40, tree="b"*40)
+        with self.assertRaises(MODULE.SelfHealBlock):
+            MODULE.route_repair_receipt(receipt,
+                repository="ingolf-lohmann/qik-vrt", head="d"*40, tree="b"*40)
+
+    def test_workflow_routes_repair_before_generic_pr_selection(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml").read_text()
+        self.assertLess(workflow.index("tools/qikvrt_autonomous_self_heal.py repair-consume"),
+                        workflow.index("tools/qikvrt_autonomous_self_heal.py repair-route"))
+        self.assertLess(workflow.index("tools/qikvrt_autonomous_self_heal.py repair-route"),
+                        workflow.index("Select and record one fair exact opted-in draft PR"))
+        self.assertIn("unrelated PR rotation is not its execution", workflow)
+
+
     def test_inbox_conflict_does_not_overwrite_predecessor(self):
         _, _, env, source, jobs = self.fixture()
         with tempfile.TemporaryDirectory() as inbox:
@@ -313,6 +420,96 @@ class RepairInputTests(unittest.TestCase):
             bad=subprocess.run(command,capture_output=True,text=True)
             self.assertEqual(bad.returncode,2)
             self.assertEqual(json.loads(bad.stdout)['state'],'BLOCK')
+
+
+class RepairDurableRouteTests(unittest.TestCase):
+    class Api:
+        repository = "ingolf-lohmann/qik-vrt"
+        def __init__(self, head):
+            self.head, self.refs, self.blobs = head, {}, {}
+        def ref(self, path):
+            if path == "refs/heads/main":
+                return {"object": {"sha": self.head}}
+            return {"object": {"sha": self.refs[path]}} if path in self.refs else None
+        def call(self, method, path, value=None):
+            if method == "POST" and path == "git/blobs":
+                raw = MODULE.base64.b64decode(value["content"])
+                blob = MODULE.hashlib.sha1(
+                    b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+                self.blobs[blob] = raw
+                return {"sha": blob}
+            if method == "GET" and path.startswith("git/blobs/"):
+                blob = path.rsplit("/", 1)[1]
+                return {"sha": blob, "encoding": "base64",
+                        "content": MODULE.base64.b64encode(self.blobs[blob]).decode()}
+            raise AssertionError((method, path))
+        def create_once(self, ref, sha):
+            if ref in self.refs:
+                if self.refs[ref] != sha:
+                    raise MODULE.SelfHealBlock("conflicting existing ref")
+                return False
+            self.refs[ref] = sha
+            return True
+
+    def fixture(self, root):
+        canonical = lambda x: (MODULE.json.dumps(
+            x, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n").encode()
+        subject = {"repository": "ingolf-lohmann/qik-vrt",
+                   "head": "a" * 40, "tree": "b" * 40}
+        origin = {"run_id": 11, "run_attempt": 1, "event": "push"}
+        text = '{"disposition":"HOLD"}'
+        digest = MODULE.hashlib.sha256(text.encode()).hexdigest()
+        unit = MODULE.hashlib.sha256(canonical(
+            {"subject": subject, "origin": origin, "analysis_sha256": digest})).hexdigest()
+        envelope = {"schema": "qikvrt_error_analysis_handoff_v1",
+                    "state": "REPAIR_INPUT_REQUIRED", "subject": subject,
+                    "origin": origin, "work_unit_id": unit, "hop_count": 1,
+                    "effect_permission": False, "analysis_utf8": text,
+                    "analysis_sha256": digest}
+        raw = canonical(envelope)
+        inbox = root / "inbox"; inbox.mkdir()
+        (inbox / (unit + ".json")).write_bytes(raw)
+        receipt = {"work_unit_id": unit, "origin": origin,
+                   "inbox_sha256": MODULE.hashlib.sha256(raw).hexdigest(),
+                   "analysis_sha256": digest}
+        route = {"state": "REPAIR_HANDLER_REQUIRED", "work_unit_id": unit,
+                 "subject": subject}
+        return inbox, receipt, route, raw
+
+    def test_exact_bytes_are_persisted_and_replayed_without_writer_claim(self):
+        with tempfile.TemporaryDirectory() as dirname:
+            inbox, receipt, route, raw = self.fixture(pathlib.Path(dirname))
+            api = self.Api(route["subject"]["head"])
+            first = MODULE.persist_repair_route(api, receipt, inbox, route)
+            second = MODULE.persist_repair_route(api, receipt, inbox, route)
+            self.assertEqual(first, second)
+            self.assertEqual(api.blobs[first["blob_sha"]], raw)
+            self.assertEqual(len(api.refs), 1)
+            self.assertTrue(first["persistence_readback_verified"])
+            self.assertIsNone(first["writer_claim"])
+            self.assertIsNone(first["lease"])
+            self.assertIsNone(first["fencing_token"])
+            self.assertFalse(first["effect_ack_done"])
+
+    def test_wrong_bytes_or_head_never_create_work_unit_ref(self):
+        with tempfile.TemporaryDirectory() as dirname:
+            inbox, receipt, route, raw = self.fixture(pathlib.Path(dirname))
+            api = self.Api("c" * 40)
+            with self.assertRaises(MODULE.SelfHealBlock):
+                MODULE.persist_repair_route(api, receipt, inbox, route)
+            self.assertFalse(api.refs)
+            api.head = route["subject"]["head"]
+            (inbox / (route["work_unit_id"] + ".json")).write_bytes(raw + b" ")
+            with self.assertRaises(MODULE.SelfHealBlock):
+                MODULE.persist_repair_route(api, receipt, inbox, route)
+            self.assertFalse(api.refs)
+
+    def test_workflow_uses_same_inbox_and_existing_route(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml").read_text()
+        self.assertIn('--receipt "$root/consumer-receipt.json" --inbox "$root/inbox"', workflow)
+        self.assertIn("repair-route", workflow)
+        self.assertIn("GH_TOKEN:", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

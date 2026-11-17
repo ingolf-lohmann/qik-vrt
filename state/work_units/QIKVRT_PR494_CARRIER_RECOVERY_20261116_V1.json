@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt_temdd_carrier_recovery_work_unit/v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 494,
+  "source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+  "source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3",
+  "original_archive_bytes": 382994793,
+  "original_archive_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+  "principal_authorization": "GRANTED_IN_CONVERSATION_2026-11-16",
+  "carrier_state": "CARRIER_HOLD",
+  "known_negative_artifact": 13378557846,
+  "library_candidates": [
+    {
+      "id": "libfile_d3bd702289c08191881924ab99d9c069",
+      "state": "READBACK_REQUIRED"
+    },
+    {
+      "id": "libfile_a1671d04e304819199e5e1d7ada99ae1",
+      "state": "READBACK_REQUIRED"
+    }
+  ],
+  "next_action": "Independently read original bytes from library candidate; verify exact archive size, SHA256, provenance, source binding; then run unchanged exact-head CI and admitted writer/effect readback.",
+  "admission": "FAIL_CLOSED",
+  "app_writer_admitted": false,
+  "effect_ack_done": false
+}

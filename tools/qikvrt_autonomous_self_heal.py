@@ -658,11 +658,14 @@ class GitHubREST:
             return False
         try:
             self.call("POST", "git/refs", {"ref": ref, "sha": sha})
-        except SelfHealBlock:
-            # Independent observation is safe. Even a matching ref cannot prove
-            # ownership after a timeout or a race; only a confirmed create can.
-            self.ref(ref)
-            raise
+        except SelfHealBlock as failure:
+            # Read back exactly once. A matching ref is evidence, not writer ownership.
+            observed = self.ref(ref)
+            readback = ("NOT_FOUND" if observed is None else
+                        "EXACT_MATCH" if observed.get("ref") == ref and
+                        observed.get("object", {}).get("sha") == sha else "CONFLICT")
+            raise SelfHealBlock(f"{failure}; immutable_ref={ref}; "
+                                f"readback={readback}; writer_admitted=false") from failure
         observed = self.ref(ref)
         if observed is None or observed.get("ref") != ref or observed.get("object", {}).get("sha") != sha:
             raise SelfHealBlock("immutable continuation receipt readback mismatch")
@@ -743,6 +746,31 @@ def reobserve_selection(api: GitHubREST, plan: Mapping[str, Any], head: str) -> 
     return pr
 
 
+def inspect_existing_run_claim(api: GitHubREST, plan: dict[str, Any],
+                               run_id: int, run_ref: str) -> dict[str, Any]:
+    """Read-only reconcile an existing Run claim; never acquire its missing refs.
+
+    A Run ref binds only Main, not the selected PR, owner or fencing epoch.
+    In particular an orphaned Turn is not a lease for a different run attempt.
+    """
+    attempts = api.pages("git/matching-refs/qikvrt/pr-continuation/attempts/")
+    bound = []
+    for item in attempts:
+        name = item.get("ref") or ""
+        match = ATTEMPT_PATTERN.fullmatch(name)
+        if (match is None or
+                item.get("object", {}).get("sha") != match.group(3)):
+            raise SelfHealBlock("invalid immutable attempt inventory")
+        if int(match.group(5)) == run_id:
+            bound.append(name)
+    if len(bound) > 1:
+        raise SelfHealBlock("ambiguous existing run attempt binding")
+    return dict(plan, selected=None, run_ref=run_ref,
+                state="DUPLICATE_RUN_NOOP" if bound else "PARTIAL_RUN_CLAIM_HOLD",
+                prior_attempt_ref=bound[0] if bound else None,
+                writer_admitted=False, effect_ack_done=False)
+
+
 def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[str, Any]:
     if run_id < 1:
         raise SelfHealBlock("native run identity is required")
@@ -752,7 +780,7 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
     reobserve_selection(api, plan, selected["head_sha"])
     run_ref = CONTINUATION_REFS + f"runs/{run_id}"
     if not api.create_once(run_ref, plan["base_sha"]):
-        return dict(plan, state="DUPLICATE_RUN_NOOP", selected=None)
+        return inspect_existing_run_claim(api, plan, run_id, run_ref)
     if not api.create_once(CONTINUATION_REFS + f"turns/{plan['turn_number']}", selected["head_sha"]):
         return dict(plan, state="CONTENDED_TURN_NOOP", selected=None)
     receipt = (CONTINUATION_REFS + f"attempts/{plan['turn_number']}-{selected['pull_request']}-"
@@ -1026,9 +1054,26 @@ def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str
         expected_tree = local_git(root, "rev-parse", sha + "^{tree}").decode().strip()
         tree = create_rest_tree(api, {"base_tree": parent_tree, "tree": entries}, expected_tree)
         if tree.get("sha") != expected_tree: raise SelfHealBlock("outgoing tree mismatch")
+        # Keep exact local Git message bytes, including all terminal newlines.
         created = api.call("POST", "git/commits", {"tree": expected_tree, "parents": parents,
-                           "message": message.rstrip("\n"), **identities})
-        if created.get("sha") != sha: raise SelfHealBlock("outgoing commit mismatch")
+                           "message": message, **identities})
+        observed_sha = created.get("sha")
+        if observed_sha != sha:
+            # An unmatched SHA is an immutable remote write, not a rejected POST.
+            # Record its returned identity; never retry with altered content.
+            remote = "NOT_VERIFIED"
+            if isinstance(observed_sha, str) and SHA_PATTERN.fullmatch(observed_sha):
+                try:
+                    actual = api.call("GET", f"git/commits/{observed_sha}")
+                    if (actual.get("sha") == observed_sha
+                            and actual.get("tree", {}).get("sha") == expected_tree
+                            and [p.get("sha") for p in actual.get("parents", [])] == parents):
+                        remote = "TREE_AND_PARENTS_VERIFIED"
+                except SelfHealBlock:
+                    pass
+            diagnostic = observed_sha if isinstance(observed_sha, str) and SHA_PATTERN.fullmatch(observed_sha) else "INVALID"
+            raise SelfHealBlock(f"outgoing commit mismatch; expected={sha}; observed={diagnostic}; "
+                                f"readback={remote}; no repeated POST")
         if api.call("GET", f"git/commits/{sha}").get("tree", {}).get("sha") != expected_tree:
             raise SelfHealBlock("outgoing commit independent readback mismatch")
     reobserve_selection(api, plan, source)
@@ -1247,9 +1292,103 @@ def consume_repair_input(envelope: Mapping[str, Any], source: Mapping[str, Any],
             "effect_ack_done": False}
 
 
+def route_repair_receipt(receipt: Mapping[str, Any], *, repository: str,
+                         head: str, tree: str) -> dict[str, Any]:
+    """Gate verified predecessor work before unrelated PR rotation.
+
+    Neither this receipt nor its route grants writer authority, proves a
+    cause, or acknowledges a downstream deployment effect.
+    """
+    if not isinstance(receipt, Mapping) or not re.fullmatch(r"[0-9a-f]{40}", head) \
+            or not re.fullmatch(r"[0-9a-f]{40}", tree) \
+            or not isinstance(repository, str) or repository.count("/") != 1:
+        raise SelfHealBlock("invalid exact repair route subject")
+    identity = receipt.get("work_unit_id")
+    if not isinstance(identity, str) or re.fullmatch(r"[0-9a-f]{64}", identity) is None \
+            or receipt.get("effect_ack_done") is not False:
+        raise SelfHealBlock("unbound work unit or unverified effect claim")
+    if receipt.get("state") == "NOOP":
+        return {"schema": "qikvrt_repair_route_v1", "state": "NO_REPAIR_REQUIRED",
+                "work_unit_id": identity, "allow_pr_rotation": True,
+                "writer_admitted": False, "effect_ack_done": False}
+    if (receipt.get("schema") != "qikvrt_repair_consumer_receipt_v1"
+            or receipt.get("state") not in {"ADMITTED_ANALYSIS_HOLD", "DUPLICATE_READBACK"}
+            or receipt.get("subject") != {"repository": repository, "head": head, "tree": tree}
+            or receipt.get("consumer") != "tools/qikvrt_autonomous_self_heal.py"
+            or receipt.get("analysis_admitted") is not True
+            or receipt.get("inbox_readback_verified") is not True
+            or receipt.get("writer_admitted") is not False
+            or receipt.get("repair_executed") is not False
+            or receipt.get("gap_closed") is not False
+            or receipt.get("cause_closed") is not False
+            or receipt.get("repair_complete") is not False
+            or receipt.get("gap_priority") != "OWNER_HIGHEST"
+            or receipt.get("cause_priority") != "OWNER_HIGHEST"):
+        raise SelfHealBlock("repair route rejected unverified or promoted consumer receipt")
+    return {"schema": "qikvrt_repair_route_v1", "state": "REPAIR_HANDLER_REQUIRED",
+            "work_unit_id": identity, "subject": dict(receipt["subject"]),
+            "first_blocker": receipt.get("first_blocker"),
+            "next_action": "ESTABLISH_CAUSE_AND_MATCH_EXISTING_ALLOWLISTED_REPAIR",
+            "allow_pr_rotation": False, "writer_admitted": False,
+            "repair_executed": False, "effect_ack_done": False}
+
+
+
+def persist_repair_route(api: GitHubREST, receipt: Mapping[str, Any],
+                         inbox: pathlib.Path, route: Mapping[str, Any]) -> dict[str, Any]:
+    """Preserve verified repair input in the existing immutable Git receipt lane."""
+    unit = route["work_unit_id"]
+    raw = (inbox / (unit + ".json")).read_bytes()
+    if len(raw) > 8 * 1024 * 1024 or hashlib.sha256(raw).hexdigest() != receipt.get("inbox_sha256"):
+        raise SelfHealBlock("repair inbox byte binding differs")
+    envelope = json.loads(raw.decode("utf-8"))
+    canonical = lambda value: (json.dumps(value, ensure_ascii=False,
+        sort_keys=True, indent=2, allow_nan=False) + "\n").encode("utf-8")
+    if raw != canonical(envelope) or envelope.get("work_unit_id") != unit:
+        raise SelfHealBlock("repair envelope identity or canonical bytes differ")
+    if (envelope.get("schema") != "qikvrt_error_analysis_handoff_v1"
+            or envelope.get("state") != "REPAIR_INPUT_REQUIRED"
+            or envelope.get("subject") != route["subject"]
+            or envelope.get("origin") != receipt.get("origin")
+            or envelope.get("effect_permission") is not False
+            or envelope.get("analysis_sha256") != receipt.get("analysis_sha256")
+            or envelope.get("hop_count") != 1):
+        raise SelfHealBlock("source-bound repair envelope drift")
+    analysis = envelope.get("analysis_utf8")
+    if not isinstance(analysis, str) or hashlib.sha256(analysis.encode()).hexdigest() != receipt["analysis_sha256"]:
+        raise SelfHealBlock("repair analysis byte digest differs")
+    identity = hashlib.sha256(canonical({
+        "subject": route["subject"], "origin": receipt["origin"],
+        "analysis_sha256": receipt["analysis_sha256"]})).hexdigest()
+    if identity != unit:
+        raise SelfHealBlock("repair work-unit identity differs")
+    head = route["subject"]["head"]
+    if (api.ref("refs/heads/main") or {}).get("object", {}).get("sha") != head:
+        raise SelfHealBlock("main moved before durable repair binding")
+    blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+    saved = api.call("POST", "git/blobs", {
+        "content": base64.b64encode(raw).decode(), "encoding": "base64"})
+    if saved.get("sha") != blob:
+        raise SelfHealBlock("repair Git object SHA differs")
+    readback = api.call("GET", f"git/blobs/{blob}")
+    if (readback.get("sha") != blob or readback.get("encoding") != "base64"
+            or base64.b64decode(readback.get("content", "")) != raw):
+        raise SelfHealBlock("persisted Git repair byte readback differs")
+    reference = CONTINUATION_REFS + "work-units/" + unit
+    api.create_once(reference, blob)
+    if (api.ref(reference) or {}).get("object", {}).get("sha") != blob:
+        raise SelfHealBlock("durable repair reference readback differs")
+    if (api.ref("refs/heads/main") or {}).get("object", {}).get("sha") != head:
+        raise SelfHealBlock("main drift after persistence; no writer claim")
+    return dict(route, persistent_ref=reference, blob_sha=blob,
+                inbox_sha256=receipt["inbox_sha256"], persistence_readback_verified=True,
+                writer_claim=None, lease=None, fencing_token=None,
+                writer_admitted=False, repair_executed=False, effect_ack_done=False)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation", "repair-consume"))
+    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation", "repair-consume", "repair-route"))
     parser.add_argument("--repository", type=pathlib.Path, default=ROOT)
     parser.add_argument("--reference")
     parser.add_argument("--binding", type=pathlib.Path)
@@ -1259,6 +1398,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--event")
     parser.add_argument("--run-id", type=int)
     parser.add_argument("--run-attempt", type=int)
+    parser.add_argument("--receipt", type=pathlib.Path)
     parser.add_argument("--envelope", type=pathlib.Path)
     parser.add_argument("--source-run", type=pathlib.Path)
     parser.add_argument("--source-jobs", type=pathlib.Path)
@@ -1278,6 +1418,17 @@ def main(argv: Sequence[str] | None = None) -> int:
                 _load_json(args.source_run, "producer run"),
                 _load_json(args.source_jobs, "producer jobs"), repository=args.repository_name,
                 head=args.expected_head, tree=args.expected_tree, inbox=args.inbox)
+        elif args.command == "repair-route":
+            if not all((args.receipt, args.repository_name, args.expected_head, args.expected_tree)):
+                raise SelfHealBlock("exact consumer receipt and repair subject required")
+            receipt = _load_json(args.receipt, "repair consumer receipt")
+            result = route_repair_receipt(receipt,
+                repository=args.repository_name, head=args.expected_head, tree=args.expected_tree)
+            if result["state"] == "REPAIR_HANDLER_REQUIRED":
+                if args.inbox is None:
+                    raise SelfHealBlock("durable repair route requires consumer inbox")
+                result = persist_repair_route(GitHubREST(args.repository_name),
+                    receipt, args.inbox, result)
         elif args.command == "ci-continuation":
             result = ci_continuation_receipt(args.repository, args.reference,
                 args.test_outcome, args.repository_name, args.event,

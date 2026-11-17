@@ -663,7 +663,8 @@ class GitDataREST(MemoryREST):
                 identity = payload[role]; date = datetime.datetime.fromisoformat(identity['date'])
                 zone = date.strftime('%z')
                 headers.append(f"{role} {identity['name']} <{identity['email']}> {int(date.timestamp())} {zone}")
-            raw = ('\n'.join(headers) + '\n\n' + payload['message'] + '\n').encode()
+            # Never mask a dropped terminal newline in the production caller.
+            raw = ('\n'.join(headers) + '\n\n' + payload['message']).encode()
             result = {'sha': git_bytes(self.root, 'hash-object', '-w', '-t', 'commit', '--stdin', data=raw).decode().strip()}
         elif method == 'PATCH' and path.startswith('git/refs/heads/'):
             assert payload['force'] is False
@@ -786,6 +787,26 @@ class RESTTransportRegressionTests(unittest.TestCase):
         trees = [payload for _, path, payload in api.posts if path == 'git/trees']
         self.assertTrue(any(item['sha'] is None and item['path'] == 'nested/run.sh' for item in trees[0]['tree']))
         self.assertEqual(git_bytes(self.root, 'rev-parse', candidate + '^{tree}').decode().strip(), tree)
+
+    def test_rest_successor_preserves_terminal_newlines_byte_exact(self):
+        (self.root / 'file.cmd').write_text('main change\n')
+        main = self.commit('main')
+        git_bytes(self.root, 'checkout', '-b', 'work', self.initial)
+        (self.root / 'nested/run.sh').write_text('#!/bin/sh\nexit 1\n')
+        source = self.commit('draft')
+        tree = git_bytes(self.root, 'rev-parse', 'HEAD^{tree}').decode().strip()
+        original = git_bytes(self.root, 'commit-tree', tree, '-p', source, '-p', main,
+                             '-m', 'merge with preserved body', env=self.env).decode().strip()
+        raw = git_bytes(self.root, 'cat-file', 'commit', original)
+        self.assertTrue(raw.endswith(b'\n'))
+        candidate = git_bytes(self.root, 'hash-object', '-w', '-t', 'commit', '--stdin',
+                              data=raw + b'\n').decode().strip()
+        api = GitDataREST(self.root, main, source)
+        controller.export_rest_successor(api, self.root, self.plan(api), candidate)
+        self.assertEqual(api.prs[0]['head']['sha'], candidate)
+        posted = [payload for _, path, payload in api.posts if path == 'git/commits']
+        self.assertEqual(len(posted), 1)
+        self.assertTrue(posted[0]['message'].endswith('\n\n'))
 
     def test_bad_remote_tree_never_advances_the_branch(self):
         (self.root / 'file.cmd').write_text('candidate\n'); candidate = self.commit('candidate')

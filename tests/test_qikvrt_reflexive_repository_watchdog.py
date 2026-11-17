@@ -784,6 +784,44 @@ class JobReadbackBudgetTests(unittest.TestCase):
                                       "2026-11-04T00:00:00Z", "2026-11-04T00:00:01Z", "success")
                                   for i in range(count)]}
 
+    def test_extended_2500_runs_and_2415_to_2417_drift(self):
+        self.assertEqual(MODULE.MAX_JOB_READBACK_REQUESTS, 20)
+        self.assertEqual(MODULE.MAX_RUN_READBACK_PAGES, 40)
+
+        def collect(count, drift=False):
+            calls = []
+            def page(endpoint, destination):
+                number = int(endpoint.rsplit("page=", 1)[1])
+                calls.append(number)
+                start = (number - 1) * 100
+                runs = [
+                    {"id": n, "head_sha": HEAD}
+                    for n in range(count - start, max(count - start - 100, 0), -1)
+                ] if start < count else []
+                if drift and number == 1 and calls.count(1) == 2:
+                    return {"total_count": count + 2, "workflow_runs": [
+                        {"id": count + 2, "head_sha": HEAD},
+                        {"id": count + 1, "head_sha": HEAD}, *runs[:98],
+                    ]}
+                return {"total_count": count, "workflow_runs": runs}
+            with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+                MODULE, "_readback_page", side_effect=page
+            ):
+                result = MODULE.collect_runs(
+                    repository="example/qik-vrt", expected_head=HEAD,
+                    directory=pathlib.Path(tmp))
+            return result, calls
+
+        complete, calls = collect(2500)
+        self.assertEqual(complete["first_blocker"], None)
+        self.assertEqual(len(complete["workflow_runs"]), 2500)
+        self.assertEqual(len(calls), 26)
+        self.assertEqual(calls[-1], 1)
+        changed, calls = collect(2415, drift=True)
+        self.assertEqual(changed["first_blocker"], "RUN_SNAPSHOT_DRIFT")
+        self.assertTrue(changed["truncated"])
+        self.assertEqual(len(calls), 26)
+
     def test_incomplete_over_budget_and_invalid_pages_never_admit_job_reads(self):
         cases = [
             (self.page(21), "JOB_READBACK_REQUEST_BUDGET_EXCEEDED"),
@@ -1063,7 +1101,9 @@ class JobReadbackBudgetTests(unittest.TestCase):
     def test_run_pagination_budget_and_numeric_latest_tie_break(self):
         result, requests, _ = self.collect(self.page(1001))
         self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(len(requests), 10)
+        # 1001 complete runs = 11 pages plus one high-water verification.
+        # The subsequent HOLD comes from the unchanged job budget of 20.
+        self.assertEqual(len(requests), 12)
         self.assertTrue(all(r['kind'] == 'runs' for r in requests))
         page = self.page(10)
         for entry in page['workflow_runs']:

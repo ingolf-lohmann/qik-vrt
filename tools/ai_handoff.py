@@ -255,9 +255,10 @@ def historical_readonly_watchdog_retry(action: dict[str, Any], subject: dict[str
                     or job.get("name") != "Linux S1 native terminal production and smoke"
                     or job.get("status") != "completed" or job.get("conclusion") != "success"):
                 return False
-            # These exact sources force the carrier step to perform authenticated
-            # REST metadata and archive reads. No fixture/cache-only substitute.
-            pins = {".github/workflows/qikvrt_ci.yml": "e848529d8d4f938a7b7bcf502754579b82baf4493979ff90ac55a808e024feff",
+            # These exact sources bind the preserved original-byte OCI recovery,
+            # authenticated Actions metadata/archive reads and pinned image-byte
+            # verification. A fixture or changed recovery recipe still fails closed.
+            pins = {".github/workflows/qikvrt_ci.yml": "0d1e22930fbf6ceddf1a868123fc1f751845fcfd76e9cd7e4c74dc1b0a273526",
                     "tools/qikvrt_self_host_container.py": "174e1858cd5ff35f0b01f5d6487e2f78d8054d33ea0f8b6bc50b6b714784d613",
                     "tools/qikvrt_self_host.py": "f332bd157258cf29f3f574329874d1dba7644f13d730becfe6dec9c8e693fdd7"}
             for name, digest in pins.items():

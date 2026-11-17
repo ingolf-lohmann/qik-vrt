@@ -1420,12 +1420,80 @@ jobs:
             --output "$RUNNER_TEMP/s1-context" --receipt "$RUNNER_TEMP/container-evidence/context.json"
           docker version > "$RUNNER_TEMP/container-evidence/docker-version.txt"
           docker buildx version > "$RUNNER_TEMP/container-evidence/buildx-version.txt"
+      # Rehydrate original SHA-pinned ZIP from an independently verified OCI backup.
+      # No substitute image, no new runner or controller, no acceptance transfer.
+      - name: Recover byte-identical original Docker carrier from preserved evidence
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PYRECOVER'
+          import hashlib, json, os, pathlib, shutil, tarfile, zipfile
+          from tools import qikvrt_self_host_container as c
+          pin = json.loads(pathlib.Path('runtime/self-host/CONTAINER_CARRIER.json').read_bytes())
+          aid, size = 13378557846, 377733146
+          digest = '6898cb71fc343bb5b1a9f9b1c9f922f8bb06c82428bbbfbf5eb9024a0c630138'
+          c.require(os.environ.get('GITHUB_REPOSITORY') == c.REPOSITORY,
+                    'PRESERVED_CARRIER_AUTHORITY_REQUIRED')
+          meta = json.loads(c.get('https://api.github.com/repos/' + c.REPOSITORY +
+                                  '/actions/artifacts/' + str(aid), os.environ['GITHUB_TOKEN']))
+          c.require(meta.get('id') == aid and meta.get('expired') is False and
+                    meta.get('size_in_bytes') == size and meta.get('digest') == 'sha256:' + digest,
+                    'PRESERVED_CARRIER_METADATA_MISMATCH')
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'qikvrt-original-carrier-recovery'
+          root.mkdir(mode=0o700, exist_ok=False)
+          transport = root / 'preserved.zip'
+          c.actions_archive_download(aid, size, transport, os.environ['GITHUB_TOKEN'])
+          with transport.open('rb') as f:
+              c.require(hashlib.file_digest(f, 'sha256').hexdigest() == digest,
+                        'PRESERVED_CARRIER_TRANSPORT_DRIFT')
+          oci = root / 'original.oci.tar'
+          with zipfile.ZipFile(transport) as z:
+              entries = z.infolist()
+              c.require(len(entries) == 1 and entries[0].filename == 'carrier-original.oci.tar'
+                        and entries[0].file_size <= pin['archive_bytes'] + 1048576,
+                        'PRESERVED_CARRIER_UNEXPECTED_FILESET')
+              with z.open(entries[0]) as src, oci.open('xb') as dst:
+                  shutil.copyfileobj(src, dst, 1048576)
+          verified = c.carrier_archive_check(pin, oci)
+          c.require(verified['state'] == 'ORIGINAL_ARCHIVE_OCI_BYTE_READBACK_VERIFIED',
+                    'PRESERVED_CARRIER_UNVERIFIED')
+          original = root / 'original-delivery.zip'
+          with tarfile.open(oci, 'r:') as a:
+              index = json.loads(a.extractfile('index.json').read())
+              manifest = json.loads(a.extractfile('blobs/sha256/' +
+                                    index['manifests'][0]['digest'][7:]).read())
+              name = 'blobs/sha256/' + manifest['layers'][0]['digest'][7:]
+              with tarfile.open(fileobj=a.extractfile(name), mode='r|') as layer:
+                  member = layer.next()
+                  c.require(member is not None and member.name == 'original-delivery.zip'
+                            and member.size == pin['archive_bytes'] and member.mode == 0o444
+                            and member.uid == member.gid == member.mtime == 0,
+                            'ORIGINAL_DELIVERY_MEMBER_MISMATCH')
+                  hasher = hashlib.sha256()
+                  with layer.extractfile(member) as src, original.open('xb') as dst:
+                      while chunk := src.read(1048576):
+                          hasher.update(chunk)
+                          dst.write(chunk)
+                  c.require(hasher.hexdigest() == pin['archive_sha256'] and layer.next() is None,
+                            'ORIGINAL_DELIVERY_BYTES_MISMATCH')
+          receipt = {'schema':'qikvrt-original-carrier-restore/v1',
+                     'source_artifact_id':aid, 'transport_sha256':digest,
+                     'original_artifact_id':pin['artifact_id'],
+                     'original_archive_sha256':pin['archive_sha256'],
+                     'original_archive_bytes':pin['archive_bytes'],
+                     'state':'VERIFIED_EXACT_ORIGINAL_BYTES','effect_ack_done':False}
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'container-evidence'/
+           'original-carrier-restore.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PYRECOVER
       - name: Verify and reuse original PR494 Docker carrier
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           python3 -B tools/qikvrt_self_host.py container-carrier --root . \
+            --carrier-archive "$RUNNER_TEMP/qikvrt-original-carrier-recovery/original-delivery.zip" \
             --output "$RUNNER_TEMP/frozen-carrier" \
             --carrier-oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
             --receipt "$RUNNER_TEMP/container-evidence/carrier.json"
