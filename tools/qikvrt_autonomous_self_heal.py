@@ -1054,9 +1054,26 @@ def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str
         expected_tree = local_git(root, "rev-parse", sha + "^{tree}").decode().strip()
         tree = create_rest_tree(api, {"base_tree": parent_tree, "tree": entries}, expected_tree)
         if tree.get("sha") != expected_tree: raise SelfHealBlock("outgoing tree mismatch")
+        # Keep exact local Git message bytes, including all terminal newlines.
         created = api.call("POST", "git/commits", {"tree": expected_tree, "parents": parents,
-                           "message": message.rstrip("\n"), **identities})
-        if created.get("sha") != sha: raise SelfHealBlock("outgoing commit mismatch")
+                           "message": message, **identities})
+        observed_sha = created.get("sha")
+        if observed_sha != sha:
+            # An unmatched SHA is an immutable remote write, not a rejected POST.
+            # Record its returned identity; never retry with altered content.
+            remote = "NOT_VERIFIED"
+            if isinstance(observed_sha, str) and SHA_PATTERN.fullmatch(observed_sha):
+                try:
+                    actual = api.call("GET", f"git/commits/{observed_sha}")
+                    if (actual.get("sha") == observed_sha
+                            and actual.get("tree", {}).get("sha") == expected_tree
+                            and [p.get("sha") for p in actual.get("parents", [])] == parents):
+                        remote = "TREE_AND_PARENTS_VERIFIED"
+                except SelfHealBlock:
+                    pass
+            diagnostic = observed_sha if isinstance(observed_sha, str) and SHA_PATTERN.fullmatch(observed_sha) else "INVALID"
+            raise SelfHealBlock(f"outgoing commit mismatch; expected={sha}; observed={diagnostic}; "
+                                f"readback={remote}; no repeated POST")
         if api.call("GET", f"git/commits/{sha}").get("tree", {}).get("sha") != expected_tree:
             raise SelfHealBlock("outgoing commit independent readback mismatch")
     reobserve_selection(api, plan, source)
