@@ -1,0 +1,134 @@
+{
+  "base_head": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+  "base_tree": "1c9c1f42e3f37a99d82a68497d8bbf108d07a6c7",
+  "candidate_targeted_tests": {
+    "continuation": 49,
+    "frozen_apt_and_artifact": 10,
+    "specification": 23,
+    "total": 137,
+    "watchdog": 55
+  },
+  "effect_ack_done": false,
+  "historical_predecessor": {
+    "consumer_artifact_gaps_remain": true,
+    "local_targeted_tests": 135,
+    "native_core_job": 126972090971,
+    "native_formal_run": 41944160433,
+    "native_full_test": "PASS",
+    "native_watchdog_run": 41944160522,
+    "s1_job": 126977054766,
+    "s1_run": 41944160618,
+    "watchdog_attempt": 2
+  },
+  "local_successor_execution": "NOT_EXECUTED_EXEC_SERVER_UNAVAILABLE",
+  "native_runtime_acceptance": false,
+  "native_successor_execution": "REQUIRED",
+  "new_python_embedded_blocks": "NATIVE_REGRESSION_COMPILES_ACTUAL_SOURCE",
+  "old_syntax_checks": "HISTORICAL49_ONLY",
+  "schema": "qikvrt_stall_source_checks_v1",
+  "scope": "REMOTE_BYTE_VERIFIED_SOURCE_NATIVE_SUCCESSOR_EXECUTION_REQUIRED",
+  "sources": [
+    {
+      "bytes": 45385,
+      "git_blob": "dca02c44b10599853042d6c006bc7e7b0cdb9615",
+      "path": "AI",
+      "sha256": "ea242c8d10cb803a7f1c16d7eec2749853d6c713a00638e4a464c4d820ba1934"
+    },
+    {
+      "bytes": 35562,
+      "git_blob": "13441a7f6ffc58ea6e5ed63a923a2922fc708dff",
+      "path": "AGENTS.md",
+      "sha256": "b713c3c9ef7fe3756a8e1c99212922eed2ab663bdd673b3f5ba47827a35048d6"
+    },
+    {
+      "bytes": 84150,
+      "git_blob": "631989706fc8854e047b27221aa6b11ab5af596f",
+      "path": "tools/qikvrt_reflexive_repository_watchdog.py",
+      "sha256": "3d4ae027b52853a06a549edcd8548264c4c8ab2fa8a916811b786b8d6bd2a3ce"
+    },
+    {
+      "bytes": 65364,
+      "git_blob": "5611716e883a32446d818959608a78bf1929264d",
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "sha256": "ba771a25629dbdeea688449882f301e5a01d54876587807d3d0343fc0819314d"
+    },
+    {
+      "bytes": 13061,
+      "git_blob": "b3203033e9c032b42fb8bfcc40f541587c23713c",
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "sha256": "e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d"
+    },
+    {
+      "bytes": 14730,
+      "git_blob": "db4929613227792fce83f292320b6920ed305d00",
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "sha256": "de88b53e7c76f42f70177edabc64f266782d2799c2e1ff1774cbdd01f84a9201"
+    },
+    {
+      "bytes": 14871,
+      "git_blob": "2e7f6695713f072e521bdd5483b5f475c74c0d65",
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "sha256": "c0388f34cb8df42596b1bc1b90e9139ce58f7a3c7f0f219ba4a69bff7631b271"
+    },
+    {
+      "bytes": 17370,
+      "git_blob": "af63d142447f2937dc6148be17154bb1001f2497",
+      "path": "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json",
+      "sha256": "dea2c8f2b7abaa003210e1c81297f172f232e40e48b340babdc49a805bb6622f"
+    },
+    {
+      "bytes": 19733,
+      "git_blob": "18148f12f2742ac76bf114ab7f145d029ea12fde",
+      "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+      "sha256": "0b9cef2a581f4200307eb93c37e9041e75037bf20abf58331e3a8c915674ebdb"
+    },
+    {
+      "bytes": 7358,
+      "git_blob": "a136f1846128a7303c1d29748831ccaf59e7b301",
+      "path": "runtime/self-host/Dockerfile",
+      "sha256": "6c052d98cb1e5e9e7f29230ee85398ca59b6416063c307d23831b81a049aaa45"
+    },
+    {
+      "bytes": 2656,
+      "git_blob": "b552d7724bb02d757a63e4f76acc981bf63f0be9",
+      "path": "runtime/self-host/FROZEN_BUILD_APT_V1.json",
+      "sha256": "6715635413c9b03ca5a3eb229afc3d767ef08c39bb6b6a2033859160cf52d4a9"
+    },
+    {
+      "bytes": 88706,
+      "git_blob": "bdfd874f69edb6921447596dbcd6eb04309dda21",
+      "path": "tools/qikvrt_self_host_container.py",
+      "sha256": "174e1858cd5ff35f0b01f5d6487e2f78d8054d33ea0f8b6bc50b6b714784d613"
+    },
+    {
+      "bytes": 14098,
+      "git_blob": "9abd29033e8efbeaaf5df5781a84f1503ec49b41",
+      "path": "tests/test_frozen_build_apt.py",
+      "sha256": "ecbbb97bff53987ac31412d5f39af58e4c919c4c2e571d7aefc30e479e56431d"
+    },
+    {
+      "bytes": 21348,
+      "git_blob": "ed7753ca938d2e8c5efa84f076ecb4fa91f18f89",
+      "path": "Makefile",
+      "sha256": "706246470e38c0d3f7812f1be669e4ae5fb1f47b2673a78bc2a9c7dbaefc4dc0"
+    },
+    {
+      "bytes": 117264,
+      "git_blob": "61710d1a2e24d40fecef39405c0c79e0a4308562",
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "e848529d8d4f938a7b7bcf502754579b82baf4493979ff90ac55a808e024feff"
+    },
+    {
+      "bytes": 106150,
+      "git_blob": "562cef79b1b5e841ba18de66d0daf924274379dd",
+      "path": "tools/ai_handoff.py",
+      "sha256": "f5d4aad70b4e19d2876b80c30d866a00414593eafe3cb8cb70a3a6e291c85e2c"
+    },
+    {
+      "bytes": 17811,
+      "git_blob": "e8df533ad15eb42a53fbe13b5f797fc45fc5551f",
+      "path": "tests/test_specification_review.py",
+      "sha256": "8e0dfba1e5c4300245b9cdb6aeb55336a847f9554ac21849fae57500c750da5d"
+    }
+  ]
+}

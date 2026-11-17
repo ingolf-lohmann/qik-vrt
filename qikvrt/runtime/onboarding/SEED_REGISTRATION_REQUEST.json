@@ -1,0 +1,15 @@
+{
+  "authorized_manifest_graph_only": true,
+  "automatic_after_setup": true,
+  "event": "QIKVRT_NODE_ONBOARDING_REQUEST",
+  "no_further_human_machine_interaction_after_setup": true,
+  "no_global_scanning": true,
+  "no_remote_mutation_without_authorization": true,
+  "no_self_propagation": true,
+  "repository_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+  "role": "node",
+  "seed_repository": "ingolf-lohmann/qik-vrt",
+  "seed_url": "https://github.com/ingolf-lohmann/qik-vrt",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "version": "2.13.4"
+}

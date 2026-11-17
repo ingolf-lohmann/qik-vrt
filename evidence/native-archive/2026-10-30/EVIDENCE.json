@@ -1,0 +1,145 @@
+{
+  "archive_bytes": 295614106,
+  "archive_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+  "build": {
+    "binary_sha256": "e268baa947c993efde2731d98bdcfeec1a078020b276ccb0b5c2241c7f45dc82",
+    "command": [
+      "cc",
+      "-std=c90",
+      "-pedantic-errors",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-O2",
+      "-I",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/include",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/src/sha256.c",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/src/codec_native.c",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/src/finite_machine.c",
+      "/workspace/scratch/5cf3cb2fac5e/universal-archive/tools/qikvrt_archive_native.c",
+      "-lz",
+      "-o",
+      "/workspace/scratch/5cf3cb2fac5e/release-native-archive-proof/qikvrt-archive"
+    ],
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "headers_sha256": {
+      "include/qikvrt/codec_native.h": "0b7d06a1ab6c72a1a1a7ae951bc26660218b014eef1d65d616e5f9c2c0741a8f",
+      "include/qikvrt/effect_ack.h": "bbd62bd4044e0feb7561770cb11cbbb866fdf3c9b5124c0d520637cdd0172580",
+      "include/qikvrt/finite_machine.h": "7da9a55a8e6b9a9d690634c4547ddb78ce262d0b117e3b8ef3e0db7bc631c581",
+      "include/qikvrt/fixed_q16.h": "5fa4ecca2859a02ec45b88e1dd123782bc16a558c68a9d439bbae9783212e55e",
+      "include/qikvrt/sha256.h": "a37f974ef184b4c05f1ca2c23839680f739a91fc7de8cf74f50cc3db67908d89",
+      "include/qikvrt/standpoint_signature_v1.h": "ce45d0502d3df437a3b702235d523ed5821de2d43e70ae06e77e449993deea27"
+    },
+    "sources_sha256": {
+      "src/codec_native.c": "4199867e66497f3b2890c2a352c6943c7a8ff6ad90122e0ff5db14a35ecb57ce",
+      "src/finite_machine.c": "77673ef1784d81c16257faab7fd7ddc1dfec887aa4e97cecfe620ee80b3c1d04",
+      "src/sha256.c": "ead4899bf35c93c6fbb41c1b5ab6c2e01d8bcf6e70d4356683bd3faa36b7e5d3",
+      "tools/qikvrt_archive_native.c": "6a00cd2f5d7c09d3db5e112c1bf7dba274d7f031fa6d70d58f895f9dbabd073c"
+    },
+    "version": "QIKVRT native codec V1; C90; POSIX/Linux adapter; zlib=1.3",
+    "zlib_shared_library": {
+      "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+      "sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286"
+    }
+  },
+  "driver_sha256": "34acb093d0354e5b44841999905f3ac804fa968fd4ccbec050552710f460c11c",
+  "effect_ack_done": false,
+  "host": {
+    "machine": "x86_64",
+    "system": "Linux"
+  },
+  "independent_zip_readbacks": [
+    {
+      "exit": 0,
+      "file": "repository.zip",
+      "output_sha256": "264162f7798ddf2502e5669dcb22f76408b67324074a4a4dbf26f18d87706dfe"
+    },
+    {
+      "exit": 0,
+      "file": "qikvrt-repository.run",
+      "output_sha256": "066259e09f207cf31662761f8a2ecbcfd499914a6de946e13e0bcfe140f32046"
+    },
+    {
+      "exit": 0,
+      "file": "self-extracted.zip",
+      "output_sha256": "94758febe253b74b215cc59828d171dc292808d8c76a9592262ac7caedd588ab"
+    }
+  ],
+  "python_reference_restored_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+  "reference_sha256": "703bb15d75b441f2eccf9d414a3134ff7afa144763dc15241a90067a15c185e5",
+  "restored_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+  "schema": "qikvrt-native-archive-evidence/v1",
+  "scope_status": {
+    "complete_selected_source_archive_roundtrip": "VERIFIED",
+    "linux_native_sfx": "VERIFIED",
+    "other_native_platforms": "OPEN",
+    "productive_mesh_transputer_terminal": "OPEN",
+    "standard_zip_interoperability": "VERIFIED_WITH_INFOZIP_AND_PYTHON",
+    "winzip_application": "NOT_EXECUTED"
+  },
+  "self_extracted_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+  "sfx": {
+    "payload_bytes": 295614106,
+    "payload_offset": 34796,
+    "payload_sha256": "9a135e2a6ad9104c5f6e9fa7bd59cd3ee871cdbfd439f25a342777567c8195b5",
+    "profile": "LINUX_ELF_POSIX_DYNAMIC_LIBZ",
+    "sfx_bytes": 295649203,
+    "sfx_sha256": "cf704bc62771f4f429a35f025a12b396c3880793bc9457d2a5a0931aa4e1592b"
+  },
+  "source": {
+    "commit": "630fe6a2db8b202fd8483a3ed5d9d13112839d46",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scope": "COMPLETE_TRACKED_SOURCE_TREE_NOT_GIT_HISTORY",
+    "tree": "ba8e32c34d387c6d2532c491088c06fcbad4106e"
+  },
+  "source_bytes": 448821631,
+  "source_files": 5453,
+  "stored_program": {
+    "input": "1110",
+    "output_sha256": "bbe626b9318f25104431eff2d1c87a1db2c7c7c743407b70b05352fbaf237fd9",
+    "result": {
+      "cells": 4,
+      "head": 3,
+      "schema": "qikvrt-binary-machine-result/v1",
+      "state": 65535,
+      "steps": 4,
+      "tape": "1111"
+    },
+    "scope": "BOUNDED_BINARY_TURING_TABLE_REFERENCE_NOT_MESH_ADMISSION",
+    "sha256": "5a2ec9065d4441e23053b8f3770f536968be643c22fcf1dceed91b9e0fc31206"
+  },
+  "terminal": {
+    "changed_input_status": 409,
+    "commit_status": 200,
+    "discovery_status": 200,
+    "event": {
+      "audio_present": false,
+      "event_id": 1,
+      "external_effect": "NONE",
+      "input_hash": "bd885a4a30131b273f48118e926e214205834a20fa94bdc361507581e1592a61",
+      "kind": "TERMINAL_INPUT_ACCEPTED",
+      "observed_at": "2026-10-30T11:19:38Z",
+      "record_hash": "913309b9f89e38728c88c6403eceb6eb10c6eb5b1873347f31c33843bea3015d",
+      "text": "{\"program_sha256\": \"5a2ec9065d4441e23053b8f3770f536968be643c22fcf1dceed91b9e0fc31206\", \"result\": {\"cells\": 4, \"head\": 3, \"schema\": \"qikvrt-binary-machine-result/v1\", \"state\": 65535, \"steps\": 4, \"tape\": \"1111\"}}",
+      "video_present": false
+    },
+    "input_sha256": "bd885a4a30131b273f48118e926e214205834a20fa94bdc361507581e1592a61",
+    "productive_native_mesh_admission": false,
+    "readback_status": 200,
+    "replay_status": 409,
+    "scope": "ORIGINAL_AUTHENTICATED_LOOPBACK_TERMINAL_INPUT_ONLY",
+    "unauthenticated_status": 401
+  },
+  "trials": [
+    {
+      "operation": "encode",
+      "wall_ns": 10195679786
+    },
+    {
+      "operation": "decode",
+      "wall_ns": 3744822626
+    }
+  ],
+  "wire_bytes": 294468676,
+  "wire_sha256": "bd6705a2f543cb01f2dc1991df1390fa5990b2a2c77b8fc5ab33afbefe50dd3b"
+}

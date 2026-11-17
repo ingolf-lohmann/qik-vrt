@@ -1,0 +1,25 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 4,
+  "manifest_sha256": "4540218c64c511cf543be195593cb80115e0ecab1da248c10c5873b24d803c2e",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/9d7237237e83/qik-vrt/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/README.md",
+      "sha256": "cd3c778df994c37588233abb6f44a5b027aa6e6aabc487e4a56e1a6df139ca68",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "path": "/workspace/scratch/9d7237237e83/qik-vrt/docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/PROTOKOLL_DE.md",
+      "sha256": "2d3c95dcc3850d189c6df9de7d0ab6a1db36907de062ddb9d00c978f0df872c0",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

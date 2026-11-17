@@ -1,0 +1,27 @@
+{
+  "schema": "qikvrt-capability-transfer-native-source-readback/v1",
+  "head": "527744762b646673ccd173218fbe5d577c5b7fd0",
+  "tree": "4175ebf7112005a89c8699d2181ea087fe89dab6",
+  "full_test": {
+    "run": 38882295327,
+    "job": 116911663265,
+    "status": "success",
+    "original_terminal_markers": [
+      "2026-10-16T09:47:17.3306139Z MAKE_TEST_EXIT=0",
+      "2026-10-16T09:47:18.3048721Z QIKVRT_TERMINAL_DISPOSITION PASS mode=full-test"
+    ]
+  },
+  "router": {
+    "run": 38882302760,
+    "job": 116911688279,
+    "status": "success",
+    "tests": 14,
+    "publisher_job": "SKIPPED"
+  },
+  "native_governance": {
+    "main_protected": false,
+    "rulesets": [],
+    "independent_approved": false
+  },
+  "predecessor_pass_transferred_to_successor": false
+}

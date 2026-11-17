@@ -1,0 +1,25 @@
+{
+  "accepted_count": 1,
+  "errors": [],
+  "fail_count": 0,
+  "generated_utc": "2026-10-18T05:30:39Z",
+  "node_count": 1,
+  "qikvrt_event": "AUTONOMOUS_SEED_ACCEPTANCE_EVIDENCE",
+  "results": [
+    {
+      "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+      "policy_status": "ACTIVE",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "request_sha256": "4cdeb0eb420cde38eb051709b594a385883f55622459b8997bcc975e0e273889",
+      "result_status": "ACCEPTED",
+      "workflow_executor_receipt_sha256": null,
+      "workflow_executor_receipt_url": null
+    }
+  ],
+  "revoked_count": 0,
+  "run_id": "owner-seed-role-migration-20261018-e0ad3755",
+  "schema": "qikvrt_seed_acceptance_run_v2",
+  "seed_repository": "ingolf-lohmann/qik-vrt",
+  "status": "PASS",
+  "suspended_count": 0
+}

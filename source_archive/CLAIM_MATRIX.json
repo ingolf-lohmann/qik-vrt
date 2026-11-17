@@ -1,0 +1,159 @@
+{
+  "publication_id": "qikvrt-real-energy-model-source-20261103",
+  "claim_count": 11,
+  "claims": [
+    {
+      "claim_id": "PRE-T01",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos"
+      ],
+      "sources": [
+        "PRE_T01_planckMass_pos",
+        "PRE_T01_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "PRE-T02",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos"
+      ],
+      "sources": [
+        "PRE_T02_planckTime_pos",
+        "PRE_T02_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "PRE-T03",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos"
+      ],
+      "sources": [
+        "PRE_T03_planckEnergy_pos",
+        "PRE_T03_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "PRE-T04",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy"
+      ],
+      "sources": [
+        "PRE_T04_planckTime_mul_planckEnergy",
+        "PRE_T04_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "PRE-T05",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in PlanckRealEnergyDomain.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime"
+      ],
+      "sources": [
+        "PRE_T05_planckEnergy_eq_hbar_div_planckTime",
+        "PRE_T05_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "REB-T01",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in RealErasureBudget.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound"
+      ],
+      "sources": [
+        "REB_T01_real_bit_bound",
+        "REB_T01_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "REB-T02",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in RealErasureBudget.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized"
+      ],
+      "sources": [
+        "REB_T02_gap_normalized",
+        "REB_T02_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "REB-T03",
+      "statement": "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget satisfies its explicitly stated Lean proposition.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "boundary": "Exactly the premise-dependent proposition in RealErasureBudget.lean with the statement binding in RealEnergyStatements.lean; classic axioms propext, Classical.choice, Quot.sound; no empirical interpretation established.",
+      "proof_refs": [
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget"
+      ],
+      "sources": [
+        "REB_T03_planck_budget",
+        "REB_T03_Statement",
+        "core_theorems"
+      ]
+    },
+    {
+      "claim_id": "SRC-001",
+      "statement": "The original source archive binds 47 original payload files by path, byte count and SHA-256.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "boundary": "The frozen source archive only; no claim of a complete author corpus.",
+      "proof_refs": [],
+      "sources": [
+        "files"
+      ]
+    },
+    {
+      "claim_id": "MODEL-001",
+      "statement": "The preserved numerical FLRW computation reports 48 successful model controls.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "boundary": "Observed computation of an assumed numerical model with illustrative parameters, not an astronomical or laboratory observation.",
+      "proof_refs": [],
+      "sources": [
+        "main",
+        "checks",
+        "exit_code"
+      ]
+    },
+    {
+      "claim_id": "OPEN-001",
+      "statement": "Independent physical spacetime emergence and universal physical validity are not established.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "boundary": "No new physical measurement, converter or nongeometric derivation is supplied.",
+      "proof_refs": [],
+      "sources": []
+    }
+  ]
+}

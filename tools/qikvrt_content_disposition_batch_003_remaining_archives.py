@@ -238,11 +238,16 @@ def materialize():
  for ordinal,config in enumerate(probe.SUBJECTS,1):results.append(materialize_subject(config,cache,ordinal))
  build_batch_receipt(results);index,receipt,correction=build_proof_corpus(results);build_work_units(correction);progress,status=build_progress_projection();write(AI_PROGRESS,progress);AI_STATUS.write_text(status,encoding='utf-8',newline='\n');verify_materialized()
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--materialize',action='store_true');parser.add_argument('--check',action='store_true');parser.add_argument('--json',action='store_true');args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--materialize',action='store_true');parser.add_argument('--check',action='store_true');parser.add_argument('--preflight',action='store_true');parser.add_argument('--json',action='store_true');args=parser.parse_args()
+ if args.preflight and (args.materialize or args.check):parser.error('--preflight is a separate read-only admission check')
  try:
-  if args.materialize:materialize()
-  result=verify_materialized() if args.check or not args.materialize else verify_materialized()
- except (DispositionError,OSError,UnicodeError,ValueError,json.JSONDecodeError) as ex:
-  print(json.dumps({'state':'BLOCK','failure_class':'REMAINING_ARCHIVE_CONTENT_DISPOSITION_INVALID','reason':str(ex),'pass':False,'final_pass':False,'effect_ack_done':False,'zenodo_mutation_authorized':False},ensure_ascii=False,sort_keys=True));return 2
+  admission=probe.materialization_preflight() if args.preflight or args.materialize else None
+  if args.preflight or admission is not None and not admission['materialization_admitted']:
+   result=admission
+  else:
+   if args.materialize:materialize()
+   result=verify_materialized()
+ except (probe.E,DispositionError,OSError,UnicodeError,ValueError,json.JSONDecodeError) as ex:
+  print(json.dumps({'state':'BLOCK','failure_class':'REMAINING_ARCHIVE_CONTENT_DISPOSITION_INVALID','reason':str(ex),'pass':False,'final_pass':False,'effect_ack_done':False,'zenodo_mutation_authorized':False,'proof_corpus_published_on_zenodo':False},ensure_ascii=False,sort_keys=True));return 2
  print(json.dumps(result,ensure_ascii=False,indent=2 if args.json else None,sort_keys=True));return 0
 if __name__=='__main__':raise SystemExit(main())

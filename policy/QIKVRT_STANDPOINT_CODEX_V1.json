@@ -1,0 +1,274 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "normative_standpoint_serialization_codex"
+  },
+  "schema": "qikvrt_standpoint_codex_v1",
+  "version": 1,
+  "status": "NONNORMATIVE_COMPATIBILITY_PROJECTION",
+  "specification": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+  "implementation": "src/qikvrt_standpoint_codex.py",
+  "regression_tests": "tests/test_qikvrt_standpoint_codex.py",
+  "acceptance_command": "make standpoint-codex-test",
+  "semantic_source": {
+    "human": "Ingolf Lohmann",
+    "instruction_date": "2026-10-01",
+    "binding": "FIRST_CANONICAL_BYTE_MATERIALIZATION_OF_DECLARED_INVARIANTS",
+    "recovered_historical_400_byte_image": false
+  },
+  "signature": {
+    "bytes": 400,
+    "magic_hex": "51494b5652545350",
+    "version": 1,
+    "descriptor": {
+      "codec": "QIKVRT",
+      "element_binding": [
+        "signature",
+        "stable_id",
+        "payload"
+      ],
+      "element_identity": "SHA-256",
+      "external_service_required": false,
+      "format": 1,
+      "order": "stable_id_bytes",
+      "payload": "opaque_bytes",
+      "serialization": "canonical_binary",
+      "signature_bytes": 400,
+      "validation": "fail_closed"
+    },
+    "descriptor_bytes": 281,
+    "descriptor_encoding": "src.qikvrt_effect_ack.canonical_json then UTF-8",
+    "descriptor_digest_domain_hex": "51494b5652542d5354414e44504f494e542d563100",
+    "descriptor_digest_input": [
+      "domain",
+      "signature[0:16]",
+      "descriptor"
+    ],
+    "padding_bytes": 71,
+    "padding_value": 0,
+    "hex": "51494b56525453500001019001190000ce63feb4a49911570f5f95316711a44b90937614e8509552fad198ac3748847b7b22636f646563223a2251494b565254222c22656c656d656e745f62696e64696e67223a5b227369676e6174757265222c22737461626c655f6964222c227061796c6f6164225d2c22656c656d656e745f6964656e74697479223a225348412d323536222c2265787465726e616c5f736572766963655f7265717569726564223a66616c73652c22666f726d6174223a312c226f72646572223a22737461626c655f69645f6279746573222c227061796c6f6164223a226f70617175655f6279746573222c2273657269616c697a6174696f6e223a2263616e6f6e6963616c5f62696e617279222c227369676e61747572655f6279746573223a3430302c2276616c69646174696f6e223a226661696c5f636c6f736564227d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "fields": [
+      {
+        "offset": 0,
+        "bytes": 8,
+        "name": "magic",
+        "semantics": "QIKVRTSP"
+      },
+      {
+        "offset": 8,
+        "bytes": 2,
+        "name": "version",
+        "semantics": "uint16=1"
+      },
+      {
+        "offset": 10,
+        "bytes": 2,
+        "name": "total_bytes",
+        "semantics": "uint16=400"
+      },
+      {
+        "offset": 12,
+        "bytes": 2,
+        "name": "descriptor_bytes",
+        "semantics": "uint16; exact bound UTF-8 byte count"
+      },
+      {
+        "offset": 14,
+        "bytes": 2,
+        "name": "flags",
+        "semantics": "uint16=0"
+      },
+      {
+        "offset": 16,
+        "bytes": 32,
+        "name": "descriptor_digest",
+        "semantics": "SHA-256(domain || prefix || descriptor)"
+      },
+      {
+        "offset": 48,
+        "bytes": 281,
+        "name": "descriptor",
+        "semantics": "fixed canonical JSON bytes"
+      },
+      {
+        "offset": 329,
+        "bytes": 71,
+        "name": "padding",
+        "semantics": "zero bytes only"
+      }
+    ],
+    "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
+  },
+  "element": {
+    "stable_id_bytes": 32,
+    "identity_bytes": 32,
+    "identity_algorithm": "SHA-256",
+    "identity_domain_hex": "51494b5652542d454c454d454e542d563100",
+    "identity_input": [
+      "domain",
+      "uint16(version)",
+      "signature[400]",
+      "stable_id[32]",
+      "uint64(payload_bytes)",
+      "payload"
+    ],
+    "stable_id_assignment": "CALLER_ASSIGNED_DISTINCT_PERSISTENT_32_BYTES",
+    "content_change": "PRESERVE_STABLE_ID_AND_RECOMPUTE_IDENTITY",
+    "payload": "OPAQUE_IMMUTABLE_BYTES",
+    "minimum_record_bytes": 472,
+    "fields": [
+      {
+        "offset": 0,
+        "bytes": 400,
+        "name": "signature",
+        "semantics": "exact shared V1 signature"
+      },
+      {
+        "offset": 400,
+        "bytes": 32,
+        "name": "stable_id",
+        "semantics": "caller-assigned stable label"
+      },
+      {
+        "offset": 432,
+        "bytes": 32,
+        "name": "identity",
+        "semantics": "content-bound digest"
+      },
+      {
+        "offset": 464,
+        "bytes": 8,
+        "name": "payload_bytes",
+        "semantics": "uint64; exact byte count"
+      },
+      {
+        "offset": 472,
+        "bytes": "payload_bytes",
+        "name": "payload",
+        "semantics": "preserved exact input bytes"
+      }
+    ]
+  },
+  "snapshot": {
+    "magic_hex": "51494b5652545353",
+    "version": 1,
+    "integer_encoding": "UNSIGNED_BIG_ENDIAN_FIXED_WIDTH",
+    "header_bytes": 28,
+    "minimum_bytes": 428,
+    "order": "STRICTLY_INCREASING_STABLE_ID_RAW_BYTES",
+    "set_input_order": "IGNORED_BY_SERIALIZER",
+    "snapshot_dump_serialization": "ONE_IDENTICAL_BINARY_FORMAT",
+    "size_formula": "428 + 472 * element_count + sum(payload_bytes)",
+    "trailer_bytes": 0,
+    "fields": [
+      {
+        "offset": 0,
+        "bytes": 8,
+        "name": "magic",
+        "semantics": "QIKVRTSS"
+      },
+      {
+        "offset": 8,
+        "bytes": 2,
+        "name": "version",
+        "semantics": "uint16=1"
+      },
+      {
+        "offset": 10,
+        "bytes": 2,
+        "name": "signature_bytes",
+        "semantics": "uint16=400"
+      },
+      {
+        "offset": 12,
+        "bytes": 8,
+        "name": "element_count",
+        "semantics": "uint64; complete records only"
+      },
+      {
+        "offset": 20,
+        "bytes": 8,
+        "name": "body_bytes",
+        "semantics": "uint64; exact length of concatenated records"
+      },
+      {
+        "offset": 28,
+        "bytes": 400,
+        "name": "signature",
+        "semantics": "exact shared V1 signature, also for empty set"
+      },
+      {
+        "offset": 428,
+        "bytes": "body_bytes",
+        "name": "elements",
+        "semantics": "canonical ordered concatenation"
+      }
+    ]
+  },
+  "fail_closed": {
+    "reject_unknown_version": true,
+    "reject_modified_or_rehashed_foreign_signature": true,
+    "reject_nonzero_padding": true,
+    "reject_inconsistent_or_truncated_lengths": true,
+    "reject_trailing_bytes": true,
+    "reject_duplicate_stable_ids": true,
+    "reject_duplicate_identities": true,
+    "reject_unsorted_records": true,
+    "reject_mutable_or_text_inputs": true,
+    "no_partial_decoding_result": true,
+    "assert_independent_validation": true
+  },
+  "default_limits": {
+    "max_snapshot_bytes": 67108864,
+    "max_elements": 100000,
+    "max_payload_bytes": 16777216,
+    "wire_uint64_max": 18446744073709551615,
+    "configurable_without_format_change": true
+  },
+  "normative_process": {
+    "steps": [
+      "BIND",
+      "SERIALIZE",
+      "DESERIALIZE",
+      "BYTE_COMPARE",
+      "TEST",
+      "READBACK"
+    ],
+    "network_required": false,
+    "chatgpt_required": false,
+    "external_model_required": false,
+    "provider_adapter": "OPTIONAL_EXPLICITLY_AUTHORIZED",
+    "historical_provenance": "PRESERVE_EXACT_BYTES",
+    "predecessor_evidence_transfer": false
+  },
+  "claim_boundary": {
+    "lossless_within_declared_finite_byte_format": true,
+    "signature_contains_snapshot_payloads": false,
+    "universal_compression_to_400_bytes_claimed": false,
+    "sha256_is_collision_free_claimed": false,
+    "digest_is_authentication_claimed": false,
+    "mc68000_execution_claimed": false,
+    "scientific_universality_claimed": false,
+    "merge_release_or_effect_ack_done_implied": false
+  },
+  "fixed_vector": {
+    "stable_ids_hex": [
+      "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+    ],
+    "payloads_hex": [
+      "00ff51494b56525400",
+      ""
+    ],
+    "identity_hex": [
+      "edd507903074e055f4033d4b44597cb4f574f1f34e11ce6e6629d1017a4f4468",
+      "037c3220c2851a2c5491e3c03f5787de9756e3d3cc96218e21eeedc415cabb48"
+    ],
+    "snapshot_bytes": 1381,
+    "snapshot_sha256": "ef8b7d6bf629a8cdfd4e537de213917ae48a407d76179e2c8cb62dc865a680b5"
+  },
+  "canonical_contract": "policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint"
+}

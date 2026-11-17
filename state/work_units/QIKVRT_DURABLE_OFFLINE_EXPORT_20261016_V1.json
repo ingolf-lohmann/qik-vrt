@@ -1,0 +1,208 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_DURABLE_OFFLINE_EXPORT_20261016_V1",
+  "status": "DURABLE_CURRENT_TREE_EXPORT_AND_INDEPENDENT_OFFLINE_RESTORE_VERIFIED_HISTORY_AND_PRODUCTIVE_LINUX_OPEN",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "source_head": "cd3c0689bd0cbfd68c71dac2114717ce71516711",
+  "source_tree": "2999e95b12a5f6bdda324b7e8a0e9926be5dc884",
+  "authorization": {
+    "human": "Ingolf Lohmann",
+    "scope": "Preserve existing runtime artifacts, complete current portable offline export, test isolated restoration, integrate source changes through PR523."
+  },
+  "reuse": {
+    "exporter": "tools/qikvrt_self_host.py portable",
+    "runtime_artifact_id": 11521962723,
+    "runtime_run_id": 37710500668,
+    "original_library_file_id": "libfile_a1671d04e304819199e5e1d7ada99ae1",
+    "original_new_copy_created": false,
+    "independent_saved_original_readback": {
+      "bytes": 382994793,
+      "sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "matches": true
+    },
+    "new_workflow_created": false,
+    "new_executor_created": false
+  },
+  "implementation": {
+    "optional_complete_history_bundle": "--include-git-history; no network, no lazy fetch; refuse shallow/incomplete sources; strict fsck; exact HEAD ancestry only",
+    "source_restore": "portable-restore; independently pinned SQLite/carrier; empty target; read back all original file bytes/modes/TREE; no Git or Node required",
+    "credentials_exported": false
+  },
+  "baseline_restore": {
+    "state": "SOURCE_TREE_RESTORED_BYTE_EXACT",
+    "source_head": "cd3c0689bd0cbfd68c71dac2114717ce71516711",
+    "source_tree": "2999e95b12a5f6bdda324b7e8a0e9926be5dc884",
+    "source_files": 4939,
+    "canonical_sha256": "9bd8c2816e55972fb606ab432773463bd5e9c901e01c2020957943bdf0bb3bec",
+    "manifest_sha256": "6ceb8acb66085a420077904cc0731b90f4dd72d3a10a08dfb7c2f85ccc32112f",
+    "git_history_included": false,
+    "native_runtime_executed": false,
+    "linux_distribution_verified": false,
+    "effect_ack_done": false,
+    "network": "KERNEL_SECCOMP_DENIED",
+    "git_in_path": false,
+    "node_in_path": false,
+    "scope": "FRESH_EMPTY_DIRECTORY_AND_PROCESS_NETWORK_ISOLATION; NOT_VM_OR_BOOT"
+  },
+  "verification": {
+    "new_regression_cases": "3 passed; complete bundle restore, missing/shallow rejection, source restore with independent pins and no external runtime",
+    "extended_suite": {
+      "run": 218,
+      "passed": 203,
+      "failures": 14,
+      "skipped": 1,
+      "failure": "Existing native standalone and monolithic ingress returned [Errno 1] Operation not permitted; AF_UNIX socket creation independently denied in this executor. Preserve failing tests; no acceptance downgrade."
+    },
+    "effect_ack_conformance": {
+      "tests": 41,
+      "result": "PASS; pure state-machine scope only"
+    },
+    "native_successor_ci": {
+      "head": "4e2490e1af9d42d39bfe080509c98c2db4f53028",
+      "tree": "d9904a89cae99cd362e2400cb7740a95c0858c95",
+      "s1_run": 38941496651,
+      "s1_job": 117109984504,
+      "s1_result": "success",
+      "full_run": 38941496254,
+      "full_job": 117109982966,
+      "full_test_step": "success",
+      "overall_job": "in_progress_at_closing_observation; no terminal success claimed",
+      "earlier_source_full_test": {
+        "head": "aef2ac8bc435199ca9e22314ee4dfccf459ced0c",
+        "job": 117106526599,
+        "make_test_exit": 0,
+        "later_same_ref_check": "failed after concurrent publication successor advanced the ref; no unchanged retry"
+      }
+    },
+    "first_native_failure": {
+      "head": "75e29aa90a7b5537d1d661fc5b7dafc43a0b848c",
+      "job": 117102458810,
+      "run": 38939257445,
+      "cause": "New missing-object fixture assumed a loose blob; Git2.55 runner packed it. FileNotFoundError occurred before the intended assertion.",
+      "repair": "Build an incomplete fixture object store from only the original commit/root-tree bytes. Do not assume loose/packed representation."
+    },
+    "checkout_representation": {
+      "raw_git_blobs": "Byte-exact restoration verified before optional checkout",
+      "canonical_inventory": "Honor original .gitattributes (CMD/PowerShell CRLF) after constructing an explicit depth-one Git snapshot; do not rewrite the frozen original inventory."
+    }
+  },
+  "git_history": {
+    "current_source_history_complete": false,
+    "local_source": "REST-verified full target tree and exact original commit; shallow boundary retained",
+    "older_bundle": "f77bc1183b25cd7a1fdb605bc39ee5ea27953d95; 2422 commits; not target Authority ancestry proof",
+    "missing": "All ancestor commit/tree/blob objects not contained in the exact-head snapshot; other refs/tags and their exclusive history. Existing older provider bundle is not substituted.",
+    "next_action": "Run the optional history export from an authorized complete native object closure and independently restore/read back its bundle. No new repository trigger or missing dispatch operation is fabricated."
+  },
+  "runtime_limits": {
+    "dependency_oci_bytes_verified": true,
+    "privileged_chroot": "Observed EPERM in this executor; no Docker or Podman executable exposed",
+    "offline_basic_functions": "Source restore passed in fresh directory with kernel-enforced network denial; 41 effect-ack conformance tests passed separately",
+    "bootable_linux_distribution_verified": false,
+    "productive_current_application_restart_verified": false,
+    "predecessor_application_acceptance_transferred": false
+  },
+  "outputs": {
+    "durable_export": {
+      "filename": "QIKVRT_Offline_Export_20261016.zip",
+      "bytes": 283634728,
+      "sha256": "7af7092bcdbbc536686c4dc0586f70fe03570c8a7c13d7cd23fbb3412afa51ac",
+      "source_head": "4e2490e1af9d42d39bfe080509c98c2db4f53028",
+      "source_tree": "d9904a89cae99cd362e2400cb7740a95c0858c95",
+      "files": 13,
+      "derived_duplicate_omitted": "repository.qmesh",
+      "exact_archive_inventory_verified": true,
+      "library_file_id": "libfile_0b907fdfa90c819199713f89b8b0bc1a",
+      "version_number": 2,
+      "independent_saved_byte_readback": true
+    },
+    "readback_receipt": {
+      "filename": "QIKVRT_Offline_Export_Nachweis_20261016.json",
+      "library_file_id": "libfile_c6900e573a0881918f35a4dedfc5bd50",
+      "identity_preserved_on_update": true
+    },
+    "duplicate_runtime_copy_created": false,
+    "derived_qmesh_storage_avoided": true
+  },
+  "human_contribution": "Ingolf Lohmann: objective, requirements, authority and research.",
+  "artificial_contribution": "OpenAI Codex: REST/source-cache verification, exporter extension, tests, restoration and evidence.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false,
+  "export_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 523,
+    "ref": "integration/515-519-521-522-20261012-eceb9b63",
+    "head": "4e2490e1af9d42d39bfe080509c98c2db4f53028",
+    "tree": "d9904a89cae99cd362e2400cb7740a95c0858c95"
+  },
+  "independent_saved_export_restore": {
+    "state": "SOURCE_TREE_RESTORED_BYTE_EXACT",
+    "source_head": "4e2490e1af9d42d39bfe080509c98c2db4f53028",
+    "source_tree": "d9904a89cae99cd362e2400cb7740a95c0858c95",
+    "source_files": 4942,
+    "canonical_sha256": "222d9975be604dccb8274e1da8c99a36aab8335bdc50a50edcebd03e7ecc152b",
+    "manifest_sha256": "15fa5cb0b98d3ed71118383b7b9b8ad7c3b73b3f4cc26d5dca09110ec9bf12ee",
+    "git_history_included": false,
+    "native_runtime_executed": false,
+    "linux_distribution_verified": false,
+    "effect_ack_done": false,
+    "network_isolation": "KERNEL_SECCOMP_SOCKET_DENIAL_VERIFIED",
+    "git_or_node_during_restore": false,
+    "isolation_scope": "EMPTY_TARGET_AND_NETWORK_ISOLATED_PROCESS; NOT_VM_OR_FILESYSTEM_SANDBOX",
+    "git_snapshot": {
+      "head": "4e2490e1af9d42d39bfe080509c98c2db4f53028",
+      "tree": "d9904a89cae99cd362e2400cb7740a95c0858c95",
+      "history_depth": 1,
+      "shallow": true,
+      "ancestor_objects_included": false,
+      "remotes_included": false,
+      "worktree_normalization": "ORIGINAL_GITATTRIBUTES_AFTER_BYTE_EXACT_BLOB_RESTORE"
+    },
+    "derived_transport": {
+      "sha256": "d770a5db5c8765b34810162a469752bac17ce2115d8e23d29dcde76ccda34584",
+      "byte_exact": true,
+      "bytes": 439039411
+    },
+    "ledger_restart_replay": {
+      "same_readback": true,
+      "records": 1
+    },
+    "basic_functions_passed": true,
+    "checks": [
+      {
+        "command": [
+          "tools/qikvrt_tool_cache.py",
+          "verify"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "tools/qikvrt_integrity.py",
+          "verify"
+        ],
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "-m",
+          "unittest",
+          "-v",
+          "tests.test_effect_ack_conformance"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "source_acceptance_boundary": "The archive freezes 4e2490e1/d9904a89 before this metadata-only audit commit. This later receipt is not a new application acceptance and does not transfer predecessor tests or domain delivery.",
+  "archive_inventory_correction": {
+    "unaccepted_intermediate_sha256": "300ae0a8089caa62dca23e0b540f151d4063945a43ed6e16e9778150b4c262ca",
+    "cause": "Unlisted staging members were observed before acceptance.",
+    "repair": "Archive only the explicit manifest inventory; independently verify every member and exact inventory after saved-byte download.",
+    "accepted_final_sha256": "7af7092bcdbbc536686c4dc0586f70fe03570c8a7c13d7cd23fbb3412afa51ac"
+  },
+  "closed_storage_effect_verified": true,
+  "complete_git_history_acceptance": false,
+  "productive_linux_distribution_acceptance": false,
+  "updated_at_utc": "2026-10-16T18:01:37.811075+00:00"
+}

@@ -1,0 +1,306 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "own_host_capability_observation_json"
+  },
+  "schema": "qikvrt-own-host-capability/v1",
+  "observed_at": "2026-10-05T05:40:08.179Z",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 457,
+    "source_head": "3bf52747bc94de847d390ffacabecae183aee588",
+    "source_tree": "96c7bb691675dcd15bb5045871201adb400074f0"
+  },
+  "state": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+  "scope": "FRESH_REMOTE_BRANCH_SNAPSHOT; REACHABLE_SELECTED_DEPLOYMENT_HISTORY; EXPOSED_AUTHORIZED_DEPLOYMENT_CARRIERS",
+  "history_evidence": "evidence/self_host/OWN_HOST_HISTORY_SEARCH_20261005.json",
+  "first_causal_blocker": "No actually callable own-host execution operation bound to independently validated host identity, persistent mount and authorized public HTTPS origin is accessible in this task.",
+  "missing_binding": {
+    "callable_execution_operation": null,
+    "authorized_host_identity": null,
+    "persistent_mount_or_device": null,
+    "public_https_origin": null,
+    "existing_supervisor_identity": null
+  },
+  "local_package_binding": {
+    "source_head": "3bf52747bc94de847d390ffacabecae183aee588",
+    "source_tree": "96c7bb691675dcd15bb5045871201adb400074f0",
+    "manifest_sha256": "d040cfa41800147fc30affac669ecb88f08e0f4c60955bd92c07a0b8adc7788a",
+    "archive_sha256": "8c7a4be40e96bfef69e6839bc9dce6f8ec54e708307357fa36bb4d96e6d504ba",
+    "pack": "EXECUTED_LOCAL_ONLY",
+    "independent_verify": "SEPARATE_PROCESS_EXACT_EXPORT_VERIFIED",
+    "profile": "NATIVE_TEMDD_EXPORT; NO_BROWSER_RUNTIME_ASSET_FREEZE_ON_THIS_BUILDER",
+    "runtime_scope": "LOCAL_EXECUTABLE_PINNING; NOT_DEPLOYED_HOST_ADMISSION",
+    "details": "evidence/self_host/OWN_HOST_LOCAL_VALIDATION_20261005.json"
+  },
+  "observed_candidates": [
+    {
+      "kind": "railway_universal_terminal",
+      "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+      "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+      "service_id": "feb518e8-bfb2-450d-a36a-c992b052427c",
+      "deployment": {
+        "id": "d74053cf-7753-4d41-8d61-eab36b65c678",
+        "status": "SUCCESS",
+        "createdAt": "2026-09-28T05:26:32.994Z",
+        "url": null
+      },
+      "volumes": [
+        {
+          "id": "0e2d37e2-ac58-4bdc-8238-ed81bf2aa187",
+          "name": "qikvrt-state",
+          "mountPath": "/var/lib/qikvrt",
+          "sizeMB": 500,
+          "region": "iad",
+          "state": "live"
+        }
+      ],
+      "domains": {
+        "serviceDomains": [
+          {
+            "id": "f3941195-c8bc-465e-8320-6eee3f0b0233",
+            "domain": "universal-terminal-production.up.railway.app",
+            "targetPort": 8080
+          }
+        ],
+        "customDomains": []
+      },
+      "source": {
+        "repo": "Goldkelch/qik-vrt",
+        "branch": "feature/cloud-transputer-materialization-v1-b4b0038",
+        "commitSha": "2fdcf8d233b1495732ef38e3406ebfc095fd0ef3"
+      },
+      "own_host_qualified": false,
+      "reason": "Managed Railway carrier; actual startup requires mutable GitHub fetch and is not bound to PR457 standalone package. Existing live data and service were not changed."
+    },
+    {
+      "kind": "railway_mesh_monitor",
+      "service": {
+        "id": "dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+        "name": "mesh-monitor",
+        "state": "live-with-staged-changes",
+        "source": {
+          "image": null,
+          "repo": "ingolf-lohmann/qik-vrt",
+          "branch": "candidate/mesh-monitor-mirror-20261004-29a55ae4"
+        },
+        "regions": [
+          "iad"
+        ],
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "volumeMounts": [
+          {
+            "volumeId": "e802140e-b6a9-476c-a937-dde322253539",
+            "volumeName": "mirror-monitor-events",
+            "mountPath": "/var/lib/qikvrt/monitor"
+          }
+        ],
+        "latestDeployment": {
+          "id": "278211b2-3d12-4bc6-8d56-ffdfb7590a7a",
+          "status": "SUCCESS",
+          "createdAt": "2026-09-19T05:14:47.567Z",
+          "url": null
+        },
+        "stagedChangeCount": 18
+      },
+      "volume": {
+        "id": "e802140e-b6a9-476c-a937-dde322253539",
+        "name": "mirror-monitor-events",
+        "state": "staged-create",
+        "region": "iad",
+        "sizeMB": 500,
+        "mountedOn": {
+          "serviceId": "dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+          "serviceName": "mesh-monitor",
+          "mountPath": "/var/lib/qikvrt/monitor"
+        },
+        "stagedChangeCount": 3
+      },
+      "staged": {
+        "patchId": "9d4860c4-5003-48ef-a07f-d383f303b539",
+        "status": "STAGED",
+        "changeCount": 21,
+        "message": null,
+        "createdAt": "2026-09-17T11:23:18.024Z",
+        "updatedAt": "2026-10-04T14:18:26.061Z"
+      },
+      "own_host_qualified": false,
+      "reason": "Managed carrier; source/volume in inventory include staged changes. Staged-create is not a provisioned persistent mount."
+    },
+    {
+      "kind": "vercel_qikvrt_projects",
+      "projects": [
+        {
+          "id": "prj_U6FPqbeA6ZApqwSkjr42Y7nZZ6ov",
+          "name": "qikvrt-goldkelch-monitor",
+          "accountId": "team_gy5f8lcnU2bifwDJ5dC3MT27",
+          "createdAt": 1788439583508,
+          "updatedAt": 1788439590945
+        },
+        {
+          "id": "prj_KwJBeZWsDZBOqcGxN8JbBmrdmUnB",
+          "name": "qikvrt-beacon",
+          "accountId": "team_gy5f8lcnU2bifwDJ5dC3MT27",
+          "createdAt": 1788439873286,
+          "updatedAt": 1788440216347
+        }
+      ],
+      "own_host_qualified": false,
+      "reason": "Managed project identifiers returned; no own-host execution, identity, persistent mount or authorized own-host HTTPS binding established by this inventory."
+    },
+    {
+      "kind": "historical_local_compose",
+      "path": "deploy/universal-terminal/compose.yaml",
+      "own_host_qualified": false,
+      "reason": "Reusable local recipes and named volumes, SSH host port bound to 127.0.0.1:2222; no actual authorized external target or executed host admission."
+    },
+    {
+      "kind": "mesh_registry",
+      "path": "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+      "own_host_qualified": false,
+      "reason": "Repository-node registration identifies a GitHub repository, not a deployment host."
+    },
+    {
+      "kind": "current_scratch_executor",
+      "own_host_qualified": false,
+      "reason": "Transient task execution workspace is not the requested owned persistent public host."
+    }
+  ],
+  "capability_inventory": {
+    "own_host_ssh_or_control_plane_operation_exposed": false,
+    "managed_railway_operations_exposed": true,
+    "vercel_managed_projects_and_ephemeral_session_operations_exposed": true,
+    "credential_contents_inspected": false,
+    "domain_or_account_creation_performed": false
+  },
+  "materialized_next_binding": {
+    "tool": "tools/qikvrt_self_host.py admit",
+    "private_template": "runtime/self-host/HOST_ADMISSION.example.json",
+    "contract": "runtime/self-host/README.md",
+    "reuse": "Existing package verifier, original exported launcher and independent monitor client; no second executor, ledger or supervisor",
+    "no_host_command_result": {
+      "state": "HOLD",
+      "cause": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+      "effect_ack_done": false,
+      "exit_code": 2
+    },
+    "retry_condition": "An authorized operator exposes the existing own-host execution operation and independently validated private host declaration/config pins; run admit on that host, independently validate external evidence, then use emitted exact verify/run/readback argv and deployed restart witness."
+  },
+  "separate_review_governance": {
+    "source_commit": "3bf52747bc94de847d390ffacabecae183aee588",
+    "observation": [
+      {
+        "context": "QIKVRT requested review execution",
+        "state": "failure",
+        "description": "failure: CODE_OWNER_RULE_NOT_ENFORCED",
+        "run_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37265082568",
+        "updated_at": "2026-10-05T04:48:29Z"
+      }
+    ],
+    "runtime_admission_does_not_satisfy_governance": true
+  },
+  "boundaries": {
+    "host_admission_verified": false,
+    "deployment_performed": false,
+    "public_url": null,
+    "public_readback_verified": false,
+    "deployed_restart_verified": false,
+    "S1_DONE": false,
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false,
+    "predecessor_evidence_transfer": false
+  },
+  "limitations": [
+    "Absence is bounded to the inspected current/history/tool/resource scope; no global claim that the owner has no other host.",
+    "Historical references and operator declarations do not authenticate control-plane authority.",
+    "Local package and synthetic admission controls do not establish remote host persistence or public usability."
+  ],
+  "continuation": {
+    "observed_at": "2026-10-05T07:25:29.735860+00:00",
+    "source_head": "34c74ae770378cad8febeb2a559bf0db13aad3b0",
+    "source_tree": "59542b066623c9990bb55c5ffa51af0bb9ab9386",
+    "instruction": "Current user explicitly authorizes closing the gap and automatic prevention/recovery; supplied Product Owner name: Ingo Flomann. Account/person attribution remains metadata, not identity proof.",
+    "state": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "fresh_carriers": {
+      "railway_projects": 2,
+      "qikvrt_production_services": 5,
+      "live_own_host_qualified": 0,
+      "existing_staged_changes": 21,
+      "vercel_default_scope_qikvrt_projects": 2,
+      "explicit_vercel_team_scope": "403_FORBIDDEN; default authenticated scope list succeeded",
+      "own_host_control_plane_or_ssh_operation_exposed": false,
+      "credentials_inspected": false,
+      "deployments_or_accounts_mutated": false
+    },
+    "materialized_recovery": {
+      "tool": "tools/qikvrt_self_host.py",
+      "operations": [
+        "supervisor",
+        "run-admitted"
+      ],
+      "platform": "ALREADY_PROVISIONED_SYSTEMD_252_OR_NEWER",
+      "new_supervisor_daemon": false,
+      "unit_installation": "NOT_PERFORMED_NO_CALLABLE_HOST",
+      "boot_and_mount_activation_binding": true,
+      "process_exit_recovery": "EXISTING_SUPERVISOR_CGROUP; MAXIMUM_FIVE_STARTS_PER_300_SECONDS",
+      "admission_restoration_recovery": "FILESYSTEM_EVENT; SAME_PINNED_BYTES_ONLY",
+      "independent_verify_before_each_start": true,
+      "wrong_identity_mount_or_pin_exit": 78,
+      "state_recreation_rebinding_deletion": false,
+      "credential_provisioning_or_host_creation": false
+    },
+    "native_successor_evidence": "REQUIRED_ON_CONTAINING_NEW_COMMIT; NO_PREDECESSOR_PASS_TRANSFER",
+    "external_readback": null,
+    "deployed_restart": null,
+    "separate_governance": {
+      "source_head": "34c74ae770378cad8febeb2a559bf0db13aad3b0",
+      "status": "failure: CODE_OWNER_RULE_NOT_ENFORCED",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37269518916"
+    },
+    "smallest_missing_capability": "An actually callable authorized Own-Host execution endpoint/control-plane with persistent storage and authorized HTTPS route; broad task approval provides no endpoint or credential.",
+    "fresh_repository_delta": {
+      "current_branch_heads": 553,
+      "changes": [
+        {
+          "ref": "refs/heads/automation/self-heal-e4d6a939ac3074c4f50a689e",
+          "old_sha": null,
+          "sha": "9c431098c4680f295a90bafe49ba747a74d288e6"
+        },
+        {
+          "ref": "refs/heads/candidate/provider-independent-roadmap-20261004-eeef48fd",
+          "old_sha": "3bf52747bc94de847d390ffacabecae183aee588",
+          "sha": "34c74ae770378cad8febeb2a559bf0db13aad3b0"
+        },
+        {
+          "ref": "refs/heads/main",
+          "old_sha": "0a44160d16c3937dc5888652791f4bd1a7136af7",
+          "sha": "86d7062f25f174039da0a5df8a856127553036f1"
+        }
+      ],
+      "inspection": "Fresh API compare: new main changes only node-health/registration renewal; new self-heal branch adds integrity outputs. No new deployment carrier or Own-Host execution endpoint in this delta."
+    }
+  },
+  "railway_exit_continuation": {
+    "observed_at": "2026-10-05T08:34:12.597Z",
+    "source_head": "4718e0ac162548f5285fb4a92e0f805f8c959965",
+    "source_tree": "43d028a4d33dc2b41be59e85783aab5a29093782",
+    "owner_task_authorized": true,
+    "observation": "evidence/self_host/RAILWAY_EXIT_PREPARATION_20261005.json",
+    "same_tool_operations": [
+      "snapshot-state",
+      "restore-state"
+    ],
+    "original_ledger_and_journal_preserved": true,
+    "credentials_exported": false,
+    "legacy_railway_volume_exported": false,
+    "target_host_execution_operation_exposed": false,
+    "state": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "successor_native_ci_required": true,
+    "railway_cutover_verified": false,
+    "effect_ack_done": false
+  }
+}

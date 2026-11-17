@@ -1,0 +1,22 @@
+{
+  "schema": "qikvrt-native-peer-rule-source-validation/v1",
+  "base_head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+  "base_tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714",
+  "policy_pr": 538,
+  "policy_head": "984f1398a533fdcfbfb214e58250576e89c3e290",
+  "existing_tests": {
+    "command": "python3 -B -m unittest -v tests.test_self_host.MeshWorkCacheTests tests.test_self_host.MeshContractTests tests.test_self_host_temdd.OwnerRESTMonolithTests",
+    "count": 68,
+    "result": "PASS",
+    "log_sha256": "e21be62ccabe5f9e43584031955ab0b813b9b8c976fceac1c48512213dd2c240"
+  },
+  "native_rule_tests": {
+    "command": "python3 -B -m unittest -v tests.test_self_host_temdd.NativePeerRuleTests",
+    "count": 17,
+    "result": "PASS: first 16 cases plus separate post-commit fault-cut case; final combined gate follows",
+    "log_sha256": "1f9fc9d8ca8a1e02f49905b83882609716e9a8f03057c18e92bad67e88afa12f"
+  },
+  "scope": "SYNTHETIC_PEER_LOOPBACK_NATIVE_JOURNAL_AND_AUTHENTICATED_HTTP_TESTS_ONLY",
+  "real_claude_ack_verified": false,
+  "effect_ack_done": false
+}

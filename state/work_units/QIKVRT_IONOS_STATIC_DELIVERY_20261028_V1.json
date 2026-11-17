@@ -1,0 +1,132 @@
+{
+  "acceptance_order": [
+    "Resolve existing protected VPS identity, SSH identity, independently pinned host key and actual webroot.",
+    "Read the old index, preserve it privately and perform one exact-byte static install through S1.",
+    "Independently read the installed bytes; reconcile uncertain effects without re-upload.",
+    "Read the whole IONOS DNS zone; change only admitted existing apex/www routes with exact state pins.",
+    "Independently read both exact HTTPS URLs with no redirect and compare the frozen page hash."
+  ],
+  "artificial_cognitive_contribution": {
+    "scope": "Documented provider mechanisms, existing S1/provider/receipt reuse, bounded SSH static transfer, independent file and HTTPS readbacks, whole-zone apex/www DNS cutover and regression verification.",
+    "system": "OpenAI Codex"
+  },
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "9f7cad6cf72890a8dc6cb79ae908b5f0a0f0b65a",
+  "base_tree": "89fc3b51b2118adfa5db33f8f4c9ca765591a6e1",
+  "baseline": {
+    "local_full_repository_bootstrap": "NOT_ACCEPTED: selected source recovery is not a complete Git checkout",
+    "missing_static_transfer_regression_cases": 2,
+    "original_subject_rejected": true,
+    "source_archive_scope": "Selected original Git blobs; the bounded archive recovery was stopped, not claimed complete."
+  },
+  "effect_ack_done": false,
+  "hosting_control_setting_removal_verified": false,
+  "human_contribution": {
+    "authorization": "Current direct Owner authorization retained; no repeated task approval.",
+    "decision": "Correct the old domain forwarding, deliver a minimal Hello World on the existing IONOS VPS, implement missing functions instead of returning only capability limitations.",
+    "principal": "Ingolf Lohmann"
+  },
+  "local_validation": {
+    "actual_installer_execution": "Isolated local directories, including lost ACK, old-byte backup, stale predecessor and symlink/hardlink refusal",
+    "declared_tool_cache_coverage": "36/36",
+    "legacy_provider_and_dns_plus_static_and_web_cases": 91,
+    "live_vps_effect_inferred": false,
+    "native_full_make_test": "REQUIRED_ON_EXACT_CANDIDATE",
+    "workflow_action_pin_tests": 12
+  },
+  "main_integration_followup_20261029": {
+    "artificial_cognitive_contribution": "OpenAI Codex: reconcile static REST with the existing continuation, production Environment and publication paths; regenerate existing tool coverage and integrity authorities; verify the integrated candidate.",
+    "exact_domain_accepted": false,
+    "host_effect_performed": false,
+    "human_contribution": "Ingolf Lohmann: reaffirmed autonomous conflict-free green-test merge and subsequent push/continuation in the current session.",
+    "integrated_main_head": "47c5810b6e2d17cf701820a6729c4826e06c89b4",
+    "open_duties": "All original protected-host, HTTPS, native runtime, peer and outbox duties remain open.",
+    "predecessor_head": "83b049573d6b4ac6c5a5aa8c89142ffbe95dc4f3"
+  },
+  "native_ci_correction": {
+    "correction": "Restore that original annotation; do not change the runtime pin or weaken its regression check.",
+    "job_id": 122742317858,
+    "observed_cause": "Workflow-action pin contract requires the original v6.3.0 annotation alongside the unchanged setup-python SHA.",
+    "original_failed_run_retained": true,
+    "predecessor_head": "0dbfc2508e3c7a9879278bd1cbe657982c9c6315",
+    "run_id": 40666527925
+  },
+  "open_work": [
+    {
+      "id": "EXACT_CANDIDATE_NATIVE_CI",
+      "next_action": "Run the original complete make test, integrity and package controls on the exact source candidate.",
+      "state": "OPEN"
+    },
+    {
+      "id": "PROTECTED_ORIGINAL_VPS_CONNECTION",
+      "next_action": "Resolve and bind the actual existing protected connection; test fixture addresses are not target evidence.",
+      "state": "OPEN"
+    },
+    {
+      "id": "STATIC_FILE_AND_DOMAIN_EFFECT",
+      "next_action": "Execute admitted original-host upload and scoped DNS cutover, then independent exact-domain HTTPS readback.",
+      "state": "OPEN"
+    },
+    {
+      "id": "PREDECESSOR_NATIVE_PEER_PUBLICATION_AND_HOST_DUTIES",
+      "next_action": "Retain every prior duty; this source repair closes none of their separate effects.",
+      "state": "OPEN_UNCHANGED"
+    }
+  ],
+  "productive_host_upload_verified": false,
+  "public_hello_world_verified": false,
+  "rest_extension": {
+    "cold_export": {
+      "actual_python_S_cold_start": true,
+      "archive_sha256": "dea6b9de6bfab22765a5b576c4517bee7eea9200818892e5f358043b64d96cdc",
+      "effect_ack_done": false,
+      "frozen_export_verified": true,
+      "health_http": 200,
+      "manifest_sha256": "3b6ef134e40d6c477d7118cd30971351cb20ce8bd4bf0e93e2032b780b6abb0f",
+      "scope": "DISPOSABLE_GIT_SOURCE_FIXTURE_NOT_AUTHORITY_OR_LIVE_HOST",
+      "source_fixture_head": "554bda3676eadc2045ae058347e5037406115126",
+      "source_fixture_tree": "ce3ecabd4000b14fe2b4c6f0288f1554128fa902",
+      "state": "PASS",
+      "static_implementation_sha256": "e0188e023f755ad927f4534cc04d4405eb91cfb961ccfef663cfa019df9e9cc4",
+      "static_rest_missing_binding_http": 503
+    },
+    "effect_ack_done": false,
+    "graphql_invoked": false,
+    "graphql_source_changed": false,
+    "implementation": "Existing src/qikvrt_github_api_shim.py and scripts/qikvrt_api_client.py directly reuse original S1 static_execute and private Receipts.",
+    "live_host_effect_claimed": false,
+    "local_tests": {
+      "cases": 251,
+      "scope": "Original API client/TCPIP/provider/DNS tests plus 11 new static REST tests. Actual remote installer runs only in disposable local directories.",
+      "state": "PASS"
+    },
+    "native_full_make_test": "REQUIRED_ON_NEW_EXACT_HEAD",
+    "new_executor_or_trigger": false,
+    "open_duties": [
+      "GitHub Draft transition remains unavailable via documented pure REST route. No GraphQL call admitted by this instruction.",
+      "Existing IONOS DNS CLI/workflow is unchanged; REST DNS mutation exposure is not part of this first static-delivery extension.",
+      "Protected real VPS connection and server installation/admission remain unverified.",
+      "Exact-domain Hello World, TLS, native Mesh admission and peer ACK remain unverified."
+    ],
+    "operations": [
+      "static_readback",
+      "static_upload",
+      "static_reconcile",
+      "static_public_readback"
+    ],
+    "original_affected_operation": "Actual original handler blob955162011cb7bd41ce43ced9b4bf4ef3cde7bd71 returns HTTP404 on static POST; candidate actual HTTP test returns200 and reads exact installed bytes.",
+    "owner_instruction": "Add missing REST operations first; retain GraphQL unchanged during this step. Existing grant retained.",
+    "predecessor_head": "951512d04c45956a235691a62a3295579a5c0ece",
+    "predecessor_tree": "edf8f8a92660dbb78826ccc02a8d915acb39a936"
+  },
+  "reuse": {
+    "dns_adapter": "tools/qikvrt_ionos_dns.py",
+    "entrypoint": "tools/qikvrt_self_host.py",
+    "host_adapter": "tools/qikvrt_self_host_provider.py",
+    "receipt_store": "Existing S1 provider Receipts and private fsync primitives",
+    "replacement_runtime_or_scheduler": false,
+    "workflow": ".github/workflows/qikvrt_ionos_dns.yml"
+  },
+  "schema": "qikvrt-ionos-static-delivery-work-unit/v1",
+  "work_unit_id": "QIKVRT_IONOS_STATIC_DELIVERY_20261028_V1"
+}

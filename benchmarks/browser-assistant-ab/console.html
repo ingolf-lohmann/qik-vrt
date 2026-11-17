@@ -1,0 +1,63 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 -->
+<!-- Copyright 2026 Ingolf Lohmann. -->
+<html lang="de">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QIK-VRT A/B Messkonsole</title>
+<style>
+body{font:17px/1.5 system-ui,sans-serif;max-width:950px;margin:24px auto;padding:0 20px;background:#f7f8fa;color:#142134}
+h1{font-size:26px} label{display:block;margin-top:14px} select,textarea,input,button{font:inherit;padding:9px;max-width:100%;box-sizing:border-box}
+textarea{display:block;width:100%;min-height:130px}button{margin-top:12px;background:#14395d;color:white;border:0;border-radius:4px;cursor:pointer}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:14px;border:1px solid #c6cdd6}
+.boundary{background:#fff1ca;padding:14px;border-left:5px solid #ad7314}.status{min-height:40px}
+</style>
+<h1>Unterbrochene Browseraufgaben: A/B Messkonsole</h1>
+<p class="boundary"><strong>Harness, keine Produktmessung.</strong> Diese Konsole protokolliert Übungen mit synthetischen Quellen. Sie führt keinen persönlichen Browserassistenten aus. Tatsächliche Firefox-, Assistenten-, Unterbrechungs- und Fortsetzungsadapter fehlen. Aus dieser Übung folgt kein Produktvorteil.</p>
+<label for="trial">Versuch in vorab festgelegter Reihenfolge</label><select id="trial"></select>
+<h2>Aufgabe, Quellen und gemeinsamer gespeicherter Entwurf</h2><pre id="task"></pre>
+<label for="event">Beobachtetes Ereignis</label><select id="event">
+<option>trial_start</option><option>checkpoint_readback</option><option>interruption_observed</option><option>resume_signal</option>
+<option>human_input</option><option>automatic_context</option><option>resume_probe</option><option>step_output</option><option>step_claim</option><option>task_claim</option><option>trial_end</option>
+</select>
+<label for="payload">Ereignisdaten (JSON)</label><textarea id="payload" spellcheck="false">{}</textarea>
+<p>Der Beobachter muss beim Unterbrechen des Clients weiterlaufen. Zwischen Unterbrechung und Wiederaufnahmesignal liegen 60 Sekunden. Ab dem Signal läuft die Uhr einschließlich Anmeldung, Restore, Lesen und menschlicher Kontexteingabe. Nach 180 Sekunden ein Timeout erfassen. Jede tatsächliche Hilfe als eindeutige <code>human_input</code>-Geste erfassen; reine Beobachtertranskription ist keine Hilfe. Diese manuelle Übung ersetzt keine automatische Produktinstrumentierung.</p>
+<button id="record" type="button">Beobachtung protokollieren</button><pre class="status" id="status" aria-live="polite"></pre>
+<p>Die Aufgabe enthält keine Bewertungsantworten. Es gibt keine private Profil-, Gmail- oder Netzwerkquelle. Die Messdaten bleiben im lokalen Versuchsverzeichnis.</p>
+<script>
+"use strict";
+const trial = document.getElementById("trial"), kind = document.getElementById("event"), payload = document.getElementById("payload"), status = document.getElementById("status");
+let plan;
+const show = value => JSON.stringify(value, null, 2);
+function selectedPair(){return plan.pairs.find(p => p.trials.includes(trial.value));}
+function preset(){
+  const pair = selectedPair();
+  const values = {
+    trial_start:{}, checkpoint_readback:pair.binding, interruption_observed:{class:pair.interruption}, resume_signal:{},
+    human_input:{gesture_id:crypto.randomUUID(),kind:"context_reentry",text:""},
+    automatic_context:{origin_sha256:"<Digest des tatsächlich übertragenen Fortsetzungsartefakts>",text:""},
+    resume_probe:{task_sha256:pair.binding.task_sha256,checkpoint_sha256:pair.binding.checkpoint_sha256,sources:{},completed_steps:[],pending_steps:[],next_step:""},
+    step_output:{step_id:"",facts:{},citations:{}},step_claim:{step_id:""},task_claim:{},trial_end:{reason:"timeout"}
+  };
+  payload.value=show(values[kind.value]);
+}
+async function task(){
+  const response=await fetch(`/api/task/${encodeURIComponent(trial.value)}`);
+  document.getElementById("task").textContent=show(await response.json());preset();
+}
+kind.addEventListener("change",preset);trial.addEventListener("change",task);
+document.getElementById("record").addEventListener("click",async()=>{
+  try{
+    const response=await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({trial_id:trial.value,type:kind.value,payload:JSON.parse(payload.value)})});
+    status.textContent=show(await response.json());
+    if(kind.value==="human_input" && response.ok)preset();
+  }catch(error){status.textContent=error.message;}
+});
+async function init(){
+  const response=await fetch("/api/plan");plan=await response.json();
+  for(const pair of plan.pairs)for(const id of pair.trials){const option=document.createElement("option");option.value=id;option.textContent=`${id} · ${pair.task_id} · ${pair.interruption}`;trial.append(option);}
+  await task();
+}
+init().catch(error=>{status.textContent=error.message;});
+</script>
+</html>

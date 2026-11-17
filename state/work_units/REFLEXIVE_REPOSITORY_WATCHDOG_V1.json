@@ -6,29 +6,173 @@
     "license_text_ref": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
     "rights_holder": "Ingolf Lohmann"
   },
-  "schema": "qikvrt_reflexive_repository_watchdog_work_unit_v1",
-  "work_unit_id": "REFLEXIVE_REPOSITORY_WATCHDOG_V1",
-  "title": "Make the adaptive repository monitor a reflexive pre-deadlock watchdog in every instance",
-  "repository": "Goldkelch/qik-vrt",
-  "authority_base": "670da64af4d7830cd583182908a59d74d976a451",
-  "owner_instruction": {
-    "language": "de",
-    "utf8_sha256": "5c04dcfdab717f908ea5c0eed3287aeba3db04dd9d92fc287a51fde69ff70ba1",
-    "received_at": "2026-08-10T19:58:38+02:00",
-    "decision": "IMPLEMENT_REPOSITORY_INTERNAL_PRE_DEADLOCK_WATCHDOG"
-  },
-  "requirement": {
-    "applies_to": [
-      "AUTHORITY",
-      "MIRROR",
-      "EVERY_FUTURE_MESH_NODE"
+  "architectural_comparison": {
+    "bounded_interpretation": "VERSIONED_CROSS_REPOSITORY_PRE_DEADLOCK_ADMISSION_AND_PROVENANCE",
+    "not_claimed": [
+      "RELATIONAL_DATABASES_HAVE_NO_DEADLOCK_MANAGEMENT",
+      "UNIVERSAL_PERFORMANCE_SUPERIORITY",
+      "EXHAUSTIVE_NOVELTY_SEARCH",
+      "GLOBAL_DEADLOCK_FREEDOM_PROOF"
     ],
-    "maximum_observation_interval": "PT5M",
-    "reflexive": true,
-    "prevention_before_cycle": true,
-    "single_writer_admission": "PREEMPTIVE_HOLD_BEFORE_SECOND_WRITER",
-    "stale_writer_replacement": "FORBIDDEN_UNTIL_EXACT_STALL_REOBSERVATION",
-    "observer_coalescing": "CANCEL_SUPERSEDED_OBSERVER_ONLY"
+    "owner_assertion": "INNOVATION_AND_IMPROVEMENT_OVER_CONVENTIONAL_RELATIONAL_DATABASES"
+  },
+  "artifact_consumer_roundtrip_repair": {
+    "candidate_cases": {
+      "continuation": 49,
+      "execution": "NEW_NATIVE_EXACT_HEAD_REQUIRED",
+      "frozen_apt_and_artifacts": 10,
+      "specification": 23,
+      "total": 137,
+      "watchdog": 55
+    },
+    "causal_gaps": [
+      "Artifact upload omitted the two manifest-bound hidden files.",
+      "The split carrier remained preserved, but the existing publication consumer did not download its separate artifact."
+    ],
+    "correction": [
+      "Include hidden package files in the existing non-secret container artifact.",
+      "Download the original carrier through the existing publication consumer before its original archive check.",
+      "Read both actual uploaded artifacts back in the existing native S1 job; validate exact native producer identity, original package bytes/modes, original package verifier, every OCI blob and the immutable original carrier archive.",
+      "Restore only original manifest-bound file permissions after complete byte validation, including before the existing public-domain readback."
+    ],
+    "local_environment": {
+      "effect": "No local successor test or CLI preflight execution claimed after this failure; native complete checkout tests must run.",
+      "error": "apply_patch verification failed: exec-server transport closed",
+      "state": "UNAVAILABLE_DURING_PATCH_BEFORE_SOURCE_CHANGE"
+    },
+    "merge_performed": false,
+    "original_artifacts": {
+      "carrier": {
+        "id": 13378557846,
+        "independent_original_byte_readback": true,
+        "original_archive_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+        "zip_bytes": 377733146,
+        "zip_sha256": "6898cb71fc343bb5b1a9f9b1c9f922f8bb06c82428bbbfbf5eb9024a0c630138"
+      },
+      "image": {
+        "id": 13378304142,
+        "independent_original_byte_readback": true,
+        "manifest_files": 199,
+        "missing_package_files": [
+          ".github/CODEOWNERS",
+          ".well-known/qik-vrt-self-disclosure.json"
+        ],
+        "oci_bytes": 1142170112,
+        "oci_sha256": "f665649ab0c35fc9d0e0636b0f8a339bc2b49fd0c0a3f450198e6f9144a01214",
+        "zip_bytes": 392040345,
+        "zip_sha256": "314c2ae8ece02c165b35b2fcdd68d11ae39ada89d5098ce82cb912212a1973d2"
+      }
+    },
+    "predecessor": {
+      "head": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+      "native_ci": 41944160618,
+      "native_s1_job": 126977054766,
+      "source_owner_review": 5778176608,
+      "technical_review": 5778312264,
+      "terminal_checks": {
+        "failed": 0,
+        "skipped": 15,
+        "success": 30
+      },
+      "tree": "1c9c1f42e3f37a99d82a68497d8bbf108d07a6c7"
+    },
+    "preserved_local_result": {
+      "head": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+      "scope": "HISTORICAL_ONLY",
+      "targeted_tests": 135
+    },
+    "productive_effect_ack_done": false
+  },
+  "authority_base": "670da64af4d7830cd583182908a59d74d976a451",
+  "complete_run_inventory_repair_20261104": {
+    "attribution": {
+      "requirement_and_authorization": "Ingolf Lohmann",
+      "source_repair_and_bounded_tests": "OpenAI Codex"
+    },
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "base_head": "e1ac5f52896b494eb9051f704a42d4554d4b7139",
+    "base_tree": "22095e5fb54a0e864660b5140829cb0ab78f826a",
+    "convergence": {
+      "additional_correction": "UNKNOWN_JOB_STATUS_MUST_NOT_BECOME_GATE_SUCCESS",
+      "archive_sha256": "4c29c610cea56a359d84403c8a26c9ade14c3a6241a7012ff7cc0af503b18421",
+      "effect_ack_done": false,
+      "final_full_suite": "REQUIRES_EXACT_COMBINED_CANDIDATE_RUN",
+      "final_native_acceptance": "REQUIRES_FRESH_EXACT_HEAD_READBACK",
+      "maximum_run_page_requests": 10,
+      "maximum_total_job_page_requests": 20,
+      "other_pr": 683,
+      "own_source_parent": "c54292622335b43f112f82dc54e3ef695eaf7653",
+      "pr": 684,
+      "preserved_source_parent": "8fbc9df0107987dff0f4287320f9eb938bbf2f84",
+      "recorded_replay": "356_OF_356_RUNS_4_RUN_PAGES_13_JOB_PAGES_ANALYSIS_REACHED_TRUSTED_GATE_EXECUTED_FAILURE",
+      "source_reuse": [
+        "bounded original run/job page collectors",
+        "numeric latest-run ordering",
+        "archived recorded REST evidence",
+        "original branch work unit"
+      ],
+      "strict_analysis": "EXACT_PLAN_COMPLETE_JOB_LIST_HEAD_RUN_ATTEMPT_REVALIDATION",
+      "targeted_result": "PASS",
+      "targeted_tests": 169
+    },
+    "effect_ack_done": false,
+    "evidence_path": "evidence/receipts/20261104-watchdog-run-inventory",
+    "local_verification": {
+      "fixture_scope": "213_RUNS_3_PAGES_11_SELECTED_JOB_GETS",
+      "full_suite_command": "make test",
+      "full_suite_result": "REQUIRES_EXACT_CANDIDATE_RUN_AND_REMOTE_READBACK",
+      "native_acceptance": "NOT_ESTABLISHED_BY_LOCAL_TESTS",
+      "predecessor_213_run_regression": "FAIL_EXIT_2_BEFORE_REPAIR",
+      "targeted_command": "python3 -B -m unittest -q tests.test_qikvrt_reflexive_repository_watchdog tests.test_qikvrt_workflow_executor_mesh_contract tests.test_seed_workflows",
+      "targeted_result": "PASS",
+      "targeted_test_executions": 165
+    },
+    "original_observation": {
+      "artifact_id": 13288684528,
+      "artifact_zip_sha256": "8c28964fe5e2ee70e4b822e43fb9ff5f763bfc629d90b9dde097f3a248514971",
+      "attempt": 1,
+      "deadlock_analysis_executed": false,
+      "failed_stage": "JOBS_BUDGET_PREFLIGHT",
+      "first_blocker": "RUN_INVENTORY_INCOMPLETE",
+      "report_byte_reproduction": true,
+      "reported_run_count": 213,
+      "returned_run_count": 100,
+      "run_id": 41759139590
+    },
+    "predecessor_pr": 675,
+    "requirements": {
+      "denial": "STOP_WITHOUT_AUTOMATIC_RETRY",
+      "full_exact_head_run_pagination": true,
+      "job_inputs": "LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1",
+      "maximum_per_run_job_requests": 20,
+      "missing_or_truncated_selected_jobs": "HOLD",
+      "new_executor_or_timer": false,
+      "old_completed_runs": "RETAIN_METADATA_AND_MARK_JOBS_UNOBSERVED"
+    },
+    "retained_open_duties": [
+      "ORIGINAL_PROTECTED_HOST_INPUT_DELIVERY",
+      "RAUMZEITTERMINAL_DE_NATIVE_RUNTIME_ACCEPTANCE",
+      "ACTUAL_CLAUDE_PEER_READBACK",
+      "FULL_DISTRIBUTED_UNIVERSAL_PRODUCTIVE_EFFECT_PROOF"
+    ],
+    "source_issue": "https://github.com/ingolf-lohmann/qik-vrt/issues/682"
+  },
+  "completion_claims": {
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "DEADLOCK_FREEDOM_PROVED": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "effect_boundary": {
+    "authority_branch_and_draft_pr_only": true,
+    "deployment": false,
+    "ietf": false,
+    "merge": false,
+    "mirror_port_before_authority_promotion": false,
+    "productive_writer_cancellation": false,
+    "release": false,
+    "zenodo": false
   },
   "implementation_paths": [
     ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
@@ -39,31 +183,185 @@
     "tests/test_qikvrt_reflexive_repository_watchdog.py",
     "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
   ],
-  "architectural_comparison": {
-    "owner_assertion": "INNOVATION_AND_IMPROVEMENT_OVER_CONVENTIONAL_RELATIONAL_DATABASES",
-    "bounded_interpretation": "VERSIONED_CROSS_REPOSITORY_PRE_DEADLOCK_ADMISSION_AND_PROVENANCE",
-    "not_claimed": [
-      "RELATIONAL_DATABASES_HAVE_NO_DEADLOCK_MANAGEMENT",
-      "UNIVERSAL_PERFORMANCE_SUPERIORITY",
-      "EXHAUSTIVE_NOVELTY_SEARCH",
-      "GLOBAL_DEADLOCK_FREEDOM_PROOF"
-    ]
+  "job_readback_budget_repair_20261102": {
+    "attribution": {
+      "implementation_and_isolated_verification": "OpenAI Codex",
+      "requirements_and_authorization": "Ingolf Lohmann"
+    },
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "authorization": "Existing Owner quota-repair authorization and current resume(); instruction; no repeated grant required",
+    "base_head": "1d8e17e9c19356062d89c37f6881c6fac467ecf5",
+    "base_tree": "3eb6ef10b9ada5bd0c8976839b1a739ca344ac69",
+    "effect_ack_done": false,
+    "local_verification": {
+      "causal_correction": "FREEZE_COMPLETE_CANDIDATE_REGENERATE_INTEGRITY_AND_RERUN_FULL_SUITE",
+      "full_suite_command": "make test",
+      "initial_full_suite": "FINAL_INTEGRITY_FAILURE_AFTER_CLIENT_ADDED_A_TEST_DURING_THE_RUN",
+      "integrity_command": "python3 -B tools/qikvrt_integrity.py verify",
+      "isolated_fixture_is_live_provider_acceptance": false,
+      "original_workflow_cases": [
+        "21_RUNS",
+        "100_OF_101_RUNS",
+        "3_OF_4_RUNS"
+      ],
+      "original_workflow_regression_cases_detected": 3,
+      "targeted_result": "PASS",
+      "targeted_tests": 27
+    },
+    "predecessor_tasks": [
+      "a63ec5b1-8d42-4f64-a5a2-95a250e5b7df",
+      "c9ebfc7e-53c6-4ca4-bf17-2c3991acb58a",
+      "f3a3c21e-7b8d-4c0f-9d26-50a8d3f176aa"
+    ],
+    "prior_artifact_http403_correction": {
+      "client_gate_failure": {
+        "effect": "Draft transition nevertheless called and independently read back. This was a client orchestration violation, not valid gate admission.",
+        "operation": "convertPullRequestToDraft",
+        "preflight": "CLIENT_GITHUB_ROUTE_FORBIDDEN",
+        "repair": "No repetition or policy relaxation; subsequent effectful calls require a successful preflight exit before invocation. Restore ready state only through the already admitted markPullRequestReadyForReview fallback after publishing and checking the successor."
+      },
+      "correction": "Let the existing ERR trap stop at BASELINE_READBACK before current runs or jobs.",
+      "finding": "The prior artifact ZIP GET used || true; the real whole observation body returned0 and issued3 job GETs after HTTP403.",
+      "fresh_successor_native_checks_required": true,
+      "predecessor_ci_accepts_successor": false,
+      "predecessor_head": "93a531b51aa577457fce2f8bef0565648a241238",
+      "predecessor_tree": "e63e2d865f3ea75f00c47eb2942e7c085961f1af",
+      "regression": "Actual complete observation body with prior-artifact403; one expected test failure on the predecessor, successor target suite28 tests PASS."
+    },
+    "requirements": {
+      "complete_exact_head_page_before_job_get": true,
+      "http_403_or_checker_failure": "STOP_WITHOUT_AUTOMATIC_RETRY",
+      "incomplete_or_over_budget_page": "HOLD_WITH_ZERO_JOB_GETS",
+      "maximum_per_run_job_requests": 20,
+      "new_scheduler_or_executor": false
+    },
+    "retained_open_duties": [
+      "PR459_UNRESOLVED_TREE_POST_READBACK_ONLY",
+      "LIVE_EVENT_DELIVERY",
+      "ORIGINAL_MIRROR_OUTBOX_SOURCE",
+      "ORIGINAL_SSO_AND_PROTECTED_HOST_INPUT_DELIVERY",
+      "RAUMZEITTERMINAL_DE_HTTPS_AND_NATIVE_RUNTIME_ACCEPTANCE"
+    ],
+    "source_issue": "https://github.com/ingolf-lohmann/qik-vrt/issues/674"
   },
-  "effect_boundary": {
-    "authority_branch_and_draft_pr_only": true,
-    "mirror_port_before_authority_promotion": false,
-    "productive_writer_cancellation": false,
-    "merge": false,
-    "release": false,
-    "deployment": false,
-    "zenodo": false,
-    "ietf": false
+  "native_api_retry_source_repair": {
+    "effect_ack_done": false,
+    "failed_native_log_sha256": "be7f278faee6a1941bb9120098cf30c192c124144e2f5862632d07323753bc3b",
+    "failure_attempt": 2,
+    "failure_exit_code": 5,
+    "failure_run": 41939852801,
+    "failure_stage": "BASELINE_READBACK",
+    "frozen_predecessor_head": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+    "later_native_api_witness": {
+      "completed_at": "2026-11-05T00:28:43Z",
+      "job_id": 126962985046,
+      "run_id": 41939852727,
+      "step": "Verify and reuse original PR494 Docker carrier"
+    },
+    "native_runtime_acceptance": false,
+    "new_native_acceptance_required": true,
+    "scope": "PINNED_READONLY_OBSERVER_RETRY_CONSISTENCY_ONLY"
   },
-  "completion_claims": {
-    "PASS": false,
-    "FINAL_PASS": false,
-    "EFFECT_ACK_DONE": false,
-    "AUTHORITY_MIRROR_EQUALITY": false,
-    "DEADLOCK_FREEDOM_PROVED": false
-  }
+  "open_work_stall_repair_20261104": {
+    "artificial_contribution": "OpenAI Codex source repair and isolated regression verification",
+    "authorization_source": "CURRENT_AUTHENTICATED_CHAT",
+    "detected_defects": [
+      "NO_ACTIVE_RUN_CLASSIFIED_QUIESCENT_WITHOUT_OPEN_WORK_READBACK",
+      "OBSERVATION_TIMESTAMP_RESTARTED_PROGRESS_LEASE",
+      "EXISTING_REPAIR_HANDOFF_NOT_CONNECTED_TO_WORKFLOW_CONSUMER"
+    ],
+    "effect_ack_done": false,
+    "existing_candidate": "https://github.com/ingolf-lohmann/qik-vrt/pull/686",
+    "full_make_test": "NOT_EXECUTED_IN_PARTIAL_SOURCE_SNAPSHOT",
+    "human_contribution": "Requirement and authorization",
+    "instruction": "Also du musst natürlich auch Stillstanderkennung in das Repository hineinbringen und dafür sorgen, dass solange Aufgaben anstehen es keinen Stillstand geben kann. Freigabe erteilt",
+    "instruction_utf8_sha256": "8d5a979c66ca43eec53226d6b8ac59d8cf1eaaab97ae0bbb4dc77c687606378d",
+    "main_integration": "NOT_YET_VERIFIED",
+    "native_build_transport_correction": {
+      "artifact_readback_repaired": "ORIGINAL_CARRIER_AND_NEW_IMAGE_SEPARATE_WITH_ALL_BYTES_RETAINED",
+      "checker_omission_repaired": "STANDARD_NATIVE_MAKE_TARGET_NOW_INVOKES_GUARD_SUITE",
+      "evidence": "evidence/receipts/20261104-open-work-stall-repair/apt-transport-repair.json",
+      "local_builder_guard_tests": 8,
+      "local_watchdog_state_matrix_cases": 24,
+      "main_adoption": "UNVERIFIED",
+      "native_exact_new_head_validation": "REQUIRED",
+      "native_parent_s1_success": {
+        "head": "a000c5fe62a3fda3c85a73b8c51884d0ca2e256c",
+        "job": 126946814342,
+        "scope": "PARENT_ONLY"
+      },
+      "observed_head": "add7617d5cd930ba8a7329474791042a28ec4f59",
+      "observed_tree": "510eb3a1f62b48acc3efdd1bd1b3f4ee0ae8ed6c",
+      "original_failure_job": 126915921892,
+      "original_stall_job": 126914575535,
+      "real_downloaded_archives_verified": 8,
+      "repair": "EXACT_EIGHT_PACKAGE_VERSION_SIZE_SHA256_LOCK_WITH_DEBIAN_SIGNATURES_AND_BOUNDED_TRANSFER",
+      "universal_liveness_guarantee": false
+    },
+    "native_exact_head_ci": "PENDING_NEW_CANDIDATE",
+    "owner": "Ingolf Lohmann",
+    "predecessor_head": "ed22c8ab5bf8d963d2718f43192f4e7320424f6f",
+    "predecessor_tree": "ecb6ca0ca7f71de87a66b5f78135972e8f5a338e",
+    "productive_host_and_domain": "OPEN",
+    "readonly_verifier_recovery": {
+      "actual_failure": "JOB_READBACK_REQUEST_BUDGET_EXCEEDED_22_REQUIRED_20_ALLOWED",
+      "client_defect": "HISTORICAL_SOURCE_REPAIR_ROUTE_OMITTED_ALREADY_AUTHORIZED_READONLY_NATIVE_VERIFICATION",
+      "current_specification_publication_deployment_guards": "UNCHANGED",
+      "failure_artifact": 13375281040,
+      "failure_artifact_bytes": 625253,
+      "failure_artifact_sha256": "ed5e277bc584dcc2ce0bef965a6247ea1e476761e73dd6ef7aba5a1fda6dac3a",
+      "local_specification_guard_tests": 22,
+      "native_attempt": 1,
+      "native_current_head_acceptance": "REQUIRED",
+      "native_job": 126950969047,
+      "native_retry_executed": false,
+      "native_run": 41937909257,
+      "observed_head": "66d93bdfda7f83a281ff684be878bc32eda6bd09",
+      "observed_recovery": "COMPLETE_RUN_INVENTORY_NOW_REQUIRES_20_REQUESTS",
+      "predecessor_replay": "ORIGINAL_REJECTS_SAME_BOUND_INPUT_SUCCESSOR_ACCEPTS",
+      "readonly_workflow_sha256": "e67dc7685ed7649e01d1db70452c349e2c209c4ac42b1778799cd7ba6583d10d",
+      "source_fix": "EXACT_PINNED_READONLY_WORKFLOW_RETRY_ONLY_AFTER_BUDGET_RECOVERY_BOUND_TO_FAILURE_RUN_ATTEMPT_HEAD_TREE"
+    },
+    "source_repair": [
+      "COMPLETE_BOUNDED_OPEN_WORK_INVENTORY",
+      "CUMULATIVE_EXACT_SUBJECT_JOB_STEP_PROGRESS_CLOCK",
+      "EXISTING_CONSUMER_WITH_INDEPENDENT_PRODUCER_READBACK",
+      "MACHINE_READABLE_ANALYSIS_FAILURE",
+      "EVENT_DRIVEN_ACYCLIC_CONTINUATION"
+    ],
+    "universal_zero_stall_guarantee": false,
+    "workflow_context_correction": {
+      "detected_invalid_expression": "runner.temp in jobs.<job_id>.env",
+      "native_run": 41925125016,
+      "native_successor_validation": "REQUIRED",
+      "observed_candidate": "43594d18fcf9c76cd9cbeb0d26c72770b3f7e636",
+      "observed_state": "WORKFLOW_FILE_FAILURE_BEFORE_JOBS",
+      "primary_contract": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+      "regression": "test_runner_context_is_not_evaluated_in_job_level_environment",
+      "source_repair": "MOVE_RUNNER_TEMP_BINDING_TO_STEP_ENV"
+    }
+  },
+  "owner_instruction": {
+    "decision": "IMPLEMENT_REPOSITORY_INTERNAL_PRE_DEADLOCK_WATCHDOG",
+    "language": "de",
+    "received_at": "2026-08-10T19:58:38+02:00",
+    "utf8_sha256": "5c04dcfdab717f908ea5c0eed3287aeba3db04dd9d92fc287a51fde69ff70ba1"
+  },
+  "repository": "Goldkelch/qik-vrt",
+  "requirement": {
+    "applies_to": [
+      "AUTHORITY",
+      "MIRROR",
+      "EVERY_FUTURE_MESH_NODE"
+    ],
+    "maximum_observation_interval": "PT5M",
+    "observer_coalescing": "CANCEL_SUPERSEDED_OBSERVER_ONLY",
+    "prevention_before_cycle": true,
+    "reflexive": true,
+    "single_writer_admission": "PREEMPTIVE_HOLD_BEFORE_SECOND_WRITER",
+    "stale_writer_replacement": "FORBIDDEN_UNTIL_EXACT_STALL_REOBSERVATION"
+  },
+  "schema": "qikvrt_reflexive_repository_watchdog_work_unit_v1",
+  "title": "Make the adaptive repository monitor a reflexive pre-deadlock watchdog in every instance",
+  "work_unit_id": "REFLEXIVE_REPOSITORY_WATCHDOG_V1"
 }

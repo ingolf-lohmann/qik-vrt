@@ -1,0 +1,65 @@
+{
+  "origin": "SIMULATED_POSITIVE_DELAYS",
+  "messages": [
+    {
+      "source_mark": 0,
+      "send_label": 0,
+      "receive_label": 24,
+      "positive_delay": 24
+    },
+    {
+      "source_mark": 1,
+      "send_label": 1,
+      "receive_label": 23,
+      "positive_delay": 22
+    },
+    {
+      "source_mark": 2,
+      "send_label": 2,
+      "receive_label": 22,
+      "positive_delay": 20
+    },
+    {
+      "source_mark": 3,
+      "send_label": 3,
+      "receive_label": 21,
+      "positive_delay": 18
+    },
+    {
+      "source_mark": 4,
+      "send_label": 4,
+      "receive_label": 20,
+      "positive_delay": 16
+    },
+    {
+      "source_mark": 5,
+      "send_label": 5,
+      "receive_label": 19,
+      "positive_delay": 14
+    },
+    {
+      "source_mark": 6,
+      "send_label": 6,
+      "receive_label": 18,
+      "positive_delay": 12
+    },
+    {
+      "source_mark": 7,
+      "send_label": 7,
+      "receive_label": 17,
+      "positive_delay": 10
+    }
+  ],
+  "arrival_source_order": [
+    7,
+    6,
+    5,
+    4,
+    3,
+    2,
+    1,
+    0
+  ],
+  "receive_before_own_send": false,
+  "physical_measurement": false
+}

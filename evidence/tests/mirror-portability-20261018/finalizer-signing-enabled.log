@@ -1,0 +1,14 @@
+test_accepts_canonical_external_authorization_input (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_accepts_canonical_external_authorization_input) ... ok
+test_builds_exact_controls_without_writing (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_builds_exact_controls_without_writing) ... ok
+test_rejects_authorization_before_the_selected_source_commit (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_rejects_authorization_before_the_selected_source_commit) ... ok
+test_rejects_future_dated_authorization (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_rejects_future_dated_authorization) ... ok
+test_rejects_tampered_authorization_statement_before_writing (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_rejects_tampered_authorization_statement_before_writing) ... ok
+test_release_state_has_exact_proof_bearing_files (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_release_state_has_exact_proof_bearing_files) ... ok
+test_workflow_requires_the_confirmed_goldkelch_execution_account (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_workflow_requires_the_confirmed_goldkelch_execution_account) ... ok
+test_write_then_committed_descendant_check_is_local_only (test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_write_then_committed_descendant_check_is_local_only)
+Exercise real source/descendant commits without historical Git objects. ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.568s
+
+OK

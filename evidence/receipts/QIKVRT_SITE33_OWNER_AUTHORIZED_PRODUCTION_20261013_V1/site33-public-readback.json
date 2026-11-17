@@ -1,0 +1,180 @@
+{
+  "schema": "qikvrt-site33-public-byte-readback/v1",
+  "observed_at": "2026-10-13T12:59:14.965973+00:00",
+  "origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+  "source_head": "c6ece66477cd7b81d114c455225bb4ab9ba54b41",
+  "source_tree": "9ab38c852a82eb7ca7016b687540414e5eeb12dd",
+  "responses": [
+    {
+      "path": "/AI",
+      "status": 200,
+      "bytes": 2035,
+      "sha256": "bd0db22cf7cd0a1cb9754f95f21c1dea1b91fb166c450612ecc03da4df3eb948",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "bytes": 17540,
+      "sha256": "3b11e34a1a1ba8e061373445753184d433b44831ad1a530c6c3540594534fa98",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/SOURCE.json",
+      "status": 200,
+      "bytes": 3730,
+      "sha256": "fdfd21d6ee2b6893a9e1dfd3700803f099899b7d2361c9a146bc1fffd0e14428",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/style.css",
+      "status": 200,
+      "bytes": 2455,
+      "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/git-hash.js",
+      "status": 200,
+      "bytes": 3134,
+      "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/repository.js",
+      "status": 200,
+      "bytes": 16647,
+      "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/package.json",
+      "status": 200,
+      "bytes": 145,
+      "sha256": "f7e988855ba0859e142c6a19bb9b84a2d7a2d62aa0d726e72e8f30fa11d361a8",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/service-worker.js",
+      "status": 200,
+      "bytes": 2858,
+      "sha256": "8bf7706b8a2600a58808886ddfc99302453f73ad6e1d83ad002e782b372ee151",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/manifest.webmanifest",
+      "status": 200,
+      "bytes": 262,
+      "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/icon.svg",
+      "status": 200,
+      "bytes": 332,
+      "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/index.html",
+      "status": 200,
+      "bytes": 1043,
+      "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/static-server.mjs",
+      "status": 200,
+      "bytes": 1565,
+      "sha256": "b6e14d3eca626d93f74f55fcdf96842777ed0720152c299bc7b3d238e6006aca",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/README.md",
+      "status": 200,
+      "bytes": 8296,
+      "sha256": "9d6a65da1aced1d24a3822e45c62587727476d13c44c21138c74a3f1d248f9c9",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/client.js",
+      "status": 200,
+      "bytes": 17031,
+      "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "sha256": "38977c2920374bbf7adc34916f7c23bb713f73fa87d43faa6b68a4aef1967182",
+      "bytes": 160
+    },
+    {
+      "path": "/monitor/",
+      "status": 200,
+      "sha256": "429e7017dfc48646dcd1df27c14c0c690cfa9add958beb285dcfaccb0da69ba0",
+      "bytes": 27684,
+      "network_name_present": true,
+      "owner_roles_present": true
+    },
+    {
+      "path": "/api/mesh/status",
+      "status": 200,
+      "sha256": "7fed6e1da059c30619fec82eb6309839e04cae837c1d2a3f6ba9d754ff244a52",
+      "bytes": 4315,
+      "owner_binding": {
+        "authority_repository": "ingolf-lohmann/qik-vrt",
+        "mirror_repository": "Goldkelch/qik-vrt",
+        "assigned_by": "Ingolf Lohmann",
+        "source": "OWNER_ROLE_ASSIGNMENT",
+        "assigned_on": "2026-10-07",
+        "network_name": "QIK VRT Mesh Netzwerk",
+        "human": {
+          "name": "Ingolf Lohmann",
+          "type": "NATURAL_PERSON",
+          "roles": [
+            "Principal",
+            "Schöpfer",
+            "Code Owner",
+            "Product Owner",
+            "Lizenzgeber"
+          ]
+        },
+        "identity_confirmed_on": "2026-10-13",
+        "production_authorization": {
+          "granted_by": "Ingolf Lohmann",
+          "granted_on": "2026-10-13",
+          "source": "Freigabe erteilt zur Produktivierung."
+        },
+        "native_activation_verified": false
+      }
+    },
+    {
+      "path": "/offline/vendor/react-runtime.js",
+      "status": 200,
+      "bytes": 571915,
+      "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca",
+      "source_bytes_equal": true
+    },
+    {
+      "path": "/offline/vendor/REACT_LICENSE.txt",
+      "status": 200,
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+      "source_bytes_equal": true
+    }
+  ],
+  "browser_execution": false,
+  "native_execution": false,
+  "physical_iphone": false,
+  "static_byte_equal_count": 16,
+  "offline_source_files_verified": 14,
+  "completed_at": "2026-10-13T13:01:40.170631+00:00",
+  "exact_domain": {
+    "url": "https://raumzeitterminal.de/",
+    "status": 502,
+    "bytes": 150,
+    "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+    "delivery_verified": false
+  }
+}

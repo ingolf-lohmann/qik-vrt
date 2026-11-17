@@ -1,0 +1,48 @@
+{"pair": 0, "operation": "encode", "implementation": "python", "wall_ns": 8581552858}
+{"pair": 0, "operation": "encode", "implementation": "native", "wall_ns": 9947086919}
+{"pair": 0, "operation": "decode", "implementation": "python", "wall_ns": 1211417648}
+{"pair": 0, "operation": "decode", "implementation": "native", "wall_ns": 3750188126}
+{"pair": 1, "operation": "encode", "implementation": "native", "wall_ns": 10460859975}
+{"pair": 1, "operation": "encode", "implementation": "python", "wall_ns": 8261836808}
+{"pair": 1, "operation": "decode", "implementation": "native", "wall_ns": 3647929496}
+{"pair": 1, "operation": "decode", "implementation": "python", "wall_ns": 859956301}
+{"pair": 2, "operation": "encode", "implementation": "python", "wall_ns": 7329723345}
+{"pair": 2, "operation": "encode", "implementation": "native", "wall_ns": 10519668756}
+{"pair": 2, "operation": "decode", "implementation": "python", "wall_ns": 1087095802}
+{"pair": 2, "operation": "decode", "implementation": "native", "wall_ns": 4015948851}
+{"pair": 3, "operation": "encode", "implementation": "native", "wall_ns": 11187233695}
+{"pair": 3, "operation": "encode", "implementation": "python", "wall_ns": 7527495490}
+{"pair": 3, "operation": "decode", "implementation": "native", "wall_ns": 3182314019}
+{"pair": 3, "operation": "decode", "implementation": "python", "wall_ns": 849571326}
+{"pair": 4, "operation": "encode", "implementation": "python", "wall_ns": 7231153848}
+{"pair": 4, "operation": "encode", "implementation": "native", "wall_ns": 9398044617}
+{"pair": 4, "operation": "decode", "implementation": "python", "wall_ns": 840117344}
+{"pair": 4, "operation": "decode", "implementation": "native", "wall_ns": 3402884943}
+{
+  "encode": {
+    "median": {
+      "python": {
+        "wall_ns": 7527495490,
+        "cpu_ns": 7457858000
+      },
+      "native": {
+        "wall_ns": 10460859975,
+        "cpu_ns": 10388981000
+      }
+    },
+    "python_over_native_wall_ratio": 0.7195866791057014
+  },
+  "decode": {
+    "median": {
+      "python": {
+        "wall_ns": 859956301,
+        "cpu_ns": 791100000
+      },
+      "native": {
+        "wall_ns": 3647929496,
+        "cpu_ns": 3576472000
+      }
+    },
+    "python_over_native_wall_ratio": 0.2357381911966645
+  }
+}

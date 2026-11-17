@@ -9,23 +9,25 @@ on:
         description: "Optional PR number; still requires the repository promotion marker"
         required: false
         type: string
-  schedule:
-    - cron: "*/10 * * * *"
+  push:
+    branches: [main]
   workflow_run:
     workflows:
       - "QIKVRT CI"
+      - "QIKVRT productive TEMDD S1 carrier"
       - "QIKVRT repository evidence materialization"
       - "QIKVRT Collective Proposal Review"
       - "QIK-VRT global claim completion"
       - "QIKVRT Batch-003 remaining subject disposition"
       - "QIKVRT requested review executor"
+      - "QIKVRT required code-owner review"
       - "QIK-VRT universal ontology finite-model verification"
       - "QIK-VRT measurement-independence boundary verification"
       - "QIK-VRT manuscript proof coverage"
     types: [completed]
 
 permissions:
-  actions: read
+  actions: write
   contents: write
   issues: write
   pull-requests: write
@@ -36,6 +38,119 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  native-conditional-closure:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      QIKVRT_CLOSURE_EVENT_HEAD: ${{ github.event.workflow_run.head_sha || '' }}
+    steps:
+      - name: Check out the exact trusted consumer source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up declared Python runtime
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - name: Verify the original closure and recovery paths
+        run: |
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest tests.test_reciprocal_closure_step tests.test_qikvrt_pr_closure_engine
+      - name: Recover prior intent and prepare one fresh admitted successor
+        id: prepare
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/pr-closure
+          rc=0
+          python3 -B tools/qikvrt_pr_closure_engine.py workflow-prepare \
+            --journal-dir .qikvrt/pr-closure/intents \
+            --output .qikvrt/pr-closure/prepare.json || rc=$?
+          test "$rc" -eq 0 || test "$rc" -eq 2
+          python3 -B - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          value=json.loads(Path('.qikvrt/pr-closure/prepare.json').read_bytes())
+          print('prepared=' + str(value['state']=='STEP_CHECKPOINT_REQUIRED').lower())
+          PY
+      - name: Persist the immutable intent before any repository mutation
+        if: steps.prepare.outputs.prepared == 'true'
+        id: checkpoint
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-pr-closure-intents
+          include-hidden-files: true
+          path: .qikvrt/pr-closure/intents/*.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Verify the checkpoint then execute and read back one original step
+        if: steps.prepare.outputs.prepared == 'true'
+        env:
+          CHECKPOINT_ID: ${{ steps.checkpoint.outputs.artifact-id }}
+          CHECKPOINT_DIGEST: ${{ steps.checkpoint.outputs.artifact-digest }}
+        run: |
+          python3 -B tools/qikvrt_pr_closure_engine.py workflow-apply \
+            --journal-dir .qikvrt/pr-closure/intents \
+            --checkpoint-id "$CHECKPOINT_ID" --checkpoint-digest "$CHECKPOINT_DIGEST" \
+            --output .qikvrt/pr-closure/effect.json
+      - name: Freeze the verified effect's existing CI successor request
+        if: steps.prepare.outputs.prepared == 'true'
+        id: successor
+        run: |
+          python3 -B - <<'PY' >> "$GITHUB_OUTPUT"
+          import json,os,subprocess
+          from pathlib import Path
+          r=json.loads(Path('.qikvrt/pr-closure/effect.json').read_bytes())
+          allowed=r.get('post_effect_verified') is True and r['selected_action']['action']=='MERGE'
+          print('dispatch='+str(allowed).lower())
+          if allowed:
+              repo=os.environ['GITHUB_REPOSITORY']; action=r['selected_action']
+              pr=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/pulls/{action["pr"]}']))
+              ref='main' if action['action']=='MERGE' else pr['head']['ref']
+              expected=r['inventory_after']['main_sha'] if action['action']=='MERGE' else r['post_effect_readback']['head_sha']
+              value={'ref':ref,'return_run_details':True}
+              Path('.qikvrt/pr-closure/successor-request.json').write_text(json.dumps(value)+'\n')
+              Path('.qikvrt/pr-closure/successor-binding.json').write_text(json.dumps({'ref':ref,'expected_head':expected,'intent_id':r['intent_id'],'effect_ack_done':False})+'\n')
+          PY
+      - name: Persist successor intent before the existing CI dispatch
+        if: steps.successor.outputs.dispatch == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-pr-closure-successor-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .qikvrt/pr-closure/successor-*.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Continue through existing CI after the verified source transition
+        if: steps.successor.outputs.dispatch == 'true'
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,urllib.parse
+          from pathlib import Path
+          p=Path('.qikvrt/pr-closure'); b=json.loads((p/'successor-binding.json').read_bytes())
+          repo=os.environ['GITHUB_REPOSITORY']
+          current=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/git/ref/heads/{urllib.parse.quote(b["ref"],safe="")}']))
+          if current['object']['sha']!=b['expected_head']: raise SystemExit('HOLD: SUCCESSOR_SOURCE_DRIFT')
+          # One dispatch, never a timer or response-polling loop. Its original
+          # completion event re-enters the existing review/closure consumer.
+          result=subprocess.run(['gh','api','--method','POST',f'repos/{repo}/actions/workflows/qikvrt_ci.yml/dispatches','--input',str(p/'successor-request.json')],capture_output=True)
+          (p/'successor-response.json').write_bytes(result.stdout)
+          (p/'successor-exit-code.txt').write_text(str(result.returncode)+'\n')
+          if result.returncode: raise SystemExit('HOLD: SUCCESSOR_DISPATCH_UNVERIFIED_READBACK_ONLY')
+          PY
+      - name: Preserve progress, failures, readbacks and remaining obligations
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-pr-closure-result-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .qikvrt/pr-closure
+          if-no-files-found: error
+          retention-days: 90
+
   evaluate-and-promote:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -43,9 +158,12 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       PROMOTION_MARKER: "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
-      REVIEW_STATUS_CONTEXT: "QIKVRT requested review execution"
+      REVIEW_STATUS_CONTEXT: "QIKVRT required code-owner review"
+      # Deliberately disabled until independent CAS/governance qualification,
+      # review of this adapter, and durable cross-run attempt retention.
+      CAS_AUTOMATIC_MAIN_PROMOTION: "false"
       REQUIRED_GATES_JSON: >-
-        ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion","QIKVRT requested review execution"]
+        ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion","QIKVRT required code-owner review"]
     steps:
       - name: Check out current main promotion code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -60,6 +178,8 @@ jobs:
           set -euo pipefail
           python3 -B -m unittest -v \
             tests.test_qikvrt_expected_head_promotion \
+            tests.test_qikvrt_expected_head_promotion_contract \
+            tests.test_qikvrt_required_review_gate \
             tests.test_qikvrt_requested_review_executor
 
       - name: Discover one marked current-base candidate
@@ -122,6 +242,8 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-promotion-snapshot.json
           import json, os, subprocess
+          from tools.qikvrt_required_review_gate import project_governance, resolve_required_code_owner
+          from tools.qikvrt_expected_head_promotion import QUALIFICATION_PATH, qualify_target_ref_cas
           repo=os.environ['REPOSITORY']
           pr_number=int(os.environ['PR_NUMBER'])
           required=json.loads(os.environ['REQUIRED_GATES_JSON'])
@@ -145,6 +267,7 @@ jobs:
           pr=gh_json(f'repos/{repo}/pulls/{pr_number}')
           current_main=gh_json(f'repos/{repo}/commits/main')['sha']
           head=pr['head']['sha']
+          expected_tree=gh_json(f'repos/{repo}/git/commits/{head}')['tree']['sha']
           runs=gh_runs(f'repos/{repo}/actions/runs?head_sha={head}&event=pull_request&per_page=100')
           workflow_runs=[
               {'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'run_number':r.get('run_number')}
@@ -152,6 +275,9 @@ jobs:
           ]
 
           statuses=gh_pages(f'repos/{repo}/commits/{head}/statuses?per_page=100')
+          rules=gh_json(f'repos/{repo}/rules/branches/main')
+          reviews=gh_pages(f'repos/{repo}/pulls/{pr_number}/reviews?per_page=100')
+          governance=project_governance(pr, rules, reviews, statuses, required_code_owner=resolve_required_code_owner(repo, pr_author=pr['user']['login']))
           review_status=next((s for s in statuses if s.get('context') == review_context), None)
           if review_status is None:
               synthetic={'name':review_context,'status':'in_progress','conclusion':None,'run_number':0}
@@ -172,8 +298,10 @@ jobs:
               common=sorted(candidate_files & other_files)
               if common: overlaps.append({'pr_number':other['number'],'paths':common})
 
-          print(json.dumps({
+          snapshot={
               'pr_number':pr_number,
+              'repository':repo,
+              'expected_tree_sha':expected_tree,
               'current_main_sha':current_main,
               'base_sha':pr['base']['sha'],
               'expected_head_sha':head,
@@ -184,7 +312,13 @@ jobs:
               'required_gates':required,
               'workflow_runs':workflow_runs,
               'competing_writer_overlaps':overlaps,
-          }, sort_keys=True))
+              'governance_projection':governance,
+          }
+          # This file and adapter come from the trusted MAIN checkout above.
+          # No PR file, comment, workflow artifact or environment enables CAS.
+          qualification=json.loads(QUALIFICATION_PATH.read_text())
+          snapshot['target_ref_cas']=qualify_target_ref_cas(snapshot,qualification)
+          print(json.dumps(snapshot, sort_keys=True))
           PY
 
           set +e
@@ -202,7 +336,7 @@ jobs:
           exit 0
 
       - name: Reobserve exact unchanged head and advance one promotion phase
-        if: steps.decision.outputs.state == 'PROMOTABLE'
+        if: steps.decision.outputs.state == 'PROMOTABLE' && env.CAS_AUTOMATIC_MAIN_PROMOTION == 'true'
         env:
           PR_NUMBER: ${{ steps.candidate.outputs.pr }}
           EXPECTED_HEAD: ${{ steps.decision.outputs.head }}
@@ -220,6 +354,25 @@ jobs:
           test "$current_base" = "$EXPECTED_BASE"
           test "$current_head" = "$EXPECTED_HEAD"
 
+          # Status publication and technical execution cannot replace a fresh
+          # native read immediately before either promotion phase.
+          python3 -B - <<'PY'
+          import json, os, subprocess
+          from tools.qikvrt_required_review_gate import project_governance, resolve_required_code_owner
+          repo=os.environ['REPOSITORY']; number=os.environ['PR_NUMBER']
+          def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
+          def pages(path):
+              result=[]
+              for page in json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',path],text=True)):
+                  result.extend(page)
+              return result
+          pr=one(f'repos/{repo}/pulls/{number}'); head=pr['head']['sha']
+          projection=project_governance(pr, one(f'repos/{repo}/rules/branches/main'), pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100'), pages(f'repos/{repo}/commits/{head}/statuses?per_page=100'), required_code_owner=resolve_required_code_owner(repo, pr_author=pr['user']['login']))
+          current=one(f'repos/{repo}/pulls/{number}')
+          if head != os.environ['EXPECTED_HEAD'] or pr['base']['sha'] != os.environ['EXPECTED_BASE'] or current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha'] or projection['gate_state'] != 'success':
+              raise SystemExit(f"BLOCK: fresh native governance {projection.get('first_blocker') or 'SUBJECT_DRIFT'}")
+          PY
+
           if [ "$draft" = true ]; then
             gh pr ready "$PR_NUMBER" --repo "$REPOSITORY"
             echo "READY_RECLASSIFIED_REOBSERVATION_REQUIRED" >> "$GITHUB_STEP_SUMMARY"
@@ -233,13 +386,32 @@ jobs:
           test "$current_base" = "$EXPECTED_BASE"
           test "$current_head" = "$EXPECTED_HEAD"
 
-          gh api --method PUT "repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge" \
-            -f merge_method=merge -f sha="$EXPECTED_HEAD" > /tmp/qikvrt-promotion-merge.json
-          cat /tmp/qikvrt-promotion-merge.json
-          test "$(python3 -c 'import json; print(str(json.load(open("/tmp/qikvrt-promotion-merge.json"))["merged"]).lower())')" = true
-          promoted_main="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
-          test "$promoted_main" != "$EXPECTED_BASE"
-          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" --body "Expected-head promotion completed by repository-native executor. Source head: \`$EXPECTED_HEAD\`; previous main: \`$EXPECTED_BASE\`; promoted main: \`$promoted_main\`. Requested-review execution was exact-head bound. No Zenodo/IETF/release/PASS/FINAL_PASS/EFFECT_ACK_DONE effect is implied."
+          # One updateRefs, beforeOid=B, afterOid=M, force=false. No REST fallback.
+          # Preserve the intent before POST even if the runner/response is lost.
+          # Before enabling this phase, restore a durable same-subject journal
+          # from earlier attempts; the current disabled workflow cannot certify
+          # cross-run replay suppression by a fresh /tmp file.
+          python3 -B tools/qikvrt_expected_head_promotion.py publish-graphql \
+            --input /tmp/qikvrt-promotion-snapshot.json \
+            --attempt-file /tmp/qikvrt-promotion-cas-attempt.json \
+            > /tmp/qikvrt-promotion-readback.json
+          cat /tmp/qikvrt-promotion-readback.json
+          promoted_main="$(python3 -c 'import json; print(json.load(open("/tmp/qikvrt-promotion-readback.json"))["published_head_sha"])')"
+          gh api --method POST "repos/${REPOSITORY}/issues/${PR_NUMBER}/comments" \
+            -f body="Exact ref publication readback verified. Source head: ${EXPECTED_HEAD}; previous main: ${EXPECTED_BASE}; published main: ${promoted_main}. No broader approval, PASS, FINAL_PASS, deployment or EFFECT_ACK_DONE is established."
+
+      - name: Preserve promotion and readback evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-ref-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/qikvrt-promotion-candidate.json
+            /tmp/qikvrt-promotion-snapshot.json
+            /tmp/qikvrt-promotion-decision.json
+            /tmp/qikvrt-promotion-cas-attempt.json
+            /tmp/qikvrt-promotion-readback.json
+          if-no-files-found: warn
 
       - name: Persist bounded decision summary
         if: always()
@@ -255,6 +427,10 @@ jobs:
             else
               echo "No promotion snapshot was materialized."
             fi
+            if [ -f /tmp/qikvrt-promotion-readback.json ]; then
+              echo '```json'; cat /tmp/qikvrt-promotion-readback.json; echo '```'
+            fi
             echo
             echo "Requested-review execution and external effects remain fail-closed."
           } >> "$GITHUB_STEP_SUMMARY"
+

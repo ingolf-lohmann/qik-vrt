@@ -1,0 +1,128 @@
+{
+  "_license": {
+    "classification": "bounded_capability_evidence",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "capabilities": {
+    "container_text_read_mediated": true,
+    "control_plane_read": true,
+    "deployed_container_exec": false,
+    "deployed_container_write": false,
+    "documented_ssh_scp_sftp_is_not_session_capability": true,
+    "local_railway_cli_available": false,
+    "local_railway_credential_configuration_available": false,
+    "local_ssh_identity_available": false,
+    "official_carrier_documentation": "https://docs.railway.com/cli/ssh",
+    "private_binary_transfer": false,
+    "railway_agent_thread_id": "fd3b3551-a5d4-43b1-8247-1cfd9ff81394",
+    "registered_ssh_identity_exposed": false,
+    "sandbox_vm_is_not_deployment": true
+  },
+  "carrier": {
+    "deployment": {
+      "createdAt": "2026-09-28T05:26:32.994Z",
+      "id": "d74053cf-7753-4d41-8d61-eab36b65c678",
+      "status": "SUCCESS",
+      "url": null
+    },
+    "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+    "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+    "service_id": "feb518e8-bfb2-450d-a36a-c992b052427c",
+    "service_name": "universal-terminal",
+    "volume": {
+      "id": "0e2d37e2-ac58-4bdc-8238-ed81bf2aa187",
+      "mountPath": "/var/lib/qikvrt",
+      "name": "qikvrt-state",
+      "region": "iad",
+      "sizeMB": 500,
+      "state": "live"
+    }
+  },
+  "first_blocker": "HOLD_PRIVILEGED_RAILWAY_CAPTURE_AND_PRIVATE_TRANSFER_CAPABILITY",
+  "observation_scope": "2026-10-05 session; bounded control-plane and mediated container-file observations; no snapshot",
+  "one_shot_path": {
+    "additive_hook": "deploy/universal-terminal/railway-capture-hook.sh",
+    "arm": "migration-capture-arm",
+    "automatic_source_resume": false,
+    "capture": "migration-capture",
+    "materialization": "REPOSITORY_ADAPTER_AND_SINGLE_FIELD_STAGED_START_GUARD; NOT_ADMITTED_TO_RUNNING_SUPERVISOR",
+    "new_runtime_or_transfer_daemon": false,
+    "original_44_recovered_source_blobs_unchanged": true,
+    "original_supervisor": "deploy/universal-terminal/cloud-entrypoint.sh",
+    "private_supervisor_composer": "migration-capture-supervisor"
+  },
+  "private_capture": {
+    "capture_evidence_sha256": null,
+    "durable_acknowledgement_cut_observed": false,
+    "export_sha256": null,
+    "migration_export_performed_on_production": false,
+    "migration_verify_export_performed_on_production": false,
+    "migration_verify_source_performed_on_production": false,
+    "private_inventory_or_profile_bytes_committed": false,
+    "production_snapshot_created": false,
+    "production_snapshot_uploaded": false,
+    "source_declaration_filled": false,
+    "source_declaration_sha256": null,
+    "source_snapshot_sha256": null,
+    "writers_stopped": false
+  },
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "S1_DONE": false,
+    "deployment_performed": false,
+    "host_admission_verified": false,
+    "ordinary_release": false,
+    "predecessor_evidence_transfer": false,
+    "production_capture_verified": false,
+    "railway_cutover_verified": false
+  },
+  "repository": {
+    "main_head_reobserved": "86d7062f25f174039da0a5df8a856127553036f1",
+    "name": "ingolf-lohmann/qik-vrt",
+    "parent_head": "812d062f3e4f963e388ed89fdc8ece47f0541e64",
+    "parent_tree": "0fecc2f728fb863f0b80d2bb68ecbf9e4e83cb35",
+    "pr": 457
+  },
+  "retry_condition": "Expose an authenticated privileged exec/SSH and private SFTP/SCP carrier for this exact running deployment; independently verify applied restart fencing, actual clean source HEAD/TREE and fresh durable acknowledgement cut before quiesce/capture.",
+  "schema": "qikvrt-railway-private-capture-capability/v1",
+  "source_observation": {
+    "actual_tree": null,
+    "clean_source_independently_verified": false,
+    "configured_commit": "2fdcf8d233b1495732ef38e3406ebfc095fd0ef3",
+    "configured_commit_is_not_runtime_source_proof": true,
+    "configured_repository": "Goldkelch/qik-vrt",
+    "mediated_git_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+    "method": "Railway Agent readContainerFileTool /opt/qikvrt/.git/HEAD; 41 bytes"
+  },
+  "staged_restart_guard": {
+    "applied": false,
+    "applied_start_command": {
+      "bytes": 10140,
+      "sha256": "8522a1218a6fc9eb8ce43c095c8c3c30734fc5056a0fae425b524dea6f927ed7"
+    },
+    "environment_accept_deploy_performed": false,
+    "environment_change_count_after": 22,
+    "environment_change_count_before": 21,
+    "foreign_21_staged_changes_not_applied": true,
+    "patch_id": "9d4860c4-5003-48ef-a07f-d383f303b539",
+    "readback_applied_original_unchanged": true,
+    "readback_staged_target_exact": true,
+    "restart_fence_independently_verified": false,
+    "service_field_changes": [
+      {
+        "destructive": false,
+        "path": "services.feb518e8-bfb2-450d-a36a-c992b052427c.deploy.startCommand",
+        "type": "updated"
+      }
+    ],
+    "service_staged_variables": [],
+    "staged_start_command": {
+      "bytes": 10203,
+      "sha256": "285772df80b626942f28240d6b88aebb982a3cae611fd1794dfad12c8ecb0363"
+    },
+    "status": "STAGED",
+    "updated_at": "2026-10-05T10:22:53.206Z"
+  }
+}

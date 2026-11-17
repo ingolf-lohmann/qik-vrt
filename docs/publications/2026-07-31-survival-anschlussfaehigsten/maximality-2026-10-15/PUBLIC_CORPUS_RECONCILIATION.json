@@ -1,0 +1,692 @@
+{
+  "schema": "qikvrt_public_corpus_reconciliation_v1",
+  "observed_at": "2026-10-15T09:59:47.660892+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "source_head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
+  "source_tree": "59296a4a6a0a41f926adad601df0f2472e15ce8f",
+  "zenodo_record_ids": [
+    20712301,
+    21244412,
+    21245282,
+    21245951,
+    21247297,
+    21247388,
+    21252415,
+    21252649,
+    21266670,
+    21267021,
+    21482023,
+    21488116,
+    21498773,
+    21498774,
+    21500322,
+    21501365,
+    21515074,
+    21518464,
+    21529081,
+    21582781,
+    21633411,
+    21636774,
+    21640160,
+    21640173,
+    21711193,
+    21721918,
+    21731492,
+    21748371,
+    21804399,
+    21888130,
+    21947141,
+    21983644,
+    22216916,
+    22283396,
+    22527889,
+    22813431,
+    22840633,
+    22845516,
+    22847245,
+    22907018,
+    22941556,
+    22955727,
+    23008330,
+    23008704
+  ],
+  "zenodo_version_count": 44,
+  "zenodo_concept_count": 32,
+  "zenodo_native_files": 479,
+  "all_public_queries_complete": true,
+  "all_native_family_versions_complete": true,
+  "all_original_files_match_fresh_metadata": true,
+  "original_file_validation_method": "Reused exact 266480654-byte original-source archive; all 479 files independently rehashed against freshly paginated public size/MD5, with prior SHA256 agreement. Only six selected Zenodo files and five IETF originals were freshly downloaded; no claim of 479 new public downloads.",
+  "original_archive": {
+    "filename": "QIKVRT_Zenodo_IETF_Originalquellen_20261015.zip",
+    "bytes": 266480654,
+    "sha256": "0c0fb7bfa144a30b6d71f368e9503497ce58d3e79f2550f3bfd1804fb579b290"
+  },
+  "ietf_person_id": 163830,
+  "ietf_revision_names": [
+    "draft-lohmann-qikvrt-effect-ack-00",
+    "draft-lohmann-qikvrt-effect-ack-01",
+    "draft-lohmann-qikvrt-effect-ack-02",
+    "draft-lohmann-qikvrt-effect-ack-03",
+    "draft-lohmann-qikvrt-epistemic-status-00"
+  ],
+  "ietf_document_count": 2,
+  "ietf_submission_records": {
+    "posted": 5,
+    "cancelled": 1,
+    "cancelled_submission_id": 164587,
+    "cancelled_record_not_counted_as_publication": true
+  },
+  "comparison_with_historical_corpus": {
+    "historical_record_count": 24,
+    "historical_missing_from_current": [],
+    "additional_current_records": [
+      21711193,
+      21721918,
+      21731492,
+      21748371,
+      21804399,
+      21888130,
+      21947141,
+      21983644,
+      22216916,
+      22283396,
+      22527889,
+      22813431,
+      22840633,
+      22845516,
+      22847245,
+      22907018,
+      22941556,
+      22955727,
+      23008330,
+      23008704
+    ]
+  },
+  "comparison_with_central_index_before": {
+    "zenodo_indexed": 14,
+    "missing_zenodo_version_ids": [
+      20712301,
+      21244412,
+      21245282,
+      21245951,
+      21247297,
+      21247388,
+      21252415,
+      21252649,
+      21266670,
+      21267021,
+      21482023,
+      21501365,
+      21518464,
+      21582781,
+      21640160,
+      21748371,
+      21804399,
+      21983644,
+      22216916,
+      22283396,
+      22527889,
+      22813431,
+      22840633,
+      22845516,
+      22847245,
+      22907018,
+      22941556,
+      22955727,
+      23008330,
+      23008704
+    ],
+    "missing_published_ietf_revision": "draft-lohmann-qikvrt-epistemic-status-00"
+  },
+  "pages": [
+    {
+      "url": "https://zenodo.org/api/records/21748371/versions?size=25",
+      "utc": "2026-10-15T09:52:43.831968+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21748370-1.json",
+      "bytes": 16515,
+      "sha256": "9bd047ed9ef99d0690b990655601c19ee51eeb965092edcccf11ff938f36ec1c",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21529081/versions?size=25",
+      "utc": "2026-10-15T09:52:26.464997+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21488115-1.json",
+      "bytes": 44523,
+      "sha256": "e87be19b8a00ddc5ab109e0cf6e259d5a753892e0f4e2b65638f0d168c26ea47",
+      "count": 5,
+      "total": 5,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21482023/versions?size=25",
+      "utc": "2026-10-15T09:52:26.464431+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21482022-1.json",
+      "bytes": 9559,
+      "sha256": "15e1934c7a9e96d92ab42b914aacd237c00bcf3c7e3cf3e5d72a32f81ff0756f",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21640173/versions?size=25",
+      "utc": "2026-10-15T09:52:35.166943+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21640172-1.json",
+      "bytes": 7611,
+      "sha256": "80a1fc6aa23b8d2759ddc149f0ed98be44a39395ebab1e023411d90fd80294aa",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22845516/versions?size=25",
+      "utc": "2026-10-15T09:53:01.096220+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22845515-1.json",
+      "bytes": 8184,
+      "sha256": "44ec7ef2caff7d20762e19f3e73005af31288d8690bf6ce5a7ef3909c9158e07",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21500322/versions?size=25",
+      "utc": "2026-10-15T09:52:26.467406+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21500321-1.json",
+      "bytes": 10606,
+      "sha256": "651f70e5f3959d8856e1fa74bbe33d7ae776a283649f0bb6be73c68f221841a1",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21633411/versions?size=25",
+      "utc": "2026-10-15T09:52:34.908767+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21633410-1.json",
+      "bytes": 5731,
+      "sha256": "d5470c888258c8b865af8eef1f6d7d0269d95ba35fb54e927e4a7dd34742388b",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22941556/versions?size=25",
+      "utc": "2026-10-15T09:53:01.123077+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22941555-1.json",
+      "bytes": 5366,
+      "sha256": "b1253cdfd1b3dcce73ff56a0a761e3ef986e4393c6cd5a9abaf06896a94bde0d",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21983644/versions?size=25",
+      "utc": "2026-10-15T09:52:52.846638+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21983643-1.json",
+      "bytes": 5298,
+      "sha256": "fe9a67f768bd92feb9847ec9a6f2a155a25235e8d08997f01bf4a8664e46105f",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/23008704/versions?size=25",
+      "utc": "2026-10-15T09:53:09.209967+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-23008703-1.json",
+      "bytes": 8970,
+      "sha256": "984acf323e452e46d4d437605bc1f999c111e3b858e53013a764cc8a9cf4ba88",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22283396/versions?size=25",
+      "utc": "2026-10-15T09:52:52.851372+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22283395-1.json",
+      "bytes": 6894,
+      "sha256": "892d611cc5156d22279c1da8abef6a5615975d3ffff2e931e9ed69cef262a209",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21515074/versions?size=25",
+      "utc": "2026-10-15T09:52:34.834603+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21515073-1.json",
+      "bytes": 4622,
+      "sha256": "24ad29c649a6dec63a3eb424fd4d05950e148a73daa67317f6c72a33f4042179",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/23008330/versions?size=25",
+      "utc": "2026-10-15T09:53:09.018325+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-23008329-1.json",
+      "bytes": 7630,
+      "sha256": "94f2a22ecfa134f0a646d758b0d9f9a6d0f14fb6effc3fe08b8b4b4f3b7bd09f",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://datatracker.ietf.org/api/v1/doc/documentauthor/?person=163830&limit=100",
+      "utc": "2026-10-15T09:49:06.530995+00:00",
+      "status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/ietf-author-1.json",
+      "sha256": "7cb5105b3431ca7c1963546226460f2e4e5bff12b3603db83d603bc8a4b466b7",
+      "total": 2,
+      "count": 2,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22907018/versions?size=25",
+      "utc": "2026-10-15T09:53:01.115823+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22907017-1.json",
+      "bytes": 6796,
+      "sha256": "c4098a735b2f1ef52f43620c66755f86417b42acf1a74800885c5765ad89e4ca",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records?q=creators.name%3A%28Ingolf+AND+Lohmann%29&size=25&sort=mostrecent&allversions=True",
+      "utc": "2026-10-15T09:49:06.528165+00:00",
+      "status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/name-all-1.json",
+      "sha256": "fc48b2ed71aaa8a83202b4b6e2afb047324a34a08f825af52f403f4d4395c7b9",
+      "total": 42,
+      "count": 25,
+      "next": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent"
+    },
+    {
+      "url": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:(Ingolf+AND+Lohmann)&size=25&sort=mostrecent",
+      "utc": "2026-10-15T09:49:14.372501+00:00",
+      "status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/name-all-2.json",
+      "sha256": "9eaebe8da24a393bbac908ec904babc9e8befc1e511fb000a1b5a8e007769d83",
+      "total": 42,
+      "count": 17,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/20712301/versions?size=25",
+      "utc": "2026-10-15T09:52:26.463178+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-20712300-1.json",
+      "bytes": 6048,
+      "sha256": "ad859bcb83ddbd47f2006336f19b78d7880bcbaed6d122e696e25dcf77ed7372",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22216916/versions?size=25",
+      "utc": "2026-10-15T09:52:52.847140+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22216915-1.json",
+      "bytes": 7222,
+      "sha256": "9a482b5b5c48a22f6d31dc653c1ce905df5c3d6f151f41c2431f9a4aab71845d",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22955727/versions?size=25",
+      "utc": "2026-10-15T09:53:01.142495+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22955726-1.json",
+      "bytes": 12837,
+      "sha256": "58ce8a548b6378dfa576527ee02115c0f3e61be53636900937ffe73ad57a73e8",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21636774/versions?size=25",
+      "utc": "2026-10-15T09:52:35.008638+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21636773-1.json",
+      "bytes": 6116,
+      "sha256": "7fea135caaf3287d4cda9941a15444fc0ad48a9155d9811ec4a3c54a05536f67",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://datatracker.ietf.org/api/v1/doc/document/?name__contains=lohmann&limit=100",
+      "utc": "2026-10-15T09:49:06.532505+00:00",
+      "status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/ietf-lohmann-1.json",
+      "sha256": "96800bb528e4d16bccf9e26e8d21529277d29ae09575cd58703761be25df508c",
+      "total": 2,
+      "count": 2,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records?q=creators.name%3A%22ingolf-lohmann%22&size=25&sort=mostrecent&allversions=True",
+      "utc": "2026-10-15T09:49:06.528799+00:00",
+      "status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/handle-all-1.json",
+      "sha256": "537bae1ef4bdb1e8f27ea6a2c127ddf7be7c744b8107bfe507d5254d5a718680",
+      "total": 2,
+      "count": 2,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21640160/versions?size=25",
+      "utc": "2026-10-15T09:52:35.121338+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21640159-1.json",
+      "bytes": 7607,
+      "sha256": "cc6607247b8d896e15fa4eba4867ed1120fe0128b4773ccdaeb1deb91956a676",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22527889/versions?size=25",
+      "utc": "2026-10-15T09:52:52.957150+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22527888-1.json",
+      "bytes": 14033,
+      "sha256": "4fba4e0ba64e8f3f06ef65f4c7bf8f09f9cbb514ddd32b0c098421e07a2024c2",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21498773/versions?size=25",
+      "utc": "2026-10-15T09:52:26.465864+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21498772-1.json",
+      "bytes": 10490,
+      "sha256": "7de442af829d1c9d725bc1e4e3795f79e19e671cece4a041a780a04714d1bc5b",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21582781/versions?size=25",
+      "utc": "2026-10-15T09:52:34.893792+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21582780-1.json",
+      "bytes": 5144,
+      "sha256": "71a8d4452a034bb07f80fe91df2987727fe639fb93d842e7aafbf86d427fe11b",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://datatracker.ietf.org/api/v1/submit/submission/?name__contains=lohmann&limit=100",
+      "utc": "2026-10-15T09:53:09.282286+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/ietf-submissions-1.json",
+      "bytes": 9722,
+      "sha256": "874957af21f848b0cbaebf90ff820c406f9782a7440021c92065352a11fd28de",
+      "count": 6,
+      "total": 6,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21947141/versions?size=25",
+      "utc": "2026-10-15T09:52:52.777712+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21947140-1.json",
+      "bytes": 12984,
+      "sha256": "869e6a2859479a1b221d79024f59c23123ec652e59288fa49dde1c564ec3dba6",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21731492/versions?size=25",
+      "utc": "2026-10-15T09:52:43.590204+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21731491-1.json",
+      "bytes": 15113,
+      "sha256": "1976e3b213da31b99d8b6f12d3125e69b1142eb7ad3c76d71593ea344de55004",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22840633/versions?size=25",
+      "utc": "2026-10-15T09:53:00.979437+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22840632-1.json",
+      "bytes": 6660,
+      "sha256": "ba5dde627b45c14e2c49c5ff7a49fa73ab7bc4290c2695116c2f7324a34bbe03",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21267021/versions?size=25",
+      "utc": "2026-10-15T09:52:26.463834+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21244411-1.json",
+      "bytes": 35209,
+      "sha256": "da6a3853ca12d108868d94e83c6c4c24b6d13e867defdba780387d50c58af29a",
+      "count": 9,
+      "total": 9,
+      "next": null
+    },
+    {
+      "url": "https://datatracker.ietf.org/api/v1/person/person/163830/",
+      "utc": "2026-10-15T09:49:06.529903+00:00",
+      "status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/ietf-person-1.json",
+      "sha256": "02a8c774ce0fb5dd19b61dc5ebf2295a43e503a6f6fa1fc0c836df93b85dad44",
+      "total": null,
+      "count": 0,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21711193/versions?size=25",
+      "utc": "2026-10-15T09:52:43.569270+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21711192-1.json",
+      "bytes": 13166,
+      "sha256": "2d5592904c7d34bff8f02f95b767917c120a11a7dc1b2e66bc571fc27d89041d",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22847245/versions?size=25",
+      "utc": "2026-10-15T09:53:01.100298+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22847244-1.json",
+      "bytes": 7990,
+      "sha256": "c6cccbc4053e92815e1687cf40846cc7a71ea73b2b8aa78bd7af551fe98a0005",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21721918/versions?size=25",
+      "utc": "2026-10-15T09:52:43.574689+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21721917-1.json",
+      "bytes": 15240,
+      "sha256": "47481a28852d18cd7da87bb7a15c602e4a78e970e4b7e954947a1ef00b37993a",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21804399/versions?size=25",
+      "utc": "2026-10-15T09:52:43.854702+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21804398-1.json",
+      "bytes": 6190,
+      "sha256": "da7a064b34214403a6d4a0a60c662b808f1421470fb9d1ef2618e64badab71b9",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/22813431/versions?size=25",
+      "utc": "2026-10-15T09:52:54.019392+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-22813430-1.json",
+      "bytes": 5297,
+      "sha256": "1e1bda9dddcbfb74d4b65937cbc8e8d0b1b9a17fc831a994c209928136d46660",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records?q=creators.name%3A%22Lohmann%2C+Ingolf%22&size=25&sort=mostrecent&page=2",
+      "utc": "2026-10-15T09:49:06.529289+00:00",
+      "status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/exact-latest-1.json",
+      "sha256": "f272d9f6ad482ea539d3858fd12a8a1b82557b440a3289855467b14e038c8aed",
+      "total": 32,
+      "count": 7,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records/21888130/versions?size=25",
+      "utc": "2026-10-15T09:52:45.522505+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/versions-21888129-1.json",
+      "bytes": 20782,
+      "sha256": "647b8e976dbb789f364d8335a79b464d4e70fa9756e2a54edf9fdfae05d64edd",
+      "count": 1,
+      "total": 1,
+      "next": null
+    },
+    {
+      "url": "https://zenodo.org/api/records?allversions=True&page=2&q=creators.name:%22Lohmann,+Ingolf%22&size=25&sort=mostrecent",
+      "utc": "2026-10-15T09:53:09.258910+00:00",
+      "http_status": 200,
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/public-corpus-reconciliation-20261015/exact-name-page-2-1.json",
+      "bytes": 114854,
+      "sha256": "c30c9b82fdd61fc449908ffff26b0bdba81fe0d0bca298596b36334d9233824c",
+      "count": 17,
+      "total": 42,
+      "next": null
+    }
+  ],
+  "reused_native_kernel": {
+    "run_id": 38711511556,
+    "head": "b97e55a0c4adf1abf2dd608500c55784930a4362",
+    "conclusion": "success",
+    "scope": "Nine conditional maximality theorems and existing formal-environment workflow. No independent rerun of all historical theorems."
+  },
+  "pdf_identity_boundary": {
+    "canonical_repository_pdf": {
+      "bytes": 103905,
+      "sha256": "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6"
+    },
+    "previous_returned_pdf": {
+      "bytes": 128889,
+      "sha256": "67faecdabd9bc40dec4626bd45107f22345d2fb68b93b4b236a7b9637fac3eab"
+    },
+    "extracted_text_equal": true,
+    "page_count_each": 16,
+    "hyperlink_count_each": 93,
+    "byte_identity_equal": false,
+    "authorization_transfer": false
+  },
+  "boundaries": [
+    "Complete within fully paginated public creator-name and handle searches, all 32 family version endpoints and native IETF person-author relation. Private, unindexed or differently attributed works remain a discovery boundary.",
+    "Publication identity and byte verification are not content truth or independent empirical replication.",
+    "No new theorem, scientific consensus, global superiority, Zenodo publication, Main merge, Mirror equality or domain acceptance is inferred."
+  ],
+  "local_ietf_candidate_revision_count": 7,
+  "local_ietf_candidate_document_count": 6,
+  "local_ietf_candidates": [
+    {
+      "name": "draft-lohmann-qikvrt-effect-ack-http-00",
+      "state": "local_candidate_no_public_posting_observed",
+      "locations": [
+        "external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml"
+      ]
+    },
+    {
+      "name": "draft-lohmann-qikvrt-effect-ack-http-01",
+      "state": "local_candidate_no_public_posting_observed",
+      "locations": [
+        "original-archive:zenodo/21983644/draft-lohmann-qikvrt-effect-ack-http-01.xml"
+      ]
+    },
+    {
+      "name": "draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00",
+      "state": "candidate_not_submitted",
+      "locations": [
+        "original-archive:zenodo/21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.txt",
+        "original-archive:zenodo/21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.xml",
+        "original-archive:zenodo/21731492/draft-lohmann-qikvrt-epistemic-fairness-observation-profile-00.html"
+      ]
+    },
+    {
+      "name": "draft-lohmann-qikvrt-local-change-time-00",
+      "state": "candidate_not_submitted",
+      "locations": [
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-local-change-time-provenance-00-current-synthesis-candidate/draft-lohmann-qikvrt-local-change-time-00.html",
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-local-change-time-provenance-00-current-synthesis-candidate/draft-lohmann-qikvrt-local-change-time-00.txt",
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-local-change-time-provenance-00-current-synthesis-candidate/draft-lohmann-qikvrt-local-change-time-00.xml"
+      ]
+    },
+    {
+      "name": "draft-lohmann-qikvrt-scientific-claim-assurance-00",
+      "state": "local_candidate_no_public_posting_observed",
+      "locations": [
+        "original-archive:zenodo/21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.html",
+        "original-archive:zenodo/21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.xml",
+        "original-archive:zenodo/21748371/draft-lohmann-qikvrt-scientific-claim-assurance-00.txt"
+      ]
+    },
+    {
+      "name": "draft-lohmann-qikvrt-temporal-provenance-00",
+      "state": "candidate_not_submitted",
+      "locations": [
+        "docs/publications/2026-08-12-observer-relative-retrocausality/ietf-temporal-provenance-00-candidate/draft-lohmann-qikvrt-temporal-provenance-00.xml"
+      ]
+    },
+    {
+      "name": "draft-lohmann-repository-capability-protocol-00",
+      "state": "local_candidate_no_public_posting_observed",
+      "locations": [
+        "external/ietf/draft-lohmann-repository-capability-protocol-00.md"
+      ]
+    }
+  ],
+  "payload_identity": {
+    "method": "Multiset of all file SHA256 values per version, preserving multiplicity and ignoring names; content identity is not scientific independence.",
+    "clusters": 39,
+    "distinct_file_sha256": 443,
+    "duplicate_clusters": [
+      [
+        21244412,
+        21245282,
+        21245951,
+        21247297,
+        21247388
+      ],
+      [
+        21640160,
+        21640173
+      ]
+    ]
+  }
+}

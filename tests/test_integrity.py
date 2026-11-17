@@ -159,6 +159,163 @@ class IntegrityGenerationTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "must not be a symlink"):
                     integrity.generate(root)
 
+
+    def test_stale_transfer_temporary_blocks_generation(self) -> None:
+        # Regression: PR #554 HEAD dbdfdc3a inventoried two interrupted
+        # ".<archive>.zip.XXXXXX" files that were absent from its Git tree.
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            self._repository(root)
+            for name in (".tracked.txt.coJQO1", ".tracked.txt.a1B2c3d4"):
+                stale = root / "nested" / name
+                stale.write_bytes(b"partial transfer")
+                with self.subTest(name=name):
+                    with self.assertRaisesRegex(ValueError, "STALE_TRANSFER_TEMPORARY: .*nested/" + name.replace(".", r"\.")):
+                        integrity.generate(root)
+                stale.unlink()
+            # A deliberate dot-file without the matching sibling stays a source.
+            (root / "nested" / ".deliberate.coJQO1").write_text("kept\n", encoding="utf-8")
+            self.assertTrue(integrity.generate(root).ok)
+            manifest = json.loads((root / integrity.MANIFEST_NAME).read_text(encoding="utf-8"))
+            self.assertIn("nested/.deliberate.coJQO1", {entry["path"] for entry in manifest["files"]})
+
+    def test_streaming_digest_matches_exact_bytes_at_block_boundaries(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            block = bytes(range(256)) * 4096
+            for size in (0, 1, len(block) - 1, len(block), len(block) + 1, 3 * len(block) + 7):
+                with self.subTest(size=size):
+                    data = (block * 4)[:size]
+                    (root / "payload").write_bytes(data)
+                    self.assertEqual(integrity._regular_file_digest(root, "payload"),
+                                     (size, hashlib.sha256(data).hexdigest()))
+                    self.assertEqual(integrity._regular_file_bytes(root, "payload"), data)
+
+    def test_streaming_manifest_is_byte_identical_to_materialized_reader(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            self._repository(root)
+            (root / "large.bin").write_bytes(bytes(range(256)) * 8193)
+            streamed = integrity.build_outputs(root)
+            def materialized(root, relative):
+                data = integrity._regular_file_bytes(root, relative)
+                return len(data), hashlib.sha256(data).hexdigest()
+            with mock.patch.object(integrity, "_regular_file_digest", side_effect=materialized):
+                self.assertEqual(streamed, integrity.build_outputs(root))
+
+    def test_streaming_digest_rejects_bounds_and_symlink_components(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "payload").write_bytes(b"1234")
+            self.assertEqual(integrity._regular_file_digest(root, "payload", max_bytes=4),
+                             (4, hashlib.sha256(b"1234").hexdigest()))
+            with self.assertRaisesRegex(RuntimeError, "integrity bound"):
+                integrity._regular_file_digest(root, "payload", max_bytes=3)
+            (root / "link").symlink_to(root / "payload")
+            with self.assertRaisesRegex(RuntimeError, "must not be a symlink"):
+                integrity._regular_file_digest(root, "link")
+            (root / "parent").symlink_to(root, target_is_directory=True)
+            with self.assertRaisesRegex(RuntimeError, "must not be a symlink"):
+                integrity._regular_file_digest(root, "parent/payload")
+
+    def test_streaming_digest_rejects_inflight_changes(self) -> None:
+        original_read = integrity.os.read
+        for mutation in ("grow", "truncate", "same_size"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = pathlib.Path(directory)
+                path = root / "payload"
+                path.write_bytes(b"original bytes")
+                changed = False
+                def read(descriptor, size):
+                    nonlocal changed
+                    data = original_read(descriptor, size)
+                    if data and not changed:
+                        changed = True
+                        before = path.stat()
+                        path.write_bytes({"grow": b"original bytes plus extra",
+                                          "truncate": b"short", "same_size": b"modified bytes"}[mutation])
+                        os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns + 1000000000))
+                    return data
+                with mock.patch.object(integrity.os, "read", side_effect=read):
+                    with self.assertRaisesRegex(RuntimeError, "changed"):
+                        integrity._regular_file_digest(root, "payload")
+
+    def test_streaming_digest_handles_short_reads_and_closes_on_error(self) -> None:
+        original_read = integrity.os.read
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            data = b"short reads still include every byte"
+            (root / "payload").write_bytes(data)
+            with mock.patch.object(integrity.os, "read", side_effect=lambda fd, size: original_read(fd, min(size, 3))):
+                self.assertEqual(integrity._regular_file_digest(root, "payload"),
+                                 (len(data), hashlib.sha256(data).hexdigest()))
+            captured = []
+            def failed_read(fd, size):
+                captured.append(fd)
+                raise OSError("injected read failure")
+            with mock.patch.object(integrity.os, "read", side_effect=failed_read):
+                with self.assertRaisesRegex(OSError, "injected"):
+                    integrity._regular_file_digest(root, "payload")
+            with self.assertRaises(OSError):
+                os.fstat(captured[0])
+
+    def test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            self._repository(root)
+            onboarding = root / "qikvrt/runtime/onboarding"
+            onboarding.mkdir(parents=True)
+            for name in (
+                "NODE_HEALTH.json",
+                "NODE_REGISTRATION_RENEWAL.json",
+                "SEED_ACCEPTANCE_STATUS.json",
+            ):
+                (onboarding / name).write_text('{"run_id": "run-1"}\n', encoding="utf-8")
+            for receipts in ("evidence/node_health", "evidence/node_registration_renewal"):
+                (root / receipts).mkdir(parents=True)
+                (root / receipts / "run-1.json").write_text('{"run_id": "run-1"}\n', encoding="utf-8")
+                (root / receipts / "LATEST.json").write_text('{"run_id": "run-1"}\n', encoding="utf-8")
+            (root / "evidence/other").mkdir()
+            (root / "evidence/other/receipt.json").write_text("{}\n", encoding="utf-8")
+
+            self.assertTrue(integrity.generate(root).ok)
+            trio = (integrity.MANIFEST_NAME, integrity.INDEX_NAME, integrity.DETACHED_NAME)
+            before = {name: (root / name).read_bytes() for name in trio}
+            manifest = json.loads(before[integrity.MANIFEST_NAME].decode("utf-8"))
+            entries = {entry["path"]: entry for entry in manifest["files"]}
+
+            for name in ("NODE_HEALTH.json", "NODE_REGISTRATION_RENEWAL.json"):
+                entry = entries[f"qikvrt/runtime/onboarding/{name}"]
+                self.assertEqual(entry["classification"], "role_local_liveness_state")
+                self.assertFalse(entry["immutable"])
+                self.assertNotIn("sha256", entry)
+            # The Seed acceptance binds an observed Authority head and other
+            # evidence is unaffected: both stay digest-bound.
+            self.assertTrue(entries["qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"]["immutable"])
+            self.assertTrue(entries["evidence/other/receipt.json"]["immutable"])
+            self.assertFalse(any(path.startswith("evidence/node_health/") for path in entries))
+            self.assertFalse(
+                any(path.startswith("evidence/node_registration_renewal/") for path in entries)
+            )
+
+            # One renewal exactly as tools/qikvrt_mirror_node_lifecycle.sh
+            # performs it: rewrite both records and LATEST, append receipts.
+            for name in ("NODE_HEALTH.json", "NODE_REGISTRATION_RENEWAL.json"):
+                (onboarding / name).write_text('{"run_id": "run-2"}\n', encoding="utf-8")
+            for receipts in ("evidence/node_health", "evidence/node_registration_renewal"):
+                (root / receipts / "run-2.json").write_text('{"run_id": "run-2"}\n', encoding="utf-8")
+                (root / receipts / "LATEST.json").write_text('{"run_id": "run-2"}\n', encoding="utf-8")
+
+            self.assertTrue(integrity.verify(root).ok)
+            self.assertTrue(integrity.generate(root).ok)
+            self.assertEqual(before, {name: (root / name).read_bytes() for name in trio})
+
+            # Everything outside that narrow scope is still caught.
+            (onboarding / "SEED_ACCEPTANCE_STATUS.json").write_text(
+                '{"run_id": "tampered"}\n', encoding="utf-8"
+            )
+            self.assertFalse(integrity.verify(root).ok)
+
     def test_portable_git_source_capsule_proves_exact_selected_closure(self) -> None:
         relative = self.CAPSULE.relative_to(REPOSITORY_ROOT).as_posix()
         capsule = integrity.load_portable_git_source_capsule(

@@ -1,0 +1,4580 @@
+{
+  "conclusion": "NO_CALLABLE_QUALIFYING_OWN_HOST_ESTABLISHED; recipes/repository IDs/managed service IDs remain candidates only",
+  "lexical_endpoint_candidates": {
+    "qikvrt-beacon-4egmxkowx-ingolflohmann-8385.vercel.app": [
+      {
+        "blob": "7fd4b35b7188f75667adde4f881acd746fb25d02",
+        "path": "state/publication/QIKVRT_BEACON_VERCEL_DEPLOYMENT_Cb31Uu54zR5CRJYrvpmj3PyG427n.json"
+      }
+    ],
+    "qikvrt-beacon-e50kn8d7q-ingolflohmann-8385.vercel.app": [
+      {
+        "blob": "5326b3883e4a0ea350aebf7ba32844a4c5ccc966",
+        "path": "state/external/vercel/QIKVRT_BEACON_DEPLOYMENT_RECEIPT.json"
+      }
+    ],
+    "qikvrt-beacon-ingolflohmann-8385.vercel.app": [
+      {
+        "blob": "7fd4b35b7188f75667adde4f881acd746fb25d02",
+        "path": "state/publication/QIKVRT_BEACON_VERCEL_DEPLOYMENT_Cb31Uu54zR5CRJYrvpmj3PyG427n.json"
+      }
+    ]
+  },
+  "limitations": [
+    "Selected deployment, carrier, node-registry and workflow paths; not a claim of complete source content search",
+    "Historical host names, recipes and placeholders do not establish current reachability, authorization or ownership",
+    "No private credential contents were read or persisted",
+    "Missing unrelated blobs in the partial Git object store were allowed during enumeration; selected deployment blobs were present and scanned, but a missing historical tree could limit unselected inventory."
+  ],
+  "local_refs": 1024,
+  "method": "Fresh 552 GitHub branch heads as revision roots plus all 1024 retained local refs; deduplicated selected deployment, carrier, node-registry, workflow and task-tool blob content. No missing selected blobs.",
+  "missing_objects": [],
+  "observed_at": "2026-10-05T05:40:52.942657+00:00",
+  "oversized_not_scanned": [],
+  "path_selection": {
+    "excluded_prefixes": [
+      "docs/publications/"
+    ],
+    "full_prefixes": [
+      "deploy/",
+      "infra/",
+      "infrastructure/",
+      "ops/",
+      "runtime/capabilities/",
+      "registry/",
+      ".github/workflows/"
+    ],
+    "maximum_blob_bytes": 1048576,
+    "name_filtered_prefixes": [
+      "state/",
+      "docs/",
+      "tools/",
+      "scripts/"
+    ],
+    "name_pattern": "host|deploy|terminal|carrier|mesh|admission|launcher|routing|devops"
+  },
+  "reachable_commits": 4456,
+  "remote_branch_heads": 552,
+  "remote_branch_snapshot": [
+    {
+      "commit": "3a826efcb5425b949a20aefd50c74b2ec088afdd",
+      "ref": "refs/heads/admin/admit-pr1173-24c4a886"
+    },
+    {
+      "commit": "f36d2f98424ceeef0b87c78c3ac4c16efdec13d9",
+      "ref": "refs/heads/agent/action-required-trusted-carrier-standard-v1"
+    },
+    {
+      "commit": "8e0bb8f68e5424ab9dc3f9455512575df07fd984",
+      "ref": "refs/heads/agent/aphorism-corpus-scientific-assessment-mirror-v2"
+    },
+    {
+      "commit": "449659e82ff1363115aa9fc8e7290b97a81e63d9",
+      "ref": "refs/heads/agent/aphorism-corpus-scientific-assessment-mirror-v3"
+    },
+    {
+      "commit": "d48a1a3de869f9fb0a63abaaafc1865f8e95de4d",
+      "ref": "refs/heads/agent/aphorism-corpus-scientific-assessment-v2-mirror"
+    },
+    {
+      "commit": "fa09b7b3965ce584dbd13952cc4a988cd4aab441",
+      "ref": "refs/heads/agent/authority-041fb501-exact-transfer"
+    },
+    {
+      "commit": "12f14be44a060578330eeb7f6039784ca657f8e1",
+      "ref": "refs/heads/agent/authority-4211d774-exact-transfer"
+    },
+    {
+      "commit": "a9d77c43ad972f88c5d0093f176f8600fcc9a6e5",
+      "ref": "refs/heads/agent/authority-4211d774-materialized"
+    },
+    {
+      "commit": "3c829a498e25b978fc6d011012dfcbce8208e00c",
+      "ref": "refs/heads/agent/bootstrap-authority-041fb501"
+    },
+    {
+      "commit": "09ce513fe45dd3d4f911691e138891ce49bd93ca",
+      "ref": "refs/heads/agent/canonical-upstream-remote-policy-v1"
+    },
+    {
+      "commit": "134f948ccd1b84e6e7e7eea68717d5cd30155890",
+      "ref": "refs/heads/agent/complete-runtime-tool-cache"
+    },
+    {
+      "commit": "5e27e955ba42ff47d75aa9bde2d1f9e9bbe9113d",
+      "ref": "refs/heads/agent/complete-runtime-tool-cache-v4"
+    },
+    {
+      "commit": "697128397720de109c8ea8df0ebc0d7435d6cda3",
+      "ref": "refs/heads/agent/contiguous-output-role-local-adoption-v1"
+    },
+    {
+      "commit": "db9132cf31c918ca7b284f5f1ab9e21ebf1be972",
+      "ref": "refs/heads/agent/cross-ai-session-handoff"
+    },
+    {
+      "commit": "248c3ba3c5f2ebfc71ec3d494c87291f3d671b52",
+      "ref": "refs/heads/agent/cumulative-tool-cache-registry"
+    },
+    {
+      "commit": "69efdab376d1b961d1d4fcdc4ffc21c5f645cf19",
+      "ref": "refs/heads/agent/current-main-anticipation-refresh-pr366-pr211-v1"
+    },
+    {
+      "commit": "d1d87d704da7121432ba2b3c2a5ae97603851a17",
+      "ref": "refs/heads/agent/current-main-anticipation-refresh-pr368-pr214-v1"
+    },
+    {
+      "commit": "9b11618513540a0448daaa3dcd35c2976855f595",
+      "ref": "refs/heads/agent/current-main-anticipation-refresh-pr368-pr214-v2"
+    },
+    {
+      "commit": "9e007c216adb744975012929e132744f7b033da5",
+      "ref": "refs/heads/agent/current-main-anticipation-refresh-pr382-pr217-v1"
+    },
+    {
+      "commit": "c9a67df6e8e9825da85908681382a3863ca38cf6",
+      "ref": "refs/heads/agent/current-main-anticipation-refresh-pr387-pr223-mirror-v1"
+    },
+    {
+      "commit": "ff6f723a3de779305da60230e10e7c593b6c3546",
+      "ref": "refs/heads/agent/dynamic-simplex-role-local-adoption-v1"
+    },
+    {
+      "commit": "781cf7a9c1a3457b31004934166e6dacc223c4b9",
+      "ref": "refs/heads/agent/effect-ack-http-terminal-mirror-4211d77"
+    },
+    {
+      "commit": "beb4ce0499628132b81eabc02940a406a2ff621a",
+      "ref": "refs/heads/agent/effect-ack-lean-v1"
+    },
+    {
+      "commit": "f2b3cf768c0805b01b026d99079851ce5f5b7dfc",
+      "ref": "refs/heads/agent/fix-exact-head-dispatch-receipt-binding-v1"
+    },
+    {
+      "commit": "9421859ed3452200a4453c6d111e6f74c1dc4475",
+      "ref": "refs/heads/agent/formal-evidence-audio-2026-07-22"
+    },
+    {
+      "commit": "d455f1f1a5d0f90fbf3fbc4369c547faffbf2794",
+      "ref": "refs/heads/agent/formalization-cache-hmi-batch04"
+    },
+    {
+      "commit": "a320b02edd84510e7cb9ad3fe34e42db68fa5031",
+      "ref": "refs/heads/agent/formalization-v2-alpha2-postpublication"
+    },
+    {
+      "commit": "7aaee4e1b182e18c9f0e927685f31d3c1190031a",
+      "ref": "refs/heads/agent/formalization-v2-batch03-shift"
+    },
+    {
+      "commit": "37af18377726b8b4c7e0ebb932236c61ee6dad63",
+      "ref": "refs/heads/agent/harden-reusable-zenodo-finalization"
+    },
+    {
+      "commit": "7affcf7a71d618158140ae17bf1321d1ad246f3a",
+      "ref": "refs/heads/agent/human-machine-progress-protocol"
+    },
+    {
+      "commit": "00d9336c44de68ee814e85e0dd4456239d971474",
+      "ref": "refs/heads/agent/ietf-effect-ack-01"
+    },
+    {
+      "commit": "c1424d4d53b03402c8284728d7a47e03c9de1b1c",
+      "ref": "refs/heads/agent/labyrinth-closure-proof-20261004-v1"
+    },
+    {
+      "commit": "49d9347901d7015ee429078f352105cb35f2535c",
+      "ref": "refs/heads/agent/manuscript-formalization-v2-alpha"
+    },
+    {
+      "commit": "554bd390b6256a4deaf57b7da1374465792926b5",
+      "ref": "refs/heads/agent/official-status-clarification-20260722"
+    },
+    {
+      "commit": "600debd54278b5d5ec2b182b79a2b755a9e31c2b",
+      "ref": "refs/heads/agent/perfect-optimum-v1"
+    },
+    {
+      "commit": "28fa5c3109aac108d95f8e7bbb15bcf189e31b27",
+      "ref": "refs/heads/agent/port-authority-pr368-pre-spacetime-ontology-v1"
+    },
+    {
+      "commit": "41a17c3f3bb08977f1fe566b83d0bd36b1e5ceac",
+      "ref": "refs/heads/agent/port-authority-pr404-bounded-self-healing-mirror-v1"
+    },
+    {
+      "commit": "ebced69176a0a571b4e17fb53744547aafa4367d",
+      "ref": "refs/heads/agent/port-authority-pr404-bounded-self-healing-mirror-v2-current-main"
+    },
+    {
+      "commit": "4913f738e06ddda89e71985ad95c83ace53fb282",
+      "ref": "refs/heads/agent/port-round-trip-zenodo-publication-v1"
+    },
+    {
+      "commit": "a3f8694c501405f1d5c7eb79c0a95002b30256f2",
+      "ref": "refs/heads/agent/privacy-preserving-interaction-archive"
+    },
+    {
+      "commit": "a3f8694c501405f1d5c7eb79c0a95002b30256f2",
+      "ref": "refs/heads/agent/privacy-preserving-interaction-archive-final"
+    },
+    {
+      "commit": "86de509a78bc2a46587d3f5074a5a8ed3868f903",
+      "ref": "refs/heads/agent/recursive-haltpoint-v1"
+    },
+    {
+      "commit": "92872b0f3da3c716e7f22f2856801592e04b6bd0",
+      "ref": "refs/heads/agent/renew-mirror-node-liveness-after-expiry-v1"
+    },
+    {
+      "commit": "2e1b6df608947d42e3d8f623984d22482ab4d903",
+      "ref": "refs/heads/agent/renew-mirror-node-liveness-after-expiry-v2"
+    },
+    {
+      "commit": "e6a57f817c4b2bfe69ebd0d173873bc99e49ecae",
+      "ref": "refs/heads/agent/requested-review-and-issue-lifecycle-v1"
+    },
+    {
+      "commit": "781cf7a9c1a3457b31004934166e6dacc223c4b9",
+      "ref": "refs/heads/agent/requested-review-executor-v1"
+    },
+    {
+      "commit": "6f694a8af9d4fb410fb95b2af99ee20a79e3d350",
+      "ref": "refs/heads/agent/restore-mirror-node-liveness-v1"
+    },
+    {
+      "commit": "112d57fb3a9ad6324a67c5062d6ce54475a82723",
+      "ref": "refs/heads/agent/round-trip-canonical-zenodo-identity-v1-mirror"
+    },
+    {
+      "commit": "68d217fe6081b4ae06f6ccc676b8d2e0248a7f12",
+      "ref": "refs/heads/agent/runtime-progress-step-telemetry"
+    },
+    {
+      "commit": "76e4736f5200135990f517d8f8bebb96ed655746",
+      "ref": "refs/heads/agent/self-healing-repository-collective-intelligence-v1"
+    },
+    {
+      "commit": "ab629b95e66701c668137e88c65998eafbb528c5",
+      "ref": "refs/heads/agent/slack-update-adapter-and-work-unit"
+    },
+    {
+      "commit": "c2b9cbfb639ef11eb7c82028742d92e07ef191d6",
+      "ref": "refs/heads/agent/status-clarification-doi-21500322"
+    },
+    {
+      "commit": "dd35232d3d0cac55035698f6b1438038eb5b1b5e",
+      "ref": "refs/heads/agent/synchronous-repository-first-terminal-receipt-v1"
+    },
+    {
+      "commit": "1ba3d7a16771b47553f2c68d9631b827421119ea",
+      "ref": "refs/heads/agent/unicode-data-exchange-standard-v1-20260923"
+    },
+    {
+      "commit": "a8369a6e5672d4a9fc81863ce64138b7072e6e5e",
+      "ref": "refs/heads/agent/universal-io-persistence-knowledge-pipeline-v1"
+    },
+    {
+      "commit": "3568e24a31764ad0b3704d15645b1b2dbd3d2ec4",
+      "ref": "refs/heads/agent/virtual-past-reception-clarification-v1"
+    },
+    {
+      "commit": "5b6ec7e5d033c8c556d5e7893c9602433825769d",
+      "ref": "refs/heads/agent/wirkungsquadrat-v1"
+    },
+    {
+      "commit": "e1941ce7760902c24651acd23217148cb56ff63e",
+      "ref": "refs/heads/agent/world-formula-formalization-delegation-current-main-v2"
+    },
+    {
+      "commit": "3bcbc41e9dc50627f9cea6f541f8d3066e5e1c3d",
+      "ref": "refs/heads/agent/world-formula-formalization-delegation-v1"
+    },
+    {
+      "commit": "8505903919bc2105e025a90706a549ecd46fd2da",
+      "ref": "refs/heads/anticipation/current-main-r11-binding-after-pr368-pr214-v1"
+    },
+    {
+      "commit": "d003251a0388ddd4b1b10770d2423a0f70c9e69e",
+      "ref": "refs/heads/architecture/universal-transputer-c90-v1"
+    },
+    {
+      "commit": "4b0dcaad16674f29581d24767ea67e94dbd2e5fd",
+      "ref": "refs/heads/audit/full-repository-selftest-20260928-v1"
+    },
+    {
+      "commit": "9ed07ff63fbb3475bc4f35858652053ba98d2088",
+      "ref": "refs/heads/automation/diagnose-alpha3-mirror-push"
+    },
+    {
+      "commit": "40ff549a08e43210d966fffac708e17b57ce6d99",
+      "ref": "refs/heads/automation/dispatch-manuscript-proof-c3931554"
+    },
+    {
+      "commit": "fc0e62708bcd563405fb034718ff1581e34c8e47",
+      "ref": "refs/heads/automation/effect-ack-universality-finalize-20260722"
+    },
+    {
+      "commit": "4ef65394c91e82eb60bc61b27edb04bc11cc9d9d",
+      "ref": "refs/heads/automation/equality-receipt-49850f-7ebe2b"
+    },
+    {
+      "commit": "6bbac080d1909b06948d84f0c9d3ac98fa80d37a",
+      "ref": "refs/heads/automation/execute-alpha3-authority-mirror"
+    },
+    {
+      "commit": "1b8afc70dfea63461e55136737c6457b48ebe4ee",
+      "ref": "refs/heads/automation/formalization-v2-alpha2-validator-repair-20260723"
+    },
+    {
+      "commit": "cc25549cc4895c6b52f4278b4dfad73e85f39675",
+      "ref": "refs/heads/automation/import-audio-runtime-authority-20260725"
+    },
+    {
+      "commit": "25a601ad67e563eec8d3fa851698f077d676cc1a",
+      "ref": "refs/heads/automation/import-authority-tree-49850f649283"
+    },
+    {
+      "commit": "a16e96893d10e920342fab0216082da69c9c364c",
+      "ref": "refs/heads/automation/import-dependency-authority-20260724"
+    },
+    {
+      "commit": "f209054135ca7a06cf716714ff2fe9b8741ec8d2",
+      "ref": "refs/heads/automation/import-final-repository-mesh-authority-20260724"
+    },
+    {
+      "commit": "bffb66f380702406cee5efe4ae694bb8a26118b4",
+      "ref": "refs/heads/automation/mirror-charter-authority-20260724"
+    },
+    {
+      "commit": "e044daa3e7dda47a73cdc0074eb1bb10b9f36a9d",
+      "ref": "refs/heads/automation/mirror-manuscript-formalization-v2"
+    },
+    {
+      "commit": "de57e8478c59c1724bce87c7aac8c0528454d717",
+      "ref": "refs/heads/automation/port-authority-pr564-scope-d6a937"
+    },
+    {
+      "commit": "3987d56a77ecf1938a607f5ea142bdd6f1215f73",
+      "ref": "refs/heads/automation/pr238-exact-head-verification-3987d56a-v1"
+    },
+    {
+      "commit": "fe1d7a9a213abf63dcf1028f4412f6c507b921f3",
+      "ref": "refs/heads/automation/pr240-exact-head-verification-fe1d7a9a-v1"
+    },
+    {
+      "commit": "9d467632266b2747157e3a5d78c74f67caae0ceb",
+      "ref": "refs/heads/automation/pr242-exact-head-verification-9d467632-v1"
+    },
+    {
+      "commit": "e1941ce7760902c24651acd23217148cb56ff63e",
+      "ref": "refs/heads/automation/pr245-exact-head-verification-e1941ce7-v1"
+    },
+    {
+      "commit": "9d467632266b2747157e3a5d78c74f67caae0ceb",
+      "ref": "refs/heads/automation/product-owner-effect-boundary-current-main-v1"
+    },
+    {
+      "commit": "c2a3d2c88263bedf67aa2e79fdd0f2cedb31df7c",
+      "ref": "refs/heads/automation/publication-overview-dependency-677fdef7"
+    },
+    {
+      "commit": "fe1d7a9a213abf63dcf1028f4412f6c507b921f3",
+      "ref": "refs/heads/automation/qce-current-main-port-v1"
+    },
+    {
+      "commit": "01bde5057aa47fa275efed1a0dbfd77c1b2d5c19",
+      "ref": "refs/heads/automation/repository-mesh-sync-tag-20260724"
+    },
+    {
+      "commit": "f9c2e05100028ab6b98a3e663f44bb2d5e56f1ba",
+      "ref": "refs/heads/automation/seed-batch003-authority-objects-6f4a57dd"
+    },
+    {
+      "commit": "74efda5996e9a481d4ffa787639f103c4e205203",
+      "ref": "refs/heads/automation/self-heal-03cba75c458ab3f53200d646"
+    },
+    {
+      "commit": "754e16863991c7dde67cf1346737c532ebdf7027",
+      "ref": "refs/heads/automation/self-heal-06bea7264007202f10a00ed3"
+    },
+    {
+      "commit": "71914ca22b3336804f3cd27bb33437c73c9c5eb1",
+      "ref": "refs/heads/automation/self-heal-095f7567d68e00129d0ef5d2"
+    },
+    {
+      "commit": "10ba5c2c7c962e00ee156573773333d3cb0b21b2",
+      "ref": "refs/heads/automation/self-heal-0bf4233c6e4298398c7fab0f"
+    },
+    {
+      "commit": "32c577cec2b91ba3c19452f001c1babd5729f343",
+      "ref": "refs/heads/automation/self-heal-0f9e77b9e9b661a4db0c07cc"
+    },
+    {
+      "commit": "1159a2e096a98247354ee83cc3856bb2bf292808",
+      "ref": "refs/heads/automation/self-heal-13b9dad909295762cd3dead1"
+    },
+    {
+      "commit": "944970050e2be9b00b7afc019fafb2ea7c958191",
+      "ref": "refs/heads/automation/self-heal-15248ed9d90b7a2117d704fd"
+    },
+    {
+      "commit": "2b94bed8b21fa4be5cb27cb05271757cfd66b1ab",
+      "ref": "refs/heads/automation/self-heal-192cd2033b0efbafb411bfc3"
+    },
+    {
+      "commit": "c0d910dde7ffa2093f3ede115a278051c276a537",
+      "ref": "refs/heads/automation/self-heal-24a786de1b669c13f83e4020"
+    },
+    {
+      "commit": "1ed57c958a7249f2fd283413917b31c24d65fe2c",
+      "ref": "refs/heads/automation/self-heal-28db1e9bf31f292b8104c21d"
+    },
+    {
+      "commit": "dea9f25d657e27dd0e1082c14513d20b0d4968e4",
+      "ref": "refs/heads/automation/self-heal-2f68655be93aca03e42fd992"
+    },
+    {
+      "commit": "2b4664a364a5cd782806ff12db9739d63436bf6e",
+      "ref": "refs/heads/automation/self-heal-43b8a1f64f0e6efaf9b8d6a8"
+    },
+    {
+      "commit": "c1847b4844eccfc0b77e0344c5a42f85f1c9095a",
+      "ref": "refs/heads/automation/self-heal-468f6a3e8cd64c7b42bf90c3"
+    },
+    {
+      "commit": "e8eea891d90e4052856f3de40a638bab866e9ef7",
+      "ref": "refs/heads/automation/self-heal-48239acf7c5d51dd4033367f"
+    },
+    {
+      "commit": "48847cc0e1599d6b2f437a164a0a2331dec38b5e",
+      "ref": "refs/heads/automation/self-heal-4b659d244cd06ecd3c1359eb"
+    },
+    {
+      "commit": "74ee0e960671dc1a3374973e3ae9c8b59aca51c3",
+      "ref": "refs/heads/automation/self-heal-4cab51719f0021aaf37e05ce"
+    },
+    {
+      "commit": "715e10dc41ad3cfb83139e36493b0cd48a28a6f0",
+      "ref": "refs/heads/automation/self-heal-4ece5a5282f0ea2904d582ff"
+    },
+    {
+      "commit": "b30c61d5a2d4cfde03d66bd2f3ffa020b8cb4fb7",
+      "ref": "refs/heads/automation/self-heal-4f452232ff6cf1df61f44f3d"
+    },
+    {
+      "commit": "d4be3d3f2c5ce9e41fa725a081333e334d81be74",
+      "ref": "refs/heads/automation/self-heal-51fc89697c99317a0acc4a34"
+    },
+    {
+      "commit": "e1a19ba2dd1d925190a6b506de23ff149415b8f7",
+      "ref": "refs/heads/automation/self-heal-530c84b1bfefb3e1e1618916"
+    },
+    {
+      "commit": "488243389777eb1b572b25c01355ce5a1257f026",
+      "ref": "refs/heads/automation/self-heal-53e7c3a196e032c48003c155"
+    },
+    {
+      "commit": "7dcaf217775e73f44988348f638216e88b651809",
+      "ref": "refs/heads/automation/self-heal-57b56e51b249931f8f097575"
+    },
+    {
+      "commit": "834a93660281b8cd37c88d3499517955953e32af",
+      "ref": "refs/heads/automation/self-heal-57dd1718f14f6c41e3a30c3f"
+    },
+    {
+      "commit": "ffa421697445aa26a7abd7891e3c5f837f70d97c",
+      "ref": "refs/heads/automation/self-heal-57fd7d2389b605e559c8f351"
+    },
+    {
+      "commit": "3704d402474dc3ec1e6aa710768c1888c023ae5e",
+      "ref": "refs/heads/automation/self-heal-5af5ab2670695a64c87eedc1"
+    },
+    {
+      "commit": "4aeada4f2d58b5bc1ce8d0980623c28248bc1f66",
+      "ref": "refs/heads/automation/self-heal-5bfdad61dc7ba248424523da"
+    },
+    {
+      "commit": "44f67589fb790224e2657b623a11feface0e1b2e",
+      "ref": "refs/heads/automation/self-heal-5e635818f781065c4fbd51ef"
+    },
+    {
+      "commit": "55d1075d83e3bc82ecf6b4e8e310d0853fefb87a",
+      "ref": "refs/heads/automation/self-heal-60fdf1011039583327300e65"
+    },
+    {
+      "commit": "eac1e1327a1fad3fa39dbf72bcca6ee27972958a",
+      "ref": "refs/heads/automation/self-heal-6977bf961bfa7b9f8fe1ad2a"
+    },
+    {
+      "commit": "7ceebf4f280b98f4dd16ad38c3827585012c094b",
+      "ref": "refs/heads/automation/self-heal-6dd2e08ba327c02020bceb2a"
+    },
+    {
+      "commit": "d1c7aa75e5d0142f23c7fc4951ba4651330937b8",
+      "ref": "refs/heads/automation/self-heal-6fa829d9a2cd2411c544d212"
+    },
+    {
+      "commit": "76be4d87d48a914ce5022de18df333a68fce3b3a",
+      "ref": "refs/heads/automation/self-heal-7202192781e935d99226ccd2"
+    },
+    {
+      "commit": "dbab92c595061c5ade2877b5da85d0003edfe7cf",
+      "ref": "refs/heads/automation/self-heal-75e9cd03d2e511804933680d"
+    },
+    {
+      "commit": "050df3c2c9f750381ffa6add7f1a187b92a1990c",
+      "ref": "refs/heads/automation/self-heal-7b487489150c8f0d31cc311e"
+    },
+    {
+      "commit": "01b200d84b4d7c2eb96cc97e1db6edb5f36f2213",
+      "ref": "refs/heads/automation/self-heal-829406f311f66d0424f96bec"
+    },
+    {
+      "commit": "f5c7531de225ca965872a4b726f3a7ffb1b12d32",
+      "ref": "refs/heads/automation/self-heal-833074760ee53825a9f63a38"
+    },
+    {
+      "commit": "7aaee15c03a2d65d3ca6751f693c304edf3cc8dd",
+      "ref": "refs/heads/automation/self-heal-84207d6c3de32cf9117f17cc"
+    },
+    {
+      "commit": "1d29fcba19c7b16d9732c46f3c1082457831a455",
+      "ref": "refs/heads/automation/self-heal-8cca53542f580622c601e5c2"
+    },
+    {
+      "commit": "a76f32f50b3a21c6fdc2d2aac4587ff4d5a09ac2",
+      "ref": "refs/heads/automation/self-heal-8e2319fe9638708da1c47103"
+    },
+    {
+      "commit": "8998697ce0d1b4624748bf98d474c0b51f0f1e1c",
+      "ref": "refs/heads/automation/self-heal-8f707f6154b8b2e439c25d2e"
+    },
+    {
+      "commit": "44b536c70eefd4c721f19b886e8920bcc771c178",
+      "ref": "refs/heads/automation/self-heal-8fbc2e7b7b609b4893ade00b"
+    },
+    {
+      "commit": "943c082254844f11d834313f5ccf7288236203ef",
+      "ref": "refs/heads/automation/self-heal-9180fe1721546dca9e4c4735"
+    },
+    {
+      "commit": "1394de7bb17b708e636708b2f8922716ae6a12bb",
+      "ref": "refs/heads/automation/self-heal-9231566c4b8d779c94fa8277"
+    },
+    {
+      "commit": "61b4aecc5b0fc44cb943de74cb45df86505f9eb2",
+      "ref": "refs/heads/automation/self-heal-9246f80548e07ad5f993babb"
+    },
+    {
+      "commit": "f074b4b759dc974436f085585f019e8ea2ae1474",
+      "ref": "refs/heads/automation/self-heal-92c7a2ff43312e34325fdebf"
+    },
+    {
+      "commit": "f921a345a7cb6c7de029590d155f0a3787d12170",
+      "ref": "refs/heads/automation/self-heal-933c925609d2d49c2af1149f"
+    },
+    {
+      "commit": "4464814dd4ec04666c7527c7a759b54c2461f0d5",
+      "ref": "refs/heads/automation/self-heal-96a7cf0d88215107a856705a"
+    },
+    {
+      "commit": "a48b5f5b423d7b72215ce497a58b8c9717d6083e",
+      "ref": "refs/heads/automation/self-heal-9ac06b940e12c658eb9098d6"
+    },
+    {
+      "commit": "3ccdf2b2053bcdc518b259e03dbed1a1ca4327dc",
+      "ref": "refs/heads/automation/self-heal-9bff12d0fd0505e7cc5c8ed7"
+    },
+    {
+      "commit": "895aba2a88154cf04f87c5f9409b5bcf596efb4e",
+      "ref": "refs/heads/automation/self-heal-a074bb4e79df14dab1042967"
+    },
+    {
+      "commit": "13ff4f9399d68b216abe21715702e11081a8d839",
+      "ref": "refs/heads/automation/self-heal-a4d0ff9eec2f843dad03d824"
+    },
+    {
+      "commit": "45a254c985e74f44c3e310c0976c20dac2c0df9a",
+      "ref": "refs/heads/automation/self-heal-ae8a90ada0cf605f4e37e604"
+    },
+    {
+      "commit": "378a0be0fb5b4b3a7ea2827258805725b6a75488",
+      "ref": "refs/heads/automation/self-heal-b3d4dc11bf1ccfaa0e3c97a7"
+    },
+    {
+      "commit": "fcef33df0574d9fbf8ae29ae260ca320ec738dcb",
+      "ref": "refs/heads/automation/self-heal-b4511c106d849d49ff92251a"
+    },
+    {
+      "commit": "0dcf6df881c8546a5e73414c8ae2c84dbfb71655",
+      "ref": "refs/heads/automation/self-heal-b969c1cbe3a4706b2afabd88"
+    },
+    {
+      "commit": "f73a1206857573d3107efd4921cc711d01b1c9e9",
+      "ref": "refs/heads/automation/self-heal-bb75c22b698e8876c7e37155"
+    },
+    {
+      "commit": "5aef6acb86e7fd883f2a2f81a1626469298ffc47",
+      "ref": "refs/heads/automation/self-heal-bc0928bcb5dd2f3378f39c9a"
+    },
+    {
+      "commit": "901943d61d618f4ce09e206083655ee76e5d52a9",
+      "ref": "refs/heads/automation/self-heal-bcc2676f3f3c7105a1a02057"
+    },
+    {
+      "commit": "65baf97d0ed54417ede395feae6dc685e1abd228",
+      "ref": "refs/heads/automation/self-heal-bd2c52aab2488f40d2da016f"
+    },
+    {
+      "commit": "ed4378e7424f60e8f54d5a0afcfc81d920ccb9ef",
+      "ref": "refs/heads/automation/self-heal-bdb88d0f7d87a6cada644266"
+    },
+    {
+      "commit": "78f18f218bf7b830efa6769308409f61f96d1887",
+      "ref": "refs/heads/automation/self-heal-block-receipt-289fdc93"
+    },
+    {
+      "commit": "d3a29c403d8d716fbd1a115b3d505a87971576fc",
+      "ref": "refs/heads/automation/self-heal-block-receipt-289fdc93-v2"
+    },
+    {
+      "commit": "4f1947e225d7dad157c78a82727d52240fce0017",
+      "ref": "refs/heads/automation/self-heal-c3bd74fed3f9d69fe7f33123"
+    },
+    {
+      "commit": "08eff214be585a532219d5001def266b8261db2a",
+      "ref": "refs/heads/automation/self-heal-c99ab7b609bc09afc148ff8a"
+    },
+    {
+      "commit": "f12a4d14abdfe7e748d0bcfd8ae9f30e2d3b08ab",
+      "ref": "refs/heads/automation/self-heal-cf195a8a884a4a4c3cfbcf18"
+    },
+    {
+      "commit": "075d48e7d8afb56ba578cd11742f3c0c1adc3d58",
+      "ref": "refs/heads/automation/self-heal-d80547dcf798b6f5bd9487e1"
+    },
+    {
+      "commit": "5716c6fc28b03231f73b7fdb19a872d6d364fc31",
+      "ref": "refs/heads/automation/self-heal-d9427551b85f52ce21e7453b"
+    },
+    {
+      "commit": "b014b3c5bf1deb3d4daf95f774b9d2d996a17a04",
+      "ref": "refs/heads/automation/self-heal-e0ae8d8ba3336962b6ad4afe"
+    },
+    {
+      "commit": "61c5610d30f585b3e5afe7af9dc3180778406184",
+      "ref": "refs/heads/automation/self-heal-e522e047b1e8e12b7679b7fa"
+    },
+    {
+      "commit": "5264090c6c79159501ba85d5e6d15584b021924e",
+      "ref": "refs/heads/automation/self-heal-f037bf1bda3fa1490d6fdf8d"
+    },
+    {
+      "commit": "c930322fdda5bcb6a2a031ceb9b15d145b4d93b6",
+      "ref": "refs/heads/automation/self-heal-f493c5bb06a2a2c4123a8c22"
+    },
+    {
+      "commit": "d8af8032bbd1d0975ecc848c21fccdce08290c7d",
+      "ref": "refs/heads/automation/self-heal-fa5f1c2e8273ba1321b5bd01"
+    },
+    {
+      "commit": "fbe0366183c1eb932a2b58670c74e927c7eb2a38",
+      "ref": "refs/heads/automation/status-clarification-finalize-20260722"
+    },
+    {
+      "commit": "dd236080f7e282748482a70bb59c165638ef5da3",
+      "ref": "refs/heads/automation/tag-post-publication-equality-20260728"
+    },
+    {
+      "commit": "7d2bfc0d8f4206195678e1738a0e5bd7c3af5435",
+      "ref": "refs/heads/automation/trigger-alpha3-authority-mirror-v2"
+    },
+    {
+      "commit": "d3c80147d5d97596c48edba9dd11d8c2a4693f52",
+      "ref": "refs/heads/bootstrap/finalize-formalization-v2-publication-mirror-20260724"
+    },
+    {
+      "commit": "b1436bd02e3cde70f06ea3916cffb60e7dd9d393",
+      "ref": "refs/heads/bootstrap/quantum-runtime-article-sync-controller-v1"
+    },
+    {
+      "commit": "257fca94d4a7691cf7653707ff094a616a9bb9cc",
+      "ref": "refs/heads/candidate/authority-pr489-ai-entrypoint-port-v1"
+    },
+    {
+      "commit": "694d002b738ef994f0d7d970227469d9f2be53f9",
+      "ref": "refs/heads/candidate/bounded-autonomous-self-healing-archive-v1"
+    },
+    {
+      "commit": "b5dfbf7b1e405467a434bbb103f300848121c22a",
+      "ref": "refs/heads/candidate/canonical-owner-delivery-monitor-v1"
+    },
+    {
+      "commit": "2dff886a4ae42de297914ca239897d2c18026edd",
+      "ref": "refs/heads/candidate/document-delivery-canonical-pair-binding-v1"
+    },
+    {
+      "commit": "e7c43170578b6925941fba0e03b25e01938c83a3",
+      "ref": "refs/heads/candidate/mandelbrot-42-proof-dependency-closure-v1"
+    },
+    {
+      "commit": "df5b95fba59a347ae93ce60bf74ab91af0aeb00a",
+      "ref": "refs/heads/candidate/mandelbrot-42-proof-reproduction-port-v1"
+    },
+    {
+      "commit": "14fc43ec8263d7d278c54975ac0338130e0de716",
+      "ref": "refs/heads/candidate/mesh-monitor-mirror-20261004-29a55ae4"
+    },
+    {
+      "commit": "2cebf563393bea808dae0d920e7976f8b7ff0403",
+      "ref": "refs/heads/candidate/port-authority-pr327-pr328-zenodo-controls-v1"
+    },
+    {
+      "commit": "9c36a4030a9a15011b57e64adfc16a661ca8dd8b",
+      "ref": "refs/heads/candidate/post-pr303-pr176-anticipation-refresh-v1"
+    },
+    {
+      "commit": "061ec8a52bd5f6046e1f7010ab07388165184a04",
+      "ref": "refs/heads/candidate/post-pr309-pr181-anticipation-refresh-v1"
+    },
+    {
+      "commit": "73fc8997269b00092e09188b6b456ef053f23878",
+      "ref": "refs/heads/candidate/pre-spacetime-ontology-zenodo-publication-receipt-mirror-v1"
+    },
+    {
+      "commit": "2c2a8e2b75cfd5f6fac487474c56bf05b04c7f49",
+      "ref": "refs/heads/candidate/pre-spacetime-ontology-zenodo-scoped-effect-ack-mirror-v1"
+    },
+    {
+      "commit": "3bf52747bc94de847d390ffacabecae183aee588",
+      "ref": "refs/heads/candidate/provider-independent-roadmap-20261004-eeef48fd"
+    },
+    {
+      "commit": "f1891cabc9d678daed4ba9c1602a93a06d66a2c3",
+      "ref": "refs/heads/candidate/qikvrt-p1-history-and-api-execution-contract-v1"
+    },
+    {
+      "commit": "a4f7c4995b4ede9415f8ef9592fe70d6f0ac4ad3",
+      "ref": "refs/heads/candidate/qikvrt-public-explanation-and-proof-program-v1"
+    },
+    {
+      "commit": "53891ce6aa3c100a1c86f974122dbc475b1f7a45",
+      "ref": "refs/heads/candidate/r11-read-only-observation-dispatch-contract-mirror-v1"
+    },
+    {
+      "commit": "d6fccf6921a257888427c27aacb03511b336b5cb",
+      "ref": "refs/heads/candidate/repository-live-monitor-deliveries-v1"
+    },
+    {
+      "commit": "145db2cc1a66a2415d04022c1a3f066a96b3d81f",
+      "ref": "refs/heads/candidate/repository-live-monitor-v1"
+    },
+    {
+      "commit": "46ab1241663d12450897ea16607ef0e452277e6e",
+      "ref": "refs/heads/candidate/repository-operated-owner-delivery-effect-ack-v1"
+    },
+    {
+      "commit": "5f9fe4193ba54d834129a5a0d24bddd15044a798",
+      "ref": "refs/heads/candidate/round-trip-publication-port-v1"
+    },
+    {
+      "commit": "ca7a76b2267352e21bee85bbfdddf1cf88614017",
+      "ref": "refs/heads/candidate/vrtcore-h3-authority-pr320-port-v1"
+    },
+    {
+      "commit": "aa7ff79d9035c3d459dc08668e633c2773578973",
+      "ref": "refs/heads/candidate/vrtcore-h56-authority-pr323-port-v1"
+    },
+    {
+      "commit": "06da50359cf8dd11a208a9e8c3652e17d3ea9c83",
+      "ref": "refs/heads/codex/port-authority-pr-559-runtime-promotion"
+    },
+    {
+      "commit": "113488136f52d6a4cc4d59e47b29b10a5055002c",
+      "ref": "refs/heads/codex/publication-overview-20260801"
+    },
+    {
+      "commit": "de70c4e89f66888021788112a442284a2a84815a",
+      "ref": "refs/heads/codex/verify-pr-274-exact-tree"
+    },
+    {
+      "commit": "25c4df4caf063d0545621f9958941c3cd0dfd5fa",
+      "ref": "refs/heads/copilot/crates-io-dashboard"
+    },
+    {
+      "commit": "c86c1b5dddcdf7060a75bef1ba8486f518be28e2",
+      "ref": "refs/heads/copilot/improve-crates-dashboard"
+    },
+    {
+      "commit": "c86c1b5dddcdf7060a75bef1ba8486f518be28e2",
+      "ref": "refs/heads/copilot/update-documentation-for-api"
+    },
+    {
+      "commit": "dd86b6b21cf8fc2ae8433da14d632d85db5d0529",
+      "ref": "refs/heads/dependabot/github_actions/main/actions/upload-artifact-7.0.1"
+    },
+    {
+      "commit": "9e6cb2fa53fbecac3a4ce95ae51b5d28f260be44",
+      "ref": "refs/heads/dependabot/github_actions/main/leanprover/lean-action-1.6.0"
+    },
+    {
+      "commit": "adc6df9c24d9ba9806bb94bb07fc621e4fff12f0",
+      "ref": "refs/heads/dependabot/npm_and_yarn/tools/offline-audio-transcription/main/sherpa-onnx-node-1.13.6"
+    },
+    {
+      "commit": "446287c275225805b5a45baf27b6e3a047236e3c",
+      "ref": "refs/heads/dependabot/pip/runtime/toolchains/main/platformdirs-4.11.5"
+    },
+    {
+      "commit": "73b7d14688a8c22d25fefa254324ffc0fa85cbc0",
+      "ref": "refs/heads/docs/charta-machine-verifiable-science-bootstrap-v1"
+    },
+    {
+      "commit": "b548099d3cc6296bbfea5c5a27dcf07e14bac5ba",
+      "ref": "refs/heads/docs/mesh-evidence-sphere-canonical-invariant-v1"
+    },
+    {
+      "commit": "f5dbffc5bafcb2ae05839498895a7603ee49803c",
+      "ref": "refs/heads/docs/mesh-evidence-sphere-monotonic-v1"
+    },
+    {
+      "commit": "90d6a909615ad49c14f86afcaaeb05867cc0388d",
+      "ref": "refs/heads/docs/professional-self-obsolescence-zenodo-core-20260925"
+    },
+    {
+      "commit": "05d02cbc88ffe15ba09dfe2678ca8b3e02d46591",
+      "ref": "refs/heads/docs/qikvrt-roundtrip-unified-20260920"
+    },
+    {
+      "commit": "f257a8a8cf7378ab5c069d061daf41d6d59c9a98",
+      "ref": "refs/heads/docs/qikvrt-standard-evidence-repair-20260921"
+    },
+    {
+      "commit": "87b5fed25793ddd9490de77114535fa64b04362f",
+      "ref": "refs/heads/docs/quality-gates-and-closure-archive-20260928"
+    },
+    {
+      "commit": "fc60ed6e7c5efcf9f93c5a93cd9cadc776722fc3",
+      "ref": "refs/heads/docs/universal-effect-ack-frontdoor-v1"
+    },
+    {
+      "commit": "897a9f34e886884ca8ec2720ecdab96d421cfa69",
+      "ref": "refs/heads/docs/universales-universalprinzip-20260919-v1"
+    },
+    {
+      "commit": "24cb703ad545a44b119590847926c4f796f5c038",
+      "ref": "refs/heads/evidence/batch-002-authority-mirror-equality-pr194-pr93"
+    },
+    {
+      "commit": "27d6d48f647fae73d7b3b261848930db4dd601c3",
+      "ref": "refs/heads/evidence/batch-002-corrected-authority-mirror-equality-pr209-pr100"
+    },
+    {
+      "commit": "7d9cf83a180e5ec6bb2e638f7116fc28edb1932e",
+      "ref": "refs/heads/evidence/batch-002-terminal-authority-mirror-equality-pr201-pr96"
+    },
+    {
+      "commit": "b7e770be31647126ccf766db8591fadea88c5909",
+      "ref": "refs/heads/evidence/batch003-dispatch-authority-mirror-equality-pr220-pr117"
+    },
+    {
+      "commit": "c791cc09029b02dfdb3a558eda09d98525f33cc8",
+      "ref": "refs/heads/evidence/batch003-first-subject-equality-pr225-pr128"
+    },
+    {
+      "commit": "070e061ebac75e2cab0af450b138ce0d9e126f35",
+      "ref": "refs/heads/evidence/batch003-first-subject-equality-pr225-pr128-v1"
+    },
+    {
+      "commit": "0cedbe6a8e28b2e4b5801ec7b4bbb93be1025f81",
+      "ref": "refs/heads/evidence/batch003-second-subject-projector-equality-pr240-pr132-v1"
+    },
+    {
+      "commit": "e35611ec84163440228efbbf62ec012e9e36deba",
+      "ref": "refs/heads/evidence/batch003-subject-2581811-equality-pr225-pr128-v1"
+    },
+    {
+      "commit": "3c8a68165eb3fcb70a629b73732de5da31463e07",
+      "ref": "refs/heads/evidence/post-acceptance-status-authority-mirror-equality-pr215-pr110"
+    },
+    {
+      "commit": "920b8e2e89340f55ee94506345c89b35346eaa2c",
+      "ref": "refs/heads/evidence/post-acceptance-status-equality-pr215-pr110"
+    },
+    {
+      "commit": "e390f7ebf3665b6afe888091906af274d9b2c7f4",
+      "ref": "refs/heads/evidence/post-acceptance-status-equality-pr215-pr110-recovered-v2"
+    },
+    {
+      "commit": "52b0c57a35f51a266d6cac3f0d371997ec203c1c",
+      "ref": "refs/heads/evidence/pr323-pr197-reciprocal-equality-mirror-v1"
+    },
+    {
+      "commit": "a8104fd4238056ba0283cc4fe93185e59c2efed0",
+      "ref": "refs/heads/evidence/pr356-pr204-reciprocal-equality-mirror-v1"
+    },
+    {
+      "commit": "74dae366380ae5058baa6766875e02aee2f241f2",
+      "ref": "refs/heads/evidence/pr368-pr214-reciprocal-equality-clean-v1"
+    },
+    {
+      "commit": "9bb4afde617c26df968a08e202f3cc31a3d396c7",
+      "ref": "refs/heads/evidence/pr368-pr214-reciprocal-equality-mirror-v1"
+    },
+    {
+      "commit": "7131c2a59226603f29985a72304a51abe0f7139c",
+      "ref": "refs/heads/evidence/pre-spacetime-zenodo-receipt-equality-mirror-v1"
+    },
+    {
+      "commit": "ad0c89b9a87eaf687cdc008d5393ac20f4cf65b9",
+      "ref": "refs/heads/evidence/projector-repair-equality-pr240-pr132-v1"
+    },
+    {
+      "commit": "73c0d8cbff5f7bfe3c20f33e6c34c62ed6f7f50c",
+      "ref": "refs/heads/evidence/reciprocal-equality-pr249-pr147-v1"
+    },
+    {
+      "commit": "5efd79a2b46eeecb5a3d09b8db4cd0c632ea7e75",
+      "ref": "refs/heads/evidence/reciprocal-equality-pr273-pr155-v1"
+    },
+    {
+      "commit": "609becdd628f1572d754123831359566c8baf82b",
+      "ref": "refs/heads/evidence/reciprocal-equality-pr277-pr158-v1"
+    },
+    {
+      "commit": "ce1b49f72be45a4e14cf338a638b6a23eaa62c7d",
+      "ref": "refs/heads/evidence/reciprocal-equality-pr278-pr163-v1"
+    },
+    {
+      "commit": "026f47fc0c5a325ddcb4e27b49d0e358d1331527",
+      "ref": "refs/heads/evidence/reciprocal-equality-pr297-pr174-v1"
+    },
+    {
+      "commit": "6a8315941518e8762fbc3f319835d2f2ab77cea6",
+      "ref": "refs/heads/evidence/reciprocal-equality-pr307-pr179-v1"
+    },
+    {
+      "commit": "8bfb9d0f48e31666fbd5ce23a0fed622c6bfffd6",
+      "ref": "refs/heads/evidence/reciprocal-equality-survival-pr284-pr286-pr167-v1"
+    },
+    {
+      "commit": "191edacb816bc944bc8bfa15abf7907b6d42f034",
+      "ref": "refs/heads/evidence/requirements-carrier-readback-20260923"
+    },
+    {
+      "commit": "6156396279fe646bcdcfb3ecdd8d128214f0654c",
+      "ref": "refs/heads/evidence/six-corrected-candidates-equality-pr249-pr145-current-v2"
+    },
+    {
+      "commit": "59f2cd14c8c443876fd402213410003565b4f41c",
+      "ref": "refs/heads/evidence/six-corrected-candidates-equality-pr249-pr145-v1"
+    },
+    {
+      "commit": "66868decd767b58a1b087f730eb175b5c8f0225c",
+      "ref": "refs/heads/evidence/six-corrected-candidates-equality-pr249-pr147-v1"
+    },
+    {
+      "commit": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+      "ref": "refs/heads/execution/construct-owner-accepted-six-mirror-candidate-7d87a600-v1"
+    },
+    {
+      "commit": "5ddc21a62608e14a5834ac4f07b3ef61649b089b",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-0fea97ca-from-11a20a81-v1"
+    },
+    {
+      "commit": "b3678a68fbd88eb32c81c18ad6c4ba2489cfdcf6",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-0fea97ca-from-1ac57c68-v1"
+    },
+    {
+      "commit": "226a9921578eed4cd52a169231da914532a22372",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-0fea97ca-from-c9fe9826-v1"
+    },
+    {
+      "commit": "7e0cc334fcbbf43e523fa1cb64ded2333d83bd5c",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-191bee0e-from-a6b45c22-v1"
+    },
+    {
+      "commit": "9757e707aeefae5b577d1d67be4c98c5d4236531",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-191bee0e-from-a6b45c22-v3"
+    },
+    {
+      "commit": "23d1d4b9859574de4f3988dbf22f5012a4f644bc",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-191bee0e-from-acb45bd6-v2"
+    },
+    {
+      "commit": "6b12b7f4217948dd4f594c16e1cee1785ff9a0d2",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-6f4a57dd-from-3c8a6816-v1"
+    },
+    {
+      "commit": "d71f6b3804145c5a39ebdc182a94465949c40eac",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-authority-7d87-from-afcd-v1"
+    },
+    {
+      "commit": "43f3918b603b7bc5673165bb29838e7f314aa198",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-pr240-v1"
+    },
+    {
+      "commit": "e3e4f328900eccad645ca5319468eea4777f1090",
+      "ref": "refs/heads/execution/history-preserving-mirror-sync-pr249-v1"
+    },
+    {
+      "commit": "c8af0bdb6d3ac931d8263b79a0982caaae74aa07",
+      "ref": "refs/heads/execution/runtime-article-exact-tree-from-0698e6-v1"
+    },
+    {
+      "commit": "0e76b376e50ddccc423fe9f55de35e711511571c",
+      "ref": "refs/heads/execution/sync-accepted-corrected-batch002-524fabd5-from-daf42fd3-v1"
+    },
+    {
+      "commit": "2a00dbceb3871d72c84408729cf845834729e2d5",
+      "ref": "refs/heads/execution/sync-authority-batch002-combined-20260728-v1"
+    },
+    {
+      "commit": "c7fb2d350d4eec5a5a30267fc9650b73df542fda",
+      "ref": "refs/heads/execution/sync-post-acceptance-status-191bee0e-from-c0bbf858-v1"
+    },
+    {
+      "commit": "3e6c31b65098842392970680c666a5b4cef6bb4c",
+      "ref": "refs/heads/feat/authority-review-receiver-v1"
+    },
+    {
+      "commit": "b284dd0946c5147a0d3f4a38a2361df339c1738e",
+      "ref": "refs/heads/feature/digital-twin-scheduling-sync-20261001"
+    },
+    {
+      "commit": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+      "ref": "refs/heads/feature/digital-twin-scheduling-v1-20261001"
+    },
+    {
+      "commit": "963d5cd57856349c84d40089cef5d11e214c5435",
+      "ref": "refs/heads/fix/autonomous-mirror-lifecycle-20260926"
+    },
+    {
+      "commit": "1819da9bf08478a7052312d24819a8c25c1533a3",
+      "ref": "refs/heads/fix/autonomous-pr-closure-engine-20260923"
+    },
+    {
+      "commit": "27e75695757338c60e634ed9ebd36c325f020c74",
+      "ref": "refs/heads/fix/github-api-rate-budget-v1-20260928"
+    },
+    {
+      "commit": "c026b6448e43b4db91217b2d1ac8d3a4fae09f0b",
+      "ref": "refs/heads/fix/global-noop-exclusion"
+    },
+    {
+      "commit": "11a7f34dcac9676d03951be525df4c17883a4953",
+      "ref": "refs/heads/fix/global-noop-exclusion-v1"
+    },
+    {
+      "commit": "ed61024b379b33f5657741b1c8bc2276ea3a3315",
+      "ref": "refs/heads/fix/microsoft-support-effect-carrier-v1"
+    },
+    {
+      "commit": "e9753c1e1162cd4f2761ba2df8b8ff93c557300b",
+      "ref": "refs/heads/fix/openai-subscription-effect-v1"
+    },
+    {
+      "commit": "69f0610f56f4984a1599f2b09bff159a74403f32",
+      "ref": "refs/heads/fix/ruleset-canonical-token-route-20260927"
+    },
+    {
+      "commit": "fd5aba2d0f97b3f20e560a5ce754550fce245cdf",
+      "ref": "refs/heads/fix/self-heal-pr-postcondition-20261004-93be182a"
+    },
+    {
+      "commit": "19165f34e18cebe151077f96e53eb2ff7dee725d",
+      "ref": "refs/heads/governance/machine-verifiable-science-charter-v1"
+    },
+    {
+      "commit": "1b2138e39914375ed45a75b64b708fe3c4174c27",
+      "ref": "refs/heads/governance/machine-verifiable-science-charter-v1-postmerge"
+    },
+    {
+      "commit": "5595daad88e7bb76a63d439b8d7c09c61579c47f",
+      "ref": "refs/heads/infrastructure/history-preserving-mirror-sync-pr225-materializer-hook-v1"
+    },
+    {
+      "commit": "b6cf8a5585775951ba74a76e22ef4875c8cebf15",
+      "ref": "refs/heads/infrastructure/history-preserving-mirror-sync-pr225-v1"
+    },
+    {
+      "commit": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1",
+      "ref": "refs/heads/infrastructure/history-preserving-mirror-sync-v2"
+    },
+    {
+      "commit": "30564d933dd2168bf41fb6463326235c163b6bc3",
+      "ref": "refs/heads/infrastructure/history-preserving-mirror-sync-v2-pr-trigger"
+    },
+    {
+      "commit": "fcafb4d9c5f34e14e386b68b377215cf79612959",
+      "ref": "refs/heads/integration/ontology-difference-publication"
+    },
+    {
+      "commit": "25ef0baf39c0f33c06543295ac6b444991c9c37c",
+      "ref": "refs/heads/issue-agent/362"
+    },
+    {
+      "commit": "28ffb2e1b3083ebe2d800d96e026388a5104cda1",
+      "ref": "refs/heads/issue-agent/363"
+    },
+    {
+      "commit": "4d1cf46c2ec7ba4570285a813c528a2b1fbb7df3",
+      "ref": "refs/heads/issue-agent/368"
+    },
+    {
+      "commit": "d15b9781433e64d8c0385834ce257ea145d0d7d6",
+      "ref": "refs/heads/issue-agent/374"
+    },
+    {
+      "commit": "a739ee7bea21e6b6e1bfca1f3d13aae7b38b2c71",
+      "ref": "refs/heads/issue-agent/376"
+    },
+    {
+      "commit": "8761f8f1331a5a4ea4f60705e31192e622228406",
+      "ref": "refs/heads/issue-agent/380"
+    },
+    {
+      "commit": "d9525376f7f248f2eeeeda9bfa6035ba9930c914",
+      "ref": "refs/heads/issue-agent/458"
+    },
+    {
+      "commit": "0a44160d16c3937dc5888652791f4bd1a7136af7",
+      "ref": "refs/heads/main"
+    },
+    {
+      "commit": "d38a0a764804aec3852beb4e6a242c3f3b2ff63c",
+      "ref": "refs/heads/mesh/recursive-authority-906-admission-v1"
+    },
+    {
+      "commit": "afff4fa651948c244b2ceea7736ca6ca6eb1e48c",
+      "ref": "refs/heads/mesh/review-authority-966-2db106e5-v1"
+    },
+    {
+      "commit": "cc25549cc4895c6b52f4278b4dfad73e85f39675",
+      "ref": "refs/heads/mirror/audio-runtime-final-20260725"
+    },
+    {
+      "commit": "83c65cbe19d668861fd49d3fb3d9148b6b38e7f7",
+      "ref": "refs/heads/mirror/charter-publication"
+    },
+    {
+      "commit": "e4f99d8ede5c2e2fa5bdefa7292952e6be6ee1aa",
+      "ref": "refs/heads/mirror/corpus-closure-effective-current-v1"
+    },
+    {
+      "commit": "6c629708516b5196f4430d6cdbbcab0b40cb9c62",
+      "ref": "refs/heads/mirror/dependency-security-final"
+    },
+    {
+      "commit": "e5ed805e57f58635a9addc97143c15bfa02d40ed",
+      "ref": "refs/heads/mirror/formalization-v2-alpha3-publication"
+    },
+    {
+      "commit": "447c6cee03b302553c1d2124dc4e1e4ced9eb0a3",
+      "ref": "refs/heads/mirror/manuscript-formalization-v2-completion"
+    },
+    {
+      "commit": "3d420f0027334c68064f2fb9bbadb3e602e6beaa",
+      "ref": "refs/heads/mirror/port-authority-pr568-workflow-executor-mesh-v1"
+    },
+    {
+      "commit": "c4083452918ebf8516fdb162ab93bcdc0f9049d6",
+      "ref": "refs/heads/mirror/port-authority-pr582-reflexive-watchdog-v1"
+    },
+    {
+      "commit": "6f9c599cf36b5c4bb72dd9dd476124472e437dfd",
+      "ref": "refs/heads/mirror/repository-mesh-sync-20260724"
+    },
+    {
+      "commit": "58cdec0f77a7c1d7f96e9de38bf5bc7ad46c574f",
+      "ref": "refs/heads/mirror/repository-mesh-sync-final"
+    },
+    {
+      "commit": "fb32431d0a152849d41290fc7ae3f243bbbf565e",
+      "ref": "refs/heads/mirror/round-trip-prepublication-return-v1"
+    },
+    {
+      "commit": "c81f5b9703d61f03beb9e6c27aca23c267a3be52",
+      "ref": "refs/heads/ops/ruleset-admin-bridge-20260915"
+    },
+    {
+      "commit": "7b1fbd43c568d7303039926aae8bef231357734a",
+      "ref": "refs/heads/orchestration/history-preserving-mirror-sync-pr217-v1"
+    },
+    {
+      "commit": "01d978310ae26f67388dd4d06572028bbe1dd814",
+      "ref": "refs/heads/orchestration/history-preserving-mirror-sync-pr225-v1"
+    },
+    {
+      "commit": "4d66d0cca787261daa6d15c29a3fecd40477f6ce",
+      "ref": "refs/heads/owner/qikvrt-evolutionary-automation-delegation-v1"
+    },
+    {
+      "commit": "a6ff28b7443e99ca7524f314c6b83b469506ba64",
+      "ref": "refs/heads/personal/autonomous-optimal-goal-contract-20260927"
+    },
+    {
+      "commit": "482dc6b84f73d912b3a3a5feada16f3b0fc4d8aa",
+      "ref": "refs/heads/personal/autonomous-optimal-goal-contract-rebased-5418499-20260927"
+    },
+    {
+      "commit": "cc6acb8b981cfd0d200f388d94adccd68c6236a8",
+      "ref": "refs/heads/personal/firefox-capability-boundary-20260927"
+    },
+    {
+      "commit": "60f5051a33259c7654e9ee3f1e5bce0af61629fb",
+      "ref": "refs/heads/policy/answer-search-roadmap-20260928"
+    },
+    {
+      "commit": "e1c7ae2b8f1a80a6125c31da5598a779724bfe77",
+      "ref": "refs/heads/policy/owner-no-reinteraction-standing-delegation-v1"
+    },
+    {
+      "commit": "fa1e9b15185594bd1e6771a49791b4c860c84309",
+      "ref": "refs/heads/policy/qikvrt-note-inheritance-v1"
+    },
+    {
+      "commit": "b3ebd1ae77c8bb8cb9a8527af35851d92d67ee19",
+      "ref": "refs/heads/policy/qikvrt-notes-inheritance-v1"
+    },
+    {
+      "commit": "6c4c8bb3664cd6fb6400a5e8261045e51090c06c",
+      "ref": "refs/heads/policy/universal-proof-thought-schema-v1"
+    },
+    {
+      "commit": "db15d2fe2f041894d45b96c64b731d8b71d0423d",
+      "ref": "refs/heads/port/authority-pr297-current-main-v1"
+    },
+    {
+      "commit": "8fa6a5e414fbe49680b5906c6c034c0194dbc4d4",
+      "ref": "refs/heads/port/authority-pr562-round-trip-freeze-v1"
+    },
+    {
+      "commit": "1b9bef853a3c0a5ece79038bfa1133b401becdd5",
+      "ref": "refs/heads/port/continuous-auto-repair-authority-8de77d3a-v1"
+    },
+    {
+      "commit": "91b11e5315c689e26575e9bbc67db8c9957bc4a1",
+      "ref": "refs/heads/port/pr489-ai-entrypoint-continuous-optimization-v1"
+    },
+    {
+      "commit": "20260bde24c851cc8d1ad2133fd5ebcc821aaffd",
+      "ref": "refs/heads/port/pr516-ordered-qce-stack-v1"
+    },
+    {
+      "commit": "62c4f5876ca3a0c9ff4266851173624b16e9d99c",
+      "ref": "refs/heads/port/pr516-ordered-qce-stack-v2"
+    },
+    {
+      "commit": "ec26a6b6265f5073d81e30b8e91d7d6c240d8e91",
+      "ref": "refs/heads/port/pr516-ordered-qce-stack-v2-current-main"
+    },
+    {
+      "commit": "0d314dace15effb80c1fff0fe8ff3dfa99cd696e",
+      "ref": "refs/heads/port/round-trip-final-byte-freeze-authority-f907-v1"
+    },
+    {
+      "commit": "2b3a5b0c6cfa58ee02d31b8d3802eb81201df880",
+      "ref": "refs/heads/port/round-trip-final-byte-freeze-v1"
+    },
+    {
+      "commit": "eea0d0da5430a8c516440e742d309f7e96435985",
+      "ref": "refs/heads/port/round-trip-publication-corpus-precedence-v1"
+    },
+    {
+      "commit": "6287a639f2386ffb195212875298cb77a48f926d",
+      "ref": "refs/heads/publication/leibniz-qikvrt-persistence-v1"
+    },
+    {
+      "commit": "c3efa495f2195970f3aa6187170e29e6518a6d31",
+      "ref": "refs/heads/publication/nash-kognition-20260923-v1"
+    },
+    {
+      "commit": "606f4ae39143e4f7098537d5da57e2c7db4a9d9c",
+      "ref": "refs/heads/publication/ontology-difference-reverse-engineering"
+    },
+    {
+      "commit": "f7ca844939ba70c2629e2e0f7ac910c66d87ca82",
+      "ref": "refs/heads/publication/original-sketches-20261002-v1"
+    },
+    {
+      "commit": "4f739f4b2d075b338bf217c152fc9cd1234e01b6",
+      "ref": "refs/heads/publication/pr1128-dossier-v2"
+    },
+    {
+      "commit": "58c0b81a7234308dc903208ed99df97b8ce8b04c",
+      "ref": "refs/heads/publication/qik-scientific-revision-20260923"
+    },
+    {
+      "commit": "bc454ca91c93cb964f56501caee87bdd4caa97ed",
+      "ref": "refs/heads/publication/roundtrip-unified-20260920"
+    },
+    {
+      "commit": "935c4b980fbf8551177b68c9f7dac8493bb950f7",
+      "ref": "refs/heads/publication/survival-anschlussfaehig-v1"
+    },
+    {
+      "commit": "b51014fc188b69a85f252d861b4b2ae542c45037",
+      "ref": "refs/heads/qikvrt-node/v2.13.4-node"
+    },
+    {
+      "commit": "5c775fb2f20f6f17ac771d183cc7c72ffa33b186",
+      "ref": "refs/heads/qikvrt-node/v2.13.4-node-r"
+    },
+    {
+      "commit": "029f805ceb00bc20f217089877761db2263889c5",
+      "ref": "refs/heads/qikvrt/retained-authority/20260816-d18af01d"
+    },
+    {
+      "commit": "1119abe18b4fe4169c120fbcbe2006c7c93e31ff",
+      "ref": "refs/heads/qikvrt/zenodo-state"
+    },
+    {
+      "commit": "1a6a46be99a02ba553ceca8d5b644251a9e3f545",
+      "ref": "refs/heads/release/effect-ack-universality-20260722"
+    },
+    {
+      "commit": "25aa815551ce27c82070f44c93492061b2398d72",
+      "ref": "refs/heads/repair/activate-observation-hold-20261001"
+    },
+    {
+      "commit": "05bdb4959ef42e7547631d7e62cde95f1c20b72e",
+      "ref": "refs/heads/repair/continuation-noop-verifier-dispatch-v1"
+    },
+    {
+      "commit": "a6ec86731991283c2acf03a78218e551c3be5c57",
+      "ref": "refs/heads/repair/continuation-pr-head-origin-main-binding-v1"
+    },
+    {
+      "commit": "b865e129f235ddc81a8cf205aebb466b1e8e8b1b",
+      "ref": "refs/heads/repair/continuous-mirror-liveness-gatewatch-0d1b-v1"
+    },
+    {
+      "commit": "849dd5cd0535db591ff01444c0d04a4a9af18ac2",
+      "ref": "refs/heads/repair/exact-pr-head-admission-carrier-v1"
+    },
+    {
+      "commit": "ac42f7486cc33c0f09c72e7373967102e68a1afb",
+      "ref": "refs/heads/repair/exact-verifier-base-checkout-126f-v1"
+    },
+    {
+      "commit": "f6247bb055ac7064a9081c92a9533a5c7b6a11fd",
+      "ref": "refs/heads/repair/governance-enforcement-successor-20260923-v1"
+    },
+    {
+      "commit": "3987d56a77ecf1938a607f5ea142bdd6f1215f73",
+      "ref": "refs/heads/repair/ietf-revision03-archival-warning-v1"
+    },
+    {
+      "commit": "630fd695791da71185077fb442e0f090a8fbcb13",
+      "ref": "refs/heads/repair/main-test-gaps-20261001"
+    },
+    {
+      "commit": "695bb4202a883a70893a50dd101bdc588f696e68",
+      "ref": "refs/heads/repair/mesh-role-local-completion-v1"
+    },
+    {
+      "commit": "e8d96ad6926a3acb48281185719c6af25c1960ec",
+      "ref": "refs/heads/repair/mirror-aphorism-boundary-v2"
+    },
+    {
+      "commit": "c4bf2716e83b9d2039031378e363fe812f8a5cbc",
+      "ref": "refs/heads/repair/mirror-aphorism-final-boundary-v3"
+    },
+    {
+      "commit": "653ce31f18233b14a37f071f3d1596f0524e6da0",
+      "ref": "refs/heads/repair/mirror-reflexive-watchdog-all-observed-jobs-c54a0fba-v1"
+    },
+    {
+      "commit": "1b332614987b646fb5af452091b9ebe5c0437765",
+      "ref": "refs/heads/repair/mirror-role-local-pre-effect-cas-20260918-v1"
+    },
+    {
+      "commit": "6e6e541a977a7ff0d2206f116fbaa018f64677f1",
+      "ref": "refs/heads/repair/node-liveness-test-disable-auto-maintenance-0a792-v1"
+    },
+    {
+      "commit": "8434c54126ba4629c9834d1617aec2f8de64aafa",
+      "ref": "refs/heads/repair/node-liveness-test-disable-auto-maintenance-0a792620-v1"
+    },
+    {
+      "commit": "174b979427517275ac33f15d53b2b2c41c85de41",
+      "ref": "refs/heads/repair/permanent-mirror-liveness-current-main-v1"
+    },
+    {
+      "commit": "1f35dcb539f7da2479d7f3b847abbc94c24e5ff9",
+      "ref": "refs/heads/repair/pr1214-seed-revalidation-stale-heartbeat-v1"
+    },
+    {
+      "commit": "57adf1bc6740054b24f7e0a3f1598c43f8ed08ce",
+      "ref": "refs/heads/repair/pr295-isolated-materializer-v1"
+    },
+    {
+      "commit": "d71b58449fb36e835c1185ccda3d7a101fddb884",
+      "ref": "refs/heads/repair/pr353-pr355-materialized-trusted-successor-v1"
+    },
+    {
+      "commit": "1077ea0c8b7b06efb2fba25ae7f0801eb6aad537",
+      "ref": "refs/heads/repair/pr353-watchdog-liveness-fixture-isolation-v1"
+    },
+    {
+      "commit": "413e180b90574471c0a1776a62d43e1aea32ad7b",
+      "ref": "refs/heads/repair/pre-effect-origin-parser-da3d771c-v1"
+    },
+    {
+      "commit": "468a388361d6ae85114288e1f682d5acd4391e76",
+      "ref": "refs/heads/repair/publication-overview-dependency-677fdef-v1"
+    },
+    {
+      "commit": "9038911d7769130504b0741b4713b9fc09167ef7",
+      "ref": "refs/heads/repair/qik-scientific-revision-governance-20260923"
+    },
+    {
+      "commit": "b43238cf651d74783f4d6ead97d633d962860f66",
+      "ref": "refs/heads/repair/renew-mirror-node-liveness-20260911-v1"
+    },
+    {
+      "commit": "bd48eb96a17afada8e31a6d25b04987a3fd364bd",
+      "ref": "refs/heads/repair/renew-mirror-node-liveness-after-main-restoration-20260819-v1"
+    },
+    {
+      "commit": "2280eaebd7b781bc11c98943b4ad40bcf9c4caa2",
+      "ref": "refs/heads/repair/restore-role-local-node-state-20260818"
+    },
+    {
+      "commit": "e4c5c63d70536ff4cdbdc77aea74b69152924790",
+      "ref": "refs/heads/repair/role-local-pre-effect-main-20261001"
+    },
+    {
+      "commit": "45ed173e2599683c1b7fcda4681c1fbbc48bc63e",
+      "ref": "refs/heads/repair/scaling-lossless-worker-v1"
+    },
+    {
+      "commit": "ff6e258e296a14cae860016c0be785e5e0e836b4",
+      "ref": "refs/heads/repair/seed-acceptance-probe-json-1e1bf6af-v1"
+    },
+    {
+      "commit": "7b2d703c433995d650880a275d2a9cf9469ee6fe",
+      "ref": "refs/heads/repair/windows-python-offline-cache-20261003"
+    },
+    {
+      "commit": "3d644eb951b1d65ab60dc207f9e90d4c146de788",
+      "ref": "refs/heads/research/temdd-liveness-convergence-v1"
+    },
+    {
+      "commit": "9766774c58615819b98aa5f610f79dc64df5e061",
+      "ref": "refs/heads/seed/batch003-authority-objects-6f4a57dd"
+    },
+    {
+      "commit": "b3a1f4fab616c51e43b966cd759e2e2d8cbc4309",
+      "ref": "refs/heads/seed/batch003-current-authority-db60a080"
+    },
+    {
+      "commit": "1a89702d6656056bbfc15314935b3e670b4fc7c2",
+      "ref": "refs/heads/staging/ai-handoff-clean"
+    },
+    {
+      "commit": "9d34e99aafa3abb9ed4bba37c16aea4c9bfdc9f5",
+      "ref": "refs/heads/staging/arxiv-kontinuitaet-a2dbd3ac-v1"
+    },
+    {
+      "commit": "a167e9ba6957177a399964902936fd6004c15ae6",
+      "ref": "refs/heads/staging/cumulative-tool-cache-registry"
+    },
+    {
+      "commit": "f5b0bc77ce362cb68c587b897df651f45b66ea14",
+      "ref": "refs/heads/staging/cumulative-tool-cache-registry-v2"
+    },
+    {
+      "commit": "17a86ca2e51da454d26fa16d454c6d32e338f024",
+      "ref": "refs/heads/staging/ietf-epistemic-status-00-a2dbd3ac-v1"
+    },
+    {
+      "commit": "98621a7bda587345294b230117861b3cf5c204b8",
+      "ref": "refs/heads/state/mirror-node-a84f157a-v1"
+    },
+    {
+      "commit": "1df3a83282fff289b57ea5b1e0bf29fd74b8f233",
+      "ref": "refs/heads/successor/pr286-requested-review-lifecycle-9cccdb0-v1"
+    },
+    {
+      "commit": "37730553d9c6eff3684783946a95418f8ee60a92",
+      "ref": "refs/heads/successor/pr295-reflexive-watchdog-85eed663-v1"
+    },
+    {
+      "commit": "7ec95c58b5e40b97a41a9e8ab75dcee3b712c429",
+      "ref": "refs/heads/sync/accepted-corrected-batch002-authority-524fabd5-from-daf42fd3-v1"
+    },
+    {
+      "commit": "90636489e29ed8dc5e38c1188bb3f140124a7e89",
+      "ref": "refs/heads/sync/authority-42389236-zenodo-evidence"
+    },
+    {
+      "commit": "13bc34c8981502b352191a8b178c851e35ef84fb",
+      "ref": "refs/heads/sync/authority-49850f649283"
+    },
+    {
+      "commit": "2d5f255d0307de2e4574a13ec82a8f818e01c74d",
+      "ref": "refs/heads/sync/authority-599866-global-completion"
+    },
+    {
+      "commit": "8b951ef0ab3293e5c134a0f0ef2c39ad2cc288c0",
+      "ref": "refs/heads/sync/authority-5c0a60dac2da"
+    },
+    {
+      "commit": "c3abe8ae41b76d65d6282f3b084439c113d31850",
+      "ref": "refs/heads/sync/authority-b64e4c782634"
+    },
+    {
+      "commit": "3c5cf7f03d617e623c3fc79a5f60e843f04b1528",
+      "ref": "refs/heads/sync/authority-pr307-current-main-v1"
+    },
+    {
+      "commit": "cfcee6b59b931f1f0e492440e5edc6700931290c",
+      "ref": "refs/heads/sync/batch003-dispatch-authority-6f4a57dd-from-3c8a6816-v1"
+    },
+    {
+      "commit": "11a20a81b1f90d79e684df6513a49cd2244616ff",
+      "ref": "refs/heads/sync/batch003-first-subject-authority-0fea97ca-from-11a20a81-v1"
+    },
+    {
+      "commit": "14b64aefad02e8335fab502486b314bef4911118",
+      "ref": "refs/heads/sync/batch003-first-subject-authority-0fea97ca-from-1ac57c68-v1"
+    },
+    {
+      "commit": "c9fe98267924433f9e6c8d02f185ad5e2d6804ac",
+      "ref": "refs/heads/sync/batch003-first-subject-authority-0fea97ca-from-c9fe9826-v1"
+    },
+    {
+      "commit": "c3931554f2f4bf0e12d0c21ae317eeab968e86ff",
+      "ref": "refs/heads/sync/canonical-status-article-b47d-v1"
+    },
+    {
+      "commit": "b0ae9775c4735cfa2332ca8bfc6cc901ef3ba12e",
+      "ref": "refs/heads/sync/canonical-temporal-memory-authority-944438bd-from-a7520583-v1"
+    },
+    {
+      "commit": "63c56dc0e3f134dbb3af82b13d8c8429e3ca2489",
+      "ref": "refs/heads/sync/canonical-zenodo-union-4892e744-v2"
+    },
+    {
+      "commit": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+      "ref": "refs/heads/sync/construction-base-authority-7d87a600-from-afcd0255-v1"
+    },
+    {
+      "commit": "f17aa8eca00b0e5e75d5bd44f1b5fb96d760cc0d",
+      "ref": "refs/heads/sync/content-disposition-batch-001-98194f45-v1"
+    },
+    {
+      "commit": "e97360391996b0f78e95903ad96cd02506d5c982",
+      "ref": "refs/heads/sync/content-disposition-batch-001-98194f45-v2"
+    },
+    {
+      "commit": "044408d165bf3054af0e0b38c72df7d58f52c986",
+      "ref": "refs/heads/sync/content-disposition-batch-002-3ba298e0-v1"
+    },
+    {
+      "commit": "9307d6e7b27b96a3822f833dfb96411e4ac44385",
+      "ref": "refs/heads/sync/content-disposition-batch-002-terminal-5d52adc8-from-30efd108-v1"
+    },
+    {
+      "commit": "952ec0ae89b05935ba884ec566a51d638dd51ea3",
+      "ref": "refs/heads/sync/current-batch003-db60a080-from-518677ee-v1"
+    },
+    {
+      "commit": "9f7bd91cb86bda0be9b6dafb5ba3b1f6f3c959a3",
+      "ref": "refs/heads/sync/global-completion-599866-v2"
+    },
+    {
+      "commit": "e6b3f1a7e0be975c9346637cda4a4ef6a910d24f",
+      "ref": "refs/heads/sync/global-finalization-b771-v1"
+    },
+    {
+      "commit": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b",
+      "ref": "refs/heads/sync/global-system-closure-authority-844643be-from-ff8bdd5f-v1"
+    },
+    {
+      "commit": "e2b197eadf6e20efb1e31475f040ff7419b1fb92",
+      "ref": "refs/heads/sync/goldkelch-main-2e8192d"
+    },
+    {
+      "commit": "a8300da6e897534077629dce50a4426aba8c672e",
+      "ref": "refs/heads/sync/post-acceptance-status-191bee0e-from-a6b45c22-v1"
+    },
+    {
+      "commit": "a6b45c22eae2fb3fa3c8168062cadfdf5f902cbd",
+      "ref": "refs/heads/sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v3"
+    },
+    {
+      "commit": "a4aba5f511434e5924ce843429234c234e755e82",
+      "ref": "refs/heads/sync/post-acceptance-status-authority-191bee0e-from-a6b45c22-v4"
+    },
+    {
+      "commit": "acb45bd6897465bd96db9d3e2912388531252cc1",
+      "ref": "refs/heads/sync/post-acceptance-status-authority-191bee0e-from-acb45bd6-v2"
+    },
+    {
+      "commit": "c0bbf85881c996cca5fff32be91847b7e537a493",
+      "ref": "refs/heads/sync/post-acceptance-status-authority-191bee0e-from-c0bbf858-v1"
+    },
+    {
+      "commit": "4a5574f4dd091995fd5d33867d7c374641b2f970",
+      "ref": "refs/heads/sync/pr273-authority-b5452d9e-from-0bc051d5-v1"
+    },
+    {
+      "commit": "118c9d219e21c4a5ea552b36a6662c17ec8ff348",
+      "ref": "refs/heads/sync/projector-repair-authority-1f559a19-from-465b46fd-v1"
+    },
+    {
+      "commit": "30fb5afd1bc0e5eadae5156b091a5b3637993c0c",
+      "ref": "refs/heads/sync/quantum-classical-runtime-article-3a186-v1"
+    },
+    {
+      "commit": "dc217c8cb19bc113401a1f91dae27bf1733b5b5e",
+      "ref": "refs/heads/sync/quantum-runtime-article-zenodo-3a186cb5-v1"
+    },
+    {
+      "commit": "e22fa5a8617365c782679e7c986ee4a916f453bf",
+      "ref": "refs/heads/sync/runtime-article-authority-tree-3a186-from-0698e-v1"
+    },
+    {
+      "commit": "b0a7f35c9536c9df72592b204cb8ff1256048c1c",
+      "ref": "refs/heads/sync/six-corrected-candidates-authority-7d87a600-from-afcd0255-v1"
+    },
+    {
+      "commit": "97717350a23435497da14a1929a86a4275850bd4",
+      "ref": "refs/heads/sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75-v1"
+    },
+    {
+      "commit": "97717350a23435497da14a1929a86a4275850bd4",
+      "ref": "refs/heads/sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75e-v1"
+    },
+    {
+      "commit": "1fb4a50d32007988b0702ade804adb441686d7bc",
+      "ref": "refs/heads/sync/survival-postpublication-authority-3e6981a5-from-cd5ea13e-v1"
+    },
+    {
+      "commit": "2cb1d231eb050e0eaddea15e85367e0568781c63",
+      "ref": "refs/heads/sync/survival-postpublication-authority-pr286-v1"
+    },
+    {
+      "commit": "59e93dd15009320a3b1df68aa049a8bf896544d9",
+      "ref": "refs/heads/sync/whole-tree-authority-2071b2946ef5-from-c8bb2dfaad51-v1"
+    },
+    {
+      "commit": "157c28fe2fff76ea7882f00da3ca0ed450468d02",
+      "ref": "refs/heads/sync/whole-tree-authority-d18af01d2b56-from-c8bb2dfaad51-v1"
+    },
+    {
+      "commit": "6ce50474b0235fa4f003e99a7635af200341ad7e",
+      "ref": "refs/heads/sync/whole-tree-receipt-pr634-pr344-mirror-v1"
+    },
+    {
+      "commit": "74db1c61a8cedeb6d8702e7acb1fe18aa45e7ebc",
+      "ref": "refs/heads/temdd/executable-runtime-20260923-v1"
+    },
+    {
+      "commit": "6a5868097c580772aa80f763743d4326559bc919",
+      "ref": "refs/heads/tmp-do-not-use"
+    },
+    {
+      "commit": "b0a7f35c9536c9df72592b204cb8ff1256048c1c",
+      "ref": "refs/heads/tmp/b0a7-tree-probe"
+    },
+    {
+      "commit": "465b46fd69f9311ff02f80a31790691b59affe9e",
+      "ref": "refs/heads/tmp/probe-base-tree-465b"
+    },
+    {
+      "commit": "502f9942ec91af7766695f7a2dfd09c583ca2c77",
+      "ref": "refs/heads/transport/mirror-aphorism-candidate-bytes-20260804-v1"
+    },
+    {
+      "commit": "bbcaeb88116960cc89e6ee2238fd7a194aae92d0",
+      "ref": "refs/heads/transport/r11-v2-mirror-materializer-once"
+    },
+    {
+      "commit": "9072c4277929d9b386c29ee291b6c8ed3ecc6cf7",
+      "ref": "refs/heads/trigger/quantum-runtime-article-sync-3a186cb5-v1"
+    },
+    {
+      "commit": "432b5efffbcaf6603039505cca6b472a0aecae2f",
+      "ref": "refs/heads/trusted/dispatch-pr334-exact-901943d6-v2"
+    },
+    {
+      "commit": "c8af0bdb6d3ac931d8263b79a0982caaae74aa07",
+      "ref": "refs/heads/trusted/execute-runtime-article-sync-c8af0bdb"
+    },
+    {
+      "commit": "ce875e832a097c1c679ab7bd742cedcdf1d7c310",
+      "ref": "refs/heads/trusted/materialize-mirror-authority-0ab86d6f-20260729-v1"
+    },
+    {
+      "commit": "77aeb60a2825ef8494a19af0aed8bdf8095941f5",
+      "ref": "refs/heads/trusted/materialize-node-liveness-test-maintenance-repair-0a792620-v1"
+    },
+    {
+      "commit": "2222294d611e371d317809fe86a71638a9f01848",
+      "ref": "refs/heads/trusted/materialize-scoped-zenodo-effect-ack-equality-mirror-v1"
+    },
+    {
+      "commit": "0ce287aa3e2ef73d5cc3d40553ef9be821843b5b",
+      "ref": "refs/heads/trusted/post-pr382-pr217-anticipation-refresh-v1"
+    },
+    {
+      "commit": "27d6d48f647fae73d7b3b261848930db4dd601c3",
+      "ref": "refs/heads/trusted/pr101-equality-27d6d48f"
+    },
+    {
+      "commit": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1",
+      "ref": "refs/heads/trusted/pr103-history-preserving-sync-v2-8653eb9f"
+    },
+    {
+      "commit": "8653eb9fd04c7956daa2e6729421dd4e9f5115b1",
+      "ref": "refs/heads/trusted/pr103-history-sync-v2-8653eb9f"
+    },
+    {
+      "commit": "30564d933dd2168bf41fb6463326235c163b6bc3",
+      "ref": "refs/heads/trusted/pr106-sync-pr-trigger-30564d93"
+    },
+    {
+      "commit": "e390f7ebf3665b6afe888091906af274d9b2c7f4",
+      "ref": "refs/heads/trusted/pr112-post-acceptance-equality-e390f7eb"
+    },
+    {
+      "commit": "b7e770be31647126ccf766db8591fadea88c5909",
+      "ref": "refs/heads/trusted/pr118-batch003-equality-b7e770be"
+    },
+    {
+      "commit": "b6cf8a5585775951ba74a76e22ef4875c8cebf15",
+      "ref": "refs/heads/trusted/pr121-mirror-sync-v4-b6cf8a55"
+    },
+    {
+      "commit": "5595daad88e7bb76a63d439b8d7c09c61579c47f",
+      "ref": "refs/heads/trusted/pr124-constructor-hook-5595daad"
+    },
+    {
+      "commit": "ae2ee5100e15a73242d43c1c01d2ca4a44a43677",
+      "ref": "refs/heads/trusted/pr124-constructor-hook-ae2ee510"
+    },
+    {
+      "commit": "070e061ebac75e2cab0af450b138ce0d9e126f35",
+      "ref": "refs/heads/trusted/pr129-first-subject-equality-070e061e"
+    },
+    {
+      "commit": "f9731ac315381871c957b66a3cbe71a67cf5b500",
+      "ref": "refs/heads/trusted/pr134-constructor-exact-bytes-f9731ac3"
+    },
+    {
+      "commit": "e3e4f328900eccad645ca5319468eea4777f1090",
+      "ref": "refs/heads/trusted/pr134-constructor-infrastructure-f9731ac3"
+    },
+    {
+      "commit": "2cd4c0d19bb8109743e84a3b1db80462e12567fa",
+      "ref": "refs/heads/trusted/pr134-exact-tree-retrigger-f973-v1"
+    },
+    {
+      "commit": "6d9dde7793816028fd95335306df8157e39a25bf",
+      "ref": "refs/heads/trusted/pr134-infrastructure-6d9dde77"
+    },
+    {
+      "commit": "66868decd767b58a1b087f730eb175b5c8f0225c",
+      "ref": "refs/heads/trusted/pr148-six-corrected-equality-66868dec"
+    },
+    {
+      "commit": "73c0d8cbff5f7bfe3c20f33e6c34c62ed6f7f50c",
+      "ref": "refs/heads/trusted/pr149-reciprocal-equality-73c0d8cb"
+    },
+    {
+      "commit": "6156396279fe646bcdcfb3ecdd8d128214f0654c",
+      "ref": "refs/heads/trusted/pr152-pr145-receipt-61563962"
+    },
+    {
+      "commit": "6156396279fe646bcdcfb3ecdd8d128214f0654c",
+      "ref": "refs/heads/trusted/pr152-pr145-receipt-exact-head-61563962"
+    },
+    {
+      "commit": "5efd79a2b46eeecb5a3d09b8db4cd0c632ea7e75",
+      "ref": "refs/heads/trusted/pr156-reciprocal-equality-5efd79a2"
+    },
+    {
+      "commit": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b",
+      "ref": "refs/heads/trusted/pr158-global-closure-41393e71"
+    },
+    {
+      "commit": "41393e7180a8dd3c9779f7edc5d66f7aee8e235b",
+      "ref": "refs/heads/trusted/pr158-global-closure-exact-head-41393e71"
+    },
+    {
+      "commit": "609becdd628f1572d754123831359566c8baf82b",
+      "ref": "refs/heads/trusted/pr161-reciprocal-equality-609becdd"
+    },
+    {
+      "commit": "1d8737f6fffcfadea63c6e55fa85196aeb577ac3",
+      "ref": "refs/heads/trusted/pr168-reciprocal-equality-1d8737f6"
+    },
+    {
+      "commit": "f8d62259dc5a770eac318e38e45468d5af7de317",
+      "ref": "refs/heads/trusted/pr192-vrtcore-h3-port-executor-e1c7ae2b"
+    },
+    {
+      "commit": "e1941ce7760902c24651acd23217148cb56ff63e",
+      "ref": "refs/heads/trusted/pr245-zero-job-retrigger-e1941ce7-v2"
+    },
+    {
+      "commit": "4d66d0cca787261daa6d15c29a3fecd40477f6ce",
+      "ref": "refs/heads/trusted/pr248-exact-head-verification-4d66d0c-v1"
+    },
+    {
+      "commit": "2370c7be17e467e6aaadb4f3a283a423ea1c07ed",
+      "ref": "refs/heads/trusted/pr249-mirror-constructor-current-main-c2a6-v1"
+    },
+    {
+      "commit": "12d684e33314134466d4c6a6a5c0f20ba55d3df1",
+      "ref": "refs/heads/trusted/pr249-mirror-constructor-trigger-current-v2-temp"
+    },
+    {
+      "commit": "fefc0b2c884b6372405ffab0a4ab1fb01a6ee6ad",
+      "ref": "refs/heads/trusted/pr249-mirror-constructor-trigger-main-v1"
+    },
+    {
+      "commit": "8adbeea66d324933831aa1f36ba1731a3c9e3bb5",
+      "ref": "refs/heads/trusted/pr249-mirror-constructor-trigger-v1"
+    },
+    {
+      "commit": "5f9fe4193ba54d834129a5a0d24bddd15044a798",
+      "ref": "refs/heads/trusted/pr250-exact-head-verification-5f9fe419-v1"
+    },
+    {
+      "commit": "df5b95fba59a347ae93ce60bf74ab91af0aeb00a",
+      "ref": "refs/heads/trusted/pr252-exact-head-df5b95fb-v1"
+    },
+    {
+      "commit": "e7c43170578b6925941fba0e03b25e01938c83a3",
+      "ref": "refs/heads/trusted/pr254-exact-head-e7c43170-v1"
+    },
+    {
+      "commit": "91b11e5315c689e26575e9bbc67db8c9957bc4a1",
+      "ref": "refs/heads/trusted/pr256-exact-head-91b11e53-v1"
+    },
+    {
+      "commit": "eea0d0da5430a8c516440e742d309f7e96435985",
+      "ref": "refs/heads/trusted/pr262-eea0d0da-exact-head-v1"
+    },
+    {
+      "commit": "eea0d0da5430a8c516440e742d309f7e96435985",
+      "ref": "refs/heads/trusted/pr262-exact-head-verification-eea0d0da-v1"
+    },
+    {
+      "commit": "2b3a5b0c6cfa58ee02d31b8d3802eb81201df880",
+      "ref": "refs/heads/trusted/pr265-2b3a5b0c-exact-head-v1"
+    },
+    {
+      "commit": "fb32431d0a152849d41290fc7ae3f243bbbf565e",
+      "ref": "refs/heads/trusted/pr268-exact-head-fb32431d-v1"
+    },
+    {
+      "commit": "6f694a8af9d4fb410fb95b2af99ee20a79e3d350",
+      "ref": "refs/heads/trusted/pr272-literal-exact-head-6f694a8a-v1"
+    },
+    {
+      "commit": "a10cf9683412819d56938c357d1a27ad2a2119e8",
+      "ref": "refs/heads/trusted/pr323-h5-h6-port-executor-4ce9c07b"
+    },
+    {
+      "commit": "b311b6fb1791ca15b039f6c6d3ddd395e945e7a8",
+      "ref": "refs/heads/trusted/pr323-pr197-receipt-executor-mirror-v1"
+    },
+    {
+      "commit": "5684ebb6d75cb16f5d42186dcba9b11212264257",
+      "ref": "refs/heads/trusted/pr356-pr204-receipt-executor-mirror-v1"
+    },
+    {
+      "commit": "fa1cdee80a95d971ff7202d2b14788e36118ac9d",
+      "ref": "refs/heads/trusted/pr356-pr204-receipt-executor-mirror-v2"
+    },
+    {
+      "commit": "091b26de82d6092e1014520725779a837f5865f8",
+      "ref": "refs/heads/trusted/pr356-pr204-receipt-executor-mirror-v3"
+    },
+    {
+      "commit": "3041a3381309a8e5e1bcdcd6f385c674e23e9269",
+      "ref": "refs/heads/trusted/pr356-pr204-receipt-executor-mirror-v4"
+    },
+    {
+      "commit": "0f592a75a8f309b23a311f7fa10df0667364a61c",
+      "ref": "refs/heads/trusted/pr368-mirror-current-main-port-v1"
+    },
+    {
+      "commit": "485fe4cb74daec5451358ee8000bfe2a14dce2d3",
+      "ref": "refs/heads/trusted/pr368-pr214-reciprocal-equality-mirror-v1"
+    },
+    {
+      "commit": "0f26e3a3e0b8ccf96b375bd2261e45b53765c0bb",
+      "ref": "refs/heads/trusted/pr384-mirror-request-port-v1"
+    },
+    {
+      "commit": "8b951ef0ab3293e5c134a0f0ef2c39ad2cc288c0",
+      "ref": "refs/heads/trusted/pr55-materialized-8b951ef0"
+    },
+    {
+      "commit": "c3abe8ae41b76d65d6282f3b084439c113d31850",
+      "ref": "refs/heads/trusted/pr57-materialized-c3abe8ae"
+    },
+    {
+      "commit": "90636489e29ed8dc5e38c1188bb3f140124a7e89",
+      "ref": "refs/heads/trusted/pr59-zenodo-evidence-materialized-90636489"
+    },
+    {
+      "commit": "9f7bd91cb86bda0be9b6dafb5ba3b1f6f3c959a3",
+      "ref": "refs/heads/trusted/pr61-global-completion-9f7bd91c"
+    },
+    {
+      "commit": "2fda06e13f1e2a8e9b8305596d01f83219d72d3c",
+      "ref": "refs/heads/trusted/pr62-authority-tree-sync-2fda06e1"
+    },
+    {
+      "commit": "2d5f255d0307de2e4574a13ec82a8f818e01c74d",
+      "ref": "refs/heads/trusted/pr62-global-completion-exact-2d5f255d"
+    },
+    {
+      "commit": "95c0e03614cc067301ee9e044aaca2501fc7603d",
+      "ref": "refs/heads/trusted/pr66-finalization-sync-95c0e036"
+    },
+    {
+      "commit": "e6b3f1a7e0be975c9346637cda4a4ef6a910d24f",
+      "ref": "refs/heads/trusted/pr66-global-finalization-e6b3f1a7"
+    },
+    {
+      "commit": "979b104632c3f1331d3b19ce4f3e74a3f3b87e85",
+      "ref": "refs/heads/trusted/pr69-persist-authority-tree-56a70fd0"
+    },
+    {
+      "commit": "c3931554f2f4bf0e12d0c21ae317eeab968e86ff",
+      "ref": "refs/heads/trusted/pr69-status-article-b47d-exact-c3931554"
+    },
+    {
+      "commit": "c5439e6d3d2fcbdcdc745de3905e68c405f9b428",
+      "ref": "refs/heads/trusted/pr73-runtime-sync-c5439e6d"
+    },
+    {
+      "commit": "5b783984177299cd4010402c97d1a16a9ea5ce64",
+      "ref": "refs/heads/trusted/pr74-mirror-sync-5b783984"
+    },
+    {
+      "commit": "a857059b9650dad67c1abf025778694be9a36608",
+      "ref": "refs/heads/trusted/pr74-mirror-sync-a857059b"
+    },
+    {
+      "commit": "b1436bd02e3cde70f06ea3916cffb60e7dd9d393",
+      "ref": "refs/heads/trusted/pr77-sync-controller-b1436bd0"
+    },
+    {
+      "commit": "b1436bd02e3cde70f06ea3916cffb60e7dd9d393",
+      "ref": "refs/heads/trusted/pr78-controller-b1436bd0-v2"
+    },
+    {
+      "commit": "24cb703ad545a44b119590847926c4f796f5c038",
+      "ref": "refs/heads/trusted/pr94-pair-receipt-24cb703a"
+    },
+    {
+      "commit": "9307d6e7b27b96a3822f833dfb96411e4ac44385",
+      "ref": "refs/heads/trusted/pr96-mirror-9307d6e7"
+    },
+    {
+      "commit": "7d9cf83a180e5ec6bb2e638f7116fc28edb1932e",
+      "ref": "refs/heads/trusted/pr98-equality-7d9cf83a"
+    },
+    {
+      "commit": "e433f7df2cd0aec09aebd0beaccd93cf8afb4ef1",
+      "ref": "refs/heads/trusted/pre-spacetime-zenodo-receipt-equality-mirror-v1"
+    },
+    {
+      "commit": "526cd11d6dbe0ea99e81fc8121bb8213aaf4daf7",
+      "ref": "refs/heads/trusted/recover-pr309-exact-verifier-dispatch-126f-v1"
+    },
+    {
+      "commit": "dbb808a63281f791731d3f02086ac2b9eea46f9b",
+      "ref": "refs/heads/trusted/recover-pr313-exact-verifier-dispatch-9dcc-v1"
+    },
+    {
+      "commit": "69fb7767e2a8fd830cbe82f3d7be2ba4075f7312",
+      "ref": "refs/heads/trusted/repair-mirror-pr228-materializer-timeout-v1"
+    },
+    {
+      "commit": "f0a87c1784d78ceee250053e4b5fba713e93e305",
+      "ref": "refs/heads/trusted/trigger-canonical-zenodo-union-sync-4892e744-v1"
+    },
+    {
+      "commit": "c8ff1e8f51a3d75300a3cec11a44c6c5ae5d508b",
+      "ref": "refs/heads/trusted/trigger-canonical-zenodo-union-sync-4892e744-v2"
+    },
+    {
+      "commit": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+      "ref": "refs/heads/trusted/trigger-construct-mirror-pr249-7d87a600-v1"
+    },
+    {
+      "commit": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+      "ref": "refs/heads/trusted/trigger-construct-mirror-pr249-clean-v1"
+    },
+    {
+      "commit": "2eedf312a0806fa92d258815e3fde6256d9f6373",
+      "ref": "refs/heads/trusted/trigger-content-disposition-batch-001-sync-98194f45-v1"
+    },
+    {
+      "commit": "26d4a5ce71af32b05c9a3af961764ee19f55d3a9",
+      "ref": "refs/heads/trusted/trigger-content-disposition-batch-001-sync-98194f45-v2"
+    },
+    {
+      "commit": "33eb2e5152b7eae8138df1f856714bf69fcc7cba",
+      "ref": "refs/heads/trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1"
+    },
+    {
+      "commit": "c5439e6d3d2fcbdcdc745de3905e68c405f9b428",
+      "ref": "refs/heads/trusted/trigger-quantum-runtime-article-sync-3a186cb5"
+    },
+    {
+      "commit": "63452d7066e180a4fad9e94329be65ca2612f64c",
+      "ref": "refs/heads/trusted/verify-mirror-pre-spacetime-zenodo-effect-ack-098ef9f-v1"
+    },
+    {
+      "commit": "db15d2fe2f041894d45b96c64b731d8b71d0423d",
+      "ref": "refs/heads/trusted/verify-pr174-materialized-db15d2fe-v1"
+    },
+    {
+      "commit": "9c36a4030a9a15011b57e64adfc16a661ca8dd8b",
+      "ref": "refs/heads/trusted/verify-pr177-materialized-9c36a403-v1"
+    },
+    {
+      "commit": "3c5cf7f03d617e623c3fc79a5f60e843f04b1528",
+      "ref": "refs/heads/trusted/verify-pr179-materialized-3c5cf7f0-v1"
+    },
+    {
+      "commit": "468a388361d6ae85114288e1f682d5acd4391e76",
+      "ref": "refs/heads/trusted/verify-pr288-468a388-zero-tree-v1"
+    },
+    {
+      "commit": "1df3a83282fff289b57ea5b1e0bf29fd74b8f233",
+      "ref": "refs/heads/trusted/verify-pr293-exact-1df3a832-v1"
+    },
+    {
+      "commit": "7b6a3bd2cbbdf155f0184f1fad480ddc99e2e399",
+      "ref": "refs/heads/trusted/verify-pr295-c4083452-zero-tree-v1"
+    },
+    {
+      "commit": "ef550b1c4c1c8b7e0a67ce289d932f7d98f7589b",
+      "ref": "refs/heads/trusted/verify-pr299-1b9bef85-zero-tree-v1"
+    },
+    {
+      "commit": "9ef7b3a6ce8b54096f5f938fa9a4bb74aa48e66b",
+      "ref": "refs/heads/trusted/verify-pr301-2e1b6df-zero-tree-v1"
+    },
+    {
+      "commit": "a4b490e79f839f6b52430a66410d84c47b32e60a",
+      "ref": "refs/heads/trusted/verify-pr304-653ce31f-zero-tree-v1"
+    },
+    {
+      "commit": "297f5c50094db8c7fbaf014294678fdc20d0d229",
+      "ref": "refs/heads/trusted/verify-pr306-413e180b-zero-tree-v1"
+    },
+    {
+      "commit": "dcb3af38e3774ae0a657a301504391e6cbe1c03d",
+      "ref": "refs/heads/trusted/verify-pr311-ac42f748-zero-tree-v1"
+    },
+    {
+      "commit": "343d63cd37dfc6211e5898d4ba80b6c80ccf839d",
+      "ref": "refs/heads/trusted/verify-pr315-6e6e541a-zero-tree-v1"
+    },
+    {
+      "commit": "112d57fb3a9ad6324a67c5062d6ce54475a82723",
+      "ref": "refs/heads/trusted/verify-pr321-exact-112d57fb-v1"
+    },
+    {
+      "commit": "4913f738e06ddda89e71985ad95c83ace53fb282",
+      "ref": "refs/heads/trusted/verify-pr324-exact-4913f738-v1"
+    },
+    {
+      "commit": "05bdb4959ef42e7547631d7e62cde95f1c20b72e",
+      "ref": "refs/heads/trusted/verify-pr329-exact-05bdb495-v1"
+    },
+    {
+      "commit": "a6ec86731991283c2acf03a78218e551c3be5c57",
+      "ref": "refs/heads/trusted/verify-pr332-exact-a6ec8673-v1"
+    },
+    {
+      "commit": "901943d61d618f4ce09e206083655ee76e5d52a9",
+      "ref": "refs/heads/trusted/verify-pr334-dispatch-901943d6-v1"
+    },
+    {
+      "commit": "8bfb9d0f48e31666fbd5ce23a0fed622c6bfffd6",
+      "ref": "refs/heads/trusted/verify-reciprocal-equality-survival-pr284-pr286-pr167-mirror-v1"
+    },
+    {
+      "commit": "30fb5afd1bc0e5eadae5156b091a5b3637993c0c",
+      "ref": "refs/heads/trusted/verify-runtime-article-mirror-30fb5afd"
+    },
+    {
+      "commit": "e22fa5a8617365c782679e7c986ee4a916f453bf",
+      "ref": "refs/heads/trusted/verify-runtime-article-mirror-e22fa5a8"
+    },
+    {
+      "commit": "de57e8478c59c1724bce87c7aac8c0528454d717",
+      "ref": "refs/heads/verification/pr277-exact-head-de57e847"
+    },
+    {
+      "commit": "694d002b738ef994f0d7d970227469d9f2be53f9",
+      "ref": "refs/heads/verify/pr183-exact-head-694d002"
+    },
+    {
+      "commit": "a4f7c4995b4ede9415f8ef9592fe70d6f0ac4ad3",
+      "ref": "refs/heads/verify/pr185-exact-head-a4f7c49"
+    },
+    {
+      "commit": "a1b87e249289f363aba15dc5ef2bb8248c49621e",
+      "ref": "refs/heads/verify/pr270-exact-head-v1"
+    },
+    {
+      "commit": "92872b0f3da3c716e7f22f2856801592e04b6bd0",
+      "ref": "refs/heads/verify/pr279-exact-92872b0"
+    },
+    {
+      "commit": "11e2483d71f259f1a5c77b01209ad745d07705f3",
+      "ref": "refs/heads/verify/pr281-exact-11e2483-zero-tree-v1"
+    },
+    {
+      "commit": "a401413500dbb6617ab17f7657c805c30964ddf0",
+      "ref": "refs/heads/verify/pr283-self-heal-receipt-78f18f2-zero-tree-v1"
+    },
+    {
+      "commit": "776b5c09a221ec0e8531b2b0521fea6c4d63a330",
+      "ref": "refs/heads/verify/pr286-exact-3f242d1-zero-tree-v1"
+    },
+    {
+      "commit": "dadfa64311fe6c879a921a5992eac658876418c5",
+      "ref": "refs/heads/verify/pr286-exact-e6a57f8-zero-tree-v2"
+    },
+    {
+      "commit": "ece80db2f9d63dccd3356f551b29ab5840464726",
+      "ref": "refs/heads/verify/pr288-publication-overview-468a388-zero-tree-v1"
+    },
+    {
+      "commit": "2280eaebd7b781bc11c98943b4ad40bcf9c4caa2",
+      "ref": "refs/heads/verify/pr353-exact-head-2280eaeb-20260818"
+    },
+    {
+      "commit": "217491dc72687a0f6a9b7ed9b21f1a18032b4ba1",
+      "ref": "refs/heads/verify/pr357-integrity-isolated-4d320b6f-v1"
+    },
+    {
+      "commit": "83d7a38e38f32f9cd28a52b887a5bcb3cdf6ff76",
+      "ref": "refs/heads/work/20260815-ai-bootstrap"
+    },
+    {
+      "commit": "15bad08883288f686bb7ce7567f092bbbdd5f08b",
+      "ref": "refs/heads/work/20260906-author-positioning-roundtrip"
+    },
+    {
+      "commit": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
+      "ref": "refs/heads/work/api-acceptance-rest-repair-20261001"
+    },
+    {
+      "commit": "37e9aaccbb4f7046ce3d0ed536c8c205a71a13d2",
+      "ref": "refs/heads/work/authority-recovery-acceptance-20261002"
+    },
+    {
+      "commit": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "ref": "refs/heads/work/authority-url-probe-20261003-6fb101b"
+    },
+    {
+      "commit": "d4abb49133dc509233acff1df8dc202af65d6475",
+      "ref": "refs/heads/work/chat-interruption-continuity-20261002"
+    },
+    {
+      "commit": "638397fc1b86ab44eac9f06f0c9754d3b5803a2b",
+      "ref": "refs/heads/work/claim-audit-20261001-469a95ac"
+    },
+    {
+      "commit": "f53b386544542e180bdae84c98d86c6afcdacdff",
+      "ref": "refs/heads/work/closure-promotion-consolidation-20261001"
+    },
+    {
+      "commit": "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
+      "ref": "refs/heads/work/collective-functional-consciousness-20261003"
+    },
+    {
+      "commit": "5254836e0865970cf79da2f012f74bcd04941857",
+      "ref": "refs/heads/work/delegation-bootstrap-20261001"
+    },
+    {
+      "commit": "b0e3828c9f02fb7772dc094afd9182d937c86f93",
+      "ref": "refs/heads/work/firefox-windows-witness-20261001"
+    },
+    {
+      "commit": "522cbc91179535bf941185415b4a434c24fbee61",
+      "ref": "refs/heads/work/full-node-recovery-20261001-c621b863"
+    },
+    {
+      "commit": "8eeece5571c3235941e6ac10afd45e4cfbaaf623",
+      "ref": "refs/heads/work/linux-ring-scale-consolidation-20261002"
+    },
+    {
+      "commit": "f9cb73172157951fbab81a0843a8a6e8657dcfa5",
+      "ref": "refs/heads/work/meta-transistor-feedback-20261001-7e5a588d"
+    },
+    {
+      "commit": "6e6848b1f2da4e4b7e57b40d6e275a5d03eda275",
+      "ref": "refs/heads/work/mirror-lifecycle-governance-20261003-8153c4e6"
+    },
+    {
+      "commit": "96f5cc19f8fd3c69d28b8c2e3e1a0c6707ac7be3",
+      "ref": "refs/heads/work/node-genesis-recovery-c621b863-20261001"
+    },
+    {
+      "commit": "ce344c122f363aa00d18f935735126947f2b8454",
+      "ref": "refs/heads/work/owner-dependency-assimilation-20261003-8153c4e6-4796ff30"
+    },
+    {
+      "commit": "b8f5050587f7df637e5d1c792796e8a23e5a8ce7",
+      "ref": "refs/heads/work/owner-hotpath-current-criteria-20261004-8658b113"
+    },
+    {
+      "commit": "d5aacbc7961346a0cc14c155b1955560aab2e5ca",
+      "ref": "refs/heads/work/pipeline-mtbf-20260930"
+    },
+    {
+      "commit": "c801b81c4928c344ccd41c3f4b1f5fb0601184a7",
+      "ref": "refs/heads/work/processor-clock-core-20261001"
+    },
+    {
+      "commit": "be2ce383af1b884ce86b891ac0208990f0e474ad",
+      "ref": "refs/heads/work/qikvrt-codec-v1-20261001"
+    },
+    {
+      "commit": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+      "ref": "refs/heads/work/qikvrt-standpoint-codex-v1-20261001"
+    },
+    {
+      "commit": "4d33d78bee91cfa639abde0aceae95371ad8f55c",
+      "ref": "refs/heads/work/reciprocal-devops-dod-20261001"
+    },
+    {
+      "commit": "854e1f835d2f5d5a45de2a96759bbd077e5118a4",
+      "ref": "refs/heads/work/software-independent-promotion-proof-20261001-469a95ac"
+    }
+  ],
+  "remote_heads_sha256": "fef421139c293be76866fe8897db42dfdd5e2545ed4b19a56a3ff458235ae6ed",
+  "scan_bindings": [
+    {
+      "blob": "2f99e47c1bc2e6bf77720c27a5185b142bb73afc",
+      "bytes": 7351,
+      "path": ".github/workflows/issue-agent-autofinish.yml",
+      "sha256": "9b19a7b92d966dd83884bd11d6a8386c6762ca9acc754c93ace70376176747aa"
+    },
+    {
+      "blob": "42401bdbe53c5fee13f75beced87c7e56196966e",
+      "bytes": 3420,
+      "path": ".github/workflows/issue-agent-backlog-resume.yml",
+      "sha256": "43a5f8bbdfc62ad9995e7b902366ad9694da5c21ec69b86acbc84ad3af9e12d5"
+    },
+    {
+      "blob": "0bc763dc2ededa7eb7a37ebb46ad8b29f76b524b",
+      "bytes": 4756,
+      "path": ".github/workflows/issue-autonomous-processing.yml",
+      "sha256": "914f2c5c4df8d4dea20c17cb479d6aa087304b3ebeb09b87b4ef6537875f82f2"
+    },
+    {
+      "blob": "1afe5856639ed62c7f174013a614997229ab67fc",
+      "bytes": 6599,
+      "path": ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml",
+      "sha256": "5c953258a22ad855499765be43441ce192d72999505a0ae20ad19cce77f1e435"
+    },
+    {
+      "blob": "c3fce059f331c2987ada61b505992aef39dde4bd",
+      "bytes": 25145,
+      "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+      "sha256": "d86d3fa92a7558d5ab94e1996bc6d03c54d07b0894e9c3fc070ff2736eb6cff3"
+    },
+    {
+      "blob": "e1ec4b7a757f6ece42c379909ee5cc56b58a3d66",
+      "bytes": 9822,
+      "path": ".github/workflows/qikvrt_audio_request.yml",
+      "sha256": "e9fd50cb7c71c66d7ffcdc5a8df535b6fa684a0ec1406265192ff01ec3f450f5"
+    },
+    {
+      "blob": "99056f8a4cec9a7fce688e95379b5c6c38df65b0",
+      "bytes": 5172,
+      "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "sha256": "389e4bc20c5e7b317f7c173bf0bd28872c8c90c5e65a1e213012cd05df8e7277"
+    },
+    {
+      "blob": "b138d57fb249f8352c8d4e856e9fc7634a5b81c4",
+      "bytes": 10210,
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "sha256": "c5b8532cde108b3fae8a03b49d3420203b687f3c25e2a3b16347b84960b5555a"
+    },
+    {
+      "blob": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+      "bytes": 9616,
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "sha256": "e3c9de7c7d948838ecf9be5e0b2c86715cbb42501721f188e5cbd4637e571c87"
+    },
+    {
+      "blob": "0a2cc7322fdcb5220a9ce05987d695d006a4a7d3",
+      "bytes": 2201,
+      "path": ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+      "sha256": "901a6a98325f86b744b505ac8bd65774ace18e2b09056bcb691c796e7653f41c"
+    },
+    {
+      "blob": "b8af272b498918fbc5337a663193c55e48d0779e",
+      "bytes": 5388,
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "sha256": "8b587bf2d5f0b69dbe057bdd3b383bf12e2378ddac15e393b121914831fb919a"
+    },
+    {
+      "blob": "3ee1ff79348e62cf860ef6b649090485fbd8198a",
+      "bytes": 3039,
+      "path": ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+      "sha256": "8523f7caab65191ae63c94da3f101eee890b30a5f4a83243cf6512c85510e9c2"
+    },
+    {
+      "blob": "0c821263b5cc34a75ad609988d7d2f3cbf8e57bd",
+      "bytes": 18139,
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "sha256": "6a476402efacd778a81f2620ef20ebda3074a8d457b7b3ec51d727362e8cb6fd"
+    },
+    {
+      "blob": "e4c66aa0d71c09873c0e902aba10783edf967c5b",
+      "bytes": 8380,
+      "path": ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml",
+      "sha256": "a32ce95f4e6b252fb59399e547b1a476ddca037dae46b76731c3199c98200ffb"
+    },
+    {
+      "blob": "4f19b83776f44cb42122f49525e822ec7707d2e5",
+      "bytes": 8225,
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "4d83b511016a533aaafa8aa1afa3dce50fcf6e859b90ad02ccd9c67fb0bed807"
+    },
+    {
+      "blob": "5e9c283fb44d6adff58c4f252627482e83252c8d",
+      "bytes": 1183,
+      "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+      "sha256": "13c903baf017326046a2de756ca224847ce9988b851a7442090a37148bf99998"
+    },
+    {
+      "blob": "7bbfc4d74009bb1b787101fcfdbfb969b9a96df1",
+      "bytes": 11058,
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "sha256": "4f9da69d9f79dcddf348e85ea4b6fb2498a53632e16949652526cf0453068e16"
+    },
+    {
+      "blob": "350403b2d0190a6761e3d5946d0b77c089f6973f",
+      "bytes": 2557,
+      "path": ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
+      "sha256": "c962154f6c4b39f16d1a27742ace2241b360c2f531021ba7e5bf1c8f0a60c2d7"
+    },
+    {
+      "blob": "c7ebf0b00920115f80450a7338dd7d4d537848a8",
+      "bytes": 1172,
+      "path": ".github/workflows/qikvrt_corpus_closure_overlay.yml",
+      "sha256": "25cb956636f690f235d8d53cc3814d81a5206bcaeac37f2a7828566631c785ea"
+    },
+    {
+      "blob": "b254b7fd4378298e15751b38ed3c46e434bdbd34",
+      "bytes": 1250,
+      "path": ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml",
+      "sha256": "ba8edb0a29d942054cfbb5e0477f595a5e7620ddb1116db89979e3c3ad79e71a"
+    },
+    {
+      "blob": "3ebd8a512ecc85c662cb7e33fa1371efb1afc1f3",
+      "bytes": 46881,
+      "path": ".github/workflows/qikvrt_effect_ack_finalize.yml",
+      "sha256": "fc2bc054cafef169ef6b4d9dfcb26f7dd6eb67528c8ba6f36cd62b42dfb02f90"
+    },
+    {
+      "blob": "2e1cf1b67fc740681e7cd7a4e348f6da299f974c",
+      "bytes": 8111,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "eede5fcbc774baf03a7188261776651416b5c3cab51efcee6426ad8ecd87925c"
+    },
+    {
+      "blob": "c8fd85d4c59085e9c09161c3f71e7c240c58207a",
+      "bytes": 1282,
+      "path": ".github/workflows/qikvrt_escape_stages_integrity.yml",
+      "sha256": "7f0a4422371f9a0074552f187f3e39c0a53d6080e755b4a3bf6a24040a07c1e5"
+    },
+    {
+      "blob": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6",
+      "bytes": 12217,
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "sha256": "477706dbc01f9f73208fdd0eab06825b40871a44b729691b4b3adc69c585433d"
+    },
+    {
+      "blob": "96f07c5b784561fadae29b0a502872cc15f130be",
+      "bytes": 3847,
+      "path": ".github/workflows/qikvrt_formalization_and_audio.yml",
+      "sha256": "ea609420404ad0d21667ad8d95de0562c65ff722485695087a21503a710e5266"
+    },
+    {
+      "blob": "61559dd8b9e0f82967fd2e36f58f0344ce26e157",
+      "bytes": 11895,
+      "path": ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml",
+      "sha256": "13632ff4c53f5065bea3e79b83a6f4e26f31740a85fdf4ccb80f7baf6a9ba432"
+    },
+    {
+      "blob": "442f9ef19a346ba2a00ff818c1e3c41914eb1652",
+      "bytes": 14977,
+      "path": ".github/workflows/qikvrt_formalization_v2_inspect.yml",
+      "sha256": "9b55027b2b0fe472592b5dec60267b6d8fb70364e64f6e5d0fd2f3b8acc95c63"
+    },
+    {
+      "blob": "a1a30e1b00c7858d4d3870e5b828e437d78c618c",
+      "bytes": 16820,
+      "path": ".github/workflows/qikvrt_formalization_v2_inventory.yml",
+      "sha256": "f6c4f394d1a29ab9e70c7405ab0d20639adc6adfb5908e2f2709b1129b11c121"
+    },
+    {
+      "blob": "778dcfc8faf63c7b1a62fa9a26ae318a0c2934c2",
+      "bytes": 24969,
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+      "sha256": "00edd543538167fcce4ecf8a69a9485ee16c409380a299bad91c7d8e21c0981f"
+    },
+    {
+      "blob": "8f43ecbe25c33fc5e3aed4630c5b16f2fbdddd0c",
+      "bytes": 34388,
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+      "sha256": "968a2f12bd0c0dd9d1adc7e04fd2080c31667f1cc2285e6aa82cc7c110c72cd8"
+    },
+    {
+      "blob": "027412fd92bbe058d5bddf8fbe74796b3de8ecf1",
+      "bytes": 8940,
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "sha256": "09cfe53cd2aa94caff88dd59e0bf1bc2d458fe903014bda4f37f887657d63e2c"
+    },
+    {
+      "blob": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+      "bytes": 11253,
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "sha256": "23ede0d211d074039921c8293bf798f46b0ac5e49866c4e0c110db45b92129d5"
+    },
+    {
+      "blob": "81406e0165f391634c0d28bfb3ab60e2a310e779",
+      "bytes": 6599,
+      "path": ".github/workflows/qikvrt_live_status_watch.yml",
+      "sha256": "5b199897b88a93eb279e59ac2cd28660e91785436fc04887e97e5d8978fa3186"
+    },
+    {
+      "blob": "644b613b5069635384c05c06849d84a34580d073",
+      "bytes": 7718,
+      "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+      "sha256": "dd6373a0280788d1a96b688b2be5f38b809751c5973e2a8a09ba997f7530f698"
+    },
+    {
+      "blob": "b74eecbc791318685286758d01df0c16803c4dcc",
+      "bytes": 19668,
+      "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+      "sha256": "1dcb813f040d123f77e566518b971c0c08cad80d268a59e1f47b37b6703a52d5"
+    },
+    {
+      "blob": "9f19bbb609ce9275496e30eea8700e5437664de0",
+      "bytes": 8181,
+      "path": ".github/workflows/qikvrt_measurement_derived_dimensions.yml",
+      "sha256": "75273287527a761bcefa957f6e771058f54974f418d214e154b48944501fb073"
+    },
+    {
+      "blob": "37eddbe54fe8e3fd8604bbdacc34d7d14dc8f1a1",
+      "bytes": 5002,
+      "path": ".github/workflows/qikvrt_measurement_independence_formalization.yml",
+      "sha256": "dcfef2893b14b01699c38121769cb7f4a20d1ceb05667e56b69204d6dc9da4b2"
+    },
+    {
+      "blob": "7b38260082e98046b0f8da5009104b25ce255e31",
+      "bytes": 4890,
+      "path": ".github/workflows/qikvrt_mesh_api.yml",
+      "sha256": "4f4eecefa918529b5d2f547e007c67a6a30e09203bdb9334610f96a71fae1dd7"
+    },
+    {
+      "blob": "406f4204e0402acaed16af3ce235ff7837ca5eae",
+      "bytes": 3474,
+      "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+      "sha256": "d9aef48a302d5475685314de21a9650c145dbf32b11ad3c95f902a9eeef34f93"
+    },
+    {
+      "blob": "e1a9e3865d7136080cbc1212be011fd0bd2c71ad",
+      "bytes": 2298,
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "sha256": "202c0281f35a98d022c491040b55786f1dce78d3c49fad22ae8b25584a37bdc5"
+    },
+    {
+      "blob": "7eb73d96035101810e2f78cabd02cf99dad04773",
+      "bytes": 10959,
+      "path": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+      "sha256": "eef2d427d5bcc7b194ad35bde26dbbc69927a8ded79fa12ef7c4ba915e0bfd3a"
+    },
+    {
+      "blob": "efcee53cf1b2ff59ca8b06f924f5be806d4b75c0",
+      "bytes": 4233,
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "dd80f55bb6f790f263f0fe636cf210ce6ac7a80bf6571bc0381de64eeb05626c"
+    },
+    {
+      "blob": "776f821cfbb182aebb46415b4d89557a9ffe9004",
+      "bytes": 1313,
+      "path": ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+      "sha256": "7812c4f81ab32cf5179bf4bfd3e1a8c075fd5de63689b6f6c0bb5446435116d3"
+    },
+    {
+      "blob": "ef191995ff628bbfa86e5074f9948ca27bac3912",
+      "bytes": 1438,
+      "path": ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+      "sha256": "87563ba087a98c909378ed6fc1b7194d295a7c6697a02068c9a677af172f999e"
+    },
+    {
+      "blob": "024d6dd0f0d827b5c686b1f567045c569c4983ac",
+      "bytes": 1620,
+      "path": ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml",
+      "sha256": "7a47a9cda08b3f728858b09e1ca47d15445552ae2b6947f15c138774fc1ad1cc"
+    },
+    {
+      "blob": "4052c2acd95cdb032a2ccd109e3143665520887f",
+      "bytes": 1203,
+      "path": ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+      "sha256": "69f3646881b49602f6f1b54b67f7a7d315d54096a606094c955a344e2ab81d2e"
+    },
+    {
+      "blob": "7c8d6ee6d1f9fe8c7826fe4d177e9c051c64c25e",
+      "bytes": 886,
+      "path": ".github/workflows/qikvrt_publication_router.yml",
+      "sha256": "f8ea5912cbe41d4811df24aded4a28e1f7f02b45c185f6bced85542529edf8b4"
+    },
+    {
+      "blob": "4038f005fdc842efda149a3118fbfcc4ede4ffea",
+      "bytes": 11618,
+      "path": ".github/workflows/qikvrt_qce_c_measurement_binding.yml",
+      "sha256": "156cc47c740f7055402474621372c1a5974e87505b02541e167365c739d9d390"
+    },
+    {
+      "blob": "cc6698a105b726db7b0b58ccb3b98abb24e4024b",
+      "bytes": 3928,
+      "path": ".github/workflows/qikvrt_qce_candidate.yml",
+      "sha256": "d8ce3c07a8e968af181966900572b6b2ef9d9e78c1129d7a5559dc82879e377d"
+    },
+    {
+      "blob": "984fd6d0af66f07a840cd3cc025ea3ec4b61e21a",
+      "bytes": 10582,
+      "path": ".github/workflows/qikvrt_qce_causal_axis_bridge.yml",
+      "sha256": "9a65b1ab17d20d4b33742af541a8714caab1cfe166e79da5cd4ce7182f928e83"
+    },
+    {
+      "blob": "f4f4aa859ed619465c305ad6334164c9ac3964ba",
+      "bytes": 12639,
+      "path": ".github/workflows/qikvrt_qce_causal_axis_selection.yml",
+      "sha256": "2eef88baff1f1b09be783b9c4eae4108c0c02648ff569a58273c68d7d7cd588b"
+    },
+    {
+      "blob": "b5d7a72f01ef94b38e5c07bb9f1ffc9c810eb2de",
+      "bytes": 9662,
+      "path": ".github/workflows/qikvrt_qce_now_serialization.yml",
+      "sha256": "abc7239e18b31abf2708d6934aecfd74e6b7cdd783416683b58f135340d12b37"
+    },
+    {
+      "blob": "7fe9feef36535e1a2c85749145b4ef9c2d3c6ebf",
+      "bytes": 11101,
+      "path": ".github/workflows/qikvrt_qce_null_calibration_ratio.yml",
+      "sha256": "8329af093913f646e88b1badcd4734ada085b98d4b507402cd9a44bd551a2191"
+    },
+    {
+      "blob": "c3e51de650574e6a67127bedddb533ecf7bed298",
+      "bytes": 10970,
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "sha256": "4960e837a93fc8b3e5d2ffd285a72238e0a75ffc206e07c548360fd093089672"
+    },
+    {
+      "blob": "0cf466f8c461aa0293b9ba4c98231fe2f2357ef9",
+      "bytes": 12474,
+      "path": ".github/workflows/qikvrt_repository_mesh_sync_tag.yml",
+      "sha256": "84c34a4ec0984079a31d130ade9aaf119fc8bbd43dd3745196d41bc1070ffeda"
+    },
+    {
+      "blob": "7cb6844c19f1eb38be82f475a25acce46ee039d2",
+      "bytes": 3241,
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "sha256": "b46f6e22546111c1a7c4cc2589c8c3bc5982562cc222770be9558e894d79df76"
+    },
+    {
+      "blob": "484fe5c98f333f3fd921789a456571d281e06353",
+      "bytes": 11839,
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "sha256": "134a31f4cde255753b7de93f964b34b6b0acac0ec16e88a147724d054a539423"
+    },
+    {
+      "blob": "6882d8071f319749e4eeec9d467cf7bcb6c9ed75",
+      "bytes": 3820,
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "sha256": "f4bc91e0a3b85bdf5a73fc0fbb771bca5b7c9d956ec784892dde73b05371c70a"
+    },
+    {
+      "blob": "ea49531e4e413f5b7314206e93e0153c77f3669c",
+      "bytes": 3797,
+      "path": ".github/workflows/qikvrt_round_trip_final_byte_freeze.yml",
+      "sha256": "cdcef87b35d27e05ea62fdd9fd552c6de53d2cf9b3436604c13e37be3c7e12d0"
+    },
+    {
+      "blob": "d5d6a352cfd72a53f2ccb59132012e75bbcdc1db",
+      "bytes": 7124,
+      "path": ".github/workflows/qikvrt_round_trip_prepublication_return.yml",
+      "sha256": "ce17906eaf8879538d6ea43442e7e9d902c71395b28f0c9e82f2b9897cf1bc5a"
+    },
+    {
+      "blob": "527dd8a8514452409d777a985abf68ff897088ad",
+      "bytes": 3743,
+      "path": ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml",
+      "sha256": "3b6890403f964c0d9c53ffb244249ba397e797bf5aa5ee49d25777678e00787f"
+    },
+    {
+      "blob": "42388fda524f56286cb145c295ba5d5aa48d441a",
+      "bytes": 17785,
+      "path": ".github/workflows/qikvrt_round_trip_zenodo_publish.yml",
+      "sha256": "adeeee0612d8f426d1b36e04f50259d15d60ac46cc9156a657a6edd5ad9cf6f2"
+    },
+    {
+      "blob": "0121c8eba6470f77c04ded990d147d81b4ee8009",
+      "bytes": 3535,
+      "path": ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "sha256": "6db7d9ae58123d96b25af0fe3ed7e24ea6983e0a5778a03837f1dfabde9f655b"
+    },
+    {
+      "blob": "5cb837e66086a8af12a88d930438f84bf1c06be6",
+      "bytes": 2220,
+      "path": ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      "sha256": "e0dcdaf0e358c0e379fa037ccee03016b12f72f56513c3e679daa3d89d3a65aa"
+    },
+    {
+      "blob": "10e77c142c0f457c979f01089263aa5af87de9ba",
+      "bytes": 1904,
+      "path": ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "sha256": "29a395363bc2f3bfd6915fe4d5c51e75d21c6d6643aabfafd5054694f7ce0d66"
+    },
+    {
+      "blob": "9fa0fa652d8bc67887e6df0f2733860a3af91573",
+      "bytes": 1921,
+      "path": ".github/workflows/qikvrt_seed_node_revalidation.yml",
+      "sha256": "9bc7a94e348991363cd5abd6cceb1f8356c2ab0a3addfefd665d12a0855117c4"
+    },
+    {
+      "blob": "1d98f87c715d4c1e570ab30b961f243428821d60",
+      "bytes": 2181,
+      "path": ".github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "sha256": "c0e6ffb1bfea984df41e95731807b381b20cc94f045945a84973c2bed51e6857"
+    },
+    {
+      "blob": "6d92901ac442878d6b02cce7dbe77eaa9c00861b",
+      "bytes": 38827,
+      "path": ".github/workflows/qikvrt_status_report_finalize.yml",
+      "sha256": "251e35883e738e64c0e67a0059552ddf7b84ba8d90ae82b48e5128806521d82c"
+    },
+    {
+      "blob": "9696b17d1b83345d89e1f534c7812a70df2281a3",
+      "bytes": 35266,
+      "path": ".github/workflows/qikvrt_status_report_reserve.yml",
+      "sha256": "66a45717a4bf25ef0d8040af34a3670190060c3b926d34c5c9dd451701d78fb4"
+    },
+    {
+      "blob": "ecd668bea4522ebd40aff589b341651fec0d448d",
+      "bytes": 8294,
+      "path": ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml",
+      "sha256": "4c245ea026df631105c6eec83868c68a597d539acaf70ee8a5a4753b8b762bd5"
+    },
+    {
+      "blob": "cffcb872da82ac29d6b6f312d255d7a38948506f",
+      "bytes": 3058,
+      "path": ".github/workflows/qikvrt_temdd.yml",
+      "sha256": "90278614a3befd6353181998cd97a55b5102c1f863e4633706088354cf14b653"
+    },
+    {
+      "blob": "3d114676ad85994308a416534ffa67cab74e1dcb",
+      "bytes": 7153,
+      "path": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+      "sha256": "aedb87486a2a584bd0ebcb818045dadf82a814deef048467deaf402e9d4787c7"
+    },
+    {
+      "blob": "1906dd22d7b0a5c11f476dd6befedac26e900454",
+      "bytes": 6381,
+      "path": ".github/workflows/qikvrt_universal_ontology_shell_fallback.yml",
+      "sha256": "59f57aa460cdf2c86b7056fe635168ba1a4e5ab50b637f98ac75069024f52628"
+    },
+    {
+      "blob": "eddcb4931aaf57818eb02508d2da0e694b4835d6",
+      "bytes": 4427,
+      "path": ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+      "sha256": "1d06ebe154db67e3ee73a080f84da5cd51e373a0d3f3f29f8a2d30692a48607c"
+    },
+    {
+      "blob": "9b318e1f0c0949f39d7dc82aaa9e4857e9678c86",
+      "bytes": 7724,
+      "path": ".github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml",
+      "sha256": "80a158501661036f0fe698f7697b56a96833aa52ccc1a83858768081867c9d85"
+    },
+    {
+      "blob": "db7c43f50f862300348d4e12dff1fbac531b3be9",
+      "bytes": 6305,
+      "path": ".github/workflows/qikvrt_workflow_executor.yml",
+      "sha256": "16e5dafb4b35b09db82bc292d990764a584e13d18aebf682e7db0f7015537f83"
+    },
+    {
+      "blob": "f42391f3acbe3f3276df2f2cccd47ddc88fcb6b6",
+      "bytes": 3479,
+      "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+      "sha256": "4cfa4604371cc655409d721ecefdaedfc9bbc6bb76d369321b5e22109310130a"
+    },
+    {
+      "blob": "3e0827ea9bd2c0276ade7af2502d687552cfb9c1",
+      "bytes": 27642,
+      "path": ".github/workflows/qikvrt_zenodo_reserve.yml",
+      "sha256": "69248103773de20a670ee980678748bbf2fe17d2c2c3dcc0bdaeb85985d93a91"
+    },
+    {
+      "blob": "b793a5ba0cb966520f681399d8f2a61ceb5fe883",
+      "bytes": 4957,
+      "path": "deploy/universal-terminal/Dockerfile",
+      "sha256": "97a03ff7b88218050b4f4295bcf6369ba03a402388364666cca32a0673d4b4f7"
+    },
+    {
+      "blob": "c2099bf301108389192c72497a3637acae392d7a",
+      "bytes": 5001,
+      "path": "deploy/universal-terminal/cloud-entrypoint.sh",
+      "sha256": "97b2507ed2ac3955ed80682403ed482334201511849285c881e5c8739bfc6b9c"
+    },
+    {
+      "blob": "f807391adabc9046fa37ba847f572acbd1709e46",
+      "bytes": 5661,
+      "path": "deploy/universal-terminal/compose.yaml",
+      "sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1"
+    },
+    {
+      "blob": "3db27a8487e67b2beac596e1f576afe1cf95b21e",
+      "bytes": 7470,
+      "path": "deploy/universal-terminal/entrypoint.sh",
+      "sha256": "c0bae910a3220b79d283943294b0ace65b8787c8f95b275a75ffc73d65fb139b"
+    },
+    {
+      "blob": "1a778891a805825bb82d7e475c97d9b02c3e6a6e",
+      "bytes": 1900,
+      "path": "deploy/universal-terminal/mirror-bootstrap.sh",
+      "sha256": "f6889cda54e74b6fa3bc2faf9f73fbe9aca48c394d461769d1f91e5a24202edc"
+    },
+    {
+      "blob": "17b250ab096a70c188913d9368e0493c6ffd0b87",
+      "bytes": 357,
+      "path": "deploy/universal-terminal/named.conf",
+      "sha256": "5df23f5a9d0217cbd38a1d86dd6b661f9cbeea72489a577ef1349948165c6d90"
+    },
+    {
+      "blob": "4e13a623d72896cae563d57b710766af3744a27a",
+      "bytes": 4026,
+      "path": "deploy/universal-terminal/nginx.conf",
+      "sha256": "583491a285112a900cedb5b1e4dc001ddc1df1efd90d13f1f234127f0758489b"
+    },
+    {
+      "blob": "454606e89d09f845ed7470b9aed764dfb1ba884e",
+      "bytes": 4396,
+      "path": "deploy/universal-terminal/qikvrt_smtpd.py",
+      "sha256": "9b68ef0b402ac269418571eebfc9aee5fd33eece849dbe259bd69b73a1e3ce29"
+    },
+    {
+      "blob": "3bec1909edc484bb15116a0a23c27f5b4e20a3e9",
+      "bytes": 1548,
+      "path": "deploy/universal-terminal/runtime-health.sh",
+      "sha256": "731d9e2adddf83999623424f9a306a6dd1ff2b142ec6a179cfd2c9ae12f13bf3"
+    },
+    {
+      "blob": "54c672e48c52b3d5b94a47d73a76137e67fb4662",
+      "bytes": 5285,
+      "path": "deploy/universal-terminal/service-entrypoint.sh",
+      "sha256": "57c34784cf4a82a93a7639cf7917f37bb75e1a4b404e41243f890c5a85f06054"
+    },
+    {
+      "blob": "bd555a057536c9f913fbdcc2a1a9ad3b42da28ab",
+      "bytes": 151,
+      "path": "deploy/universal-terminal/snmpd.conf",
+      "sha256": "3d7caeb6b2f8e0a75f6c66a01b6520ba2403c5ac0b9f64837a11ee2e61e17528"
+    },
+    {
+      "blob": "e06dd174e059b3e81c0706278cfb5c269dbb380c",
+      "bytes": 468,
+      "path": "deploy/universal-terminal/sshd_config",
+      "sha256": "2effb563d95bdb35c9cb22ed144b718dd5ba6df509c70e3db8c4cb44f9b839b3"
+    },
+    {
+      "blob": "2596eac31da3d5758a26d226a9cd247b3102733a",
+      "bytes": 443,
+      "path": "docs/GITHUB_DEPLOYMENT.md",
+      "sha256": "f84aa0a7a148377a807ca963c30507892d630e0d0bf08ed457fd85e515ebdb6e"
+    },
+    {
+      "blob": "4b84a09245cc24bec3f3f0db9790a31ee45d02f2",
+      "bytes": 321,
+      "path": "docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+      "sha256": "cd0dcebb27145969b3e1fc000341fa4b6873d42fad1aab47f52d345615ea0f81"
+    },
+    {
+      "blob": "a1dfd81d0418f74f673bf3085f540df32f21f908",
+      "bytes": 221,
+      "path": "docs/QIKVRT_MESH_DASHBOARD.md",
+      "sha256": "206abfb4ac6cd8ada2e4cee2c634146a81298151095e83d66e9acf6506d493c4"
+    },
+    {
+      "blob": "d697565ce2347e1206d589b799b2c7415255b5b1",
+      "bytes": 666,
+      "path": "docs/README_DEPLOY_GITHUB_PAGES_DE.md",
+      "sha256": "9588c09ab7ee2035e1c13134334f3e732ea749aceba9cd45c62fd17839ac1227"
+    },
+    {
+      "blob": "6b631b51572a2b4ab4df4a32787671ec289d3bf5",
+      "bytes": 22310,
+      "path": "docs/assets/js/qikvrt-repository-terminal.js",
+      "sha256": "30296c535826da2e9e49c528b1d53fd1fa87454883da347a428870c659c9ddb0"
+    },
+    {
+      "blob": "afb34dc921ae63fc3c1bd1c24d775b4ad7312bf9",
+      "bytes": 9774,
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "5620d5840849f6e96f97a04bf5b631be4a534c2b4ccaead0767442f254cd845f"
+    },
+    {
+      "blob": "53edf7c9af7b456604ddbe611d7b8df3af242e4e",
+      "bytes": 18135,
+      "path": "docs/notes/QIKVRT_MESH_EVIDENCE_SPHERE_MONOTONIC_V1.json",
+      "sha256": "6a8772e4f3929fa19c33b07691b8e24b6374de1db19154ba27c4c14caeb41661"
+    },
+    {
+      "blob": "28d330465dbdf56c8f7f3b0cf5d6961e1d2b0305",
+      "bytes": 6275,
+      "path": "docs/notes/QIKVRT_MESH_EVIDENCE_SPHERE_MONOTONIC_V1.md",
+      "sha256": "e06adc60cffddf54bb9f9e2ad0c2d0bf0cdecc5a9551e2410e021d1787e7060c"
+    },
+    {
+      "blob": "6be14c23b3af6eadfe7162579cf1e7ee3f82e552",
+      "bytes": 4272,
+      "path": "docs/qikvrt_trust_mesh/AI_ACT_NACHWEISPFLICHT_DOSSIER_DE.md",
+      "sha256": "b7d658aeca20f239cf619803c91f007ffd9035077023dcc1f74fed1d118669a0"
+    },
+    {
+      "blob": "4d38a00e01d7be0473eac65c42a0d23d40d648f6",
+      "bytes": 1023,
+      "path": "docs/qikvrt_trust_mesh/COMMERCIAL_READINESS_INDEX.json",
+      "sha256": "2ec0b3cb3f632ee8ea4946eb9ff17567bd0e97c880d1a27f5c6ddb4957792b20"
+    },
+    {
+      "blob": "cf89820f7a554b26c18b821ac72897127dbd4a7b",
+      "bytes": 1287,
+      "path": "docs/qikvrt_trust_mesh/CUSTOMER_EMAILS_DE.md",
+      "sha256": "2babda2040924772d30927d8c1235f6c1471800a8d0f97940f5a7ff58336f82e"
+    },
+    {
+      "blob": "447aa9a742980762df1305bee73fa806f6088b2f",
+      "bytes": 1201,
+      "path": "docs/qikvrt_trust_mesh/DEMO_SCRIPT_DE.md",
+      "sha256": "c9a5d2b6e40d74fa994d071df49422b580a957a1e1fbb210efbdbb59cf5fe459"
+    },
+    {
+      "blob": "66c0142d0c040dd7e760a3cf4bbcbe6578a6cfac",
+      "bytes": 1086,
+      "path": "docs/qikvrt_trust_mesh/FAQ_OBJECTIONS_DE.md",
+      "sha256": "2dc7462d61d01dd2b94dc4891426bfaba9f518aae38f0325e6db69ea69b0eecb"
+    },
+    {
+      "blob": "77b7977ffd556cc6e5df5e736f0a506c7af37819",
+      "bytes": 3026,
+      "path": "docs/qikvrt_trust_mesh/KUENSTLICHE_KOGNITION_UND_ONTOLOGIE_DE.md",
+      "sha256": "a71a992b8a45a8e4609a60454ef36b52d6befb6465354068e01db11a3302d8e2"
+    },
+    {
+      "blob": "048e6e27b13d9ef62bb45f8bd3ab4c207d28a35b",
+      "bytes": 1428,
+      "path": "docs/qikvrt_trust_mesh/LANDING_PAGE_DE.md",
+      "sha256": "b6ca7292579a9ea424a1c135e6249cc1e0673342d45229e1afb18ee8f9aa6ced"
+    },
+    {
+      "blob": "984cfd9a416f1e400ce20fb5b3cc7bfab84f67c4",
+      "bytes": 1039,
+      "path": "docs/qikvrt_trust_mesh/LINKEDIN_POSTS_DE.md",
+      "sha256": "723fae90264b20d4288f494e0ff7023bd58d7cfd2e9befc0469435aded26329f"
+    },
+    {
+      "blob": "77633fc9cf4b8d76014a1347a6c945cf6b6a8ab8",
+      "bytes": 1629,
+      "path": "docs/qikvrt_trust_mesh/OFFERING_AND_PRICING_DE.md",
+      "sha256": "bff280c9041c7e230fd5d0189550c6026f83fcbadf426e31395301c4653b9fe4"
+    },
+    {
+      "blob": "366ed3294901d69fbe91d5b610f109891d6c3b80",
+      "bytes": 1465,
+      "path": "docs/qikvrt_trust_mesh/ONE_PAGER_DE.md",
+      "sha256": "6545a938373eb64b465f8f28c4793f75e79f95efa3d1ec7038958d7d0ec27774"
+    },
+    {
+      "blob": "699447d6cb72d4b3b08bdd78ff57d6a98f46784b",
+      "bytes": 727,
+      "path": "docs/qikvrt_trust_mesh/PILOT_PROJECT_PLAN_DE.md",
+      "sha256": "3b24c6b2b85d831e29e4cb7a48b8025df2f68f3110ad26ec9f8f13136c5a09d4"
+    },
+    {
+      "blob": "4cdd49223a5b4a72e1271467859daa40567796e9",
+      "bytes": 937,
+      "path": "docs/qikvrt_trust_mesh/PRESS_RELEASE_DE.md",
+      "sha256": "5a4bc9c5b499efcfc397dfe2bbd20237cf666c6b10d56ee3fd11a0e5efe12131"
+    },
+    {
+      "blob": "10e241e642226925bbb7784f01a69e84e90c4347",
+      "bytes": 773,
+      "path": "docs/qikvrt_trust_mesh/PUBLIC_GITHUB_README_DE.md",
+      "sha256": "bbd6ccefef374d58227454d961516f83517c8948461538787f2f9d9f87205ed6"
+    },
+    {
+      "blob": "128264e4d42e8f427623191ca530e362688bdbf9",
+      "bytes": 136,
+      "path": "docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md",
+      "sha256": "9615d26dbecebb4fbac339a61a58ee7bb9938b788a0439d0264a813a9ee04476"
+    },
+    {
+      "blob": "c73392976ceb60776abf7f4c71150eb7b68e843b",
+      "bytes": 1591,
+      "path": "docs/qikvrt_trust_mesh/QIKVRT_UNIQUE_FEATURES_DE.md",
+      "sha256": "3ac7b1e2ff85529d670dc2f8d9401ebd746fc209d27dda7156feccdb98c32a5d"
+    },
+    {
+      "blob": "01ad87a5a1523add880f770d4509ff1539868e38",
+      "bytes": 940,
+      "path": "docs/qikvrt_trust_mesh/RISK_AND_CLAIMS_BOUNDARY_DE.md",
+      "sha256": "4bb2a542a36ab02a73e08787c33410c4e3b48c917652728d59643a09ddecce5a"
+    },
+    {
+      "blob": "e4c2d07ccb9fc395d0fc28ffdae905fe00dca9ef",
+      "bytes": 723,
+      "path": "docs/qikvrt_trust_mesh/SALES_CALL_PLAYBOOK_DE.md",
+      "sha256": "b871995575dbcacbdaf773cb495a6b2f8b38f4d052575d98a8b679eaa35fc97d"
+    },
+    {
+      "blob": "a3d5b4737acbf28b854e15108e1d33dfbe22e582",
+      "bytes": 4386,
+      "path": "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md",
+      "sha256": "7d60d3052b6ff6742a193bec76c808bde7efd8ad86f012db35e733cadf559e8b"
+    },
+    {
+      "blob": "642506a8e0dfdba401d136fbccc1528b380f1c7d",
+      "bytes": 6745,
+      "path": "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
+      "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047"
+    },
+    {
+      "blob": "cfb03ebd863f041eecb2c39311f3cc54c609a638",
+      "bytes": 1659,
+      "path": "docs/terminal/QIKVRT_TERMINAL_FRAME_V1.schema.json",
+      "sha256": "b413c1467ebdb7a8a47f641786f4ed9c1a1ae2fb974f4afbe1ec6f9891c619ed"
+    },
+    {
+      "blob": "615512ad2951b8c9f3ebd076f3b074d2cf25cbfa",
+      "bytes": 1575,
+      "path": "registry/NODEMESH_INDEX.json",
+      "sha256": "2b82f68672663441711881687983655394b9b15019682adf222e310c03862215"
+    },
+    {
+      "blob": "fe60af81f08ef01e5cbc4d4dad3f1e585675dd68",
+      "bytes": 659,
+      "path": "registry/NODEMESH_STATUS.json",
+      "sha256": "e35759546c43832c05c492dd47912f37a243c697a66e3fefe37cdc0cc0227c5b"
+    },
+    {
+      "blob": "0dd4584a2e9ced084d1652f10c90e74915610588",
+      "bytes": 1409,
+      "path": "registry/NODE_DISCOVERY_POLICY.json",
+      "sha256": "fb4b8472bd06eea100af74ea8d5babf9c6ac7164621cc27c53cdb5e0e33307f9"
+    },
+    {
+      "blob": "bf29b0026cd6b01f0954f7f143ffe02b950ac8bd",
+      "bytes": 945,
+      "path": "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+      "sha256": "e2a33ed2fd0bf3231c3c47ae9bf08aea98e12ef77cdc319cd0788bd296ef3ce5"
+    },
+    {
+      "blob": "3edb3e7dbaf2916756834afa3ce898b660920339",
+      "bytes": 4667,
+      "path": "runtime/capabilities/ZENODO_METADATA_EDIT_CAPABILITY.json",
+      "sha256": "39632274ab8657829c1fc3c59d684333b0cbf4c7b5c9df80c8c3150f4ae3acfb"
+    },
+    {
+      "blob": "25789699aed7c53e08b3c4e66d4ca8c0f61bdda9",
+      "bytes": 5220,
+      "path": "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
+      "sha256": "a0815a2fc2397d7bf5bca7f54601e246e6dc6ceae8d6fb53391cbce87e021723"
+    },
+    {
+      "blob": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+      "bytes": 8987,
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "sha256": "aa94375b3d5255ebe0dc01bfc6f7dffe5d111e2667ff01455b14a272c3ab53d7"
+    },
+    {
+      "blob": "d74151404b6be0d88eb039343fd0bc1fde998caf",
+      "bytes": 604,
+      "path": "state/launcher_acceptance_record.json",
+      "sha256": "fc062e63a5d4956d55fa47ee1a0f431a369f2bc8038a2ca88df229269b7454d8"
+    },
+    {
+      "blob": "4ddea0669f9a420b9664301cf025ef6e579abdc6",
+      "bytes": 5812,
+      "path": "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+      "sha256": "e4cdc28dbc9886fa5cdb9100b5d340a2b0c6f5f014bc6a467d155d312c90e6ea"
+    },
+    {
+      "blob": "51b109ab2e7db57082d5a091fecf5e52e471d32f",
+      "bytes": 8760,
+      "path": "state/work_units/QIKVRT_BROWSER_TERMINAL_INTERFACE_V1.json",
+      "sha256": "f85b25607b9def54916f1351f793d200f2911a5459deb09db97c573589fe5fda"
+    },
+    {
+      "blob": "8ae56034298cd526b61de2a98b4f363dff6c7d9c",
+      "bytes": 27195,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "faba273fe232e6b2b78f0a31ab68e058e0ffdd20bcbd3fd748ebb5ff149138b9"
+    },
+    {
+      "blob": "f92602d4a8698c7d3b0547c585b0144e39fea8ab",
+      "bytes": 27261,
+      "path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+      "sha256": "60a326d5ebe23f5fce93320e3de39d325b0cecadbf3050adb111f5a41d5c0e53"
+    },
+    {
+      "blob": "59c62884c38976ba2a2bc23a3fabc0c183b33dc7",
+      "bytes": 54929,
+      "path": "tools/qikvrt_content_disposition_batch_002_terminal.py",
+      "sha256": "8ef50d544dff9d97baed5132abc048520291ebc763d784007425f7d63accce65"
+    },
+    {
+      "blob": "05396c27a0e84c97f661c4ffd29adf5cef9bd0cf",
+      "bytes": 189,
+      "path": "tools/qikvrt_github_mesh_api_handler.py",
+      "sha256": "489c5b3905c1f94309601eca04fac923dd4b872253472b28495721f47ba6071c"
+    },
+    {
+      "blob": "94f553fe54038389c19bc8b95a0a69c86961a9bf",
+      "bytes": 10198,
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "sha256": "e2c674f221255e9ed2cf495bb897181a8352420acb656bd7fb7e0e8193ced1dd"
+    },
+    {
+      "blob": "fc8a61ea19944d3eebb6dffdadf09b92b9521713",
+      "bytes": 173,
+      "path": "tools/qikvrt_seed_mesh_audit_export.sh",
+      "sha256": "18779a020e120efff5a9671f5e414404e3e8856dfb19c3fc88c9689313c17e28"
+    },
+    {
+      "blob": "0054d656151e1421b7472a49f68e0bbb8d751184",
+      "bytes": 172,
+      "path": "tools/qikvrt_seed_mesh_maintenance.sh",
+      "sha256": "40de2e3402982e8a7cd53eec2a5066ef3ffc8e3d7c36e3db2e02771aa50d44be"
+    },
+    {
+      "blob": "1788bab299d3fcaf07af99c57a2d1f2471636d99",
+      "bytes": 28982,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "75d334b48eefb837ad02b285765764b5a0912d6b0bc2596284a7ae2ba02c1345"
+    },
+    {
+      "blob": "1ad7b5b5c182b20bd2e9ac5ef958f8c12c5588b7",
+      "bytes": 7975,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "b3f17dc4dd5683453e949451b7061ba553d290af5241475236d4097e8beb9815"
+    },
+    {
+      "blob": "5fd49705aae7faa03533374752b3504f664f8888",
+      "bytes": 25913,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "f432bab8dafe1a4503690b5e697b1456d025207cf9f71a23f3ca0c6083974245"
+    },
+    {
+      "blob": "1b10ad42347a44fe402e117dba4592c1950c5a4f",
+      "bytes": 28955,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "d1e42b243e6516e16f8d7a8dc08e6b03b396211b2dcd42e85769d4c4f1e0dc9c"
+    },
+    {
+      "blob": "e3f5e031824b6908c2a4d7ed4fa0af80fbbf4545",
+      "bytes": 24679,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "e6f461be6a995320616feaaa92092d9517a485f930ea8ea611dd4f55f91e50ef"
+    },
+    {
+      "blob": "701d02107616d207a37bc56ef33dbd3e1e41d608",
+      "bytes": 28714,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "e6cdaf8e57ad8a98969ce0f148e8b69e7203a82e69c05828c39e0760f108dd2c"
+    },
+    {
+      "blob": "20694f465b393faf19ed033ae3bb4d1e47d6f1e5",
+      "bytes": 7901,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "d165ac1c1f8439a260d4620ebfa69c26130ebac304071d467725a960369b3e6e"
+    },
+    {
+      "blob": "909ddd5122fe8c6b1ee8936005c66fe1bb02ee5f",
+      "bytes": 22790,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "9c2bb2997b3674d5d8093526d4f7eb15398ee71918045e86deb5b7c3000229d7"
+    },
+    {
+      "blob": "860d313872604d0ea0ec59e06b0f1afb9890b001",
+      "bytes": 28484,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "8d70e01a0fead0fcfd74731646b3cd1e9f2294ffa7f15ca3b5ac409c35e84ffe"
+    },
+    {
+      "blob": "701a8d2800ac2773a4b159bee76b07f1ae64864d",
+      "bytes": 4556,
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "sha256": "bc0bdd936601b5bd336756201ff47f5f51bfb1fd47777e6c1e68647f2bf96a50"
+    },
+    {
+      "blob": "1d7cf69a661e17bf41a51d110770dbe9cee5cab4",
+      "bytes": 17938,
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "sha256": "96cf0debfd60aed8944e870f5ef3c912b8386157a3f518b07b4960e6af7b597a"
+    },
+    {
+      "blob": "48fd528d890850c9c5e2bb7b78c11a7842c91826",
+      "bytes": 10577,
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "sha256": "46b3854ac3d2d0e7491e76206b822d34365db90d9154c90c3cba52f1a8d8e812"
+    },
+    {
+      "blob": "815e32524401aac59fa79aa4f2fb1e37b2f49fdc",
+      "bytes": 4447,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "fa1e3bbc32492a87d3a1b0c1f7bfa0e6a0d7cd6dd4c3cdb30335f47e438cf089"
+    },
+    {
+      "blob": "a8a03ba7ac496a51fb17004a5103103a1e78ac34",
+      "bytes": 8629,
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "sha256": "2be1dd6a405364e6015eab05583dd4cca650cb10f63b319a3fe98a93d778dfd4"
+    },
+    {
+      "blob": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+      "bytes": 7776,
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "c9c65f62eccc27f447dff205cf549218b5aa12af548a0767440bfecb22246300"
+    },
+    {
+      "blob": "a3194dcf97665eb472de79757859727859dcc7f3",
+      "bytes": 21956,
+      "path": "docs/assets/js/qikvrt-repository-terminal.js",
+      "sha256": "3a3e65b172fbc169a769af0a63c1bd8d8b11c5f99264ce75d539d7c28eb84f74"
+    },
+    {
+      "blob": "8b91ac4cf2cc58d3a4bcd695d703bd4465018da8",
+      "bytes": 6293,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "bbc36ef7efd8c56a181b5e78df496b67d0144e285c54318c8a9224215f13c872"
+    },
+    {
+      "blob": "0c7fe64b9bfc36ff04fa40f43042da341e343391",
+      "bytes": 8479,
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "ec176ea902dd2bb13ca478cb0462c9c5491e5380136de63340396e36c9b2954e"
+    },
+    {
+      "blob": "dc37a723f491bc4343a998d5067bea731c55c068",
+      "bytes": 5527,
+      "path": "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+      "sha256": "19032adb45e8423e1bceebc3c910cbdaa212b686530542c150ae6421c6ce5b68"
+    },
+    {
+      "blob": "c276845019b7a5635814d3e452a2bcf079845212",
+      "bytes": 26589,
+      "path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+      "sha256": "34dea3640d97229b1cb6f900c6c03829fa3e289436578026f483fa03b524f9e7"
+    },
+    {
+      "blob": "87f6dd86a6eb02d7ec2ca86f730324052d927aa2",
+      "bytes": 9480,
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "sha256": "60380776aee3b33272ab395320c25fb327fd72bfd778bf83a11ce7ea42fba35a"
+    },
+    {
+      "blob": "9c59f349d4013085bde6dc82e91706d2a2da619a",
+      "bytes": 13615,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "bdc4be4fad8a7faa6c595eb1342a035290291237aa34aceb9dddaa615e3bb2d0"
+    },
+    {
+      "blob": "96c34c7d61b5227d52b2611d0feb86a65a360fc9",
+      "bytes": 3621,
+      "path": "runtime/capabilities/MESH_MONITOR_RAILWAY_SERVER_DEPLOYMENT_20261004.json",
+      "sha256": "29cb8247f8e97dd24ceb545f961cb4017780e38a4f219018677c7c3ff1b49c2a"
+    },
+    {
+      "blob": "f400e1a423c9ab0bf9cc96339814673360ce32c9",
+      "bytes": 3709,
+      "path": ".github/workflows/qikvrt_real_mesh.yml",
+      "sha256": "d9eebf8b600d63a9d041b43231a0eafc8b8e159b3d758f8d9fd45c51f54af6e4"
+    },
+    {
+      "blob": "4d850c8fc4cacc4c7acaf6b9505a42cd3cf722d6",
+      "bytes": 8594,
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "sha256": "d410b52581a0fa308a529e968aaf568e7e6bfe22675c912ad01588ed0ff28640"
+    },
+    {
+      "blob": "5f515c5bdd60b3b46a84abf27d71e442e2d8b57f",
+      "bytes": 9377,
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "sha256": "d32ea063f84beb0a55c9ae4d45525f2a66611c95da79b11002d10bcaccded9af"
+    },
+    {
+      "blob": "64e8a2911da3cd372ae561a8649793ff03823dff",
+      "bytes": 10238,
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "sha256": "8eedde74dbd4d248407d93ab0fd380f6c66ed3b5b851d9629fa05afddb52fb0e"
+    },
+    {
+      "blob": "f4047a29942719ca99663398de5e5d83f592c021",
+      "bytes": 3070,
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "61d9aa62ab28fc21e2cae8942ab34a31bccd1fb5c1a6eeb66fb487082809c926"
+    },
+    {
+      "blob": "62d4dea9e02827bf6241287a54647f28924a9cd1",
+      "bytes": 15199,
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "sha256": "74357bc710a0aed7fb0eb17ff2e236aa7919572307485587b2a6df79b49b1b87"
+    },
+    {
+      "blob": "bbfc55b642e1bbcd0a98ed7a164ee283d6cc8611",
+      "bytes": 3729,
+      "path": ".github/workflows/qikvrt_authenticated_web_delivery_proxy.yml",
+      "sha256": "e8d6833278c3706267182edd4139b586ea2f29566721a9b697fb2ec154798fbe"
+    },
+    {
+      "blob": "d70f3181e2176ac09778e16fa9d36b221ef41d88",
+      "bytes": 8531,
+      "path": ".github/workflows/qikvrt_authority_review_report_fanout.yml",
+      "sha256": "0904d0c4b1cb23953ea310a5d8c26efbeb0db1873e4a8e3fbd2d1e2d10bb6526"
+    },
+    {
+      "blob": "27ff44cdee7097205034f3f50ac69282959200c2",
+      "bytes": 16849,
+      "path": ".github/workflows/qikvrt_autonomous_pr_head_continuation.yml",
+      "sha256": "effc6529bae7b68cd504a55b357260bb0d96fc33dd25a7e08e73dda1f7059f3b"
+    },
+    {
+      "blob": "f447b760ec52834671a279a5eb6a32915539dd4a",
+      "bytes": 26481,
+      "path": ".github/workflows/qikvrt_autonomous_ruleset_effect_loop.yml",
+      "sha256": "d9c423c8b428f694b60515cfff5e7ef9773df4d73714ca51295ba602fa36ca70"
+    },
+    {
+      "blob": "3ea47370fa6571d6a60fc8f2d59b9723cfbe7725",
+      "bytes": 3680,
+      "path": ".github/workflows/qikvrt_c89_turbo_pascal_delphi_bridge.yml",
+      "sha256": "35dd21aaaa08cb8787b7737619cf5e79f20588af4880cd384eb99aa1b7c92a01"
+    },
+    {
+      "blob": "2ef0f835de431e323e5be5f95dd035d83c01eda2",
+      "bytes": 4663,
+      "path": ".github/workflows/qikvrt_circular_spark_v2.yml",
+      "sha256": "6deb0b9f237a94246aa155fb2cdb7338d5e0e77653ff62a97ad45c39862de044"
+    },
+    {
+      "blob": "d51e3167efd68e7bdf29bc470e2972f796d747b3",
+      "bytes": 4848,
+      "path": ".github/workflows/qikvrt_cloud_transputer_integrity_objects_v1.yml",
+      "sha256": "e2cc0880fe508ed2cad8b1eb008afedb08a49e9be6d122320cf5fb9390309fbd"
+    },
+    {
+      "blob": "0f523ea84cf2f1428861f0d92c9b675f1505213b",
+      "bytes": 9400,
+      "path": ".github/workflows/qikvrt_cloud_transputer_materialization_v1.yml",
+      "sha256": "426195c1cb5908a246a1644f67e2e3e9b366e59cf5bd3146b0a69ee8836e1f34"
+    },
+    {
+      "blob": "c35143da7d97b413fb07b246b67f1bc8216ff5d6",
+      "bytes": 7228,
+      "path": ".github/workflows/qikvrt_d3_fixed_point.yml",
+      "sha256": "cf082714faee8b8151efb032326228a320236b2ade42e0a58e835ee78ea02cef"
+    },
+    {
+      "blob": "13584d3c6cfcf405c906d5b5b83da43ef84ba678",
+      "bytes": 728,
+      "path": ".github/workflows/qikvrt_explicit_hold_contract.yml",
+      "sha256": "82c4300bc5ebeeb247b71c87d2f4ced448c3e278a7ed136e35b68d1ccc8f885e"
+    },
+    {
+      "blob": "c3b48f39cbcfd26bbcb893e79b370905eb35c935",
+      "bytes": 1948,
+      "path": ".github/workflows/qikvrt_firefox_proxy_delegation.yml",
+      "sha256": "d24e4585b2632f4cfc054da8306b630ee48253f0e2881c599977fbe56abf2668"
+    },
+    {
+      "blob": "579edb84b9f5c91eba8d4963d8d33d3c027ec070",
+      "bytes": 2621,
+      "path": ".github/workflows/qikvrt_lean_gate_m68000.yml",
+      "sha256": "1978119d803b2833b1045ebdf9bcb9c3948011bfdb264982afa4bc4844bd2e4a"
+    },
+    {
+      "blob": "a66f25c7e9b06dc6a2bf849dc4b4aa28f7af6c64",
+      "bytes": 11381,
+      "path": ".github/workflows/qikvrt_lean_v2_m68000_d3.yml",
+      "sha256": "ab875e3651b0221a91ab995b79d76e6e74b1954a2aedf8dd16f124d351e58b16"
+    },
+    {
+      "blob": "ea583559d5045cefe5a2f922f9af32a899c2b15f",
+      "bytes": 2638,
+      "path": ".github/workflows/qikvrt_lean_v2_m68000_mesh_recovery.yml",
+      "sha256": "d347533345fd6398172f12a0bd4626d9899c148589100362f49fdc3414f401d2"
+    },
+    {
+      "blob": "7b5e7dd6e5b35b0541a9c750b9487e8fbb68ffe1",
+      "bytes": 9995,
+      "path": ".github/workflows/qikvrt_m68000_tos_consumer.yml",
+      "sha256": "b4a1752524b048440c4a8a0f954a39da94523520b75aa0372ee5743ba9187f8e"
+    },
+    {
+      "blob": "77b169cb17a061d2907a121e6e12e99ca932b326",
+      "bytes": 5944,
+      "path": ".github/workflows/qikvrt_perfect_optimum_self_application.yml",
+      "sha256": "74862dcfc49d9c45c8be77d69d95faf82e923bb0537d339f7eee5987148c715e"
+    },
+    {
+      "blob": "1519cbea5147c0578dcef5dc07d893d04a8512b4",
+      "bytes": 10082,
+      "path": ".github/workflows/qikvrt_planck_tick_gap_law_zenodo_publish.yml",
+      "sha256": "ea5dcc9f1cb272aee6d44e03ea66baf2903d64095ba2bbf3884b3b5b13dbdb52"
+    },
+    {
+      "blob": "ec55fc1d3b8c2404b5460297f3610584038671cc",
+      "bytes": 1810,
+      "path": ".github/workflows/qikvrt_pr_integrity_projection.yml",
+      "sha256": "65717057aa9e0da8fff361abfe3f672149b844428e9b680363207fcc77ac3511"
+    },
+    {
+      "blob": "2826ecc670a44ee52e4ef797d4dc4000357ca8de",
+      "bytes": 4923,
+      "path": ".github/workflows/qikvrt_quantum_causal_neutron_star_vhdl.yml",
+      "sha256": "275999d125402b3a433e1a81832874a9e0867bb540b2e947f0f5f8c89e9b5e49"
+    },
+    {
+      "blob": "b4e09548488834932cced35d02400a27f6158194",
+      "bytes": 3348,
+      "path": ".github/workflows/qikvrt_real_mesh_system_verification.yml",
+      "sha256": "dfa33165ce14f7b78aee9ae2ca03c4814b52151cb80ae99b0fa5e068d6234c7f"
+    },
+    {
+      "blob": "bd28c51d30c1238a74167990485745be5e44b1bb",
+      "bytes": 8909,
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "sha256": "79eea2a4e26a7ced4b6b01c8cc2e84132b03c862b4e6925ea1c386ac205ab66e"
+    },
+    {
+      "blob": "8f15568db8100b615178ed21dd4ac0f6de51f0ff",
+      "bytes": 5559,
+      "path": ".github/workflows/qikvrt_relational_time_evidence_sphere_materialize.yml",
+      "sha256": "66c2943e5a511e2d428bb78e6e0976d2870f794cd040743021241ed97dace7ef"
+    },
+    {
+      "blob": "e2071b319c41c32d4228ce9bf0b26427de238078",
+      "bytes": 17462,
+      "path": ".github/workflows/qikvrt_relational_time_evidence_sphere_zenodo_publish.yml",
+      "sha256": "2cc9da05f5ab54a3c14b9d4b1fdf128dafb7c498bac486baef788f85e85785e4"
+    },
+    {
+      "blob": "f36753f6e1694beaaa3d7bcefd626436d2d950a2",
+      "bytes": 13874,
+      "path": ".github/workflows/qikvrt_relational_time_evidence_sphere_zenodo_publish_transport_v2.yml",
+      "sha256": "9deadbd63e601687265cf45cc92b31bd859882aa561bff860bf6218ec2b421ff"
+    },
+    {
+      "blob": "326454d610a5a769c9da6562c1f08357f161cb56",
+      "bytes": 7399,
+      "path": ".github/workflows/qikvrt_repository_dod_census.yml",
+      "sha256": "93a2e21f826571bad14232efab8c230b8e71c14609d32bb0c3670ca1fcb52ec0"
+    },
+    {
+      "blob": "cd3039b3f026335af73913e4e34a27ce358202bb",
+      "bytes": 5540,
+      "path": ".github/workflows/qikvrt_requested_review_stale_work_unit_reaper.yml",
+      "sha256": "0f993d7e453c613e3f611de4abdc91b4f9a1d8b443c7c8edbc873a7069690730"
+    },
+    {
+      "blob": "26d0d1a2f0d2d15a44137992208a8b4022374cbb",
+      "bytes": 7305,
+      "path": ".github/workflows/qikvrt_ruleset_effect_dispatch_bridge.yml",
+      "sha256": "3a0c081bf453eda02bc2e15b1ecc94326524ca7dea7909080e36bd4b43a47399"
+    },
+    {
+      "blob": "381728289b3b256d4f69a1e871cf17b5f36cb2f2",
+      "bytes": 1337,
+      "path": ".github/workflows/qikvrt_ruleset_reconcile.yml",
+      "sha256": "9a1aae793ca71f4a18468d05bd3ff5744709c925e713860f835cea8b5aa3347b"
+    },
+    {
+      "blob": "c43f013d71a2fcdd4d8b6162e90a8c40b090ac4f",
+      "bytes": 2043,
+      "path": ".github/workflows/qikvrt_siemens_reference_integration.yml",
+      "sha256": "0e1c189677c150e3ef0363b5b348d5cb55c94ca77e5fab4361cf476522bae8d3"
+    },
+    {
+      "blob": "1726c36db0d1579ef6df29ace7cd0da130799ebe",
+      "bytes": 3542,
+      "path": ".github/workflows/qikvrt_spark_branch_runtime.yml",
+      "sha256": "0e6dfeda7200526060de2d61839e58cecd3965a461ae91fe21c253509127d513"
+    },
+    {
+      "blob": "6037cc62f326c6993c19495b0715555d3f5659ea",
+      "bytes": 2529,
+      "path": ".github/workflows/qikvrt_transputer_evidence_spiral_zenodo_preflight.yml",
+      "sha256": "a7461bed811c4319adb5047ee05af3921932428db95bf2f9076db1aa1acb7af3"
+    },
+    {
+      "blob": "c94cd3315a1a4063280d8c1be7cd13f7231481bd",
+      "bytes": 14668,
+      "path": ".github/workflows/qikvrt_universal_terminal_container.yml",
+      "sha256": "1da1c65095386b0a943356ccedf84918d8d01c46d9d3d9625d4a95757b442e66"
+    },
+    {
+      "blob": "188a2898983858b6cdcd485119fa02b2f3bf92fb",
+      "bytes": 4688,
+      "path": ".github/workflows/qikvrt_universal_terminal_materialize.yml",
+      "sha256": "6cce86c1b59790649dfb4ef1b3060d1ffd82146978f272a910d301285f82f235"
+    },
+    {
+      "blob": "4a7a6a84643bc09fe9a74250e1f229e44e563b90",
+      "bytes": 2443,
+      "path": ".github/workflows/qikvrt_virtual_mesh_m68000_acceptance.yml",
+      "sha256": "bf2fe0d7fc1baddbfeb82b3dada4af93baeed7774aabc6a43be9e75765754bea"
+    },
+    {
+      "blob": "aa12bfc292052fbe8870056a2f15b8915e79d8ab",
+      "bytes": 4037,
+      "path": ".github/workflows/qikvrt_wire_roundtrip_v1.yml",
+      "sha256": "85d475241e3747e43e264c07fded793bdcc60d8f7f0d989cc4c8a46399e95d0d"
+    },
+    {
+      "blob": "a84f94cee96c2565f97091a5d4829c8ad25d5413",
+      "bytes": 3149,
+      "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+      "sha256": "fb9efe81cecdae3219dc8ef81cb29c70a8d0f224cae25580d79c4344e680f006"
+    },
+    {
+      "blob": "f44c87fe988b2f02e75c5c3df14e43f415adea55",
+      "bytes": 4136,
+      "path": ".github/workflows/qikvrt_zero_bug_continuous.yml",
+      "sha256": "75d2dea0b63bc6e61c98f14d2d31b6b85c1a3c7f16302381f473b3a661447058"
+    },
+    {
+      "blob": "ee7afd01e544c51f7aad0ba8cb23ad08168accc9",
+      "bytes": 5409,
+      "path": ".github/workflows/qikvrt_zero_job_self_dispatch.yml",
+      "sha256": "35799c41514897c212222ce2872a603c705aa67a544461136b2faf6a3d8e303d"
+    },
+    {
+      "blob": "2ec05a71203387ed369e74cf4b2cef5518710e16",
+      "bytes": 7398,
+      "path": "deploy/mesh-monitor/server.py",
+      "sha256": "d41844b0e1a480f1d2411bbc0787b3822bf25c8d3fbc53dc425b20bbfbb37406"
+    },
+    {
+      "blob": "2ad8158ce22f3d6ea988bfe9e6c036b19d404ec3",
+      "bytes": 61,
+      "path": "deploy/mesh-monitor/start.sh",
+      "sha256": "3f803dc6b9e067599ff8e4aa10b1b74f1c1ce494278f0b40660fa62d6439868c"
+    },
+    {
+      "blob": "716a99514eeabf91438ce8c69610968a671d0dfe",
+      "bytes": 4220,
+      "path": "deploy/siemens-horizon/QIKVRT_SIEMENS_HORIZON_ADAPTER_V1.md",
+      "sha256": "b73e5546dedf567adcf7af44fdb2fdd4d0f5cd2ea08fdbede57fc83b0d276c67"
+    },
+    {
+      "blob": "275c3cc576c217b2e2306e6361c3c2e0ef95aa99",
+      "bytes": 1618,
+      "path": "deploy/siemens-horizon/REFERENCE_INTEGRATION_V1.md",
+      "sha256": "bb8a8183d3b63bca01cb18afab830432d459e095c7f1aea94453999d8279b47e"
+    },
+    {
+      "blob": "ef5a6f2eedd71aa9d1c16de2f3d9979776589a29",
+      "bytes": 138,
+      "path": "deploy/siemens-horizon/reference-twin-state.json",
+      "sha256": "a9caa49fbd132cba44669d3ab5a33cf6b0e61567298e4990e15bac9d98aae542"
+    },
+    {
+      "blob": "fc16a6c0fb2f8a6c95acef76b608547ee928e80f",
+      "bytes": 2016,
+      "path": "deploy/vercel-monitor/api/state.js",
+      "sha256": "c69ffb087400dbef8a24010bb59f53f9885b598953da5673e15fd49b2ff765b7"
+    },
+    {
+      "blob": "e3799c95bf69561a9922f3d762647b9dd5cc87b7",
+      "bytes": 352,
+      "path": "deploy/vercel-monitor/vercel.json",
+      "sha256": "1f07ddb8a407574a24fab8d58a178b2873c40ec2ddf13915884e037e4cbe9b99"
+    },
+    {
+      "blob": "c3fb61be294f469312b3d5dc6dfecdc385792800",
+      "bytes": 4737,
+      "path": "docs/MESH_SELF_EXPLANATION_AND_DELIVERY.md",
+      "sha256": "11e61751673e7acd9d32cbcad60a5a1f06c5c30c1c0071b32591980aa2492023"
+    },
+    {
+      "blob": "11dd14969b96aa90e846d5c56f3a6ae22773a1fc",
+      "bytes": 2271,
+      "path": "docs/architecture/QIKVRT_MESH_AUTHORITY_MIRROR_INSTANCE_V1.md",
+      "sha256": "64b3db2616e695f031e86e75c18a255f3c92e20953c8ee7b1db38511680f287e"
+    },
+    {
+      "blob": "b3af0791d6ceee94eed176a3746797f155e3b432",
+      "bytes": 4978,
+      "path": "docs/architecture/QIKVRT_REAL_MESH_V1.md",
+      "sha256": "86df30a69742bdb9bc249166de462924be143759bb4c9d7699f85b8fcc8a1bae"
+    },
+    {
+      "blob": "002ed77cda3fb73f883ea64e52be1ba068b63588",
+      "bytes": 1849,
+      "path": "docs/research/2026-09-05-information-effect-axis/DELIVERY_AND_MESH_RULE.md",
+      "sha256": "db6e0ccc0cc5e1cd9be7affc04531eca5e9a538da36ceadc20c2e353a8fd7aef"
+    },
+    {
+      "blob": "bef22f9ba926bdfca979f8c07089f52faed57268",
+      "bytes": 13980,
+      "path": "docs/research/2026-09-05-information-effect-axis/PROSA_TRANSPUTER_ZUM_EVIDENZ_MESH.md",
+      "sha256": "2387eb2ab88f55b974a77b2c53b6ff24a2ea6c2ef70b04c5a358f647bfc13d96"
+    },
+    {
+      "blob": "c2f9ca497645dadd52c99be6c73ac260436b90b5",
+      "bytes": 19273,
+      "path": "docs/research/2026-09-05-information-effect-axis/TRANSPUTER_TO_EVIDENCE_MESH.md",
+      "sha256": "b5b1071a95fa3ce9c8583ba70fc2bbfcf60e56a90f06257fb85a3b44943cadfe"
+    },
+    {
+      "blob": "62eaea728876c6d7900b41f826b3f85b0d311500",
+      "bytes": 2724,
+      "path": "docs/terminal/FIREFOX_PROXY_DELEGATION_BRIDGE_V1.md",
+      "sha256": "0ca39d2821221f2826bc2fca2706dc42b75068fc515efc959a3b7f424921ebce"
+    },
+    {
+      "blob": "fbe6412a47d753c74072ad6eceecab783ae84ad5",
+      "bytes": 3282,
+      "path": "docs/terminal/QIKVRT_CLOUD_TRANSPUTER_MATERIALIZATION_V1.md",
+      "sha256": "da82c8748a04f6e2935c14de473d8c7d4ab6043435254af3f874a010ba7e625c"
+    },
+    {
+      "blob": "326b527b992296c022f55d379337f1f66f8aed9b",
+      "bytes": 3525,
+      "path": "docs/terminal/QIKVRT_EXECUTION_PRECEDENCE_V1.md",
+      "sha256": "7c0def279b21c8c4f7cc7beced9db9fc079f5456cb63061b0e656ed2d4f0a3c7"
+    },
+    {
+      "blob": "691dd9345c3491b52cbe440dd771a6d6d849fcfd",
+      "bytes": 2568,
+      "path": "docs/terminal/QIKVRT_LIVE_EVENT_STREAM_V1.md",
+      "sha256": "15e27f5a8c1e58205b5e08fd70c9e763ebd5be42f076a086e43d07a0c4aec31d"
+    },
+    {
+      "blob": "cbfee6f727a402b9869dddb13ec1488a032d4e8b",
+      "bytes": 2712,
+      "path": "docs/terminal/REQUIREMENT_DELIVERY_DOD_V1.md",
+      "sha256": "c02434a50e56f863d6367646da96c55cbf1a5d79d188d44d3aaed849b3e890e5"
+    },
+    {
+      "blob": "d4a578847fb76352926d761e69fad2efe5e35cba",
+      "bytes": 3700,
+      "path": "docs/terminal/quantum-causal-neutron-star/status.json",
+      "sha256": "ba9460ebca905a07226b4066fd9f3fe1aef09053995cc6eac52f7e1e2bce1c7a"
+    },
+    {
+      "blob": "2cff8b504ba037a11208c6291746192183c9e815",
+      "bytes": 3244,
+      "path": "state/authorization/delegations/OWNER_MESH_REPOSITORY_SELF_REVIEW_FEEDBACK_V1.json",
+      "sha256": "ddd7bb371dae806858ebba80f1bd2a0df40adf06ec045a4f9bec1c9fdd97a18f"
+    },
+    {
+      "blob": "5326b3883e4a0ea350aebf7ba32844a4c5ccc966",
+      "bytes": 1205,
+      "path": "state/external/vercel/QIKVRT_BEACON_DEPLOYMENT_RECEIPT.json",
+      "sha256": "a1446fcb71e89aefee902d7ec5911ec4f5448cef96524219be7b336e983d8a8b"
+    },
+    {
+      "blob": "850e09b7ad442d26c4e869c79e9b8a218041adc6",
+      "bytes": 2842,
+      "path": "state/mesh/QIKVRT_AUTHORITY_MIRROR_MESH_INSTANCE_V1.json",
+      "sha256": "a145ed50b713e8aa4aa05592a3a320fc299d1b868055ca5509ec7c0a8f714224"
+    },
+    {
+      "blob": "88fb1db437dc76e29d6b6a2711ea6db2fcefa659",
+      "bytes": 1996,
+      "path": "state/mesh/QIKVRT_REAL_MESH_V1.json",
+      "sha256": "c783ef2193b1bb40fd25ee331c0e882d3562bff80a1660a06991038183431187"
+    },
+    {
+      "blob": "7fd4b35b7188f75667adde4f881acd746fb25d02",
+      "bytes": 1401,
+      "path": "state/publication/QIKVRT_BEACON_VERCEL_DEPLOYMENT_Cb31Uu54zR5CRJYrvpmj3PyG427n.json",
+      "sha256": "bea3584d294049d7bcf4e8dfc15105b229c508092c9e3572c0bd0ffb30faea1d"
+    },
+    {
+      "blob": "c418f249fd5a9eec9e73eb52ebc0903133e594d0",
+      "bytes": 6148,
+      "path": "state/work_units/MESH_REPOSITORY_SELF_REVIEW_FEEDBACK_V1.json",
+      "sha256": "a7baabc640ba53e1dca68a953ca5340eb8a906ef3d73e5b93c59459fab7ed0a0"
+    },
+    {
+      "blob": "267b85cd012c9971614bd7aa1282dd609ecc94ac",
+      "bytes": 13010,
+      "path": "tools/qikvrt_authority_mirror_mesh_instance.py",
+      "sha256": "b7d4cbd1939e9c76eb71fb37c1ffd5b7ff3edb0009a05badd4a2ed4b4a041fd3"
+    },
+    {
+      "blob": "5237a095c7f44bc3530f67ccdd1b43cbb39b62c7",
+      "bytes": 3419,
+      "path": "tools/qikvrt_lean_v2_m68000_mesh_recovery_compiler.py",
+      "sha256": "e17a4b51506153f34a5b9d52d36eff8831771a08fd63358b116047d437267f40"
+    },
+    {
+      "blob": "a9944096c3583d885b5414c4e30f1404537b9e3e",
+      "bytes": 54403,
+      "path": "tools/qikvrt_real_mesh.py",
+      "sha256": "98332d83431afae4c578fc1a45749f64282f281693956ee8cd6ab750dec3238d"
+    },
+    {
+      "blob": "0b81d05e50a25ee08e33945ca8183ae79702a8d1",
+      "bytes": 14979,
+      "path": "tools/qikvrt_real_mesh_system_verification.py",
+      "sha256": "ed776f179ea41eafe08591cb0870e30c36745054188ad09d05b7dac6c0e8eec2"
+    },
+    {
+      "blob": "2768a155a35f04760f6aac2ab544997839456265",
+      "bytes": 6098,
+      "path": "tools/qikvrt_universal_terminal_materialize.py",
+      "sha256": "406e076305f04c6750cb004510e1b4744758ae1bd717fa4378c4584a140dd7be"
+    },
+    {
+      "blob": "3325fc1606d384709869ef64ba39d524240dcd05",
+      "bytes": 12187,
+      "path": "tools/qikvrt_virtual_mesh_m68000_acceptance.py",
+      "sha256": "68006b61fe99dc40c57d0f5299f614f29c481c158cbd74794ff4d2f12a838d51"
+    },
+    {
+      "blob": "46b27e1846e49928c6b5258108f834143e158ff9",
+      "bytes": 25142,
+      "path": ".github/workflows/qikvrt_megast_distribution_v1.yml",
+      "sha256": "80aca5744f4c780b09a783b903b841b0341a040d8f0487673f34fba80ed0bf3a"
+    },
+    {
+      "blob": "fef8c7ca626a9b8168a30cac2cea31d54e855b2c",
+      "bytes": 13212,
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "sha256": "181205a5940f1b82b2b48dd674474ea3455797efed33771488150a0774d6234f"
+    },
+    {
+      "blob": "39bb577066dc3abc596b2051a0fd0fea4e77aa4f",
+      "bytes": 19689,
+      "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+      "sha256": "0245a6c4c4eabc9d2d6e8339e9e70ff1f4bf0fa37b5a413b6fbc0a67571b8f85"
+    },
+    {
+      "blob": "64c611fbab34f43507518ca845cba38e04fb38a0",
+      "bytes": 3655,
+      "path": ".github/workflows/qikvrt_qce_candidate.yml",
+      "sha256": "55a78e7b3d23cdd6ee5d3147ec3e35157a0ba96d2f7739a1c62d8026e0888288"
+    },
+    {
+      "blob": "01acd6c49c00fba7ddd36c1cbe39988bf92c4adc",
+      "bytes": 8665,
+      "path": ".github/workflows/qikvrt_targeted_json_repair.yml",
+      "sha256": "74e40c3ab9c93b118043ff01ad4cb7f1cb93d940753873f4dd7083edc00eca9e"
+    },
+    {
+      "blob": "478ffb1cfe9fd94e0494a0884ce5199c33258bc9",
+      "bytes": 9023,
+      "path": ".github/workflows/qikvrt_seed_acceptance_probe_json_repair.yml",
+      "sha256": "dd2b2702195db670b194dc6764949ab83a84673ae22c0f9ab935fbab77fc2d46"
+    },
+    {
+      "blob": "e9246cb308d8500fb5a4a51dab40efde009964b5",
+      "bytes": 7222,
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "sha256": "caa1a0db81073d0bd220f05bebd1e914a952c94c1c6db77762d3a2d8b305fb9a"
+    },
+    {
+      "blob": "959a2037007c3ca0b4c429a38e84d4609c5af1ce",
+      "bytes": 2765,
+      "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+      "sha256": "cd88cbde94f85cb23c83d20c7c2533f6f5474527c0d139e85763a50866ab9b39"
+    },
+    {
+      "blob": "47b91788f7b3fbc8bde87c50da5974c48bef16f6",
+      "bytes": 3930,
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "sha256": "c51d467b26b3f7d6da6c9a65a09c6b9c34a20db9b0775aaeb910abaf5d9ebefb"
+    },
+    {
+      "blob": "9502a10d77eda5deb342420776543e5aad720c30",
+      "bytes": 8729,
+      "path": ".github/workflows/_materialize_authority_pr582_reflexive_watchdog_port.yml",
+      "sha256": "83a29da74374b25a1af990f4aafdcfcf31460e72030c9dacdf8982bc957ceefc"
+    },
+    {
+      "blob": "1b9b6ecd6745dfef5c25ad214eb8dec1cf7406bb",
+      "bytes": 10496,
+      "path": ".github/workflows/_recover_authority_pr582_reflexive_watchdog_port.yml",
+      "sha256": "419d3587611df757c1ccafa2fde97725bb9dcd711a3d4f1894577d7606098dfc"
+    },
+    {
+      "blob": "0db5c2d82454dcaa54e0d0c50d0364e5251b8594",
+      "bytes": 13971,
+      "path": ".github/workflows/_materialize_authority_pr568_workflow_executor_mesh_port.yml",
+      "sha256": "daa6982eaa9b7e36b008141b6c1efba9b181e1a3b03a4582b23e308940906b55"
+    },
+    {
+      "blob": "55145a44586ab5c2c054dc8763df535578f65445",
+      "bytes": 13940,
+      "path": ".github/workflows/qikvrt_round_trip_zenodo_bundle_bootstrap.yml",
+      "sha256": "e3b465e7fe33e3e768ac3cd79468cb505ead37742b65d7bb76f9eef2368ea6f4"
+    },
+    {
+      "blob": "448a7a69dfd0658024bb97879699adc8a716e966",
+      "bytes": 12613,
+      "path": ".github/workflows/qikvrt_pr516_qce_mirror_port_once.yml",
+      "sha256": "ab202ddf4a4ba4da97c5e93a30badae9209845e1cf306ab6dc06f0036cb57637"
+    },
+    {
+      "blob": "8252d19637c492c51ec32c2dc70adabaac786a68",
+      "bytes": 5651,
+      "path": ".github/workflows/qikvrt_qce_mirror_port_once.yml",
+      "sha256": "727a7fd37da76fb275437b6d25f57815edff3d54df97893b75f2b0744d354d52"
+    },
+    {
+      "blob": "b6be08bd93e178d8a648cd7dcb9237e724fbb989",
+      "bytes": 8625,
+      "path": ".github/workflows/qikvrt_qce_receipt_claim_normalization_once.yml",
+      "sha256": "e7f7883d8826195d4d331ba128d3d696362499fe9ee6b7be47fc6734a4096c8d"
+    },
+    {
+      "blob": "72f41128664e151dabe5fe1111aceda075f29491",
+      "bytes": 5710,
+      "path": ".github/workflows/qikvrt_bootstrap_self_healing_repository_collective_intelligence.yml",
+      "sha256": "73d35edd4da3d74b7f7721075bb808b640b23116aec2906fd5e9b9926ff5231f"
+    },
+    {
+      "blob": "378e3948a64c8ec0125c8e81c09682ab36a10bf5",
+      "bytes": 7092,
+      "path": ".github/workflows/qikvrt_materialize_r11_v2_mirror_once.yml",
+      "sha256": "cae3d8e468bd90d042cbad47b18c2fb4565ae4dc334b0754c0f56e92e07a2d37"
+    },
+    {
+      "blob": "6a9929b0e189dcbbe5b6f0d9707dc2465453e372",
+      "bytes": 10802,
+      "path": ".github/workflows/qikvrt_materialize_pr368_pr214_receipt_once.yml",
+      "sha256": "7bd58f9f0511443891916cdda3839b07d81fdd4598579b22b787446293b7967f"
+    },
+    {
+      "blob": "33d0cc5e8b32bce611aea434f669f9a59b7e993e",
+      "bytes": 13427,
+      "path": ".github/workflows/qikvrt_mirror_aphorism_corpus_port_v3.yml",
+      "sha256": "194ba0696a7631356b2838ab4398fcab973be349186a4609df67bf7fb8706d3c"
+    },
+    {
+      "blob": "072bef434b0ff7770097c0f17a84d3e456a04dbd",
+      "bytes": 2948,
+      "path": ".github/workflows/qikvrt_construct_mirror_candidate_pr249.yml",
+      "sha256": "3257f374611ff05cc6bc77d217e815db6d78c71d824f91aa8419b499d346d82d"
+    },
+    {
+      "blob": "36b57ac6e4570477639baadca30e00b525b7b30f",
+      "bytes": 15679,
+      "path": ".github/workflows/qikvrt_history_preserving_mirror_sync_v4.yml",
+      "sha256": "f4e6da128e1f7b03464f8be67fe523d23c5b82e12a3aee0fc339ef3cc9f0f327"
+    },
+    {
+      "blob": "bda857b4ec0148b56072128d14526efe34733c9c",
+      "bytes": 9148,
+      "path": ".github/workflows/qikvrt_history_preserving_mirror_sync_v2.yml",
+      "sha256": "d938db8c1030dce0d04ba8aed0778046509b3d9bbed2ad7295613bef2cc693a7"
+    },
+    {
+      "blob": "7b2d6180c8012a21fd3be52239411523c30e533d",
+      "bytes": 4839,
+      "path": ".github/workflows/qikvrt_trigger_quantum_runtime_article_sync_3a186cb5_once.yml",
+      "sha256": "139395574b81616f5f48c743b0a391d5873df9356ec5841d47a828859fec405e"
+    },
+    {
+      "blob": "5dfc60dd9f2855ec14d6afef05ae93ec10914a13",
+      "bytes": 4968,
+      "path": ".github/workflows/qikvrt_sync_quantum_classical_runtime_article_3a186_once.yml",
+      "sha256": "bac5bd232895236bf9ffe54d8395df0020a59ebfef8026d2eb8a220d65f5e14e"
+    },
+    {
+      "blob": "9d56681511d9a943bf734871fee336b244380526",
+      "bytes": 4666,
+      "path": ".github/workflows/qikvrt_sync_canonical_status_article_b47d_once.yml",
+      "sha256": "7d0cedbe15b4e6f39ddd21c9ab940a2f4bf497f84352e54c7f4dcd0a87887852"
+    },
+    {
+      "blob": "c3d27885595021898f2d117ae9156193faea5d48",
+      "bytes": 7097,
+      "path": ".github/workflows/qikvrt_sync_global_finalization_b771_once.yml",
+      "sha256": "8bac7307e517ed538e4da899eb0696059f3ca8f80cbe81aae12edceed7452213"
+    },
+    {
+      "blob": "e5ff1ae722c56194bfb5ff18237b4558198f2c97",
+      "bytes": 6272,
+      "path": ".github/workflows/qikvrt_sync_global_completion_599866_once.yml",
+      "sha256": "0d55fca7035b8489fc458b3da0fb4ba922aed89699d6d4bbd70b662ce2bfc9f4"
+    },
+    {
+      "blob": "8489721584ea23ea5a50802bbdadb40ae803783b",
+      "bytes": 2529,
+      "path": ".github/workflows/sync_ontology_difference_publication.yml",
+      "sha256": "38477830e857e27846f6b7dcdbf81e3a570b16c21a33acc4a594a74d6ecb4d62"
+    },
+    {
+      "blob": "4bdd865554e390b61c447b7146406bed2b7a6767",
+      "bytes": 1282,
+      "path": ".github/workflows/qikvrt_escape_stages_integrity.yml",
+      "sha256": "2748d06f869410cff71d72a551132be34c58f2637e0da6e839162ad876710862"
+    },
+    {
+      "blob": "f3d25c2e9d003d0bc9f80d0d7538ef73d1544b51",
+      "bytes": 14977,
+      "path": ".github/workflows/qikvrt_formalization_v2_inspect.yml",
+      "sha256": "63a811497784bd1fbba76ff482ee53a23275658ff6c238b459f6611f689f97d4"
+    },
+    {
+      "blob": "a7094f69b4a48d3726fa4f04366f17de0aca2970",
+      "bytes": 16820,
+      "path": ".github/workflows/qikvrt_formalization_v2_inventory.yml",
+      "sha256": "cedbd071ed827ae87020a106297283e4844cbf119224310f05745ff738d8c486"
+    },
+    {
+      "blob": "e3cd3efd63b1e449ee7cc085cac20d85e1a69eea",
+      "bytes": 1313,
+      "path": ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+      "sha256": "70a44f7e79b031e1137b0606e58e8f5e5767ef11e14b4c78bad4b6feb1c5c888"
+    },
+    {
+      "blob": "3ec8f75e4abfed77dd91a50f390b9c152d33412b",
+      "bytes": 1438,
+      "path": ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+      "sha256": "e0e2772a5019f783ff1dad4a6b548a04ee071661605059aa03f20c1a672ebea2"
+    },
+    {
+      "blob": "827738ee590018989f7077a73cc2f716c2823867",
+      "bytes": 1203,
+      "path": ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+      "sha256": "764f4dea624b70b77870cfdbcbcdc1f0e20eec6e73564d59e57607c0df1777d6"
+    },
+    {
+      "blob": "08001f1d09777047041afacda1bd33bf26659747",
+      "bytes": 2165,
+      "path": ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+      "sha256": "b147f85e3797ead1a3245fa0a398b1600f24d19646aac729024b39165c93198a"
+    },
+    {
+      "blob": "faed1e6901cee342d7a382a663bac68de0dc3869",
+      "bytes": 2220,
+      "path": ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      "sha256": "8336774c4560ec42aa21506405966e732082f8fdd5bab6e97fb514c21c2a0ffc"
+    },
+    {
+      "blob": "f918f282df98bffa7fb08ed2fb34123e3e37da23",
+      "bytes": 1904,
+      "path": ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      "sha256": "c4f2c33de4b6feefd9c34a9992c2813e230cd38371a9f4bd18b62c054e121766"
+    },
+    {
+      "blob": "5831a7807dcc4a00e119cd6da82455e5f5060297",
+      "bytes": 1921,
+      "path": ".github/workflows/qikvrt_seed_node_revalidation.yml",
+      "sha256": "5f3837f6fa963a395d126593f82dc9979cb67d2ae0eccb776b9a0c9e5931a37c"
+    },
+    {
+      "blob": "fc862bf38847ba849a20d5ab1b294eca60997e76",
+      "bytes": 2181,
+      "path": ".github/workflows/qikvrt_seed_registry_acceptance.yml",
+      "sha256": "853aefc2e527ce3747c0b8a6a0c1bc59dacb1eed79e922cd85fc2eacb617993b"
+    },
+    {
+      "blob": "63e8561e60bfb40ad216ca9d0a4d8ed472d07044",
+      "bytes": 4562,
+      "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+      "sha256": "c8f6b3cce0eaf871057f537cac9927012698da856b2557e6124227f0a70ddebd"
+    },
+    {
+      "blob": "e7a31b5be457abadf6d6c61d28fcfadf3767f23a",
+      "bytes": 34137,
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+      "sha256": "add46675a592c895c2fda75e2ac064f5c86806dffd7b69e3e34f3b5439e90aaa"
+    },
+    {
+      "blob": "fa4c3c6117c85c4608f44c631b89769e23f581cb",
+      "bytes": 24718,
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+      "sha256": "e631d3d676b8e6a99799cf1e19e0514bcf10513a97e949a6c4954201f87d0db7"
+    },
+    {
+      "blob": "5b6d50d9043be7eac6e6e126e9419445965584ad",
+      "bytes": 2391,
+      "path": ".github/workflows/one-shot-sync-goldkelch.yml",
+      "sha256": "d3b14729843bcf547cd126de4172fa74b2a6858e00662abb470b8644f4b4be90"
+    },
+    {
+      "blob": "dcecb665005b0ab860bbd5a56b1cf740759da68a",
+      "bytes": 1087,
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "0029a95a9725e0ce7add9bfe07111aaf0e9de7c7a6e9ca654aabc18330bf63af"
+    },
+    {
+      "blob": "f8d72a21c9531a7ffa29434f541c2b53804cc1be",
+      "bytes": 1989,
+      "path": ".github/workflows/qikvrt_mesh_api.yml",
+      "sha256": "28b5ac7dc6ca033dc91b2c24064b2554a876fc50c1b3db1ee93d96d7932f634c"
+    },
+    {
+      "blob": "c98ad94aec747d8bc47df4257456ea4988903f6c",
+      "bytes": 821,
+      "path": "docs/GITHUB_DEPLOYMENT.md",
+      "sha256": "b602583743a3a0ecec8fb425d0e727a1ec1f7a37577d7f0412e3978af9b69acb"
+    },
+    {
+      "blob": "e06bd16f8a940f28d3f169f9db6d02dce1d1aee4",
+      "bytes": 540,
+      "path": "tools/qikvrt_github_mesh_api_handler.py",
+      "sha256": "e5e4d7ac7a471014d6fabe9a87679d46d7d46e6c4edc6e3a90baaba751857a97"
+    },
+    {
+      "blob": "6f2eb9472e27beeadcd9c51702858f157d4330c4",
+      "bytes": 398,
+      "path": ".github/workflows/qikvrt-manual-release.yml",
+      "sha256": "ecd46aaf91073ffed05ad947635c150dbf4bab7423d78b22a9e28dd9739efffb"
+    },
+    {
+      "blob": "e2bc4fcca4f50ae43751a48f43809734c9abfc1f",
+      "bytes": 272,
+      "path": ".github/workflows/qikvrt-v24-verify.yml",
+      "sha256": "e129e0793cf7b04abf655c296e5e1d20950df1087539ca9b0468173119835c45"
+    },
+    {
+      "blob": "c5e2d0a1b194d3f1a65667edc20ca3548901af6b",
+      "bytes": 648,
+      "path": ".github/workflows/qikvrt_v12_verify.yml",
+      "sha256": "5eacfa20e6cb338c0bba51356c381028271d4e8dec952ec0450ac453ac11857e"
+    },
+    {
+      "blob": "aa2a683788fd67ec47117f26d10b126690139271",
+      "bytes": 1105,
+      "path": ".github/workflows/qikvrt_v14_matrix.yml",
+      "sha256": "a6dfcf244ba99bfcc2e593879f191cc00629f99b7c2d3a58a66b9cf09712d934"
+    },
+    {
+      "blob": "534ca3c00825c1140201e3cbe6dfaaaf4e5b32a1",
+      "bytes": 476,
+      "path": "docs/INITIAL_LAUNCHER_ACCEPTANCE_BEFORE_ANY_EFFECT.md",
+      "sha256": "7eeaefc42a6678f4a421b0feb88bbce71b2f58cc97381527f21c5dc9137c4f1f"
+    },
+    {
+      "blob": "ad6bc1e1ab34e156d3817e2e252a8904afd717d1",
+      "bytes": 4671,
+      "path": "tools/qikvrt_shift_left_launcher_regression.py",
+      "sha256": "1980d4675b3bf2823ec077ec4e5dbab79526d95e2bfc0df925af2bd8bc26b29f"
+    }
+  ],
+  "scan_bindings_sha256": "ae954f651226dfacf0ef8245aa83eed3649e6167d21241da3628d8aa819ec125",
+  "schema": "qikvrt-own-host-history-search/v1",
+  "selected_blobs_scanned": 287,
+  "selected_paths": [
+    ".github/workflows/_materialize_authority_pr568_workflow_executor_mesh_port.yml",
+    ".github/workflows/_materialize_authority_pr582_reflexive_watchdog_port.yml",
+    ".github/workflows/_recover_authority_pr582_reflexive_watchdog_port.yml",
+    ".github/workflows/issue-agent-autofinish.yml",
+    ".github/workflows/issue-agent-backlog-resume.yml",
+    ".github/workflows/issue-autonomous-processing.yml",
+    ".github/workflows/one-shot-sync-goldkelch.yml",
+    ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml",
+    ".github/workflows/qikvrt-manual-release.yml",
+    ".github/workflows/qikvrt-v24-verify.yml",
+    ".github/workflows/qikvrt_adaptive_runtime.yml",
+    ".github/workflows/qikvrt_audio_request.yml",
+    ".github/workflows/qikvrt_authenticated_web_delivery_proxy.yml",
+    ".github/workflows/qikvrt_authority_review_report_fanout.yml",
+    ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+    ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    ".github/workflows/qikvrt_autonomous_pr_head_continuation.yml",
+    ".github/workflows/qikvrt_autonomous_ruleset_effect_loop.yml",
+    ".github/workflows/qikvrt_autonomous_self_heal.yml",
+    ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+    ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+    ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+    ".github/workflows/qikvrt_batch04_integrity.yml",
+    ".github/workflows/qikvrt_bootstrap_self_healing_repository_collective_intelligence.yml",
+    ".github/workflows/qikvrt_c89_turbo_pascal_delphi_bridge.yml",
+    ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml",
+    ".github/workflows/qikvrt_ci.yml",
+    ".github/workflows/qikvrt_circular_spark_v2.yml",
+    ".github/workflows/qikvrt_cloud_transputer_integrity_objects_v1.yml",
+    ".github/workflows/qikvrt_cloud_transputer_materialization_v1.yml",
+    ".github/workflows/qikvrt_code_owner_review_observer.yml",
+    ".github/workflows/qikvrt_collective_review.yml",
+    ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
+    ".github/workflows/qikvrt_construct_mirror_candidate_pr249.yml",
+    ".github/workflows/qikvrt_corpus_closure_overlay.yml",
+    ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml",
+    ".github/workflows/qikvrt_d3_fixed_point.yml",
+    ".github/workflows/qikvrt_effect_ack_finalize.yml",
+    ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+    ".github/workflows/qikvrt_escape_stages_integrity.yml",
+    ".github/workflows/qikvrt_expected_head_promotion.yml",
+    ".github/workflows/qikvrt_explicit_hold_contract.yml",
+    ".github/workflows/qikvrt_firefox_proxy_delegation.yml",
+    ".github/workflows/qikvrt_formalization_and_audio.yml",
+    ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml",
+    ".github/workflows/qikvrt_formalization_v2_inspect.yml",
+    ".github/workflows/qikvrt_formalization_v2_inventory.yml",
+    ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+    ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+    ".github/workflows/qikvrt_global_completion.yml",
+    ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+    ".github/workflows/qikvrt_history_preserving_mirror_sync_v2.yml",
+    ".github/workflows/qikvrt_history_preserving_mirror_sync_v4.yml",
+    ".github/workflows/qikvrt_lean_gate_m68000.yml",
+    ".github/workflows/qikvrt_lean_v2_m68000_d3.yml",
+    ".github/workflows/qikvrt_lean_v2_m68000_mesh_recovery.yml",
+    ".github/workflows/qikvrt_live_status_watch.yml",
+    ".github/workflows/qikvrt_m68000_tos_consumer.yml",
+    ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+    ".github/workflows/qikvrt_manuscript_proof.yml",
+    ".github/workflows/qikvrt_materialize_pr368_pr214_receipt_once.yml",
+    ".github/workflows/qikvrt_materialize_r11_v2_mirror_once.yml",
+    ".github/workflows/qikvrt_measurement_derived_dimensions.yml",
+    ".github/workflows/qikvrt_measurement_independence_formalization.yml",
+    ".github/workflows/qikvrt_megast_distribution_v1.yml",
+    ".github/workflows/qikvrt_mesh_api.yml",
+    ".github/workflows/qikvrt_mesh_authority_edge.yml",
+    ".github/workflows/qikvrt_mirror_aphorism_corpus_port_v3.yml",
+    ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+    ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+    ".github/workflows/qikvrt_perfect_optimum_self_application.yml",
+    ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+    ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+    ".github/workflows/qikvrt_planck_tick_gap_law_zenodo_publish.yml",
+    ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+    ".github/workflows/qikvrt_pr516_qce_mirror_port_once.yml",
+    ".github/workflows/qikvrt_pr_integrity_projection.yml",
+    ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml",
+    ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+    ".github/workflows/qikvrt_publication_router.yml",
+    ".github/workflows/qikvrt_qce_c_measurement_binding.yml",
+    ".github/workflows/qikvrt_qce_candidate.yml",
+    ".github/workflows/qikvrt_qce_causal_axis_bridge.yml",
+    ".github/workflows/qikvrt_qce_causal_axis_selection.yml",
+    ".github/workflows/qikvrt_qce_mirror_port_once.yml",
+    ".github/workflows/qikvrt_qce_now_serialization.yml",
+    ".github/workflows/qikvrt_qce_null_calibration_ratio.yml",
+    ".github/workflows/qikvrt_qce_receipt_claim_normalization_once.yml",
+    ".github/workflows/qikvrt_quantum_causal_neutron_star_vhdl.yml",
+    ".github/workflows/qikvrt_real_mesh.yml",
+    ".github/workflows/qikvrt_real_mesh_system_verification.yml",
+    ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+    ".github/workflows/qikvrt_relational_time_evidence_sphere_materialize.yml",
+    ".github/workflows/qikvrt_relational_time_evidence_sphere_zenodo_publish.yml",
+    ".github/workflows/qikvrt_relational_time_evidence_sphere_zenodo_publish_transport_v2.yml",
+    ".github/workflows/qikvrt_repository_dod_census.yml",
+    ".github/workflows/qikvrt_repository_mesh_sync_tag.yml",
+    ".github/workflows/qikvrt_requested_review_contract.yml",
+    ".github/workflows/qikvrt_requested_review_executor.yml",
+    ".github/workflows/qikvrt_requested_review_stale_work_unit_reaper.yml",
+    ".github/workflows/qikvrt_required_review_gate.yml",
+    ".github/workflows/qikvrt_round_trip_final_byte_freeze.yml",
+    ".github/workflows/qikvrt_round_trip_prepublication_return.yml",
+    ".github/workflows/qikvrt_round_trip_zenodo_bundle_bootstrap.yml",
+    ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml",
+    ".github/workflows/qikvrt_round_trip_zenodo_publish.yml",
+    ".github/workflows/qikvrt_ruleset_effect_dispatch_bridge.yml",
+    ".github/workflows/qikvrt_ruleset_reconcile.yml",
+    ".github/workflows/qikvrt_seed_acceptance_probe_json_repair.yml",
+    ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+    ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+    ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+    ".github/workflows/qikvrt_seed_node_revalidation.yml",
+    ".github/workflows/qikvrt_seed_registry_acceptance.yml",
+    ".github/workflows/qikvrt_siemens_reference_integration.yml",
+    ".github/workflows/qikvrt_spark_branch_runtime.yml",
+    ".github/workflows/qikvrt_status_report_finalize.yml",
+    ".github/workflows/qikvrt_status_report_reserve.yml",
+    ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml",
+    ".github/workflows/qikvrt_sync_canonical_status_article_b47d_once.yml",
+    ".github/workflows/qikvrt_sync_global_completion_599866_once.yml",
+    ".github/workflows/qikvrt_sync_global_finalization_b771_once.yml",
+    ".github/workflows/qikvrt_sync_quantum_classical_runtime_article_3a186_once.yml",
+    ".github/workflows/qikvrt_targeted_json_repair.yml",
+    ".github/workflows/qikvrt_temdd.yml",
+    ".github/workflows/qikvrt_transputer_evidence_spiral_zenodo_preflight.yml",
+    ".github/workflows/qikvrt_trigger_quantum_runtime_article_sync_3a186cb5_once.yml",
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+    ".github/workflows/qikvrt_universal_ontology_shell_fallback.yml",
+    ".github/workflows/qikvrt_universal_terminal_container.yml",
+    ".github/workflows/qikvrt_universal_terminal_materialize.yml",
+    ".github/workflows/qikvrt_v12_verify.yml",
+    ".github/workflows/qikvrt_v14_matrix.yml",
+    ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+    ".github/workflows/qikvrt_virtual_mesh_m68000_acceptance.yml",
+    ".github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml",
+    ".github/workflows/qikvrt_wire_roundtrip_v1.yml",
+    ".github/workflows/qikvrt_workflow_executor.yml",
+    ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+    ".github/workflows/qikvrt_zenodo_reserve.yml",
+    ".github/workflows/qikvrt_zero_bug_continuous.yml",
+    ".github/workflows/qikvrt_zero_job_self_dispatch.yml",
+    ".github/workflows/sync_ontology_difference_publication.yml",
+    "deploy/mesh-monitor",
+    "deploy/mesh-monitor/server.py",
+    "deploy/mesh-monitor/start.sh",
+    "deploy/siemens-horizon",
+    "deploy/siemens-horizon/QIKVRT_SIEMENS_HORIZON_ADAPTER_V1.md",
+    "deploy/siemens-horizon/REFERENCE_INTEGRATION_V1.md",
+    "deploy/siemens-horizon/reference-twin-state.json",
+    "deploy/universal-terminal",
+    "deploy/universal-terminal/Dockerfile",
+    "deploy/universal-terminal/cloud-entrypoint.sh",
+    "deploy/universal-terminal/compose.yaml",
+    "deploy/universal-terminal/entrypoint.sh",
+    "deploy/universal-terminal/mirror-bootstrap.sh",
+    "deploy/universal-terminal/named.conf",
+    "deploy/universal-terminal/nginx.conf",
+    "deploy/universal-terminal/qikvrt_smtpd.py",
+    "deploy/universal-terminal/runtime-health.sh",
+    "deploy/universal-terminal/service-entrypoint.sh",
+    "deploy/universal-terminal/snmpd.conf",
+    "deploy/universal-terminal/sshd_config",
+    "deploy/vercel-monitor",
+    "deploy/vercel-monitor/api",
+    "deploy/vercel-monitor/api/state.js",
+    "deploy/vercel-monitor/vercel.json",
+    "docs/GITHUB_DEPLOYMENT.md",
+    "docs/INITIAL_LAUNCHER_ACCEPTANCE_BEFORE_ANY_EFFECT.md",
+    "docs/MESH_SELF_EXPLANATION_AND_DELIVERY.md",
+    "docs/QIKVRT_AUTONOMOUS_MESH_OPERATIONS.md",
+    "docs/QIKVRT_MESH_DASHBOARD.md",
+    "docs/README_DEPLOY_GITHUB_PAGES_DE.md",
+    "docs/architecture/QIKVRT_MESH_AUTHORITY_MIRROR_INSTANCE_V1.md",
+    "docs/architecture/QIKVRT_REAL_MESH_V1.md",
+    "docs/assets/js/qikvrt-repository-terminal.js",
+    "docs/monitor/self-host.mjs",
+    "docs/notes/QIKVRT_MESH_EVIDENCE_SPHERE_MONOTONIC_V1.json",
+    "docs/notes/QIKVRT_MESH_EVIDENCE_SPHERE_MONOTONIC_V1.md",
+    "docs/qikvrt_trust_mesh",
+    "docs/qikvrt_trust_mesh/AI_ACT_NACHWEISPFLICHT_DOSSIER_DE.md",
+    "docs/qikvrt_trust_mesh/COMMERCIAL_READINESS_INDEX.json",
+    "docs/qikvrt_trust_mesh/CUSTOMER_EMAILS_DE.md",
+    "docs/qikvrt_trust_mesh/DEMO_SCRIPT_DE.md",
+    "docs/qikvrt_trust_mesh/FAQ_OBJECTIONS_DE.md",
+    "docs/qikvrt_trust_mesh/KUENSTLICHE_KOGNITION_UND_ONTOLOGIE_DE.md",
+    "docs/qikvrt_trust_mesh/LANDING_PAGE_DE.md",
+    "docs/qikvrt_trust_mesh/LINKEDIN_POSTS_DE.md",
+    "docs/qikvrt_trust_mesh/OFFERING_AND_PRICING_DE.md",
+    "docs/qikvrt_trust_mesh/ONE_PAGER_DE.md",
+    "docs/qikvrt_trust_mesh/PILOT_PROJECT_PLAN_DE.md",
+    "docs/qikvrt_trust_mesh/PRESS_RELEASE_DE.md",
+    "docs/qikvrt_trust_mesh/PUBLIC_GITHUB_README_DE.md",
+    "docs/qikvrt_trust_mesh/QIKVRT_4AW_ROLE_MARKER.md",
+    "docs/qikvrt_trust_mesh/QIKVRT_UNIQUE_FEATURES_DE.md",
+    "docs/qikvrt_trust_mesh/RISK_AND_CLAIMS_BOUNDARY_DE.md",
+    "docs/qikvrt_trust_mesh/SALES_CALL_PLAYBOOK_DE.md",
+    "docs/research/2026-09-05-information-effect-axis/DELIVERY_AND_MESH_RULE.md",
+    "docs/research/2026-09-05-information-effect-axis/PROSA_TRANSPUTER_ZUM_EVIDENZ_MESH.md",
+    "docs/research/2026-09-05-information-effect-axis/TRANSPUTER_TO_EVIDENCE_MESH.md",
+    "docs/terminal",
+    "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md",
+    "docs/terminal/FIREFOX_PROXY_DELEGATION_BRIDGE_V1.md",
+    "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
+    "docs/terminal/QIKVRT_CLOUD_TRANSPUTER_MATERIALIZATION_V1.md",
+    "docs/terminal/QIKVRT_EXECUTION_PRECEDENCE_V1.md",
+    "docs/terminal/QIKVRT_LIVE_EVENT_STREAM_V1.md",
+    "docs/terminal/QIKVRT_TERMINAL_FRAME_V1.schema.json",
+    "docs/terminal/REQUIREMENT_DELIVERY_DOD_V1.md",
+    "docs/terminal/quantum-causal-neutron-star",
+    "docs/terminal/quantum-causal-neutron-star/status.json",
+    "docs/terminal/temdd",
+    "registry/NODEMESH_INDEX.json",
+    "registry/NODEMESH_STATUS.json",
+    "registry/NODE_DISCOVERY_POLICY.json",
+    "registry/nodes",
+    "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+    "runtime/capabilities/MESH_MONITOR_RAILWAY_SERVER_DEPLOYMENT_20261004.json",
+    "runtime/capabilities/ZENODO_METADATA_EDIT_CAPABILITY.json",
+    "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json",
+    "state/authorization/delegations/OWNER_MESH_REPOSITORY_SELF_REVIEW_FEEDBACK_V1.json",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "state/deployments",
+    "state/external/vercel/QIKVRT_BEACON_DEPLOYMENT_RECEIPT.json",
+    "state/launcher_acceptance_record.json",
+    "state/mesh",
+    "state/mesh/QIKVRT_AUTHORITY_MIRROR_MESH_INSTANCE_V1.json",
+    "state/mesh/QIKVRT_REAL_MESH_V1.json",
+    "state/mesh_reviews",
+    "state/publication/QIKVRT_BEACON_VERCEL_DEPLOYMENT_Cb31Uu54zR5CRJYrvpmj3PyG427n.json",
+    "state/virtual_meshes",
+    "state/work_units/MESH_REPOSITORY_SELF_REVIEW_FEEDBACK_V1.json",
+    "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+    "state/work_units/QIKVRT_BROWSER_TERMINAL_INTERFACE_V1.json",
+    "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+    "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+    "state/work_units/labyrinth-durable-terminal-20261004",
+    "tools/qikvrt_authority_mirror_mesh_instance.py",
+    "tools/qikvrt_content_disposition_batch_002_terminal.py",
+    "tools/qikvrt_github_mesh_api_handler.py",
+    "tools/qikvrt_lean_v2_m68000_mesh_recovery_compiler.py",
+    "tools/qikvrt_mesh_monitor_readback.mjs",
+    "tools/qikvrt_real_mesh.py",
+    "tools/qikvrt_real_mesh_system_verification.py",
+    "tools/qikvrt_seed_mesh_audit_export.sh",
+    "tools/qikvrt_seed_mesh_maintenance.sh",
+    "tools/qikvrt_self_host.py",
+    "tools/qikvrt_shift_left_launcher_regression.py",
+    "tools/qikvrt_universal_terminal_materialize.py",
+    "tools/qikvrt_virtual_mesh_m68000_acceptance.py"
+  ],
+  "signal_hits": [
+    {
+      "blob": "b8af272b498918fbc5337a663193c55e48d0779e",
+      "bytes": 5388,
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "sha256": "8b587bf2d5f0b69dbe057bdd3b383bf12e2378ddac15e393b121914831fb919a",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "0c821263b5cc34a75ad609988d7d2f3cbf8e57bd",
+      "bytes": 18139,
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "sha256": "6a476402efacd778a81f2620ef20ebda3074a8d457b7b3ec51d727362e8cb6fd",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "4f19b83776f44cb42122f49525e822ec7707d2e5",
+      "bytes": 8225,
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "4d83b511016a533aaafa8aa1afa3dce50fcf6e859b90ad02ccd9c67fb0bed807",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "7bbfc4d74009bb1b787101fcfdbfb969b9a96df1",
+      "bytes": 11058,
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "sha256": "4f9da69d9f79dcddf348e85ea4b6fb2498a53632e16949652526cf0453068e16",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "2e1cf1b67fc740681e7cd7a4e348f6da299f974c",
+      "bytes": 8111,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "eede5fcbc774baf03a7188261776651416b5c3cab51efcee6426ad8ecd87925c",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "027412fd92bbe058d5bddf8fbe74796b3de8ecf1",
+      "bytes": 8940,
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "sha256": "09cfe53cd2aa94caff88dd59e0bf1bc2d458fe903014bda4f37f887657d63e2c",
+      "signals": [
+        "own_host",
+        "route"
+      ]
+    },
+    {
+      "blob": "cffcb872da82ac29d6b6f312d255d7a38948506f",
+      "bytes": 3058,
+      "path": ".github/workflows/qikvrt_temdd.yml",
+      "sha256": "90278614a3befd6353181998cd97a55b5102c1f863e4633706088354cf14b653",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "b793a5ba0cb966520f681399d8f2a61ceb5fe883",
+      "bytes": 4957,
+      "path": "deploy/universal-terminal/Dockerfile",
+      "sha256": "97a03ff7b88218050b4f4295bcf6369ba03a402388364666cca32a0673d4b4f7",
+      "signals": [
+        "remote_exec",
+        "storage"
+      ]
+    },
+    {
+      "blob": "f807391adabc9046fa37ba847f572acbd1709e46",
+      "bytes": 5661,
+      "path": "deploy/universal-terminal/compose.yaml",
+      "sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1",
+      "signals": [
+        "remote_exec",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "54c672e48c52b3d5b94a47d73a76137e67fb4662",
+      "bytes": 5285,
+      "path": "deploy/universal-terminal/service-entrypoint.sh",
+      "sha256": "57c34784cf4a82a93a7639cf7917f37bb75e1a4b404e41243f890c5a85f06054",
+      "signals": [
+        "remote_exec",
+        "storage"
+      ]
+    },
+    {
+      "blob": "e06dd174e059b3e81c0706278cfb5c269dbb380c",
+      "bytes": 468,
+      "path": "deploy/universal-terminal/sshd_config",
+      "sha256": "2effb563d95bdb35c9cb22ed144b718dd5ba6df509c70e3db8c4cb44f9b839b3",
+      "signals": [
+        "remote_exec"
+      ]
+    },
+    {
+      "blob": "afb34dc921ae63fc3c1bd1c24d775b4ad7312bf9",
+      "bytes": 9774,
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "5620d5840849f6e96f97a04bf5b631be4a534c2b4ccaead0767442f254cd845f",
+      "signals": [
+        "own_host",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "4ddea0669f9a420b9664301cf025ef6e579abdc6",
+      "bytes": 5812,
+      "path": "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+      "sha256": "e4cdc28dbc9886fa5cdb9100b5d340a2b0c6f5f014bc6a467d155d312c90e6ea",
+      "signals": [
+        "own_host",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "8ae56034298cd526b61de2a98b4f363dff6c7d9c",
+      "bytes": 27195,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "faba273fe232e6b2b78f0a31ab68e058e0ffdd20bcbd3fd748ebb5ff149138b9",
+      "signals": [
+        "own_host",
+        "remote_exec",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "f92602d4a8698c7d3b0547c585b0144e39fea8ab",
+      "bytes": 27261,
+      "path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+      "sha256": "60a326d5ebe23f5fce93320e3de39d325b0cecadbf3050adb111f5a41d5c0e53",
+      "signals": [
+        "own_host",
+        "remote_exec",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "94f553fe54038389c19bc8b95a0a69c86961a9bf",
+      "bytes": 10198,
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "sha256": "e2c674f221255e9ed2cf495bb897181a8352420acb656bd7fb7e0e8193ced1dd",
+      "signals": [
+        "own_host",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "1788bab299d3fcaf07af99c57a2d1f2471636d99",
+      "bytes": 28982,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "75d334b48eefb837ad02b285765764b5a0912d6b0bc2596284a7ae2ba02c1345",
+      "signals": [
+        "own_host",
+        "storage"
+      ]
+    },
+    {
+      "blob": "1ad7b5b5c182b20bd2e9ac5ef958f8c12c5588b7",
+      "bytes": 7975,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "b3f17dc4dd5683453e949451b7061ba553d290af5241475236d4097e8beb9815",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "5fd49705aae7faa03533374752b3504f664f8888",
+      "bytes": 25913,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "f432bab8dafe1a4503690b5e697b1456d025207cf9f71a23f3ca0c6083974245",
+      "signals": [
+        "own_host",
+        "remote_exec",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "1b10ad42347a44fe402e117dba4592c1950c5a4f",
+      "bytes": 28955,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "d1e42b243e6516e16f8d7a8dc08e6b03b396211b2dcd42e85769d4c4f1e0dc9c",
+      "signals": [
+        "own_host",
+        "storage"
+      ]
+    },
+    {
+      "blob": "e3f5e031824b6908c2a4d7ed4fa0af80fbbf4545",
+      "bytes": 24679,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "e6f461be6a995320616feaaa92092d9517a485f930ea8ea611dd4f55f91e50ef",
+      "signals": [
+        "own_host",
+        "remote_exec",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "701d02107616d207a37bc56ef33dbd3e1e41d608",
+      "bytes": 28714,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "e6cdaf8e57ad8a98969ce0f148e8b69e7203a82e69c05828c39e0760f108dd2c",
+      "signals": [
+        "own_host",
+        "storage"
+      ]
+    },
+    {
+      "blob": "20694f465b393faf19ed033ae3bb4d1e47d6f1e5",
+      "bytes": 7901,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "d165ac1c1f8439a260d4620ebfa69c26130ebac304071d467725a960369b3e6e",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "909ddd5122fe8c6b1ee8936005c66fe1bb02ee5f",
+      "bytes": 22790,
+      "path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json",
+      "sha256": "9c2bb2997b3674d5d8093526d4f7eb15398ee71918045e86deb5b7c3000229d7",
+      "signals": [
+        "own_host",
+        "remote_exec",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "860d313872604d0ea0ec59e06b0f1afb9890b001",
+      "bytes": 28484,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "8d70e01a0fead0fcfd74731646b3cd1e9f2294ffa7f15ca3b5ac409c35e84ffe",
+      "signals": [
+        "own_host",
+        "storage"
+      ]
+    },
+    {
+      "blob": "8b91ac4cf2cc58d3a4bcd695d703bd4465018da8",
+      "bytes": 6293,
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "bbc36ef7efd8c56a181b5e78df496b67d0144e285c54318c8a9224215f13c872",
+      "signals": [
+        "own_host"
+      ]
+    },
+    {
+      "blob": "0c7fe64b9bfc36ff04fa40f43042da341e343391",
+      "bytes": 8479,
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "ec176ea902dd2bb13ca478cb0462c9c5491e5380136de63340396e36c9b2954e",
+      "signals": [
+        "own_host",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "dc37a723f491bc4343a998d5067bea731c55c068",
+      "bytes": 5527,
+      "path": "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+      "sha256": "19032adb45e8423e1bceebc3c910cbdaa212b686530542c150ae6421c6ce5b68",
+      "signals": [
+        "own_host",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "c276845019b7a5635814d3e452a2bcf079845212",
+      "bytes": 26589,
+      "path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+      "sha256": "34dea3640d97229b1cb6f900c6c03829fa3e289436578026f483fa03b524f9e7",
+      "signals": [
+        "own_host",
+        "remote_exec",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "87f6dd86a6eb02d7ec2ca86f730324052d927aa2",
+      "bytes": 9480,
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "sha256": "60380776aee3b33272ab395320c25fb327fd72bfd778bf83a11ce7ea42fba35a",
+      "signals": [
+        "own_host",
+        "storage",
+        "route"
+      ]
+    },
+    {
+      "blob": "9c59f349d4013085bde6dc82e91706d2a2da619a",
+      "bytes": 13615,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "bdc4be4fad8a7faa6c595eb1342a035290291237aa34aceb9dddaa615e3bb2d0",
+      "signals": [
+        "own_host",
+        "storage"
+      ]
+    },
+    {
+      "blob": "11dd14969b96aa90e846d5c56f3a6ae22773a1fc",
+      "bytes": 2271,
+      "path": "docs/architecture/QIKVRT_MESH_AUTHORITY_MIRROR_INSTANCE_V1.md",
+      "sha256": "64b3db2616e695f031e86e75c18a255f3c92e20953c8ee7b1db38511680f287e",
+      "signals": [
+        "remote_exec"
+      ]
+    }
+  ],
+  "source_head": "3bf52747bc94de847d390ffacabecae183aee588",
+  "source_tree": "96c7bb691675dcd15bb5045871201adb400074f0"
+}

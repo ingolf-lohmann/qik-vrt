@@ -1,0 +1,27 @@
+{
+  "schema": "qikvrt-checker-selftest/v1",
+  "cases": [
+    {
+      "case": "wrong_source",
+      "exit": 2,
+      "status": "UNVERIFIED",
+      "reason": "ValueError: SOURCE_BINDING_MISMATCH: PlanckRealEnergyDomain.lean",
+      "pass": true
+    },
+    {
+      "case": "missing_compiler",
+      "exit": 2,
+      "status": "UNVERIFIED",
+      "reason": "LEAN_EXECUTABLE_UNAVAILABLE",
+      "pass": true
+    },
+    {
+      "case": "valid_preflight",
+      "exit": 0,
+      "status": "VERIFIED_SOURCE_BINDING",
+      "reason": "Exact sources and dependency revisions checked; no proof check claimed",
+      "pass": true
+    }
+  ],
+  "pass": true
+}

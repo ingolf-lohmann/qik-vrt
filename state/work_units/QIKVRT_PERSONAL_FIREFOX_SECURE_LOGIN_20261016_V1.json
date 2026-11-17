@@ -1,0 +1,182 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "bounded_operational_work_unit_not_scientific_publication"
+  },
+  "schema": "qikvrt_personal_firefox_secure_login_work_unit_v1",
+  "id": "QIKVRT_PERSONAL_FIREFOX_SECURE_LOGIN_20261016_V1",
+  "status": "SOURCE_IMPLEMENTED_AND_LOCALLY_TESTED_PRODUCTIVE_AUTHENTICATION_OPEN",
+  "owner": "Ingolf Lohmann",
+  "human_contribution": "Direct feature/security/acceptance requirements and authorization for API-native integration into existing PR523",
+  "artificial_cognitive_contribution": "OpenAI Codex: source inspection, implementation, tests, documentation and bounded REST integration preparation; no human authorship or independent review inferred",
+  "authorization": "Current explicit Owner task; existing PR523 only; REST_API_ONLY; no general new IdP account/client enrollment or credential disclosure inferred",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 523,
+    "ref": "integration/515-519-521-522-20261012-eceb9b63",
+    "head": "a20232e7194f6fb860447966b0c9f007f9867565",
+    "tree": "37ef12555e659fc0314d28058c92fee46511be68"
+  },
+  "reuse_assessment": {
+    "reused": [
+      "src/qikvrt_personal_assistant.py",
+      "src/qikvrt_effect_ack_http_terminal.py",
+      "personal/ingolf-lohmann/firefox-assistant",
+      "existing lifetime writer.lock",
+      "Makefile personal-firefox-boundary-test",
+      "runtime/toolchains lock/registry/coverage",
+      "existing repository integrity generator"
+    ],
+    "inspected_current_roots": [
+      "src",
+      "tools",
+      "personal",
+      "policy",
+      "runtime",
+      "spec",
+      "tests"
+    ],
+    "new_module_reason": "The inspected source inventory contains no OIDC lifecycle or OS credential-store adapter to extend. The new module supplies that missing component to the existing server; no parallel server, executor, workflow or PR is created."
+  },
+  "implemented": [
+    "Default Personal CLI requires explicit private OIDC configuration; memory pairing only behind explicit legacy development flag",
+    "Linux Secret Service model credential and identity token storage with readback; no plaintext fallback; same writer lock for provisioning",
+    "Public-client Authorization Code and PKCE S256; one-time five-minute state/nonce; form_post; pinned discovery/endpoints; bounded TLS and no redirects",
+    "RS256 signature and issuer/Owner-subject/exact-audience/nonce/time validation; refresh nonce omission only under OIDC Core 12.2",
+    "Protected authorization/refresh/revocation pending journals; refresh rotation; no retry of ambiguous effects",
+    "Twelve-hour local admission; page-memory bearer only; guarded popup callback; no application cookies/storage/access logging",
+    "Local logout before optional RFC7009 revocation; provider support/endpoint acknowledgement/global logout kept separate",
+    "Personal-only UI; no Standard extension change or personal payload admission",
+    "Passkeys/WebAuthn delegated to actually selected IdP/device; no raw biometrics or fabricated modality evidence"
+  ],
+  "test_receipt": {
+    "path": "evidence/native-runtime-acceptance/personal-firefox-auth-20261016.json",
+    "sha256": "191c54d1e707b8ed365afb64c78fdbf5c030b889f84a083bba99efbbd61d34b6",
+    "tests_run": 78,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [],
+    "code_source_bindings": {
+      "Makefile": {
+        "bytes": 16311,
+        "sha256": "2e2c1f41149f8c7606f46b868d20636e814de9beacafa9342a9c8fa43aa56c05",
+        "git_blob": "c6cf23dd0777d61c18dbdc693ad6037425bb8c52"
+      },
+      "src/qikvrt_personal_auth.py": {
+        "bytes": 25415,
+        "sha256": "9b31c8a9f49bf2facea4d3a6784aad8e1550c55e74eaaf5af39693cbe7f1c59b",
+        "git_blob": "070a78ac954a54123d3daa955274848345060987"
+      },
+      "src/qikvrt_personal_assistant.py": {
+        "bytes": 33221,
+        "sha256": "a19ec2dba987eee4a77465753ec3346336b04c0a6de2af3055f236b9fc9c7533",
+        "git_blob": "0b4f319bafda8927bd97d0496fe1efff54acd2d4"
+      },
+      "src/qikvrt_effect_ack_http_terminal.py": {
+        "bytes": 34614,
+        "sha256": "03f72ec0a2e00d71806dc4e232aced081902d086de2870e8c3f52c6b169513df",
+        "git_blob": "670702e9f6ba1492ae2dd651babaa1932c950261"
+      },
+      "tests/test_qikvrt_personal_auth.py": {
+        "bytes": 25794,
+        "sha256": "6e6a11d480242a55ee21e59e0c006783f92888b954386c4e257bf3ef65b74983",
+        "git_blob": "1d85f2d4bcf059e7ffbdf35a6f8386acd79ed7a4"
+      },
+      "tests/test_qikvrt_personal_assistant.py": {
+        "bytes": 13869,
+        "sha256": "da82f7a388c12842f364ef762accd9e3a155f26eca30de143676770c044b685b",
+        "git_blob": "b837df18e320ff405aa0b4a23b0ee9526e07d2b1"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/README.md": {
+        "bytes": 15873,
+        "sha256": "245b47c9768aa550f17a17ccb0b97bf886a9879e591c004657d9b0f2226012a8",
+        "git_blob": "ecc312fea024fcf2df22766342719c51fb344e09"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+        "bytes": 4299,
+        "sha256": "48786cd2cf1d33774b0c5c94a9e611507862b3562c9217be3b9aab12074604f8",
+        "git_blob": "fd8020f7306f94788814be6c6d6161c71fac2307"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+        "bytes": 6193,
+        "sha256": "150245df245c5b8f7bf58c8f7def4bdb01351a6407329f4773ae1cf805ebe89a",
+        "git_blob": "7dbcc6fd67f2aae08d51d4dee30108d7978f0c4e"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+        "bytes": 2378,
+        "sha256": "3c19f4a454f2a61a19db2106677c23f4969606143c2fdb64d456f107b80125d4",
+        "git_blob": "d7057894e44d0f7653eeae993f563e8f78b030c0"
+      },
+      "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md": {
+        "bytes": 6062,
+        "sha256": "c6a55c41134e91c3020cfeb7faf9857867ec179127ce963907d9aa0b56a86b1e",
+        "git_blob": "f12ad70e69f10fd62537be30b71d10b13999d82f"
+      },
+      "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json": {
+        "bytes": 2275,
+        "sha256": "fe9155869a7c238975020cdb5f20b9270aaa9c12a6a99917ca03b6ecabd3913a",
+        "git_blob": "71cd774ce4f6623cb57eece99d27cd393aec207f"
+      },
+      "runtime/toolchains/TOOLCHAIN.lock.tsv": {
+        "bytes": 5804,
+        "sha256": "9eafe8dfac94cc6aebd2b2d43e5e62b9791e61521ed8d933dff51d6360e3500f",
+        "git_blob": "d589eb12a2cffe5fee054fee16eb15812d6789cd"
+      },
+      "runtime/toolchains/CACHE_REGISTRY.json": {
+        "bytes": 32307,
+        "sha256": "3ead8e595b77d396df5d2f931e4f140bfdf28d9b0913e2e5605160e53117f7c4",
+        "git_blob": "120a40f7fe09045ea81ac45e4416b7712986d600"
+      },
+      "runtime/toolchains/CACHE_COVERAGE.json": {
+        "bytes": 7796,
+        "sha256": "c163fdd0a15d86b2fd5b44348b79ee9898e7b53682ce0fa8a7366d2f00915381",
+        "git_blob": "80e3e545ec4d4f0659b1531dc2b0b504d35e9812"
+      },
+      "runtime/toolchains/PROVENANCE.md": {
+        "bytes": 21834,
+        "sha256": "5b043bba74a01d1fac907ccf0e39ec93b0ce4dabc916a79a8bdc4454f66d90df",
+        "git_blob": "b735a3a7c02661c51db7577e2fd08c7c0be9782b"
+      },
+      "runtime/toolchains/requirements-personal-auth-50.0.2.txt": {
+        "bytes": 237,
+        "sha256": "da273a78db2219480c478683bdacbdd535a77c28c649c40f45d8be4ca8d27423",
+        "git_blob": "879b00cfe9dbeb97dc2693f872a0a862bd1905f9"
+      }
+    },
+    "node_ui_syntax_check": "PASS",
+    "cache_contract": "34/34 strategies PASS; not installation or native cache activation"
+  },
+  "observations": {
+    "github_connection_principal": "ingolf-lohmann",
+    "latest_exact_source_runs": "28 PR runs on a20232e7 are action_required; no native full-suite PASS transferred",
+    "local_bootloader": "Partial source projection before local fixture initialization: BLOCK at missing remote.origin binding; no full bootstrap acceptance inferred",
+    "productive_identity_authenticated": false,
+    "productive_model_authenticated": false,
+    "native_secret_service_restart_accepted": false,
+    "firefox_product_authentication_accepted": false,
+    "biometric_user_verification_attested": false,
+    "chatgpt_signed_in_session_transferred": false,
+    "windows_macos_secure_backend": "NOT_IMPLEMENTED"
+  },
+  "open_work": [
+    {
+      "id": "registered-idp-binding",
+      "state": "OPEN",
+      "next_action": "Through an existing authorized provider registration bind exact issuer, public client ID, registered 127.0.0.1 form_post redirect, verified Owner sub and provider refresh-rotation policy in private 0600 configuration; do not reuse another product client or silently select a provider."
+    },
+    {
+      "id": "native-personal-login-witness",
+      "state": "OPEN",
+      "next_action": "On the actual authorized Linux desktop user, verify protected login-collection encryption/lock/unlock, provision model key through secure terminal, then run actual Firefox login, process/browser restart, expiry, failure, reauthentication, logout and provider-revocation checks. Preserve missing provider support as OPEN."
+    },
+    {
+      "id": "candidate-integration-and-native-checks",
+      "state": "OPEN",
+      "next_action": "Expected-head fast-forward the reviewed source into existing PR523, read back every changed blob/tree, observe exact-source checks and independently qualified review. No Main bypass or approval rerun substitute."
+    }
+  ],
+  "integrity": "Regenerate the existing trio with exact base inventory; retain declared projection/native-byte boundaries in the final readback. This work-unit source remains pre-dispatch history.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false
+}

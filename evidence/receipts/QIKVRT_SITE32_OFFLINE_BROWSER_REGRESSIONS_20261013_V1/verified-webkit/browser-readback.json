@@ -1,0 +1,638 @@
+{
+  "schema": "qikvrt-offline-browser-readback/v2",
+  "source": {
+    "site32": {
+      "head": "17fb5f3ff3904bbdc389a85d10a72c06eb7f5395",
+      "tree": "2f3440e0e441f8da3e6624688d57f699ac2d7f83",
+      "source_json_sha256": "fdfd21d6ee2b6893a9e1dfd3700803f099899b7d2361c9a146bc1fffd0e14428",
+      "public_origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site"
+    },
+    "live_origin_browser_acceptance": false,
+    "derived_source": {
+      "actual_iphone_devices_tested": false,
+      "derivation": {
+        "changed_files": [
+          "README.md",
+          "client.js",
+          "service-worker.js"
+        ],
+        "id": "PERSONAL_OFFLINE_REGISTERED_WORKER_READINESS_20261013",
+        "implementation_contribution": "OpenAI Codex",
+        "native_browser_pass_transfer": false,
+        "requirements_and_authorization": "Ingolf Lohmann",
+        "scope": "REGISTERED_WORKER_ACTIVATION_AND_INTEGRITY_READINESS; NO_STORAGE_SCHEMA_CHANGE"
+      },
+      "files": {
+        "README.md": {
+          "bytes": 8296,
+          "sha256": "9d6a65da1aced1d24a3822e45c62587727476d13c44c21138c74a3f1d248f9c9"
+        },
+        "client.js": {
+          "bytes": 17031,
+          "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3"
+        },
+        "git-hash.js": {
+          "bytes": 3134,
+          "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"
+        },
+        "icon.svg": {
+          "bytes": 332,
+          "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"
+        },
+        "index.html": {
+          "bytes": 1043,
+          "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"
+        },
+        "manifest.webmanifest": {
+          "bytes": 262,
+          "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"
+        },
+        "package.json": {
+          "bytes": 145,
+          "sha256": "f7e988855ba0859e142c6a19bb9b84a2d7a2d62aa0d726e72e8f30fa11d361a8"
+        },
+        "repository.js": {
+          "bytes": 16647,
+          "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"
+        },
+        "service-worker.js": {
+          "bytes": 2858,
+          "sha256": "8bf7706b8a2600a58808886ddfc99302453f73ad6e1d83ad002e782b372ee151"
+        },
+        "static-server.mjs": {
+          "bytes": 1565,
+          "sha256": "b6e14d3eca626d93f74f55fcdf96842777ed0720152c299bc7b3d238e6006aca"
+        },
+        "style.css": {
+          "bytes": 2455,
+          "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"
+        },
+        "vendor/REACT_LICENSE.txt": {
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        },
+        "vendor/react-runtime.js": {
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        }
+      },
+      "first_install_requires_https": true,
+      "main_effect": false,
+      "native_review": false,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "schema": "qikvrt-offline-client-derived-source/v1",
+      "site_source_parent": "4179d18907e71da125ba51a1a7250dfea82590e6",
+      "upstream": {
+        "original_files": {
+          "README.md": {
+            "bytes": 7824,
+            "sha256": "2153e2b7d035a9321af746328a5fe9c0617f8287036b45e3a94eb239eaa4e4b8"
+          },
+          "client.js": {
+            "bytes": 16603,
+            "sha256": "08e561d76da139cce8cb87adb43ef2a6960bd86ef80c73462d2ed9c2f228b211"
+          },
+          "git-hash.js": {
+            "bytes": 3134,
+            "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"
+          },
+          "icon.svg": {
+            "bytes": 332,
+            "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"
+          },
+          "index.html": {
+            "bytes": 1043,
+            "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"
+          },
+          "manifest.webmanifest": {
+            "bytes": 262,
+            "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"
+          },
+          "package.json": {
+            "bytes": 145,
+            "sha256": "f7e988855ba0859e142c6a19bb9b84a2d7a2d62aa0d726e72e8f30fa11d361a8"
+          },
+          "repository.js": {
+            "bytes": 16647,
+            "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"
+          },
+          "service-worker.js": {
+            "bytes": 2858,
+            "sha256": "959b6c051f67a921a0796d67eb5cf73ac858b229c80deb917501cf83367dd947"
+          },
+          "static-server.mjs": {
+            "bytes": 1565,
+            "sha256": "b6e14d3eca626d93f74f55fcdf96842777ed0720152c299bc7b3d238e6006aca"
+          },
+          "style.css": {
+            "bytes": 2455,
+            "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"
+          },
+          "vendor/REACT_LICENSE.txt": {
+            "bytes": 1088,
+            "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+          },
+          "vendor/react-runtime.js": {
+            "bytes": 571915,
+            "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+          }
+        },
+        "original_source_json_sha256": "246ec794f705b7b66f679dce057c91fd68b0b0ead51c21c81e2eeb0e898ec67e",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "source_head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+        "source_tree": "3af7d383933a8972469f48928a800aa6c06031d4"
+      }
+    },
+    "worker_sha256": "8bf7706b8a2600a58808886ddfc99302453f73ad6e1d83ad002e782b372ee151",
+    "suite_sha256": "eb25d680e57ebb672d578f16bf33bb6f86ed5d89e71fcb97c9a8a7b57f339e48"
+  },
+  "fixture": {
+    "expected": {
+      "path": "qikvrt-browser-acceptance.txt",
+      "text": "QIKVRT_SITE31_BROWSER_ACCEPTANCE_20261013\n",
+      "bytes": 42,
+      "sha256": "e1bc337f3ce0605ece250eaf5748b3acc8f70ce8847b863df48172741b63a6db",
+      "git_blob_sha1": "638d1b19598c3077b89f3a954d2974baca2c3117",
+      "tree": "99b939da0bc046ab0f7a362b1d83ed596254d949"
+    },
+    "before": {
+      "head": "94fbe814403bdad0c3628aa047e906918ca6b59458309ed2ce3ef2c1beb891c7",
+      "tree": "99b939da0bc046ab0f7a362b1d83ed596254d949",
+      "report": {
+        "head": "94fbe814403bdad0c3628aa047e906918ca6b59458309ed2ce3ef2c1beb891c7",
+        "revisions": 2,
+        "files": 1,
+        "bytes": 42,
+        "scope": "LOCAL_OFFLINE_WORKING_REPLICA",
+        "native_execution": false,
+        "github_write": false,
+        "native_review": false
+      },
+      "archive_sha256": "de16f97d13e4e08b82f18e7a075321d08144cf9849849c90990b832f474304ee",
+      "file": {
+        "path": "qikvrt-browser-acceptance.txt",
+        "bytes": 42,
+        "text": "QIKVRT_SITE31_BROWSER_ACCEPTANCE_20261013\n",
+        "sha256": "e1bc337f3ce0605ece250eaf5748b3acc8f70ce8847b863df48172741b63a6db",
+        "git_blob_sha1": "638d1b19598c3077b89f3a954d2974baca2c3117"
+      }
+    },
+    "offline": {
+      "head": "94fbe814403bdad0c3628aa047e906918ca6b59458309ed2ce3ef2c1beb891c7",
+      "tree": "99b939da0bc046ab0f7a362b1d83ed596254d949",
+      "report": {
+        "head": "94fbe814403bdad0c3628aa047e906918ca6b59458309ed2ce3ef2c1beb891c7",
+        "revisions": 2,
+        "files": 1,
+        "bytes": 42,
+        "scope": "LOCAL_OFFLINE_WORKING_REPLICA",
+        "native_execution": false,
+        "github_write": false,
+        "native_review": false
+      },
+      "archive_sha256": "de16f97d13e4e08b82f18e7a075321d08144cf9849849c90990b832f474304ee",
+      "file": {
+        "path": "qikvrt-browser-acceptance.txt",
+        "bytes": 42,
+        "text": "QIKVRT_SITE31_BROWSER_ACCEPTANCE_20261013\n",
+        "sha256": "e1bc337f3ce0605ece250eaf5748b3acc8f70ce8847b863df48172741b63a6db",
+        "git_blob_sha1": "638d1b19598c3077b89f3a954d2974baca2c3117"
+      }
+    }
+  },
+  "restart": {
+    "profile_reused": true,
+    "old_browser_disconnected": true,
+    "new_browser_connected": true,
+    "browser_object_reused": false,
+    "pids_before": [
+      5212,
+      5218
+    ],
+    "pids_after": [
+      5392,
+      5398
+    ],
+    "old_profile_pids_after_close": [],
+    "origin_still_stopped": true,
+    "before": {
+      "head": "10ff6c5f8da53a004ca9a60d701eac9f723ad4652646d05cbf2443c87638e7e5",
+      "tree": "fcaecef8dad587cf138b325ba3e7686883c51527",
+      "report": {
+        "head": "10ff6c5f8da53a004ca9a60d701eac9f723ad4652646d05cbf2443c87638e7e5",
+        "revisions": 7,
+        "files": 2,
+        "bytes": 3145806,
+        "scope": "LOCAL_OFFLINE_WORKING_REPLICA",
+        "native_execution": false,
+        "github_write": false,
+        "native_review": false
+      },
+      "archive_sha256": "a2771493fdbae12b30c3bbfe265c8b1ccf2a5bcaaf3cf949a7a1d0812a66b852",
+      "file": {
+        "path": "qikvrt-browser-acceptance.txt",
+        "bytes": 7,
+        "text": "phone B",
+        "sha256": "24cd69f8ff62dcbdf2b0184614f1f736bae776d2d8b09014df105a3840fb4fa1",
+        "git_blob_sha1": "e720f457339bd9b2c2795bbc0ad9d0435d901c2c"
+      }
+    },
+    "after": {
+      "head": "10ff6c5f8da53a004ca9a60d701eac9f723ad4652646d05cbf2443c87638e7e5",
+      "tree": "fcaecef8dad587cf138b325ba3e7686883c51527",
+      "report": {
+        "head": "10ff6c5f8da53a004ca9a60d701eac9f723ad4652646d05cbf2443c87638e7e5",
+        "revisions": 7,
+        "files": 2,
+        "bytes": 3145806,
+        "scope": "LOCAL_OFFLINE_WORKING_REPLICA",
+        "native_execution": false,
+        "github_write": false,
+        "native_review": false
+      },
+      "archive_sha256": "a2771493fdbae12b30c3bbfe265c8b1ccf2a5bcaaf3cf949a7a1d0812a66b852",
+      "file": {
+        "path": "qikvrt-browser-acceptance.txt",
+        "bytes": 7,
+        "text": "phone B",
+        "sha256": "24cd69f8ff62dcbdf2b0184614f1f736bae776d2d8b09014df105a3840fb4fa1",
+        "git_blob_sha1": "e720f457339bd9b2c2795bbc0ad9d0435d901c2c"
+      }
+    }
+  },
+  "cache_stages": [
+    {
+      "active_state": "activated",
+      "controller": "http://127.0.0.1:8765/service-worker.js",
+      "scope": "http://127.0.0.1:8765/",
+      "cache": "qikvrt-offline-3155c08833f64824e3a203c2d3d805e6a0ce95555a46345ea101de2bb67e2df4",
+      "files": [
+        {
+          "path": "client.js",
+          "bytes": 17031,
+          "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3"
+        },
+        {
+          "path": "git-hash.js",
+          "bytes": 3134,
+          "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"
+        },
+        {
+          "path": "icon.svg",
+          "bytes": 332,
+          "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"
+        },
+        {
+          "path": "index.html",
+          "bytes": 1043,
+          "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"
+        },
+        {
+          "path": "manifest.webmanifest",
+          "bytes": 262,
+          "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"
+        },
+        {
+          "path": "repository.js",
+          "bytes": 16647,
+          "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"
+        },
+        {
+          "path": "style.css",
+          "bytes": 2455,
+          "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"
+        },
+        {
+          "path": "vendor/REACT_LICENSE.txt",
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        },
+        {
+          "path": "vendor/react-runtime.js",
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        }
+      ]
+    },
+    {
+      "active_state": "activated",
+      "controller": "http://127.0.0.1:8765/service-worker.js",
+      "scope": "http://127.0.0.1:8765/",
+      "cache": "qikvrt-offline-3155c08833f64824e3a203c2d3d805e6a0ce95555a46345ea101de2bb67e2df4",
+      "files": [
+        {
+          "path": "client.js",
+          "bytes": 17031,
+          "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3"
+        },
+        {
+          "path": "git-hash.js",
+          "bytes": 3134,
+          "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"
+        },
+        {
+          "path": "icon.svg",
+          "bytes": 332,
+          "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"
+        },
+        {
+          "path": "index.html",
+          "bytes": 1043,
+          "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"
+        },
+        {
+          "path": "manifest.webmanifest",
+          "bytes": 262,
+          "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"
+        },
+        {
+          "path": "repository.js",
+          "bytes": 16647,
+          "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"
+        },
+        {
+          "path": "style.css",
+          "bytes": 2455,
+          "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"
+        },
+        {
+          "path": "vendor/REACT_LICENSE.txt",
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        },
+        {
+          "path": "vendor/react-runtime.js",
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        }
+      ]
+    },
+    {
+      "active_state": "activated",
+      "controller": "http://127.0.0.1:8766/service-worker.js",
+      "scope": "http://127.0.0.1:8766/",
+      "cache": "qikvrt-offline-3155c08833f64824e3a203c2d3d805e6a0ce95555a46345ea101de2bb67e2df4",
+      "files": [
+        {
+          "path": "client.js",
+          "bytes": 17031,
+          "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3"
+        },
+        {
+          "path": "git-hash.js",
+          "bytes": 3134,
+          "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"
+        },
+        {
+          "path": "icon.svg",
+          "bytes": 332,
+          "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"
+        },
+        {
+          "path": "index.html",
+          "bytes": 1043,
+          "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"
+        },
+        {
+          "path": "manifest.webmanifest",
+          "bytes": 262,
+          "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"
+        },
+        {
+          "path": "repository.js",
+          "bytes": 16647,
+          "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"
+        },
+        {
+          "path": "style.css",
+          "bytes": 2455,
+          "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"
+        },
+        {
+          "path": "vendor/REACT_LICENSE.txt",
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        },
+        {
+          "path": "vendor/react-runtime.js",
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        }
+      ]
+    },
+    {
+      "active_state": "activated",
+      "controller": "http://127.0.0.1:8766/service-worker.js",
+      "scope": "http://127.0.0.1:8766/",
+      "cache": "qikvrt-offline-3155c08833f64824e3a203c2d3d805e6a0ce95555a46345ea101de2bb67e2df4",
+      "files": [
+        {
+          "path": "client.js",
+          "bytes": 17031,
+          "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3"
+        },
+        {
+          "path": "git-hash.js",
+          "bytes": 3134,
+          "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"
+        },
+        {
+          "path": "icon.svg",
+          "bytes": 332,
+          "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"
+        },
+        {
+          "path": "index.html",
+          "bytes": 1043,
+          "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"
+        },
+        {
+          "path": "manifest.webmanifest",
+          "bytes": 262,
+          "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"
+        },
+        {
+          "path": "repository.js",
+          "bytes": 16647,
+          "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"
+        },
+        {
+          "path": "style.css",
+          "bytes": 2455,
+          "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"
+        },
+        {
+          "path": "vendor/REACT_LICENSE.txt",
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        },
+        {
+          "path": "vendor/react-runtime.js",
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        }
+      ]
+    }
+  ],
+  "negative_controls": [
+    {
+      "path": "/SOURCE.json?uncached-negative=ded6a414-2efe-45d3-8eed-d0c097841609",
+      "cache_match": false,
+      "failed": true,
+      "error": "TypeError"
+    },
+    {
+      "path": "/SOURCE.json?uncached-negative=43cdb472-6126-48c5-8cc0-1ecf592b2047",
+      "cache_match": false,
+      "failed": true,
+      "error": "TypeError"
+    }
+  ],
+  "timeline": [
+    {
+      "stage": "worker_activated",
+      "observed_at": "2026-10-13T12:17:48.696Z",
+      "active_state": "activated",
+      "controller": "http://127.0.0.1:8765/service-worker.js",
+      "scope": "http://127.0.0.1:8765/",
+      "cache": "qikvrt-offline-3155c08833f64824e3a203c2d3d805e6a0ce95555a46345ea101de2bb67e2df4",
+      "files": [
+        {
+          "path": "client.js",
+          "bytes": 17031,
+          "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3"
+        },
+        {
+          "path": "git-hash.js",
+          "bytes": 3134,
+          "sha256": "308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"
+        },
+        {
+          "path": "icon.svg",
+          "bytes": 332,
+          "sha256": "dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"
+        },
+        {
+          "path": "index.html",
+          "bytes": 1043,
+          "sha256": "2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"
+        },
+        {
+          "path": "manifest.webmanifest",
+          "bytes": 262,
+          "sha256": "419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"
+        },
+        {
+          "path": "repository.js",
+          "bytes": 16647,
+          "sha256": "cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"
+        },
+        {
+          "path": "style.css",
+          "bytes": 2455,
+          "sha256": "c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"
+        },
+        {
+          "path": "vendor/REACT_LICENSE.txt",
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        },
+        {
+          "path": "vendor/react-runtime.js",
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        }
+      ]
+    },
+    {
+      "stage": "fixture_saved",
+      "observed_at": "2026-10-13T12:17:49.602Z",
+      "head": "94fbe814403bdad0c3628aa047e906918ca6b59458309ed2ce3ef2c1beb891c7",
+      "tree": "99b939da0bc046ab0f7a362b1d83ed596254d949",
+      "report": {
+        "head": "94fbe814403bdad0c3628aa047e906918ca6b59458309ed2ce3ef2c1beb891c7",
+        "revisions": 2,
+        "files": 1,
+        "bytes": 42,
+        "scope": "LOCAL_OFFLINE_WORKING_REPLICA",
+        "native_execution": false,
+        "github_write": false,
+        "native_review": false
+      },
+      "archive_sha256": "de16f97d13e4e08b82f18e7a075321d08144cf9849849c90990b832f474304ee",
+      "file": {
+        "path": "qikvrt-browser-acceptance.txt",
+        "bytes": 42,
+        "text": "QIKVRT_SITE31_BROWSER_ACCEPTANCE_20261013\n",
+        "sha256": "e1bc337f3ce0605ece250eaf5748b3acc8f70ce8847b863df48172741b63a6db",
+        "git_blob_sha1": "638d1b19598c3077b89f3a954d2974baca2c3117"
+      }
+    },
+    {
+      "stage": "origin_process_exited",
+      "observed_at": "2026-10-13T12:17:49.610Z",
+      "pid": 5196,
+      "exit_code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "stage": "offline_reload_verified",
+      "observed_at": "2026-10-13T12:17:49.890Z",
+      "head": "94fbe814403bdad0c3628aa047e906918ca6b59458309ed2ce3ef2c1beb891c7",
+      "tree": "99b939da0bc046ab0f7a362b1d83ed596254d949"
+    },
+    {
+      "stage": "full_browser_process_restart",
+      "observed_at": "2026-10-13T12:17:58.227Z",
+      "profile_reused": true,
+      "old_browser_disconnected": true,
+      "new_browser_connected": true,
+      "browser_object_reused": false,
+      "pids_before": [
+        5212,
+        5218
+      ],
+      "pids_after": [
+        5392,
+        5398
+      ],
+      "old_profile_pids_after_close": [],
+      "origin_still_stopped": true
+    }
+  ],
+  "engine": "webkit",
+  "mobile_layout": {
+    "width": 390,
+    "height": 844
+  },
+  "actual_iphone_devices": false,
+  "offline_disruption": {
+    "origin_server_stopped": true,
+    "uncached_network_request_failed": true,
+    "playwright_offline_flag": false,
+    "webkit_offline_emulation": "Excluded from acceptance after native internal error; upstream microsoft/playwright#42775"
+  },
+  "complete_source": null,
+  "checks": [
+    "390px layout has no horizontal overflow",
+    "UI edit commits and reads back real IndexedDB bytes",
+    "origin is stopped, uncached negative control fails, navigation comes from the SHA-256-verified worker cache, and unchanged 42-byte file, HEAD, TREE and history reopen offline",
+    "offline UI writes survive storage readback",
+    "multi-block binary contents and full history are verified",
+    "online recovery restores a real uncached origin response without changing local HEAD, TREE, files or history",
+    "different origins have separate local repositories",
+    "complete export/import preserves exact revision and byte-level Git working tree",
+    "divergence never overwrites; explicit merge preserves two parents and chosen conflict",
+    "merged stand transfers back to second origin without losing history",
+    "tamper, truncation and repository-identity mismatch preserve the admitted head",
+    "two-tab writes use an atomic expected-head lease",
+    "fresh stored-byte tampering blocks verification",
+    "full browser process exits and a different process reopens the same profile offline; HEAD, TREE, archive digest, every historical block and UI file are unchanged",
+    "real worker rejects a corrupted cache entry with 503 and ready=false while local repository bytes remain unchanged"
+  ],
+  "check_count": 15,
+  "second_origin_final_head": "10ff6c5f8da53a004ca9a60d701eac9f723ad4652646d05cbf2443c87638e7e5",
+  "console_errors": [],
+  "native_execution": false,
+  "main_effect": false
+}

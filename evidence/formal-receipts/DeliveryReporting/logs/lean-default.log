@@ -1,0 +1,27 @@
+{"command": ["/home/runner/work/_temp/lean-4.35.0-linux/bin/lean", "--version"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T21:09:49.977258+00:00"}
+Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.35.0-linux/bin/lean", "--githash"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/delivery-reporting", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T21:09:50.041933+00:00"}
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.35.0-linux/bin/lake", "build", "QIKVRTDeliveryReporting"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/external-project", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T21:09:50.106487+00:00"}
+info: DeliveryReportingRecheck: no previous manifest, creating one from scratch
+info: toolchain not updated; no toolchain information found
+✔ [2/3] Built QIKVRTEffectAck.DeliveryReporting (569ms)
+Build completed successfully (3 jobs).
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.35.0-linux/bin/lake", "env", "lean", "QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/external-project", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T21:09:50.772715+00:00"}
+'QIKVRT.DeliveryReporting.T1' depends on axioms: [propext]
+'QIKVRT.DeliveryReporting.T2' depends on axioms: [propext, Quot.sound]
+'QIKVRT.DeliveryReporting.T3' depends on axioms: [propext, Quot.sound]
+'QIKVRT.DeliveryReporting.T4' does not depend on any axioms
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.35.0-linux/bin/lake", "env", "/home/runner/work/_temp/lean-4.35.0-linux/bin/leanexport", "QIKVRTEffectAck.DeliveryReporting", "--", "QIKVRT.DeliveryReporting.T1", "QIKVRT.DeliveryReporting.T2", "QIKVRT.DeliveryReporting.T3", "QIKVRT.DeliveryReporting.T4"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/external-project", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T21:09:51.188155+00:00"}
+
+EXIT_CODE=0
+{"command": ["/home/runner/work/_temp/lean-4.35.0-linux/bin/leanchecker", "--silent", "--from-export", "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/DeliveryReporting.export.ndjson"], "cwd": "/home/runner/work/qik-vrt/qik-vrt/.qikvrt/formal-receipts/DeliveryReporting/external-project", "environment": {"LEAN_ABORT_ON_PANIC": "1"}, "utc": "2026-10-31T21:09:52.658500+00:00"}
+
+EXIT_CODE=0

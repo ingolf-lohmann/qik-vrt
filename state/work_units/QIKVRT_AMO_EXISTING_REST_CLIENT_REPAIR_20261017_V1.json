@@ -1,0 +1,80 @@
+{
+  "artificial_contribution": "OpenAI Codex: existing REST client and OpenAPI extension, source-bound journal reuse, adversarial transport fixtures and independent readback; no credential values handled.",
+  "base_subject": {
+    "head": "ca42f818a39e288221a5dd0ff2efb5d93601a248",
+    "pr": 523,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "7ef232ad2b1ef89aeffa937da694966159396f50"
+  },
+  "effect_ack_done": false,
+  "human_contribution": {
+    "authorization": "Direct Owner APPROVED / Product Owner repair and PR523 merge grant; source https://github.com/ingolf-lohmann/qik-vrt/pull/523#issuecomment-6231678308",
+    "instruction": "Also dann ist doch prima, wenn wir jetzt das Delta so gut rausgearbeitet haben, dann schließt diese Lücke jetzt ein für alle Mal."
+  },
+  "id": "QIKVRT_AMO_EXISTING_REST_CLIENT_REPAIR_20261017_V1",
+  "merge": {
+    "authorized": true,
+    "native_independent_approval_observed": false,
+    "performed": false
+  },
+  "observed_at": "2026-10-17T08:30:58.606471+00:00",
+  "official_contract_sources": [
+    "https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28",
+    "https://docs.github.com/en/rest/actions/secrets#get-a-repository-secret"
+  ],
+  "ordinary_release": false,
+  "owner": "Ingolf Lohmann",
+  "package": {
+    "six_standard_source_components_changed": false,
+    "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c",
+    "workflow_blob": "098d1625f446cdc481cb86805e398512ff874a6a"
+  },
+  "repair": {
+    "existing_component": "scripts/qikvrt_api_client.py",
+    "journal": "Reuse existing private attempt journal/lock; persist exact non-secret request and source binding before POST; add-on/version key prevents replay by request-id, ref or unrelated HEAD changes.",
+    "main_or_review_policy_weakened": false,
+    "new_operations": {
+      "firefox_amo_access": "GET only the two fixed repository-secret metadata records; NOT_INSPECTED on denial, never job-delivery/authentication inference.",
+      "firefox_amo_dispatch": "POST only existing qikvrt_ci.yml direct Owner signing path, current PR523 HEAD/TREE and immutable workflow bytes, existing authorized six-component package."
+    },
+    "new_server_proxy_trigger_or_permission_grant": false,
+    "readback": "Existing bounded repository/exact-host closing readback; original native run/artifact readback remains required."
+  },
+  "runtime_activation": {
+    "active_ChatGPT_connector_operations_added": false,
+    "installation_retries": 0,
+    "job_credential_delivery": "NOT_REOBSERVED_BY_NEW_SIGNING_RUN",
+    "native_dispatch_callable_from_this_client": false,
+    "native_signing_attempts": 0,
+    "repository_secret_configuration": "NOT_INSPECTED",
+    "secret_binding_write_callable_from_this_client": false,
+    "smallest_continuation": "Expose the existing bounded GitHub POST/GET operations in the authorized connector, or execute this existing client in an already authorized securely credentialed runtime. Do not manufacture a proxy, new scope or synthetic trigger. Verify original source-bound native effect before claiming repair completion.",
+    "source_commit_is_runtime_activation": false
+  },
+  "schema": "qikvrt-work-unit/v1",
+  "source_sha256": {
+    "api/qikvrt_github_api.openapi.yaml": "82ab920391497602bbdf5a92461ca8bd890ec1f0148849609ed94781ec5d3819",
+    "docs/operations/AUTONOMOUS_PR_CONTINUATION.md": "adfa9d1c266918f00c56aad7257a0a5c4d94639e08411fc7e81857601de6e89e",
+    "scripts/qikvrt_api_client.py": "e9ecfa54b78df5b3dc89be20b20c07f7f43f31defdf85d3887551619bbe21316",
+    "tests/test_api_client.py": "86f7555c3d6ba0667269ceab2b74f82e0e2492e1ab0938d61c1cc86fef76ddb9"
+  },
+  "state": "SOURCE_REPAIR_TESTED_RUNTIME_ACTIVATION_PENDING",
+  "tests": {
+    "broader_local_attempt": {
+      "boundaries": [
+        "Imported NativeStandaloneTests cannot start the local sandbox runtime: Operation not permitted.",
+        "FirefoxCarrierTests requires a clean committed checkout and failed before export while the repair was uncommitted."
+      ],
+      "errors": 1,
+      "failures": 10,
+      "not_claimed_as_pass": true,
+      "tests": 263
+    },
+    "command": "python3 -B -m unittest -q tests.test_api_client tests.test_handler_security tests.test_mcp_e2e tests.test_qikvrt_workflow_executor_mesh_contract tests.test_self_host_firefox.FirefoxAMOUnlistedTests tests.test_self_host_firefox.FirefoxExtensionAdmissionTests tests.test_effect_ack_release_workflows",
+    "failures": 0,
+    "log_sha256": "cf220c5cb7b6b209a7db07cf3654888bc31afaa485b47a0ea2e2a434f97fd629",
+    "new_transport_tests": 12,
+    "passed": 252,
+    "scope": "Local real request/journal construction with provider-shaped transport fixtures, local MCP wire checks and security/workflow contracts. No provider signing or production acceptance."
+  }
+}

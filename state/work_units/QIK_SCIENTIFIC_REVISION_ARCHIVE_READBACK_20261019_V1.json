@@ -1,0 +1,28 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIK_SCIENTIFIC_REVISION_ARCHIVE_READBACK_20261019_V1",
+  "corrects": "QIK_SCIENTIFIC_REVISION_PUBLICATION_2026_09_23 current-state projection only; original record remains historical",
+  "requested_by": "Ingolf Lohmann",
+  "task": "Verify external archival effect and reconcile stale repository metadata without altering publication originals",
+  "publication_id": "2026-09-23-qik-scientific-revision",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "publication_readback": "docs/publications/2026-09-23-qik-scientific-revision/PUBLICATION_READBACK_20261019.json",
+  "external_effect_status": "EXISTING_ZENODO_PUBLICATION_READ_BACK_NO_NEW_UPLOAD",
+  "originals_preserved": true,
+  "open_work": [
+    "Review and integrate this metadata correction through the existing protected REST-only path",
+    "Retain PR392 historical governance obligation; external publication is not proof of its satisfaction",
+    "The mail PDF is not present in record22907018; a new PDF deposition is outside this metadata correction",
+    "Mirror/node delivery and native outbox return require their own admitted evidence; no inferred receipt"
+  ],
+  "contribution_provenance": {
+    "human": "Ingolf Lohmann: original QIK concept, prior task authorization and present audit request",
+    "artificial_cognitive": "OpenAI Codex: byte comparisons, documentary provenance and bounded metadata reconciliation",
+    "unresolved": "Authenticated PDF conversion process and source-manuscript bytes were not independently established"
+  },
+  "global_effect_ack_done": false
+}

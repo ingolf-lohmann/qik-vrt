@@ -1,0 +1,32 @@
+{
+  "schema": "qikvrt-railway-capture-request/v1",
+  "carrier": {
+    "provider": "railway",
+    "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+    "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+    "service_id": "feb518e8-bfb2-450d-a36a-c992b052427c",
+    "volume_id": "0e2d37e2-ac58-4bdc-8238-ed81bf2aa187",
+    "volume_name": "qikvrt-state",
+    "mount_path": "/var/lib/qikvrt",
+    "domain": "universal-terminal-production.up.railway.app"
+  },
+  "deployment_id": null,
+  "source_repository": "Goldkelch/qik-vrt",
+  "source_head": null,
+  "source_tree": null,
+  "snapshot_id": null,
+  "expires_at": null,
+  "restart_fence_receipt_sha256": null,
+  "layout": {
+    "ledger": null,
+    "monitor": null,
+    "binding": null,
+    "locks": [],
+    "jsonl": []
+  },
+  "acknowledgements": {
+    "epoch": null,
+    "events": null,
+    "logical_sha256": null
+  }
+}

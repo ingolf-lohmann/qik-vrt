@@ -1,0 +1,53 @@
+{
+  "additional_brand_name": null,
+  "artificial_cognitive_actor": {
+    "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "contributions": [
+      "Applied authorized technical product name to Personal surface, capability manifest and product/benchmark documentation."
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "system_family": "Codex"
+  },
+  "base_head": "0f9f422b16a306e468038513563e5f53537abced",
+  "containing_commit_binding": "Containing commit/tree and canonical integrity bind this record; historical evidence is not transferred to this successor.",
+  "created_at": "2026-10-05",
+  "evidence_boundary": {
+    "historical_measurements_rewritten": false,
+    "naming_authorization_is_runtime_or_benefit_acceptance": false,
+    "product_benefit_proven": false,
+    "product_metrics": null,
+    "product_trials_executed": 0
+  },
+  "human_actor": {
+    "authorization": "Produktname technisch: Universales Raumzeit-Terminal. Product Owner Ingolf Lohmann Freigabe erteilt.",
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner"
+  },
+  "output_bindings": [
+    {
+      "bytes": 2010,
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.html",
+      "sha256": "860c355e373d609cd41fde301d05cc2395a29ca1a7508021e4d2e0186f9a49da"
+    },
+    {
+      "bytes": 2443,
+      "path": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "sha256": "ba2a7a227ee0403201512a8ceedb9ce4247998591059c014136b192d9ea9700b"
+    },
+    {
+      "bytes": 6157,
+      "path": "personal/ingolf-lohmann/firefox-assistant/README.md",
+      "sha256": "b44b5ef67b5bd73dd3657afb18a2478f1e4e3b401d15ae6f3fb3df6eb1203c8b"
+    },
+    {
+      "bytes": 13358,
+      "path": "benchmarks/browser-assistant-ab/README.md",
+      "sha256": "d3140363097c685d1fb7868fc150ad0e10a3abfc5693bccea548e8c027429fe9"
+    }
+  ],
+  "product_name": "Universales Raumzeit-Terminal",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_product_naming_work_unit_v1",
+  "scope": "Existing Personal candidate; identifiers, Standard package, model instructions, fixtures and measurement contract unchanged."
+}

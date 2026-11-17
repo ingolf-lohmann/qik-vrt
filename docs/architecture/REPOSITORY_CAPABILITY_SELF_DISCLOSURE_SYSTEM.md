@@ -149,3 +149,47 @@ A capability may be reported as pair-available only when both repositories expos
 - all outputs are SHA-256 bound and reproducible.
 
 Until these criteria are met, status remains `EFFECT_ACK_CONTINUE`.
+
+## Owner-directed Authority capability handover, 2026-10-16
+
+The current handover is bound in
+`state/work_units/QIKVRT_AUTHORITY_CAPABILITY_TRANSFER_20261016_V1.json`.
+The Owner requests reuse of Goldkelch-origin capabilities in
+`ingolf-lohmann/qik-vrt`. The live Goldkelch REST read returned HTTP 404;
+this is a source-read boundary, not evidence that its private configuration
+or the Owner's access does not exist. Reuse the preserved sources in the
+Authority. Do not replace immutable historical repository identities,
+candidate grants, consumption refs or publication receipts.
+
+| Goal | Existing Authority implementation | Admission still required |
+| --- | --- | --- |
+| New Zenodo publication | `tools/qikvrt_zenodo_publish.py`, v2 machine-proof policy and schemas | Exact returned candidate and canonical candidate-specific decision; protected token delivery; current native execution and public original-byte readback |
+| Existing Zenodo metadata correction | `tools/qikvrt_zenodo_metadata_edit.py` | Exact before/after metadata, unchanged files, separate exact decision and public readback |
+| Native publication entrypoint | `.github/workflows/qikvrt_publication_router.yml`, `requested-zenodo` job | Trusted current Authority Main; explicit `workflow_dispatch`; exact HEAD, TREE and manifest SHA-256; `execute` defaults to false |
+| Own-host runtime, model/session/capabilities | Existing self-host, universal terminal, origin adapter, persistent storage and CI paths in the handover record | Admitted own host and exact workload acceptance; source presence does not prove live model execution |
+| IONOS and exact-host delivery | Existing private `IONOS_TOKEN` consumer, provider admission and deployment gates | Actual target account/zone permissions and execution admission; DNS, TLS and exact public application readback remain separate |
+| Governance and GitHub App | Existing ruleset-effect, requested-review and GitHub REST components | Protected target configuration, actual callable initial/admin operation, independent native approval and effective Main policy |
+| Knowledge, proof and IETF preparation | Existing `/AI`, client receipt, Lean, claim matrix and protocol/render paths | Fresh exact-subject proofs and applicable publication/submission gates |
+
+The extended publication router reuses the existing publisher and metadata
+editor; it is not another executor or a new automatic trigger. Pull-request
+classification remains effect-free. Requested execution validates the clean,
+committed manifest and its current Main subject, reruns all ordinary gates,
+then reobserves Authority Main immediately before invoking the unchanged
+publication state machine. The global create-only authorization-consumption
+ref, v2 proof gates and token-leak checks remain in that implementation.
+
+The job uses existing `secrets.ZENODO_ACCESS_TOKEN` and its scoped `github.token`.
+Source code cannot export, copy or attest a secret value or protected service
+binding. Target secret configuration, provider permissions and initial REST
+dispatch admission remain independently observable obligations. Do not infer
+their absence from this client or their existence from a workflow file.
+No new account, OAuth scope, browser login, Railway/Vercel dependency, observer
+write or automatic Main push is introduced.
+
+Workflow artifacts preserve bounded intermediate/final publisher evidence for
+reconciliation. They expire and are not durable publication acceptance.
+An admitted client must independently re-download the exact public record and
+original bytes and persist the resulting evidence in Authority before claiming
+completion. Main integration, Mirror equality, domain delivery and a new DOI
+are not established by this source handover.

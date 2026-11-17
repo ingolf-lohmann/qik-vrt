@@ -1,0 +1,44 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "research_work_unit_json"
+  },
+  "schema": "qikvrt_energy_cosmology_research_work_unit_v1",
+  "work_unit_id": "QIKVRT_ENERGY_COSMOLOGY_RESEARCH_20261103_V1",
+  "owner": "Ingolf Lohmann",
+  "owner_instruction_utf8_sha256": "dd7309e87b2e6ef3413b09cc19ef21e4f7a525294b3fb0db4e643327883d6205",
+  "owner_work_record": "d385b867-360a-5794-8428-2df4b90c53fb",
+  "research_entry": "docs/publications/2026-11-03-energy-cosmology-model-test/ENTRY_INDEX.json",
+  "candidate_source_sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac",
+  "numeric_checks": {
+    "passed": 48,
+    "total": 48
+  },
+  "scientific_scope": "Reproducible conditional FLRW model test. No new empirical natural-law confirmation, observer-independent Universe energy, or internal physical spacetime emergence demonstrated.",
+  "publication": {
+    "status": "DRAFT_NOT_PUBLISHED",
+    "universal_law_confirmation_condition_met": false,
+    "doi": null
+  },
+  "production": {
+    "original_debian_packages_verified": 5,
+    "source_files_compared_with_exact_Main_manifest": 199,
+    "original_verifier_exit": 0,
+    "installation_performed": false,
+    "original_SSO_host_binding": "UNAVAILABLE_IN_THIS_EXECUTION_CONTAINER",
+    "native_adapter_ready": false,
+    "effect_ack_done": false
+  },
+  "historical_proof_sources": "docs/publications/2026-11-03-energy-cosmology-model-test/prior_sources",
+  "prior_audit": "edc3fb2e-4ac3-5d42-8bd9-1aab83406801",
+  "native_CI_for_candidate": "NOT_RUN_ARCHIVE_ONLY",
+  "open_work": [
+    "Recover original prior execution archive/raw logs.",
+    "Review exact conditional scientific scope and admit original publication route; never label universal proof.",
+    "Repair original SSO/host attachment; actual installation, HTTPS, restart/persistence and EAP effect evidence.",
+    "Retain original review publisher repair d2a4c871 and existing independent duties."
+  ]
+}

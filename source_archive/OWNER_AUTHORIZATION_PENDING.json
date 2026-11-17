@@ -1,0 +1,169 @@
+{
+  "_license": {
+    "classification": "owner_effect_authorization",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_zenodo_owner_authorization_v1",
+  "authorization_id": "OWNER-REAL-ENERGY-SOURCE-20261103-V1",
+  "nonce": "53bf8b47541cc52ad7c133570119c35bd71bf2c659007847f0b504330218dc8c",
+  "single_use": true,
+  "single_use_scope": "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_id": "qikvrt-real-energy-model-source-20261103",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "c71f0699e2e9feb22ce4a4d1d1ab860eae6de62c",
+  "candidate_return_receipt": {
+    "path": "source_archive/PREPUBLICATION_RETURN_RECEIPT.json",
+    "bytes": 1412,
+    "sha256": "b3d45886ec4d931086f7195789ba5fe261c58a089ecd39fd99572d57e18aa5fd",
+    "git_blob_sha": "9f984bf5068c018e2657dd33cf0dda83712acdc6"
+  },
+  "canonical_metadata_sha256": "319a63536b229840bae0f4a2149243b46a8c3388510068d89009e88ba77d4d02",
+  "uploads": [
+    {
+      "path": "source_archive/README.txt",
+      "name": "README.txt",
+      "bytes": 2658,
+      "sha256": "603fdf993cbc3af72b0aafea2059e447faff61d7077ef346b8c582bbfa53a880",
+      "git_blob_sha": "c6d1ea0e5fae7fc4383bace52078b55164af606b"
+    },
+    {
+      "path": "source_archive/QIKVRT_Quellen_und_Modell_20261103.zip",
+      "name": "QIKVRT_Quellen_und_Modell_20261103.zip",
+      "bytes": 458670,
+      "sha256": "8c3b464c0d4a0315ab3fca30254964a926c066d76134c485c2798a4d339e8667",
+      "git_blob_sha": "eacf692c5d5875da9ee2530df7c8f5b849876007"
+    },
+    {
+      "path": "source_archive/CLAIM_MATRIX.json",
+      "name": "CLAIM_MATRIX.json",
+      "bytes": 6996,
+      "sha256": "ba662a42542c45827a6224d0ca6bbb50d9ca09b69a5680df85a552bea7a424b8",
+      "git_blob_sha": "1a07e4580b929cb39bb60aa5ea4792310d986eca"
+    },
+    {
+      "path": "source_archive/KERNEL_RECEIPT.json",
+      "name": "KERNEL_RECEIPT.json",
+      "bytes": 2817,
+      "sha256": "ad3257308dd22b0186fe91584877bd18b42013b3366d16f3f0990c31b4a8b680",
+      "git_blob_sha": "9985595aca4ee8615fad00b7f2d91c61dc01ad14"
+    },
+    {
+      "path": "source_archive/NATIVE_RECEIPT_STDOUT.json",
+      "name": "NATIVE_RECEIPT_STDOUT.json",
+      "bytes": 7236,
+      "sha256": "2e284a60af4b495851b783a008a927c9446e9b0fb128b15096cb79bdf7ca0c5e",
+      "git_blob_sha": "065289cdcf98e5cc3e414b9bf0f892b6c891cb8b"
+    },
+    {
+      "path": "evidence/real-energy-20261103/native_run_41616823386.log",
+      "name": "native_run_41616823386.log",
+      "bytes": 287727,
+      "sha256": "e877045ede09821add5ad80c959c13474772ff4cc2e5611a94f0bd5acf53dab4",
+      "git_blob_sha": "8b6a9b8ef3065b693cae271aa3b4ea578c51c646"
+    },
+    {
+      "path": "evidence/real-energy-20261103/NATIVE_RUN_41616823386.json",
+      "name": "NATIVE_RUN_41616823386.json",
+      "bytes": 15253,
+      "sha256": "2c1ff28ea2948bcaad4f8f1c817cdecd8cf9c767cf52e4d0d14176806a7318cd",
+      "git_blob_sha": "9993ae5b62b1c9aa6d86b4a26c61c6784a4f54be"
+    },
+    {
+      "path": "source_archive/SOURCE_FILES.json",
+      "name": "SOURCE_FILES.json",
+      "bytes": 9596,
+      "sha256": "a7cd276f2c98be3d2681ee63e01bc4414161b977d809314876d774aad339f426",
+      "git_blob_sha": "f9e5f0ca45ad9a0b0e38c270ccd2152f95ca1d92"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/results/RESULTS.json",
+      "name": "RESULTS.json",
+      "bytes": 15250,
+      "sha256": "290f27a1940d951088b1e57adb107a80da710c283574f130372a515c93608006",
+      "git_blob_sha": "31273c5d23ec3b3b8f311070c0a87e57eac627a9"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/RUN-002.json",
+      "name": "RUN-002.json",
+      "bytes": 841,
+      "sha256": "6a464eff781877407a7fe3508e1f8010d10b883a6e68bc0026e23f2213030f99",
+      "git_blob_sha": "26994946483ae4e88a6318cc7f3dcdba80ea81ab"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/run_experiment.py",
+      "name": "run_experiment.py",
+      "bytes": 11575,
+      "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac",
+      "git_blob_sha": "8dce573ee3c9f82d0e2d77128fc4f1eec4880296"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean",
+      "name": "PlanckRealEnergyDomain.lean",
+      "bytes": 3467,
+      "sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+      "git_blob_sha": "afab4e05435f26ca0d8f5440a3ca47f5210b1fac"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealErasureBudget.lean",
+      "name": "RealErasureBudget.lean",
+      "bytes": 1533,
+      "sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63",
+      "git_blob_sha": "209681e2ffd8272e2480fed7aa75334f69933831"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean",
+      "name": "RealEnergyStatements.lean",
+      "bytes": 1889,
+      "sha256": "3fd5220b2bb3808e5b6def6ca7eae0e16df2693c068355addc9698056543e1cf",
+      "git_blob_sha": "e870bf8b7f9b555da6995f6c9a7c9bf471c7a34c"
+    },
+    {
+      "path": "source_archive/PREPUBLICATION_RETURN_RECEIPT.json",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "bytes": 1412,
+      "sha256": "b3d45886ec4d931086f7195789ba5fe261c58a089ecd39fd99572d57e18aa5fd",
+      "git_blob_sha": "9f984bf5068c018e2657dd33cf0dda83712acdc6"
+    },
+    {
+      "path": "source_archive/MACHINE_PROOF_BUNDLE.json",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "bytes": 15219,
+      "sha256": "ec1af67061caa7fd05994410ac368e29110703c45fe31e42306641c8058b4e26",
+      "git_blob_sha": "792d21e71d59a774d373826a79cacff992dd5afc"
+    }
+  ],
+  "machine_proof": {
+    "path": "source_archive/MACHINE_PROOF_BUNDLE.json",
+    "bytes": 15219,
+    "sha256": "ec1af67061caa7fd05994410ac368e29110703c45fe31e42306641c8058b4e26",
+    "git_blob_sha": "792d21e71d59a774d373826a79cacff992dd5afc"
+  },
+  "authorized_effects": [
+    "ACQUIRE_REPOSITORY_REMOTE_CONSUMPTION_LOCK",
+    "CREATE_PRODUCTION_ZENODO_RECORD",
+    "UPLOAD_EXACT_AUTHORIZED_FILES",
+    "PUBLISH_PRODUCTION_ZENODO_RECORD",
+    "VERIFY_PUBLIC_BYTE_EXACT_REDOWNLOAD",
+    "PERSIST_PUBLICATION_EVIDENCE"
+  ],
+  "publication_evidence_path": "source_archive/zenodo-publication.json",
+  "authorization_event": {
+    "channel": "PENDING_EXACT_CANDIDATE_OWNER_DECISION",
+    "authorized_at": null,
+    "decision": "PENDING",
+    "exact_statement": null,
+    "statement_sha256": null,
+    "principal": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON"
+    },
+    "candidate_return_receipt_sha256": "b3d45886ec4d931086f7195789ba5fe261c58a089ecd39fd99572d57e18aa5fd"
+  }
+}

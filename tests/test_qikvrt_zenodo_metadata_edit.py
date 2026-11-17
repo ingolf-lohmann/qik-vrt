@@ -614,7 +614,7 @@ class ZenodoMetadataEditTests(unittest.TestCase):
             manifest_path = write_json("candidate/metadata-edit-request.json", manifest_value)
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
+                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
             ):
                 with self.assertRaisesRegex(
                     zenodo.ZenodoError,

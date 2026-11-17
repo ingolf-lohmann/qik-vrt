@@ -1,0 +1,61 @@
+{
+  "observed_at": "2026-10-31T16:41:03.344Z",
+  "main": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae"
+  },
+  "native": {
+    "schema": "qikvrt-native-connection-public-projection/v1",
+    "source": "mcp__codex_apps__raumzeitterminal___ingolf_lohmann__raumzeitterminal_ingolf_lohmann_qikvrt_native_connection",
+    "observation": {
+      "origin": "https://raumzeitterminal.de",
+      "status": 525,
+      "observed_at": "2026-10-31T16:41:03.344Z",
+      "mesh_scope_verified": false
+    },
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "effect_ack_done": false,
+    "scope": "Existing Site adapter observation of exact origin; caller identity omitted; no prepare or commit"
+  },
+  "pr658": {
+    "head": "a56b0632e120ce815019e5f4a812fc828c57cd1e",
+    "tree": "8fa77daa712d99004ad2bbdb9c3e3b681bde216d",
+    "draft": true,
+    "mergeable": true,
+    "workflows": [
+      {
+        "run_id": 41215513746,
+        "scope": "Full CI",
+        "conclusion": "success"
+      },
+      {
+        "run_id": 41215513755,
+        "scope": "Mini-Internet evidence-integrity",
+        "conclusion": "success"
+      },
+      {
+        "run_id": 41215513887,
+        "scope": "QIKVRT Batch-003 remaining subject disposition",
+        "conclusion": "failure",
+        "job_id": 124579086355,
+        "error": "GitHub Git-Data API rejected GET (HTTP 403)"
+      },
+      {
+        "run_id": 41215514005,
+        "scope": "QIKVRT repository evidence materialization",
+        "conclusion": "failure",
+        "job_id": 124579087227,
+        "error": "GitHub Git-Data API rejected GET (HTTP 403)"
+      }
+    ],
+    "owner_approval": "OWNER_ASSERTED in supplied handoff; GitHub /pulls/658/reviews and /issues/658/comments were empty at independent readback",
+    "merge_attempted": false
+  },
+  "record_scope": "Mixed observation times, retained as source-bound readbacks; timestamp on native projection applies only to that projection.",
+  "identity_correction": "Run identity comes from original Actions run metadata, not the shared materialize job name."
+}

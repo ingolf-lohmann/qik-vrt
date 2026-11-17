@@ -1,0 +1,189 @@
+{
+  "schema": "qikvrt_maximality_sources_v1",
+  "records": [
+    {
+      "record_id": 21888130,
+      "doi": "10.5281/zenodo.21888130",
+      "record_url": "https://zenodo.org/records/21888130",
+      "metadata": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/zenodo-21888130-metadata.json",
+        "bytes": 20647,
+        "sha256": "de203b05d4cc7590c6c606c4b6b72866f871b108ebce88035baf3245f17778ca",
+        "git_blob_sha1": "ac61391edf5a836b6ccbf60278f4ed166f3bd8bc"
+      },
+      "files": [
+        {
+          "record_id": 21888130,
+          "doi": "10.5281/zenodo.21888130",
+          "key": "ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md",
+          "url": "https://zenodo.org/api/records/21888130/files/ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md/content",
+          "bytes": 5150,
+          "sha256": "e5fd9c53a0bf6c84471d9b26d0c3c06019977aa6b2367913006fa9560a3c948f",
+          "native_checksum": "md5:a7c07d3206da86d09778453791b92933",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:47.682245+00:00"
+        },
+        {
+          "record_id": 21888130,
+          "doi": "10.5281/zenodo.21888130",
+          "key": "CLAIM_MATRIX.json",
+          "url": "https://zenodo.org/api/records/21888130/files/CLAIM_MATRIX.json/content",
+          "bytes": 26930,
+          "sha256": "94fa533bc82b029a2d49269cef468f99211bff7f9be3d2e2809866b6d5acf684",
+          "native_checksum": "md5:b6767f820418b1abc21a401e354a63d0",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:56.795959+00:00"
+        },
+        {
+          "record_id": 21888130,
+          "doi": "10.5281/zenodo.21888130",
+          "key": "DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md",
+          "url": "https://zenodo.org/api/records/21888130/files/DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md/content",
+          "bytes": 18120,
+          "sha256": "dc58e50161b22826152dd251db836f06f85235a470e0253aeefa1b0a380787fe",
+          "native_checksum": "md5:496dabec707848d56f066a47ead9745f",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:53.884795+00:00"
+        }
+      ]
+    },
+    {
+      "record_id": 21721918,
+      "doi": "10.5281/zenodo.21721918",
+      "record_url": "https://zenodo.org/records/21721918",
+      "metadata": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/zenodo-21721918-metadata.json",
+        "bytes": 15105,
+        "sha256": "85c0c310df3ebd55c54dd29c19353210c97db08777ae0335d58a630ba62b2fc4",
+        "git_blob_sha1": "da363ce3c107d137bbfe161b3e360cf47f5b1268"
+      },
+      "files": [
+        {
+          "record_id": 21721918,
+          "doi": "10.5281/zenodo.21721918",
+          "key": "CLAIM_MATRIX.json",
+          "url": "https://zenodo.org/api/records/21721918/files/CLAIM_MATRIX.json/content",
+          "bytes": 8412,
+          "sha256": "6dd80355ae67bba8a8e03a77f54df8ea15973f6a398fe47e75e39d16ea361e49",
+          "native_checksum": "md5:1ea17267fbeeb8243c1410f9c4459bcc",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:43.015606+00:00"
+        },
+        {
+          "record_id": 21721918,
+          "doi": "10.5281/zenodo.21721918",
+          "key": "KERNEL_RECEIPT.json",
+          "url": "https://zenodo.org/api/records/21721918/files/KERNEL_RECEIPT.json/content",
+          "bytes": 6854,
+          "sha256": "ec6bef7e8cf13d5604834efedf0e1b812921d8a224e528d14fea7fa0d92a4911",
+          "native_checksum": "md5:ecb511ccde3a9346897fa247e804d715",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:42.365051+00:00"
+        },
+        {
+          "record_id": 21721918,
+          "doi": "10.5281/zenodo.21721918",
+          "key": "FORMAL_ConnectabilitySimulation.lean",
+          "url": "https://zenodo.org/api/records/21721918/files/FORMAL_ConnectabilitySimulation.lean/content",
+          "bytes": 15641,
+          "sha256": "ea24867dd46c9cd5cd745a4427fff83620813ca05a7e5ba48596a4f667b3cb0a",
+          "native_checksum": "md5:c1f3d000398a8f5396fb8f31cc9dfa30",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:50.906171+00:00"
+        },
+        {
+          "record_id": 21721918,
+          "doi": "10.5281/zenodo.21721918",
+          "key": "ARTICLE_DE.md",
+          "url": "https://zenodo.org/api/records/21721918/files/ARTICLE_DE.md/content",
+          "bytes": 41333,
+          "sha256": "2f7ed0b3623d2308118cda0ea01a8598bf86888b92aa1ee6cd4ca2725416eb44",
+          "native_checksum": "md5:46420d04d78d638ac925a4c7218974ec",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:51.121094+00:00"
+        }
+      ]
+    },
+    {
+      "record_id": 23008330,
+      "doi": "10.5281/zenodo.23008330",
+      "record_url": "https://zenodo.org/records/23008330",
+      "metadata": {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/zenodo-23008330-metadata.json",
+        "bytes": 7495,
+        "sha256": "318365812bb91d8d5ce47f394e72f015b35f88687493a0ddaed77db417df43f9",
+        "git_blob_sha1": "bf3bd07c7f1caa180776007fb5442077633f4b90"
+      },
+      "files": [
+        {
+          "record_id": 23008330,
+          "doi": "10.5281/zenodo.23008330",
+          "key": "VORLESEFASSUNG.txt",
+          "url": "https://zenodo.org/api/records/23008330/files/VORLESEFASSUNG.txt/content",
+          "bytes": 27862,
+          "sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e",
+          "native_checksum": "md5:a559cbb0e3813c5ee86bcb7db76fd11a",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:01:57.118469+00:00"
+        },
+        {
+          "record_id": 23008330,
+          "doi": "10.5281/zenodo.23008330",
+          "key": "CLAIM_MATRIX.json",
+          "url": "https://zenodo.org/api/records/23008330/files/CLAIM_MATRIX.json/content",
+          "bytes": 5908,
+          "sha256": "1c877c8dc6ac0a9d27446f0462b4793dd5eaef141cef4e75a18aa830b47021a2",
+          "native_checksum": "md5:ed18387019d10fca785bd9a64a0560fd",
+          "matches_archived_original": true,
+          "byte_exact_public_redownload": true,
+          "observed_at": "2026-10-15T08:02:03.245139+00:00"
+        }
+      ]
+    }
+  ],
+  "prior_catalog": {
+    "sha256": "b5c2016a8c4d4d7ab69bbe81d30510a3fe011faab2eaf405974f0b1acd3f4382",
+    "archive_sha256": "2af96e67876c528477417d5d84790d34d978050dbd2d166048c0996cfdb803bf"
+  },
+  "new_proof_zenodo_archive": "PENDING_NOT_PUBLISHED",
+  "full_corpus": {
+    "coverage": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
+      "bytes": 117549,
+      "sha256": "0d93a3e47815e5d323865fcc0588bf981c924139654d8cdc46a3b27346f00dfe",
+      "git_blob_sha1": "72ef63ff992654d0d0c72b339ef86741a7e40631"
+    },
+    "all_zenodo_files": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ZENODO_ALL_FILE_READBACK.json",
+      "bytes": 227639,
+      "sha256": "1d2f922518ea997b1323ab656cb40ba850d2f58e4b58e3986e95a1e2269d88f8",
+      "git_blob_sha1": "69975880bd083f22d285fda6a86b43b442c0dae3"
+    },
+    "all_ietf_revisions": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/IETF_ALL_REVISIONS_READBACK.json",
+      "bytes": 1635,
+      "sha256": "ac35bec0a95dc973ff73b98fbeaae0d68601927bb3b7eb4f226cdbb9d59fc2ea",
+      "git_blob_sha1": "655f172682dbf551624321e848eafa0c3a60334e"
+    },
+    "fresh_native_metadata": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/zenodo_inventory_confirmed.json",
+      "bytes": 445827,
+      "sha256": "929a7233358acb043bef6fdaff8e12f4e3a0f8772251f52517cd3dead760a859",
+      "git_blob_sha1": "593661d6dac6259bd3941db56408a3d48790990f"
+    },
+    "catalog_evidence_rebinding": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/CATALOG_KEY_EVIDENCE_REBINDING.json",
+      "bytes": 38182,
+      "sha256": "4b6dbc2e43f376cf9e81d0183c3f7910fbc20340b957491493bc6a8a8d43990d",
+      "git_blob_sha1": "7b6858a56d45c1fe45078b6627d5af97331eaba2"
+    }
+  }
+}

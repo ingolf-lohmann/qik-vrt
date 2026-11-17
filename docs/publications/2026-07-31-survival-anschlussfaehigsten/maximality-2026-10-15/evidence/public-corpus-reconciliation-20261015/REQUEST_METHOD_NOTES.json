@@ -1,0 +1,7 @@
+{
+  "schema": "qikvrt_read_only_inventory_method_notes_v1",
+  "early_size_100_requests": "HTTP 400; not treated as a complete inventory",
+  "accepted_continuation": "Size 25 queries, provider next links, exact-name and AND-name creator queries plus handle; all 32 native version endpoints",
+  "authenticated_account_deposition_scan": "Not executed; existing v2 inventory entrypoint requires a securely supplied ZENODO_ACCESS_TOKEN. Its public state/key/attribution helpers were reused without fabricating credentials.",
+  "scope": "Public identified author inventory; private/unindexed or differently attributed items remain explicitly outside established completeness."
+}

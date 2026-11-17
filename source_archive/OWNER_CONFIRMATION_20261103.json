@@ -1,0 +1,25 @@
+{
+  "schema": "qikvrt-owner-confirmation-capture/v1",
+  "captured_at": "2026-11-03T12:05:07.976414+00:00",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "owner_response": "Ja, ilo.",
+  "owner_response_source": "Actual user reply in the current ChatGPT Work conversation",
+  "question": "Erteilst du mit dieser Zeile jetzt verbindlich die Uploadfreigabe?",
+  "confirmed_exact_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=OWNER-REAL-ENERGY-SOURCE-20261103-V1 publication_id=qikvrt-real-energy-model-source-20261103 return_sha256=b3d45886ec4d931086f7195789ba5fe261c58a089ecd39fd99572d57e18aa5fd metadata_sha256=319a63536b229840bae0f4a2149243b46a8c3388510068d89009e88ba77d4d02 machine_proof_sha256=ec1af67061caa7fd05994410ac368e29110703c45fe31e42306641c8058b4e26",
+  "confirmed_statement_sha256": "b85cfa5939de5fa0d96409957d196281680b2c64820ce04726688fde7863d53e",
+  "authorization_path": "source_archive/OWNER_ZENODO_AUTHORIZATION.json",
+  "source_head_correction": {
+    "from": "c71f0699e2e9feb22ce4a4d1d1ab860eae6de62c",
+    "to": "f3549c2b71d497dc0411178ca841298006ad4c12",
+    "reason": "The returned source ZIP and README first exist at the immutable frozen f354 candidate; publisher source-head gate requires their original blobs at source_head."
+  },
+  "implementation_origin": "OpenAI Codex",
+  "upload_bytes_changed": false,
+  "upload_file_count": 16,
+  "production_mutation_performed": false,
+  "doi": null,
+  "effect_ack_done": false
+}

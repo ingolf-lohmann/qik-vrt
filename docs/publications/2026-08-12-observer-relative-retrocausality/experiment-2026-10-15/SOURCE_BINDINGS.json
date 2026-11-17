@@ -1,0 +1,62 @@
+{
+  "schema": "qikvrt_retrocausality_experiment_source_bindings_v1",
+  "authority": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "source_head": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "source_tree": "d79ea74ef83d0ac6eb8d938deb3d1265bfb6c720",
+  "frozen_original_paths": [
+    "docs/publications/2026-08-12-observer-relative-retrocausality/QIKVRT_RETROCAUSALITY_WITNESS.json",
+    "docs/publications/2026-08-12-observer-relative-retrocausality/verify_observer_relative_retrocausality.py",
+    "docs/publications/2026-08-12-observer-relative-retrocausality/CLAIM_MATRIX.json",
+    "release/observer-relative-retrocausality-current-synthesis-zenodo-v2/CLAIM_MATRIX_V2.json"
+  ],
+  "reused_local_sources": [
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/audit_three_observer.py",
+      "source_artifact": "backsignaling_lean: observed local predecessor working artifact, 2026-10-15; no published archive identity asserted",
+      "source_member": "audit_three_observer.py",
+      "sha256": "82e26b41a346b50276512246e0eaedcf0a5cd494d5cc7bacac773d1ca2fc7419",
+      "byte_equal_prior": true
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/run_multi_observer.py",
+      "source_artifact": "backsignaling_lean: observed local predecessor working artifact, 2026-10-15; no published archive identity asserted",
+      "source_member": "run_multi_observer.py",
+      "sha256": "37652caf683cb9da1755423cf171f2454ed445f86aba9cdd8be5d8b6d9b79f7c",
+      "byte_equal_prior": true
+    },
+    {
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/experiment-2026-10-15/local-control/run_three_observer.py",
+      "source_artifact": "backsignaling_lean: observed local predecessor working artifact, 2026-10-15; no published archive identity asserted",
+      "source_member": "run_three_observer.py",
+      "sha256": "efdb7965987e025d78357921374d490f32db778d8f07bab635ddc4854a2e7209",
+      "byte_equal_prior": true
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/BacksignalingBoundary.lean",
+      "source_artifact": "backsignaling_lean: observed local predecessor working artifact, 2026-10-15; no published archive identity asserted",
+      "source_member": "QIKVRTFormalization/Retrocausality/BacksignalingBoundary.lean",
+      "sha256": "7544717fad739fe0393794a789d666ddc2d337c8dc3bd18cb682bd2371914659",
+      "byte_equal_prior": true
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ThreeObserverProtocol.lean",
+      "source_artifact": "backsignaling_lean: observed local predecessor working artifact, 2026-10-15; no published archive identity asserted",
+      "source_member": "QIKVRTFormalization/Retrocausality/ThreeObserverProtocol.lean",
+      "sha256": "734c9f31bd1e47b096ff997b35610d720ba376469f1845bde54654c1ec72aca1",
+      "byte_equal_prior": true
+    }
+  ],
+  "reuse_before_create": "Existing finite checker has no prospective data input or uncertainty-aware statistical test; extend with an offline analysis companion, reuse canonical_report and the existing process harnesses; no parallel workflow or executor introduced.",
+  "historical_controls": "evidence/historical-local-controls; original bytes; historical scope only",
+  "fresh_controls": "local-control/evidence; fresh host measurements; no native Mesh or laboratory independence",
+  "rights": "Existing per-file and repository licenses retained. No relicensing or transfer of implementation rights.",
+  "contributions": {
+    "human": "Ingolf Lohmann: original theory, source publications, research question, requested continuation",
+    "artificial": "OpenAI Codex: new plan, 8 integer theorems, analysis, tests and repository integration; earlier generated control/formal sources reused with provenance",
+    "owner_acceptance_of_new_scientific_text": "NOT_ASSUMED"
+  },
+  "publication_status": "DRAFT_NOT_ZENODO_PUBLISHED",
+  "physical_confirmation": false,
+  "independent_reproduction": false
+}

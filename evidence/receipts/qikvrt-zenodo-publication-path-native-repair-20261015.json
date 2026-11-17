@@ -1,0 +1,38 @@
+{
+  "schema": "qikvrt_native_publication_repair_receipt_v1",
+  "observed_at": "2026-10-15T13:07:01.106221+00:00",
+  "subject_head": "1ea5c01473515c21127c5a7946157b665c2d9d83",
+  "subject_tree": "03dc1e7426a04b020ed22b4e28c97512c83c861f",
+  "manuscript_run": 38739544681,
+  "manuscript_conclusion": "success",
+  "full_ci_run": 38739544691,
+  "job_id": 116437350667,
+  "job_conclusion": "failure",
+  "actual_failed_test": "test_metadata_specific_proof_and_v2_return_receipt_validate_end_to_end",
+  "original_error": "AssertionError: ZenodoError not raised",
+  "cause": "Synthetic negative context was ingolf-lohmann/qik-vrt, which is now the pinned production Authority.",
+  "repair": "Use Goldkelch/qik-vrt as the synthetic wrong context; preserve the required rejection and historical read-only audits.",
+  "native_log_bytes": 195932,
+  "native_log_sha256": "4686436bac12a34c863b804238dad1e2093d993a5989994c07a54b89c4c7345b",
+  "focused_tests_passed": 115,
+  "no_zenodo_effect": true,
+  "scientific_payload_unchanged_by_this_fixture_repair": true,
+  "fresh_native_successor_required": true,
+  "second_native_run": {
+    "head": "faa94114ab48ab6e09bcc49439d3378ee7cde85f",
+    "run": 38740058504,
+    "job": 116439091715,
+    "result": "failure",
+    "target": "evidence-contract-test",
+    "passed": 171,
+    "total": 173,
+    "errors": [
+      "test_controls_pass_active_v2_manifest_gate",
+      "test_single_use_nonces_are_distinct_without_exposing_values"
+    ],
+    "cause": "Historical control helper substituted current production repository for immutable recorded repository.",
+    "repair": "Audit under manifest.repository; preserve wrong-context rejection and new-effect Authority pin.",
+    "native_log_sha256": "8bcf91ba28229f5c7dcb2f524d9a3d0cba5358c45f2082d597438cdc7eb58389",
+    "local_verification": "Two control tests and real historical manifest helper: PASS; production validator unchanged."
+  }
+}

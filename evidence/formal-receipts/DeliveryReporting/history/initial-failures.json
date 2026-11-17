@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt-formal-proof-native-predecessor/v1",
+  "subject": {
+    "head": "31c575c2bf071f18584aec6b1a211c3ab230073e",
+    "tree": "31ff196945632e8d8352fa079f06883ad3cec61b"
+  },
+  "run_id": 41237873451,
+  "job_id": 124645354123,
+  "result": "FAILURE",
+  "diagnosis": "Lean unknown identifier _root_.decide; causal repair uses actual Init.Prelude definition Decidable.decide",
+  "log": "history/initial-native-model-failure.log",
+  "log_scope": "Exact decoded UTF-8 job log returned by GitHub connector; not original ZIP bytes",
+  "other_failure": {
+    "run_id": 41237873581,
+    "job_id": 124645354789,
+    "cause": "New post-Alpha2 modules were included in immutable Alpha2 archive; add to existing POST_ALPHA2_EXCLUSIONS, preserve archive bytes"
+  },
+  "local_runtime": {
+    "state": "UNVERIFIED",
+    "cause": "Lean original binary exits before kernel because /proc/<pid>/exe readlink is denied. /proc/self/exe works. No patched runtime or substituted checker is admitted."
+  },
+  "effect_ack_done": false
+}

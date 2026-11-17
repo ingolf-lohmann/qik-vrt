@@ -1,0 +1,141 @@
+{
+  "schema": "qikvrt_manual_source_visibility_inspection_v1",
+  "performed_at": "2026-11-03T06:37:41.646704+00:00",
+  "method": "pypdf extractable text, URI annotations, attachment byte comparison and visual page inspection",
+  "original_mandatory_gate_executed": false,
+  "scope": "URL visibility and matching links only; not scientific validity, publication or original gate acceptance",
+  "regression_original_missing_sources_confirmed": {
+    "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
+    "sha256": "30fc885b9451ed2c08071fcb0cc8a0036af15bcdaa19a213bd1f5b174bce9568",
+    "urls": [
+      {
+        "url": "https://interactivetextbooks.tudelft.nl/classical-mechanics-and-special-relativity/content/ChXX0_FourMomentum.html",
+        "visible": false,
+        "clickable": false
+      },
+      {
+        "url": "https://doi.org/10.1103/PhysRevLett.113.190601",
+        "visible": false,
+        "clickable": false
+      },
+      {
+        "url": "https://ned.ipac.caltech.edu/level5/Sept03/Trodden/Trodden2_2.html",
+        "visible": false,
+        "clickable": false
+      },
+      {
+        "url": "https://doi.org/10.5281/zenodo.21515074",
+        "visible": false,
+        "clickable": false
+      }
+    ]
+  },
+  "corrected_formats": [
+    {
+      "path": "FACHARTIKEL.md",
+      "sha256": "f3951cb0d78db01d37da778722cda28e98837aa87ff2292f77c166d9d378a993",
+      "urls": [
+        {
+          "url": "https://interactivetextbooks.tudelft.nl/classical-mechanics-and-special-relativity/content/ChXX0_FourMomentum.html",
+          "visible": true,
+          "clickable": null
+        },
+        {
+          "url": "https://doi.org/10.1103/PhysRevLett.113.190601",
+          "visible": true,
+          "clickable": null
+        },
+        {
+          "url": "https://ned.ipac.caltech.edu/level5/Sept03/Trodden/Trodden2_2.html",
+          "visible": true,
+          "clickable": null
+        },
+        {
+          "url": "https://doi.org/10.5281/zenodo.21515074",
+          "visible": true,
+          "clickable": null
+        }
+      ]
+    },
+    {
+      "path": "PROSAARTIKEL.md",
+      "sha256": "22ab19a49f398d14a7f19f24fc8642177e1e4bc645397aaf45484dd759e584e3",
+      "urls": [
+        {
+          "url": "https://interactivetextbooks.tudelft.nl/classical-mechanics-and-special-relativity/content/ChXX0_FourMomentum.html",
+          "visible": true,
+          "clickable": null
+        },
+        {
+          "url": "https://doi.org/10.1103/PhysRevLett.113.190601",
+          "visible": true,
+          "clickable": null
+        },
+        {
+          "url": "https://ned.ipac.caltech.edu/level5/Sept03/Trodden/Trodden2_2.html",
+          "visible": true,
+          "clickable": null
+        },
+        {
+          "url": "https://doi.org/10.5281/zenodo.21515074",
+          "visible": true,
+          "clickable": null
+        }
+      ]
+    },
+    {
+      "path": "QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
+      "sha256": "f8fba47921768f10f1c8cd033dc0f13dd1fc29260ae18a0cdb79b47fd6f3b53c",
+      "urls": [
+        {
+          "url": "https://interactivetextbooks.tudelft.nl/classical-mechanics-and-special-relativity/content/ChXX0_FourMomentum.html",
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "url": "https://doi.org/10.1103/PhysRevLett.113.190601",
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "url": "https://ned.ipac.caltech.edu/level5/Sept03/Trodden/Trodden2_2.html",
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "url": "https://doi.org/10.5281/zenodo.21515074",
+          "visible": true,
+          "clickable": true
+        }
+      ]
+    },
+    {
+      "path": "QIKVRT_Virtuelles_Universum_Prosa.pdf",
+      "sha256": "c9c13cc334339dd9d305f4dc29d5d82021843bfd282c6f4f02734856757a4e17",
+      "urls": [
+        {
+          "url": "https://interactivetextbooks.tudelft.nl/classical-mechanics-and-special-relativity/content/ChXX0_FourMomentum.html",
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "url": "https://doi.org/10.1103/PhysRevLett.113.190601",
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "url": "https://ned.ipac.caltech.edu/level5/Sept03/Trodden/Trodden2_2.html",
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "url": "https://doi.org/10.5281/zenodo.21515074",
+          "visible": true,
+          "clickable": true
+        }
+      ]
+    }
+  ],
+  "result": "MANUAL_LOCATOR_CHECKS_PASS_NOT_ORIGINAL_GATE_PASS",
+  "publication_complete": false
+}

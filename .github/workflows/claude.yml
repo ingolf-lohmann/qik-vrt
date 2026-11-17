@@ -1,0 +1,25 @@
+name: claude
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [claude]
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened, reopened]
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+jobs:
+  m:
+    if: contains(github.event.comment.body || github.event.issue.body || '@claude', '@claude')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}
+          prompt: ${{ !startsWith(github.event_name, 'issue') && 'Bearbeite jedes offene Issue, dessen Text oder Kommentar @claude enthaelt und noch keine Antwort von dir hat, nach seinem Text. Ist nichts offen, beende sofort.' || '' }}

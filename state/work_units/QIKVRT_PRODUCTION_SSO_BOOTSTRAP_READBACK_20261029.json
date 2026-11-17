@@ -1,0 +1,95 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PRODUCTION_SSO_BOOTSTRAP_READBACK_20261029",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18",
+  "state": "READBACK_SOURCE_REPAIR_NATIVE_VALIDATION_REQUIRED_BOOTSTRAP_OPEN",
+  "predecessor": {
+    "path": "state/work_units/QIKVRT_PRODUCTION_SSO_HANDOFF_20261029.json",
+    "sha256": "2dabf716b87d65d8c78488e6f5759374dabd1513b3b4a596436a76a875366bca",
+    "bytes_restored_exactly": true
+  },
+  "scope": "Repair read-only metadata observation without inventing original protected material acquisition.",
+  "open_work": [
+    {
+      "id": "native-sso",
+      "next_action": "Run the existing adapter under the original native desktop SSO profile with its protected process bindings; verify original OIDC identity/renewal without exporting credentials."
+    },
+    {
+      "id": "protected-handoff",
+      "next_action": "Execute one source-bound handoff and independently observe the original consuming job inputs; metadata is not secret-value delivery proof."
+    },
+    {
+      "id": "original-host-identity",
+      "next_action": "Execute existing container-host-identity with independent tested package pins and freshly read the create-only receipt before any restart."
+    },
+    {
+      "id": "exact-domain-delivery",
+      "next_action": "Retain raumzeitterminal.de as the exact acceptance target; fresh native runtime and public terminal delivery are separate."
+    }
+  ],
+  "mirror_outbox": {
+    "original_tool": "node-tools/qikvrt_mirror_emit.py",
+    "state": "HOLD: original admitted native effect/outbox carrier unavailable in this session",
+    "sent": false,
+    "node_adoption_verified": false,
+    "preserved_members": [
+      "Codex",
+      "Goldkelch Mirror",
+      "Originalhost",
+      "Mesh-Monitor"
+    ]
+  },
+  "bootstrap_readback_correction": {
+    "base_head": "e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18",
+    "base_tree": "c596b4a49d2f05f79891d20ecd136971a1a23a64",
+    "predecessor_pr": 633,
+    "state": "READBACK_SOURCE_REPAIR_VALIDATED_LOCALLY_PROTECTED_MATERIAL_SOURCE_OPEN",
+    "confirmed_defect": "production_material ran before the first GitHub read, so missing local bindings hid remote state and uncertain-handoff recovery.",
+    "change": "Read existing GitHub metadata after unchanged SSO/Owner/admin checks, then optionally validate original local material; unknown variable equality is null and the UI cannot prepare writes without verified material.",
+    "original_source_bootstrap_implemented": false,
+    "original_material_acquired": false,
+    "production_mutations_executed": false,
+    "local_validation": {
+      "regression_before": "Two new readback tests fail before the causal correction.",
+      "production_controller_tests": 18,
+      "result": "PASS",
+      "real_missing_material_validator_exercised": true,
+      "optional_checker_failure_preserves_remote_readback": true,
+      "provider_and_sso": "TEST_DOUBLES_NO_LIVE_EFFECT_PROOF",
+      "ui": "PASS, including metadata-only upload suppression",
+      "full_native_candidate_ci": "REQUIRED"
+    },
+    "existing_main_failure": {
+      "run_id": 40816861841,
+      "job_id": 123264003734,
+      "step": "Read original host identity before any admitted deployment or recovery",
+      "conclusion": "failure",
+      "exact_domain_acceptance": "skipped",
+      "source_head": "e2e4f0b8f88bd2ab4ca6b0881b3a1b804376ed18"
+    },
+    "remaining_causal_action": "Connect the originally provisioned protected material source to the existing native process; prove actual delivery in the existing qikvrt-production job, then mTLS GET /v1.45/info with independently verified package pins.",
+    "no_global_credential_absence_inferred": true,
+    "native_available": false,
+    "native_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "exact_domain_observation": {
+      "origin": "https://raumzeitterminal.de",
+      "status": 525,
+      "observed_at": "2026-10-29T07:03:43.689Z"
+    },
+    "effect_ack_done": false,
+    "contributions": {
+      "human": "Ingolf Lohmann: bootstrap diagnosis, original-source requirement and existing authorization.",
+      "artificial_cognitive": "OpenAI Codex: exact-source inspection, readback correction and local regression validation."
+    }
+  },
+  "correction_history": [
+    {
+      "candidate": "0075bd9dc1b567e7ab50f5b589af287c528cba85",
+      "finding": "The first candidate appended to the SSO decision record pinned by the shared client policy.",
+      "repair": "Restore the exact predecessor and persist this linked successor. Prior candidate remains in Git history; exact new-tree CI is required."
+    }
+  ],
+  "effect_ack_done": false
+}

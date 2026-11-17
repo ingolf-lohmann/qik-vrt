@@ -1,0 +1,18 @@
+{
+  "schema": "qikvrt-failed-run-identity-readback/v1",
+  "source": "Independent GitHub Actions run metadata GET",
+  "runs": [
+    {
+      "id": 41215513887,
+      "name": "QIKVRT Batch-003 remaining subject disposition",
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "job": 124579086355
+    },
+    {
+      "id": 41215514005,
+      "name": "QIKVRT repository evidence materialization",
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "job": 124579087227
+    }
+  ]
+}

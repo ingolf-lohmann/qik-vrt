@@ -1,0 +1,304 @@
+{
+  "schema": "qikvrt_collective_cognition_ab_microbenchmark_v1",
+  "measured_at_utc": "2026-10-03T10:12:00Z",
+  "seed": 20261003,
+  "host": {
+    "python": "3.13.5",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "cpu_count": 5
+  },
+  "scope": "in-process deterministic reconciliation microbenchmark; NOT a live Authority/Mirror network benchmark",
+  "control": "full reciprocal rescan after each mutation batch",
+  "treatment": "provenance-bound dirty-set reciprocal reconciliation",
+  "winner_rule": "lexicographically larger 128-bit BLAKE2b digest",
+  "cases": [
+    {
+      "subjects": 1000,
+      "rounds": 12,
+      "mutation_fraction": 0.01,
+      "baseline_median_s": 0.0015970859999470122,
+      "reciprocal_median_s": 0.0006132339999567193,
+      "wall_speedup_x": 2.6043663594316864,
+      "baseline_comparisons": 12000,
+      "reciprocal_comparisons": 120,
+      "comparison_reduction_pct": 99.0,
+      "baseline_writes": 240,
+      "reciprocal_writes": 240,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.0015970859999470122,
+        0.0014346410000598553,
+        0.0016182580000076996,
+        0.0016418840000369528,
+        0.0017108480000160853,
+        0.001534822000053282,
+        0.001566178999951262
+      ],
+      "reciprocal_samples_s": [
+        0.00060169699997914,
+        0.0006157269999675918,
+        0.0006731139999374136,
+        0.000579393000066375,
+        0.000579773000026762,
+        0.0007471359999726701,
+        0.0006132339999567193
+      ]
+    },
+    {
+      "subjects": 1000,
+      "rounds": 12,
+      "mutation_fraction": 0.05,
+      "baseline_median_s": 0.0015462689999594659,
+      "reciprocal_median_s": 0.0007611669999505466,
+      "wall_speedup_x": 2.031445136297196,
+      "baseline_comparisons": 12000,
+      "reciprocal_comparisons": 600,
+      "comparison_reduction_pct": 95.0,
+      "baseline_writes": 1200,
+      "reciprocal_writes": 1200,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.0016108569999460087,
+        0.0015345709999792234,
+        0.0015462689999594659,
+        0.0015222130000438483,
+        0.0015842269999666314,
+        0.0015504459998965103,
+        0.0015281119999599468
+      ],
+      "reciprocal_samples_s": [
+        0.0007587530000137122,
+        0.0007738450000260855,
+        0.0007609870000351293,
+        0.0010260660000085409,
+        0.000795279000044502,
+        0.0007611669999505466,
+        0.0007586130000163394
+      ]
+    },
+    {
+      "subjects": 1000,
+      "rounds": 12,
+      "mutation_fraction": 0.2,
+      "baseline_median_s": 0.0020615660000657954,
+      "reciprocal_median_s": 0.0016270320001012806,
+      "wall_speedup_x": 1.2670715756896396,
+      "baseline_comparisons": 12000,
+      "reciprocal_comparisons": 2400,
+      "comparison_reduction_pct": 80.0,
+      "baseline_writes": 4800,
+      "reciprocal_writes": 4800,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.0021155970000563684,
+        0.001839521000079003,
+        0.0020826880000868186,
+        0.0019348749999608117,
+        0.0020615660000657954,
+        0.0020171490000393533,
+        0.0023310719999471985
+      ],
+      "reciprocal_samples_s": [
+        0.0015618529999983366,
+        0.0016270320001012806,
+        0.0014296939999667302,
+        0.001800842999955421,
+        0.0017777989999103738,
+        0.0017494360000682718,
+        0.001531817999989471
+      ]
+    },
+    {
+      "subjects": 10000,
+      "rounds": 12,
+      "mutation_fraction": 0.01,
+      "baseline_median_s": 0.016501961000017218,
+      "reciprocal_median_s": 0.00642777300004127,
+      "wall_speedup_x": 2.567290568585926,
+      "baseline_comparisons": 120000,
+      "reciprocal_comparisons": 1200,
+      "comparison_reduction_pct": 99.0,
+      "baseline_writes": 2400,
+      "reciprocal_writes": 2400,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.016501961000017218,
+        0.015819772999975612,
+        0.015927834999956758,
+        0.01640743799998745,
+        0.01820625300001666,
+        0.017774508000002243,
+        0.022464141999989806
+      ],
+      "reciprocal_samples_s": [
+        0.006640464000042812,
+        0.006150186000013491,
+        0.00642777300004127,
+        0.006166610000036599,
+        0.006204958000012084,
+        0.014311140000017986,
+        0.006636157999992065
+      ]
+    },
+    {
+      "subjects": 10000,
+      "rounds": 12,
+      "mutation_fraction": 0.05,
+      "baseline_median_s": 0.01719602599996506,
+      "reciprocal_median_s": 0.008312463000038406,
+      "wall_speedup_x": 2.068704065195311,
+      "baseline_comparisons": 120000,
+      "reciprocal_comparisons": 6000,
+      "comparison_reduction_pct": 95.0,
+      "baseline_writes": 12000,
+      "reciprocal_writes": 12000,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.017829119999987597,
+        0.016537564000032035,
+        0.01685168699998485,
+        0.02026435900006618,
+        0.01719602599996506,
+        0.016504304000022785,
+        0.0175417570000036
+      ],
+      "reciprocal_samples_s": [
+        0.008388998999976138,
+        0.008216778000019076,
+        0.008195546000024478,
+        0.010170691999974224,
+        0.00862493399995401,
+        0.008312463000038406,
+        0.008234275000063462
+      ]
+    },
+    {
+      "subjects": 10000,
+      "rounds": 12,
+      "mutation_fraction": 0.2,
+      "baseline_median_s": 0.022284131999981582,
+      "reciprocal_median_s": 0.016953931999978522,
+      "wall_speedup_x": 1.314393144906433,
+      "baseline_comparisons": 120000,
+      "reciprocal_comparisons": 24000,
+      "comparison_reduction_pct": 80.0,
+      "baseline_writes": 48000,
+      "reciprocal_writes": 48000,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.020400784000003114,
+        0.022552035999979125,
+        0.020522106999919743,
+        0.022284131999981582,
+        0.021733371999971496,
+        0.02394043699996473,
+        0.025178963000030308
+      ],
+      "reciprocal_samples_s": [
+        0.016555070999970667,
+        0.016967801999953736,
+        0.015411888000016916,
+        0.017095554999968954,
+        0.016746789000080753,
+        0.018159216999947603,
+        0.016953931999978522
+      ]
+    },
+    {
+      "subjects": 100000,
+      "rounds": 12,
+      "mutation_fraction": 0.01,
+      "baseline_median_s": 0.1824231340000324,
+      "reciprocal_median_s": 0.07205587399994329,
+      "wall_speedup_x": 2.5316899771443473,
+      "baseline_comparisons": 1200000,
+      "reciprocal_comparisons": 12000,
+      "comparison_reduction_pct": 99.0,
+      "baseline_writes": 24000,
+      "reciprocal_writes": 24000,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.18547144600006504,
+        0.1752326409999796,
+        0.18010547200003657,
+        0.19094194800004516,
+        0.1824231340000324,
+        0.17466371400007574,
+        0.18299380299993118
+      ],
+      "reciprocal_samples_s": [
+        0.07385015599993494,
+        0.07086401799995201,
+        0.07205587399994329,
+        0.07221250899999632,
+        0.07174809999992249,
+        0.07214495799996712,
+        0.07073301100001572
+      ]
+    },
+    {
+      "subjects": 100000,
+      "rounds": 12,
+      "mutation_fraction": 0.05,
+      "baseline_median_s": 0.21331112299992583,
+      "reciprocal_median_s": 0.10556102100008502,
+      "wall_speedup_x": 2.0207375883542658,
+      "baseline_comparisons": 1200000,
+      "reciprocal_comparisons": 60000,
+      "comparison_reduction_pct": 95.0,
+      "baseline_writes": 120000,
+      "reciprocal_writes": 120000,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.25008505399989645,
+        0.21331112299992583,
+        0.21262786199997663,
+        0.21685039699991648,
+        0.2130306390000669,
+        0.21845588700000462,
+        0.2069985570000199
+      ],
+      "reciprocal_samples_s": [
+        0.11153586699992957,
+        0.10955201700005546,
+        0.10236555500000577,
+        0.10311630600006083,
+        0.11601391700003205,
+        0.10556102100008502,
+        0.10043483300000844
+      ]
+    },
+    {
+      "subjects": 100000,
+      "rounds": 12,
+      "mutation_fraction": 0.2,
+      "baseline_median_s": 0.3401562819999526,
+      "reciprocal_median_s": 0.25499948200001654,
+      "wall_speedup_x": 1.3339489136685014,
+      "baseline_comparisons": 1200000,
+      "reciprocal_comparisons": 240000,
+      "comparison_reduction_pct": 80.0,
+      "baseline_writes": 480000,
+      "reciprocal_writes": 480000,
+      "correctness_equal_final_state": true,
+      "baseline_samples_s": [
+        0.329464870000038,
+        0.32898753999995733,
+        0.3383058859999437,
+        0.3401562819999526,
+        0.35218242200005534,
+        0.3689489839999851,
+        0.36712707899994257
+      ],
+      "reciprocal_samples_s": [
+        0.24201750400004585,
+        0.26322644300000775,
+        0.24534061299993937,
+        0.24331197799995152,
+        0.25499948200001654,
+        0.3331379469999547,
+        0.2668840820000469
+      ]
+    }
+  ]
+}

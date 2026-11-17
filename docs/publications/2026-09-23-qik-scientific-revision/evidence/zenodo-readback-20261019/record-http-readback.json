@@ -1,0 +1,33 @@
+{
+  "requested_url": "https://zenodo.org/api/records/22907018",
+  "final_url": "https://zenodo.org/api/records/22907018",
+  "status": 200,
+  "headers": {
+    "server": "nginx",
+    "date": "Mon, 19 Oct 2026 16:18:16 GMT",
+    "content-type": "application/json",
+    "content-length": "6661",
+    "vary": "Accept-Encoding",
+    "etag": "\"3\"",
+    "link": "<https://zenodo.org/api/records/22907018> ; rel=\"linkset\" ; type=\"application/linkset+json\"",
+    "access-control-allow-origin": "*",
+    "access-control-expose-headers": "Content-Type, ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset",
+    "x-ratelimit-limit": "133",
+    "x-ratelimit-remaining": "131",
+    "x-ratelimit-reset": "1792426757",
+    "retry-after": "60",
+    "permissions-policy": "interest-cohort=()",
+    "x-frame-options": "sameorigin",
+    "x-xss-protection": "1; mode=block",
+    "x-content-type-options": "nosniff",
+    "content-security-policy": "default-src 'self' fonts.googleapis.com *.gstatic.com data: 'unsafe-inline' 'unsafe-eval' blob: zenodo-broker.web.cern.ch zenodo-broker-qa.web.cern.ch maxcdn.bootstrapcdn.com cdnjs.cloudflare.com ajax.googleapis.com webanalytics.web.cern.ch",
+    "strict-transport-security": "max-age=31556926; includeSubDomains",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "x-source": "api",
+    "connection": "close"
+  },
+  "started_at": "2026-10-19T16:18:09.171533+00:00",
+  "completed_at": "2026-10-19T16:18:16.737087+00:00",
+  "bytes": 6661,
+  "sha256": "ce5667878b8e4e9c534cdaca57e24ae635ec8d5871a0a01c37fda35995b83318"
+}

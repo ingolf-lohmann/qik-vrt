@@ -1,0 +1,502 @@
+{
+  "schema": "qikvrt-cosmology-model-experiment/v1",
+  "status": "PASS",
+  "evidence_class": "NUMERICAL_MODEL_TEST",
+  "scientific_novelty": "NOT_ESTABLISHED",
+  "physical_measurement": false,
+  "internal_spacetime_emergence_demonstrated": false,
+  "universal_poster_identity_proved": false,
+  "original_metric": "assumed FLRW, not derived from information",
+  "units": "c=G=H_reference=k_B=1; all parameters illustrative",
+  "duration_proper_time": 1.0,
+  "default_steps": 800,
+  "cases": {
+    "flat_dust": {
+      "maximum_relative_residuals": {
+        "friedmann": 2.407796184654593e-13,
+        "matter_scaling": 5.73638105638824e-13,
+        "radiation_scaling": 0.0,
+        "work_balance": 5.73638105638824e-13,
+        "photon_redshift": 3.7836400679225336e-14,
+        "conditional_bit_ceiling": 3.79233234348787e-14
+      },
+      "final": {
+        "proper_time": 1.0,
+        "a": 1.8420157493203835,
+        "H": 0.40000000000010094,
+        "full_or_cell_volume": 6.250000000001936,
+        "matter_energy": 0.11936620731898998,
+        "radiation_energy": 0.0,
+        "vacuum_energy": 0.0,
+        "material_total": 0.11936620731898998,
+        "material_total_initial": 0.1193662073189215,
+        "integrated_minus_p_dV": 0.0,
+        "radial_null_coordinate": 0.7144176165948709,
+        "photon_energy": 5.428835233189049,
+        "redshift_from_a1": 0.8420157493203835,
+        "temperature_reference_over_a": 0.5428835233189253,
+        "conditional_bit_ceiling_eta_half": 7.2134752044445465,
+        "radial_metric_determinant": -3.393022020744334
+      },
+      "parameters": {
+        "name": "flat_dust",
+        "omega_m": 1,
+        "omega_r": 0,
+        "omega_v": 0
+      },
+      "curvature": 0.0,
+      "volume_scope": "finite fiducial cell in spatially flat model"
+    },
+    "flat_radiation": {
+      "maximum_relative_residuals": {
+        "friedmann": 4.773306749842982e-12,
+        "matter_scaling": 0.0,
+        "radiation_scaling": 1.5552405632596302e-12,
+        "work_balance": 1.0754261202193282e-13,
+        "photon_redshift": 1.0071943279399421e-13,
+        "conditional_bit_ceiling": 1.0084156458820019e-13
+      },
+      "final": {
+        "proper_time": 1.0,
+        "a": 1.7320508075699643,
+        "H": 0.33333333333396964,
+        "full_or_cell_volume": 5.196152422716415,
+        "matter_energy": 0.0,
+        "radiation_energy": 0.06891611192778792,
+        "vacuum_energy": 0.0,
+        "material_total": 0.06891611192778792,
+        "material_total_initial": 0.1193662073189215,
+        "integrated_minus_p_dV": -0.05045009539112075,
+        "radial_null_coordinate": 0.7320508075686661,
+        "photon_energy": 5.7735026918920545,
+        "redshift_from_a1": 0.7320508075699643,
+        "temperature_reference_over_a": 0.5773502691892635,
+        "conditional_bit_ceiling_eta_half": 7.213475204444093,
+        "radial_metric_determinant": -3.0000000000037654
+      },
+      "parameters": {
+        "name": "flat_radiation",
+        "omega_m": 0,
+        "omega_r": 1,
+        "omega_v": 0
+      },
+      "curvature": 0.0,
+      "volume_scope": "finite fiducial cell in spatially flat model"
+    },
+    "flat_vacuum": {
+      "maximum_relative_residuals": {
+        "friedmann": 0.0,
+        "matter_scaling": 0.0,
+        "radiation_scaling": 0.0,
+        "work_balance": 1.9096951523936745e-13,
+        "photon_redshift": 3.5527136788004883e-15,
+        "conditional_bit_ceiling": 3.570702531206099e-15
+      },
+      "final": {
+        "proper_time": 1.0,
+        "a": 2.7182818284589967,
+        "H": 1.0,
+        "full_or_cell_volume": 20.08553692318659,
+        "matter_energy": 0.0,
+        "radiation_energy": 0.0,
+        "vacuum_energy": 2.3975343644849434,
+        "material_total": 2.3975343644849434,
+        "material_total_initial": 0.1193662073189215,
+        "integrated_minus_p_dV": 2.27816815716648,
+        "radial_null_coordinate": 0.632120558828613,
+        "photon_energy": 3.678794411714501,
+        "redshift_from_a1": 1.7182818284589967,
+        "temperature_reference_over_a": 0.3678794411714489,
+        "conditional_bit_ceiling_eta_half": 7.2134752044448405,
+        "radial_metric_determinant": -7.389056098930387
+      },
+      "parameters": {
+        "name": "flat_vacuum",
+        "omega_m": 0,
+        "omega_r": 0,
+        "omega_v": 1
+      },
+      "curvature": 0.0,
+      "volume_scope": "finite fiducial cell in spatially flat model"
+    },
+    "closed_mixed": {
+      "maximum_relative_residuals": {
+        "friedmann": 8.436356290593854e-14,
+        "matter_scaling": 3.3171567120673168e-12,
+        "radiation_scaling": 1.4133275731171897e-11,
+        "work_balance": 9.776587622081408e-14,
+        "photon_redshift": 2.131628207280296e-15,
+        "conditional_bit_ceiling": 2.093170449327716e-15
+      },
+      "final": {
+        "proper_time": 1.0,
+        "a": 2.518897464778543,
+        "H": 0.896053993393605,
+        "full_or_cell_volume": 9976.109535267055,
+        "matter_energy": 22.35282359811535,
+        "radiation_energy": 0.0029580168719203687,
+        "vacuum_energy": 952.5292061824632,
+        "material_total": 974.8849877974505,
+        "material_total_initial": 81.96035319281775,
+        "integrated_minus_p_dV": 892.9246346046752,
+        "radial_null_coordinate": 0.20482484849233767,
+        "photon_energy": 3.9699908947580766,
+        "redshift_from_a1": 1.5188974647785431,
+        "temperature_reference_over_a": 0.3969990894758069,
+        "conditional_bit_ceiling_eta_half": 7.213475204444831,
+        "radial_metric_determinant": -63.44844438067768
+      },
+      "parameters": {
+        "name": "closed_mixed",
+        "omega_m": 0.3,
+        "omega_r": 0.0001,
+        "omega_v": 0.7999
+      },
+      "curvature": 0.10000000000000009,
+      "volume_scope": "entire compact S3 spatial slice, material energy only"
+    }
+  },
+  "checks": [
+    {
+      "name": "flat_dust:friedmann",
+      "passed": true,
+      "residual": 2.407796184654593e-13,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_dust:matter_scaling",
+      "passed": true,
+      "residual": 5.73638105638824e-13,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_dust:radiation_scaling",
+      "passed": true,
+      "residual": 0.0,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_dust:work_balance",
+      "passed": true,
+      "residual": 5.73638105638824e-13,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_dust:photon_redshift",
+      "passed": true,
+      "residual": 3.7836400679225336e-14,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_dust:conditional_bit_ceiling",
+      "passed": true,
+      "residual": 3.79233234348787e-14,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_dust:analytic_solution",
+      "passed": true,
+      "residual": 1.0330651433950043e-13
+    },
+    {
+      "name": "flat_dust:two_ODE_formulations",
+      "passed": true,
+      "relative_difference": 1.0173943769257686e-13
+    },
+    {
+      "name": "flat_dust:time_coordinate_change",
+      "passed": true,
+      "relative_difference": 0.0
+    },
+    {
+      "name": "flat_radiation:friedmann",
+      "passed": true,
+      "residual": 4.773306749842982e-12,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_radiation:matter_scaling",
+      "passed": true,
+      "residual": 0.0,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_radiation:radiation_scaling",
+      "passed": true,
+      "residual": 1.5552405632596302e-12,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_radiation:work_balance",
+      "passed": true,
+      "residual": 1.0754261202193282e-13,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_radiation:photon_redshift",
+      "passed": true,
+      "residual": 1.0071943279399421e-13,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_radiation:conditional_bit_ceiling",
+      "passed": true,
+      "residual": 1.0084156458820019e-13,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_radiation:analytic_solution",
+      "passed": true,
+      "residual": 6.276550208352014e-13
+    },
+    {
+      "name": "flat_radiation:two_ODE_formulations",
+      "passed": true,
+      "relative_difference": 6.235527004375857e-13
+    },
+    {
+      "name": "flat_radiation:time_coordinate_change",
+      "passed": true,
+      "relative_difference": 0.0
+    },
+    {
+      "name": "flat_vacuum:friedmann",
+      "passed": true,
+      "residual": 0.0,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_vacuum:matter_scaling",
+      "passed": true,
+      "residual": 0.0,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_vacuum:radiation_scaling",
+      "passed": true,
+      "residual": 0.0,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_vacuum:work_balance",
+      "passed": true,
+      "residual": 1.9096951523936745e-13,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_vacuum:photon_redshift",
+      "passed": true,
+      "residual": 3.5527136788004883e-15,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_vacuum:conditional_bit_ceiling",
+      "passed": true,
+      "residual": 3.570702531206099e-15,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "flat_vacuum:analytic_solution",
+      "passed": true,
+      "residual": 1.780747064814002e-14
+    },
+    {
+      "name": "flat_vacuum:two_ODE_formulations",
+      "passed": true,
+      "relative_difference": 0.0
+    },
+    {
+      "name": "flat_vacuum:time_coordinate_change",
+      "passed": true,
+      "relative_difference": 0.0
+    },
+    {
+      "name": "closed_mixed:friedmann",
+      "passed": true,
+      "residual": 8.436356290593854e-14,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "closed_mixed:matter_scaling",
+      "passed": true,
+      "residual": 3.3171567120673168e-12,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "closed_mixed:radiation_scaling",
+      "passed": true,
+      "residual": 1.4133275731171897e-11,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "closed_mixed:work_balance",
+      "passed": true,
+      "residual": 9.776587622081408e-14,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "closed_mixed:photon_redshift",
+      "passed": true,
+      "residual": 2.131628207280296e-15,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "closed_mixed:conditional_bit_ceiling",
+      "passed": true,
+      "residual": 2.093170449327716e-15,
+      "tolerance": 2e-09
+    },
+    {
+      "name": "closed_mixed:two_ODE_formulations",
+      "passed": true,
+      "relative_difference": 2.644545179347581e-15
+    },
+    {
+      "name": "closed_mixed:time_coordinate_change",
+      "passed": true,
+      "relative_difference": 4.474460739307308e-16
+    },
+    {
+      "name": "closed_mixed:geometry_stress_Ricci",
+      "passed": true,
+      "max_relative_difference": 4.8711422647090966e-08,
+      "method": "central finite difference of a(t)"
+    },
+    {
+      "name": "RK4:step_halving",
+      "passed": true,
+      "error_ratios": [
+        16.527908789191994,
+        16.27251515294477,
+        16.138716797113993
+      ]
+    },
+    {
+      "name": "negative_control:wrong_photon_sign_detected",
+      "passed": true,
+      "residual": 0.8423917229553797
+    },
+    {
+      "name": "negative_control:constant_material_energy_rejected",
+      "passed": true,
+      "final_over_initial": 11.894592322021381
+    },
+    {
+      "name": "counterexample:rest_mass_is_not_photon_momentum",
+      "passed": true,
+      "m": 1,
+      "c": 1,
+      "p": 0,
+      "mc2": 1,
+      "pc": 0
+    },
+    {
+      "name": "constructed_parameterization:E=0.125",
+      "passed": true,
+      "max_relative_residual": 0.0
+    },
+    {
+      "name": "constructed_parameterization:weak_field:E=0.125",
+      "passed": true,
+      "dimensionless_compactness": 6.25e-08,
+      "scope": "necessary weak-field check; not a built converter"
+    },
+    {
+      "name": "constructed_parameterization:E=1.0",
+      "passed": true,
+      "max_relative_residual": 0.0
+    },
+    {
+      "name": "constructed_parameterization:weak_field:E=1.0",
+      "passed": true,
+      "dimensionless_compactness": 5e-07,
+      "scope": "necessary weak-field check; not a built converter"
+    },
+    {
+      "name": "constructed_parameterization:E=7.0",
+      "passed": true,
+      "max_relative_residual": 1.2688263138573217e-16
+    },
+    {
+      "name": "constructed_parameterization:weak_field:E=7.0",
+      "passed": true,
+      "dimensionless_compactness": 3.5000000000000004e-06,
+      "scope": "necessary weak-field check; not a built converter"
+    },
+    {
+      "name": "constructed_parameterization:E=100.0",
+      "passed": true,
+      "max_relative_residual": 0.0
+    },
+    {
+      "name": "constructed_parameterization:weak_field:E=100.0",
+      "passed": true,
+      "dimensionless_compactness": 5e-05,
+      "scope": "necessary weak-field check; not a built converter"
+    }
+  ],
+  "convergence": [
+    {
+      "steps": 25,
+      "absolute_error": 2.1266093463978564e-07
+    },
+    {
+      "steps": 50,
+      "absolute_error": 1.2866778087428088e-08
+    },
+    {
+      "steps": 100,
+      "absolute_error": 7.907061672085547e-10
+    },
+    {
+      "steps": 200,
+      "absolute_error": 4.899436412131308e-11
+    }
+  ],
+  "constructed_equalities": [
+    {
+      "E": 0.125,
+      "m_energy_equivalent": 0.03125,
+      "p_massless_carrier": 0.0625,
+      "I_idealized_erased_entropy_bits": 0.041666666666666664,
+      "r_defined_from_E": 40000000000000.0,
+      "dimensionless_compactness": 6.25e-08,
+      "meaning": "definitions for distinct quantities; not one particle's invariant mass"
+    },
+    {
+      "E": 1.0,
+      "m_energy_equivalent": 0.25,
+      "p_massless_carrier": 0.5,
+      "I_idealized_erased_entropy_bits": 0.3333333333333333,
+      "r_defined_from_E": 5000000000000.0,
+      "dimensionless_compactness": 5e-07,
+      "meaning": "definitions for distinct quantities; not one particle's invariant mass"
+    },
+    {
+      "E": 7.0,
+      "m_energy_equivalent": 1.75,
+      "p_massless_carrier": 3.5,
+      "I_idealized_erased_entropy_bits": 2.3333333333333335,
+      "r_defined_from_E": 714285714285.7142,
+      "dimensionless_compactness": 3.5000000000000004e-06,
+      "meaning": "definitions for distinct quantities; not one particle's invariant mass"
+    },
+    {
+      "E": 100.0,
+      "m_energy_equivalent": 25.0,
+      "p_massless_carrier": 50.0,
+      "I_idealized_erased_entropy_bits": 33.333333333333336,
+      "r_defined_from_E": 50000000000.0,
+      "dimensionless_compactness": 5e-05,
+      "meaning": "definitions for distinct quantities; not one particle's invariant mass"
+    }
+  ],
+  "scope": "Closed model permits full proper-volume material-energy integral; no observer-independent gravitational total assigned.",
+  "conditional_information_bound": "eta*E_packet/(k_B*T*ln2), assuming usable work eta*E_packet; no erasure device simulated",
+  "checker_independence": "analytic solutions and two formulations share GR/FLRW assumptions; not independent physical observations",
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "implementation": "CPython"
+  },
+  "source_sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
+}

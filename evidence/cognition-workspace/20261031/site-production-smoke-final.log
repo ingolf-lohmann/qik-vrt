@@ -1,0 +1,9 @@
+file:///workspace/scratch/022670758995/cognition-site/tests/production-smoke.mjs:26
+  assert.equal(value.distribution.native_eap_channel,false);
+                                  ^
+
+TypeError: Cannot read properties of undefined (reading 'native_eap_channel')
+    at file:///workspace/scratch/022670758995/cognition-site/tests/production-smoke.mjs:26:35
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v24.22.1

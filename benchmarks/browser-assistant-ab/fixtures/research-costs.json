@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt_browser_ab_fixture_v1",
+  "id": "research-costs",
+  "version": "1.0.0",
+  "license": "CC-BY-NC-ND-4.0",
+  "synthetic": true,
+  "prompt": "Erstelle aus den synthetischen Quellen einen überprüfbaren Beschaffungsvermerk für Atlas und Beacon, je 12 Nutzer über 24 Monate. Dokumentiere aktuelle Gesamtkosten, Update-Verfahren und die Aussagegrenzen. Belege jede Angabe mit der konkreten aktuellen Quelle. Diese Anbieter und Preise sind erfunden.",
+  "sources": [
+    {"id": "atlas-old", "revision": "2026-01", "text": "Archiv, ersetzt durch atlas-current: Atlas kostete 8 EUR je Nutzer und Monat. Das Update-Angebot war noch unbestimmt."},
+    {"id": "atlas-current", "revision": "2026-09", "text": "Aktuelle synthetische Atlas-Preisliste: 10 EUR je Nutzer und Monat, einmalig 120 EUR Einrichtung. Updates automatisch monatlich. Keine belegte Aussage zur Zeitersparnis oder zum Kundennutzen. Beträge netto, kein Rabatt, 24 Monate konstante Preise."},
+    {"id": "beacon-current", "revision": "2026-09", "text": "Aktuelle synthetische Beacon-Preisliste: 12 EUR je Nutzer und Monat, keine Einrichtungsgebühr. Updates manuell quartalsweise. Keine belegte Aussage zur Zeitersparnis oder zum Kundennutzen. Beträge netto, kein Rabatt, 24 Monate konstante Preise."}
+  ],
+  "checkpoint": {
+    "completed_steps": ["requirements"],
+    "pending_steps": ["costs", "updates", "limits"],
+    "loaded_sources": ["atlas-old", "atlas-current", "beacon-current"],
+    "saved_draft": "12 Nutzer, 24 Monate, Netto ohne Rabatt. Die aktuelle Kostenberechnung, der Update-Vergleich und die Aussagegrenzen sind noch offen.",
+    "next_step": "costs"
+  },
+  "oracle": {
+    "requirements": {"source_id": "atlas-current", "facts": {"users": 12, "months": 24, "tax_basis": "net"}},
+    "costs": {"source_id": "atlas-current", "facts": {"atlas_total_eur": 3000, "beacon_total_eur": 3456, "atlas_saving_eur": 456}, "additional_sources": ["beacon-current"]},
+    "updates": {"source_id": "atlas-current", "facts": {"atlas_updates": "automatic_monthly", "beacon_updates": "manual_quarterly"}, "additional_sources": ["beacon-current"]},
+    "limits": {"source_id": "atlas-current", "facts": {"customer_benefit_proven": false, "prices_are_synthetic": true}, "additional_sources": ["beacon-current"]}
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "_license": {
+    "classification": "machine_readable_build_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "publication_id": "raumzeit-original-en-de-20261020-20261029",
+  "original": {
+    "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_EN_DE.pdf",
+    "bytes": 376446,
+    "sha256": "88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68",
+    "git_blob_sha1": "051bc588b083c73ea5fee2c9ccbd0302262b7953"
+  },
+  "sources": {
+    "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_Quellen_EN_DE.zip",
+    "bytes": 32047,
+    "sha256": "da5fc1d6ff07727ee2c9227a4bef3d82f292b1a80603df611523e4882175491a",
+    "git_blob_sha1": "cf22ae20860a90b55da96b2335dc3542e9d9a896"
+  },
+  "command": "pdflatex -interaction=nonstopmode -halt-on-error -no-shell-escape main.tex",
+  "passes": 2,
+  "exit_codes": [
+    0,
+    0
+  ],
+  "pages": 27,
+  "whitespace_stripped_extracted_text_equal": true,
+  "original_pdf_byte_reproduced": false,
+  "rebuilt_pdf_sha256": "5f3a5230a5b1ec23c32830bc0ea55b1bb164f32e5b1d2ea024defb0179995fb2",
+  "compiler": "pdfTeX 1.40.25 / TeX Live 2023/Debian"
+}

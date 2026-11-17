@@ -1,0 +1,13 @@
+{
+  "command": "make test",
+  "exit_code": 0,
+  "log_sha256": "ea3b1f2b0ffce31d0e6d333cdd0c8fa5aa14668e42f84c64ef819dbedfda9a1c",
+  "log_gzip": "evidence/cognition-workspace/20261031/authority-reconciled-full-suite.log.gz",
+  "tested_base_head": "03c665f8e9e7e41ee3b1c87428d5bfaeb25f7f48",
+  "tested_index_tree": "80931a52159631025ce44ae67b70dc8578a8cb60",
+  "source_scope": "earlier isolated candidate with independently prepared metadata repair; fully preserved; runtime source later superseded by Authority2eb18c6b",
+  "current_runtime_base": "2eb18c6b17da0c8773242879eca0dae755c65017",
+  "current_runtime_diff": "EMPTY",
+  "final_head_native_acceptance": "REQUIRED; not inferred from local predecessor tests",
+  "finished_readback_utc": "2026-10-31T21:05:19.079839+00:00"
+}

@@ -1,0 +1,50 @@
+/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:77156
+      throw new MiniflareCoreError("ERR_MODULE_DYNAMIC_SPEC", message);
+            ^
+
+MiniflareCoreError [ERR_MODULE_DYNAMIC_SPEC]: Unable to resolve "dist/server/index.js" dependency: dynamic module specifiers are unsupported.
+You must manually define your modules when constructing Miniflare:
+  new Miniflare({
+    ...,
+    modules: [
+      { type: "ESModule", path: "index.js" },
+      { type: "ESModule", path: "_next/static/rolldown-runtime-DUnMT5BP.js" },
+      { type: "ESModule", path: "_next/static/headers-BBgHuOI_.js" },
+      { type: "ESModule", path: "_next/static/cache-headers-D_okIPUG.js" },
+      { type: "ESModule", path: "_next/static/headers-j0QAsRga.js" },
+      { type: "ESModule", path: "_next/static/record-Cz3MrZeO.js" },
+      { type: "ESModule", path: "_next/static/framework~index~layout~page~app-page-cache-render~app-page-cache~app-route-handler-dispatch-D9hUuLbx.js" },
+      { type: "ESModule", path: "_next/static/root-params-CarSBhWB.js" },
+      { type: "ESModule", path: "_next/static/app-segment-config-BULQUppU.js" },
+      { type: "ESModule", path: "_next/static/implicit-tags-BgLb8-kF.js" },
+      { type: "ESModule", path: "_next/static/redirect-digest-x5mH93OF.js" },
+      { type: "ESModule", path: "_next/static/isr-cache-B0_D1jGA.js" },
+      { type: "ESModule", path: "_next/static/navigation-errors-D4THGAeH.js" },
+      { type: "ESModule", path: "_next/static/framework~index~page~app-route-handler-dispatch-uDu0U572.js" },
+      { type: "ESModule", path: "_next/static/framework~index-BRedknQv.js" },
+      { type: "ESModule", path: "_next/static/navigation.react-server-CjL1FlCp.js" },
+      { type: "ESModule", path: "_next/static/text-stream-B3-mCb7e.js" },
+      { type: "ESModule", path: "_next/static/app-page-stream-BelrWLJL.js" },
+      { type: "ESModule", path: "_next/static/app-page-cache-finalizer-CtS0xXBO.js" },
+      { type: "ESModule", path: "_next/static/app-prerender-static-params-C8K0k5Go.js" },
+      { type: "ESModule", path: "vinext-client-assets.js" },
+      { type: "ESModule", path: "__vite_rsc_assets_manifest.js" },
+      ...
+    ]
+  })
+    at /workspace/scratch/022670758995/cognition-site/dist/server/index.js:2:14695
+    at #visitModule (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:77156:13)
+    at Object.ImportExpression (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:77123:26)
+    at c2 (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76631:21)
+    at Object.skipThrough (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76636:3)
+    at c2 (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76629:22)
+    at base.ReturnStatement.base.YieldExpression.base.AwaitExpression (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76691:5)
+    at c2 (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76629:22)
+    at Object.skipThrough (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76636:3)
+    at c2 (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76629:22)
+    at base.VariableDeclarator (/workspace/scratch/022670758995/cognition-site/node_modules/.pnpm/miniflare@4.20260515.0_@types+node@22.19.19/node_modules/miniflare/dist/src/index.js:76753:5) {
+  code: 'ERR_MODULE_DYNAMIC_SPEC',
+  cause: undefined
+}
+
+Node.js v24.22.1

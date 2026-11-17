@@ -1,0 +1,18 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 46,
+  "manifest_sha256": "8878bd274e40c4f9c80657f783be1e4136941b1af094dcb6aeed4f6861d97eed",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/61b2c5861bd1/worktree/docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+      "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

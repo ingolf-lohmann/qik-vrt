@@ -1,0 +1,136 @@
+{
+  "all_original_parent_layers_retained": true,
+  "archive_bytes": 572793479,
+  "archive_sha256": "e509bfa0a5d5d63883a312c7c3c23d6ab2bd85cedb56f1843ec4ed0a12be4bea",
+  "artifact_name": "qikvrt-s1-firefox158-runtime-aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+  "component_blobs": {
+    "deploy/universal-terminal/entrypoint.sh": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+    "runtime/self-host/Dockerfile": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547",
+    "tools/qikvrt_self_host.py": "f4784754fbe51b61523ea6b366ee0b89941cc3aa"
+  },
+  "diff_ids": [
+    "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
+    "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
+    "sha256:bb21db850823bcb6669b652ce8bff42787673cc8136550cc2d783af0415dc486",
+    "sha256:f4572018cf8016fadccf2df095d62525be857901cf1d837892078204a8f6cf43",
+    "sha256:a330acce559c4382d8f3aa869bff0cb33f7928ddd72e4e411e496fcfca89b4a9",
+    "sha256:24e1ce093f7727d9e25192bf0cac7dc2171d712cc82b4ee1abbb9d53ae1cbfe6",
+    "sha256:7e6ff46024450c208f8666e0171bf45d3adb09cc3c90ec43bc09f1b0644e7d2a",
+    "sha256:8745b1f3637b0bcef90aba1cd4a50bdbc0b5cda283873b37e584cce1354e7d42",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "sha256:21e294d27f171e3cdfb3b8ffb50a5ea9687d68c96ddff1732bbc2a86a1d68df6",
+    "sha256:29c5a6ac7a125a83c79110f005736d05c68b10b3b59477b8fbcf49e2bd5bae45",
+    "sha256:be8942bdbe452cfa3ba8b5ebe0e6957a6f4f027542fd493a8a135b4961e5d0ac",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+  ],
+  "effect_ack_done": false,
+  "extension_activation_verified": false,
+  "image_id": "sha256:a09a88ed85044fe31347fa3491c57e098a1247411eb3019751de22ee6ac551f6",
+  "native_components_rebuilt": false,
+  "parent_diff_ids": [
+    "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
+    "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
+    "sha256:bb21db850823bcb6669b652ce8bff42787673cc8136550cc2d783af0415dc486",
+    "sha256:f4572018cf8016fadccf2df095d62525be857901cf1d837892078204a8f6cf43",
+    "sha256:a330acce559c4382d8f3aa869bff0cb33f7928ddd72e4e411e496fcfca89b4a9",
+    "sha256:24e1ce093f7727d9e25192bf0cac7dc2171d712cc82b4ee1abbb9d53ae1cbfe6",
+    "sha256:7e6ff46024450c208f8666e0171bf45d3adb09cc3c90ec43bc09f1b0644e7d2a",
+    "sha256:8745b1f3637b0bcef90aba1cd4a50bdbc0b5cda283873b37e584cce1354e7d42",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+  ],
+  "parent_image_id": "sha256:2f35af27a2cfd36e383ae0ced8f85eca4ff328d888a7169d7cdafa62810dfe2e",
+  "provision": {
+    "apt_key_sha256": "3ecc63922b7795eb23fdc449ff9396f9114cb3cf186d6f5b53ad4cc3ebfbb11f",
+    "apt_policy_sha256": "7f42ddbf41fd21986e6660435a80f10a4aeea41b5130d658faeb3cecbe8317ab",
+    "binary_path": "/usr/lib/firefox/firefox",
+    "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
+    "channel": "release",
+    "deb_bytes": 92896850,
+    "deb_metadata": "Package: firefox\nVersion: 158.0~build2\nArchitecture: amd64\n",
+    "deb_sha256": "06a608dd092b0ba2c7cb436df259025ffd006b16126bf1c0ab8121e869fdbebc",
+    "debian_package_version": "158.0~build2",
+    "effect_ack_done": false,
+    "extension_activation_verified": false,
+    "firefox_version_output": "[524] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
+    "gpg_version": "gpg (GnuPG) 2.2.40",
+    "key_fingerprint": "35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3",
+    "minimum": "158.0",
+    "minimum_satisfied": true,
+    "ordinary_release": false,
+    "origin": "https://packages.mozilla.org/apt",
+    "package": "firefox",
+    "package_changes": {
+      "dirmngr": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "firefox": {
+        "after": "158.0~build2",
+        "before": null
+      },
+      "gnupg": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gnupg-l10n": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gnupg-utils": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gpg": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gpg-agent": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gpg-wks-client": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gpg-wks-server": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gpgconf": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "gpgsm": {
+        "after": "2.2.40-1.1+deb12u2",
+        "before": null
+      },
+      "libassuan0:amd64": {
+        "after": "2.5.5-5",
+        "before": null
+      },
+      "libksba8:amd64": {
+        "after": "1.6.3-2",
+        "before": null
+      },
+      "libldap-2.5-0:amd64": {
+        "after": "2.5.13+dfsg-5",
+        "before": null
+      },
+      "libnpth0:amd64": {
+        "after": "1.6-3",
+        "before": null
+      },
+      "pinentry-curses": {
+        "after": "1.2.1-1",
+        "before": null
+      }
+    },
+    "public_production_verified": false,
+    "schema": "qikvrt-firefox-release-provision/v1",
+    "state": "FIREFOX_RELEASE_PROVISIONED_PENDING_SIGNED_XPI"
+  },
+  "run_id": 38952009446,
+  "signing_material_excluded": true,
+  "source_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+  "source_tree": "b006136a5d6aa25210715767178860404acd6aa2"
+}

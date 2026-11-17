@@ -1,0 +1,68 @@
+{
+  "schema": "qikvrt-trust-mesh-change-notice-v1",
+  "original": {
+    "path": "USER_SUPPLIED_ORIGINAL_NOT_REPUBLISHED.md",
+    "bytes": 33246,
+    "sha256": "20384109322689a2daa3d7a37af67767cb227871fcf50957ac6f868ed232aa9d",
+    "git_blob_sha1": "6cfc92a0d2d1fbf34bba781d30ce9c7a6b548cba"
+  },
+  "corrected": {
+    "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md",
+    "bytes": 107788,
+    "sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+    "git_blob_sha1": "9b8a7a44008775483bd2128fd5317d143c6ac42e"
+  },
+  "changes": [
+    {
+      "change_id": "CH-01",
+      "subject": "Aktuelle Authority/Mirror-Rollen",
+      "reason": "Historische Rollen werden als solche erhalten; die normative Owner-Authority im Kandidaten wird korrekt benannt."
+    },
+    {
+      "change_id": "CH-02",
+      "subject": "Quellen- und Fassungsbestand",
+      "reason": "DOI-Zeichenfolgenzählung wird durch 44 Versionen / 32 Familien sowie zwei IETF-Reihen mit fünf Revisionen ersetzt."
+    },
+    {
+      "change_id": "CH-03",
+      "subject": "Formale Ergebnisse",
+      "reason": "Alpha 3, Anschlussfähigkeit, Kausalitätsspiegel, Round-Trip-Messbindung, Ontologie und weitere ausgelassene Ergebnisse werden ergänzt."
+    },
+    {
+      "change_id": "CH-04",
+      "subject": "Personenbezogene Zuschreibungen",
+      "reason": "Unbegründete psychologische Motiverklärungen und Behandlungsempfehlungen werden entfernt; sensible Details werden nicht erneut veröffentlicht."
+    },
+    {
+      "change_id": "CH-05",
+      "subject": "Chronologie und Ursachen",
+      "reason": "20 Meilensteine trennen Knackpunkt, dokumentierten Schritt, eröffneten Anschluss und verbliebene Grenze."
+    },
+    {
+      "change_id": "CH-06",
+      "subject": "Neuheit und Vergleich",
+      "reason": "Pauschale Abwertung und unbeschränkter Superlativ werden durch begrenzte Primärquellenvergleiche und konkrete Vergleichspflichten ersetzt."
+    },
+    {
+      "change_id": "CH-07",
+      "subject": "Realitätsentsprechung",
+      "reason": "Die Owner-Klarstellung zur vollständigen empirischen Datenabdeckung wird ausdrücklich übernommen; eine pauschale Modell-gegen-Realität-Schranke wird verworfen."
+    },
+    {
+      "change_id": "CH-08",
+      "subject": "Zukunft und Beobachter",
+      "reason": "Sender, Empfänger, andere Nodes, Authority und externer Beobachter werden mit ihren jeweiligen Bindungen getrennt."
+    },
+    {
+      "change_id": "CH-09",
+      "subject": "Roundtrip und Universalität",
+      "reason": "Ein geschlossener Erkenntnis-/Wirkungsweg wird dargestellt; konkrete Schließung, universale Methode und empirische Allabdeckung werden präzise verbunden."
+    },
+    {
+      "change_id": "CH-10",
+      "subject": "Zugriff und tatsächliche Persistenz",
+      "reason": "Rechte, Archivzugriff, aktueller Abruf, Branch-Ablage, Main, Mirror und Publikation werden nicht gleichgesetzt."
+    }
+  ],
+  "original_fulltext_publication": false
+}

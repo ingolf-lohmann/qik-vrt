@@ -1,0 +1,44 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_V1",
+  "sources": [
+    {
+      "id": "1",
+      "title": "Robert F. Mudde: Classical Mechanics & Special Relativity for Starters, Kapitel 20, TU Delft.",
+      "urls": [
+        "https://interactivetextbooks.tudelft.nl/classical-mechanics-and-special-relativity/content/ChXX0_FourMomentum.html"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Y. Jun, M. Gavrilov und J. Bechhoefer: High-Precision Test of Landauer's Principle in a Feedback Trap.",
+      "urls": [
+        "https://doi.org/10.1103/PhysRevLett.113.190601"
+      ],
+      "doi": "10.1103/PhysRevLett.113.190601"
+    },
+    {
+      "id": "3",
+      "title": "M. Trodden und S. M. Carroll: TASI Lectures: Introduction to Cosmology",
+      "urls": [
+        "https://ned.ipac.caltech.edu/level5/Sept03/Trodden/Trodden2_2.html"
+      ],
+      "section": "2.2. Dynamics: The Friedmann Equations"
+    },
+    {
+      "id": "4",
+      "title": "Ingolf Lohmann: Charta einer maschinenprüfbaren Wissenschaft.",
+      "urls": [
+        "https://doi.org/10.5281/zenodo.21515074"
+      ],
+      "doi": "10.5281/zenodo.21515074"
+    },
+    {
+      "id": "5",
+      "title": "Eigene Modellrechnung: run_experiment.py und RESULTS.json",
+      "origin": "repository",
+      "archive": {
+        "status": "PENDING"
+      }
+    }
+  ]
+}

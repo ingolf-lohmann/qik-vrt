@@ -7,8 +7,10 @@ param(
     [switch]$CheckOnly,
     [switch]$Install,
     [switch]$AcceptThirdParty,
-    [ValidateSet('core', 'ietf', 'formal', 'audio', 'publication', 'all')]
+    [ValidateSet('core', 'ietf', 'formal', 'audio', 'publication', 'all', 'self-host', 'self-host-firefox')]
     [string]$Profile = 'ietf',
+    [ValidateSet('auto', 'none', 'github')]
+    [string]$Adapter = 'auto',
     [string]$CacheDir = ''
 )
 
@@ -424,15 +426,37 @@ try {
     if ($Install -and -not $AcceptThirdParty) { Stop-Block '-Install requires -AcceptThirdParty' }
     Assert-NoReparseChain $CacheDir
 
-    $ghArgs = @('-CacheDir', $CacheDir)
-    if ($Install) { $ghArgs += @('-Install', '-AcceptThirdParty') } else { $ghArgs += '-CheckOnly' }
-    $powerShellExe = (Get-Process -Id $PID).Path
-    & $powerShellExe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'bootstrap-gh.ps1') @ghArgs
-    $ghExit = $LASTEXITCODE
-    if ($ghExit -ne 0 -and $ghExit -ne 20) { exit $ghExit }
-    if ($ghExit -eq 20) { $script:Overall = 20 }
+    if ($Adapter -eq 'auto') { if ($Profile -in @('self-host', 'self-host-firefox')) { $Adapter = 'none' } else { $Adapter = 'github' } }
+    if ($Profile -notin @('self-host', 'self-host-firefox') -and $Adapter -ne 'github') { Stop-Block 'existing profiles require the GitHub adapter' }
+    if ($Adapter -eq 'github') {
+        $ghArgs = @('-CacheDir', $CacheDir)
+        if ($Install) { $ghArgs += @('-Install', '-AcceptThirdParty') } else { $ghArgs += '-CheckOnly' }
+        $powerShellExe = (Get-Process -Id $PID).Path
+        & $powerShellExe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'bootstrap-gh.ps1') @ghArgs
+        $ghExit = $LASTEXITCODE
+        if ($ghExit -ne 0 -and $ghExit -ne 20) { exit $ghExit }
+        if ($ghExit -eq 20) { $script:Overall = 20 }
+    }
 
     switch ($Profile) {
+        'self-host' {
+            if (-not (Test-Node24)) { Set-Continue 'self-host: operator-provisioned Node 24.x is absent' }
+            if ($null -eq (Get-CompatiblePython -Exact312)) { Set-Continue 'self-host: operator-provisioned Python 3.12.x is absent' }
+            Write-Output 'self-host: exact executable identities must be frozen by the package builder'
+        }
+        'self-host-firefox' {
+            if (-not (Test-Node24)) { Set-Continue 'self-host-firefox: operator-provisioned Node 24.x is absent' }
+            if ($null -eq (Get-CompatiblePython -Exact312)) { Set-Continue 'self-host-firefox: operator-provisioned Python 3.12.x is absent' }
+            $linuxCarrier = (Test-Path -LiteralPath '/proc/sys/kernel/ostype') -and ([IO.File]::ReadAllText('/proc/sys/kernel/ostype').Trim() -eq 'Linux')
+            if (-not $linuxCarrier) { Set-Continue 'self-host-firefox: the declared carrier requires Linux' }
+            foreach ($command in @('firefox-esr','Xvfb','x11vnc','websockify','xdpyinfo','xwininfo')) {
+                if ($null -eq (Get-Command $command -ErrorAction SilentlyContinue)) { Set-Continue "self-host-firefox: provisioned $command is absent" }
+            }
+            foreach ($asset in @('/usr/share/novnc/vnc.html','/usr/share/novnc/core/rfb.js')) {
+                if (-not (Test-Path -LiteralPath $asset -PathType Leaf)) { Set-Continue "self-host-firefox: provisioned $asset is absent" }
+            }
+            Write-Output 'self-host-firefox: freeze exact binaries and noVNC assets; this check is not runtime acceptance'
+        }
         'core' { Test-CoreProfile }
         'ietf' { Test-IetfProfile }
         'formal' { Test-FormalProfile }

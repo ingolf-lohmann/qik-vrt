@@ -1,0 +1,106 @@
+{
+  "schema": "qikvrt_work_unit_context_memory_repair_v1",
+  "id": "QIKVRT_CONTEXT_MEMORY_REPAIR_20261024_V1",
+  "principal": "Ingolf Lohmann",
+  "roles": [
+    "Principal",
+    "Product Owner",
+    "Code Owner"
+  ],
+  "authorization": {
+    "granted": true,
+    "source": "Current Owner instruction: identify the memory bottleneck, replace the responsible component through the existing DevOps/CI path; authorization also covers suitable EAP-admitted implementation steps.",
+    "generic_authorization_requested_again": false
+  },
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "base_head": "aa024fd7c0c72a55cbb7e37bfe269bcccfd74bfb",
+    "base_tree": "08a10a209468d42e3b1ab9e9fd03e7b17ed757d5"
+  },
+  "human_contribution": {
+    "class": "HUMAN",
+    "goal": "Reduce memory-induced loss and stalled continuation; maximize useful automation, assistance and harm reduction toward the already specified QIKVRT target.",
+    "interpretations_retained_as": "OWNER_ASSERTED where broader natural/virtual universality is not separately proved",
+    "implementation_permission": "Use the original Universal Terminal/Transputer, governed SQLite persistence and existing admitted CI/DevOps. React/client changes still require actual capability, authority and independent effect readback."
+  },
+  "implementation_contribution": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "system": "Codex",
+    "changes": [
+      "scripts/qikvrt_api_client.py",
+      "src/qikvrt_mcp_adapter.py",
+      "src/qikvrt_temdd_event_ledger.py",
+      "tests/test_qikvrt_mcp_adapter.py",
+      "tests/test_temdd_event_ledger.py",
+      "evidence/context-memory/2026-10-24/COMPACT_READER_LIVE_READBACK.json",
+      "evidence/context-memory/2026-10-24/TARGETED_TESTS.log",
+      "evidence/context-memory/2026-10-24/BASELINE_SOCKET_ENVIRONMENT.log",
+      "evidence/context-memory/2026-10-24/TEMDD_BASELINE_SOURCE.py",
+      "evidence/context-memory/2026-10-24/MEMORY_COMPARISON.json",
+      "evidence/context-memory/2026-10-24/REPRODUCE_MEMORY_COMPARISON.py",
+      "evidence/context-memory/2026-10-24/REST_RESPONSE_OBSERVATIONS.json",
+      "evidence/context-memory/2026-10-24/DIAGNOSIS.json",
+      "evidence/context-memory/2026-10-24/API_CLIENT_REGRESSION.log",
+      "evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json",
+      "evidence/self_host/original-recovered/SOURCE_RECOVERY_SUCCESSOR_before_CONTEXT_MEMORY_20261024.json",
+      "tests/test_self_host_temdd.py",
+      "evidence/context-memory/2026-10-24/NATIVE_FAILURE_AND_REPAIR.json",
+      "evidence/context-memory/2026-10-24/RECOVERY_CHAIN_REPAIR_TESTS.log"
+    ],
+    "selection_basis": "Fix observed oversized identity reads and reproduced whole-journal memory growth; reuse original storage, transport, cursor, hashes, locks and CI rather than replace the whole platform."
+  },
+  "knowledge": {
+    "lean_source_integrated": {
+      "pr": 597,
+      "main": "a1a2204f429bcab7a184afaf51a57b7de03d4ee7",
+      "theorems": 36,
+      "scope": "Declared formal graph and EAP/temporal-memory model; no universal empirical causality theorem"
+    },
+    "publication_candidate_integrated": {
+      "pr": 598,
+      "main": "aa024fd7c0c72a55cbb7e37bfe269bcccfd74bfb",
+      "tested_head": "79d97323a362fdb6b5d5c778d8f5034316dc9f1d",
+      "tree": "08a10a209468d42e3b1ab9e9fd03e7b17ed757d5",
+      "native_ci_run": 40095518209,
+      "native_test_job": 120876829069,
+      "publication_id": "qikvrt-causal-distance-lean-20261024",
+      "proof_sha256": "8adce48052a5ca641912e2a7735d170fd2df277c228afc100898a8539bf0b9c3",
+      "exact_upload_decision_path": "release/causal-distance-lean-2026-10-24/EXACT_UPLOAD_DECISION_REQUEST.txt",
+      "published": false
+    }
+  },
+  "work": [
+    {
+      "id": "MEMORY_REPAIR_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Run the existing native full exact-head test/fixpoint, record the actual Principal review, merge under existing authorization and independently reobserve Main."
+    },
+    {
+      "id": "ZENODO_PUBLICATION",
+      "state": "OPEN",
+      "next_action": "Receive the canonical post-return exact-upload event required by unchanged v2 policy, bind the immutable candidate anchor da744fc23aef09306d81f76cca5ea2ad6861ed64, then use the existing editorial queue and original publisher. Verify public metadata and every downloaded file before claiming publication."
+    },
+    {
+      "id": "PRODUCTIVE_RUNTIME_DELIVERY",
+      "state": "OPEN",
+      "next_action": "Restore the already specified admitted native Mesh endpoint and separately satisfy Firefox/host/exact-domain acceptance; source repair is no live delivery."
+    },
+    {
+      "id": "PRIOR_SCIENTIFIC_AND_TWIN_GAPS",
+      "state": "OPEN",
+      "next_action": "Retain exact OPEN dispositions in the frozen publication claim matrix, including independent reproduction, Python refinement, empirical transfer and productive personal Twin acceptance."
+    }
+  ],
+  "state": "PREPARED_FOR_EXISTING_NATIVE_CI",
+  "effect_ack_done": false,
+  "native_feedback": [
+    {
+      "head": "a30019a30e22d8bf3ffc8100defcd81102de82db",
+      "run": 40099230528,
+      "job": 120887755073,
+      "result": "FAIL_SOURCE_RECOVERY_SUCCESSOR_BINDING",
+      "evidence": "evidence/context-memory/2026-10-24/NATIVE_FAILURE_AND_REPAIR.json",
+      "repair": "Preserve prior receipt byte-for-byte and advance the two changed successor bindings; original failing gate and a predecessor-preservation regression both pass locally. Complete native gates remain required on this successor."
+    }
+  ]
+}

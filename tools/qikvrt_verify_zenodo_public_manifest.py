@@ -240,6 +240,75 @@ def verify(
     }
 
 
+def _generic_subject(manifest_path: pathlib.Path, root: pathlib.Path):
+    """Validate the original local subject without asserting current public access."""
+    from tools import qikvrt_zenodo_publish as publisher
+    root = root.resolve(strict=True)
+    manifest = publisher.load_manifest(manifest_path, root)
+    if manifest["schema"] != publisher.SCHEMA_V2 or manifest["repository"] != publisher.PRODUCTION_REPOSITORY:
+        raise ValueError("generic public verification requires an Authority v2 manifest")
+    evidence, _ = publisher.zenodo._load_json_file(manifest["evidence_path"])
+    execution_head = evidence.get("repository_commit")
+    publisher._validate_recovery_evidence(evidence, manifest_path, root, manifest, execution_head)
+    if evidence.get("phase") != "public_verified" or evidence.get("state") != "published":
+        raise ValueError("publisher has not reached its public verification boundary")
+    return manifest, evidence
+
+
+def _generic_receipt(manifest, evidence, receipts):
+    rid = evidence["record_id"]
+    return {"schema": "qikvrt_public_zenodo_generic_verification_v1", "status": "PASS",
+            "record_id": rid, "doi": evidence["doi"], "record_url": f"https://zenodo.org/records/{rid}",
+            "manifest_sha256": manifest["manifest_sha256"], "publication_id": manifest["machine_proof"]["publication_id"],
+            "file_count": len(receipts), "files": receipts, "public_record_verified": True,
+            "authenticated_transport_used": False, "effect_ack_done": False}
+
+
+def validate_generic_receipt(receipt, manifest_path: pathlib.Path, root: pathlib.Path):
+    """Bind a saved readback to every original file; this performs no network read."""
+    manifest, evidence = _generic_subject(manifest_path, root)
+    files = [{"name": f["name"], "size": f["size"], "md5": f["md5"], "sha256": f["sha256"],
+              "byte_exact_public_redownload": True} for f in sorted(manifest["files"], key=lambda f: f["name"])]
+    expected = _generic_receipt(manifest, evidence, files)
+    if json.dumps(receipt, sort_keys=True) != json.dumps(expected, sort_keys=True):
+        raise ValueError("saved anonymous public receipt differs from its exact publication")
+    return manifest
+
+
+def verify_generic(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
+    """Independently retrieve anonymous metadata and every public original file."""
+    from tools import qikvrt_zenodo_publish as publisher
+    manifest, evidence = _generic_subject(manifest_path, root)
+    rid, doi = evidence["record_id"], evidence["doi"]
+    record = _get_json(f"https://zenodo.org/api/records/{rid}")
+    publisher._public_record_identity(record, rid, doi)
+    if not publisher.zenodo._published_metadata_matches(record.get("metadata"), manifest["metadata"]):
+        raise ValueError("independent public metadata differs")
+    expected = {f["name"]: f for f in manifest["files"]}
+    files = record.get("files")
+    if not isinstance(files, list) or not all(isinstance(f, dict) for f in files):
+        raise ValueError("independent public files unavailable")
+    observed = {f.get("key", f.get("filename")): f for f in files}
+    if len(observed) != len(files) or set(observed) != set(expected):
+        raise ValueError("independent public upload set differs")
+    receipts, total = [], 0
+    for name, wanted in sorted(expected.items()):
+        item = observed[name]
+        if item.get("size") != wanted["size"] or item.get("checksum") != "md5:" + wanted["md5"]:
+            raise ValueError("independent public file metadata differs")
+        links = item.get("links", {})
+        url = next((links[k] for k in ("self", "download", "content") if isinstance(links.get(k), str)), None)
+        if not url:
+            raise ValueError("independent public file URL missing")
+        size, md5, sha256 = _download(url, name)
+        total += size
+        if total > MAX_TOTAL_BYTES or (size, md5, sha256) != (wanted["size"], wanted["md5"], wanted["sha256"]):
+            raise ValueError("independent public file bytes differ")
+        receipts.append({"name": name, "size": size, "md5": md5, "sha256": sha256,
+                         "byte_exact_public_redownload": True})
+    return _generic_receipt(manifest, evidence, receipts)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", required=True)

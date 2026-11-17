@@ -22,3 +22,22 @@ import QIKVRTFormalization.Hardware.AuthorityMirrorWitness
 #print axioms QIKVRT.V2.HardwareWitness.T20_effect_ack_is_idempotently_bound_to_witness
 #print axioms QIKVRT.V2.HardwareWitness.T21_each_successful_transaction_advances_exactly_one_epoch
 #print axioms QIKVRT.V2.HardwareWitness.T22_four_step_payload_sequences_remain_monotone
+
+#print axioms QIKVRT.V2.AuthoritySuccession.majority_overlap
+#print axioms QIKVRT.V2.AuthoritySuccession.majority_intersection
+#print axioms QIKVRT.V2.AuthoritySuccession.same_epoch_election_unique
+#print axioms QIKVRT.V2.AuthoritySuccession.one_effective_writer
+#print axioms QIKVRT.V2.AuthoritySuccession.stale_epoch_rejected
+#print axioms QIKVRT.V2.AuthoritySuccession.expired_lease_rejected
+#print axioms QIKVRT.V2.AuthoritySuccession.no_quorum_holds_writes
+#print axioms QIKVRT.V2.AuthoritySuccession.step_preserves_invariant
+#print axioms QIKVRT.V2.AuthoritySuccession.step_retirement_persists
+#print axioms QIKVRT.V2.AuthoritySuccession.step_epoch_monotone
+#print axioms QIKVRT.V2.AuthoritySuccession.run_preserves_invariant
+#print axioms QIKVRT.V2.AuthoritySuccession.run_retirement_persists
+#print axioms QIKVRT.V2.AuthoritySuccession.run_epoch_monotone
+#print axioms QIKVRT.V2.AuthoritySuccession.retirement_irreversible
+#print axioms QIKVRT.V2.AuthoritySuccession.retired_never_authority
+#print axioms QIKVRT.V2.AuthoritySuccession.retired_repromotion_impossible
+#print axioms QIKVRT.V2.AuthoritySuccession.qualified_successor_can_write
+#print axioms QIKVRT.V2.AuthoritySuccession.independent_carriers_split_brain

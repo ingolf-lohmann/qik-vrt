@@ -1,0 +1,141 @@
+{
+  "_license": {
+    "classification": "owner_effect_authorization",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_zenodo_owner_authorization_v1",
+  "authorization_id": "raumzeit-original-en-de-20261029-01",
+  "nonce": "1731a5d71c419ee3b4ccb80b3829d02efbe7ae2275f563db02ee66edf21d179a",
+  "single_use": true,
+  "single_use_scope": "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_id": "raumzeit-original-en-de-20261020-20261029",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "2ad6b3ca8f6606542818549b97e05043f80d901d",
+  "candidate_return_receipt": {
+    "path": "release/raumzeit-original-2026-10-29/PREPUBLICATION_RETURN_RECEIPT.json",
+    "bytes": 1631,
+    "sha256": "17ac8dccbbbbc6c8b3845626a9decaa368e4c024737315774e44475171c388b4",
+    "git_blob_sha": "f98c4bc26acbed57f1f7f6b96513f098e430bcf6"
+  },
+  "canonical_metadata_sha256": "d9708769561424d30b6687d91019cf372fb1b1d90918ce317fd94e4c6a58b56e",
+  "uploads": [
+    {
+      "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_EN_DE.pdf",
+      "bytes": 376446,
+      "sha256": "88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68",
+      "git_blob_sha": "051bc588b083c73ea5fee2c9ccbd0302262b7953",
+      "name": "Raumzeit_arXiv_EN_DE.pdf"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_Quellen_EN_DE.zip",
+      "bytes": 32047,
+      "sha256": "da5fc1d6ff07727ee2c9227a4bef3d82f292b1a80603df611523e4882175491a",
+      "git_blob_sha": "cf22ae20860a90b55da96b2335dc3542e9d9a896",
+      "name": "Raumzeit_arXiv_Quellen_EN_DE.zip"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/CLAIM_MATRIX.json",
+      "bytes": 21884,
+      "sha256": "709096a4075ebdbd9c240923822e74d9b7df834315986486d69944b14dc27daa",
+      "git_blob_sha": "ccec1312be1fdb2fb2837a2a067b250dacbf6f77",
+      "name": "CLAIM_MATRIX.json"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/SOURCE_EVIDENCE_BINDINGS.json",
+      "bytes": 18616,
+      "sha256": "9db5488a43f0933e23bf293d4341e34e51413ad663bbfba9d46c755b7d0fe54e",
+      "git_blob_sha": "278464b8b7b095e0ef138353acc30d9e78a9f2f6",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/BOUNDARY_TESTS.json",
+      "bytes": 1214,
+      "sha256": "2f838a619c5aa0cb43cfb930198af185a7c35f0a6e054aa7b10ec0a897e4c5ed",
+      "git_blob_sha": "d822817083c08b57ba1f1b6b9b3fc81060f04d3e",
+      "name": "BOUNDARY_TESTS.json"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/SOURCE_BUILD_VERIFICATION.json",
+      "bytes": 1256,
+      "sha256": "07604affe4af6e2af71642ecaf4651657bdc44d31ca038fd864d12e2d0672aa5",
+      "git_blob_sha": "7a43a71787e26238984c53e077c430097db56858",
+      "name": "SOURCE_BUILD_VERIFICATION.json"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/PREPUBLICATION_RETURN_RECEIPT.json",
+      "bytes": 1631,
+      "sha256": "17ac8dccbbbbc6c8b3845626a9decaa368e4c024737315774e44475171c388b4",
+      "git_blob_sha": "f98c4bc26acbed57f1f7f6b96513f098e430bcf6",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/ZENODO_METADATA.json",
+      "bytes": 1685,
+      "sha256": "b3634fb02ad73cc3cb4483210dd28495c1ccfba09b23e6231b630d685d638a8e",
+      "git_blob_sha": "202cec3c22c15e83da4c1d3f6cecdbf7d4d4ee40",
+      "name": "ZENODO_METADATA.json"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/RIGHTS_MANIFEST.json",
+      "bytes": 706,
+      "sha256": "0b6d333470c212c8004e9ff9ab1ced55d59cc55b5721ba8376d3850ad3dfc379",
+      "git_blob_sha": "45358ce8a99b9da52168574bb0c7082c4fabe3cc",
+      "name": "RIGHTS_MANIFEST.json"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/PUBLICATION_NOTICE.md",
+      "bytes": 591,
+      "sha256": "2b9fa5fd728e7501c6721e20b603d84bdf3742ddbc5be7292797867d78ec1582",
+      "git_blob_sha": "df37e423251afa8088fa399ea57b68aca7d8df31",
+      "name": "PUBLICATION_NOTICE.md"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+      "git_blob_sha": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "name": "CC-BY-NC-ND-4.0.txt"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/MACHINE_PROOF_BUNDLE.json",
+      "bytes": 34237,
+      "sha256": "19de3aee1a9f5838f37b2c590969e1f65c70f3bbd4e2d4e9a9a952b90daffd5f",
+      "git_blob_sha": "e0564e6081fa963489da6acca4c3e1429f9d6ab7",
+      "name": "MACHINE_PROOF_BUNDLE.json"
+    }
+  ],
+  "machine_proof": {
+    "path": "release/raumzeit-original-2026-10-29/MACHINE_PROOF_BUNDLE.json",
+    "bytes": 34237,
+    "sha256": "19de3aee1a9f5838f37b2c590969e1f65c70f3bbd4e2d4e9a9a952b90daffd5f",
+    "git_blob_sha": "e0564e6081fa963489da6acca4c3e1429f9d6ab7"
+  },
+  "authorized_effects": [
+    "ACQUIRE_REPOSITORY_REMOTE_CONSUMPTION_LOCK",
+    "CREATE_PRODUCTION_ZENODO_RECORD",
+    "UPLOAD_EXACT_AUTHORIZED_FILES",
+    "PUBLISH_PRODUCTION_ZENODO_RECORD",
+    "VERIFY_PUBLIC_BYTE_EXACT_REDOWNLOAD",
+    "PERSIST_PUBLICATION_EVIDENCE"
+  ],
+  "publication_evidence_path": "release/raumzeit-original-2026-10-29/zenodo-publication.json",
+  "authorization_event": {
+    "channel": "CHAT_OWNER_ACK_NORMALIZED;OWNER_DECISION_PROVENANCE.json#sha256=5af67025350d9797747206bc6faa9f7068a41c568aa718e6faf139aac76a36cf",
+    "authorized_at": "2026-10-29T12:50:40.886164+00:00",
+    "decision": "AUTHORIZE_EXACT_UPLOAD",
+    "exact_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=raumzeit-original-en-de-20261029-01 publication_id=raumzeit-original-en-de-20261020-20261029 return_sha256=17ac8dccbbbbc6c8b3845626a9decaa368e4c024737315774e44475171c388b4 metadata_sha256=d9708769561424d30b6687d91019cf372fb1b1d90918ce317fd94e4c6a58b56e machine_proof_sha256=19de3aee1a9f5838f37b2c590969e1f65c70f3bbd4e2d4e9a9a952b90daffd5f",
+    "statement_sha256": "f769ac9a97dbafcc6ffe1622865d30dbf6f8986ed85949fe6582661742e04d2e",
+    "principal": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON"
+    },
+    "candidate_return_receipt_sha256": "17ac8dccbbbbc6c8b3845626a9decaa368e4c024737315774e44475171c388b4"
+  }
+}

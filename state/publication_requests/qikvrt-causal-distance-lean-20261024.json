@@ -1,0 +1,15 @@
+{
+  "schema": "qikvrt_editorial_publication_request_v1",
+  "publication_id": "qikvrt-causal-distance-lean-20261024",
+  "manifest_path": "release/causal-distance-lean-2026-10-24/publish-request.json",
+  "manifest_sha256": "b3615566b2d872a6ea9723f76bf0dc0db916963fe89aa7df3a1bbf1ad895507b",
+  "manuscript_paths": [
+    "release/causal-distance-lean-2026-10-24/Fachartikel.md",
+    "release/causal-distance-lean-2026-10-24/Prosaartikel.txt",
+    "release/causal-distance-lean-2026-10-24/QIKVRT_Prosa_Vorlesetext.txt"
+  ],
+  "website": {
+    "origin": "https://raumzeitterminal.de",
+    "path": "/publications/qikvrt-causal-distance-lean-20261024/"
+  }
+}

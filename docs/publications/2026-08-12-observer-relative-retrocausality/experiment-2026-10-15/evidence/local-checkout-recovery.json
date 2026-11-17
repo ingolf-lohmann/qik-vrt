@@ -1,0 +1,13 @@
+{
+  "schema": "qikvrt_local_test_checkout_recovery_v1",
+  "observed_at": "2026-10-15T12:48:17.608292+00:00",
+  "initial_failure": "five existing Zenodo finalizer tests lacked current parent history / historical fixture 56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+  "smallest_repair": "unbundle existing verified local archive without moving refs; declare current verified snapshot as shallow history boundary",
+  "archive_head": "f77bc1183b25cd7a1fdb605bc39ee5ea27953d95",
+  "archive_sha256": "f4db569506e57db0be313a0e6bb349801da82d231c3ffb25efc4bcd3dfe9f969",
+  "fixture_object_available": true,
+  "snapshot_boundary": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "tracked_files_changed_by_repair": false,
+  "complete_current_history_claimed": false,
+  "test_gate_weakened": false
+}

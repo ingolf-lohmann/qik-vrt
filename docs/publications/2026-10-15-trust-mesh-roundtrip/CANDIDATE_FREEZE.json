@@ -1,0 +1,131 @@
+{
+  "schema": "qikvrt-trust-mesh-candidate-freeze-v1",
+  "publication_id": "qikvrt-trust-mesh-roundtrip-20261015-v2",
+  "source_head": "7af0b7c68ad80352dd9ff6f91600cdca2616dfc9",
+  "files": [
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CHANGE_NOTICE.json",
+      "bytes": 3007,
+      "sha256": "b05b98534c685cdb6387ee12df618e5b916a177e8130efec9d5031d363afc6d0",
+      "git_blob_sha1": "1fed913aa73be20d8d56e26ff4c5b40dee429cf7"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CHANGE_NOTICE.md",
+      "bytes": 2540,
+      "sha256": "b599142232582c4c113af94f5990de255da0c4b88b79b9820f083671caa519cb",
+      "git_blob_sha1": "1041b60e4f9d41c33cab70c49be9e4fb9623094b"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CLAIM_MATRIX.json",
+      "bytes": 223147,
+      "sha256": "1b138906f2982da9dc529ff0aba4c2db5da7582e418ebf2d90864f14f7db4e4d",
+      "git_blob_sha1": "752c3af814a0fe38bdbf9de7600b5a8d904442f0"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CORPUS_COVERAGE.json",
+      "bytes": 170883,
+      "sha256": "21cfbe0414cd861c6ad233b668a74b049a640b969b0b50173c8302725e4e5d05",
+      "git_blob_sha1": "cde2864f094659d85d6aa718b47a6556e4184ab5"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/CORRECTION_DISPOSITIONS.json",
+      "bytes": 14427,
+      "sha256": "f9fe551137d3d53e1dd70efb43fce00441a5649a298955b233e594f9983bb5be",
+      "git_blob_sha1": "c0a7585b7a1527c87474e4d72ad654e7dd8b8f94"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md",
+      "bytes": 107788,
+      "sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "git_blob_sha1": "9b8a7a44008775483bd2128fd5317d143c6ac42e"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.pdf",
+      "bytes": 245731,
+      "sha256": "d93882e5446443aded564e6895c6b7856d0ea7b51de7226b80690a6270961403",
+      "git_blob_sha1": "8b8cc3e2bcc95c31d628bcbafaac92452671afcb"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.txt",
+      "bytes": 106821,
+      "sha256": "da75582580bc86b7424dae0f056714cdd5bb8a1fb0a8b9118948b27a68924a1d",
+      "git_blob_sha1": "df5cb03b2ec3a582e344a4e6d0cb38569f560ebe"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/IETF_DISPOSITION.json",
+      "bytes": 599,
+      "sha256": "165a7874ba018759bcede67a0f0f31c3778d5f5e83c1fd6d9a7338e715159ded",
+      "git_blob_sha1": "15fdccea14d23d497168d90d9e38750967515075"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/MACHINE_PROOF_BUNDLE_DRAFT.json",
+      "bytes": 186798,
+      "sha256": "3a25d6ddb4d89145177890b1636ed86cc963888aafe9ab5df234731424916561",
+      "git_blob_sha1": "492ee5a3f60c878230bd4928c315d98d941a1e12"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/MILESTONES.json",
+      "bytes": 21306,
+      "sha256": "129a83f2e64d95adfdce814283d3116fb73569951add9e1a898fcb9cd43d42a1",
+      "git_blob_sha1": "74ad9df227818e90b9bdd8be250dbf61857c2cc4"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/PREPUBLICATION_RETURN_RECEIPT_DRAFT.json",
+      "bytes": 56922,
+      "sha256": "44e45339c1bad3badb9bfe96f32d6dca4d2a8841abe7f4aa3b16a82c4e6385c8",
+      "git_blob_sha1": "13b7b3b768d4b810e64398448f9d1b6bb50dcc99"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/PRODUCTION_METADATA.json",
+      "bytes": 939,
+      "sha256": "3e24154e287e59c378ecd7e96b0b4ee36a0fdabf636562310c071f43830822f3",
+      "git_blob_sha1": "d97864c9cac59ec16345a2ea9b9a59475bda7996"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/README.md",
+      "bytes": 3717,
+      "sha256": "871a0b0735c21a815297de982d161e29016cd508cd8767a1cb4dada60b445be7",
+      "git_blob_sha1": "0027a59129a7a309a81b50693680bfa7d7f98f18"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/SCIENTIFIC_SOURCES.zip",
+      "bytes": 2376246,
+      "sha256": "a5b232c8c586d6056bb81227cd24f05b080f448399a260cf8869f838cd89d7c8",
+      "git_blob_sha1": "52b758f221750b8612d055117986e3488c60eb90"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/SCIENTIFIC_SOURCE_ARCHIVE.json",
+      "bytes": 52162,
+      "sha256": "77f2c898e1bad39cfc4a76c2457bb0c3cf1197f7b5df804e3ce8cf9b160a7c3c",
+      "git_blob_sha1": "476a6d1edc0dc66716fcc15af823132117812fcb"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/SOURCE_EVIDENCE_BINDINGS.json",
+      "bytes": 29853,
+      "sha256": "6e3b3a87ae75e561037ad53a036b2acc5bfa974f043e4080ec6d24d0f804edc1",
+      "git_blob_sha1": "58076072331010f4aff4ee13d5d0529ccffa31fc"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/UPLOAD_FILESET.json",
+      "bytes": 4364,
+      "sha256": "70780bb6587491434376117d057af06a1bb371b4ccba879004a756bc5a0cb108",
+      "git_blob_sha1": "0b84db779d7ab6b311f0d3cf6e0fca443b8f3645"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/VISIBLE_ALL_SOURCES.json",
+      "bytes": 18110,
+      "sha256": "2cf40461791f7a1cb56948db3fcc07fe0dde0f4ea902d0b2c85c1974d0297f90",
+      "git_blob_sha1": "97f92a5f0de4cd9eadbca615d89eb84d54ab0c29"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/VISIBLE_PUBLISHED_SOURCES.json",
+      "bytes": 16957,
+      "sha256": "14897620dc13326f1074107c01c205b586300c53d5ccd66cbc49b5074b209bd6",
+      "git_blob_sha1": "e268ec2b8a2dd4c71172e01f5ae9667ff0cc970b"
+    }
+  ],
+  "return_state": "PREPARED_FOR_OWNER_RETURN",
+  "owner_acceptance": false,
+  "zenodo_publication": false,
+  "mirror_persistence": false
+}

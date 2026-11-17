@@ -1,0 +1,187 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "CLAUDE_REMOTE_MCP_REST_APPLICATION_20261009_V1",
+  "created_at": "2026-10-09T14:40:33.285124+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source": {
+    "pr": 508,
+    "ref": "integration/ruleset-client-lifecycle-20261009",
+    "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+    "tree": "cde054f9aa56d98cb2389df910e0e9c19fc16deb"
+  },
+  "main_observation": {
+    "head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+    "complete_tree_delivery_paths": []
+  },
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "scope": "Authorized Claude connector application proof, one scoped write, version/security/provenance preservation, REST-only GitHub operations, fresh independent readback; no self-approval or unverified production claims",
+    "implementation_authorized": true,
+    "candidate_acceptance": "PENDING"
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "model_family": "GPT-6",
+    "exact_build": "NOT_EXPOSED",
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "activities": [
+      "REST source inventory and exact archive/blob/tree/commit reconstruction",
+      "extend existing handler/shim with opt-in MCP and original-byte readback",
+      "independent wire/probe security and replay tests",
+      "fresh authenticated existing Site MCP observe/readback and original-byte verification",
+      "isolated reviewable draft candidate preparation"
+    ],
+    "retention": "METADATA_ONLY"
+  },
+  "reuse_before_create": {
+    "reused": [
+      "src/qikvrt_github_api_shim.py",
+      "src/qikvrt_api_handler.py",
+      "src/qikvrt_effect_ack.py",
+      "scripts/qikvrt_api_client.py",
+      "tests/test_tcpip_e2e.py",
+      "Makefile",
+      "existing version-17 Mesh Monitor MCP tools"
+    ],
+    "reason_for_new_protocol_client_tests_docs": "The complete inspected repository tree has no executable MCP adapter. New standard-library probe does not import the implementation, allowing independent returned-byte verification."
+  },
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 12414,
+      "sha256": "942be6d0f536e81153b9472664f6c5f602381358ece18ac83989dd6605a75376",
+      "git_blob": "6ed72bd4a4cc752e91c412f4961e74eecae74f8c"
+    },
+    {
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "bytes": 13660,
+      "sha256": "098c5f665cf2b7990fd56360b983bb60786b1c058afc0a4780d720cc8ffae97f",
+      "git_blob": "2782f55a21a4d882e2626b2270921fe18a9af18c"
+    },
+    {
+      "path": "docs/CLAUDE_MCP_CONNECTOR.md",
+      "bytes": 9606,
+      "sha256": "4ae28a7f0e1e8eb7bc512a751034187431cd1877e1b96611e2c78f6a07a85188",
+      "git_blob": "80d74e6dfdd582108b3c4567762097d3a8851147"
+    },
+    {
+      "path": "scripts/qikvrt_mcp_probe.py",
+      "bytes": 10114,
+      "sha256": "d437ae220c372a5b268a6ac79f5bec26739907a4c354d3809a4acb410a8da58c",
+      "git_blob": "bbb59462fc200d20066cbdd6ef14727f775afdfc"
+    },
+    {
+      "path": "src/qikvrt_api_handler.py",
+      "bytes": 75942,
+      "sha256": "dd2fb68be4b73eceaa833d0256cd93232baf9d933b6e6e0c235b3d0274316e18",
+      "git_blob": "57d3f65996f75ffffadadbe40e638cd8063c61ca"
+    },
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 35187,
+      "sha256": "81fa8153b825aa2e4baa70cbd5d40b5a541b9ec639c182d6bdbb43d4609283e7",
+      "git_blob": "cd74a7b4f79b219ad4a146c22fed2ef573cf91c8"
+    },
+    {
+      "path": "tests/test_mcp_e2e.py",
+      "bytes": 20062,
+      "sha256": "9a692e01e3c5a7664a9ba0b7d81ea9fdf9885b2570f569773ce823ab5b0d2b2f",
+      "git_blob": "95e336eaf09bcb5554c4ef14f670cabf3302b190"
+    },
+    {
+      "path": "evidence/claude-mcp-connector/2026-10-09/LIVE_MCP_READBACK.json",
+      "bytes": 14632,
+      "sha256": "24283647e55c728c790c66480fc5ac6693b059d61809ea2ae3cf25ca1e8bf976",
+      "git_blob": "19714ce5ddd0adb21e930e3a9625748f1d54e746"
+    },
+    {
+      "path": "evidence/claude-mcp-connector/2026-10-09/INDEPENDENT_LIVE_BYTE_CHECK.json",
+      "bytes": 578,
+      "sha256": "fd0717e9edbfdecc1a22d6d45147672499fbbb51d3d705d65db3d7624f762dde",
+      "git_blob": "d3184b03770c7ba9c0a2f25ee28fa956883c28bf"
+    }
+  ],
+  "validation": {
+    "mcp_conformance": {
+      "command": "python3 -B -m unittest -v tests.test_mcp_e2e",
+      "status": "PASS_OUTPUT_BYTES",
+      "test_methods": 24,
+      "source_bytes_bound_above": true
+    },
+    "full_repository_gate": {
+      "command": "make test",
+      "status": "TO_BE_FRESHLY_EXECUTED_ON_FROZEN_CANDIDATE_HEAD",
+      "initial_environment_failure": "Missing REST-materialized parent tree metadata and historical commit/worktree closure; exact objects restored without modifying the test",
+      "historical_source_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "source_history_is_complete": false,
+      "native_push_failure": {
+        "head": "e514aa2b329b59456de19b5fede86940b67bc482",
+        "tree": "c666a7a615f5c4c1989134609484f40e72ecab3d",
+        "run_id": 37947509975,
+        "job_id": 113877511728,
+        "first_blocker": "CANONICAL_CHECKOUT_EOL_MISMATCH",
+        "affected_existing_windows_files": 34,
+        "verified_cause": "The REST materialization restored exact normalized Git blobs, but the manifest was generated before applying existing eol=crlf checkout attributes. Native checkout materialized CRLF and rejected the LF-derived digests.",
+        "repair": "Materialize existing Windows files through git cat-file --filters using their unchanged HEAD blobs and existing eol attributes, then regenerate integrity authorities. No Windows source blob or verification rule changed.",
+        "unmodified_failure_retry_count": 0,
+        "original_checkout_manifest_hashes_verified": 35
+      },
+      "prior_candidate_exact_head_local": {
+        "head": "e514aa2b329b59456de19b5fede86940b67bc482",
+        "tree": "c666a7a615f5c4c1989134609484f40e72ecab3d",
+        "command": "make test",
+        "exit_code": 0,
+        "unittest_executions": 861,
+        "log_sha256": "0af0a6522faf904c0bf51f3078264f35b3cdf4ae86a68d65241aa47c83ce0a08",
+        "transfer_to_successor": false
+      }
+    },
+    "native_exact_head_checks": "REQUIRED_FRESH_READ_AFTER_DRAFT_CREATION",
+    "predecessor_evidence_transfer": false
+  },
+  "live_application": {
+    "execution_client": "OpenAI Work authorized MCP plugin; not Claude",
+    "mcp_observe": "EXECUTED_FRESH_PERSISTENT_OBSERVATION",
+    "snapshot_id": "569fb70c-9ba9-4d22-9bdf-314ca388db40",
+    "mcp_readback": "EXECUTED_AUTHENTICATED_INDEPENDENT_PERSISTENT_READ",
+    "original_utf8_bytes": 5663,
+    "original_utf8_sha256": "b666efd88ad324981ec672b9f5853e78f7f59ee3b0bb0ac5b0750e8fe748bb54",
+    "local_independent_hash_verification": true,
+    "direct_public_rest_fetch": {
+      "status": 403,
+      "origin_cause": "UNKNOWN",
+      "retry_count": 0
+    },
+    "claude_web_connector_execution_verified": false,
+    "new_adapter_remote_deployment_verified": false,
+    "native_mesh_execution_verified": false
+  },
+  "governance": {
+    "independent_code_owner_approval": false,
+    "self_approval": false,
+    "rulesets_observed": [],
+    "main_protected": false,
+    "main_activation": false,
+    "dependency_pr508": "OPEN_DRAFT; no source approval transferred",
+    "contribution_terms": "REQUIRED_BEFORE_INCORPORATION"
+  },
+  "domain": {
+    "hostname": "raumzeitterminal.de",
+    "provider_status": "pending",
+    "ssl_status": "pending_validation",
+    "delivery_verified": false,
+    "repository_proof_absence_is_domain_nonexistence": false
+  },
+  "external_boundary": {
+    "first_blocker": "AUTHENTICATED_CLAUDE_WEB_CONNECTOR_EXECUTION_NOT_AVAILABLE",
+    "retry_condition": "Actual authorized Claude connector connection plus an accepted publicly reachable HTTPS MCP service, private credentials and exact source binding",
+    "smallest_continuation": "Governed incorporation/deployment of this adapter, or authorized Claude connection to the existing monitor under its distinct observation contract, followed by actual Claude tools/call trace and independent result-byte readback",
+    "previous_unchanged_direct_mcp_401_retries": 0,
+    "github_route": "REST_API_ONLY"
+  },
+  "effect_state": "EFFECT_ACK_CONTINUE",
+  "ordinary_release": false,
+  "effect_ack_done": false
+}

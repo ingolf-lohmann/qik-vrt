@@ -1,0 +1,12 @@
+{
+  "name": "qikvrt-origin-browser-tests",
+  "version": "1.0.0",
+  "private": true,
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  }
+}

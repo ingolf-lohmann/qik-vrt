@@ -1,0 +1,164 @@
+{
+  "authenticated_runtime_readback": false,
+  "baseline_implementation_materialized": true,
+  "baseline_runtime_readback": false,
+  "blockers": [
+    "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED",
+    "BASELINE_RUNTIME_AND_NORMAL_RETENTION_READBACK_NOT_BOUND",
+    "EQUIVALENT_REAL_PRE_RUNS_NOT_OBSERVED",
+    "PRODUCT_INTERRUPTION_AND_ORACLE_ISOLATION_NOT_BOUND",
+    "FIREFOX_EXECUTABLE_UNAVAILABLE"
+  ],
+  "environment": {
+    "firefox": {
+      "executable": null,
+      "executable_sha256": null,
+      "version": null
+    },
+    "machine": "x86_64",
+    "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14"
+  },
+  "head": "5bd1afc5bfa7c3887698f24f899b72e6f5701990",
+  "observed_utc": "2026-10-05T13:04:21Z",
+  "personal_adapter_source_materialized": true,
+  "personal_capability_manifest": {
+    "adapter": "src/qikvrt_personal_assistant.py",
+    "ambiguous_external_result": "DURABLE_PENDING_AND_NO_AUTOMATIC_RETRY",
+    "authenticated_runtime_readback": false,
+    "capability_readback": "/personal/capabilities",
+    "client_authentication": "EPHEMERAL_LOCAL_BEARER_FROM_QIKVRT_PERSONAL_LOCAL_TOKEN",
+    "credentials_in_repository_or_runtime_database": false,
+    "edition": "PERSONAL_OPT_IN",
+    "entrypoint": "src/qikvrt_effect_ack_http_terminal.py",
+    "equivalent_pre_runs_observed": false,
+    "firefox_execution_observed": false,
+    "firefox_surface": "http://127.0.0.1:8771/personal/",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "normal_baseline": {
+      "automatic_history_deletion_or_reset": false,
+      "comparison_scope": "This comparator is the adapter's ordinary conversation mode. It is not a measurement of ChatGPT UI or another vendor product.",
+      "identity": "SAME_SOURCE_BOUND_ASSISTANT_ORDINARY_CONVERSATION_MODE",
+      "mode": "baseline",
+      "persistence": [
+        "normal provider conversation",
+        "full local transcript",
+        "saved outputs",
+        "session list and readback",
+        "browser tab restore"
+      ],
+      "same_provider_model_instructions_parameters_tools": true
+    },
+    "operations": [
+      "create_source_bound_task",
+      "research_documentation_turn",
+      "ordinary_history_readback",
+      "resume_observed_checkpoint"
+    ],
+    "personal_release_effect_ack_done": false,
+    "product_claim_allowed": false,
+    "product_metrics": null,
+    "product_trials_executed": 0,
+    "provider": {
+      "api": "RESPONSES_WITH_CONVERSATIONS",
+      "authentication": "SERVER_MEMORY_BEARER_FROM_OPENAI_API_KEY",
+      "authority": "https://api.openai.com/v1",
+      "chatgpt_signed_in_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
+      "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
+      "proprietary_runtime_redistributed": false
+    },
+    "qikvrt_mode": {
+      "additional_capability": "HASH_BOUND_OBSERVED_OUTPUT_CHECKPOINT_ON_RESUME",
+      "checkpoint_from_harness_oracle": false,
+      "checkpoint_is_independent_acceptance": false,
+      "mode": "qikvrt"
+    },
+    "repository": "ingolf-lohmann/qik-vrt",
+    "runtime_evidence_class": "SOURCE_CAPABILITY_MANIFEST_ONLY",
+    "runtime_state": "PRIVATE_EXTERNAL_DIRECTORY_SQLITE_WAL_SYNCHRONOUS_FULL",
+    "schema": "qikvrt_personal_assistant_capabilities_v1",
+    "version": "1.0.0"
+  },
+  "personal_release_candidate": {
+    "authenticated_runtime_readback": false,
+    "boundary_contract_materialized": true,
+    "executable_adapter_materialized": true,
+    "normal_baseline_implementation_materialized": true,
+    "normal_baseline_runtime_readback": false,
+    "personal_capability_manifest": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+    "personal_capability_manifest_materialized": true,
+    "personal_release_effect_ack_done": false,
+    "state": "HOLD"
+  },
+  "product_claim_allowed": false,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_browser_ab_preflight_v1",
+  "source_files": {
+    "benchmarks/browser-assistant-ab/console.html": {
+      "bytes": 4936,
+      "sha256": "e4d97ca077963bc3936e3cc3be5ed2a4f39c22aa15ed131f18758f3a1e3e0c4a"
+    },
+    "browser/firefox/qikvrt-terminal/background.js": {
+      "bytes": 10470,
+      "sha256": "d6ac437244b24f05542460df7e89614fb77b6c495c8c112b373a6049a5bfe610"
+    },
+    "browser/firefox/qikvrt-terminal/content.js": {
+      "bytes": 8904,
+      "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+    },
+    "browser/firefox/qikvrt-terminal/manifest.json": {
+      "bytes": 1040,
+      "sha256": "83bcdef35587bda131c0517abda944db509f94e95aa9a35f16d8ea0f03f9b06a"
+    },
+    "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+      "bytes": 2273,
+      "sha256": "20bb534639db5013276381e9d4635a2eed9f65defbb5dacfe1513b8b26ac80c7"
+    },
+    "personal/ingolf-lohmann/firefox-assistant/ui.css": {
+      "bytes": 990,
+      "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+    },
+    "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+      "bytes": 2004,
+      "sha256": "f5550078a8d45df0b90fb2b1bf5bf7389ae14b8ce6bfb6922170c0d6bac334db"
+    },
+    "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+      "bytes": 3532,
+      "sha256": "e6ba8e202c02a61f229afc5fbbecfe1fe05de068d8d521aee0e299523c9a5fb5"
+    },
+    "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json": {
+      "bytes": 1971,
+      "sha256": "9eb9b2e3fdd3c760224290b8b2278c07050da6516dfe34f9096e06587843e385"
+    },
+    "runtime/toolchains/CACHE_COVERAGE.json": {
+      "bytes": 3054,
+      "sha256": "f8e272a7ae8ed05da5f29b1e4ef7df04b01f666913d1661f6096314077027d08"
+    },
+    "runtime/toolchains/CACHE_REGISTRY.json": {
+      "bytes": 10790,
+      "sha256": "3cd6ea7d83d7547757d25adc022930c149b48cc621904d7080564e0a45997a7e"
+    },
+    "runtime/toolchains/TOOLCHAIN.lock.tsv": {
+      "bytes": 2599,
+      "sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69"
+    },
+    "src/qikvrt_effect_ack_http_terminal.py": {
+      "bytes": 15778,
+      "sha256": "300caae7c842007880548704ebd30e4ef1a0cab12338ff134c801ac52bda1fb8"
+    },
+    "src/qikvrt_personal_assistant.py": {
+      "bytes": 22633,
+      "sha256": "aaaaa72a54f08ddb0031e1edc70e9ead4469aded351ef78e12c814b9692e8c9c"
+    },
+    "tools/qikvrt_browser_assistant_ab.py": {
+      "bytes": 38109,
+      "sha256": "89a694bd46b53a342be08b8a57cffc54310a628704a1390d057dc6ae9832117f"
+    }
+  },
+  "status": "PRODUCT_EXECUTION_NOT_AVAILABLE",
+  "terminal_boundary": "The optional Personal adapter shares the terminal server and implements source-bound model requests, normal conversation persistence and checkpoint resume. Real authenticated Firefox product execution is not established by this offline preflight.",
+  "tree": "9ed7eabb3d56f1d346d40397f0a3150c976eb786",
+  "worktree_dirty": true
+}

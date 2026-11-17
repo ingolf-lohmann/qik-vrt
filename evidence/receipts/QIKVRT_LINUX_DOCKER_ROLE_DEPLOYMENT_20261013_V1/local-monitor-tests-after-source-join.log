@@ -1,0 +1,55 @@
+✔ health separates failures, stale evidence, live runtime and client phase (7.533617ms)
+✔ a snapshot does not hide a detected event gap or corrupted event (27.426984ms)
+✔ node health reports missing carrier and native-cache failure without green CI masking it (51.31742ms)
+✔ snapshot integrity, distinct client instances, versions, order and epoch fail closed (13.490725ms)
+✔ durable acknowledgment, byte-exact journal, duplicates and signature rejection (45.262565ms)
+✔ four concurrent clients receive all 32 accepted events and agree on original bytes (264.044871ms)
+✔ disconnect and node restart replay every missing event from the durable cursor (27.037886ms)
+{"at":"2026-10-13T15:49:06.963Z","stage":"MONITOR_REQUEST","cause":"SIMULATED_STORAGE_FULL"}
+✔ storage failure never acknowledges or broadcasts an event as durable (16.763995ms)
+✔ client event gaps and journal corruption are detected rather than promoted to synchrony (8.822081ms)
+✔ separate local processes: writer crash leaves four clients byte-exact replay on replica (998.033614ms)
+{"at":"2026-10-13T15:49:07.992Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ interruption with local pending tail withholds ACK and stream until reconnect and duplicate retry (38.803268ms)
+{"at":"2026-10-13T15:49:08.020Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ writer restart preserves the unacknowledged tail and reconnects without regenerating records (36.632203ms)
+{"at":"2026-10-13T15:49:08.077Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_GAP"}
+{"at":"2026-10-13T15:49:08.080Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-13T15:49:08.082Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-13T15:49:08.085Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-13T15:49:08.087Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-13T15:49:08.089Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EPOCH_CONFLICT"}
+{"at":"2026-10-13T15:49:08.091Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICATION_BINDING"}
+✔ signed append rejects missing events, reversed order, conflicting bytes and invalid checkpoints atomically (49.070259ms)
+{"at":"2026-10-13T15:49:08.105Z","stage":"MONITOR_REQUEST","cause":"REPLICA_PREFIX_CONFLICT"}
+✔ a valid conflicting replica prefix blocks the writer rather than overwriting the replica (8.811324ms)
+{"at":"2026-10-13T15:49:08.117Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICA_READBACK_SIGNATURE"}
+✔ peer request and readback authentication failures never produce cross-node ACK (11.783219ms)
+{"at":"2026-10-13T15:49:08.130Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-qBjjsh/occupied.tmp-998a948b-e474-4a60-8aa0-2a4f35e87edd' -> '/tmp/qikvrt-monitor-test-qBjjsh/occupied'"}
+{"at":"2026-10-13T15:49:08.131Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-qBjjsh/occupied.tmp-998a948b-e474-4a60-8aa0-2a4f35e87edd' -> '/tmp/qikvrt-monitor-test-qBjjsh/occupied'"}
+{"at":"2026-10-13T15:49:08.136Z","stage":"MONITOR_REQUEST","cause":"STORAGE_RESTART_REQUIRED"}
+✔ replica storage failure freezes receipts, then restart restores the prefix and permits recovery (26.37821ms)
+{"at":"2026-10-13T15:49:08.157Z","stage":"MONITOR_REQUEST","cause":"SOURCE_RECEIPT_DISK_FULL"}
+✔ source receipt storage failure after peer durability requires fresh confirmation on restart (27.37815ms)
+✔ interrupted bounded suffix batches restart at the durable prefix and expose only a complete checkpoint (945.127853ms)
+✔ replicas remain read-only, do not observe GitHub, and cannot be promoted by changing role (20.184479ms)
+✔ contradictory duplicate client record is rejected even if it repeats the claimed digest (15.916643ms)
+{"at":"2026-10-13T15:49:09.180Z","stage":"MONITOR_REQUEST","cause":"The operation was aborted due to timeout"}
+✔ peer timeout withholds the positive receipt and reconnect recovers the original pending event (46.725554ms)
+{"at":"2026-10-13T15:49:09.213Z","stage":"MONITOR_REQUEST","cause":"REPLICA_RESPONSE_LOST"}
+✔ lost peer response after durable append is recovered by exact readback without duplicate events (20.805185ms)
+{"at":"2026-10-13T15:49:09.247Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_CONFLICT"}
+{"at":"2026-10-13T15:49:09.250Z","stage":"MONITOR_REQUEST","cause":"PUBLIC_REPOSITORY_SCOPE_REQUIRED"}
+{"at":"2026-10-13T15:49:09.252Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+✔ valid conflicting overlap and private payload are rejected before any replica mutation (31.925005ms)
+✔ restart rejects a corrupt durable replica confirmation instead of serving a fabricated prefix (10.584051ms)
+PASS: ticking ages and stale-status expiry preserve details without source reads; exact causal evidence, source-bound counters, queues, no polling, safe job steps, attribution, rate/cache recovery, read-only routes.
+✔ docs/monitor/observer.test.mjs (250.820449ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2948.161061

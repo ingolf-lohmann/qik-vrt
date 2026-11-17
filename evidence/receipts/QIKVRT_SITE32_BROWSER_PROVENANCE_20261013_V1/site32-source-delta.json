@@ -1,0 +1,70 @@
+{
+  "parent": "4179d18907e71da125ba51a1a7250dfea82590e6",
+  "head": "17fb5f3ff3904bbdc389a85d10a72c06eb7f5395",
+  "tree": "2f3440e0e441f8da3e6624688d57f699ac2d7f83",
+  "files": [
+    {
+      "path": "lib/offline-client-hosting.ts",
+      "bytes": 4754,
+      "sha256": "2821f07f43e2175c16678bc58a7e1f5ed9358f4252d299c0add6348bdeb0ddfb",
+      "git_blob_sha1": "a631f9d5e5d8ec23fa2cbb61b4b63d02f5de2132",
+      "predecessor_bytes": 4667,
+      "predecessor_sha256": "70a251c58525af4443b477eb4ddfa8a102f64c8cb2a52a49a8f4022adc848405",
+      "predecessor_git_blob_sha1": "6742a9a0a2653c27c2ac78f5789085160befbfdc"
+    },
+    {
+      "path": "public/offline/README.md",
+      "bytes": 8296,
+      "sha256": "9d6a65da1aced1d24a3822e45c62587727476d13c44c21138c74a3f1d248f9c9",
+      "git_blob_sha1": "2c592aa15e7c33c0b2c99f799aa216da765ad656",
+      "predecessor_bytes": 7824,
+      "predecessor_sha256": "2153e2b7d035a9321af746328a5fe9c0617f8287036b45e3a94eb239eaa4e4b8",
+      "predecessor_git_blob_sha1": "327355a043af29a193e4e03ecc5180b2474d2e9f"
+    },
+    {
+      "path": "public/offline/SOURCE.json",
+      "bytes": 3730,
+      "sha256": "fdfd21d6ee2b6893a9e1dfd3700803f099899b7d2361c9a146bc1fffd0e14428",
+      "git_blob_sha1": "1dfa20df80e396cbf687f923c7fd7582551d34d9",
+      "predecessor_bytes": 1727,
+      "predecessor_sha256": "246ec794f705b7b66f679dce057c91fd68b0b0ead51c21c81e2eeb0e898ec67e",
+      "predecessor_git_blob_sha1": "f020c976a91cb2eb827e15c8d8099ec51f8032a1"
+    },
+    {
+      "path": "public/offline/client.js",
+      "bytes": 17031,
+      "sha256": "6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3",
+      "git_blob_sha1": "7bb02962517af9258b13f225189f6ffd1d66c47c",
+      "predecessor_bytes": 16603,
+      "predecessor_sha256": "08e561d76da139cce8cb87adb43ef2a6960bd86ef80c73462d2ed9c2f228b211",
+      "predecessor_git_blob_sha1": "460f254ae4251844b83242604d6f48dcfa9dd68c"
+    },
+    {
+      "path": "public/offline/service-worker.js",
+      "bytes": 2858,
+      "sha256": "8bf7706b8a2600a58808886ddfc99302453f73ad6e1d83ad002e782b372ee151",
+      "git_blob_sha1": "68830cd9d4782e4037a7e6019d96fb361847a7cc",
+      "predecessor_bytes": 2858,
+      "predecessor_sha256": "959b6c051f67a921a0796d67eb5cf73ac858b229c80deb917501cf83367dd947",
+      "predecessor_git_blob_sha1": "dd1f5a9528ccd056070bb512326ea35c6970e44c"
+    },
+    {
+      "path": "scripts/verify-offline.mjs",
+      "bytes": 7826,
+      "sha256": "adf4b892ab990266baa111f2db97a5999d952ca2e472685b65dad1ff99c4fb26",
+      "git_blob_sha1": "b1980eb759bdcc61a1b6695693061b771ca3c5ce",
+      "predecessor_bytes": 3614,
+      "predecessor_sha256": "a479a442e784be411d17a3bbe2c35510b7403b259a5be0874cf8106d37b43c5a",
+      "predecessor_git_blob_sha1": "1ac653555a6b20569c69e9b20da45a7b0851bd25"
+    },
+    {
+      "path": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "bytes": 32086,
+      "sha256": "f872393059342540221d1fa6a497c05042f2d0fb2528214a67da240c6036c4db",
+      "git_blob_sha1": "f879115804474411b82bc91d853ee826fa3498e1",
+      "predecessor_bytes": 28909,
+      "predecessor_sha256": "3e27f2f1a93c71dc4c3361af8f6727603594f4c20b8a8d2d2cd7672aab1cf0db",
+      "predecessor_git_blob_sha1": "23e59d9fc574a50d1a364808422a888e76169985"
+    }
+  ]
+}

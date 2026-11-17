@@ -1,0 +1,88 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_TEMDD_CONSOLIDATION_20261019_V1",
+  "created_at": "2026-10-19T00:44:00Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "fix/xvfb-display-lifetime-20261018",
+  "source_commit": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+  "source_tree": "36aa6737b899932c03367848a4a537c6ed25ee68",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": "OpenAI Codex",
+  "human_contributions": [
+    "Direct 19 October task: consolidate PR535 writer fence and PR536 explicit carrier via existing candidate, preserve originals, native regressions, governance-bound Main integration and close redundant PR only after integration."
+  ],
+  "artificial_cognitive_contributions": [
+    "Compared actual latest patches and native S1 ZIP bytes, merged both existing implementations and tests, preserved both recovery receipts, added historical fork-after-23 preservation regression."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "pr": 535,
+      "head": "c9514d2a67c73155ca33fdbc820d8598af4e396f",
+      "tree": "36aa6737b899932c03367848a4a537c6ed25ee68",
+      "native_run": 39180201562,
+      "artifact": 12155649068
+    },
+    {
+      "pr": 536,
+      "head": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+      "tree": "b9bf40fc745ca862bd91b2a5bba64d4eec714144",
+      "native_run": 39165808996,
+      "artifact": 12150053780
+    }
+  ],
+  "outputs": [
+    {
+      "path": "evidence/self_host/temdd-consolidation-20261019/PR535_NATIVE_c9514d2a.zip",
+      "bytes": 11518,
+      "sha256": "d8043bd1d6b4bdbbd97f5f8461b18ea6f81ffb89e141dab6850af76ad85918e2"
+    },
+    {
+      "path": "evidence/self_host/temdd-consolidation-20261019/PR536_NATIVE_a4729467.zip",
+      "bytes": 11261,
+      "sha256": "7f6b9f52db18d1efa8335a5868d398a7fc79be15295e4c3e2f725fb39f2d3ee5"
+    }
+  ],
+  "git_history": {
+    "integration_pr": 535,
+    "additional_parent": "a4729467daab3bd1f3d17736ae213683db0e98fa",
+    "third_repair_pr_created": false,
+    "force_push": false,
+    "original_journals_modified": false
+  },
+  "verification": {
+    "predecessor_native_artifacts": "SHA256, HEAD, TREE and source binding independently checked; original ZIP bytes archived below. No predecessor PASS transferred.",
+    "local_writer_and_source_recovery": "Focused real SQLite, lock and historical-fork controls; exact final result is recorded separately after execution.",
+    "local_unix_socket_limit": "Direct socket-dependent tests encounter PermissionError EPERM at AF_UNIX creation in this client sandbox. Existing native-carrier and full source CI are required on the merged subject; no socket substitutes or test weakening.",
+    "native_successor": "REQUIRED_FRESH_EXACT_HEAD",
+    "deterministic_integrity": "REQUIRED_AFTER_ALL_EDITS"
+  },
+  "human_decision": "Existing direct task and standing necessary-repair/integration grant; record actual connected-account COMMENTED Principal review on exact head.",
+  "external_effects": {
+    "github_route": "REST_API_ONLY",
+    "planned": [
+      "Fast-forward existing PR535 branch with both parent histories",
+      "Record Principal review under existing policy",
+      "Merge only after required exact-head tests and governance",
+      "Close PR536 after its changes and original evidence are integrated"
+    ],
+    "publication": false,
+    "deployment": false
+  },
+  "boundaries": {
+    "deployment_target": "raumzeitterminal.de",
+    "owner_controlled_runtime_required": true,
+    "railway_required": false,
+    "distributed_writer_control_proved": false,
+    "production_host_admitted": false,
+    "historical_fork_erased": false,
+    "actual_original_journal_bytes_independently_read_in_this_work_unit": false,
+    "scope": "Source correction and synthetic preservation fixtures; original observed journals are never edited."
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

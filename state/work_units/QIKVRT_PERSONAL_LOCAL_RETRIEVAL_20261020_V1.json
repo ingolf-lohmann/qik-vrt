@@ -1,0 +1,60 @@
+{
+  "_license": {
+    "license": "CC-BY-NC-ND-4.0",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "classification": "work_unit_provenance_and_scope"
+  },
+  "schema": "qikvrt_personal_local_retrieval_work_unit_v1",
+  "owner": "Ingolf Lohmann",
+  "base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "b226770c064a167ee3a9cc70996f05db1b3bc6d1",
+    "tree": "4200dfe141fc30557f0e0d9abb5eec4176f9df25"
+  },
+  "authorization": {
+    "source": "Direct Owner instruction 2026-10-20T13:46:11+03:00",
+    "text": "Ich, Ingolf Lohmann, Code und Product Owner, gebe diese Produktänderung und anschließende Repository Main Integration dieses konkreten Adapterkandidaten ausdrücklich frei.",
+    "scope": "Concrete optional local source-ranking adapter and repository/Main integration; no commercial license-strategy change or productive host migration inferred"
+  },
+  "contribution": {
+    "human": "Ingolf Lohmann: product goal, source boundaries and integration authorization",
+    "artificial_cognitive_system": "Codex: adapter, UI integration, tests, locks and documentation",
+    "classification": "JOINT_WITH_SEPARABLE_COMPONENTS"
+  },
+  "reuse": {
+    "existing": "PersonalRuntime, personal_handler, authenticated Personal UI, native transition, Makefile tests and tool-cache registry",
+    "new_module_reason": "Existing Personal provider paths generate conversations; no bounded local multivector source-ranking implementation was found on the bound Main tree. Dedicated optional model adapter avoids modifying generator transports."
+  },
+  "scope": "LOCAL_SOURCE_RANKING_ONLY",
+  "model": {
+    "id": "perplexity-ai/pplx-embed-v2-late-0.6b",
+    "revision": "8fc2de24534aa3610d85fa59c463313a5f096455",
+    "file_lock": "runtime/models/pplx-embed-v2-late-0.6b.lock.json"
+  },
+  "acceptance": {
+    "source_tests": "make personal-retrieval-test; full make test required on changed source",
+    "native_firefox": "OPEN",
+    "private_mesh_source_access": "OPEN",
+    "commercial_license_grant": "NOT_GRANTED_BY_THIS_CHANGE",
+    "productive_host": "OPEN",
+    "field_extraction": "NOT_IMPLEMENTED",
+    "automatic_form_submission": false,
+    "effect_ack_done": false
+  },
+  "native_input_receipt": {
+    "subject_pr": 542,
+    "epoch": "08aaa75a86fc4021bd8fc509b21e56de",
+    "event_id": "08aaa75a86fc4021bd8fc509b21e56de:1",
+    "scope": "LOCAL_OWNER_INPUT_PERSISTENCE_ONLY; no peer receipt or deployment inferred"
+  },
+  "predecessor": {
+    "artifact": "QIKVRT_Browser_Marktpruefung_20261020.zip version1",
+    "sha256": "5ac601dbdfab873d90d1a2cd15a9b4482e7697dfb9091570530474633412a33b",
+    "old_source_tests_transfer": false,
+    "old_model_only_tests_accept_adapter": false
+  },
+  "open_native_obligations": [
+    "Original node-tools/qikvrt_mirror_emit.py source/writer and admitted peer binding unavailable in checked carriers; no formal outbox assessment or peer receipt claimed",
+    "Original copied journals remain read-only; local request receipt does not transfer historical writer admission"
+  ]
+}

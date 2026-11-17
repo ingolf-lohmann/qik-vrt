@@ -1,0 +1,29 @@
+name: deterministic-workflow-dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        description: "Workflow filename or numeric workflow ID"
+        required: true
+        default: "claude.yml"
+        type: string
+      ref:
+        description: "Branch or tag to dispatch"
+        required: true
+        default: "main"
+        type: string
+permissions:
+  actions: write
+  contents: read
+jobs:
+  dispatch-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dispatch workflow and verify resulting run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          POLL_TIMEOUT_SECONDS: "180"
+        run: bash scripts/dispatch-workflow.sh "${{ inputs.workflow }}" "${{ inputs.ref }}"

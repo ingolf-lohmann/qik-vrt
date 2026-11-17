@@ -1,0 +1,209 @@
+{
+  "schema": "qikvrt_publication_archive_readback_v1",
+  "publication_id": "2026-09-23-qik-scientific-revision",
+  "observed_at": "2026-10-19T16:18:16.737087+00:00",
+  "state": "PUBLISHED_EXACT_ORIGINAL_DOCX_PUBLIC_READBACK_VERIFIED",
+  "requested_by": "Ingolf Lohmann",
+  "verification_contribution": "OpenAI Codex; task-specific read-only external verification and repository metadata correction",
+  "repository_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "record": {
+    "id": 22907018,
+    "doi": "10.5281/zenodo.22907018",
+    "concept_doi": "10.5281/zenodo.22907017",
+    "url": "https://zenodo.org/records/22907018",
+    "state": "done",
+    "status": "published",
+    "submitted": true,
+    "revision": 3,
+    "version": "2026-09-23-qik-scientific-revision",
+    "publication_date": "2026-09-23",
+    "created": "2026-09-23T00:22:23.302804+00:00",
+    "modified": "2026-09-23T00:22:23.882922+00:00",
+    "version_count_observed": 1,
+    "record_response": {
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/record.json",
+      "bytes": 6661,
+      "sha256": "ce5667878b8e4e9c534cdaca57e24ae635ec8d5871a0a01c37fda35995b83318",
+      "git_blob_sha1": "404daa61bb72aafe4c0ea584e3f5fa5e41d2cf40"
+    },
+    "versions_response": {
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/versions.json",
+      "bytes": 6796,
+      "sha256": "7e1ff021f18e2a45e9f4f0e57d3d19c8606cf07ffbbc58b54bdc7662c5fedf39",
+      "git_blob_sha1": "c3ecf2c18eac7a464b26ffa4d7e551cf1200d72a"
+    },
+    "record_response_unchanged_across_file_downloads": true
+  },
+  "files": [
+    {
+      "name": "QIK_Publikationsfassung_revidiert.docx",
+      "zenodo_file_id": "f76bb1a8-c18c-4454-ae97-f137194a55ed",
+      "public_url": "https://zenodo.org/api/records/22907018/files/QIK_Publikationsfassung_revidiert.docx/content",
+      "bytes": 49624,
+      "md5": "16debf82dddd3b86a20417414c83b2ae",
+      "sha256": "1c70cbe19edd5a34dc764ad6527cf14761b78b85bc4a157d8aed3f5853b8a020",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/QIK_Publikationsfassung_revidiert.docx",
+      "repository_archive_path": "docs/publications/2026-09-23-qik-scientific-revision/archive",
+      "reconstructed_repository_bytes_equal": true
+    },
+    {
+      "name": "ZENODO_METADATA.json",
+      "zenodo_file_id": "c5256f10-8ccf-4ba8-aaed-8530b1ec11b5",
+      "public_url": "https://zenodo.org/api/records/22907018/files/ZENODO_METADATA.json/content",
+      "bytes": 1817,
+      "md5": "bc46cd3fbd2f880091398504b6130d89",
+      "sha256": "1778b0e39d2a887d0efb9f57705e7f530ad253ba52f21e53ffeaf516cba5705b",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/ZENODO_METADATA.json",
+      "repository_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_METADATA.json",
+      "repository_bytes_equal_at_source_ref": true,
+      "repository_comparison_ref": "fbc450c4d2d5045335577aa59be7509cda16adeb"
+    },
+    {
+      "name": "ZENODO_EFFECT_METADATA.json",
+      "zenodo_file_id": "3ac8aba9-67fc-4103-adc9-d29164f9aa2d",
+      "public_url": "https://zenodo.org/api/records/22907018/files/ZENODO_EFFECT_METADATA.json/content",
+      "bytes": 1622,
+      "md5": "e9c8bdd56a469f70d9f028fd36e50e66",
+      "sha256": "4cbf952da9d724c243a8b77c0f0e3f7e490fce994c3175fb48c55fca9ba0bcfe",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/ZENODO_EFFECT_METADATA.json"
+    },
+    {
+      "name": "README.md",
+      "zenodo_file_id": "38ee8f00-21d5-4559-bd3c-cb2278f1da9e",
+      "public_url": "https://zenodo.org/api/records/22907018/files/README.md/content",
+      "bytes": 3061,
+      "md5": "4632f2095d970f948502a4cd0fea65b6",
+      "sha256": "7e68114928a9411675e8c027776534a0125d5d60acad617f99cc5aa54f230e0c",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/README.md",
+      "repository_path": "docs/publications/2026-09-23-qik-scientific-revision/README.md",
+      "repository_bytes_equal_at_source_ref": true,
+      "repository_comparison_ref": "fbc450c4d2d5045335577aa59be7509cda16adeb"
+    },
+    {
+      "name": "QIK_Wissenschaftlicher_Revisionsbericht.docx",
+      "zenodo_file_id": "339f2655-2968-494a-971a-e1aaf247bfc9",
+      "public_url": "https://zenodo.org/api/records/22907018/files/QIK_Wissenschaftlicher_Revisionsbericht.docx/content",
+      "bytes": 48246,
+      "md5": "ee3b9d864f6ee6b45bc27644903234f6",
+      "sha256": "e4be998ce2ef43f0575fa91b2974d72325f8bf820a72410cfbf697e38fc03bb1",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/QIK_Wissenschaftlicher_Revisionsbericht.docx",
+      "repository_archive_path": "docs/publications/2026-09-23-qik-scientific-revision/archive",
+      "reconstructed_repository_bytes_equal": true
+    },
+    {
+      "name": "ZENODO_PUBLISH_REQUEST.json",
+      "zenodo_file_id": "509b870f-9286-4eff-b1ea-3d6e24e84eb2",
+      "public_url": "https://zenodo.org/api/records/22907018/files/ZENODO_PUBLISH_REQUEST.json/content",
+      "bytes": 1722,
+      "md5": "00254b9e3d0bfab1e9362bc581686f3e",
+      "sha256": "0c9e3b706b37b2e19b92c5050c17d6a13b8369d0903ef286d10dcc91cedf6beb",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/ZENODO_PUBLISH_REQUEST.json",
+      "repository_path": "docs/publications/2026-09-23-qik-scientific-revision/ZENODO_PUBLISH_REQUEST.json",
+      "repository_bytes_equal_at_source_ref": true,
+      "repository_comparison_ref": "fbc450c4d2d5045335577aa59be7509cda16adeb"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "zenodo_file_id": "0be8e1df-95fb-455f-ad94-549e5c399521",
+      "public_url": "https://zenodo.org/api/records/22907018/files/PROVENANCE.json/content",
+      "bytes": 2108,
+      "md5": "075ce37999a9983a5fc9ed9f83597ae9",
+      "sha256": "c92508af3fa97d6ae9cebda116e30f74da9d844fb300d6d72ad1825b6079c1b2",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/PROVENANCE.json",
+      "repository_path": "docs/publications/2026-09-23-qik-scientific-revision/PROVENANCE.json",
+      "repository_bytes_equal_at_source_ref": true,
+      "repository_comparison_ref": "fbc450c4d2d5045335577aa59be7509cda16adeb"
+    },
+    {
+      "name": "SHA256SUMS",
+      "zenodo_file_id": "a6fb23db-40da-406c-80d2-d69ccd5446c9",
+      "public_url": "https://zenodo.org/api/records/22907018/files/SHA256SUMS/content",
+      "bytes": 216,
+      "md5": "b95f6ed4ccb4b71453ecb0bdc487ddfb",
+      "sha256": "8cc1a4da1be3df64cc4d6b14f805ed9ed5dfd7174b7c9946339c9ae63c191d62",
+      "saved_path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/SHA256SUMS",
+      "repository_path": "docs/publications/2026-09-23-qik-scientific-revision/SHA256SUMS",
+      "repository_bytes_equal_at_source_ref": true,
+      "repository_comparison_ref": "fbc450c4d2d5045335577aa59be7509cda16adeb"
+    }
+  ],
+  "original_archive": {
+    "repository_parts_glob": "docs/publications/2026-09-23-qik-scientific-revision/archive/QIK_scientific_revision_exact_artifacts.zip.b64.part-*",
+    "parts": 13,
+    "bytes": 93123,
+    "sha256": "a83d7b10db2065735ac033d39092f13d8f38ab311d6e1a3080236e473b51f02a",
+    "both_decoded_docx_equal_public_downloads": true
+  },
+  "mail_pdf": {
+    "filename": "QIK_Publikationsfassung_revidiert – Kopie.pdf",
+    "sha256": "535611105f6027af9ee0eee6de97473788289619d6145d7babae1d75f1337e30",
+    "actual_content_bytes": 561671,
+    "pages": 10,
+    "source": "Two authorized Outlook mailbox copies of 17 October 2026, received at 10:54:34Z and 11:13:23Z; attachment content fetched independently for each copy",
+    "both_attachment_bytes_equal": true,
+    "declared_sender_sha256_matches_actual_bytes": true,
+    "attachment_metadata_size_bytes": 562103,
+    "metadata_content_size_difference_bytes": 432,
+    "size_difference_cause": "UNVERIFIED; identical bytes and the declared SHA256 match; metadata size is not substituted for content size",
+    "present_in_this_zenodo_record": false,
+    "public_pdf_archival_status": "NOT_IN_RECORD_22907018; no claim about every other public archive",
+    "comparison": {
+      "method": "OOXML w:t in document order; inherited ListNumber -> numId 5 -> abstractNumId 7 decimal %1. numbering rendered for six paragraphs; Poppler pdftotext -raw; remove exact running header and standalone page numbers; Unicode NFKC and whitespace removal",
+      "normalized_text_equal": true,
+      "normalized_characters": 21108,
+      "normalized_utf8_sha256": "882514d9db0b15ce0aab94c04ccbf188ef8f85a45d5fee5b948eac6d82178f0f",
+      "list_items": 6,
+      "page_9_table_visual_review": true,
+      "substantive_text_difference_observed": false,
+      "byte_identity_between_docx_and_pdf_claimed": false,
+      "conversion_process_authenticated": false,
+      "scope": "Normalized extracted textual content, including extracted formula glyphs and table cell order. No claim of byte-identical formats, full visual equivalence or authenticated conversion history."
+    },
+    "private_mail_identifiers_and_pdf_bytes_published_by_this_correction": false
+  },
+  "provenance_limits": {
+    "source_manuscript_sha256_from_preserved_provenance": "f5f1abb80bd3ad1e05270d775f61099a8858cfeca2d84f36f27365265548c4ae",
+    "source_manuscript_bytes_reverified": false,
+    "docx_core_created_modified": "2013-12-23T23:15:00Z",
+    "docx_core_timestamp_used_as_revision_date": false,
+    "revision_identity_basis": "Exact Git archive bytes, original SHA256SUMS, preserved provenance, Zenodo public file readback and version metadata",
+    "pdf_creator_metadata": "Microsoft Word",
+    "pdf_export_timestamp_metadata": "D:20261017104656+00'00'",
+    "pdf_creation_metadata_is_authenticated_conversion_proof": false
+  },
+  "historical_metadata": {
+    "readme": {
+      "path": "docs/publications/2026-09-23-qik-scientific-revision/evidence/zenodo-readback-20261019/files/README.md",
+      "bytes": 3061,
+      "sha256": "7e68114928a9411675e8c027776534a0125d5d60acad617f99cc5aa54f230e0c",
+      "git_blob_sha1": "981711fc163a55b5af7b6433fe23534dd5cd4bbc"
+    },
+    "original_readme_and_archived_readme_equal": true,
+    "original_work_unit": "state/work_units/QIK_SCIENTIFIC_REVISION_PUBLICATION_2026_09_23.json",
+    "original_metadata_and_publish_request_preserved": true,
+    "interpretation": "The pending flags were a pre-publication snapshot that was also deposited unchanged; they are stale current-state projections, not altered primary artifacts."
+  },
+  "governance_boundary": {
+    "historical_open_repair_pr": 392,
+    "historical_review_issue_resolved_by_external_publication": false,
+    "new_zenodo_write_performed": false,
+    "new_publication_authorized_by_this_readback": false,
+    "main_integration_inferred": false,
+    "mirror_equality_inferred": false
+  },
+  "claims": {
+    "two_original_docx_published_and_byte_verified": true,
+    "all_eight_record_files_downloaded_and_checked": true,
+    "docx_integrity_error_observed": false,
+    "pdf_byte_identical_to_docx": false,
+    "new_substantive_pdf_text_revision_observed": false,
+    "peer_reviewed": false,
+    "independent_empirical_confirmation": false,
+    "scientific_consensus": false,
+    "global_effect_ack_done": false
+  }
+}

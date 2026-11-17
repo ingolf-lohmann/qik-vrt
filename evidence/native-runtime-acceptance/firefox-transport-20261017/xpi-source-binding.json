@@ -1,0 +1,41 @@
+{
+  "candidate_head": "aba4eee6d2ea8463920bf13812dcd466ec7705e3",
+  "candidate_tree": "b006136a5d6aa25210715767178860404acd6aa2",
+  "effect_ack_done": false,
+  "signed_candidate_available": false,
+  "signed_production_package": false,
+  "signing_blocker": "MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE",
+  "source_files": [
+    {
+      "git_blob": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+      "path": "browser/firefox/qikvrt-terminal/manifest.json",
+      "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+    },
+    {
+      "git_blob": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+      "path": "browser/firefox/qikvrt-terminal/background.js",
+      "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+    },
+    {
+      "git_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+      "path": "browser/firefox/qikvrt-terminal/content.js",
+      "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+    },
+    {
+      "git_blob": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+      "path": "browser/firefox/qikvrt-terminal/options.html",
+      "sha256": "c74e5eefda9bcf0f39518e05aa613981d3367b84de9f13304a798ef1abcfaf2d"
+    },
+    {
+      "git_blob": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+      "path": "browser/firefox/qikvrt-terminal/options.js",
+      "sha256": "fc1008b5208bd1605c4a5db8d5359322bbc4783277176177757e174f93cfa92d"
+    },
+    {
+      "git_blob": "817d1e58a80422367cb63d49dbb826428d452ee6",
+      "path": "browser/firefox/qikvrt-terminal/terminal.css",
+      "sha256": "53eae4781aeb15135da760c52c5c2a8320f5c3a03e3d85866d500b293de05c87"
+    }
+  ],
+  "xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+}

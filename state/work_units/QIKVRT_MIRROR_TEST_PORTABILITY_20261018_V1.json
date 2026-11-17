@@ -1,0 +1,80 @@
+{
+  "schema": "qikvrt-work-unit/v1",
+  "work_unit_id": "QIKVRT_MIRROR_TEST_PORTABILITY_20261018_V1",
+  "observed_at": "2026-10-18T07:46:05.895010+00:00",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "base_ref": "main",
+    "base_head": "bc93293d623501b7b411f6b3a90f28c2f1fe183e",
+    "base_tree": "277411f183a7d091bc3c1456e14127cc3ea7b249"
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann supplied an external test report; existing repair scope retained.",
+    "artificial_cognitive": "Codex inspected current repository sources, reproduced the unavailable-object test failure, and changed the local test fixture.",
+    "retention": "Non-secret test output and source bindings only."
+  },
+  "scope": "Zenodo finalizer local test fixture portability; production validators and frozen publication files are unchanged.",
+  "reported_results": {
+    "classification": "USER_SUPPLIED_EXTERNAL_REPORT",
+    "passed": 1642,
+    "total": 1645,
+    "exact_report_commit": "UNKNOWN",
+    "not_reexecuted_as_a_full_suite": true
+  },
+  "reproduction": {
+    "source_materialization": "Selected REST source files independently matched to base Git blobs; diagnostic single-snapshot Git repository, not a complete clone or the original Main commit.",
+    "missing_local_historical_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+    "baseline_finalizer": {
+      "tests": 8,
+      "errors": 1,
+      "evidence": "evidence/tests/mirror-portability-20261018/finalizer-before.log"
+    },
+    "native_repository_observation": "The pinned commit is REST-readable in Authority but diverges from Main (1009 commits behind, 1666 ahead); fetching full Main ancestry does not make it an ancestor."
+  },
+  "repair": {
+    "paths": [
+      "tests/test_observer_relative_retrocausality_zenodo_finalizer.py"
+    ],
+    "candidate_file_sha256": "e26179501310072ad8cfa23ccf065512e4805a8f594e69cca4c54cb77c2293f7",
+    "candidate_file_git_blob_sha1": "33b78a28fbffc3b22fbd31125a41b07cb6351b26",
+    "behavior": "Build an independent temporary source/descendant Git history from the exact frozen candidate, original files, and verified publication control contracts. Set fixture-local identity, signing, hooks and line-ending configuration. Require an uncommitted-control rejection and the exact source parent before real final validation.",
+    "test_skip": false,
+    "fallback_to_head": false,
+    "production_gate_changed": false,
+    "historical_control_bytes_changed": false
+  },
+  "verification": {
+    "finalizer": {
+      "tests": 8,
+      "errors": 0,
+      "evidence": "evidence/tests/mirror-portability-20261018/finalizer-signing-enabled.log"
+    },
+    "issue_agent_current_existing_isolation": {
+      "tests": 39,
+      "errors": 0,
+      "evidence": "evidence/tests/mirror-portability-20261018/issue-agent-signing-enabled.log",
+      "test_source_changed": false
+    },
+    "environment": "GIT_CONFIG_GLOBAL points to a task-local file with commit.gpgsign=true and a nonexistent gpg.program; no global user configuration was changed.",
+    "demo": "PASS: CONTINUE, ISOLATE, BLOCK deny release; DONE permits release.",
+    "c90_core": {
+      "checks": 7864387,
+      "status": "PASS"
+    },
+    "tool_cache": "PASS: 34/34 (100%)",
+    "complete_make_test": "NOT_REEXECUTED_LOCALLY; full native candidate validation remains separate."
+  },
+  "boundaries": {
+    "local_subset_is_full_candidate_validation": false,
+    "main_integration": false,
+    "zenodo_effect": false,
+    "deployment_effect": false,
+    "effect_ack_done": false
+  },
+  "delivery_readback": {
+    "hostname": "raumzeitterminal.de",
+    "state": "UNKNOWN",
+    "basis": "No current exact-host GET was authorized or performed in this repository-test work unit. Existing repository acceptance evidence is historical; no delivery status is promoted."
+  },
+  "next_action": "Read back the draft candidate and native full-source CI; do not infer merge or complete gate success from these local subset tests."
+}

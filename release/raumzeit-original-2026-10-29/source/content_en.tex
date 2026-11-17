@@ -1,0 +1,252 @@
+\renewcommand{\langtag}{en}
+\selectlanguage{english}
+\languageversion{English version}
+\papertitle{Emergent Spacetime, Reconstructible Virtuality, and Physical Time}{Quantum mechanics, virtual entropy, and the limits of a universe that can be read backwards}{20 October 2026}
+\begin{abstract}
+A virtual world can preserve its initial state, rules, and inputs in a way that allows earlier states to be restored exactly. The physical world offers no comparable complete access to an observer acting within it. This asymmetry provides a basis for a precise discussion of computation, entropy, quantum mechanics, and time. This article distinguishes deterministic evolution, logical reversibility, epistemic reconstruction, and physical backward influence. It defines virtual entropy relative to an observer and explains why artificial intelligence can change that observer's uncertainty without generating ontic randomness from determinism. Approaches to emergent spacetime raise the further question of whether geometry arises from more fundamental relations. Light cones and uncertainty relations have different roles: the former constrain relativistic reachability, while the latter constrain the simultaneous sharpness of particular quantum observables. The discussion concludes with a testable research programme and a philosophical interpretation of life, finitude, and responsibility. Lohmann's rejection of a completely predetermined physical universe is included as a guiding thesis; an experimental exclusion of all superdeterministic models is not inferred from it.
+\end{abstract}
+\noindent\textbf{Keywords:} emergent spacetime; reversibility; quantum uncertainty; superdeterminism; entropy; artificial intelligence; retrocausality; QIK-VRT.
+
+\section{The starting point: Two ways of going back}\label{en:sec1}
+Loading an earlier saved game restores a stored state of a virtual world. The computer nevertheless performs this operation now. It does not undo the energy already consumed, the lifetime that has elapsed, or the events that have occurred outside the simulation. This everyday example already distinguishes two temporal orders: the addressable history of the model and the physical history of its execution.
+
+Lohmann's guiding idea can be developed from this distinction. Virtual reality may possess an explicitly constructed form of backward accessibility that is unavailable to a living being for its entire physical past. The distinction becomes scientifically productive once the conditions of digital access and the limits of their application to natural processes are specified.
+
+The methodological connection to QIK-VRT begins with a difference, proceeds through a model to a testable consequence, and then requires a return to observation. The existing Round Trip programme provides a conceptual reference for this approach \cite{Q1}. A proof about stored states acquires physical applicability only through a separate, justified correspondence with physical quantities.
+
+\section{Determinism, reversibility, and superdeterminism}\label{en:sec2}
+For a finite or countable digital state space, let evolution be specified by a function F:
+
+\begin{equation}\label{en:eq1}
+x_{t+1}=F(x_t,u_t).
+\end{equation}
+Here \(x_t\) denotes the complete state and \(u_t\) the input at that step. If the rules, initial state, and all relevant inputs are fixed, the evolution is deterministically reproducible within this abstraction. Where relevant, these specifications include the random-number generator state, external responses, and the actual ordering of concurrent operations. A programme by itself does not necessarily fix these quantities.
+
+Reversibility requires more. For a fixed input u, \(F_u\) must be injective: distinct initial states must not lead to the same successor state. Deterministically erasing a bit is a counterexample. Both 0 and 1 are mapped to 0. The earlier value cannot be determined from the result alone.
+
+Lohmann's comparison with assembly and disassembly identifies an important representational level. For a fixed architecture, machine code can often be translated back into a corresponding assembly-language representation. Comments, original symbol names, and other information discarded during assembly do not thereby reappear automatically. Changing representation, recovering an original, and reversing an executed computation are different tasks.
+
+In quantum foundations, the term superdeterminism has a more specific meaning. In particular, it concerns abandoning statistical independence between hidden state variables \(\lambda\) and measurement settings a and b. The corresponding independence assumption is:
+
+\begin{equation}\label{en:eq2}
+P(\lambda\mid a,b)=P(\lambda).
+\end{equation}
+A deterministic simulation does not violate this assumption simply because its rules are fixed. A common controlling mechanism can deliberately introduce such dependencies; the actual distribution must then be examined. The research literature continues to discuss such models as possible approaches \cite{10}. For Lohmann's broader computational idea, this article therefore uses the term complete virtual trajectory specification. This preserves the intended content while allowing an unambiguous dialogue with the Bell literature.
+
+\section{Three elementary statements with explicit assumptions}\label{en:sec3}
+Statement A: Unique backward reconstruction. A deterministic map \(F_u\) has a unique inverse on its image if and only if \(F_u\) is injective. Justification: injectivity assigns exactly one predecessor to each attained result. Without injectivity, at least two predecessors have the same result, and an inverse cannot distinguish them uniquely.
+
+Statement B: Reconstruction through additional history. For each step, one can define the augmented map \(x\mapsto (F_u(x),x)\). It is injective because its second component retains the predecessor. For a finite run, preserving a sufficiently complete history can therefore make restoration possible. Bennett discusses reversible computation, including the costs of retaining and cleaning up history \cite{6}; resource trade-offs are a separate subject \cite{7}. The statement does not imply unlimited free storage.
+
+Statement C: Observer uncertainty despite a uniquely specified microdynamics. Let \(X_t\) be a finite random state and \(Y_t=C(X_t)\) a coarse-grained observation. The conditional Shannon entropy \(H(X_t\mid Y_t)\) measures the uncertainty about the microstate that remains after the observation. Ambiguity arises when several microstates having positive probability correspond to the same observation \cite{8}.
+
+\begin{equation}\label{en:eq3}
+H(X_t\mid Y_t)=-\sum_{x,y}P(x,y)\log_2 P(x\mid y).
+\end{equation}
+Terms with \(P(x,y)=0\) are assigned the value zero; the conditional probability is required only for \(P(y)>0\).
+
+This uncertainty is compatible with deterministic evolution. For example, a fully specified sequence can appear unpredictable to an observer who does not know the relevant initial state. Neither ontic randomness nor a necessary increase of this entropy at every step follows. With a completely specified initial condition, the state distribution can also be concentrated on a single state; its Shannon entropy is then zero.
+
+Statements A to C are elementary mathematical consequences of the stated definitions. They are established here by explicit argument; no machine-checked formal verification is claimed.
+
+\section{Virtual entropy and the role of artificial intelligence}\label{en:sec4}
+For virtual entropy to be more than a metaphor, a state space, a distribution, and an observation rule are required. One possible definition is:
+
+\begin{equation}\label{en:eq4}
+S_{\mathrm{virt}}(t):=k_{\mathrm{virt}}H(X_t\mid M_t).
+\end{equation}
+Here \(M_t\) denotes the observer's currently accessible information and memory state. Earlier observations count only insofar as they remain accessibly stored; forgetting can therefore be represented as well. The factor \(k_{\mathrm{virt}}\) is an explicitly chosen positive scale and is not automatically the Boltzmann constant. The definition describes residual state uncertainty; it does not introduce a new universal law of entropy.
+
+Virtual intelligence is understood here functionally: an artificial agent receives information, constructs or changes a model, selects actions, and processes their consequences. This definition does not presuppose phenomenal consciousness. The agent can obtain additional information, but it can also discard data, group cases together, or reveal only a portion of its internal situation to other agents. It thereby changes what is observable in the system.
+
+In this well-defined sense, artificial intelligence can generate or change virtual entropy. For an observer, a hidden generator state can increase uncertainty about the next action. Forgetting can make previously available distinctions inaccessible. New observations and learning can instead reduce uncertainty. Whether the entire defined quantity increases, decreases, or remains constant must be calculated for the particular model. Simply increasing the number of stored words does not demonstrate an increase in entropy.
+
+A learning deterministic AI remains deterministic as an enlarged system if its parameters, memory, training data, inputs, and all relevant execution conditions are fixed. Self-modification enlarges the description of its rules; it does not logically abolish determinism. A transition from pseudorandomness to physically supplied randomness requires a separate assumption about the source and its predictability.
+
+Virtual entropy must therefore be distinguished from thermodynamic entropy. A server is a physical system. In the usual Landauer setting, isothermally resetting an initially equiprobable, uncorrelated bit to a standard state requires at least the following heat transfer to a reservoir \cite{9,18}:
+
+\begin{equation}\label{en:eq5}
+Q_{\min}\geq k_{\mathrm B}T\ln 2.
+\end{equation}
+The assumptions matter. This is not a fixed minimum heat cost for every logical operation, stored character, or meaningful decision. An intelligent application can improve its virtual organisation while producing entropy in its physical surroundings.
+
+\section{What entropy tells us about physical return}\label{en:sec5}
+For macroscopic natural processes, retaining and controlling all relevant degrees of freedom is practically unattainable. Heat, radiation, and interactions distribute distinctions into the environment. A documented state is a selection; it does not amount to complete possession of all physical conditions.
+
+A statistical explanation of the thermodynamic arrow of time requires a macroscopic description and suitable boundary conditions in addition to dynamics, notably an account of the low entropy of the past \cite{17}. A simple coin model illustrates the counting issue. Ten coins have 1,024 ordered microstates. The macrodescription of exactly five heads corresponds to 252 of them; the description of ten heads corresponds to only one. The multiplicity of a macroclass does not by itself explain dynamics or an arrow of time. Suitable evolution and initial conditions are required before corresponding probability statements can be made.
+
+The inability to reconstruct a macroscopic history completely does not refute deterministic microdynamics. Classical Hamiltonian dynamics can be reversible. The unitary evolution of an isolated quantum system is also mathematically invertible and preserves fine-grained von Neumann entropy. For subsystems, entanglement and disregarding the environment can nevertheless lead to an increase in entropy \cite{16,18}.
+
+Lohmann's strong formulation that superdeterminism does not exist in physical reality is therefore treated as a position in the philosophy of nature: reality should not be equated with a trajectory file that is completely available to an observer within that reality. Its operational core can be stated precisely. The stronger proposition that all deterministic or superdeterministic models of nature are impossible does not follow from it.
+
+\section{Heisenberg: Quantum uncertainty and its scope}\label{en:sec6}
+For position and momentum, standard quantum theory gives the following uncertainty relation for states with finite variances:
+
+\begin{equation}\label{en:eq6}
+\sigma_x\sigma_p\geq\frac{\hbar}{2}.
+\end{equation}
+It concerns the spreads of measurement-outcome distributions in a given state and is not merely a statement about inadequate measuring instruments \cite{2,3}. For the present question, its significance is that the classical ideal of simultaneously arbitrarily sharp canonical quantities no longer provides a general basis for prediction within this theory.
+
+Uncertainty is not, however, a universal correction term that can repair any other theory. On its own, it provides neither a theory of gravitation nor a proof of free will. Its mathematical form specifies a particular relationship between observables. Further conclusions require additional dynamics and additional justified assumptions.
+
+\section{The light cone: Scope, information content, and deeper open questions}\label{en:sec7}
+A local light cone characterises the boundary between timelike, lightlike, and spacelike directions in a Lorentzian geometry. In the flat case, a lightlike separation satisfies:
+
+\begin{equation}\label{en:eq7}
+0=ds^2=-c^2\,dt^2+dx^2+dy^2+dz^2.
+\end{equation}
+General relativity makes geometry dynamical \cite{1}. In curved spacetimes, the global question of which events can reach one another requires the full geometry and its time orientation in addition to the local cone structure.
+
+Spatial return and reversal in time are different as well. Someone returning to a starting location ordinarily reaches it along a new, future-directed worldline. The same spatial address then denotes a different spacetime event. Reversing the sign of a spatial coordinate is neither a reversal of proper time nor an undoing of the effects that have occurred in the meantime.
+
+A light cone does not provide a complete description of the quantum state, its entanglement, the matter fields, or an observer's knowledge. In this sense it is incomplete as a description of all reality. This does not imply that its relativistic causal boundary has already been refuted. Newtonian gravitation is a limiting case of a more comprehensive theory; the possible embedding of relativistic spacetime in quantum gravity is a further relationship that remains to be developed. The two kinds of incompleteness are not automatically the same mathematical finding.
+
+A substantive connection to Heisenberg is possible. Within a relativistically described world, quantum systems must be described in terms of states and noncommuting observables. A theory of uncertain or quantised geometry additionally requires specific geometrical observables and their dynamics. The relation \(\sigma_x\sigma_p\geq\hbar/2\) alone does not determine any particular new light cone.
+
+\section{Emergent spacetime: From relations to geometry}\label{en:sec8}
+Emergence here means that a spacetime description arises from more fundamental structures only at a particular descriptive level. A crystal provides a limited analogy: its macroscopic properties arise from microscopic relations. The analogy does not replace a theory of spacetime.
+
+Two research directions give concrete content to this idea. Causal sets take a locally finite order of events as a basic structure \cite{14}. Holographic approaches connect entanglement quantities with geometrical areas in specific theoretical settings \cite{12}. Van Raamsdonk investigates how spacetime connectedness may be related to entanglement \cite{13}. These different programmes do not establish an identification of every kind of information with spacetime.
+
+A scientifically grounded reconstruction must reproduce, in particular, dimensionality, Lorentzian behaviour, suitable dynamics, and observed limiting cases. No-signalling is insufficient to determine its quantum statistics: it constrains controllable remote influence but does not specify all quantum correlations. Reproducing Born probabilities and the quantum bounds on correlations remains an additional task.
+
+In such a programme, pre-spatiotemporal denotes explanatory dependence. A temporal before can be asserted only if the model already supplies an appropriately defined notion of time at that level. The same principle applies to virtual worlds: a computation index becomes measured time only through a justified correspondence.
+
+\section{Schrödinger's cat and the question of an outcome}\label{en:sec9}
+Schrödinger's thought experiment exposes a difficulty in the transition from quantum coupling to a macroscopically described outcome \cite{4}. An idealised state description correlates the alternatives of a microscopic trigger with alternatives of the apparatus and the cat.
+
+Decoherence explains how interaction with the environment can make interference between macroscopic alternatives locally inaccessible and favour robust classical records \cite{5}. This does not, in every interpretation, settle why exactly one individual outcome is experienced \cite{16}. For the following argument, it is sufficient to distinguish the state description, the accessible record, and the experienced event.
+
+Taking the cat out of Pandora's box then means explicitly investigating the connection between quantum state, stable record, and individual outcome. This leads to a precise question concerning life and memory. A description of biological organisation can preserve knowledge about a living being; actually restoring that organisation requires a process that must be demonstrated separately.
+
+\section{Causality, reconstruction, and retrocausality}\label{en:sec10}
+Four processes deserve separate names. First, a present finding can be used to reconstruct an earlier cause. Second, a calculation can be solved backwards from specified boundary conditions. Third, future goals represented in the present can influence present action. Fourth, a physical signal into one's own causal past would be a distinct and substantially stronger effect.
+
+The first three processes do not establish the fourth. In the case of a goal, its present representation has an effect. In reconstruction, present knowledge changes. In a backwards calculation, the physical computation still proceeds forwards.
+
+A temporal ordering alone does not establish a cause. A scientifically grounded causal analysis asks through which mechanism and under which conditions the asserted difference arises. Depending on the subject, controlled interventions, appropriate comparisons, or independently examined dynamics can provide evidence.
+
+Retrocausal quantum models investigate functional dependencies on later measurement conditions within a description of an entire spacetime process \cite{15}. Such a model relationship is not automatically a controllable communication channel into the past. Nor does a descending source order relative to the order of reception demonstrate reception before emission. Any claimed backward influence requires controllable inputs, records, and alternative explanations to be specified.
+
+An effect-acknowledgement procedure is methodologically useful here. A claimed effect requires a specified subject, an explicitly expected state transition, and an observation that can be checked separately. This conceptual framework does not replace a law of nature, but it prevents a calculated possibility from being confused with an effect that has occurred.
+
+\section{Life, death, freedom, and meaning}\label{en:sec11}
+For the present discussion, life can be described as the ongoing maintenance of a functioning, open organisation. Exchanges of energy and matter enable local order. A heated feedback-controlled system provides a simplified thought model: stability of its internal state does not imply energetic closure. Living beings additionally involve far more complex self-regulation, repair, development, and environmental relationships.
+
+Biological death concerns the loss of viable organisation. A file can preserve information about a person. Whether a sufficiently accurate copy would preserve that person's subjective continuity follows neither from file identity nor from a proof of reversibility. In the absence of independently testable statements, questions about an afterlife remain metaphysically open.
+
+Rejecting complete predetermination can motivate a philosophical understanding of freedom. The physical lines of inference nevertheless remain distinct: unpredictability is not free will, randomness is not authorship, and acting for reasons requires more than mere randomness. Bell experiments constrain classes of models under their respective assumptions \cite{11}; they do not prove a comprehensive theory of human freedom.
+
+Meaning, finally, concerns relationships to goals, experience, values, and other people. A law of nature can describe the conditions of action without by itself yielding an obligation. The finitude of possibilities makes decisions consequential. The responsibility articulated on this basis is a defensible philosophical consequence, not an additional term in an equation of motion.
+
+\section{A testable programme for further work}\label{en:sec12}
+The discussion yields five independent tasks for investigation. First, a digital demonstration must specify its complete state and inputs; replay and backward reconstruction must be tested separately. An erasure step must exhibit the limit of backward reconstruction, while a retained history must enable restoration.
+
+Second, every claim about virtual entropy requires an explicit distribution and observer boundary. An experiment can examine the same deterministic run once with the generator state disclosed and once with it hidden. What must be examined are the resulting conditional probabilities; subjective surprise alone is insufficient. Learning and forgetting each require their own comparison conditions.
+
+Third, spacetime reconstruction must provide quantitative results within a specified model. In particular, it requires relativistic limiting cases, dynamics, and quantum correlations specified more fully than by no-signalling alone. A visualisation or suitable terminology does not replace these derivations.
+
+Fourth, any claimed physical retrocausality must demonstrate a controlled effect that cannot be explained by memory access, postselection, delayed reception, common causes, or incomplete time recording. Backward dependence within a model and freely controllable communication into the past remain separate experimental targets.
+
+Fifth, statements about the persistence or restoration of a living being require an independent biological or subject-related criterion. Neither a hash nor a copied dataset can satisfy such a criterion merely by being given its name.
+
+\section{Concluding perspective}\label{en:sec13}
+The substantive connection between these topics lies in asking which differences are retained, observable, and causally effective. Virtual systems can explicitly preserve history, making return possible as a present operation. Physical observers instead encounter limited access, thermodynamic conditions, and quantum structure. Artificial intelligence changes accessible information and hence virtual uncertainty; it does not abolish the conditions of its physical implementation. Emergent spacetime would provide a deeper explanation of these conditions and must recover their established results.
+
+Lohmann's guiding thesis thus acquires a form that can be discussed: a reconstructible description of a world and the unique course of living within that world are different objects of inquiry. Their connection is established through precise concepts, testable transitions, and the willingness to perform discriminating experiments. Where a statement passes that examination, a connection has been established. Where it goes beyond it, the next research question begins.
+
+\section*{Contribution and tool use}
+The conception and guiding questions originate with Ingolf Lohmann. ChatGPT was used for research support, drafting, mathematical exposition, English translation, and technical editing. The mathematical statements are derived by explicit argument from the stated assumptions; neither machine-checked formal verification nor new empirical confirmation is claimed. The definition of virtual entropy is an explicit modelling choice. Established formalism, open physical hypotheses, and positions in the philosophy of nature remain distinguished.
+\clearpage
+\appendix
+\renewcommand{\theHsection}{\langtag.appendix.\Alph{section}}
+\section{The Cat, the Computer, and the Arrow of Time}
+\label{en:essay}
+\noindent\emph{Why a saved world can return while our lives continue}\par\smallskip
+\noindent\textit{A companion essay for a general audience.}\par\medskip
+Imagine someone sitting at a computer. A world opens on the screen. Clouds gather, a house is built, and a character makes a decision. Then something goes wrong. The person loads an earlier saved game. The house is standing again. The clouds disappear. The decision can turn out differently.
+
+On the screen, the past has returned. In the room, time has continued to pass.
+
+This small difference leads straight to a large question. What does it mean to understand a world? Does it mean being able to read its history? To calculate its future? Or to bring it back in reality?
+
+Ingolf Lohmann starts at precisely this point. His guiding idea is that a virtual world can be bound in a particular way to its rules, states, and stored trajectories. If everything required is retained, its evolution can be repeated. Sometimes it can even be retraced step by step. We have no comparable complete saved game for our lives.
+
+Not every computer programme, however, can be read backwards. If a programme replaces a number with zero and does not preserve the earlier value anywhere, the result does not help us recover it. The zero does not reveal which number was there before. We need a memory. A log. A copy. Some surviving trace of the difference.
+
+This gives the idea its precise form. Repetition needs the right conditions. Return needs the necessary information. The result alone cannot reveal what was lost during an operation.
+
+In nature, we encounter this problem on another scale. A cup falls to the floor. We see the fragments. Perhaps we can work out where it stood and how it fell. But that has not yet put the cup back into our hand. The impact transferred sound, heat, and motion into the surroundings. The event left more traces than our eyes can take in.
+
+This is where entropy enters the discussion. It is often described as disorder. That is intuitive, but it does not go far enough. For our purposes, a more useful question is: how many different detailed states fit what we can recognise overall? And which distinctions can we still distinguish?
+
+If all we know is that five out of ten coins on a table are heads up, we do not yet know their exact arrangement. Many arrangements fit the same description. A detailed description tells us more than a coarse one. This example does not explain an entire arrow of time. It does show why knowing something about the whole does not automatically mean knowing every detail.
+
+Many everyday processes are accessible to us in only some of their details. A memory preserves something. It does not preserve everything. A photograph shows a moment. It does not contain the complete physical world of that moment. Even a very good model must specify which differences it retains and which it groups together.
+
+It would now be too simple to say that, because we cannot bring something back, nature must be fundamentally without fixed rules. That does not follow. A process can follow rules and still be unpredictable to us. We may know too little, measure too little, or have too little time to calculate. The limit of our access is not yet a complete answer to what nature is like at its deepest descriptive level.
+
+Quantum mechanics changes this question further. Werner Heisenberg showed that certain quantities of a quantum system cannot both be arbitrarily sharp. For position and momentum, this means more than the inaccuracy of a poor measuring instrument. Standard quantum theory describes states whose possible measurement outcomes have a particular limitation on their sharpness.
+
+This challenges the familiar picture in which every particle could always be described as a tiny billiard ball with simultaneously arbitrarily precise position and momentum. We need another language of states, possibilities, and measurements.
+
+The scope of this result becomes clearer when we distinguish different questions. The limited sharpness of a quantum state, a possible message to yesterday, and freedom of decision each require an explanation of their own. A decision made by throwing dice would be random. That would not yet make it our considered decision.
+
+Lohmann connects the rejection of a completely predetermined life with a philosophical position on freedom. That position can be defended. For scientific discussion, we must also know that the word superdeterminism has a specific meaning in quantum physics. There, the issue is whether the chosen measurement settings and hidden properties of the system under study are statistically independent. This differs from asking whether a stored computer run can be repeated.
+
+The understandable idea of an open life must therefore not be presented as an already completed proof that every corresponding model of nature has been excluded. The central thought remains: our life is not given to us as a completely available file. We act in a world whose coming experiences are not fully in our possession.
+
+Now Schrödinger's cat appears. It sits in an imagined box and is coupled to a microscopic event. Schrödinger wanted to expose the difficulty of extending a quantum description into our everyday world. How do we get from entangled possibilities to a particular observed outcome?
+
+Present-day physics can explain much about how a quantum system interacts with its environment and why some superpositions do not appear as visible interference in everyday life. The term for this process is decoherence. But not every question about a single experienced outcome is thereby settled in every interpretation.
+
+Taking the cat out of Pandora's box therefore means examining the connection between possibility, measurement, and experienced reality. How does a stable record arise? How do we explain a particular outcome? And how does that explanation relate to our experience? The thought experiment connects these questions without erasing their differences. That is precisely what makes it interesting.
+
+From here we turn to space. We ordinarily imagine it as a ready-made stage. Things stand within it, while time runs alongside it. Relativity changed this picture. Space and time belong together. Gravitation is connected with the geometry of this spacetime.
+
+Some research approaches go further and ask whether this stage, too, might arise from deeper relationships. Perhaps space would not be the first thing within which relationships arise. Perhaps a spatial description would emerge only from a more fundamental structure of relationships. This is the idea of emergent spacetime.
+
+There are concrete mathematical approaches to this question. Some begin with an ordering of possible influences between events. Others investigate relationships between quantum entanglement and geometry. They are serious paths of research. They do not yet provide a complete answer to how our entire world comes about.
+
+The word before also takes on a new challenge here. If we want to explain how time arises, we cannot simply place an already existing clock before it. Before spacetime can mean a dependence within an explanation. Whether there is also a temporal before must first be made clear by the theory concerned.
+
+And the light cone? It describes which directions and connections are possible in relativistic spacetime for light and slower influences. It therefore supplies a crucial boundary. It does not, however, tell the entire story of what happens within that world.
+
+A light cone alone does not tell us which quantum state is present, what a person knows, or which memories a machine preserves. It is therefore insufficient as a complete description of all reality. This does not yet imply that its relativistic boundary has been abolished. A deeper theory would have to explain why that boundary works in situations where it has been successful, and whether it must change under precisely specified conditions.
+
+Heisenberg's uncertainty can be part of this task. It does not replace the theory that is needed. An open connection acquires scientific strength when we can say what, more precisely, it predicts and how we could recognise it.
+
+We can now also understand spatial return more precisely. Someone returning to a familiar place may find the same address and the same house. But they arrive at a later time. They bring new memories, and something has happened there in the meantime as well. The same place is not yet the same moment.
+
+Now we return to the computer. What happens if an artificial intelligence lives, learns, and acts within its virtual world? It builds models, makes a selection, and changes its state. For other participants, this can produce something new that they could not predict.
+
+Such an intelligence can gather information. It can also forget. It can build a simplified picture from many individual details. And it can tell others only part of what it has processed internally. In this way, it changes what remains recognisable and predictable within the virtual world.
+
+In this sense, we can speak of virtual entropy. We must always add: uncertainty about what, and for whom? Someone who knows the hidden initial state may be able to predict an evolution exactly. Someone who does not know it sees several possible continuations. Learning can reduce that uncertainty. Forgetting can increase it. Both belong to the same relationship.
+
+The decisive mechanism here lies in a participant's limited information. Greater complexity alone does not make a deterministic computer a demonstrated source of genuine randomness. But it can produce a world in which a limited participant does not know everything. Complete specification from an outside perspective and surprise from an inside perspective can coexist.
+
+At the same time, the virtual world remains physically implemented. Its computer consumes energy. When it loads a saved game, the world outside the screen must perform that operation. Going back digitally is a new physical now.
+
+This also makes it easier to discuss retrocausality. If we infer an earlier step from a footprint, we learn something about yesterday today. If we solve a calculation backwards, we calculate an earlier state today. If we plan for tomorrow, our present thought about tomorrow affects our present action.
+
+These processes matter. They do not yet mean that tomorrow has sent a message to yesterday. Some models in quantum physics incorporate later conditions into the description of an entire process. Whether, and in what sense, this is backward causation must be explained within the model. A freely usable letterbox into one's own past has not thereby been demonstrated.
+
+The crucial distinction is between a new description and a new effect. I can correct my memory. I can understand an old recording differently. What changes directly is my present knowledge. Changing the past event itself would require an entirely different demonstration.
+
+What follows for life and death? First, something quite concrete. Life is not a frozen picture. A living being must continually maintain its organisation. It takes things in, gives things out, regulates, repairs, and responds. The order of its body is connected with a continuing exchange.
+
+If that viable organisation has been irretrievably lost, an image alone is insufficient to restore it. A voice in a recording can move us. A picture can bring an encounter vividly to mind. This is a real persistence of traces and relationships. Whether the same subjective experience would persist beyond that is not answered by the recording.
+
+A possible afterlife likewise cannot be read directly from an equation, a stored memory, or the cat in its box. Anyone wishing to make a physical claim about it must say what the claim means and how it could be recognised. Someone reflecting on it philosophically or religiously is addressing a differently grounded question.
+
+And meaning? Perhaps it arises where a possibility becomes an action that means something to someone. An equation describes conditions. Which goals we pursue, what we owe one another, and which suffering we want to prevent additionally require human judgement.
+
+Precisely because our lives have no freely available reset button, our decisions carry weight. An apology can change a relationship without erasing what happened. A repair can enable something new without undoing the damage that occurred. Memory and learning thereby become connections between a world that has been and a future still to be shaped.
+
+Here lies the common question behind the cat, the computer, and spacetime. Which differences are preserved? Which can we recognise? Which can we still change? And when has an imagined possibility actually become an effect?
+
+A virtual world can store its history so that it can be entered again. Our physical lives carry out their recollections, corrections, and hopes in a new present each time. We can understand the past and prepare for the future. Both call upon us today.
+
+The person at the computer loads the saved game once again. On the screen, the scene starts over. In the room, the person looks up. The clock has moved on. They now know something they did not know before. And their next decision is made now.
+

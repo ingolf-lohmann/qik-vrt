@@ -1,0 +1,27 @@
+{
+  "schema":"qikvrt_roadmap_forecast_delta_memory_v1",
+  "date":"2026-10-03",
+  "subject_main":"8704969da54ed9c0ad08d4540ea89aee15d85ae2",
+  "subject_tree":"6969b7ae162447c12d2f7c3429c4d4521b00c33d",
+  "repository_file_count":3928,
+  "measurement":{
+    "algorithmic_microbenchmark":"PASS",
+    "live_repository_delta_reduction":"PASS",
+    "live_distributed_authority_mirror_speedup":"HOLD_AUTHORITY_READBACK_UNAVAILABLE",
+    "median_changed_files_recent_frontier":20,
+    "median_structural_comparison_reduction":0.99490835,
+    "median_fullscan_to_delta_ratio":196.4
+  },
+  "milestones":[
+    {"id":"authority_readback","window":"1-3 days after authorized carrier is available","status":"CONDITIONAL"},
+    {"id":"live_distributed_ab","window":"same day to 1 day after authority readback works","status":"CONDITIONAL"},
+    {"id":"windows11_amd64_product_witness","window":"1-2 days if native product carrier is available","status":"CONDITIONAL"},
+    {"id":"persistence_variance","window":"1-4 days","status":"MEASUREMENT_REQUIRED"},
+    {"id":"functional_consciousness_candidate","window":"1-3 days after workflow admission and exact-head gates","status":"CONDITIONAL"},
+    {"id":"zenodo_publication","window":"1-3 days after exact candidate/proof/authorization closure","status":"CONDITIONAL"},
+    {"id":"ietf_epistemic_status_00","window":"days after render validation and author submission decision","status":"CONDITIONAL"},
+    {"id":"wikipedia","window":"not repository-forecastable","status":"EXTERNAL_NOTABILITY_DEPENDENCY"},
+    {"id":"meta_transistor_physical_effect_ack","window":"not software-calendar-derivable","status":"PHYSICAL_CARRIER_DEPENDENCY"}
+  ],
+  "boundary":"Delta-memory acceleration is currently evidenced for algorithmic and repository-structural reconciliation, not for external, physical, moderation, credential, or authorization critical paths."
+}

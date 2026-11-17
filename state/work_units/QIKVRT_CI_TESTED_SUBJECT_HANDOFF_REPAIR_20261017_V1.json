@@ -1,0 +1,138 @@
+{
+  "schema": "qikvrt_causal_repair_work_unit_v1",
+  "id": "QIKVRT_CI_TESTED_SUBJECT_HANDOFF_REPAIR_20261017_V1",
+  "observed_at": "2026-10-17T07:48:04.027885+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 523,
+  "ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "predecessor": {
+    "head": "bea2cf87b8970d7b02dc9d3407e15aacb4311493",
+    "tree": "bbc6940ca3e066035b27285605dfbd21bcedebfc",
+    "run": 39012514897,
+    "event": "pull_request",
+    "actor": "github-actions[bot]",
+    "conclusion": "action_required",
+    "jobs": []
+  },
+  "observed_causal_chain": [
+    {
+      "observation": "Admitted existing PR test writer created the integrity-only successor.",
+      "source_run": 39012064856,
+      "source_job": 117336513937,
+      "successor_head": "bea2cf87b8970d7b02dc9d3407e15aacb4311493",
+      "successor_tree": "bbc6940ca3e066035b27285605dfbd21bcedebfc",
+      "terminal": "PASS mode=tested-fixpoint",
+      "scope": "Only that native test job, not its workflow or successor checks."
+    },
+    {
+      "observation": "Independent offline jobs still checked out the literal predecessor event SHA and failed integrity before browser execution.",
+      "source_run": 39012064856,
+      "jobs": [
+        117336514167,
+        117336514239
+      ],
+      "source_head": "dda541141e8e5b08ffe9d8ddc53bfbcb936e6564"
+    },
+    {
+      "observation": "GITHUB_TOKEN PR synchronize creates approval-required workflow runs; push does not create new runs.",
+      "provider_source": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow",
+      "classification": "DOCUMENTED_PROVIDER_BEHAVIOR_NOT_CONFIGURATION_DEFECT"
+    }
+  ],
+  "repair": {
+    "mechanism": "Reuse the admitted CI writer and its existing terminal gate; publish accepted committed HEAD/TREE only after that gate, bind dependent offline and container source checks to both identities.",
+    "rejects": [
+      "dirty tracked worktree",
+      "non-integrity successor change",
+      "unrelated ancestry",
+      "remote target drift",
+      "non-writer checkout differs from event",
+      "unknown writer scope"
+    ],
+    "new_trigger": false,
+    "new_executor": false,
+    "new_permissions": false,
+    "credential_delivery_changed": false,
+    "native_approval_bypassed": false,
+    "independent_review_bypassed": false,
+    "status_synthesized": false,
+    "source_bindings": [
+      {
+        "path": ".github/workflows/qikvrt_ci.yml",
+        "bytes": 97778,
+        "sha256": "b71fd4481d815b793667d926efdb7619fe1ff90e3c277b3fad8869ee9a037f86",
+        "git_blob": "098d1625f446cdc481cb86805e398512ff874a6a"
+      },
+      {
+        "path": "tests/test_effect_ack_release_workflows.py",
+        "bytes": 33175,
+        "sha256": "90e797472ff9bc914ee247fd8696ca80fcd743a0c79d449d431cd7a2f30627f3",
+        "git_blob": "5ead254aecba715c019eea99cedbb122bd3a882d"
+      },
+      {
+        "path": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+        "bytes": 14123,
+        "sha256": "600ce1cb91160b0aa57dbce3d4b5965082637f45d54975e84ec1a81b30673e10",
+        "git_blob": "0c0636ab0ea9338df0dc67be1c83905b0423d017"
+      }
+    ]
+  },
+  "local_tests": {
+    "targeted": {
+      "tests": 127,
+      "state": "PASS",
+      "modules": [
+        "test_effect_ack_release_workflows",
+        "test_qikvrt_self_heal_pr_materializer",
+        "test_qikvrt_workflow_executor_mesh_contract",
+        "test_integrity"
+      ]
+    },
+    "original_workflow_rejected": {
+      "cases": 5,
+      "state": "PREDECESSOR_REJECTED",
+      "limitation": "The predecessor lacks the accepted-subject handoff. No native platform approval was tested by these fixture cases."
+    },
+    "tool_cache": "PASS 34/34"
+  },
+  "native_successor_execution": "PENDING_AT_SOURCE_COMMIT",
+  "delivery": {
+    "hostname": "raumzeitterminal.de",
+    "observed_at": "2026-10-17T07:47:32.106Z",
+    "http_status": 525,
+    "snapshot_id": "a437002c-604a-4b7d-9e00-5ae3f4f2b342",
+    "snapshot_sha256": "f2762e4992ed4c7f0cfcdbcdc05c32b363be5a79d7eb34eb148d73b431f2ee1f",
+    "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=a437002c-604a-4b7d-9e00-5ae3f4f2b342",
+    "product_acceptance": false
+  },
+  "open_work": [
+    {
+      "id": "NATIVE_SUCCESSOR_JOBS",
+      "next_action": "Read the new source commit native test output and both browser results; no predecessor PASS transfer."
+    },
+    {
+      "id": "INITIAL_WORKFLOW_ADMISSION",
+      "next_action": "Use the existing authorized initial-approval REST operation only when callable; current connector exposes GET and reruns but no initial approval or dispatch. Do not substitute rerun or synthetic trigger."
+    },
+    {
+      "id": "PROTECTED_MAIN_AND_INDEPENDENT_REVIEW",
+      "next_action": "Reobserve native Main protection and an independent exact-head APPROVED review before governed promotion."
+    },
+    {
+      "id": "PUBLICATION_PATHS",
+      "next_action": "Resume existing Zenodo/IETF consumers only after their exact-source authorization, proof, credentials, native admission and readback prerequisites are established."
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "next_action": "Accept the bound application on raumzeitterminal.de after authorized origin/TLS repair."
+    }
+  ],
+  "provenance": {
+    "human": "Ingolf Lohmann: product goal, standing repair authorization and effect boundaries.",
+    "artificial": "OpenAI Codex: REST diagnosis, implementation and fixture verification.",
+    "joint": "Human requirements translated into the bounded CI subject handoff.",
+    "unresolved_origin": []
+  },
+  "EFFECT_ACK_DONE": false,
+  "ordinary_release": false
+}

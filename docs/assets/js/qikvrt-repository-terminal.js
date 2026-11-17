@@ -4,18 +4,20 @@
 (function () {
   "use strict";
 
+  const NODE_SOURCE = document.documentElement.dataset.qikvrtSource === "node";
+
   const REPOSITORIES = Object.freeze({
     authority: Object.freeze({
-      label: "Authority",
-      name: "Goldkelch/qik-vrt",
-      branch: "main",
-      endpoint: "https://api.github.com/repos/Goldkelch/qik-vrt",
-    }),
-    mirror: Object.freeze({
-      label: "Mirror",
+      label: "Authority (OWNER_ROLE_ASSIGNMENT; native activation unverified)",
       name: "ingolf-lohmann/qik-vrt",
       branch: "main",
       endpoint: "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
+    }),
+    mirror: Object.freeze({
+      label: "Mirror (OWNER_ROLE_ASSIGNMENT; native activation unverified)",
+      name: "Goldkelch/qik-vrt",
+      branch: "main",
+      endpoint: "https://api.github.com/repos/Goldkelch/qik-vrt",
     }),
   });
 
@@ -51,7 +53,7 @@
       speechStopped: "Vorlesen beendet.",
       asrPrefix: "ASR_DRAFT — nicht verifiziert, nicht gespeichert, vor dem Ausführen prüfen:\n",
       fetchFailure: "Öffentliche Quelle konnte nicht gelesen werden. Netzwerk-, Browser- oder Ratenlimitfehler bleiben CONTINUE und sind kein Evidenzurteil.",
-      publicationFailure: "Der lokale Publikationsindex konnte nicht gelesen werden. Das ist CONTINUE; verwende den direkten Publikationslink als Alternative.",
+      publicationFailure: "Der öffentliche Publikationsindex konnte nicht gelesen werden. Das ist CONTINUE; verwende den direkten Publikationslink als Alternative.",
       help: [
         "Erlaubte Befehle:",
         "  help",
@@ -87,7 +89,7 @@
       speechStopped: "Reading stopped.",
       asrPrefix: "ASR_DRAFT — unverified, not stored, review before running:\n",
       fetchFailure: "The public source could not be read. Network, browser, or rate-limit failures remain CONTINUE and are not an evidence judgment.",
-      publicationFailure: "The local publication index could not be read. This is CONTINUE; use the direct publication link as an alternative.",
+      publicationFailure: "The public publication index could not be read. This is CONTINUE; use the direct publication link as an alternative.",
       help: [
         "Allowed commands:",
         "  help",
@@ -200,13 +202,16 @@
   }
 
   async function publicGet(repository, path) {
-    const response = await fetch(`${repository.endpoint}${path}`, {
+    const endpoint = NODE_SOURCE
+      ? `/api/repository?repository=${encodeURIComponent(repository.name)}&path=${encodeURIComponent(path)}`
+      : `${repository.endpoint}${path}`;
+    const response = await fetch(endpoint, {
       method: "GET",
       credentials: "omit",
       headers: { Accept: "application/vnd.github+json" },
     });
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      throw new Error(`HTTP ${response.status} — GET ${endpoint}`);
     }
     return response.json();
   }
@@ -256,7 +261,7 @@
       const output = [
         `Repository: ${repository.name}`,
         `Role: ${repository.label}`,
-        `Ref: ${repository.branch}`,
+        `Ref: ${NODE_SOURCE ? "immutable packaged source" : repository.branch}`,
         `Commit: ${commit.sha || "UNAVAILABLE"}`,
         `Tree: ${tree}`,
         `Visibility: ${metadata.visibility || "UNAVAILABLE"}`,
@@ -292,6 +297,7 @@
       const completion = parsed.completion_claims || {};
       const output = [
         `Repository: ${repository.name}`,
+        `Role: ${repository.label}`,
         `Disclosure path: ${path}`,
         `Schema: ${parsed.schema || "UNAVAILABLE"}`,
         `State: ${parsed.state || "UNAVAILABLE"}`,
@@ -321,7 +327,8 @@
       const text = decodeContent(payload.content);
       const output = [
         `Repository: ${repository.name}`,
-        `Ref: ${repository.branch}`,
+        `Role: ${repository.label}`,
+        `Ref: ${NODE_SOURCE ? "immutable packaged source" : repository.branch}`,
         `Path: ${source.path}`,
         `Blob: ${payload.sha || "UNAVAILABLE"}`,
         "",
@@ -336,17 +343,11 @@
   }
 
   async function showPublications() {
-    setConnectionState("LOCAL_READ_PENDING");
+    setConnectionState("PUBLIC_READ_PENDING");
     try {
-      const response = await fetch("../publications/index.json", {
-        method: "GET",
-        credentials: "omit",
-        headers: { Accept: "application/json" },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-      const index = await response.json();
+      const repository = currentRepository();
+      const payload = await publicGet(repository, `/contents/docs/publications/index.json?ref=${repository.branch}`);
+      const index = JSON.parse(decodeContent(payload.content));
       const items = Array.isArray(index.publication_bundles)
         ? index.publication_bundles
         : Array.isArray(index.items)
@@ -355,9 +356,11 @@
             ? index.publications
             : [];
       const lines = [
+        `Repository: ${repository.name}`,
+        `Role: ${repository.label}`,
         "Source: docs/publications/index.json",
         `Entries: ${items.length}`,
-        "Read mode: SAME_ORIGIN_GET_ONLY",
+        "Read mode: PUBLIC_GET_ONLY",
         "",
       ];
       items.slice(0, 12).forEach(function (item, indexPosition) {
@@ -368,8 +371,8 @@
       if (items.length > 12) {
         lines.push(`\n[… ${items.length - 12} further entries remain in the full index …]`);
       }
-      appendEntry("evidence", message("evidence"), lines.join("\n"), "../publications/");
-      setConnectionState("LOCAL_READ_COMPLETE");
+      appendEntry("evidence", message("evidence"), lines.join("\n"), publicUrl(repository, "docs/publications/index.json"));
+      setConnectionState("PUBLIC_READ_COMPLETE");
     } catch (error) {
       appendEntry("continue", message("continue"), `${message("publicationFailure")}\n${String(error.message || error)}`);
       setConnectionState("CONTINUE");

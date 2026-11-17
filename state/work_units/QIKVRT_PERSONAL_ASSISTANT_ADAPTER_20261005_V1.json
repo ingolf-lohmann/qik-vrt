@@ -1,0 +1,283 @@
+{
+  "artificial_cognitive_actor": {
+    "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "contributions": [
+      "Exact-head bounded inventory and existing component reuse.",
+      "Opt-in server-memory authenticated API adapter, shared Firefox surface and durable normal conversation/checkpoint persistence.",
+      "Capability and ordinary comparator implementation bindings; fail-closed technical tests and full local repository gates.",
+      "New unexecuted preparation, provenance and exact causal blocker evidence."
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex"
+  },
+  "blockers": [
+    "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED",
+    "BASELINE_RUNTIME_AND_NORMAL_RETENTION_READBACK_NOT_BOUND",
+    "EQUIVALENT_REAL_PRE_RUNS_NOT_OBSERVED",
+    "PRODUCT_INTERRUPTION_AND_ORACLE_ISOLATION_NOT_BOUND",
+    "FIREFOX_EXECUTABLE_UNAVAILABLE"
+  ],
+  "capability_state": {
+    "actual_model_authentication_observed": false,
+    "adapter_source_materialized": true,
+    "firefox_execution_observed": false,
+    "normal_baseline_runtime_retention_readback": false,
+    "normal_baseline_source_materialized": true,
+    "personal_manifest_materialized": true
+  },
+  "completion_claims": {
+    "authority_mirror_equality": false,
+    "personal_release_effect_ack_done": false,
+    "product_benefit_proven": false,
+    "repository_wide_done": false
+  },
+  "containing_commit_binding": "Containing commit/tree and canonical integrity bind this record and final metadata; no impossible self-hash or predecessor test transfer.",
+  "created_at": "2026-10-05T13:08:54Z",
+  "external_effects": {
+    "deployment": "NOT_EXECUTED",
+    "gmail": "NOT_EXECUTED",
+    "ietf": "NOT_EXECUTED",
+    "merge": "NOT_EXECUTED",
+    "openai_inference": "NOT_EXECUTED",
+    "release": "NOT_EXECUTED",
+    "repository_draft_branch": "PREPARED",
+    "zenodo": "NOT_EXECUTED"
+  },
+  "first_causal_blocker": "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED",
+  "git_branch": "work/browser-assistant-ab-20261005",
+  "human_actor": {
+    "contribution_class": "HUMAN",
+    "contributions": [
+      "Authorized the first real component of PR #462; reuse an existing authenticated Personal path, manifest and normal baseline before implementing.",
+      "Required the smallest executable adapter within the existing Firefox/terminal path if absent.",
+      "Required preservation of ordinary baseline persistence and real preflight before all 24 trials; prohibited synthetic product metrics or benefit claims."
+    ],
+    "name": "Ingolf Lohmann"
+  },
+  "human_candidate_acceptance": "PENDING_REVIEW",
+  "input_bindings": [
+    {
+      "bytes": 18241,
+      "git_blob_sha1": "702a1e006a1aeed035b504d3a19416d6740844c2",
+      "path": "AI",
+      "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe"
+    },
+    {
+      "bytes": 11787,
+      "git_blob_sha1": "c69587b566beeb13a4302ee9950962a3cc227583",
+      "path": "AI_CONTEXT.json",
+      "sha256": "7e9b8f6e831a1061bf570c1c57b175f10f05fb918e1d4f8831e210724be42991"
+    },
+    {
+      "bytes": 8200,
+      "git_blob_sha1": "cd83fda1160afb41973c538d52d81da928131671",
+      "path": "AGENTS.md",
+      "sha256": "bfc8ef292f4b72eab2923b1fd18de45303bdc81ac1ac66dc6fcb258f918fcc2e"
+    },
+    {
+      "bytes": 2273,
+      "git_blob_sha1": "9f42c5900df2385efda38e8c01418a25988a8ea8",
+      "path": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "sha256": "20bb534639db5013276381e9d4635a2eed9f65defbb5dacfe1513b8b26ac80c7"
+    }
+  ],
+  "input_retention": "METADATA_ONLY",
+  "next_step": "Provide an authorized model-runtime carrier to the opt-in existing terminal and obtain fresh authenticated readback; then bind normal provider retention and the same Firefox end-user path for both arms.",
+  "output_bindings": [
+    {
+      "bytes": 15778,
+      "git_blob_sha1": "9b537c9d81d8140743963400b7cc3e3cf70a37a8",
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "300caae7c842007880548704ebd30e4ef1a0cab12338ff134c801ac52bda1fb8"
+    },
+    {
+      "bytes": 22633,
+      "git_blob_sha1": "b348200fb962adac863e6ad72189bbf53100631c",
+      "path": "src/qikvrt_personal_assistant.py",
+      "sha256": "aaaaa72a54f08ddb0031e1edc70e9ead4469aded351ef78e12c814b9692e8c9c"
+    },
+    {
+      "bytes": 38109,
+      "git_blob_sha1": "dba407192aa4f20b0f67973f84e99ef5c766a669",
+      "path": "tools/qikvrt_browser_assistant_ab.py",
+      "sha256": "89a694bd46b53a342be08b8a57cffc54310a628704a1390d057dc6ae9832117f"
+    },
+    {
+      "bytes": 13852,
+      "git_blob_sha1": "f691a188e4a085531e604f91328eec31887674b2",
+      "path": "tests/test_qikvrt_personal_assistant.py",
+      "sha256": "d50982879fa098609cf3129d1b5af272fe420fabca16475ad40af6edbd68d01b"
+    },
+    {
+      "bytes": 4629,
+      "git_blob_sha1": "946ea3a663e450881ade1ad1e2438883c570ae68",
+      "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+      "sha256": "0d8e83cbd22aea6e89c0a1c85d770e96894e2819ac8bf1158d2bccf795c1f41b"
+    },
+    {
+      "bytes": 11148,
+      "git_blob_sha1": "1981ae800aed72f3a0c6952ce19df3b4c2aec4c4",
+      "path": "Makefile",
+      "sha256": "564d574a9eb3e3b8b464977ccc818855a8595998c4f58a96b9c75f6f5784c564"
+    },
+    {
+      "bytes": 1971,
+      "git_blob_sha1": "bb6154f246f044d28916ca9e9618e114f0ba6706",
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "sha256": "9eb9b2e3fdd3c760224290b8b2278c07050da6516dfe34f9096e06587843e385"
+    },
+    {
+      "bytes": 10790,
+      "git_blob_sha1": "358e5491d9e57067c64d2d24a49417cf147366c7",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "3cd6ea7d83d7547757d25adc022930c149b48cc621904d7080564e0a45997a7e"
+    },
+    {
+      "bytes": 3054,
+      "git_blob_sha1": "0f9fd77ec7860d1710b6136151fa75341fc8d192",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "f8e272a7ae8ed05da5f29b1e4ef7df04b01f666913d1661f6096314077027d08"
+    },
+    {
+      "bytes": 4783,
+      "git_blob_sha1": "f22ed2307ac468d17f8ee81c9c37c0af3506e6cc",
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "8a65883763ed2ad6c192a76fe712c1a7b128d6c9e1c731f6b76219434d331afc"
+    },
+    {
+      "bytes": 2273,
+      "git_blob_sha1": "9f42c5900df2385efda38e8c01418a25988a8ea8",
+      "path": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "sha256": "20bb534639db5013276381e9d4635a2eed9f65defbb5dacfe1513b8b26ac80c7"
+    },
+    {
+      "bytes": 5602,
+      "git_blob_sha1": "204d8d69269064e71688e89770c850a1e9ba46e6",
+      "path": "personal/ingolf-lohmann/firefox-assistant/README.md",
+      "sha256": "a68f38bcea4103c18c3e2a41d69fe7ea76c3c8b4b528e7701f0cc7d20ad0d77e"
+    },
+    {
+      "bytes": 990,
+      "git_blob_sha1": "65d86f6cd52f43ed86442dd4668dd0818fc2564b",
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.css",
+      "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+    },
+    {
+      "bytes": 2004,
+      "git_blob_sha1": "f6f3a37599c6ce42097768dc12623fc7fa7052e8",
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.html",
+      "sha256": "f5550078a8d45df0b90fb2b1bf5bf7389ae14b8ce6bfb6922170c0d6bac334db"
+    },
+    {
+      "bytes": 3532,
+      "git_blob_sha1": "e93a1c3c6e51cfcc0f21240ca66708ec0293cfa4",
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.js",
+      "sha256": "e6ba8e202c02a61f229afc5fbbecfe1fe05de068d8d521aee0e299523c9a5fb5"
+    },
+    {
+      "bytes": 2343,
+      "git_blob_sha1": "3402b4aa20a357b40cf6aa236b61a6ae134e0da3",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/INVENTORY.json",
+      "sha256": "c5f546869cfca77d7fd105928d7c9a8a1d5fe7dbbadd093ddb0e02dd0d1e4343"
+    },
+    {
+      "bytes": 108945,
+      "git_blob_sha1": "aa6f621fc42ae890f673573064d5df89f58bdb91",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/MAKE_TEST.txt",
+      "sha256": "79443a0380460423f42c48f7c1c5158a73c89b45765d1ab47f7f49fd275ad8d2"
+    },
+    {
+      "bytes": 6837,
+      "git_blob_sha1": "67048552d0f4d174557ee2ae8410fc8a802cabdd",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/PREFLIGHT.json",
+      "sha256": "295d0a4104a535dd347c38349c5150ed1a574bb54ca08aabcf889c233b9971a6"
+    },
+    {
+      "bytes": 2652,
+      "git_blob_sha1": "9263c9a4157b8e267e941196fb73d875520fc6c6",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/README.md",
+      "sha256": "a97220f2e2046aca20c863affda892b4c6c597a6cd6b493a269fdd3b1fc349b3"
+    },
+    {
+      "bytes": 5630,
+      "git_blob_sha1": "71268f79434ac3f39e97e800b3e74961df368f45",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/VALIDATION.json",
+      "sha256": "34476848fb82dbf69692706b0d092ce9be04344cb29b974d79ff2130d05986e4"
+    },
+    {
+      "bytes": 13315,
+      "git_blob_sha1": "693e51f51c62e87d61d662b24d212277dd11be8b",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/prepared-analysis/analysis.json",
+      "sha256": "e18b97ed2187a24743d7212c3db83f2e3909db3e2a09d90d13c9b5840be0b06a"
+    },
+    {
+      "bytes": 5529,
+      "git_blob_sha1": "57a2c05a248d8551e17545c0c882eb8b50e030e2",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/prepared-analysis/paired-deltas.json",
+      "sha256": "89bfcb60bb1a89b8d09edd6dc892a78240c7372c39ce0bc16fee42ce5e0aafc0"
+    },
+    {
+      "bytes": 2224,
+      "git_blob_sha1": "8934807f7a0c050908dd442167b7c4a6523b954f",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/prepared-analysis/trials.csv",
+      "sha256": "4f2afe53f4faaf82c980b507b5e6b646fd9994c55a48df5ee9b1cdd10c23b3b5"
+    },
+    {
+      "bytes": 4099,
+      "git_blob_sha1": "f620c5623354a2db4265fc2978bcc183f00f7bbd",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/prepared-run/contract.json",
+      "sha256": "1910743f21f4303b89b019c5c95a144c611ff01a8d8c5d06a68b56965e244b75"
+    },
+    {
+      "bytes": 2521,
+      "git_blob_sha1": "f738b1a28e4be4507b5d6aaced9a993fc67dde4a",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/prepared-run/fixtures/document-recovery.json",
+      "sha256": "b81c2c30cfc70dfef3c67c269bf13eb839cb80c5b993ae8fbe475e42e1c7159e"
+    },
+    {
+      "bytes": 2681,
+      "git_blob_sha1": "c0340ca53c0ff1528b6dd34edb6876aa38850b21",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/prepared-run/fixtures/research-costs.json",
+      "sha256": "cf38f611e3bd108f52f59ff2fe85f406c50e9be4d458a65d7df1ff419c3051f2"
+    },
+    {
+      "bytes": 16567,
+      "git_blob_sha1": "7ab6fc2cc3dcab7ee5f030475faa7175fa8416bb",
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/personal-adapter/prepared-run/manifest.json",
+      "sha256": "614d4cc280ea250d20c1199aa2609d97dbb7bb925d4d8c92e888e3c510e4b136"
+    }
+  ],
+  "product_claim_allowed": false,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "product_trials_planned": 24,
+  "raw_chat_or_gmail_transcript_persisted": false,
+  "reuse_before_create": {
+    "new_module_reason": "Existing loopback State only accepts bounded terminal text in process memory. The encrypted interaction archive has no inference or active conversation API. An opt-in module extends this server without creating another listener or duplicating the standard extension.",
+    "reused": [
+      "src/qikvrt_effect_ack_http_terminal.py",
+      "browser/firefox/qikvrt-terminal/",
+      "tools/qikvrt_browser_assistant_ab.py",
+      "Makefile",
+      ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "runtime/toolchains/CACHE_REGISTRY.json"
+    ]
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "source_commit": "5bd1afc5bfa7c3887698f24f899b72e6f5701990",
+  "source_ref": "work/browser-assistant-ab-20261005",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "9ed7eabb3d56f1d346d40397f0a3150c976eb786",
+  "verification": {
+    "command": "make test",
+    "exit_code": 0,
+    "full_local_gate": "PASS_FOR_BOUND_TESTED_SOURCE_AND_PREPARATION",
+    "product_e2e": "NOT_EXECUTED",
+    "remote_exact_head_gates": "NOT_YET_OBSERVED",
+    "reported_unittest_tests": 555
+  },
+  "verified_input_tree": "39317138a99f62169d3c23c5540654ff6a9b91f1",
+  "work_unit_id": "QIKVRT_PERSONAL_ASSISTANT_ADAPTER_20261005_V1"
+}

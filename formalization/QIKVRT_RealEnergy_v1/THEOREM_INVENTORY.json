@@ -1,0 +1,151 @@
+{
+  "schema": "qikvrt-real-energy-theorem-inventory/v1",
+  "original_claim_count": 8,
+  "binding_count": 8,
+  "claims": [
+    {
+      "claim_id": "PRE-T01",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "PRE_T01_planckMass_pos",
+      "statement": "PRE_T01_Statement",
+      "checked": "PRE_T01_checked",
+      "source": "PlanckRealEnergyDomain.lean",
+      "source_sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    },
+    {
+      "claim_id": "PRE-T02",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "PRE_T02_planckTime_pos",
+      "statement": "PRE_T02_Statement",
+      "checked": "PRE_T02_checked",
+      "source": "PlanckRealEnergyDomain.lean",
+      "source_sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    },
+    {
+      "claim_id": "PRE-T03",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "PRE_T03_planckEnergy_pos",
+      "statement": "PRE_T03_Statement",
+      "checked": "PRE_T03_checked",
+      "source": "PlanckRealEnergyDomain.lean",
+      "source_sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    },
+    {
+      "claim_id": "PRE-T04",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "PRE_T04_planckTime_mul_planckEnergy",
+      "statement": "PRE_T04_Statement",
+      "checked": "PRE_T04_checked",
+      "source": "PlanckRealEnergyDomain.lean",
+      "source_sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    },
+    {
+      "claim_id": "PRE-T05",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "PRE_T05_planckEnergy_eq_hbar_div_planckTime",
+      "statement": "PRE_T05_Statement",
+      "checked": "PRE_T05_checked",
+      "source": "PlanckRealEnergyDomain.lean",
+      "source_sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    },
+    {
+      "claim_id": "REB-T01",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "REB_T01_real_bit_bound",
+      "statement": "REB_T01_Statement",
+      "checked": "REB_T01_checked",
+      "source": "RealErasureBudget.lean",
+      "source_sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    },
+    {
+      "claim_id": "REB-T02",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "REB_T02_gap_normalized",
+      "statement": "REB_T02_Statement",
+      "checked": "REB_T02_checked",
+      "source": "RealErasureBudget.lean",
+      "source_sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    },
+    {
+      "claim_id": "REB-T03",
+      "namespace": "QIKVRT.V2.Physics.PlanckRealEnergy",
+      "theorem": "REB_T03_planck_budget",
+      "statement": "REB_T03_Statement",
+      "checked": "REB_T03_checked",
+      "source": "RealErasureBudget.lean",
+      "source_sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63",
+      "statement_source": "RealEnergyStatements.lean",
+      "manuscript_span": "FACHARTIKEL.md#8a",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "verification_class": "VERIFIED_LOCAL_KERNEL",
+      "empirical_correspondence": "NOT_MEASURED"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+PASS: registered personal-worker readiness succeeds after a prior monitor controller and fails closed on unsuccessful activation; frozen original application bytes remain separately bound.
+PASS: homepage and React monitor recover their own installed shells after network loss; assets recover, live APIs and sign-in bypass the cache, and unrelated pages are not replaced.

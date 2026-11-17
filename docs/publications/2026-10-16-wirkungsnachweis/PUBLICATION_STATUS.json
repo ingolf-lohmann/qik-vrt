@@ -1,0 +1,150 @@
+{
+  "schema": "qikvrt-publication-distribution-status/v1",
+  "prepared_at_utc": "2026-10-16T09:57:52.263372+00:00",
+  "human_owner": "Ingolf Lohmann",
+  "original_candidate_bytes_changed": false,
+  "human_request_received_at": "2026-10-16T09:48:07Z",
+  "human_request": "transferiere die Zenodo-Veröffentlichungsfähigkeiten und alle anderen wesentlichen Fähigkeiten, die zum Erreichen der noch offenen Ziele notwendig sind, aus dem Goldkelch-Repository in das Ingolf Lohmann Repository. Und zwar unverzüglich und schnellstmöglich und veröffentliche im Anschluss alles Notwendige. Nicht nur auf Zenodo, sondern auch auf IETF, in den Repository Nodes selbst und insbesondere auf Raumzeitterminal.de. Alles andere bleibt inakzeptabel.",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "integration_pr": 523,
+  "capability_code_tested_subject": {
+    "head": "527744762b646673ccd173218fbe5d577c5b7fd0",
+    "push_run": 38882295327,
+    "full_test_job": 116911663265,
+    "full_test": "success; MAKE_TEST_EXIT=0; PASS mode=full-test",
+    "router_run": 38882302760,
+    "router_job": 116911688279,
+    "router_tests": 14,
+    "requested_publisher_job": "SKIPPED; pull_request is not a publication dispatch"
+  },
+  "candidate_origin": "Previously returned frozen research package; all 68 archived files independently hash-verified in this distribution work unit.",
+  "files": [
+    {
+      "path": "CANDIDATE_BINDING.json",
+      "bytes": 1988,
+      "sha256": "27ca523b12c1930e152dc63bdfcb68e101abf03be442f1a8389ea846d7bd5f70",
+      "git_blob_sha1": "9ff81513d0ba068abdb4a5922e79dbde63e31f67"
+    },
+    {
+      "path": "CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2"
+    },
+    {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 5675,
+      "sha256": "6853643be80f6c05bd5e7eef17bc8ff7b63119cc1f2fcc49f22b95295d37a41d",
+      "git_blob_sha1": "d32cb9e3c6064d6b4793c96b95cbbc5f51e26b18"
+    },
+    {
+      "path": "LICENSE_NOTICE.md",
+      "bytes": 865,
+      "sha256": "d153cd778ec87d6586177f1ec49eaaa1ab843f5d9f96a9450cfac53d6d55726e",
+      "git_blob_sha1": "72de5b0c3a0f8adb530d8bbb72070ac6ef2b27b4"
+    },
+    {
+      "path": "QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.md",
+      "bytes": 19437,
+      "sha256": "2903aff99f2d5b43e92a71d5f79f9b397887d3ce3878b2d27355ab89aa1d4590",
+      "git_blob_sha1": "cec4e4cbac6e56d50c6b4d64d5beb006d1b57e97"
+    },
+    {
+      "path": "QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.pdf",
+      "bytes": 111820,
+      "sha256": "a76e8f767b71503c479fc3b457b7fd997c9f18dd10ebaa9edfd378484da00f4d",
+      "git_blob_sha1": "b269b740bcee336712e2c0cb74b31f6ff5e33219"
+    },
+    {
+      "path": "QIKVRT_Der_entscheidende_Unterschied_Prosa_20261016.txt",
+      "bytes": 19428,
+      "sha256": "2d1aff659360a09c39f33afe8f64433b6f85f339e7ee6276a60ae17b77b9ad42",
+      "git_blob_sha1": "a9e351c93153e65dd8042f4f5173228aa98abf74"
+    },
+    {
+      "path": "QIKVRT_Wirkungsnachweis_Nachpruefung_20261016.json",
+      "bytes": 45163,
+      "sha256": "76033269cbd8fec56ab5f9433fd34e291cb26bddc6cf36b906ee5f92f66e9a49",
+      "git_blob_sha1": "89c21e7a8efda8d3d9136c53c1f1a92d4ec8f6b2"
+    },
+    {
+      "path": "QIKVRT_Wirkungsnachweis_Nachweispaket_20261016.zip",
+      "bytes": 684977,
+      "sha256": "0f7bf05eb76f76bc8abac004ec0dd81126e088e557d0839635a42397e2fc0cc0",
+      "git_blob_sha1": "37a84a6b93715d4eb4d403b8e6e6dc800bf83ce6"
+    },
+    {
+      "path": "QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.md",
+      "bytes": 39801,
+      "sha256": "0a29a86e6b3dd1db6edcd7b960be7b006cc31e42645b6f524d9dce976e8c4a93",
+      "git_blob_sha1": "a6262f05d736328bf194e1114ac599920133545c"
+    },
+    {
+      "path": "QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.pdf",
+      "bytes": 155074,
+      "sha256": "f0546d0228dea325c9c89a14f0893d33d30ea95c89ee3716a6103820a5116965",
+      "git_blob_sha1": "950166ddc09c8969a8a90bd60c5bd88bd9cde5c6"
+    },
+    {
+      "path": "QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.txt",
+      "bytes": 39690,
+      "sha256": "35b680d5064d5d9091d44ad5fc527b751906ab3f0071bf7391264868130edacd",
+      "git_blob_sha1": "7022623b654b72079fc62b0fc290c430b0e5e4df"
+    },
+    {
+      "path": "RESEARCH_PROOF_BUNDLE.json",
+      "bytes": 1866,
+      "sha256": "c58ae56b52a36f83655a3d289f988dca5ec321677fa7cfb333fdffcc50a54c82",
+      "git_blob_sha1": "14ed17445c8fbe5cfa453a114b6ca66c3dcbc59e"
+    },
+    {
+      "path": "index.html",
+      "bytes": 6717,
+      "sha256": "f21e006f5b86bc18ad64a57e882a3dc3ad6af388160ba908a93b6c2b6ffb33d5",
+      "git_blob_sha1": "d318035ee216090f9fd5662859a2239aad5aa3ea"
+    }
+  ],
+  "routes": {
+    "repository": {
+      "state": "PREPARED_FOR_EXISTING_PR523",
+      "main_integration": false,
+      "mirror_propagation": false
+    },
+    "site": {
+      "state": "PREPARED_FOR_NATIVE_PUBLICATION",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "canonical_url": "https://raumzeitterminal.de/publications/2026-10-16-wirkungsnachweis/index.html",
+      "exact_host_delivery_verified": false
+    },
+    "zenodo": {
+      "state": "OPEN_PROTECTED_PUBLISHER_EXECUTION_NOT_ESTABLISHED",
+      "new_record_id": null,
+      "new_doi": null,
+      "historical_candidate_binding_preserved": true,
+      "canonical_candidate_specific_decision_fabricated": false,
+      "credential_values_exported": false,
+      "production_machine_proof_v2_admission": "OPEN; research bundle is not the production-v2 authorization bundle"
+    },
+    "ietf": {
+      "state": "EXISTING_INDIVIDUAL_DRAFTS_READ_BACK_NEW_SUBMISSION_OPEN",
+      "public_drafts": [
+        "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-effect-ack/",
+        "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-epistemic-status/"
+      ],
+      "new_submission_performed": false,
+      "ietf_consensus_inferred": false
+    },
+    "nodes": {
+      "authority_candidate": "PREPARED",
+      "authority_main": "OPEN_PROTECTED_INTEGRATION",
+      "mirror": "OPEN_SOURCE_HTTP_404",
+      "complete_node_coverage": false
+    }
+  },
+  "non_completion": {
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false,
+    "runtime_activation_inferred": false,
+    "predecessor_pass_transferred_to_new_subject": false
+  }
+}

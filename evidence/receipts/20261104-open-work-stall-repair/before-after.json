@@ -1,0 +1,72 @@
+{
+  "both_candidate_regressions_passed": true,
+  "both_predecessor_defects_reproduced": true,
+  "effect_ack_done": false,
+  "predecessor_head": "ed22c8ab5bf8d963d2718f43192f4e7320424f6f",
+  "results": {
+    "candidate": {
+      "frequent_observations": [
+        {
+          "last_progress_at": "2026-08-10T17:44:00Z",
+          "observed_at": "2026-08-10T17:44:00Z",
+          "state": "SAFE_PROGRESS",
+          "unchanged_for_seconds": 0
+        },
+        {
+          "last_progress_at": "2026-08-10T17:44:00Z",
+          "observed_at": "2026-08-10T17:49:00Z",
+          "state": "SAFE_PROGRESS",
+          "unchanged_for_seconds": 300
+        },
+        {
+          "last_progress_at": "2026-08-10T17:44:00Z",
+          "observed_at": "2026-08-10T17:54:00Z",
+          "state": "SAFE_PROGRESS",
+          "unchanged_for_seconds": 600
+        },
+        {
+          "last_progress_at": "2026-08-10T17:44:00Z",
+          "observed_at": "2026-08-10T17:59:00Z",
+          "state": "PREEMPTIVE_HOLD_NO_PROGRESS_TRANSITION",
+          "unchanged_for_seconds": 900
+        }
+      ],
+      "open_work_no_executor_state": "CONTINUATION_REQUIRED_OPEN_WORK"
+    },
+    "predecessor": {
+      "frequent_observations": [
+        {
+          "last_progress_at": null,
+          "observed_at": "2026-08-10T17:44:00Z",
+          "state": "SAFE_PROGRESS",
+          "unchanged_for_seconds": null
+        },
+        {
+          "last_progress_at": null,
+          "observed_at": "2026-08-10T17:49:00Z",
+          "state": "SAFE_PROGRESS",
+          "unchanged_for_seconds": null
+        },
+        {
+          "last_progress_at": null,
+          "observed_at": "2026-08-10T17:54:00Z",
+          "state": "SAFE_PROGRESS",
+          "unchanged_for_seconds": null
+        },
+        {
+          "last_progress_at": null,
+          "observed_at": "2026-08-10T17:59:00Z",
+          "state": "SAFE_PROGRESS",
+          "unchanged_for_seconds": null
+        }
+      ],
+      "open_work_no_executor_state": "QUIESCENT_OBSERVATION"
+    }
+  },
+  "schema": "qikvrt_open_work_stall_regression_v1",
+  "scope": "ISOLATED_ORIGINAL_SOURCE_REPLAY_NOT_NATIVE_EXECUTION",
+  "source_sha256": {
+    "candidate": "3d4ae027b52853a06a549edcd8548264c4c8ab2fa8a916811b786b8d6bd2a3ce",
+    "predecessor": "9ca96a55327cd158149ba76552266b55da142ba22491a01236c518a39312f9a3"
+  }
+}

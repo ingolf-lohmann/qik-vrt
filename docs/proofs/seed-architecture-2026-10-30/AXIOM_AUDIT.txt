@@ -1,0 +1,30 @@
+'QIKVRT.SeedArchitecture.V1.composed_codec_lossless' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.decodeAll_map_encode' depends on axioms: [propext, Quot.sound]
+'QIKVRT.SeedArchitecture.V1.failed_part_prevents_complete_decode' depends on axioms: [propext, Quot.sound]
+'QIKVRT.SeedArchitecture.V1.execute_append' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.checkpoint_restart_exact' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.execute_preserves' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.deterministic_step_unique' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.execute_is_viable_trace' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.architecture_closure' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.finite_mesh_preserves' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.finite_mesh_codec_roundtrip' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.extension_preserves_existing_cell' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.extension_preserves_invariant' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.continue_requires_all_guards' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.missing_authority_blocks' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.gating_preserves_payload' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.repeated_gating_preserves_payload' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.decimal_add_exact' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.decimal_multiply_exact' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.decimal_denominator_composes' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.decimal_tenths_example' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.different_inputs_can_produce_different_results' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.physical_support_requires_observation' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.missing_observation_prevents_physical_support' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.total_erasure_heat_lower_bound' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.valid_controls_allow_continuation' does not depend on any axioms
+'QIKVRT.SeedArchitecture.V1.concrete_finite_reconstruction_witness' depends on axioms: [propext, Quot.sound]
+'QIKVRT.SeedArchitecture.V1.encoded_reference_is_fixedpoint' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.normalization_is_idempotent' depends on axioms: [propext]
+'QIKVRT.SeedArchitecture.V1.two_bound_references_are_fixedpoints' depends on axioms: [propext]

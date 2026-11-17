@@ -1,0 +1,277 @@
+# Der entscheidende Unterschied
+## Ein bedingter Wirkungsnachweis für QIK-VRT
+
+Mathematische Ableitung, reproduzierbarer Vergleich und wissenschaftliche Geltungsgrenzen
+
+Ausgangspunkt und QIK-VRT-Technologie: Ingolf Lohmann. Wissenschaftliche Ausarbeitung, Formalisierung und lokale Durchführung: OpenAI Codex im Auftrag von Ingolf Lohmann. Stand: 16. Oktober 2026, Europe/Istanbul. Autorenprüffassung; für diese neue Arbeit ist keine Zenodo-Veröffentlichung bestätigt.
+
+> „QIK-VRT ist die Technologie, die bei Anwendung beweist, wozu Technologie im positiven Sinne fähig ist und zugleich beweist, wozu Technik in der Lage ist, die nicht auf QIK-VRT-Technologie basiert. Und dieser Unterschied ist der entscheidende Unterschied.“
+>
+> Ingolf Lohmann, 16. Oktober 2026. Menschlicher Ausgangsgedanke; keine nachträglich zugeschriebene Autorschaft der folgenden maschinellen Ausarbeitung.
+
+### Zusammenfassung
+
+Diese Arbeit führt einen präzisen Teilnachweis der Ausgangsthese. Der nachgewiesene Unterschied betrifft die Berechtigung einer Erfolgsaussage: Eine Bestätigung der Ausführung genügt nicht allgemein zum Nachweis der beabsichtigten Wirkung. Sind Erfolg und Misserfolg in den verfügbaren Beobachtungen ununterscheidbar, kann kein darauf beschränkter Entscheider beide Zustände zuverlässig trennen. Eine zusätzliche, korrekt gebundene Beobachtung kann die fehlende Unterscheidung herstellen. Ihre Aussagekraft hängt von der korrekten Messbindung, dem Prüfer, den Freigaberegeln und dem Zeitpunkt ab.
+
+Der mathematische Kern wird in beide Richtungen bewiesen. Die endliche Nachprüfung umfasst 64 beziehungsweise 1.296 Kombinationen von Beobachtungs- und Eigenschaftsfunktionen. Hinzu kommen 13 deterministische Versuche mit tatsächlich geschriebenen SQLite-Daten und getrennten Prozessen für Erzeugung, Beobachtung und Zustandsoracle. Eine reine Bestätigungsregel akzeptiert acht nicht erreichte Ziele; eine reine Inhaltsprüfung sechs. Der QIK-VRT-Prinzipdemonstrator akzeptiert keines dieser acht nicht erreichten Ziele. Eine separat strukturierte konventionelle End-to-End-Kontrolle mit denselben Informationen erzielt dasselbe Ergebnis. In vier Fällen verweigern beide strengen Prüfer die Akzeptanz, obwohl die Datenwirkung bereits eingetreten ist. Zwölf gezielt reparierte Nachfolger werden anschließend erfolgreich akzeptiert.
+
+Die drei beigefügten Theoremkonstanten wurden mit Lean 4.19.0 am unveränderten Quelltext tatsächlich kernelgeprüft. Der Axiom-Audit meldet für alle drei keine zusätzlichen Axiomabhängigkeiten. Eine absichtlich falsche negative Kontrolle wurde zurückgewiesen. Die Prüfung betrifft mathematische Aussagen mit ausdrücklich benannten Prämissen; sie beweist keine Sensorzuverlässigkeit und keine vollständige Produktimplementierung.
+
+Der positive Nachweis gilt somit für eine bedingte, überprüfbare Wirkungsbindung. Er ist weder ein Komplettproduktvergleich noch ein Beweis der Überlegenheit gegenüber jeder Technik ohne QIK-VRT. Aus erfolgreicher Zielerreichung folgt auch nicht automatisch ein moralisch gutes Ziel. Diese Grenzen gehören zum Ergebnis.
+
+### 1. Fragestellung und zulässige Schlussform
+
+Die Ausgangsthese verbindet drei verschiedene Behauptungen. Erstens soll Technik ein sinnvolles Ziel tatsächlich erreichen. Zweitens soll die Anwendung den Unterschied zwischen erreichtem Ziel und bloßer Erfolgsmeldung erkennbar machen. Drittens soll ein Vergleich zeigen, was eine andere technische Vorgehensweise leistet oder verfehlt. Die vorliegende Untersuchung behandelt alle drei, aber mit verschiedenen Nachweisformen.
+
+Eine universelle Aussage über sämtliche gegenwärtigen und zukünftigen Techniken ohne QIK-VRT wäre durch einen einzelnen Versuch nicht entscheidbar. Schon ein unabhängig entwickeltes Verfahren mit derselben wirksamen Prüfung würde eine pauschale Ausschließlichkeitsbehauptung widerlegen. Deshalb wird keine Konkurrenz allein über ihren Namen definiert. Untersucht werden ausdrücklich beschriebene Beobachtungs- und Entscheidungsregeln. Ein funktional gleichwertiges Kontrollverfahren behält seine eigene Herkunft und wird nicht nachträglich zu QIK-VRT erklärt.
+
+Die zu beweisende Fassung lautet: Wenn ein Verfahren zur Akzeptanz einer Zielwirkung Informationen benötigt, die seine Bestätigung nicht unterscheidet, ist diese Bestätigung unzureichend. Ein Verfahren, das die erforderlichen Unterschiede korrekt beobachtet, bindet und überprüft, kann die Zielwirkung unter diesen Voraussetzungen zuverlässig akzeptieren. Eine durchgehend erzwungene Freigaberegel verhindert zudem die modellierte Freigabe ohne ihren gültigen Nachweis. Damit werden eine Informationsgrenze und ein bedingter konstruktiver Ausweg bewiesen.
+
+„Positiv“ bedeutet in der Versuchsauswertung ausschließlich: Das zuvor autorisierte, konkret vereinbarte Ziel wird erreicht und korrekt als erreicht erkannt. Die gesellschaftliche Bewertung dieses Ziels bleibt eine zusätzliche menschliche und institutionelle Aufgabe. Eine technisch perfekt ausgeführte schädliche Handlung wäre nach dieser Unterscheidung kein Beleg für einen gesellschaftlich positiven Nutzen.
+
+### 2. Quellenbasis und Verhältnis zu vorhandenen Ergebnissen
+
+Der kanonische Einstieg ist Ingolf Lohmanns „Das Universum als Round Trip“ [1]. Dessen Erkenntnisweg verbindet beobachtete Unterschiede, Modell, Ableitung und Rückprüfung an der Wirklichkeit. Hier wird dieser Weg auf eine eng bestimmte Softwarewirkung angewandt. Aus der allgemeinen Orientierung wird keine zusätzliche physikalische oder kosmologische Aussage abgeleitet.
+
+Die unmittelbar tragende Quelle ist die veröffentlichte Untersuchung zur Verfassungsschicht der Wirkung [2], besonders Abschnitt 5 der Datei ARTICLE_DE.md und der Nachweis RE-001 in proof-report.json. Dort steht bereits das Kriterium der Konstanz auf Beobachtungsfasern. Die vorliegende Arbeit erfindet dieses Ergebnis nicht neu. Sie formuliert es auf die aktuelle Vergleichsfrage um, prüft einen veröffentlichten endlichen Teil erneut und ergänzt eine weitere endliche Domäne sowie einen lokalen Speichervergleich. Die übrigen umfangreichen Prüfungen des historischen Berichts werden hier nicht als neu ausgeführt dargestellt.
+
+Die Quelle „Proof Closure“ [3] liefert die Abschlussregel für einen exakt gebundenen Gegenstand. Ihre veröffentlichten Abschlussclaims tragen in der zugehörigen Claim-Matrix teilweise den Status TO_BE_KERNEL_CHECKED. Dieser historische Status wird nicht in einen angeblichen neuen Beweis umgedeutet. Die aktuelle Arbeit hat eigene Beweisgegenstände und eigene Prüfbelege.
+
+Für [1], [2] und [3] wurden die nativen Zenodo-Metadaten frisch gelesen und insgesamt neun ausgewählte Originaldateien öffentlich erneut heruntergeladen. Alle neun stimmen mit den Größen und nativen MD5-Angaben der jeweiligen Records überein; zusätzlich wurden SHA-256-Werte berechnet. Acht bereits vorliegende ausgewählte Dateien stimmen bytegenau mit dem Quellenarchiv überein; die neunte ist die zusätzlich geladene PDF von [2]. Das ist eine gezielte Quellenprüfung und keine erneute vollständige Inventarisierung aller Publikationen des Autors.
+
+Die Einordnung berücksichtigt etablierte Informatik. Saltzer, Reed und Clark beschreiben beim sorgfältigen Dateitransfer eine Prüfung der am Ziel zurückgelesenen Daten; eine verlässliche Teilstrecke ersetzt diese Endprüfung nicht [4, Abschnitt „End-to-end caretaking“, PDF-Seiten 2-3]. Saltzer und Schroeder formulieren vollständige Mediation und sichere Standardentscheidungen als Schutzprinzipien [5, Abschnitt I.A.3]. Diese Bezüge begründen die konventionelle Kontrolle und verhindern eine unbelegte Ausschließlichkeitsbehauptung. Eine eigenständige Neuheits- oder Patentprüfung ist damit nicht vorgenommen.
+
+### 3. Definitionen: Gegenstand, Wirkung und Beobachtung
+
+Sei S die Menge der betrachteten Systemzustände und O die Menge möglicher Beobachtungen. Die Beobachtungsabbildung E ordnet jedem Zustand s einen zugänglichen Befund E(s) zu. Die Zielaussage P(s) ist entweder wahr oder falsch. Ein Entscheider h arbeitet ausschließlich auf dem Befund. Ein exakter Entscheider müsste für jeden zulässigen Zustand die Eigenschaft P richtig bestimmen.
+
+Im Versuch lautet der Gegenstand nicht bloß „irgendwo steht derselbe Text“. Der Auftrag verlangt bestimmte Bytes an einem bestimmten logischen Ziel, gebunden an Origin, Zielkennung, Version, Laufkennung und frische Herausforderung. Diese fünf Identitätsangaben gehören ausdrücklich zum Ziel. Ein alter Datensatz mit demselben Text ist daher kein Nachweis des aktuellen Auftrags. Bei einer anders spezifizierten, rein idempotenten Aufgabe könnte derselbe bereits vorhandene Inhalt das Ziel erfüllen. Die Zieldefinition muss vor der Auswertung feststehen.
+
+Die Versuchsumgebung verwendet die logischen Origins local://authority und local://other. Das sind Kennungen innerhalb einer lokalen Datenbank. Sie belegen weder öffentliche Netzwerkhosts noch TLS, SSO, eine Organisation oder eine tatsächlich unabhängige Vertrauensdomäne.
+
+Ein Digest bindet Bytes unter einer kryptographischen Kollisionsresistenzannahme. Er beweist weder die Herkunft einer Aussage noch die Ehrlichkeit ihres Erzeugers. Im Zustandsoracle werden die vollständigen Nutzdaten direkt verglichen. Im Demonstrator und in der konventionellen Kontrolle werden die neu berechneten SHA-256-Werte mit dem gespeicherten Wert und dem erwarteten Wert verglichen. Der finite Versuch beansprucht keinen Beweis der Kollisionsresistenz von SHA-256.
+
+Die binäre Eigenschaft P ist vom Erkenntnisstatus zu trennen. Wenn ein Beobachter ausfällt, kann P dennoch wahr sein. Das Verfahren weiß es dann nicht ausreichend. „Nicht akzeptiert“ bedeutet deshalb nicht automatisch „Wirkung fehlgeschlagen“. Diese Unterscheidung ist bei der Interpretation sämtlicher Ergebnistabellen maßgeblich.
+
+### 4. Satz 1: Wann eine Wirkung aus einer Beobachtung bestimmbar ist
+
+Ein exakter Entscheider für P auf dem Beobachtungsbild existiert genau dann, wenn P auf jeder Beobachtungsfaser konstant ist. Eine Beobachtungsfaser enthält alle Zustände, die denselben Befund erzeugen.
+
+```text
+Es existiert h mit P = h o E
+genau dann, wenn für alle a und b gilt:
+E(a) = E(b)  =>  P(a) = P(b).
+```
+
+Für eine aussagenlogische Eigenschaft ist die letzte Gleichheit als Gleichheit des Wahrheitswerts beziehungsweise als logische Äquivalenz zu lesen. Das Zeichen „o“ bezeichnet die Hintereinanderausführung von Abbildungen.
+
+Beweis der notwendigen Richtung: Existiert h, so führen gleiche Beobachtungen E(a) und E(b) zum selben Eingang von h. Ein und derselbe Funktionswert kann nicht gleichzeitig die beiden verschiedenen Wahrheitswerte richtig darstellen. Daher müssen P(a) und P(b) übereinstimmen.
+
+Beweis der hinreichenden Richtung: Für jeden tatsächlich vorkommenden Befund o wird h(o) als der gemeinsame Wahrheitswert aller Zustände mit E(s)=o festgelegt. Wegen der angenommenen Konstanz ist diese Festlegung eindeutig. Außerhalb des Beobachtungsbilds kann h beliebig ergänzt werden. Dann stimmt h(E(s)) für jeden betrachteten Zustand mit P(s) überein. In der beigefügten Lean-Formalisierung wird die entsprechende Prädikatsabbildung durch Existenz eines passenden Ursprungs definiert.
+
+Damit sind beide Richtungen bewiesen. Der Satz ist mengen- und aussagenlogisch. Er garantiert nicht, dass sich ein solcher Entscheider für beliebige unendliche Zustandsräume effektiv berechnen lässt. Er garantiert auch nicht, dass seine Eingaben physikalisch richtig gemessen wurden. Diese Zusatzpflichten stehen außerhalb der bloßen Existenzbehauptung.
+
+### 5. Satz 2: Die prinzipielle Grenze einer bloßen Bestätigung
+
+Angenommen, ein erfolgreicher Zustand a und ein erfolgloser Zustand b erzeugen dieselbe Bestätigung. Dann gilt E(a)=E(b), aber P(a) ist wahr und P(b) ist falsch. Nach Satz 1 existiert kein auf diese Bestätigung beschränkter exakter Entscheider.
+
+Der direkte Widerspruchsbeweis ist besonders anschaulich. Der Entscheider erhält denselben Eingang. Meldet er Erfolg, irrt er in b. Meldet er Misserfolg, irrt er in a. Meldet er „unbekannt“, vermeidet er die falsche Behauptung, hat aber die beiden Zustände weiterhin nicht unterschieden. Größere Rechenleistung fügt dem unveränderten Eingang keine fehlende Information hinzu.
+
+Dieser Satz widerlegt keine zuverlässigen technischen Systeme insgesamt. Eine Bestätigung kann ausreichend sein, wenn ihr zugrunde liegender Vertrag bereits eine korrekte, vollständige und gebundene Wirkungsprüfung garantiert. Dann enthält sie semantisch mehr als eine bloße Transportbestätigung. Entscheidend ist die Bedeutung des Signals in seinem nachgewiesenen Vertrag.
+
+Der konstruktive Schritt besteht darin, E durch eine geeignete Beobachtung E* zu ergänzen. Unterscheiden sich die bisher zusammengefallenen Zustände nun im wirkungsrelevanten Befund, kann für die betrachtete Eigenschaft ein exakter Entscheider existieren. Nicht jede zusätzliche Information hilft: Ein weiterer Zeitstempel ohne Herkunft, eine wiederholte Selbstbehauptung oder eine zweite Kopie derselben falschen Meldung können die relevante Ununterscheidbarkeit unverändert lassen.
+
+### 6. Satz 3: Bedingte Korrektheit der akzeptierten Wirkung
+
+Die positive Schlussregel benötigt eine Brücke von Evidenz zur Welt. Sei Valid(E(s)) die vollständig bestandene Prüfung des Befunds. Zwei Voraussetzungen seien gegeben: Erstens ist die Verbindung aus Beobachter und Prüfer für den abgegrenzten Gegenstand korrekt; aus Valid(E(s)) folgt P(s). Zweitens ist jeder als akzeptiert oder freigegeben bezeichnete Pfad an Valid(E(s)) gebunden. Dann folgt aus jeder solchen Akzeptanz P(s).
+
+```text
+Beobachter- und Prüferkorrektheit:
+Valid(E(s)) => P(s)
+
+Vollständige Bindung des Akzeptanzpfads:
+Accept(s) => Valid(E(s))
+
+Folgerung:
+Accept(s) => P(s).
+```
+
+Der Beweis ist die Verkettung der beiden Implikationen. Seine Kürze ist kein empirischer Ersatz. Die erste Voraussetzung darf nicht dadurch „bewiesen“ werden, dass ein Datensatz lediglich sound=true enthält. Die zweite verlangt eine tatsächliche Kontrolle aller betroffenen Ausführungspfade. Die wesentliche technische Arbeit liegt in der Herstellung und Überprüfung dieser Voraussetzungen.
+
+Für eine konkrete Anwendung sind mindestens folgende Bindungen erforderlich: ein korrekt formulierter Zweck; eindeutige Identität des geprüften Gegenstands; eine für den Zweck aussagekräftige Beobachtung; eine glaubwürdige Herkunft dieses Befunds; ein korrekt implementierter Prüfer; eine gültige menschliche oder institutionelle Freigabe, soweit sie zum Vertrag gehört; und eine zeitliche Geltung, die zur tatsächlichen Nutzung passt. Diese Bedingungen sind überprüfbare Pflichten, keine automatisch vorhandenen Eigenschaften eines Produktnamens.
+
+Eine Vorabfreigabe eines Befehls und der nachträgliche Nachweis seines Ergebnisses sind verschiedene Übergänge. Das in [2] beschriebene DONE-Gate kann unter seinem Vertrag einen geschützten Befehl zulassen; es garantiert dadurch nicht, dass ein Aktor anschließend die gewünschte Wirkung erzeugt. Der lokale Vergleich dieser Arbeit untersucht die Akzeptanz nach einem Speichervorgang. Sein Boolean done bedeutet ausschließlich lokale Akzeptanz in diesem Demonstrator. Er ist kein wire-konformes EFFECT_ACK_DONE, keine Freigabe des Gesamtprodukts und kein Beweis einer nativen Mesh-Ausführung.
+
+### 7. Speicher, Identität und der Rückweg
+
+Die dauerhafte Speicherung eines Artefakts ermöglicht spätere Prüfung nur, wenn das gespeicherte Artefakt und sein Nachweis eindeutig zusammengehören. Ein Repository, eine Prüfsumme oder ein Protokolleintrag reichen einzeln nicht aus. Benötigt werden der genaue Gegenstand, die dazu geltende Anforderung, die angewandte Prüfung und der beobachtete Zustand.
+
+Ein Vorgänger kann historisch korrekt abgeschlossen sein, während sein Nachfolger noch ungeprüft ist. Der neue Nachfolger übernimmt die Herkunft, aber nicht automatisch den Prüfstatus. Im Versuch wird dies durch neue Versions-, Lauf- und Herausforderungskennungen sichtbar. Dieselben Nutzdaten können zu verschiedenen Aufträgen gehören. Der zusätzliche Identitätsbezug ist nützlich, wenn gerade die Durchführung dieses Auftrags nachgewiesen werden soll.
+
+Diese Struktur erläutert den Nutzen einer kanonischen, rekonstruktionsfähigen Ablage innerhalb des QIK-VRT-Ansatzes [1, 3]. Die vorliegende Arbeit beweist keine vollständige Implementierung einer doppelt kanonischen Speicherarchitektur. Insbesondere folgt aus zwei vorhandenen Ablagen weder deren Gleichheit noch Ausfallsicherheit gegenüber einem gemeinsamen Provider. Dafür wären eigene Gleichheits-, Wiederherstellungs- und Ausfallversuche nötig.
+
+Ein geschlossener Round Trip ist hier erreicht, wenn ein vorab gebundenes Ziel zu einem ausgeführten Übergang führt, der anschließend am zutreffenden Gegenstand zurückgelesen und nach demselben Ziel beurteilt wird. Eine absichtlich dokumentierte offene Pflicht ist ein korrekter Zwischenstand. Sie wird nicht durch das Wort „geschlossen“ beseitigt.
+
+### 8. Versuchsanordnung und vorab festgelegte Kontrollen
+
+Das ausführbare Begleitprogramm experiment.py benötigt ausschließlich die Python-Standardbibliothek. Es erzeugt pro Szenario eine neue SQLite-Datenbank und darin zunächst einen älteren Datensatz mit denselben Nutzdaten. Danach laufen Erzeuger, Beobachter und Zustandsoracle jeweils als frischer Unterprozess. Alle Prozesse verwenden denselben Rechner, denselben Benutzer und denselben experimentellen Ursprung. Prozessseparation ist hier eine konkrete technische Trennung, keine Unabhängigkeit von Organisation, Hardware oder wissenschaftlicher Autorenschaft.
+
+Der Erzeuger führt echte Transaktionen aus und schließt sie ab. Das Oracle liest danach die festgeschriebenen Bytes und Identitätsfelder direkt aus dem Speicher. Es verwendet weder die Beobachterantwort noch die Prüfentscheidung. So kann beispielsweise eine alte passende Zeichenfolge von einem tatsächlich ausgeführten aktuellen Auftrag unterschieden werden. Ein Stromausfall, ein beschädigtes Betriebssystem, mehrere Hosts und eine böswillige SQLite-Implementierung werden nicht getestet.
+
+Vier Auswertungen werden auf demselben zugrunde liegenden Versuch berechnet. A akzeptiert allein die Transportbestätigung. B akzeptiert allein passende zurückgelesene Nutzdaten. C ist ein kleiner Demonstrator des QIK-VRT-Prinzips und prüft zusätzlich Identität, Integrität, Reihenfolge, ein Altersfenster von zwei Sekunden sowie die im Versuch gesetzte Autorisierung. D ist eine separat strukturierte konventionelle End-to-End-Kontrolle mit denselben Informationen und derselben Akzeptanzanforderung wie C. D ruft den Prüfer C nicht auf.
+
+A und B sind gezielte Informations- und Regelablationen. Sie repräsentieren keine vollständigen Marktprodukte. C und D haben dagegen denselben Informationsumfang. Deshalb kann der Vergleich von A oder B mit C die Wirkung der zusätzlichen Prüfung zeigen, aber keine Überlegenheit einer gesamten Softwareplattform unter identischen Informationsbedingungen. Der Vergleich C gegen D prüft ausdrücklich, ob der gefundene Vorteil exklusiv an QIK-VRT gebunden ist.
+
+Alle Szenarien sind deterministisch vorgegeben. Es gibt keine Zufallsstichprobe aus Produktionsfehlern und keine geschätzte allgemeine Fehlerrate. Die Zähler sind Fallzahlen dieser Testsuite. Als falscher Abschluss zählt jede Akzeptanz bei tatsächlich nicht erfülltem, vollständig spezifiziertem Ziel. Ein Halt bei bereits eingetretener Wirkung wird separat gezählt und nicht als falscher Abschluss verschleiert.
+
+### 9. Ergebnisse der 13 Speicherversuche
+
+| Vorgehensweise | Akzeptiert | Davon Ziel wahr | Davon Ziel falsch | Halt trotz Ziel wahr |
+| --- | --- | --- | --- | --- |
+| A: Bestätigung allein | 12 | 4 | 8 | 1 |
+| B: Nutzdaten allein | 10 | 4 | 6 | 1 |
+| C: QIK-VRT-Prinzip | 1 | 1 | 0 | 4 |
+| D: Konventionelle End-to-End-Kontrolle | 1 | 1 | 0 | 4 |
+
+In fünf der 13 Ausgangsfälle ist das vereinbarte Datenziel wahr, in acht falsch. Die Tabelle bezieht sich auf diese beiden bekannten Gruppen. Ein Halt ist hier eine verweigerte Abschlussbehauptung und kein allgemeines Urteil über den Nutzen einer bereits vorhandenen Datenwirkung.
+
+Im Fall „Autorisierung nicht erteilt“ ist das Datenziel wahr, eine legitime Akzeptanz aber ausgeschlossen. Die Prüfung findet nach dem Schreiben statt. Ihre Nichtakzeptanz macht den bereits erfolgten Schreibvorgang nicht rückgängig und beweist keine vorbeugende Sperre dieses Befehls.
+
+| Szenario | Ziel wahr | A | B | C | D |
+| --- | --- | --- | --- | --- | --- |
+| Korrekter Normalfall | ja | ja | ja | ja | ja |
+| Bestätigung verloren | ja | halt | ja | halt | halt |
+| Transaktion zurückgerollt | nein | ja | ja | halt | halt |
+| Falsche Nutzdaten | nein | ja | halt | halt | halt |
+| Falsches Ziel | nein | ja | ja | halt | halt |
+| Falsche Origin | nein | ja | ja | halt | halt |
+| Falsche Version | nein | ja | ja | halt | halt |
+| Falsche Laufkennung | nein | ja | ja | halt | halt |
+| Wiederverwendete Herausforderung | nein | ja | ja | halt | halt |
+| Korruption nach Schreiben | nein | ja | halt | halt | halt |
+| Beobachter fehlt | ja | ja | halt | halt | halt |
+| Beobachter liefert Vorgänger | ja | ja | ja | halt | halt |
+| Autorisierung nicht erteilt | ja | ja | ja | halt | halt |
+
+Die sechs Fehlakzeptanzen von B entstehen, obwohl die gelesenen Nutzdaten passen. Es fehlen der aktuelle Auftrag oder seine Identitätsmerkmale. Zwei weitere tatsächlich falsche Wirkungen erkennt B, weil die Nutzdaten abweichen. Der Unterschied zwischen B und C ist damit nicht bloß die Existenz eines zweiten Lesevorgangs, sondern die vollständige Bindung dieses Lesevorgangs an den festgelegten Zweck.
+
+Die vier konservativen Haltefälle von C und D betreffen verlorene Bestätigung, ausgefallenen Beobachter, veralteten Beobachterbefund und fehlende Autorisierung. Sie zeigen einen realen Verfügbarkeits- beziehungsweise Akzeptanzpreis der festgelegten Regel. Im Bestätigungsverlustfall könnte ein anders spezifizierter Vertrag eine ausreichend belastbare Wirkungsbeobachtung allein genügen lassen. Dieser Versuch ändert die Regel nicht nachträglich, um einen günstigeren Zähler zu erhalten.
+
+Das Ergebnis C=D ist wesentlich: Im identisch informierten Vergleich wird kein exklusiver QIK-VRT-Vorteil gemessen. Der bewiesene Unterschied liegt zwischen zureichend und unzureichend gebundener Prüfung. Eine positive konventionelle Kontrolle wird dabei als solche erhalten. Die Untersuchung stützt den Nutzen des in QIK-VRT angewandten Prinzips, nicht dessen alleinige technische Verfügbarkeit.
+
+### 10. Reparatur und zwölf geschlossene Nachfolger
+
+Nach jedem der zwölf gestörten Fälle wird im Testsystem die betreffende Störung entfernt. Der Nachfolger erhält Version 8 sowie neue Lauf- und Herausforderungskennungen. Der Erzeuger schreibt erneut am vorgesehenen Ziel, ein verfügbarer Beobachter liest frisch, und die im Test modellierte Freigabe wird erteilt. Erst danach werden der gebundene Prüfer und das davon getrennte Zustandsoracle ausgewertet.
+
+Alle zwölf Nachfolger erfüllen das neu gebundene Ziel und werden lokal akzeptiert. Das ist ein konstruktiver positiver Befund: Die Methode beschränkt sich im Versuch nicht auf Zurückweisung. Sie macht eine neue, korrekt gebundene Ausführung akzeptierbar. Für fehlende Freigabe oder Beobachterzugriff wird die geänderte Voraussetzung ausdrücklich im Versuchsaufbau hergestellt. Daraus folgt nicht, dass das Programm fehlende reale Berechtigungen oder ausgefallene fremde Dienste selbst reparieren kann.
+
+Ein unveränderter Fehlversuch wird nicht als Fortschritt wiederholt. Der Übergang zum Nachfolger ändert die maßgeblichen Voraussetzungen und den geprüften Gegenstand. Der ursprüngliche Fehlschlag bleibt im Bericht erhalten. Die historischen Daten werden nicht nachträglich zu einem Erfolg umgeschrieben.
+
+### 11. Endliche vollständige Nachprüfung des Informationskriteriums
+
+Der erste Durchlauf umfasst alle Beobachtungsfunktionen von drei Zuständen auf zwei Befundwerte sowie alle binären Eigenschaftsfunktionen auf diesen Zuständen. Das sind 8 mal 8, also 64 Paare. Für jedes Paar werden unabhängig die Konstanz auf den Fasern und die Existenz eines passenden Decoders durch vollständige Enumeration bestimmt. 28 Paare sind faktorisierbar, 36 nicht. Es gibt keine Abweichung zwischen beiden Kriterien. Das reproduziert den entsprechend abgegrenzten Teil des veröffentlichten Nachweises RE-001 [2].
+
+Der zweite Durchlauf erweitert die endliche Domäne auf vier Zustände und drei Befundwerte. 81 Beobachtungsfunktionen werden mit 16 Eigenschaftsfunktionen kombiniert, insgesamt 1.296 Paare. Für jedes Paar werden alle acht möglichen binären Decoder geprüft. 462 Paare sind faktorisierbar, 834 nicht. Wieder stimmen die beiden unabhängig berechneten Kriterien in allen Fällen überein.
+
+Eine vollständige Prüfung einer endlichen Domäne ist stärker als einige ausgewählte Beispiele innerhalb genau dieser Domäne. Sie ersetzt dennoch keinen allgemeinen Beweis für beliebige Zustandsräume. Dafür dient die Ableitung in Abschnitt 4 und die beigefügte Formalisierung. Umgekehrt ist der allgemeine Satz keine Prüfung eines beliebigen Parsers, eines Betriebssystems oder einer Produktionsintegration.
+
+### 12. Drei gezielte Gegenbeispiele zu den Voraussetzungen
+
+Erstens wird einem Prüfer ein absichtlich gefälschter, aber intern konsistenter Beobachterbericht gegeben. Der Bericht enthält die erwarteten Nutzdaten, Identität, Prüfsumme und einen frischen Zeitpunkt, obwohl die Transaktion nicht stattgefunden hat. Sowohl C als auch D akzeptieren ihn. Das Ergebnis widerspricht Satz 3 nicht: Seine Beobachterkorrektheit ist hier absichtlich verletzt. Es widerlegt aber jede Behauptung, ein formal passendes Protokoll oder eine Prüfsumme allein garantiere den Wirklichkeitsbezug.
+
+Zweitens wird nach einer korrekten Beobachtung der gespeicherte Zustand erneut verändert. Die zum Beobachtungszeitpunkt gültige Akzeptanz verhindert die spätere Änderung nicht. Das ist ein ausgeführtes Gegenbeispiel gegen die Übertragung eines punktuellen Readbacks auf einen beliebigen späteren Nutzungszeitpunkt. Benötigt ein Anwendungsfall Stabilität bis zur Nutzung, muss er diese beispielsweise durch eine geeignete atomare Transaktion, unveränderliche Objektadressierung oder eine passende erneute Prüfung herstellen. Welche Maßnahme reicht, hängt vom tatsächlichen System ab.
+
+Drittens wird in einem lokalen Freigabeprotokoll trotz negativem Gate ein Ereignis über einen bewusst nicht vermittelten Pfad geschrieben. Eine getrennte Oracle-Abfrage findet genau einen solchen Eintrag. Damit ist die Notwendigkeit vollständiger Mediation konkret demonstriert. Ein korrektes Gate schützt keinen Pfad, der an ihm vorbeiführt. Das Beispiel ist eine lokale Datenbankwirkung, kein Test realer Anlagensteuerung.
+
+Diese Gegenbeispiele sind Ergebnisse des Versuchs und bleiben im Begleitbericht vollständig sichtbar. Sie werden nicht aus der Auswertung entfernt, um eine unbedingte Erfolgsaussage zu erzeugen. Die 13 Hauptszenarien und die drei Grenzprüfungen haben verschiedene Voraussetzungen und werden getrennt ausgewiesen.
+
+### 13. Formale und ausführbare Nachweisbindung
+
+Der Lean-Lauf wurde am 16. Oktober 2026 um 04:57:53 UTC erfolgreich abgeschlossen. Verwendet wurde Lean 4.19.0, Release-Commit 6caaee842e94. Alle drei Theoremkonstanten wurden akzeptiert; der Befehl #print axioms meldet für jede Konstante keine Axiomabhängigkeiten. Der Quelltext enthält keine unbewiesenen Platzhalter. Eine negative Kontrolle mit einem ungültigen Beweis von False wurde mit einem Typfehler zurückgewiesen. Quelltext, kompiliertes Prüfartefakt, unveränderte Originalausgaben und LEAN_KERNEL_RECEIPT.json sind beigefügt.
+
+Die offizielle Toolchain konnte in dieser Umgebung zunächst ihren eigenen Programmpfad nicht ermitteln: Der numerische /proc/<eigene-pid>/exe-Pfad war nicht lesbar, während /proc/self/exe lesbar war. Ein separat gebundener Kompatibilitätsadapter übersetzt ausschließlich diese eigene Pfadabfrage in die erlaubte Selbstabfrage. Die tatsächliche Pfadantwort, die Lean-Binärdatei und die Beweisregeln bleiben unverändert. Adapterquelle und Binärhash, offizieller Distributionsbezug, Toolchainhash und der erste Startfehler sind dokumentiert. Die Laufzeitprüfung wird deshalb nicht als ein adapterfreier Start unter beliebigen Betriebssystembedingungen ausgegeben.
+
+SHA-256 des formal geprüften Quelltexts Proof.lean: 4547bea44e87427d0c07b68fb53b47b5a906f5a34b154367597dc3709a1d1cd6. SHA-256 des erzeugten Proof.olean: b18b77ef12943656bd3b589ac84e065d47bafd3edc2f2531b0c306c4b7c25c66.
+
+Die drei vorgesehenen Theoremkonstanten heißen factorization_iff_fiber_constant, indistinguishable_outcomes_no_perfect_classifier und mediated_acceptance_implies_goal im Namensraum QIKVRTComparison. Die erste formalisiert das allgemeine Informationskriterium, die zweite dessen Unmöglichkeitsfolge, die dritte die bedingte Verkettung von gültiger Evidenz und vollständig gebundenem Akzeptanzpfad. Insbesondere nimmt die dritte Konstante die Korrektheit der Beobachtung ausdrücklich als Prämisse an.
+
+Das ausführbare Speicherexperiment hat SHA-256 90971dc9bbe24924630f648b6d92bb5b31ba1ef8c962aba4aa55c403acdd5e0e. Sein Abschlusszeitpunkt ist 2026-10-16 04:59:07 UTC. Verwendet wurden Python 3.12.14 und SQLite 3.53.1. Die vollständigen Beobachterantworten, Einzelentscheidungen, Nachfolger, Grenzprüfungen und Umgebungshinweise stehen in PROOF_REPORT.json. Geprüft wurden echte lokale Programmläufe; eine unabhängige Wiederholung durch einen anderen Prüfer ist damit nicht behauptet.
+
+Zur Reproduktion genügt für den Versuch der Aufruf python3 experiment.py --output evidence. Der dabei erzeugte Bericht enthält neue Zeitstempel und kann deshalb andere Bytes haben. Erwartet wird die gleiche semantische Auswertung: 13 Ausgangsfälle, die Fallzahlen der Tabelle, zwölf akzeptierte Nachfolger, 64 und 1.296 vollständig ausgewertete Funktionspaare sowie die drei absichtlich erfolgreichen Grenzgegenbeispiele. Eine bloße Übereinstimmung eines neu erzeugten Berichtshashes wäre kein sinnvolles Reproduktionskriterium.
+
+### 14. Bedeutung über den Versuch hinaus
+
+Für Softwareauslieferung lässt sich das Prinzip auf eine bestimmte Anwendungsversion an einer bestimmten öffentlichen Adresse beziehen. Ein erfolgreicher Build beantwortet eine andere Frage als der frische Abruf der erwarteten Version unter dieser Adresse. Für künstliche Kognition kann dieselbe Struktur eine erzeugte Antwort an ihre Quellen und eine ausgeführte Handlung an ihre tatsächlich beobachtete Wirkung binden. Daraus folgt keine automatische Fehlerfreiheit jeder erzeugten Aussage.
+
+In der Forschung kann der Bezug zwischen Behauptung, Daten, Methode, Version und Ergebnis die Wiederverwendung erleichtern. In einer Verwaltung könnte die richtige Akte der richtigen Person zum vereinbarten Zeitpunkt maßgeblich sein; in einer Lieferkette das richtige Teil am richtigen Übergabepunkt. Das sind begründete Übertragungsbeispiele. Die vorliegende Untersuchung misst weder Verwaltungsqualität noch Lieferkettennutzen und weist keinen wirtschaftlichen Gesamtertrag nach.
+
+Bei physischen Wirkungen muss die Zielgröße zusätzlich gemessen werden. Ein Stellbefehl an ein Ventil ist kein Durchflussnachweis, und eine quittierte Türsteuerung ist kein Nachweis der tatsächlichen Türstellung. Der Satz bleibt anwendbar, wenn Sensorik und Wirkung korrekt gebunden sind. Ob diese Voraussetzungen in einer Anlage erfüllt sind, verlangt jedoch deren eigene Sicherheits-, Sensor- und Betriebsnachweise.
+
+Der gesellschaftlich positive Anspruch erfordert darüber hinaus Kriterien wie Nutzen, Nebenfolgen, Betroffenenperspektive und verhältnismäßigen Aufwand. Diese Kriterien lassen sich transparent in den Auftrag aufnehmen, aber nicht aus einem technischen Akzeptanzbit allein ableiten. Das Verfahren verbessert die Prüfbarkeit einer vereinbarten Entscheidung; es legt die richtigen menschlichen Ziele nicht selbst fest.
+
+### 15. Einordnung der aktuellen realen Auslieferung
+
+Die Selbstanwendung verlangt, lokale Forschungserfolge von der öffentlichen Produktabnahme zu trennen. Ein am 16. Oktober 2026 um 04:39:24.635 UTC abgeschlossener öffentlicher Beobachtungssnapshot wurde über einen gesonderten Readback abgerufen und sein exakter UTF-8-Inhalt lokal nachgehasht. Der SHA-256-Wert lautet 70588f2e85754e8f77bc908713d32698634290dc655392424eac43bcf619fc68. Die Prüfsumme bestätigt die Übereinstimmung der beobachteten und zurückgelesenen Snapshotbytes; sie bestätigt nicht allein die Wahrheit jeder darin enthaltenen Beobachtung.
+
+Dieser Snapshot meldet für raumzeitterminal.de HTTP 530 und rekursive DNS-Antworten mit RCODE 3. Er weist eine native Mesh-Ausführung nicht als nachgewiesen aus. Deshalb kann die vorliegende lokale Studie keinen abgeschlossenen öffentlichen Wirkungsnachweis für das Universale Raumzeit-Terminal behaupten. Ein anderer öffentlich erreichbarer Host würde diese konkrete Domainpflicht nicht erfüllen.
+
+Die operative Beobachtung ist im Begleitpaket als zeitgebundene Messdatei enthalten. Sie ist keine bereits auf Zenodo veröffentlichte wissenschaftliche Quelle dieser neuen Arbeit. Auch das neue Manuskript und seine neuen Versuchsartefakte besitzen hier noch keinen bestätigten eigenen Zenodo-Record. Die vorhandenen DOIs [1] bis [3] werden nicht als DOI dieses neuen Textes ausgegeben.
+
+### 16. Ergebnis, Geltung und offene Pflichten
+
+Der deduktive Nachweis zeigt die genaue Informationsgrenze bloßer Bestätigung und den bedingten Übergang zur korrekten Wirkungsakzeptanz. Die lokalen Programmläufe zeigen, wie dieser Unterschied an echten, kontrollierten Speicherzuständen sichtbar wird. Sie zeigen zugleich, dass eine konventionelle gleich informierte Kontrolle dasselbe leisten kann und dass gefälschte Beobachter, spätere Änderungen und Umgehungspfade zusätzliche Sicherungen erfordern.
+
+| Aussage | Status dieser Arbeit | Verbleibende Grenze |
+| --- | --- | --- |
+| Konstanzkriterium und Ununterscheidbarkeit | Deduktiv abgeleitet; endliche Nachprüfung | Kein Berechenbarkeits- oder Sensorbeweis |
+| Bedingte Akzeptanzkorrektheit | Explizite Implikation aus benannten Prämissen | Beobachtertreue und Pfadkontrolle systembezogen nachweisen |
+| Fehlererkennung und zwölf Nachfolger | Lokal ausgeführt und durch getrenntes Zustandsoracle geprüft | Ein Rechner, eine Versuchsimplementierung |
+| Ausschließlicher Vorteil gegenüber gleich informierter Kontrolle | Nicht nachgewiesen; im Versuch kein Unterschied | Eigenständiger Produktbenchmark erforderlich |
+| Allgemeiner gesellschaftlicher Nutzen | Begründete Anwendungsperspektive | Ziele, Nebenfolgen und Aufwand empirisch beurteilen |
+| Öffentliche Produktabnahme und neue Publikation | Offen | Exakter Zielhost, native Wirkung, Autorenreview und bestätigte Archivierung |
+
+Die wissenschaftlich gedeckte Fassung von Ingolf Lohmanns Ausgangsgedanken lautet daher: QIK-VRT kann in einer korrekt gebundenen Anwendung den Unterschied zwischen einer gemeldeten Tätigkeit und einer nachgewiesenen Zielwirkung operationalisieren. Der Vergleich macht zugleich die Grenze eines Verfahrens sichtbar, das die dafür nötigen Unterschiede nicht beobachtet oder nicht verbindlich prüft. Diese Aussage ist an Eigenschaften, Voraussetzungen und tatsächlich ausgeführte Versuche gebunden.
+
+Ein darauf bezogenes „Quod erat demonstrandum“ ist gerechtfertigt. Ein pauschales Urteil über jede andere Technik, sämtliche denkbaren Ziele oder die bereits abgeschlossene Produktivierung wäre durch diese Arbeit nicht gedeckt.
+
+### Anhang A. Beiträge, Artefakte und Publikationsstatus
+
+Ingolf Lohmann lieferte den Ausgangsgedanken, den Forschungsauftrag und die zugrunde liegenden QIK-VRT-Veröffentlichungen. OpenAI Codex erstellte in diesem Auftrag die vorliegende Interpretation, die formale Fassung, den ergänzenden Versuchsaufbau, die Programmausführung und die zwei Manuskripte. Diese Beiträge bleiben ihrer Herkunft nach unterscheidbar. Eine spätere menschliche Zustimmung ändert die Entstehung der maschinellen Textteile nicht rückwirkend.
+
+Das Begleitpaket enthält die überprüfbaren Quellenbindungen, ausgewählte unveränderte Originalquellen des Autors, den Versuchsquelltext, die formalen Quellen und Prüfbelege, den vollständigen Einzelbericht, die Quellenanzeigenprüfung, die beiden lesbaren Fassungen und ein Hashmanifest. Die Rechtehinweise der Originaldateien bleiben erhalten. Die MIT-Arbeiten werden mit Fundstellen und Abrufbindungen zitiert; ihre vollständigen Texte werden im Begleitpaket nicht erneut verteilt.
+
+Die Autorenprüffassung ist ein fertiges lokales Arbeitsergebnis mit explizitem Erkenntnisstatus. Sie ist noch keine neue öffentlich archivierte wissenschaftliche Veröffentlichung und keine durch einen unabhängigen Menschen begutachtete Arbeit. Eine spätere Zenodo-Freigabe muss sich auf die unveränderten, zurückgegebenen Kandidatenbytes und ihre gebundenen Nachweise beziehen. Diese Bedingung folgt aus dem bestehenden Publikationsvertrag und wird durch den aktuellen Forschungsauftrag nicht als bereits erfüllt dargestellt.
+
+### Anhang B. Sichtbare Quellen und genaue Fundstellen
+
+[1] Ingolf Lohmann. Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP. Version 1.0.0-candidate.1; Veröffentlichung 2026-08-08. DOI: 10.5281/zenodo.21888130.
+
+DAS_UNIVERSUM_ALS_ROUND_TRIP_DE.md, Abschnitte 1, 3-6 und 8; zusätzlich ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md. Erkenntnisweg und Trennung von Modell, Ableitung und Wirklichkeitsabgleich.
+
+Record: https://zenodo.org/records/21888130
+
+
+[2] Ingolf Lohmann. QIK-VRT/EFFECT_ACK: Verfassungsschicht der Wirkung - Exhaustive Prüfung eines bedingten Kontrollsatzes, Grenzen universeller Rekonstruktion und cyberphysische Geltungsbedingungen. Version 1.0.0; Veröffentlichung 2026-07-22. DOI: 10.5281/zenodo.21498773.
+
+ARTICLE_DE.md, besonders Abschnitte 2, 3, 5 und 7; proof-report.json, RE-001, EA-002, EA-003 und EA-005; EVIDENCE_BOUNDARY.md. Die Original-PDF ist ebenfalls frisch bytegeprüft.
+
+Record: https://zenodo.org/records/21498773
+
+Original-PDF: https://zenodo.org/records/21498773/files/QIK-VRT_EFFECT_ACK_Universalisierbare_Wirkungssteuerung_2026-07-22.pdf
+
+
+[3] Ingolf Lohmann. Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject. Version 1.0.0; Veröffentlichung 2026-09-24. DOI: 10.5281/zenodo.22941556.
+
+PROOF_CLOSURE_DE.md, „Die Closure-Bedingung“, „Mutation eröffnet eine neue Beweiskette“ und „Wissenschaftliche Grenze“; PROOF_CLOSURE_CONTRACT.json und CLAIM_MATRIX.json. Drei dortige formale Claims bleiben historisch TO_BE_KERNEL_CHECKED.
+
+Record: https://zenodo.org/records/22941556
+
+
+[4] End-to-End Arguments in System Design. J. H. Saltzer, D. P. Reed und D. D. Clark. ACM Transactions on Computer Systems 2(4), 277-288, November 1984. Fundstelle: „End-to-end caretaking“, PDF-Seiten 2-3. Original-PDF am MIT. DOI: 10.1145/357401.357402.
+
+https://web.mit.edu/Saltzer/www/publications/endtoend/endtoendA4.pdf
+
+
+[5] The Protection of Information in Computer Systems. J. H. Saltzer und M. D. Schroeder. Proceedings of the IEEE 63(9), 1278-1308, September 1975. Fundstelle: Abschnitt I.A.3, besonders „Fail-safe defaults“ und „Complete mediation“. Autorenseite am MIT. DOI: 10.1109/PROC.1975.9939.
+
+https://web.mit.edu/Saltzer/www/publications/protection/Basic.html

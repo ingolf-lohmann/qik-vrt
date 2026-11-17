@@ -1,0 +1,20 @@
+{
+  "schema": "qikvrt_cosmology_kernel_proof_plan_v1",
+  "current_new_kernel_status": "NOT_RUN",
+  "prior_original_module_sha256": "8c0ff578be57f0b18435189d711f11e94990e434fb31f9e00f1666ad0ddc1a23",
+  "remaining": [
+    "Formalize explicit positive real parameterization without conflating invariant and energy-equivalent mass.",
+    "Bind continuity and energy-integral theorems to declared fluid/metric assumptions.",
+    "Keep numerical solver verification and physical correspondence distinct."
+  ],
+  "physical_claim_from_type_checking": false,
+  "current_new_kernel_status_scope": "The original numerical FLRW model only; not the separately checked real-energy consumer",
+  "additive_real_energy": {
+    "status": "VERIFIED_LOCAL_KERNEL",
+    "core_theorems": 8,
+    "checked_bindings": 8,
+    "package": "formalization/QIKVRT_RealEnergy_v1",
+    "receipt": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/RECEIPT.json",
+    "native_CI": "NOT_EXECUTED"
+  }
+}

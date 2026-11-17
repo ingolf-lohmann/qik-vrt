@@ -1,0 +1,102 @@
+{
+  "schema": "qikvrt_digital_twin_sso_authority_v1",
+  "owner": "Ingolf Lohmann",
+  "owner_authorization": {
+    "date": "2026-10-16",
+    "statement": "Single Sign-On is a mandatory precondition for obtaining, retaining and expanding Digital Twin permissions. No manual account-by-account login.",
+    "source": "OWNER_CONVERSATION_AUTHORIZATION",
+    "scope": "DIGITAL_TWIN_AUTHORIZATION_AND_LIFECYCLE",
+    "native_provider_identity_verified": false
+  },
+  "subjects": {
+    "authority": "ingolf-lohmann/qik-vrt",
+    "mirror": "Goldkelch/qik-vrt",
+    "public_anonymous_question_access": "ALLOWED_WITHOUT_DIGITAL_TWIN_PRIVILEGES",
+    "personal_digital_twin": "SSO_REQUIRED"
+  },
+  "identity": {
+    "protocol": "OIDC_AUTHORIZATION_CODE_PKCE_S256",
+    "allowed_provider_profiles": [
+      "microsoft_public_v2",
+      "REGISTERED_OIDC_IDP_WITH_VALIDATED_METADATA"
+    ],
+    "reuse_existing_identity_session": "ALLOW_ONLY_AFTER_NATIVE_TOKEN_VALIDATION",
+    "silent_token_refresh": "ALLOW_IF_PROVIDER_SUPPORTED_AND_REFRESH_VALID",
+    "passkeys_or_biometrics": "IDP_DEVICE_ASSERTION_ONLY_NOT_LOCAL_IDENTITY_INFERENCE",
+    "registered_client_id": "NOT_BOUND",
+    "registered_owner_subject": "NOT_BOUND",
+    "active_authenticated_session": "NOT_VERIFIED",
+    "external_ionos_sso_federation": "NOT_VERIFIED",
+    "browser_login_automation": "NOT_AUTHORIZED_AS_SSO_SUBSTITUTE",
+    "no_manual_password_collection": true,
+    "no_token_in_repo_or_logs": true,
+    "require_id_token_validation": [
+      "issuer",
+      "audience",
+      "subject",
+      "signature",
+      "nonce",
+      "exp",
+      "iat",
+      "tenant_binding_if_applicable"
+    ],
+    "forbid": [
+      "UNVALIDATED_BEARER",
+      "REPLAYED_STATE_OR_NONCE",
+      "SIMULATED_TEST_TOKEN_AS_PRODUCTION",
+      "OWNER_CHAT_STATEMENT_AS_IDP_ATTESTATION",
+      "GITHUB_APP_AUTH_AS_IONOS_ACCOUNT_AUTH"
+    ]
+  },
+  "authorization": {
+    "grant_requires": [
+      "VALIDATED_CURRENT_SSO_IDENTITY",
+      "EXACT_OWNER_SUBJECT_BINDING",
+      "EXPLICIT_CAPABILITY_SCOPE",
+      "VALID_TTL",
+      "AUDITABLE_POLICY_DECISION"
+    ],
+    "retain_requires": [
+      "UNEXPIRED_OR_VALIDLY_REFRESHED_SSO_SESSION",
+      "CURRENT_POLICY_AND_SUBJECT",
+      "NO_REVOCATION",
+      "FRESH_READBACK"
+    ],
+    "expand_requires": [
+      "CURRENT_VALIDATED_SSO_IDENTITY",
+      "SEPARATE_EXPLICIT_OWNER_SCOPE_APPROVAL",
+      "LEAST_PRIVILEGE",
+      "SUCCESSOR_VERSION",
+      "EFFECT_READBACK"
+    ],
+    "revocation": "DENY_NEW_EFFECTS_AND_INVALIDATE_LOCAL_CAPABILITY",
+    "on_sso_unavailable": "HOLD_SSO_SESSION_NOT_ESTABLISHED",
+    "on_provider_not_federated": "HOLD_PROVIDER_FEDERATION_UNAVAILABLE",
+    "manual_login_refusal": "PRESERVE_OWNER_PREFERENCE_NO_WORKAROUND",
+    "prohibit_identity_by_profile_or_personal_webpage": true,
+    "predecessor_evidence_transfer": false
+  },
+  "operations": {
+    "repository": "API_NATIVE_ONLY",
+    "external_dns_or_hosting": "ONLY_WITH_VALID_AUTHORIZED_PROVIDER_API_OR_FEDERATED_SSO_SESSION",
+    "sso_does_not_imply_dns_api_permission": true,
+    "sso_does_not_bypass_code_owner_review": true,
+    "sso_does_not_publish_zenodo_ietf_arxiv": true,
+    "no_credentials_scraping": true
+  },
+  "reference_paths": [
+    "src/qikvrt_personal_auth.py",
+    "tests/test_qikvrt_personal_auth.py",
+    "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json"
+  ],
+  "implementation_status": {
+    "normative_contract_materialized": true,
+    "personal_oidc_reference_present": true,
+    "digital_twin_rest_sso_enforced": false,
+    "registered_idp_binding_verified": false,
+    "native_ionos_federation_verified": false,
+    "live_permission_grant": false,
+    "effect_ack_done": false
+  },
+  "next_gate": "Bind and verify an existing authorized OIDC session and provider federation through API-native means; until then, fail closed on privileged Digital Twin effects."
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "qikvrt_publication_validator_diagnosis_v1",
+  "observed_at": "2026-10-15T13:21:35.173950+00:00",
+  "predecessor_head": "cdbdce01ba13f0c41ade9982a2d9a26a8ea4b92f",
+  "predecessor_first_error": "candidate and artifact path sets overlap: docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CHANGE_NOTICE.md",
+  "repairs": [
+    "disjoint candidate and artifact sets",
+    "receipt#theorem proof references",
+    "bound source fragments",
+    "canonical kernel state, publication id and theorem inventory with native evidence",
+    "bidirectional claim matrix boundary and source projection",
+    "13 supplemental dispositions retained in the same matrix"
+  ],
+  "repaired_claim_count": 37,
+  "formal_claim_count": 9,
+  "strict_validator_unchanged": true,
+  "strict_production_exit_code": 2,
+  "first_remaining_error": "proof bundle does not authorize the exact Zenodo upload",
+  "owner_exact_upload_authorization_recorded": false,
+  "publication_performed": false,
+  "prepublication_return_receipt": {
+    "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json",
+    "bytes": 11317,
+    "sha256": "f37afe97fc45dd705eadd0887d18c5faacd1dc6b82ed37163f13014c2bdc66fd",
+    "git_blob_sha1": "bd156aab9643fea1a049f4841305dcd500eb1239"
+  },
+  "exact_payload_file_count": 29,
+  "exact_planned_upload_count": 35,
+  "return_record_verified_by_unmodified_production_validator": true,
+  "source_visibility_published_52": "PASS",
+  "complete_source_publication_gate": "FAIL: SOURCE_NEW-PROOF:EXACT_LOCATOR_REQUIRED; SOURCE_NEW-PROOF:ARCHIVE_PUBLICATION_PENDING",
+  "production_authority_repair": "Existing publisher now pins ingolf-lohmann/qik-vrt for origin, effect admission and all consumption-ref operations; immutable old Goldkelch manifests remain readable but cannot start new production effects.",
+  "upload_plan_error_found": "manifest.files must contain between 1 and 100 entries",
+  "previous_planned_upload_files": 288,
+  "archive_members_byte_verified": 255,
+  "production_metadata_validated_by_existing_publisher": true,
+  "upload_count_limit_changed": false,
+  "unique_safe_upload_names_verified": true,
+  "original_scientific_bytes_changed": false
+}

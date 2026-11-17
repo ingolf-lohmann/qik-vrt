@@ -1,0 +1,54 @@
+{
+  "schema": "qikvrt_retrocausality_native_successor_observation_v1",
+  "candidate_head": "9c3c6b131698a6a233bfea75dc8f23f406969a97",
+  "candidate_tree": "ca1f5d5956c15b14973c703bdf8e5d690511866b",
+  "manuscript_run": {
+    "id": 38738292026,
+    "status": "success",
+    "event": "pull_request",
+    "actual_checkout": "2e1a4283e99425573e6b78a6267a1047e49c6b2e",
+    "scope": "GitHub PR test merge with Main 5796de77fbbef367b7774bc07a340eb970455a4c; relevant source blobs explicitly compared",
+    "source_bindings": [
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean",
+        "expected_blob": "50109305d4248e407d23c343e48807fd68258686",
+        "native_merge_blob": "50109305d4248e407d23c343e48807fd68258686",
+        "equal": true
+      },
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/BacksignalingBoundary.lean",
+        "expected_blob": "7245c8c071abae3ef126b25fe3088bcbc985bb5c",
+        "native_merge_blob": "7245c8c071abae3ef126b25fe3088bcbc985bb5c",
+        "equal": true
+      },
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ObserverRelative.lean",
+        "expected_blob": "7d6dbb825cdf5144aa744fd7993f191722903105",
+        "native_merge_blob": "7d6dbb825cdf5144aa744fd7993f191722903105",
+        "equal": true
+      },
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/ThreeObserverProtocol.lean",
+        "expected_blob": "3947af861a64565635ea7e14f455405288435ea9",
+        "native_merge_blob": "3947af861a64565635ea7e14f455405288435ea9",
+        "equal": true
+      },
+      {
+        "path": "tests/test_retrocausality_experiment.py",
+        "expected_blob": "761ced9d1352728e7b778f7132983120e773cc93",
+        "native_merge_blob": "761ced9d1352728e7b778f7132983120e773cc93",
+        "equal": true
+      }
+    ],
+    "log_sha256": null
+  },
+  "ci_run": {
+    "id": 38738292097,
+    "test_job": 116433118347,
+    "status": "failure",
+    "exact_checkout": "9c3c6b131698a6a233bfea75dc8f23f406969a97",
+    "error": "2026-10-15T12:55:14.9346845Z FAIL: test_package_is_reproducible_and_has_exact_provenance (tests.test_formalization_v2_release_workflow.FormalizationAlpha2ReleaseTests.test_package_is_reproducible_and_has_exact_provenance)\n2026-10-15T12:55:14.9347498Z ----------------------------------------------------------------------\n2026-10-15T12:55:14.9347814Z Traceback (most recent call last):\n2026-10-15T12:55:14.9348396Z   File \"/home/runner/work/qik-vrt/qik-vrt/tests/test_formalization_v2_release_workflow.py\", line 268, in test_package_is_reproducible_and_has_exact_provenance\n2026-10-15T12:55:14.9349019Z     self.assertEqual(outputs[0], ARCHIVE.read_bytes())\n2026-10-15T12:55:14.9349669Z AssertionError: b'PK\\[6198 chars]xf7\\\\i\\xa0r\\x16\\x8a\\x16\\x00\\x00\\xeeM\\x00\\x009\\[2421460 chars]\\x00' != b'PK\\[6198 chars]xf7\\\\X\\xc0\\xc0\\xc9\\xd3\\x15\\x00\\x00/K\\x00\\x009\\[2410114 chars]\\x00'\n2026-10-15T12:55:14.9350078Z \n2026-10-15T12:55:14.9350247Z ----------------------------------------------------------------------\n2026-10-15T12:55:14.9350552Z Ran 169 tests in 2.486s\n2026-10-15T12:55:14.9350679Z \n2026-10-15T12:55:14.9350798Z FAILED (failures=1)\n2026-10-15T12:55:14.9351089Z make: *** [Makefile:56: release-automation] Error 1\n2026-10-15T12:55:14.9351362Z --- WORKTREE STATUS ---\n2026-10-15T12:55:14.9351614Z --- INTEGRITY MANIFEST DELTA ---\n2026-10-15T12:55:14.9351841Z added=[]\n2026-10-15T12:55:14.9352077Z removed=[]\n2026-10-15T12:55:14.9352260Z changed=[]",
+    "repair": "Extend existing POST_ALPHA2_EXCLUSIONS by only the three later retrocausality sources; retain original archive and strict reproducibility test."
+  },
+  "physical_confirmation": false
+}

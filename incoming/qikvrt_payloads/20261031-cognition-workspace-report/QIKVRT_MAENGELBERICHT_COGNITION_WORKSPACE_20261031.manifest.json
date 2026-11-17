@@ -1,0 +1,41 @@
+{
+  "authority": {
+    "main_head": "5a42baf45748e4407a8fa16aef287a77873e788d",
+    "main_tree": "3f6e816b6b496eeb9ce8777d8fb93d95717be9ae",
+    "repository": "ingolf-lohmann/qik-vrt"
+  },
+  "container": {
+    "bytes": 8091,
+    "codec": "src/qikvrt_codec.py seal (V1, licensed snapshot)",
+    "element_identity": "b2f0b097bbfaf9aec2d018972b7ea5bf5f68759ac5ddcff1aed28739a4041f52",
+    "file": "QIKVRT_MAENGELBERICHT_COGNITION_WORKSPACE_20261031.qikvrt",
+    "provenance": {
+      "attribution": "Inhalt: Claude (Anthropic), QIK-VRT Mirror-Knoten, Sitzung session_01L7QQ89X4q6uweG4F5GB5sP; Auftrag und Rechteinhaber: Ingolf Lohmann (Product Owner)",
+      "license": "CC-BY-NC-ND-4.0; Copyright 2026 Ingolf Lohmann",
+      "source": "Mirror-Beobachtung 2026-10-31 18:27-18:40 MEZ; Authority ingolf-lohmann/qik-vrt main 5a42baf45748e4407a8fa16aef287a77873e788d"
+    },
+    "sha256": "c94df43a75ea38212ab13687a4a465274bb2ddb1eb91679de2c56cdae7515d41",
+    "stable_id": "f3a722a2cbac2e6d8e8c043b89fb20dcf421db1b3f57dcceda27d8963c314af4",
+    "standpoint_signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+  },
+  "evidence_boundaries": {
+    "byte_integrity": "SHA-256 (collision resistance assumed)",
+    "delivery_R1": "NICHT_ZUGESTELLT; handed to Owner as files",
+    "natural_person_authorship": "NOT established by this manifest; established only by Owner commit/signature in the Authority",
+    "standpoint": "canonical QIK-VRT V1 signature embedded and verified by unseal"
+  },
+  "producer": "Claude (Anthropic), QIK-VRT Mirror node, session_01L7QQ89X4q6uweG4F5GB5sP",
+  "report": {
+    "bytes": 11145,
+    "file": "QIKVRT_MAENGELBERICHT_COGNITION_WORKSPACE_20261031.md",
+    "sha256": "b6e5e8b4a1bb2146859c829adf313b831bb6c309b2dbd53a88425cde98163f82"
+  },
+  "schema": "qikvrt_mirror_report_manifest_v1",
+  "subject": "Maengelbericht QIK-VRT Kognitiver Arbeitsraum https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/",
+  "utc": "2026-10-31T17:45:00Z",
+  "verify": [
+    "python3 -B -m src.qikvrt_codec unseal <container> <out.md>",
+    "sha256(<out.md>) == report.sha256",
+    "sha256(<container>) == container.sha256"
+  ]
+}

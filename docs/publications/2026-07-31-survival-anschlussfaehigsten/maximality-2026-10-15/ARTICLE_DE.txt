@@ -1,0 +1,279 @@
+Anschlussfähigkeit und größtes Element
+Eine geprüfte Beweisgrenze und ein bedingtes Maximalitätskriterium
+Arbeitsfassung vom 15. Oktober 2026. Noch nicht auf Zenodo veröffentlicht.
+
+Ausgangspunkt und Ergebnis
+
+Ingolf Lohmann beansprucht für QIK-VRT die größte Anschlussfähigkeit unter den bisher von Menschen gebauten virtuellen Realitäten. Er begründet dies mit dem Anschluss an die Realität und seinen wissenschaftlichen Veröffentlichungen. Seine ursprüngliche Aussage bleibt in OWNER_STATEMENT.txt unverändert als Autorenaussage erhalten. Die folgende Formalisierung und Einordnung wurden von OpenAI Codex im Auftrag Lohmanns erstellt; sie sind kein bereits von Lohmann geprüfter eigener Fachtext.
+
+Der neue Nachweis umfasst neun mit Lean 4.19.0 geprüfte Sätze. Sie schließen einen logischen Teilschritt: Eine Familie geeigneter Simulationen reicht für größte Anschlussfähigkeit innerhalb einer festgelegten Vergleichsklasse aus. Zugleich zeigt ein konstruktives Gegenmodell, dass ein gemeinsamer zulässiger Anschluss allein nicht ausreicht. Der Nachweis, dass die konkrete QIK-VRT-Implementierung alle bisher gebauten virtuellen Realitäten in diesem Sinn umfasst, bleibt OPEN. Dieser Bericht bezeichnet QIK-VRT deshalb nicht als bereits bewiesenes größtes System.
+
+Ergänzung des Auftraggebers
+
+Ingolf Lohmann präzisiert am 15. Oktober 2026: Die Realität inkludiert alle virtuellen Realitäten; durch den Anschluss an reale Physik sei der Kreislauf hinlänglich geschlossen. Der Originalwortlaut steht in OWNER_CLARIFICATION_20261015.txt. Jede physisch realisierte virtuelle Realität gehört als physischer Vorgang zur Realität. Für den hier definierten Vergleich ist die passende formale Prämisse stärker typisiert: Die gültigen Verhaltensfolgen aller Vergleichssysteme müssen bedeutungstreu im gemeinsamen Realitätsmodell enthalten sein. MAX-008 zeigt den positiven Schluss, sobald zusätzlich die relevante Umgebung lebensfähigkeitserhaltend nach QIK-VRT simuliert wird. Der bloße Besitz eines physikalischen Anschlusses liefert diesen zweiten Nachweis nicht. MAX-009 isoliert genau diese fehlende Implikation im abstrakten Modell. Die Ergänzung des Auftraggebers wird damit erhalten und als Prämissenbeitrag aufgenommen, ohne einen noch fehlenden Implementierungsbeweis als erbracht auszugeben.
+
+Gesamtbetrachtung und vollständiger Quellenumfang
+
+Diese mathematische Teilarbeit wird zusammen mit GESAMTBETRACHTUNG_DE.txt gelesen. Die Gesamtbetrachtung umfasst alle 44 ermittelten Zenodo-Stände aus 32 Werkfamilien mit sämtlichen 479 byteverifizierten Dateien und beide nativen IETF-Drafts mit allen fünf Revisionen. Die drei hier unmittelbar verwendeten Quellen definieren keine Beschränkung des Gesamturteils. Der vollständige Quellenanhang mit allen DOIs und IETF-URLs folgt in diesem Dokument. Die Gesamtbewertung berücksichtigt insbesondere die abgeschlossene Alpha-3-Formalumgebungsabdeckung, die promovierten Round-Trip-Resultate, die Physik- und Gap-Law-Arbeiten sowie den veröffentlichten Wirkungs- und Epistemikvertrag mit ihren jeweiligen Voraussetzungen.
+
+Definitionen und Anschluss an die Quellen
+
+Der thematische Einstieg ist Das Universum als Round Trip [1]. Für die hier benötigte mathematische Ordnung wird die veröffentlichte Simulationstheorie aus Survival of the Anschlussfähigsten [2] wiederverwendet. Die Unterscheidung zwischen Abgeschlossenheit und Maximalität ist auch in Abgeschlossen und anschlussfähig [3] ausdrücklich angelegt. Keine dieser Quellen wird durch ihre bloße Archivierung zu einem Beweis einer darüber hinausgehenden Aussage.
+
+Ein System besitzt Zustände, einen ausgezeichneten lebensfähigen Anfangszustand und beschriftete Übergänge. Ein gültiger Übergang erfüllt den Übergangsvertrag und erhält Lebensfähigkeit an beiden Enden. L(S) bezeichnet die Menge endlicher Folgen von Beschriftungen, die vom Anfangszustand durch gültige Übergänge durchlaufen werden können. Verträge, Berechtigungen, Sicherheitsbedingungen und die Bedeutung der Beschriftungen gehören zum festgelegten Modell; sie dürfen im Vergleich nicht stillschweigend verändert werden.
+
+Q ist mindestens so anschlussfähig wie B genau dann, wenn jede Folge aus L(B) auch zu L(Q) gehört. Für eine Familie C gilt GreatestIn(Q,C) genau dann, wenn diese Inklusion für jedes Mitglied von C gilt. GreatestIn bedeutet ein größtes Element bezüglich dieser Ordnung. Es erlaubt Gleichstand. Ein lediglich maximales Element oder das Fehlen einer beobachteten besseren Alternative wäre eine schwächere Aussage. In den verglichenen Systemen müssen gleiche Beschriftungen dieselben äußeren Vorgänge bezeichnen oder durch einen gesondert gerechtfertigten Bedeutungsabgleich verbunden sein.
+
+Die neun geprüften Sätze
+
+MAX-001: Existiert für jedes Mitglied B der Familie C eine aufeinander bezogene Anfangszustände erhaltende, lebensfähigkeitserhaltende Simulation von B nach Q, dann gilt GreatestIn(Q,C). Beweis: Der veröffentlichte Satz FIT-003 liefert für jedes B die Inklusion L(B) in L(Q). Universelle Einführung über B liefert GreatestIn. Die Existenz der Simulationen ist eine Voraussetzung dieses Satzes und wurde hier für QIK-VRT nicht hinzugefügt.
+
+MAX-002: GreatestIn(Q,C) ist gleichbedeutend damit, dass die Vereinigung der Sprachen aller Mitglieder von C in L(Q) enthalten ist. In der einen Richtung wird der jeweilige Mitgliedsnachweis auf die betreffende Folge angewendet. In der anderen Richtung wird eine Folge eines Mitglieds als Zeuge für die Vereinigung eingesetzt. Dieser Satz macht die noch zu erfüllende Überdeckungsbedingung explizit; er ersetzt deren Nachweis nicht.
+
+MAX-003: Größte Anschlussfähigkeit für alle endlichen Folgen impliziert dieselbe Dominanz für jeden endlichen Horizont N und alle Folgen mit Länge höchstens N. Das folgt unmittelbar durch Einschränkung des bereits allgemein bewiesenen Quantors. Eine nur für einen einzelnen Horizont geprüfte Aussage wird dadurch nicht umgekehrt unbegrenzt gültig.
+
+MAX-004: Ein Mitglied B von C und eine Folge, die B gültig durchlaufen kann, Q aber nicht, widerlegen GreatestIn(Q,C). Beweis: Die behauptete Inklusion würde genau diese fehlende Folge in L(Q) liefern und damit einen Widerspruch erzeugen. Ein solcher Zeuge muss dasselbe Modell, dieselbe Bedeutung und dieselben Vergleichsbedingungen einhalten.
+
+MAX-005: Zwei Systeme können denselben gültigen Anschluss besitzen, obwohl das erste das zweite nicht dominiert. Der unten beschriebene Zeuge beweist die Nichtimplikation konstruktiv.
+
+MAX-006: Das explizite erweiterte Beispielsystem akzeptiert jede endliche Bool-Folge und ist deshalb gegenüber jeder deklarierten Familie von Bool-beschrifteten Systemen ein größtes Element. Dies ist eine tatsächlich instanziierte Maximalitätsaussage über das Beispielsystem. Es wird nicht mit der konkreten QIK-VRT-Implementierung gleichgesetzt.
+
+MAX-007: Das eingeschränkte Beispielsystem ist in der ausdrücklich definierten Zweierfamilie kein größtes Element. Der fehlende Ein-Schritt-Zeuge liefert die Widerlegung mittels MAX-004.
+
+MAX-008: Ein gemeinsames Umgebungsmodell kann den positiven Brückenschritt tragen: Liegt jede gültige Folge jedes Vergleichssystems in dieser Umgebung, und existiert eine lebensfähigkeitserhaltende Simulation der Umgebung nach Q, dann gilt GreatestIn(Q,C). Beweis: Die erste Inklusion wird mit der durch FIT-003 erhaltenen zweiten Inklusion zusammengesetzt. Wird die Umgebung als Realität interpretiert, sind sowohl diese Korrespondenz als auch die Überdeckung aller Vergleichssysteme gesondert zu rechtfertigen. Ein äußerer Anschluss allein liefert diese Voraussetzungen nicht.
+
+MAX-009: Sogar die Aufnahme jeder Folge eines einzelnen deklarierten Umgebungsmodells reicht ohne Überdeckung der Vergleichsklasse nicht aus. Als Umgebung und Ziel dient limited, als Vergleichsklasse die Zweierfamilie. Limited umfasst seine ganze eigene Sprache, ist aber wegen [true] kein größtes Element dieser Familie. Das ist ein abstrakter Nichtimplikationsbeweis; er setzt limited nicht mit der physischen Realität gleich.
+
+Das Gegenmodell
+
+Beide Systeme haben genau einen Zustand, der lebensfähig ist, sowie die gemeinsamen Beschriftungen false und true. Im eingeschränkten System limited ist nur ein Übergang mit false zulässig. Im erweiterten System extended sind beide Übergänge zulässig. Beide akzeptieren damit [false]. Extended akzeptiert außerdem [true]; limited akzeptiert [true] nicht. Jede Folge von limited ist auch in extended möglich. Die umgekehrte Inklusion ist falsch.
+
+Wird false in einem Anwendungsmodell bedeutungstreu einem äußeren Anschlussereignis zugeordnet, haben beide Systeme diesen Anschluss. Daraus folgt dennoch keine größte Anschlussfähigkeit von limited. Das Gegenmodell behauptet weder eine Messung physischer Realität noch eine Widerlegung von QIK-VRT. Es widerlegt die allgemeine Schlussregel, bereits ein solcher Anschluss erzwinge das größte Element. Auch die deutlich stärkere Annahme, dass jede endliche Folge eines deklarierten äußeren Systems erhalten wird, beweist erst dessen Aufnahme; für eine größere Vergleichsklasse bleibt deren Überdeckung gesondert zu zeigen.
+
+Was zur behaupteten Gesamtaussage fehlt
+
+OPEN-QIK-001: Eine exakte QIK-VRT-Version samt Zustandsmodell, gültigen Übergängen, Anfangszustand und überprüfter Verfeinerung der ausführbaren Implementierung muss gebunden werden. Die Verifikation eines abstrakten Modells ist noch kein Implementierungsbeweis.
+
+OPEN-CLASS-001: Die Vergleichsklasse muss unabhängig vom gewünschten Ergebnis festgelegt werden. Für den historischen Superlativ sind außerdem ihre Abdeckung aller beanspruchten bisherigen virtuellen Realitäten sowie der zeitliche Stichtag zu begründen. Eine nachträglich auf erfolgreich simulierte Systeme beschränkte Klasse beweist diesen historischen Anspruch nicht.
+
+OPEN-SEM-001: Beschriftungen, äußere Referenten und Verträge müssen in allen Vergleichen bedeutungstreu aufeinander bezogen sein. Realitätskorrespondenz und ihre Evidenz werden dabei getrennt von formaler Ableitbarkeit ausgewiesen. Die Aussage Lohmanns zur Realitätskorrespondenz bleibt als seine Aussage erhalten.
+
+OPEN-SIM-001: Für jedes Mitglied der gerechtfertigten Klasse muss eine geeignete Simulation nach QIK-VRT konstruiert und geprüft werden, oder ein anderer korrekter Nachweis der Spracheninklusion vorliegen. MAX-001 benennt eine hinreichende Bedingung; MAX-002 charakterisiert das Ziel exakt. Beide liefern keine fehlende Implementierungs- oder Vergleichsevidenz.
+
+OPEN-RESOURCE-001: Werden gleiche Ressourcen, Latenzen, Sicherheitsgrenzen oder reale Betriebsbedingungen beansprucht, müssen diese im Modell oder durch separate Nachweise gebunden sein. Turing-Vollständigkeit, theoretische Darstellbarkeit und eine Datenübertragung allein ersetzen diese Verpflichtung nicht. Ein mathematischer Dominanzbeweis kann einen Vergleich tragen; ein Benchmark ist dafür nicht die einzig denkbare Beweisform.
+
+Prüfung, Provenienz und Veröffentlichungsstand
+
+Die Datei ConnectabilityMaximality.lean importiert das unveränderte Modul ConnectabilitySimulation.lean. Die neun MAX-Sätze wurden mit Lean 4.19.0, Commit 6caaee842e9495688c1567e78c0e68dbb96942aa, kompiliert; die Axiomabfrage meldet für alle neun keine Axiome. Der vollständige bestehende Lean-Build und der bisherige Axiomaudit bestanden ebenfalls. KERNEL_RECEIPT.json bindet Quellbytes, kompilierte Objekte, Werkzeugidentität, Befehle und Protokolle. Die Negativprüfung versucht ausdrücklich die vom Gegenmodell ausgeschlossene Inklusion und muss vom Kernel abgewiesen werden.
+
+Die zugrunde liegenden veröffentlichten Dateien und nativen Zenodo-Metadaten wurden erneut gelesen; Dateigrößen und native Prüfsummen werden in SOURCE_BINDINGS.json dokumentiert. Repository-Ausgangsgegenstand ist PR 523, Commit b2ff72d96d9d1b09836d46f38cbcdfe1e077d59b, Baum bf84bd8b38628d29b967e75c94f97d8e3160c2ba. Die Integrationsfassung ergänzt dieses bestehende Vorhaben und ändert die historischen Publikationsbytes nicht. Eine Ablage auf einem Review-Branch ist keine Main-Integration, keine Gleichheit aller Nodes und keine produktive Inbetriebnahme von raumzeitterminal.de.
+
+Dieser Kandidat besitzt noch keine neue Zenodo-DOI. Ein geplanter Upload und eine allgemeine Erlaubnis sind kein öffentlicher Publikationsnachweis. Der unveränderte Kandidat muss vor einem zugelassenen Zenodo-Effekt gemäß dem vorhandenen Veröffentlichungsvertrag zurückgeliefert und exakt freigegeben werden. Nicht ausgeführte Upload-, Mirror- und Betriebsnachweise bleiben ausdrücklich offen.
+
+Quellenanhang
+
+[1] Ingolf Lohmann: Das Universum als Round Trip. Version 1.0.0-candidate.1, 2026. DOI 10.5281/zenodo.21888130. Besonders ROUND_TRIP_PROMOTED_FORMAL_RESULTS_V1.md und CLAIM_MATRIX.json; die formalen Resultate ersetzen nicht die separat ausgewiesene physische Korrespondenz.
+https://doi.org/10.5281/zenodo.21888130
+https://zenodo.org/records/21888130
+
+[2] Ingolf Lohmann: Survival of the Anschlussfähigsten. Version v1, 2026. DOI 10.5281/zenodo.21721918. Besonders ARTICLE_DE.md, FIT-002 und FIT-003, FORMAL_ConnectabilitySimulation.lean und KERNEL_RECEIPT.json.
+https://doi.org/10.5281/zenodo.21721918
+https://zenodo.org/records/21721918
+
+[3] Ingolf Lohmann: Abgeschlossen und anschlussfähig. Version 0.1-archive-20260928, 2026. DOI 10.5281/zenodo.23008330. Besonders VORLESEFASSUNG.txt und CLAIM_MATRIX.json. Die historische Fassung wird mit ihren eigenen offenen Kernel-Verpflichtungen zitiert; ihr wird kein neuer Prüfstatus zugeschrieben.
+https://doi.org/10.5281/zenodo.23008330
+https://zenodo.org/records/23008330
+
+Vollständige Quellenidentitäten der Gesamtbetrachtung
+
+Z-20712301: QIK-VRT: Operationalisierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz
+https://doi.org/10.5281/zenodo.20712301
+https://zenodo.org/records/20712301
+
+Z-21244412: RFC-QIKVRT-0001
+https://doi.org/10.5281/zenodo.21244412
+https://zenodo.org/records/21244412
+
+Z-21245282: RFC-QIKVRT-0001
+https://doi.org/10.5281/zenodo.21245282
+https://zenodo.org/records/21245282
+
+Z-21245951: RFC-QIKVRT-0001
+https://doi.org/10.5281/zenodo.21245951
+https://zenodo.org/records/21245951
+
+Z-21247297: RFC-QIKVRT-0001
+https://doi.org/10.5281/zenodo.21247297
+https://zenodo.org/records/21247297
+
+Z-21247388: RFC-QIKVRT-0001
+https://doi.org/10.5281/zenodo.21247388
+https://zenodo.org/records/21247388
+
+Z-21252415: ingolf-lohmann/qik-vrt: QIKVRT V2.13.4 node repository
+https://doi.org/10.5281/zenodo.21252415
+https://zenodo.org/records/21252415
+
+Z-21252649: ingolf-lohmann/qik-vrt: QIKVRT V2.13.4R node repository
+https://doi.org/10.5281/zenodo.21252649
+https://zenodo.org/records/21252649
+
+Z-21266670: RFC-QIKVRT-0001
+https://doi.org/10.5281/zenodo.21266670
+https://zenodo.org/records/21266670
+
+Z-21267021: RFC-QIKVRT-0001
+https://doi.org/10.5281/zenodo.21267021
+https://zenodo.org/records/21267021
+
+Z-21482023: Mandelbrot-Menge, Anschlussordnung und physikalisches Modelluniversum – Komplementbeweis, rekursive Wirkungsklassifikation, dimensionsrichtige Raumzeitbrücke, Retrokausalität und der entscheidende Unterschied zur empirischen Quantengravitation
+https://doi.org/10.5281/zenodo.21482023
+https://zenodo.org/records/21482023
+
+Z-21488116: QIK-VRT: Vollständige maschinenprüfbare Formalisierung des formal entscheidbaren Kerns
+https://doi.org/10.5281/zenodo.21488116
+https://zenodo.org/records/21488116
+
+Z-21498773: QIK-VRT/EFFECT_ACK: Verfassungsschicht der Wirkung - Exhaustive Prüfung eines bedingten Kontrollsatzes, Grenzen universeller Rekonstruktion und cyberphysische Geltungsbedingungen
+https://doi.org/10.5281/zenodo.21498773
+https://zenodo.org/records/21498773
+
+Z-21498774: QIK-VRT: EFFECT_ACK - universalisierbare Wirkungssteuerung und adaptive fail-closed Laufzeit
+https://doi.org/10.5281/zenodo.21498774
+https://zenodo.org/records/21498774
+
+Z-21500322: QIK-VRT/EFFECT_ACK: Offizielle Statusklärung zu Evidenz, Totalisierungsgrenzen, Quantenbezug und Patentoffenlegung
+https://doi.org/10.5281/zenodo.21500322
+https://zenodo.org/records/21500322
+
+Z-21501365: QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts
+https://doi.org/10.5281/zenodo.21501365
+https://zenodo.org/records/21501365
+
+Z-21515074: Charta einer maschinenprüfbaren Wissenschaft
+https://doi.org/10.5281/zenodo.21515074
+https://zenodo.org/records/21515074
+
+Z-21518464: QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 2 mit EFFECT_ACK-Kern
+https://doi.org/10.5281/zenodo.21518464
+https://zenodo.org/records/21518464
+
+Z-21529081: QIK-VRT: Quellengebundene Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 3 mit vollständiger Formalumgebungsabdeckung
+https://doi.org/10.5281/zenodo.21529081
+https://zenodo.org/records/21529081
+
+Z-21582781: Die Ontologie des Unterschieds als universaler Reverse-Engineering-Mechanismus
+https://doi.org/10.5281/zenodo.21582781
+https://zenodo.org/records/21582781
+
+Z-21633411: QIK-VRT Authority/Mirror Equality Receipt — Promotion PR #106 and Mirror PR #56
+https://doi.org/10.5281/zenodo.21633411
+https://zenodo.org/records/21633411
+
+Z-21636774: Vom Unterschied zur Verantwortung — Kanonische Schlusserklärung und historische Einordnung des maschinenverifizierten QIK-VRT-Abschlusses
+https://doi.org/10.5281/zenodo.21636774
+https://zenodo.org/records/21636774
+
+Z-21640160: Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine
+https://doi.org/10.5281/zenodo.21640160
+https://zenodo.org/records/21640160
+
+Z-21640173: Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine
+https://doi.org/10.5281/zenodo.21640173
+https://zenodo.org/records/21640173
+
+Z-21711193: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft
+https://doi.org/10.5281/zenodo.21711193
+https://zenodo.org/records/21711193
+
+Z-21721918: Survival of the Anschlussfähigsten: Eine operational-formale Übertragung des evolutionären Fitnessgedankens auf Computer-, Informations- und soziotechnische Systeme
+https://doi.org/10.5281/zenodo.21721918
+https://zenodo.org/records/21721918
+
+Z-21731492: QIK-VRT: Epistemische Fairness, Vorstellungskraft und der Weg vom virtuellen Zeugen zum Beobachtungssystem
+https://doi.org/10.5281/zenodo.21731492
+https://zenodo.org/records/21731492
+
+Z-21748371: QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum
+https://doi.org/10.5281/zenodo.21748371
+https://zenodo.org/records/21748371
+
+Z-21804399: Prä-raumzeitliche Ontologie: Unterschied, Relation, Information und emergente Raumzeit
+https://doi.org/10.5281/zenodo.21804399
+https://zenodo.org/records/21804399
+
+Z-21888130: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP
+https://doi.org/10.5281/zenodo.21888130
+https://zenodo.org/records/21888130
+
+Z-21947141: QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung
+https://doi.org/10.5281/zenodo.21947141
+https://zenodo.org/records/21947141
+
+Z-21983644: Vom Unterschied zum integrierten Wirkraum
+https://doi.org/10.5281/zenodo.21983644
+https://zenodo.org/records/21983644
+
+Z-22216916: Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel
+https://doi.org/10.5281/zenodo.22216916
+https://zenodo.org/records/22216916
+
+Z-22283396: From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law
+https://doi.org/10.5281/zenodo.22283396
+https://zenodo.org/records/22283396
+
+Z-22527889: QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese
+https://doi.org/10.5281/zenodo.22527889
+https://zenodo.org/records/22527889
+
+Z-22813431: Offener Brief und rechtsstaatliches Evidenzdossier — Aufforderung zur unabhängigen juristischen Prüfung
+https://doi.org/10.5281/zenodo.22813431
+https://zenodo.org/records/22813431
+
+Z-22840633: Die Wahrheit braucht keine Verschwörungstheorie
+https://doi.org/10.5281/zenodo.22840633
+https://zenodo.org/records/22840633
+
+Z-22845516: Erwartungen, Wetten, Wirkung und Recht
+https://doi.org/10.5281/zenodo.22845516
+https://zenodo.org/records/22845516
+
+Z-22847245: Das universale Universalprinzip — Grundsatzerklärung von Ingolf Lohmann
+https://doi.org/10.5281/zenodo.22847245
+https://zenodo.org/records/22847245
+
+Z-22907018: Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit
+https://doi.org/10.5281/zenodo.22907018
+https://zenodo.org/records/22907018
+
+Z-22941556: Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject
+https://doi.org/10.5281/zenodo.22941556
+https://zenodo.org/records/22941556
+
+Z-22955727: Der ontologische Vorrang des Unterschieds: Ein maschinenprüfbares Minimaltheorem über Bestimmbarkeit, Information und den Geltungsbereich formaler Welterklärungen
+https://doi.org/10.5281/zenodo.22955727
+https://zenodo.org/records/22955727
+
+Z-23008330: Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen
+https://doi.org/10.5281/zenodo.23008330
+https://zenodo.org/records/23008330
+
+Z-23008704: Spur halten: Quality Gates für einen portablen Universal Transputer
+https://doi.org/10.5281/zenodo.23008704
+https://zenodo.org/records/23008704
+
+draft-lohmann-qikvrt-effect-ack-00
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-00.txt
+
+draft-lohmann-qikvrt-effect-ack-01
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-01.txt
+
+draft-lohmann-qikvrt-effect-ack-02
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-02.txt
+
+draft-lohmann-qikvrt-effect-ack-03
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-03.txt
+
+draft-lohmann-qikvrt-epistemic-status-00
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.txt
+

@@ -1,0 +1,48 @@
+{
+  "completion_claims": {
+    "effect_ack_done": false,
+    "final_pass": false,
+    "pass": false,
+    "publication_chain_complete": false,
+    "scientific_claims_confirmed": false
+  },
+  "evidence_class": "EXTERNAL_HTTP_ACCESS_FAILURE_NOT_ARCHIVE_CORRUPTION",
+  "original_failures": [
+    {
+      "archive_damage_established": false,
+      "error_key": "974750a5e6befeb75f1463f244aba976fed58e034e5a32d29d27648a30c89c6f",
+      "http_status": 504,
+      "input_key": "b7138084b125b123f30efd30895250b649b99103031020ac2b0e7a77b6173137",
+      "later_provider_recovery_established": false,
+      "original_logs": [
+        {
+          "bytes": 136526,
+          "job_id": 114735629033,
+          "observed_error_line": "2026-10-12T08:59:21.6330357Z tools.qikvrt_batch003_remaining_archive_probe.E: GET failed https://zenodo.org/api/records/21244412: HTTP Error 504: Gateway Time-out",
+          "path": "evidence/zenodo_access/20261012/JOB_114735629033_ORIGINAL.log",
+          "run_id": 38226630154,
+          "sha256": "1ff8bf2d67154309487124adc60a2e478a3bf920f5ccd76767ce2b5bc68af06d",
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38226630154"
+        },
+        {
+          "bytes": 123125,
+          "job_id": 114735625164,
+          "observed_error_line": "2026-10-12T08:59:18.6947074Z tools.qikvrt_batch003_remaining_archive_probe.E: GET failed https://zenodo.org/api/records/21244412: HTTP Error 504: Gateway Time-out",
+          "path": "evidence/zenodo_access/20261012/JOB_114735625164_ORIGINAL.log",
+          "run_id": 38226629752,
+          "sha256": "dd93bba6bd40f812fefa662ad5471c12c42d128ef24b7d034c27b489ffd03543",
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38226629752"
+        }
+      ],
+      "reason": "HTTP Error 504: Gateway Time-out",
+      "state": "failed",
+      "subject": {
+        "head": "8f9740018e1a864605a9fd0babff01454df4e1cc",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "097927c2fe98ee075d1034778f25ecc8638a7dae"
+      },
+      "url": "https://zenodo.org/api/records/21244412"
+    }
+  ],
+  "schema": "qikvrt_archive_get_causal_journal_v1"
+}

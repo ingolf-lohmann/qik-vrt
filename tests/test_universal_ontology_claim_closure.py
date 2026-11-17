@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
 import json
+import os
 import pathlib
 import re
 import subprocess
 import tempfile
+import textwrap
 import unittest
 from unittest import mock
 
@@ -39,6 +42,183 @@ def load_verifier_module():
 
 
 VERIFIER = load_verifier_module()
+
+
+class UniversalOntologyRuntimeProvisioningTests(unittest.TestCase):
+    """Execute the real workflow shell with disposable transport/tool fixtures."""
+
+    def provisioning_script(self, workflow: pathlib.Path = WORKFLOW) -> str:
+        match = re.search(
+            r"      - name: Provision and verify exact Lean release\n"
+            r".*?        run: \|\n(?P<body>(?:          [^\n]*\n|\n)+)",
+            workflow.read_text(encoding="utf-8"), re.DOTALL,
+        )
+        self.assertIsNotNone(match, "missing bounded release provisioning")
+        return textwrap.dedent(match.group("body"))
+
+    def run_provisioning(self, mode="reset", cached=None, lake_version="4.19.0",
+                         source_version="4.19.0", cache_bytes=b"release fixture",
+                         broken_cache_symlink=False):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = pathlib.Path(temporary.name)
+        package = root / "formalization/QIKVRT_Formalization_v2.0"
+        package.mkdir(parents=True)
+        (package / "lean-toolchain").write_text(f"leanprover/lean4:v{source_version}\n")
+        runtime = root / "runner"
+        runtime.mkdir()
+        if cached is not None:
+            archive = runtime / "qikvrt-lean/lean-4.19.0-linux.tar.zst"
+            archive.parent.mkdir()
+            if broken_cache_symlink:
+                archive.symlink_to(root / "missing-release")
+            else:
+                archive.write_bytes(cache_bytes)
+        stubs = root / "transport"
+        stubs.mkdir()
+        stub = textwrap.dedent('''\
+            #!/usr/bin/env python3
+            import json, os, pathlib, sys
+            root = pathlib.Path(os.environ["QIKVRT_FIXTURE_ROOT"])
+            name = pathlib.Path(sys.argv[0]).name
+            with (root / "calls.jsonl").open("a") as out:
+                out.write(json.dumps([name, *sys.argv[1:]]) + "\\n")
+            mode = os.environ["QIKVRT_FIXTURE_MODE"]
+            if name == "curl":
+                if mode == "reset":
+                    sys.stderr.write("Recv failure: Connection reset by peer\\n")
+                    raise SystemExit(56)
+                target = pathlib.Path(sys.argv[sys.argv.index("--output") + 1])
+                target.write_bytes(b"x" if mode == "short" else b"release fixture")
+            else:
+                if mode == "extract-failure":
+                    raise SystemExit(2)
+                target = pathlib.Path(sys.argv[sys.argv.index("-C") + 1]) / "bin"
+                target.mkdir()
+                for tool, output in {
+                    "lean": "Lean (version " + os.environ["QIKVRT_FIXTURE_LEAN_VERSION"] + ", fixture, Release)",
+                    "lake": "Lake version fixture (Lean version " + os.environ["QIKVRT_FIXTURE_LAKE_VERSION"] + ")",
+                }.items():
+                    path = target / tool
+                    path.write_text("#!/bin/sh\\nprintf '%s\\\\n' '" + output + "'\\n")
+                    path.chmod(0o755)
+            ''')
+        for name in ("curl", "tar"):
+            path = stubs / name
+            path.write_text(stub)
+            path.chmod(0o755)
+        github_path = root / "github-path"
+        script = self.provisioning_script()
+        result = subprocess.run(
+            ["bash", "-c", script], cwd=root, capture_output=True, text=True,
+            timeout=10, env={**os.environ, "PATH": str(stubs) + os.pathsep + os.environ["PATH"],
+                             "RUNNER_TEMP": str(runtime), "GITHUB_PATH": str(github_path),
+                             "LEAN_VERSION": "4.19.0", "LEAN_ARCHIVE_BYTES": "15",
+                             "LEAN_ARCHIVE_SHA256": hashlib.sha256(b"release fixture").hexdigest(),
+                             "QIKVRT_FIXTURE_LEAN_VERSION": cached or "4.19.0",
+                             "QIKVRT_FIXTURE_LAKE_VERSION": lake_version,
+                             "QIKVRT_FIXTURE_ROOT": str(root), "QIKVRT_FIXTURE_MODE": mode},
+        )
+        calls = [json.loads(line) for line in (root / "calls.jsonl").read_text().splitlines()] \
+            if (root / "calls.jsonl").exists() else []
+        return result, calls, github_path, runtime
+
+    def test_valid_cache_avoids_failed_elan_network_path(self):
+        result, calls, path, _ = self.run_provisioning(cached="4.19.0")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual([call[0] for call in calls], ["tar"])
+        self.assertIn("lean-4.19.0-linux/bin", path.read_text())
+
+    def test_original_connection_reset_cannot_activate_partial_runtime(self):
+        result, calls, path, runtime = self.run_provisioning()
+        self.assertEqual(result.returncode, 56)
+        self.assertFalse(path.exists())
+        self.assertEqual(list(runtime.iterdir()), [])
+        self.assertEqual(len(calls), 1)
+        args = calls[0]
+        for flag, value in (("--connect-timeout", "20"), ("--max-time", "180"),
+                            ("--retry", "2"), ("--retry-max-time", "540")):
+            self.assertEqual(args[args.index(flag) + 1], value)
+        self.assertEqual(args[-1], "https://github.com/leanprover/lean4/releases/download/"
+                         "v4.19.0/lean-4.19.0-linux.tar.zst")
+
+    def test_short_archive_is_rejected_before_extraction(self):
+        result, calls, path, runtime = self.run_provisioning(mode="short")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual([call[0] for call in calls], ["curl"])
+        self.assertFalse(path.exists())
+        self.assertEqual(list(runtime.iterdir()), [])
+
+    def test_failed_extraction_cleans_up_without_cache_publication(self):
+        result, calls, path, runtime = self.run_provisioning(mode="extract-failure")
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual([call[0] for call in calls], ["curl", "tar"])
+        self.assertFalse(path.exists())
+        self.assertEqual([p.name for p in runtime.iterdir()], ["qikvrt-lean"])
+
+    def test_cold_fixture_is_verified_before_becoming_reusable(self):
+        result, calls, path, runtime = self.run_provisioning(mode="valid")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual([call[0] for call in calls], ["curl", "tar"])
+        self.assertTrue(path.exists())
+        self.assertIn("--no-same-owner", calls[1])
+        self.assertEqual(sorted(p.name for p in runtime.iterdir()),
+                         ["lean-4.19.0-linux", "qikvrt-lean"])
+
+    def test_wrong_cached_lean_and_lake_fail_without_redownload(self):
+        for lean, lake in (("4.20.0", "4.19.0"), ("4.19.0", "4.20.0")):
+            with self.subTest(lean=lean, lake=lake):
+                result, calls, path, _ = self.run_provisioning(cached=lean, lake_version=lake)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertEqual([call[0] for call in calls], ["tar"])
+                self.assertFalse(path.exists())
+
+    def test_same_size_corrupt_cache_is_rejected_before_execution(self):
+        result, calls, path, _ = self.run_provisioning(cached="4.19.0", cache_bytes=b"x" * 15)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(calls, [])
+        self.assertFalse(path.exists())
+
+    def test_broken_archive_symlink_is_rejected_without_redownload(self):
+        result, calls, path, _ = self.run_provisioning(cached="4.19.0", broken_cache_symlink=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(calls, [])
+        self.assertFalse(path.exists())
+
+    def test_changed_source_toolchain_is_not_satisfied_by_old_cache(self):
+        result, calls, path, _ = self.run_provisioning(cached="4.19.0", source_version="4.20.0")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(calls, [])
+        self.assertFalse(path.exists())
+
+    def test_cache_has_exact_scope_and_proof_gates_remain_mandatory(self):
+        text = WORKFLOW.read_text()
+        self.assertNotIn("leanprover/lean-action@", text)
+        self.assertIn("actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9", text)
+        self.assertIn("runner.os", text)
+        self.assertIn("runner.arch", text)
+        self.assertIn("'formalization/QIKVRT_Formalization_v2.0/lean-toolchain')", text)
+        self.assertNotIn("restore-keys:", text)
+        self.assertNotIn("continue-on-error:", text)
+        self.assertIn('LEAN_ARCHIVE_BYTES: "343842845"', text)
+        self.assertIn('LEAN_ARCHIVE_SHA256: "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe"', text)
+        self.assertIn("hashFiles('runtime/toolchains/**',", text)
+        self.assertIn("github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'", text)
+        self.assertIn("          lake build\n", text)
+        for gate in ("lake build QIKVRTUniversalOntology", "AxiomAudit.lean",
+                     "ExtendedAxiomAudit.lean", "make_universal_ontology_kernel_receipt.py"):
+            self.assertIn(gate, text)
+
+    def test_provisioning_utilities_are_declared_in_the_existing_runtime(self):
+        registry = json.loads((ROOT / "runtime/toolchains/CACHE_REGISTRY.json").read_text())
+        locked = {line.split("\t", 1)[0] for line in
+                  (ROOT / "runtime/toolchains/TOOLCHAIN.lock.tsv").read_text().splitlines()
+                  if line and not line.startswith("#")}
+        for name in ("bash", "curl", "tar", "zstd", "coreutils"):
+            self.assertIn(name, locked)
+            self.assertIn("formal", registry["components"][name]["profiles"])
+            self.assertIn("tests/test_universal_ontology_claim_closure.py",
+                          registry["components"][name]["authority_files"])
 
 
 class UniversalOntologyClaimClosureTests(unittest.TestCase):

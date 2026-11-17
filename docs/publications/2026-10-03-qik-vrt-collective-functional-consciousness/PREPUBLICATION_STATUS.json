@@ -1,0 +1,44 @@
+{
+  "authorization_consumed": false,
+  "authorization_created": false,
+  "canonical_metadata_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ZENODO_METADATA.json",
+  "contract_activation_present": false,
+  "external_publication_effect": "NONE",
+  "first_production_gate": "NO_REVIEWED_V3_ACTIVATION_NO_V3_PRODUCTION_MUTATION",
+  "hash_stability": {
+    "embedded_upload_authorization_field": "FORBIDDEN",
+    "immutable_completion_claims": {
+      "machine_proof_complete": true
+    },
+    "owner_decision_is_detached": true,
+    "owner_decision_must_bind_final_bundle_sha256": true
+  },
+  "machine_proof_dispositions_complete": true,
+  "migration_input_head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+  "non_claims": [
+    "Zenodo publication",
+    "Owner acceptance",
+    "Code-Owner approval",
+    "contract activation",
+    "formal kernel proof",
+    "Authority/Mirror equality",
+    "repository-wide DONE"
+  ],
+  "open_predicates": [
+    "EXACT_HEAD_INDEPENDENT_CODE_OWNER_REVIEW",
+    "CODE_OWNER_RULE_ENFORCEMENT",
+    "DETACHED_REVIEWED_V3_CONTRACT_ACTIVATION",
+    "FINAL_EXACT_PACKAGE_RETURN_THEN_AUTHORIZE_EXACT_UPLOAD",
+    "AUTHORIZED_AUTHORITY_EXECUTION_CAPABILITY"
+  ],
+  "owner_upload_authorization_present": false,
+  "policy_v3_review_state": "REVIEW_REQUIRED",
+  "proof_schema_version": 3,
+  "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+  "retry_condition": "Review and activate the exact v3 contract separately, then authorize the returned final package by its exact proof/return/metadata/fileset hashes. Revalidate the actual execution subject and Authority capability before any effect.",
+  "schema": "qikvrt_prepublication_status_v1",
+  "state": "PREPARED_V3_HOLD_REVIEW_ACTIVATION_AND_EXACT_UPLOAD_AUTHORIZATION",
+  "technical_v3_proof_contract_valid": true,
+  "upload_executed": false,
+  "v1_v2_policy_and_schema_bytes_unchanged": true
+}

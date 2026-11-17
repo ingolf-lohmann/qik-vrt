@@ -1,0 +1,4 @@
+/dev/shm/qikvrt-architecture-proof-20261030/repo/docs/proofs/seed-architecture-2026-10-30/negative/FalseGateWithoutAuthority.lean:4:77: error: tactic 'decide' proved that the proposition
+  continueAllowed { bindingValid := true, authorityValid := false, distinctionValid := true, driftDetected := false } =
+    true
+is false

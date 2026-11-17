@@ -1,0 +1,78 @@
+{
+  "schema": "qikvrt-independent-offline-browser-acceptance/v1",
+  "executed_repository": "ingolf-lohmann/qik-vrt",
+  "executed_head": "497b60de519902bca12d9ef0a4b0570619d7ae8b",
+  "executed_tree": "cb7450a49dc169cb921d6bb24adc1432fd0aae43",
+  "workflow_run_id": 38396121370,
+  "workflow_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38396121370",
+  "software_test_scope": "CONTROLLED_TCP_ORIGIN_OUTAGE_OFFLINE_CACHE_AND_SAME_PROFILE_FULL_BROWSER_PROCESS_RESTART",
+  "artifact_name_note": "PR artifact names use GitHub event merge SHA 23b34a1bec905d567d4e32ce27b046d7a5e64c88; independently read SUBJECT.txt and SUBJECT_AFTER.txt bind the actual checkout to executed_head/tree. No merge effect is inferred.",
+  "engines": [
+    {
+      "engine": "chromium",
+      "artifact_id": 11812491609,
+      "archive_bytes": 4869,
+      "archive_sha256": "2796f271aae126b213d6e0c820bf3ef4c5477f46f098c02753cd9fe239afce2f",
+      "report_sha256": "823db803cab92c8c7b8daf0c15382b1bd1b3d9529164ffeb86942cf2b0467967",
+      "suite_sha256": "eb25d680e57ebb672d578f16bf33bb6f86ed5d89e71fcb97c9a8a7b57f339e48",
+      "source_head": "497b60de519902bca12d9ef0a4b0570619d7ae8b",
+      "source_tree": "cb7450a49dc169cb921d6bb24adc1432fd0aae43",
+      "source_bindings_independently_checked": true,
+      "checks": 15,
+      "cache_stages": 4,
+      "cache_assets_per_stage": 9,
+      "fixture_bytes": 42,
+      "fixture_git_tree_sha1": "99b939da0bc046ab0f7a362b1d83ed596254d949",
+      "local_head_tree_unchanged_after_network_loss": true,
+      "local_head_tree_archive_unchanged_after_process_restart": true,
+      "profile_process_ids_before": [
+        3201
+      ],
+      "profile_process_ids_after": [
+        3326
+      ],
+      "old_profile_processes_after_close": [],
+      "scope": "CONTROLLED_STATIC_ORIGIN_DERIVED_SITE32_CLIENT; NO_LIVE_ORIGIN_OR_DEVICE_ACCEPTANCE"
+    },
+    {
+      "engine": "webkit",
+      "artifact_id": 11812546597,
+      "archive_bytes": 4884,
+      "archive_sha256": "fd0a8fcdbd17aff88a255fba2f217368f6353cd22da8a5642623e3f527b36aac",
+      "report_sha256": "f10fe3ae1c5aa6695d6f3c9d20afec27cb96e78da2c6cfe71b39b8f947c18fbd",
+      "suite_sha256": "eb25d680e57ebb672d578f16bf33bb6f86ed5d89e71fcb97c9a8a7b57f339e48",
+      "source_head": "497b60de519902bca12d9ef0a4b0570619d7ae8b",
+      "source_tree": "cb7450a49dc169cb921d6bb24adc1432fd0aae43",
+      "source_bindings_independently_checked": true,
+      "checks": 15,
+      "cache_stages": 4,
+      "cache_assets_per_stage": 9,
+      "fixture_bytes": 42,
+      "fixture_git_tree_sha1": "99b939da0bc046ab0f7a362b1d83ed596254d949",
+      "local_head_tree_unchanged_after_network_loss": true,
+      "local_head_tree_archive_unchanged_after_process_restart": true,
+      "profile_process_ids_before": [
+        5212,
+        5218
+      ],
+      "profile_process_ids_after": [
+        5392,
+        5398
+      ],
+      "old_profile_processes_after_close": [],
+      "scope": "CONTROLLED_STATIC_ORIGIN_DERIVED_SITE32_CLIENT; NO_LIVE_ORIGIN_OR_DEVICE_ACCEPTANCE"
+    }
+  ],
+  "original_archives_digest_verified": true,
+  "decoded_original_reports_preserved": true,
+  "repository_head_tree_before_after_equal": true,
+  "tracked_repository_status_empty": true,
+  "browser_fixture_acceptance": "PASS_EXACT_FROZEN_DERIVED_SOURCE",
+  "live_origin_browser_acceptance": false,
+  "actual_iphone_devices": false,
+  "authenticated_native_runtime": false,
+  "exact_domain_delivery": false,
+  "main_integration": false,
+  "effect_ack_done": false,
+  "ordinary_release": false
+}

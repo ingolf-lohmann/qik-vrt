@@ -1,0 +1,27 @@
+{
+  "exit": 0,
+  "wall_ns": 279333481531,
+  "stdout": {
+    "bytes": 26409,
+    "sha256": "e6a4bb8f2dfb3b489d498cbfacb0e1adb40ebb43563fdd51855511d1b8dd9ad5",
+    "path": "evidence/native-archive/2026-10-30/FULL_TEST_STDOUT.txt"
+  },
+  "stderr": {
+    "bytes": 419612,
+    "sha256": "8b6cc8e6b6fccf2f82c3a403d45ab55ad056b50926493132d3b6d39290a0c301",
+    "path": "evidence/native-archive/2026-10-30/FULL_TEST_STDERR.txt"
+  },
+  "command": [
+    "make",
+    "--trace",
+    "test"
+  ],
+  "tested_source_tree": "d9688679cba0fe8d80dd6be41e5c83379b4577fa",
+  "final_source_tree": "d9688679cba0fe8d80dd6be41e5c83379b4577fa",
+  "python_test_executions": 2247,
+  "native_suite_executed": true,
+  "final_integrity_pass": true,
+  "failure_summaries": [],
+  "prior_capture_disposition": "Two combined-stream captures were incomplete despite child exit zero; not used as full-suite evidence. Split-stream traced run provides complete evidence; no source-test failure established.",
+  "scope": "EXACT_LOCAL_TESTED_TREE; subsequent evidence-only additions and integrity materialization require their own verification; native CI binds final PR head"
+}

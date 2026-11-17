@@ -1,0 +1,49 @@
+{
+  "schema": "qikvrt_public_corpus_local_validation_v1",
+  "frozen_candidate_file_count": 52,
+  "frozen_candidate_unchanged": true,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-q",
+        "tests.test_qikvrt_publication_overview",
+        "tests.test_qikvrt_self_disclosure",
+        "tests.test_zenodo_corpus_proof",
+        "tests.test_zenodo_corpus_inventory_failure_receipt",
+        "tests.test_ai_runtime_bootloader"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "----------------------------------------------------------------------\nRan 112 tests in 2.719s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/qikvrt_publication_overview.py",
+        "check",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"changed_paths\": [], \"completion_claims\": {\"EFFECT_ACK_DONE\": false, \"FINAL_PASS\": false, \"PASS\": false}, \"detail\": {\"indexed_bundle_count\": 23, \"local_bundle_count\": 21, \"missing_human_entries\": [], \"missing_machine_entries\": []}, \"external_effect\": \"NONE\", \"schema\": \"qikvrt_publication_overview_result_v1\", \"state\": \"CURRENT\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/qikvrt_tool_cache.py",
+        "verify"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 32/32 declared tools have cache strategies (100%)\n",
+      "stderr": ""
+    }
+  ],
+  "publication_gate_state": "FAIL_EXPECTED_MISSING_ZENODO_ARCHIVE_FOR_NEW_REPOSITORY_PROOF",
+  "scope": "Index generation, omission/unpublished-candidate regressions, existing publication/source and client bootloader contract tests. No new theorem or physical experiment."
+}

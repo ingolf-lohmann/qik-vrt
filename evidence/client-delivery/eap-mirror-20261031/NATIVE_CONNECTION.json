@@ -1,0 +1,220 @@
+{
+  "schema": "qikvrt_native_terminal_connection_v1",
+  "adapter_version": "20261025.1",
+  "mesh_id": "qik-vrt",
+  "scope": "MESH",
+  "rest_contract": {
+    "schema": "qikvrt_native_terminal_rest_contract_v1",
+    "path": "/api/mesh/terminal/native",
+    "method": "POST",
+    "scope": "MESH",
+    "mesh_id": "qik-vrt",
+    "authorization": "EXISTING_AUTHENTICATED_SITE_LOCAL_OPERATOR_AND_ADMITTED_RUNTIME",
+    "modes": {
+      "prepare": {
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "payload": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "schema": {
+                  "type": "string",
+                  "const": "qikvrt_terminal_input_v1"
+                },
+                "scope": {
+                  "type": "string",
+                  "const": "MESH"
+                },
+                "mesh_id": {
+                  "type": "string",
+                  "const": "qik-vrt"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "audio": {
+                  "type": "null"
+                },
+                "video": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "schema",
+                "scope",
+                "mesh_id",
+                "text",
+                "audio",
+                "video"
+              ]
+            }
+          },
+          "required": [
+            "payload"
+          ]
+        },
+        "body": "Add the exact mode field to these arguments; preserve payload bytes."
+      },
+      "commit": {
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "payload": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "schema": {
+                  "type": "string",
+                  "const": "qikvrt_terminal_input_v1"
+                },
+                "scope": {
+                  "type": "string",
+                  "const": "MESH"
+                },
+                "mesh_id": {
+                  "type": "string",
+                  "const": "qik-vrt"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "audio": {
+                  "type": "null"
+                },
+                "video": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "schema",
+                "scope",
+                "mesh_id",
+                "text",
+                "audio",
+                "video"
+              ]
+            },
+            "origin": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            },
+            "hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "token": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{16,2048}$"
+            }
+          },
+          "required": [
+            "payload",
+            "origin",
+            "hash",
+            "token"
+          ]
+        },
+        "body": "Add the exact mode field to these arguments; preserve payload bytes."
+      },
+      "readback": {
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "payload": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "schema": {
+                  "type": "string",
+                  "const": "qikvrt_terminal_input_v1"
+                },
+                "scope": {
+                  "type": "string",
+                  "const": "MESH"
+                },
+                "mesh_id": {
+                  "type": "string",
+                  "const": "qik-vrt"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "audio": {
+                  "type": "null"
+                },
+                "video": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "schema",
+                "scope",
+                "mesh_id",
+                "text",
+                "audio",
+                "video"
+              ]
+            },
+            "origin": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            },
+            "hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "successor_hash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "event_id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "payload",
+            "origin",
+            "hash"
+          ]
+        },
+        "body": "Add the exact mode field to these arguments; preserve payload bytes."
+      }
+    },
+    "automatic_retry": false,
+    "ambiguous_commit_next": "READBACK_SAME_PREPARED_RECORD",
+    "verification_scope": "NATIVE_TERMINAL_INPUT_ACCEPTANCE",
+    "effect_ack_done": false
+  },
+  "runtime_observations": [
+    {
+      "origin": "https://raumzeitterminal.de",
+      "status": 525,
+      "observed_at": "2026-10-31T20:01:04.267Z",
+      "mesh_scope_verified": false
+    }
+  ],
+  "native_available": false,
+  "operator_configured": true,
+  "operator_authorized": true,
+  "ready": false,
+  "open_gates": [
+    "ADMITTED_MESH_RUNTIME_ENDPOINT"
+  ],
+  "reason": "Kein Endpunkt weist den gemeinsamen Mesh-Kontext aus.",
+  "effect_ack_done": false
+}

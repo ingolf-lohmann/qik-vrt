@@ -1,0 +1,308 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_FOUR_PR_INTEGRATION_20261012_V1",
+  "created_at": "2026-10-12T21:01:20.973914+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+  "source_tree": "e436ca6f80185d9fe264f1491d2bce232ae68b11",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "b686cf0478aa",
+    "identity_and_observation_limits": "Platform supplied assistant family; no biometric identity attestation."
+  },
+  "human_contributions": [
+    "Authorize exact four-PR consolidation with native Governance and qualified atomic Main-HEAD CAS; preserve scientific original bytes and historical evidence."
+  ],
+  "artificial_cognitive_contributions": [
+    "Read exact PR/Main commits, complete trees, actual patches and merge bases through existing authenticated GitHub REST connection.",
+    "Reuse local repository checkpoint; recover missing exact Git objects and independently verify all input HEAD/TREE and blob identities.",
+    "Perform explicit-base Git three-way merges; preserve both native Governance and CAS decisions and regression groups.",
+    "Connect existing run-receipt parser to causal attempt journal; retain pending run receipts, unchanged-retry suppression and closing readbacks.",
+    "Preserve existing original publications, historical receipts and workflow mechanisms; rematerialize canonical integrity only for the combined subject."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "pr": 515,
+      "head": "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+      "tree": "d04b96dcd35a485f1961b7e2699760a8fce70dce",
+      "ref": "integration/seed-mcp-governance-512-513-20261009-14c71097",
+      "merge_base": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/515"
+    },
+    {
+      "pr": 519,
+      "head": "8ad1d98147508a5a9586f714bbbeb05a1e90c344",
+      "tree": "d7311a729d8ee64569038a9edc3f095819268008",
+      "ref": "publication/raumzeitterminal-nobel-decay-20261010",
+      "merge_base": "66974aa881c0829e03d48c4146ff2d335646d8c6",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/519"
+    },
+    {
+      "pr": 521,
+      "head": "d44c48791c87dae4669036e49ce5db98e95e06eb",
+      "tree": "26c71186d1a06dc08048fe90aaef5e22b80c4ac8",
+      "ref": "work/ref-cas-readback-20261010-d8775f20",
+      "merge_base": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/521"
+    },
+    {
+      "pr": 522,
+      "head": "094d3a8c074e399085a864f2844adcdafc3de3cf",
+      "tree": "46d30bee21c64eb13423fbb1256a997e7431703d",
+      "ref": "work/client-end-of-action-regressions-20261012-v1",
+      "merge_base": "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/522"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "bytes": 39471,
+      "sha256": "416d0228f6095e444eb64a9de18d00bce61b3301dd83ae1beaf22a46ebee02ac",
+      "git_blob_sha1": "008dc2063b66e6617a4f54cbe3949b4843c8cb33"
+    },
+    {
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "bytes": 16147,
+      "sha256": "b9cacdcd676db9542df0993bb8a546c6ebcd471245ba8a1bd0e2ec8bd444cff1",
+      "git_blob_sha1": "218b4ff4735121febb5e5d783fd15e24e4606308"
+    },
+    {
+      "path": "scripts/qikvrt_api_client.py",
+      "bytes": 57451,
+      "sha256": "a90900c0f982783c5ea4f675d75b009de5d0ae99f78492e6130f734d427d8b77",
+      "git_blob_sha1": "fc122690e8e5b9d3ddbcf7636557568f0484c67c"
+    },
+    {
+      "path": "tools/qikvrt_integrity.py",
+      "bytes": 46504,
+      "sha256": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a",
+      "git_blob_sha1": "b65e8818f607b7f4c33ce90d97d9b4cb59ef90a9"
+    },
+    {
+      "path": "tools/ai_handoff.py",
+      "bytes": 31763,
+      "sha256": "2b7f22ae426ae3a9e18069675feda107e5bc2c819e9bea06c159de26396efdf3",
+      "git_blob_sha1": "1867b9d78e250d02a3e095268c35909a0dc5595d"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 13092,
+      "sha256": "0af4c8dd2c8628c62c52f8f0976256b6939aa21ab6c77bc99fa9b635ac9cfefe",
+      "git_blob_sha1": "548cb81c2552a1f3b55d231e6464596fff85f60a"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "bytes": 37851,
+      "sha256": "0f1c030e3e30b9fa924f15cdfd0e7510d35d4e9b9773c161be7b62b72c15dd60",
+      "git_blob_sha1": "a7fb488a1c10399f93238801cfcce44c56fcb7b7"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "bytes": 8053,
+      "sha256": "41d6b7176599db20025370408bbe5d9e479a222ac0b4ef542050e99eef7f7f39",
+      "git_blob_sha1": "9f252f588d4a9b6472fb91b156e41d580c2ebe3c"
+    },
+    {
+      "path": "tests/test_api_client.py",
+      "bytes": 73153,
+      "sha256": "38e3c548699ff6862c830e554db16de9d1fc7861f0fc1eba276aa5c58a0373bb",
+      "git_blob_sha1": "6a892a449e9c2fa08ef9e3474ee7b84ed775d7cb"
+    },
+    {
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "bytes": 26432,
+      "sha256": "ef634d781df9a5844de47909892f5b8e2da3c1f3fe9da457aea0ddb6ca3ef752",
+      "git_blob_sha1": "d16cdc29f42bc03174625c2f7fd566442e07e89b"
+    },
+    {
+      "path": "tests/test_editorial_navigation.py",
+      "bytes": 11860,
+      "sha256": "c56dd67f72cac033dff8094be31a204c8ebfaf2ba67a389fa71999806601fd4d",
+      "git_blob_sha1": "dbab150ebf9c1eddb7bb0eb7bbfa23eeba384d9c"
+    },
+    {
+      "path": "tests/test_archive_get_causal_journal.py",
+      "bytes": 18561,
+      "sha256": "c528a291a18eb60ca56f29b462538dba79ec429519e07a6ef6f994674d96bd52",
+      "git_blob_sha1": "b9505c0da8a9977c2a2dd059aa211134660f4fae"
+    }
+  ],
+  "git_history": {
+    "method": "EXPLICIT_VERIFIED_MERGE_BASE_THREE_WAY_TREE_COMPOSITION",
+    "merge_order": [
+      515,
+      521,
+      522,
+      519
+    ],
+    "intended_parents": [
+      "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+      "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+      "8ad1d98147508a5a9586f714bbbeb05a1e90c344",
+      "d44c48791c87dae4669036e49ce5db98e95e06eb",
+      "094d3a8c074e399085a864f2844adcdafc3de3cf"
+    ],
+    "history_rewritten": false,
+    "force_push": false,
+    "source_prs_closed": false
+  },
+  "conflict_resolution": {
+    "integrity_trio": "Never combine predecessor manifests. Regenerate with combined existing generator.",
+    "promotion_core": "Native Governance projection validation before technical and qualified CAS admission; live CAS read reuses canonical Owner resolver.",
+    "promotion_workflow": "Native status context and fresh rules/reviews plus disabled GraphQL CAS phase; no REST merge fallback.",
+    "api_client": "Keep reviewed Ruleset operations/version pins, shared run-receipt semantics and cause-bound journal/continuation.",
+    "tests": "Retain both suites; adapt older fixtures to canonical Authority Owner, fresh closure and absent CAS HOLD; add negative combined-Governance and run-receipt continuation regressions.",
+    "makefile": "Keep all Ruleset, self-heal, PR continuation, issue-agent, archive and editorial targets."
+  },
+  "verification": {
+    "input_commit_and_tree_reconstruction": "BYTE_EXACT_VERIFIED",
+    "input_trees_complete": true,
+    "historical_evidence": {
+      "scope": "Every input state/work_units and evidence blob except mutable LATEST.json",
+      "source_path_counts": {
+        "515": 493,
+        "519": 486,
+        "521": 492,
+        "522": 494
+      },
+      "different_or_missing_historical_source_blobs": 0,
+      "overlapping_counts_not_added": true
+    },
+    "scientific_originals": "No scientific archive or article rewritten during consolidation; PR519 original article bytes and pre-existing publication entries remain under original regression bindings.",
+    "focused_tests": "See exact final candidate check/run and external report; predecessor checks are not transferred.",
+    "full_local_make_test": "REQUIRED_ON_FINAL_COMMIT_NOT_YET_RUN_AT_WORK_UNIT_CREATION",
+    "native_ci": "REQUIRED_ON_FINAL_REMOTE_HEAD_NOT_YET_RUN_AT_WORK_UNIT_CREATION",
+    "remote_readback": "REQUIRED_AFTER_PERSISTENCE",
+    "live_graphql": "NOT_EXECUTED_OR_QUALIFIED",
+    "native_governance": "rulesets=[]; main.protected=false at initial authenticated readback"
+  },
+  "human_decision": {
+    "state": "AUTHORIZED_INTEGRATION_CANDIDATE_ONLY",
+    "main_promotion_requires": [
+      "EFFECTIVE_NATIVE_GOVERNANCE",
+      "INDEPENDENT_CURRENT_HEAD_CODE_OWNER_APPROVAL",
+      "QUALIFIED_SERVER_ATOMIC_MAIN_HEAD_COMPARE",
+      "DURABLE_CROSS_RUN_CAS_INTENT_RECOVERY"
+    ]
+  },
+  "external_effects": {
+    "route": "EXISTING_AUTHENTICATED_GITHUB_REST_GIT_DATA_AND_DRAFT_PR",
+    "main_written": false,
+    "publication": false,
+    "deployment": false,
+    "workflow_dispatch": false,
+    "new_execution_path": false,
+    "mesh_monitor_execution_capability": false
+  },
+  "integration_boundaries": [
+    "CODE_OWNER_RULE_NOT_ENFORCED",
+    "INDEPENDENT_CURRENT_HEAD_REVIEW_NOT_ESTABLISHED",
+    "ATOMIC_TARGET_REF_CAS_UNVERIFIED",
+    "GRAPHQL_AUTHENTICATED_POST_NOT_EXPOSED_TO_THIS_CLIENT",
+    "DURABLE_CAS_RECOVERY_NOT_LIVE_QUALIFIED"
+  ],
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "MAIN_INTEGRATED": false,
+    "NATIVE_ACTIVATION_VERIFIED": false,
+    "RAUMZEITTERMINAL_DE_DELIVERY_VERIFIED": false
+  },
+  "editorial_successor_20261013": {
+    "observed_at_utc": "2026-10-12T23:58:38.404884+00:00",
+    "owner_authorization": "Existing integration/publication authorization; direct instruction to continue beyond the first step.",
+    "first_causal_gap": "The combined PR523 still carried PR519 HEAD 8ad1d981 while PR519 and public Site version27 had advanced to c9c71bba.",
+    "previous_combined_head": "060cb9dd0bfb164041b16ef11ef4d22fc9ec2fea",
+    "previous_combined_tree": "3e33d51f922c3c8de3b2ca8d4533629348a89c04",
+    "accepted_editorial_head": "c9c71bba5c03c1309f29cc898e83ecb035983853",
+    "accepted_editorial_tree": "2a4d6e5ca1ce88377903e109852d560978e676b0",
+    "previous_editorial_head": "8ad1d98147508a5a9586f714bbbeb05a1e90c344",
+    "site_version": 27,
+    "site_source": "b116ae0887cb688404aeeb66a68c3b2f59ad9a6a",
+    "files_reused_byte_exact": [
+      {
+        "path": "docs/news/topics.json",
+        "bytes": 9953,
+        "sha256": "9c74fd9f08c88581e4ab062251b06e3bba85fc8bd00b2679dd0a6e49aec219bc",
+        "git_blob_sha1": "fa45a504fbda7e6a2663f9bea2ee7d833c15f993"
+      },
+      {
+        "path": "docs/news/universaler-transputer/article.txt",
+        "bytes": 3744,
+        "sha256": "bea2ce79c5998ccc8f085ec2cfe0ea4810bdc9c3c984719050549ab15bd790f1",
+        "git_blob_sha1": "2c1a979919292134c7d93b07f49a517c4d285d29"
+      },
+      {
+        "path": "docs/news/universaler-transputer/index.html",
+        "bytes": 6953,
+        "sha256": "1707f52e9ad9b720d1e37e3ca5df8e42354fc2e8931679a7a3934addb22a28f9",
+        "git_blob_sha1": "698cd398be30355484fc7ca0efaec5d9b14e3425"
+      },
+      {
+        "path": "docs/news/universaler-transputer/index.json",
+        "bytes": 4131,
+        "sha256": "6674e05c81588739861f1f1d6be908318138e686bfe5b696b8455a38907aed22",
+        "git_blob_sha1": "68e378deb091903f1d49afcfdafcafe85cdef129"
+      },
+      {
+        "path": "state/work_units/QIKVRT_EDITORIAL_TOPICS_ALIGNMENT_20261012_V1.json",
+        "bytes": 21133,
+        "sha256": "d705d8016e84f4b2ac4b15de05e18186a32c4490a9eb17f09530e1a39a721301",
+        "git_blob_sha1": "4600782af6a2103a7402b1b4365f629a81f20124"
+      }
+    ],
+    "integrity_generator_version": "3.2_UNCHANGED_FROM_COMBINED_SUBJECT",
+    "previous_three_integrity_blobs_not_reused": true,
+    "current_scientific_scope": "SFG-009 / QIKVRT.V2.Knowledge.answerability_mono; RT-OPEN-PHYSICAL-CORRESPONDENCE-001 stays OPEN",
+    "approved_original_prefix_preserved_sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+    "local_source_acquisition": {
+      "route": "PUBLIC_GITHUB_REST_TARBALL_AND_AUTHENTICATED_REST_GIT_DATA_METADATA",
+      "verified_blob_count": 4055,
+      "checkout_filter_paths": 34,
+      "exact_original_commit_reconstructed": true,
+      "original_commit_timezone_headers": "+0200",
+      "initial_raw_archive_mismatch": "DRY_RUN_VERIFY_ONLY.cmd is delivered with repository-defined CRLF checkout; Git source has LF. Corrected by the pinned .gitattributes clean filter; Git blob identity verified.",
+      "initial_parallel_boot": "BLOCK_ACTIVE_INTEGRITY_LOCK; corrected by running boot after integrity verification; no lock bypass.",
+      "sequential_boot_state": "CONTINUE; core handoff/integrity/tool-cache gates PASS; optional unrelated runtime components absent.",
+      "tool_cache_coverage": "14/14;100%",
+      "current_commit_snapshot_history": "EXPLICIT_SHALLOW_BOUNDARY; complete current tree and original commit verified; historical snapshot 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 is not materialized."
+    },
+    "validation": "REQUIRED_ON_CONTAINING_SUCCESSOR_SOURCE_AND_FRESH_NATIVE_HEAD; NO_PREDECESSOR_PASS_TRANSFER",
+    "intended_parents": [
+      "060cb9dd0bfb164041b16ef11ef4d22fc9ec2fea",
+      "c9c71bba5c03c1309f29cc898e83ecb035983853"
+    ],
+    "source_functions_and_gates_changed": false,
+    "main_written": false,
+    "domain_delivered": false,
+    "real_model_request_executed": false,
+    "open_work": [
+      "NATIVE_SUCCESSOR_TESTS_AND_READBACK",
+      "PROTECTED_MAIN_PROMOTION",
+      "REAL_MODEL_RESPONSE_AND_INDEPENDENT_PERSONAL_READBACK",
+      "RAUMZEITTERMINAL_DE_DNS_TLS_PUBLIC_DELIVERY"
+    ],
+    "local_validation_first_full_attempt": {
+      "command": "make test",
+      "exit_code": 2,
+      "log_sha256": "f53a4ed87b3974d475f6007e22ab8ab3b4170614477a2a0712d9fcd4c43187a1",
+      "completed_unittest_executions": 450,
+      "invocations": 7,
+      "failures": 2,
+      "errors": 3,
+      "affected_group": "tests.test_observer_relative_retrocausality_zenodo_finalizer",
+      "cause_scope": "LOCAL_MISSING_PINNED_HISTORICAL_COMMIT_TREE_56127a6; current archive is not complete Git history. No source defect or passing full local suite inferred.",
+      "next_action": "Run current editorial controls locally; full exact-head suite through the existing native CI checkout with complete history; independently read job logs.",
+      "source_gate_weakened": false,
+      "native_previous_pass_transferred": false
+    }
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_MAIN_AMO_PAGING_AND_SEED_ROLE_REPAIR_20261018_V1",
+  "created_at": "2026-10-18T05:39:47.212608+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "e0ad3755b050f367d85e3615fd07af8d5a466d01",
+  "source_tree": "e21c311da23f65982726dd4c8c07a1217f4bf0ff",
+  "source_pr": 523,
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "roles": [
+      "Principal",
+      "Code Owner",
+      "Product Owner"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "build_id": "UNAVAILABLE",
+    "session_or_run_id": "UNAVAILABLE",
+    "identity_limit": "Attribution, not biometric or independent-person proof."
+  },
+  "human_contributions": [
+    "Existing instruction to complete all necessary goal-completion steps.",
+    "Considered explicit approval is review; no repeated human authorization/review request."
+  ],
+  "artificial_cognitive_contributions": [
+    "Read back the actual PR523 merge, native Main tests and independent complete merged tree.",
+    "Diagnosed the actual native AMO metadata-capacity HOLD and current Seed-entry role mismatch from SHA256-verified original artifacts.",
+    "Repaired existing bounded readers without raising byte caps or discarding history/ambiguous effects; use complete status-filtered writer inventories only for an admitted dispatch candidate.",
+    "Executed the unchanged existing Seed acceptance/maintenance/revalidation producer on verified original Main request bytes and recorded read-only Main/public-ref evidence; no runtime acceptance manufactured."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "evidence_retention": "METADATA_ONLY",
+  "causal_evidence": {
+    "amo": {
+      "run": 39098886611,
+      "artifact": 12126190418,
+      "original_zip_sha256": "178f98336193bdf6e19e46c5107d7d4f9a3de4d12b8d40536833fee311810e4d",
+      "actual_first_boundary": "AMO_METADATA_CAPACITY_LIMIT",
+      "scope": "The affected parser rejects more than1MiB, including repeated per-run repository metadata in100-row queries. Provider-shaped regression reproduces this guard; final native successor must verify the repair. Credential pair separately NOT_DELIVERED to that job; remote configuration NOT_INSPECTED."
+    },
+    "seed": {
+      "run": 39098886692,
+      "artifact": 12126085883,
+      "original_zip_sha256": "b8f3b1eca9a8b3a8cf0688aa738fa18acfbc265bfcf7ada003cfd82531463bf7",
+      "actual_error": "Current accepted entry seed_repository Goldkelch/qik-vrt differs from current allowlist/manifest Authority ingolf-lohmann/qik-vrt.",
+      "existing_producer_proof": "evidence/seed_acceptance/OWNER_ROLE_MIGRATION_20261018.json"
+    }
+  },
+  "reader_contract": {
+    "rows_per_page": 20,
+    "history_budget_rows": 1600,
+    "metadata_byte_cap_unchanged": 1048576,
+    "github_read_cap_unchanged": 2097152,
+    "requires_total_count": true,
+    "duplicate_rows_or_count_drift_hold": true,
+    "short_or_search_truncated_page_cannot_erase_history": true,
+    "lost_ack_original_artifact_reconciliation_preserved": true,
+    "no_credential_or_protection_bypass": true,
+    "official_api_source": "https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository",
+    "api_source_scope": "Pagination/status filtering and filtered-search1000-result limit; no operation exposure or authenticated capability is inferred from documentation."
+  },
+  "seed_proposal": {
+    "run_id": "owner-seed-role-migration-20261018-e0ad3755",
+    "execution_scope": "Actual local invocation of unchanged existing Seed producer; not a GitHub Actions run or a live node acceptance.",
+    "request_input": {
+      "path": "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json",
+      "git_blob_sha1": "b788f21b62f00becc8f3882094ef85ee7d15a7fd",
+      "sha256": "4cdeb0eb420cde38eb051709b594a385883f55622459b8997bcc975e0e273889",
+      "remote_original_bytes_verified": true
+    },
+    "previous_entry": {
+      "path": "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+      "sha256": "e2a33ed2fd0bf3231c3c47ae9bf08aea98e12ef77cdc319cd0788bd296ef3ce5",
+      "git_blob_sha1": "bf29b0026cd6b01f0954f7f143ffe02b950ac8bd",
+      "original_retained_at_parent_commit": true
+    },
+    "ledger_original_prefix_preserved": true,
+    "ack_original_bytes_unchanged": true,
+    "ack_state": "PENDING_SEED_ACCEPTANCE",
+    "registry_status": "ACCEPTED",
+    "effective_status": "STALE",
+    "active_count": 0,
+    "maintenance_and_revalidation": "CONTINUE",
+    "historical_pass_transfer": false
+  },
+  "verification": {
+    "current_bounded_controls": 381,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "aea50dea1f78906ce0dbc0bcd6b1d67f4c95389cd94b3a0f04f6b9268fb1048a",
+    "scope": "Actual current source and generated proposal data; provider-shaped fixtures do not establish actual AMO auth/signing or live node health.",
+    "native_successor": "PENDING_AFTER_PUSH",
+    "final_changed_test_scope_controls": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "77ecdaf76b0a4f9f157b08dc741287943417847cdfae17660c5fea600de76490",
+      "scope": "Final narrowed existing-node data assertions plus bounded provider paging controls; test-only narrowing followed the381-control run."
+    }
+  },
+  "outputs": [
+    {
+      "path": "evidence/seed_acceptance/LATEST.json",
+      "bytes": 781,
+      "sha256": "4ec6829a9cb84ac8e270b0e887b7fe657a1e17f20415ef1f80c15da5d63d583a"
+    },
+    {
+      "path": "evidence/seed_acceptance/OWNER_ROLE_MIGRATION_20261018.json",
+      "bytes": 3006,
+      "sha256": "e98bd0675abaf92d3f5bde76d2060075f005a5c35b3eb891c41404779040693c"
+    },
+    {
+      "path": "evidence/seed_acceptance/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+      "bytes": 671,
+      "sha256": "64b483225b7e2d60260acc0e3d87f5a198b5cb5b75ed2b6a3509f1976fc10ca0"
+    },
+    {
+      "path": "evidence/seed_acceptance/runs/owner-seed-role-migration-20261018-e0ad3755.json",
+      "bytes": 781,
+      "sha256": "4ec6829a9cb84ac8e270b0e887b7fe657a1e17f20415ef1f80c15da5d63d583a"
+    },
+    {
+      "path": "evidence/seed_mesh_maintenance/LATEST.json",
+      "bytes": 559,
+      "sha256": "8708130f5c2e7b1e910c0cc406a5b74495179086def43206bba0e8b84bd295ba"
+    },
+    {
+      "path": "evidence/seed_mesh_maintenance/runs/owner-seed-role-migration-20261018-e0ad3755.json",
+      "bytes": 559,
+      "sha256": "8708130f5c2e7b1e910c0cc406a5b74495179086def43206bba0e8b84bd295ba"
+    },
+    {
+      "path": "evidence/seed_node_revalidation/LATEST.json",
+      "bytes": 1220,
+      "sha256": "8359789dc011f8d43bac65f4dfead3f676703ff62a549d38ad0a5d6ef4ce0916"
+    },
+    {
+      "path": "evidence/seed_node_revalidation/runs/owner-seed-role-migration-20261018-e0ad3755.json",
+      "bytes": 1220,
+      "sha256": "8359789dc011f8d43bac65f4dfead3f676703ff62a549d38ad0a5d6ef4ce0916"
+    },
+    {
+      "path": "ledger/NODE_REGISTRATION_LEDGER.jsonl",
+      "bytes": 14097,
+      "sha256": "844c98f4e280d01994c8d1e85d3ac4f0b6ecf458e0987dbb1605bb7f70a55f86"
+    },
+    {
+      "path": "registry/NODEMESH_INDEX.json",
+      "bytes": 2381,
+      "sha256": "ad96166b8dd2be74109d5c0fb627bcb6caf6efe59116097838301ad8d1a7ead6"
+    },
+    {
+      "path": "registry/NODEMESH_REVALIDATION.json",
+      "bytes": 1220,
+      "sha256": "8359789dc011f8d43bac65f4dfead3f676703ff62a549d38ad0a5d6ef4ce0916"
+    },
+    {
+      "path": "registry/NODEMESH_STATUS.json",
+      "bytes": 1540,
+      "sha256": "a8c4387e88c44bb463efbd1517493ca58aca9b6c056a09f1c7f4761404a8d2b7"
+    },
+    {
+      "path": "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+      "bytes": 1307,
+      "sha256": "430f43f68c43f6db9fc0a0617e831020b7b17a1147b983c99d10e0def73d2433"
+    },
+    {
+      "path": "tests/test_qikvrt_workflow_executor_mesh_contract.py",
+      "bytes": 73383,
+      "sha256": "04523174b067595a41002d0bd980e83e2b7e7caf9423998539933ea0efca01e4"
+    },
+    {
+      "path": "tests/test_seed_workflows.py",
+      "bytes": 49750,
+      "sha256": "2b9e5aa97b78ccb6f9769a4541d6a4b3ce8beceef074ef3aa7db1087e106b2ae"
+    },
+    {
+      "path": "tools/qikvrt_workflow_executor.py",
+      "bytes": 104663,
+      "sha256": "653403e3f1435e931583115b5d02a6bdcec973612ddd9371bab0a7e6bf030632"
+    }
+  ],
+  "git_history": {
+    "parent": "e0ad3755b050f367d85e3615fd07af8d5a466d01",
+    "base_tree": "e21c311da23f65982726dd4c8c07a1217f4bf0ff",
+    "history_rewrite": false,
+    "force_push": false,
+    "local_shallow_head_metadata": "Historical98f8; working bytes/index were independently mapped to actual merged Main tree before these changes. Final remote commit/tree need independent readback."
+  },
+  "remaining_obligations": [
+    "Actual protected credential/operation delivery for Ruleset administration and AMO.",
+    "Fresh public lifecycle snapshot and same-commit node ACK/health after actual enforcement.",
+    "Authenticated target-bound already ordered IONOS VPS operation.",
+    "Official signed persistent Firefox acceptance and useful HTTPS application at raumzeitterminal.de."
+  ],
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false
+  }
+}

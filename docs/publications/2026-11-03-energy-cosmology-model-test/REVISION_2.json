@@ -1,0 +1,20 @@
+{
+  "schema": "qikvrt_research_revision_v1",
+  "revision": 2,
+  "prepared_at": "2026-11-03T06:37:41.646704+00:00",
+  "predecessor_archive_commit": "806e2de2734dd668cffbdce1ddf1d0f3dffb261b",
+  "changes": [
+    "Prosa sources displayed in its own appendix, text and PDF",
+    "Unqualified publication-readiness wording removed",
+    "Original gate retrieval gap, catalog context and recovered predecessor scope recorded"
+  ],
+  "unchanged": [
+    "numerical code",
+    "48-control result",
+    "technical PDF",
+    "original Lean source bytes"
+  ],
+  "prosa_pdf_sha256": "c9c13cc334339dd9d305f4dc29d5d82021843bfd282c6f4f02734856757a4e17",
+  "publication_complete": false,
+  "native_effect_ack_done": false
+}

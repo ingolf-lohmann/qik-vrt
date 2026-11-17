@@ -1,0 +1,48 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_REAL_ENERGY_LOCKED_CONSUMER_20261103_V1",
+  "owner": "Ingolf Lohmann",
+  "source_owner_command": "de5f082b-cf95-5fad-bf81-29db704b8a85/v4",
+  "workspace_task": "7de55d50-f3e9-561b-930f-b3fc1ca9573c/v3",
+  "predecessor_branch_head": "747fc392251831c06627a0fa54643ab49ce5064a",
+  "authority_main": "40fa8eb1a6b413801ba8554dca35f915d54316c7",
+  "authority_tree": "cd81338b400104452a666873d1fe6c02e996b3a3",
+  "observed_at": "2026-11-03T08:33:00.064471+00:00",
+  "completed_local": [
+    "33 input payload hashes verified",
+    "Separate actual Lake lock with archive-bound original mathlib and eight transitive Git revisions",
+    "6816 original mathlib source files verified",
+    "Eight original real-energy theorems kernel-checked in the separate package",
+    "Eight exact Statement/_checked bindings and both complete axiom audits",
+    "Four false statements rejected",
+    "Three checker self-tests passed",
+    "Cold and existing-source bootstrap checks passed",
+    "Existing manuscript workflow extended as a source candidate, YAML/shell checked",
+    "Scientific seven-page and prose five-page drafts updated and visually checked"
+  ],
+  "native_CI": "NOT_EXECUTED",
+  "source_gate": "ORIGINAL_SCRIPT_UNAVAILABLE_PENDING",
+  "archive_commit_mode": "SKIP_CI_RESEARCH_ARCHIVAL_WITH_OPEN_NATIVE_GATES",
+  "ordinary_release": false,
+  "effect_ack_done": false,
+  "open_work": [
+    "Native exact-head CI and seven independent checkers",
+    "Publisher/quota repair and safe repository admission",
+    "Main/review/governance gates",
+    "Original publication source gate, exact candidate return/upload decision, protected original Zenodo publisher and public byte readback",
+    "Original PersonalAuth/OSSecretStore and actual five-input host consumer binding",
+    "Actual IONOS install, mTLS, /v1.45/info, systemd/restart/persistence, HTTPS, productive EAP readback",
+    "Original Mirror emitter/source/writer and named-peer acknowledgements",
+    "Original Nov2 full archive/raw-log gap",
+    "Original R2 stop and other existing obligations preserved"
+  ],
+  "not_performed": [
+    "No Main merge",
+    "No new PR",
+    "No CI dispatch/rerun",
+    "No new scheduler/executor",
+    "No Zenodo mutation",
+    "No host restore/deploy or substitute identity"
+  ],
+  "next_authorized_step": "Admit this exact locked consumer through the existing manuscript workflow after the existing publisher/quota path is repaired and safe native checks are available; recover the original source-gate script and original SSO executor bindings independently."
+}

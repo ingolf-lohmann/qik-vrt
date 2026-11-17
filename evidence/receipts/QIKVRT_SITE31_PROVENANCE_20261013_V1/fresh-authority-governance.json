@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt_repository_governance_readback_v1",
+  "observed_at_utc": "2026-10-13T07:19:58.671Z",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pr": 523,
+  "head": "08f9c54a8e391bd1632a95e7800f55e329fc2c4f",
+  "tree": "d1278194b8836f855246948651fa4cbbf1760dd1",
+  "rulesets": [],
+  "reviews": [],
+  "main_branch": {
+    "name": "main",
+    "head": "ac56f83f96158c162f90d41579eae047caddac22",
+    "protected": false
+  },
+  "transport": "REST_API_ONLY",
+  "main_integration": false
+}

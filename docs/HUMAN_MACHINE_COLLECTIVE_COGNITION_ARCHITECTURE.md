@@ -72,3 +72,71 @@ Eine Referenz in dieser Architektur ist keine automatische Abhängigkeit und kei
 ## Qualitätsregel
 
 Die optimale Mensch–Maschine-Schnittstelle maximiert nicht die Anzahl der Antworten, sondern die Zahl belastbarer Erkenntnisfortschritte pro menschlichem Eingriff. Geschwindigkeit darf niemals durch Weglassen von Provenienz, Unsicherheit, Pflichtprüfungen oder menschlicher Autorität bei externen Effekten erkauft werden.
+
+## Verbindliche HMI-Unabhängigkeit — Owner-Entscheidung vom 23. Oktober 2026
+
+**QIKVRT definiert, welche Eigenschaften eine geeignete HMI-Instanz erfüllen muss.
+Jede HMI-Instanz ist austauschbar. QIKVRTs Identität, dauerhafter Zustand,
+Aufträge, Autorisierung, Scheduling und Fortsetzung hängen von keiner bestimmten
+HMI-Instanz ab.**
+
+Diese Festlegung gilt für gegenwärtige und künftige HMI-Adapter. Eine spätere
+ausdrückliche Owner-Entscheidung kann sie versioniert fortschreiben; ein
+Clientwechsel oder eine technische Einschränkung setzt sie nicht außer Kraft.
+Der maschinenlesbare Vertrag steht in
+`policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json#/hmi_independence`
+und ist über `AI_CONTEXT.json` auffindbar.
+
+### Verantwortungsgrenze
+
+QIKVRT hält die maßgeblichen Arbeitszustände und Belege repository-nativ sowie
+in seiner bestehenden, zugriffsgeschützten privaten Laufzeitpersistenz.
+Die HMI übernimmt ausgehandelte Eingabe, Transport und Darstellung. Ihre
+Sitzung, ihr Kontext, ihre Dateiablage und ihre Scheduled Tasks sind keine
+Voraussetzung für den Fortbestand oder die native Fortsetzung angenommener
+Arbeit. Der äußere Taktgeber bedient den jeweiligen Kommunikationskanal;
+QIKVRTs innere Taktung und Auftragsplanung bleiben davon unabhängig.
+
+QIKVRT gibt den versionierten Schnittstellenvertrag vor. Ein Adapter meldet
+seine Fähigkeiten, Modalitäten, Größen- und Ratenlimits, Identitätsbindung
+und Zustellsemantik. Fehlende Fähigkeiten werden kenntlich gemacht.
+Ein Adapter kann über einen geeigneten autorisierten Transport angeschlossen
+werden; seine Fähigkeitserklärung ist noch kein Abnahmebeleg.
+
+### Verlustfreie Zuordnung und Fortsetzung
+
+Eingänge tragen stabile Nachrichten- und Auftragsidentitäten, Herkunft,
+Kausalbezug, Idempotenzschlüssel und eine prüfbare Nutzlastbindung.
+Konkurrierende Änderungen werden im betroffenen nativen Zustandsbereich
+geordnet; unabhängige Arbeit darf parallel bleiben. Kapazitätsgrenzen
+führen zu explizitem Rückstau oder Zurückweisung. Eine ungespeicherte
+Nachricht darf nicht als dauerhaft angenommen bestätigt werden.
+
+Ergebnisse bleiben mit Auftrag, Inhaltsversion, Lauf, Softwaregegenstand,
+Wirkungsstatus, Belegen, offenen Pflichten und Fortsetzungsposition verbunden.
+Transportbestätigung, dauerhafte Annahme, Ausführung, verifizierte Wirkung,
+Benachrichtigungszustellung und menschliche Kenntnisnahme sind getrennte
+Zustände. Die Anzeige fasst sie als Auftrag, tatsächliches Ergebnis, Beleg,
+offene Punkte und nächsten Schritt verständlich zusammen.
+
+Eine neue HMI rekonstruiert den Auftrag aus QIKVRT unter eigener verifizierter
+Identitäts- und Berechtigungsbindung. Sie benötigt weder den alten Chat noch
+dessen lokale Dateien. Ein Clientwechsel überträgt keine Zugangsdaten und
+erweitert keine Rechte. Frühere gültige Owner-Freigaben bleiben ihrem
+ursprünglichen Gegenstand zugeordnet.
+
+### Abnahme
+
+Der reale Austauschtest muss einen Auftrag über HMI A annehmen, A beenden,
+native Fortsetzung nachweisen und über die unabhängig zugelassene HMI B
+denselben Zustand samt Ergebnis und Belegen zurücklesen. Hinzu kommen
+Wiederanlauf, konkurrierender Eingang, Wiederholung, vertauschte Zustellung,
+begrenzte Kapazität und fehlende Client-Dateiablage bzw. Client-Timer.
+Bereits angenommene Eingänge dürfen nicht verloren gehen; logische Effekte
+dürfen durch Wiederholungen nicht doppelt entstehen.
+
+Wechselzeit und Wiederherstellungsvollständigkeit werden gemessen; eine
+konkrete Latenzgrenze benötigt ein ausdrücklich festgelegtes Messbudget.
+Die Speicherung dieses Vertrags belegt seine Dokumentation. Native
+HMI-Unabhängigkeit, Implementierung und produktiver Austausch bleiben bis
+zu ihren jeweiligen frischen Nachweisen offen.

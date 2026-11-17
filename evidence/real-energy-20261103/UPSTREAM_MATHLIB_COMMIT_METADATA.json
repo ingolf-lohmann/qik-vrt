@@ -1,0 +1,35 @@
+{
+  "sha": "c44e0c8ee63ca166450922a373c7409c5d26b00b",
+  "node_id": "C_kwDOFcwZ1doAKGM0NGUwYzhlZTYzY2ExNjY0NTA5MjJhMzczYzc0MDljNWQyNmIwMGI",
+  "url": "https://api.github.com/repos/leanprover-community/mathlib4/git/commits/c44e0c8ee63ca166450922a373c7409c5d26b00b",
+  "html_url": "https://github.com/leanprover-community/mathlib4/commit/c44e0c8ee63ca166450922a373c7409c5d26b00b",
+  "author": {
+    "name": "Kim Morrison",
+    "email": "kim@tqft.net",
+    "date": "2025-05-01T17:26:36Z"
+  },
+  "committer": {
+    "name": "Kim Morrison",
+    "email": "kim@tqft.net",
+    "date": "2025-05-01T17:26:36Z"
+  },
+  "tree": {
+    "sha": "fdf252e589fb338709bf537ba48ce79a78cbe5e9",
+    "url": "https://api.github.com/repos/leanprover-community/mathlib4/git/trees/fdf252e589fb338709bf537ba48ce79a78cbe5e9"
+  },
+  "message": "chore: bump toolchain to v4.19.0 (#24519)",
+  "parents": [
+    {
+      "sha": "27c67e7a64466b5e4717c7bec63c4f8d445cea97",
+      "url": "https://api.github.com/repos/leanprover-community/mathlib4/git/commits/27c67e7a64466b5e4717c7bec63c4f8d445cea97",
+      "html_url": "https://github.com/leanprover-community/mathlib4/commit/27c67e7a64466b5e4717c7bec63c4f8d445cea97"
+    }
+  ],
+  "verification": {
+    "verified": false,
+    "reason": "unsigned",
+    "signature": null,
+    "payload": null,
+    "verified_at": null
+  }
+}

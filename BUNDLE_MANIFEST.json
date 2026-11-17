@@ -1,0 +1,819 @@
+{
+  "schema": "qikvrt-real-energy-completion-payload/v1",
+  "excluded": [
+    "BUNDLE_MANIFEST.json",
+    "BUNDLE_SHA256SUMS.txt",
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt"
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+      "bytes": 27092,
+      "sha256": "5402d60064bb9a86afeb6d300e66223017d5789844194e5557880f23e7f171a7"
+    },
+    {
+      "path": "CHANGE_NOTICE.md",
+      "bytes": 3262,
+      "sha256": "622956568784630069a548f7e3089d41ab05dd245eeb08ea07b93344e542e18e"
+    },
+    {
+      "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "path": "README_REAL_ENERGY_COMPLETION.md",
+      "bytes": 5420,
+      "sha256": "2aa3dc738776e7a5e1da850c7b612c0457037e8f07c8b262c0eb1a86904bb30a"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/ARCHIVE_MODE.json",
+      "bytes": 981,
+      "sha256": "cd52795825d6af4cc87e0a2235e203601fe5ba22db5fb2a38591ccf113782d28"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/ARTIFACT_MANIFEST.json",
+      "bytes": 12657,
+      "sha256": "a51985095377b8c916fc049dc668ec489e71162721b9dba191fc05cd5af0415a"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/CATALOG_CONSULTATION.json",
+      "bytes": 3662,
+      "sha256": "f416ce341dc5b72c00f50fc3f6e20ab7422f0a6cb4f02981bd355bf8d6b718cb"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/CLAIM_MATRIX.json",
+      "bytes": 9335,
+      "sha256": "d221fcfc51cfa615966d59e1e0f4a4b19b9ed5deb7b00edbfe9c2a60ed8bf61f"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/CONTINUATION_SOURCE_RECONCILIATION.json",
+      "bytes": 1396,
+      "sha256": "90b478e419442cb87403a15341f4292963cfa9e15dc50241f832101a372c65bd"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/DOCUMENT_QA.json",
+      "bytes": 859,
+      "sha256": "25669865f7d144e382c1ff7da9fb99716be96cf9874a3773a13c5a77e5875ce3"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/ENTRY_INDEX.json",
+      "bytes": 423,
+      "sha256": "4c823edac3aceca2fb7de40c2a983c7a2fdc29deb0531eda1985c7527980278d"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/Ein_virtuelles_Universum_auf_dem_Pruefstand.txt",
+      "bytes": 11176,
+      "sha256": "f6d34fb6063e040c2ec43a10a6374a60b711516047d43cf4ca68bb61d3e56c15"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/FACHARTIKEL.md",
+      "bytes": 18567,
+      "sha256": "0beb67b09ba077e5cf0d96a6b5bfb8ebf1889d74c535653f2f1ab44a200d35cf"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/KERNEL_PROOF_PLAN.json",
+      "bytes": 981,
+      "sha256": "49e0029a89b4da7862d5004c5fd360569e588f454a06625fac0e3ddb281ce8c9"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/MANUAL_SOURCE_INSPECTION.json",
+      "bytes": 4625,
+      "sha256": "c11ea2c9482f14b3418688e9b026525a1744166f629e5d3dc6002f26d126dfa9"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/PREPARATION_ISSUES.json",
+      "bytes": 2699,
+      "sha256": "1b7da1a07ad836cce8f1f2386716918d1b8cad8194c7c297c93d0ac90bccb8c4"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/PROSAARTIKEL.md",
+      "bytes": 11202,
+      "sha256": "3c6d9f4a57e8b2795d98b002db89fbeb8f7ca4a9541debae44361ab0b8e9610a"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/PUBLICATION_ROUTING.json",
+      "bytes": 2375,
+      "sha256": "1a8156561e95d46f596edb4e41290527e6b07918b9969e2770fc067b2249f843"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/QIKVRT_Energie_Raumzeit_Forschungsnotiz.pdf",
+      "bytes": 359646,
+      "sha256": "d6bfa63e6b348d3630db3602332f5057f4de991593fb7fd2ec92b05419719f93"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/QIKVRT_Virtuelles_Universum_Prosa.pdf",
+      "bytes": 119265,
+      "sha256": "73527b183b10ec6c2855ff24b3bd9046e8be8a7c8b20929d983e2db8e6044006"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/README.md",
+      "bytes": 4425,
+      "sha256": "963b8f12bd89c2f91f14fa13df167b26ae40b943319ae40afffed50cb863b90f"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/REVISION_2.json",
+      "bytes": 707,
+      "sha256": "d58b598d5878cb7ed593392529250ca9966f1021099fda3500e44663365cdae7"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/REVISION_3.json",
+      "bytes": 556,
+      "sha256": "be29aae107ff6b6e72551e53edd0092906f6245ba854b51b7a6ecd8925e880c6"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/SHA256SUMS.txt",
+      "bytes": 7503,
+      "sha256": "ca9ea34d6f8a83c81a1ee1cdb8221bd006ecfd845c14646a40e6e59f2f77ba0e"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/SOURCE_GATE_PENDING.json",
+      "bytes": 1271,
+      "sha256": "41ad66957a4cec562ba431d55d09c3d4461304ff9dc2ffcb4a343a4cb46daf49"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/SOURCE_MANIFEST.json",
+      "bytes": 1328,
+      "sha256": "eac437e60bdda7701f7661c719c6a9280afe4567178d230f3d4348488edfcf78"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/WORKFLOW_TRIGGER_INVENTORY.json",
+      "bytes": 24455,
+      "sha256": "2c79f3c8507f802d879d3c679cfa42845f4630c2ce255b940738519758e74eb7"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/ZENODO_CANDIDATE.json",
+      "bytes": 1465,
+      "sha256": "bce3b2f6e17d580cd55706e47e8ab7fb656baaec2177da4df28b7db28fee34c3"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/ITERATION_1_RECOVERY.json",
+      "bytes": 371,
+      "sha256": "51d9eb7f704cbc824ec1362cdf89f1abc90f64f5c39a4c1c4852b71701ba2df0"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/QIKVRT_Energie_Raumzeit_Forschungsnotiz-render.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/QIKVRT_Energie_Raumzeit_Forschungsnotiz-render.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/QIKVRT_Virtuelles_Universum_Prosa-render.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/QIKVRT_Virtuelles_Universum_Prosa-render.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/RUN-002.json",
+      "bytes": 841,
+      "sha256": "6a464eff781877407a7fe3508e1f8010d10b883a6e68bc0026e23f2213030f99"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/RUN.json",
+      "bytes": 678,
+      "sha256": "097e515fdbbe6483346cf446cdfe4eeab673e180f4127cb8c6666aa2291a6f15"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/iteration-1-replay.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/iteration-1-replay.stdout",
+      "bytes": 896,
+      "sha256": "ec42341060ef79e88d5ed55e6c58c991b42a752fd68be12fa89096c8b0323b25"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/render-002.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/render-002.stdout",
+      "bytes": 123,
+      "sha256": "42e9084ca5c1c36ba2280cfc18e45305430c83d1e92d38985f64c7e31f08b5df"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/render.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/render.stdout",
+      "bytes": 123,
+      "sha256": "5bf4be737100d392b77e1307f94d391e35b17be79b40992a85564bf25e61b686"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/reproduced-iteration-1/RESULTS.json",
+      "bytes": 14149,
+      "sha256": "3a7551b924d3545dee31c3a1c7dcb2ff5ed07ed9a0a7c1ac1c33ee0d610a623e"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/reproduced-iteration-1/closed_mixed_trajectory.csv",
+      "bytes": 143244,
+      "sha256": "f757df1df19b6e93ac532130f538cabd90e59ed7fc9bf383b3f763763be0c37f"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/run-002.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/run-002.stdout",
+      "bytes": 896,
+      "sha256": "ea11f347753056439293d792341d26ff25bd00b2834c96242d3f937d469c1e42"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/run.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/run.stdout",
+      "bytes": 896,
+      "sha256": "ec42341060ef79e88d5ed55e6c58c991b42a752fd68be12fa89096c8b0323b25"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/execution/source-iteration-1.py",
+      "bytes": 11269,
+      "sha256": "5d1a8463efb72f25a28831e86688fcf950763f0e62a4c65074a644d222521aee"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/formal_evidence/PlanckRealEnergyDomain.lean",
+      "bytes": 3467,
+      "sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/formal_evidence/RECEIPT.json",
+      "bytes": 7236,
+      "sha256": "13d4a8533549c8d3993e349de7da1044bc65f7ef9fe3f2107dc10bae53fff3eb"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/formal_evidence/RealEnergyStatements.lean",
+      "bytes": 1889,
+      "sha256": "3fd5220b2bb3808e5b6def6ca7eae0e16df2693c068355addc9698056543e1cf"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/formal_evidence/RealErasureBudget.lean",
+      "bytes": 1533,
+      "sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/formal_evidence/SOURCE_LOCK.json",
+      "bytes": 2781,
+      "sha256": "0c2361374ebb90777422aeca7e45c60a5183967012acaf25eeabb22399a3c821"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/formal_evidence/THEOREM_INVENTORY.json",
+      "bytes": 5379,
+      "sha256": "2e29bdcaa2ed87c1de01c2f27f88f3574e0b739b56ec7e706b80ec6cb75c8c30"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/package_bundle.py",
+      "bytes": 2052,
+      "sha256": "3e54f628a9519fb363a9a5fccc86c0f40b757f5ecbebb8e445319c11078c5bcb"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/prior_sources/proof/IterativeEvidence.lean",
+      "bytes": 4210,
+      "sha256": "8c0ff578be57f0b18435189d711f11e94990e434fb31f9e00f1666ad0ddc1a23"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/prior_sources/proof/negative/false_checker_success.lean",
+      "bytes": 108,
+      "sha256": "445e46f61062670df07daac763da414521fbd1e7068095891f1fe94a0cbc0956"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/prior_sources/proof/negative/false_monotone_knowledge.lean",
+      "bytes": 128,
+      "sha256": "771458c2cf65b3355941be6980c2de95218a91eda9664acb7349b4fd3ff0ed38"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/prior_sources/proof/negative/false_stale_success.lean",
+      "bytes": 99,
+      "sha256": "ea96a03266ffb3a06c630d3b7dd8b321461c98f4fc52d22a0241d02a380dd47e"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/prior_sources/proof/negative/false_unconditional_budget.lean",
+      "bytes": 92,
+      "sha256": "a4439573d60a76eec3f0b2936c2c9a8f2fcef6aebb1f3c36f6bbb58a778d7211"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/prior_sources/proof/negative/false_universal_energy.lean",
+      "bytes": 98,
+      "sha256": "4d606c0ee67ef788dd55de1dd21d4b7b2db0841e225c280d5e4bda3a0b6e92d7"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/production_evidence/DOWNLOAD_RECEIPT.json",
+      "bytes": 469,
+      "sha256": "00ca47d042cb91efbe8cde773f04e48cdc42b754549b8b22b1d3bfa7522ae1a6"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/production_evidence/HOST_BOUNDARY.json",
+      "bytes": 1248,
+      "sha256": "3f8f1b5b8a447e974280e678d7e23ed8903b133e8b9fd6b4fef88fce24d69cc8"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/production_evidence/ORIGINAL_VERIFIER_RECEIPT.json",
+      "bytes": 818,
+      "sha256": "4e2fd6fc4f9fc3c2317c4b3e149d3a64ac1c2c9cd05fbe5ccc69c0ea9874ee33"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/production_evidence/SOURCE_BYTE_VERIFICATION.json",
+      "bytes": 437,
+      "sha256": "cf643418f8c12fc4167aa2ef46b611ea5a618c3e8ac3dcfeab3663fdfdcad06d"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/production_evidence/original-verify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/production_evidence/original-verify.stdout",
+      "bytes": 325,
+      "sha256": "fae3c440b2b231af1fd4ac45723a117c544d7642db609a4644af88e3ae624a2c"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/render_articles.py",
+      "bytes": 7612,
+      "sha256": "74d37a399b3075c706a4a6dab2d4f613bd8b2c7a6b82fa2f63e500f395fe076d"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/results/RESULTS.json",
+      "bytes": 15250,
+      "sha256": "290f27a1940d951088b1e57adb107a80da710c283574f130372a515c93608006"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/results/closed_mixed_trajectory.csv",
+      "bytes": 143244,
+      "sha256": "f757df1df19b6e93ac532130f538cabd90e59ed7fc9bf383b3f763763be0c37f"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/results/model_overview.png",
+      "bytes": 215551,
+      "sha256": "08f854776d250d1179795282a46545cee44265aefcce2e9692f4136d11e618b5"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/run_experiment.py",
+      "bytes": 11575,
+      "sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/EXTERNAL_LOCATORS_ONLY.json",
+      "bytes": 1137,
+      "sha256": "778a3b1089cbfbc1e2bbb8a705abc60535b9d81be98168208ceb7f132bc8d109"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/EXTERNAL_LOCATOR_CHECK.json",
+      "bytes": 1871,
+      "sha256": "34b21453bcdd58b2cd7dbcebc15baae175afc01fbf0e4baf43c23dad16d3daa9"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/EXTERNAL_LOCATOR_CHECK_CORRECTED.json",
+      "bytes": 1851,
+      "sha256": "3ce47693eedf4344b306bcac9d8b2a0d7101c35897a2e869cc1f76d6bc833f45"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/ORIGINAL_FULL_GATE_AFTER_METADATA.json",
+      "bytes": 389,
+      "sha256": "c0c6c42c3ad817c878f10d799a3916c8bb297a57ceb3cebd73f5b8f634b7f926"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/ORIGINAL_FULL_GATE_INITIAL.json",
+      "bytes": 389,
+      "sha256": "ee3567d4c307b17387cd7452eb5eb82e8463f127799c93480a38376d45535f09"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/ORIGINAL_GATE_RECOVERY.json",
+      "bytes": 353,
+      "sha256": "6dade2c7cce069d1e1c7ded54c601d210e7b1e8675acbd49ee8f41cb4b9529c8"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/SOURCE_METADATA_CORRECTION.json",
+      "bytes": 762,
+      "sha256": "571a9c935ec9ebcb665ea23323d2efa9ab10c8cc7f8f9be2e500418c0e64fa8f"
+    },
+    {
+      "path": "docs/publications/2026-11-03-energy-cosmology-model-test/source_validation/check_sources.py",
+      "bytes": 7882,
+      "sha256": "63d92f9f85883bfa56adff465369f5e9f0d5d6e0c63c74504771279c4a6d935b"
+    },
+    {
+      "path": "docs/publications/index.html",
+      "bytes": 47303,
+      "sha256": "fbe1b38ca9b128e8b13cf552dfa635b0098f8bce650e1811c2bfe4b55541cb8e"
+    },
+    {
+      "path": "docs/publications/index.json",
+      "bytes": 65040,
+      "sha256": "a30bc20cb6af8ae0da121f462c87326174e3fed8bd67193da4f24cac56e2ff8e"
+    },
+    {
+      "path": "evidence/real-energy-20261103/CHECKER_SELFTEST.json",
+      "bytes": 646,
+      "sha256": "b2195f5eb10338a424f5404fe244183b45957160783a4064ede5d65c6f609868"
+    },
+    {
+      "path": "evidence/real-energy-20261103/DOCUMENT_MACHINE_QA.json",
+      "bytes": 671,
+      "sha256": "924f3c0de976ce53bbb07c0ab31eabe4f9499e22c78f2ad4a806350b45bfe1c1"
+    },
+    {
+      "path": "evidence/real-energy-20261103/DOMAIN_READBACK.json",
+      "bytes": 33928,
+      "sha256": "0941c1750574ffbfb28ed124821cdd494ffdd0755a7c6274404f1c0c8a1e0147"
+    },
+    {
+      "path": "evidence/real-energy-20261103/HISTORICAL_INPUT_VERIFICATION.json",
+      "bytes": 3219,
+      "sha256": "e05d7393f4e16612886ad685d6fd4d3f13bf50d217fc4c8e83fc8fc9a66e3257"
+    },
+    {
+      "path": "evidence/real-energy-20261103/INPUT_BYTE_VERIFICATION.json",
+      "bytes": 6543,
+      "sha256": "a22f4eb3ae27ecf95588f97e5ad7e8b1b049bf6b48a28f2b734dd435929a4db8"
+    },
+    {
+      "path": "evidence/real-energy-20261103/NATIVE_RUN_41616823386.json",
+      "bytes": 15253,
+      "sha256": "2c1ff28ea2948bcaad4f8f1c817cdecd8cf9c767cf52e4d0d14176806a7318cd"
+    },
+    {
+      "path": "evidence/real-energy-20261103/ORIGINAL_SERVICE_BINDING.json",
+      "bytes": 715,
+      "sha256": "c15778f65091f6b94a2c37eb8dea75095cc6e1b3294dbb7e385c8d333120262a"
+    },
+    {
+      "path": "evidence/real-energy-20261103/PREPARATION_RECONCILIATION.json",
+      "bytes": 1630,
+      "sha256": "7b39bc16573e85856af65b6808d5b8d2eee75bd19a9be721e8a863fdf47516b8"
+    },
+    {
+      "path": "evidence/real-energy-20261103/QIKVRT_RealEnergy_Kernel_20261103.zip",
+      "bytes": 18410,
+      "sha256": "3de2e360f401123b121def22765c8cc6fe0c6e53f2b5ad5d7ef98d103f744ddf"
+    },
+    {
+      "path": "evidence/real-energy-20261103/UPSTREAM_MATHLIB_COMMIT_METADATA.json",
+      "bytes": 1334,
+      "sha256": "90a2253f7d675728a399676c0f3f84187ebd248ef12af64bdfb9575c4fb6bf08"
+    },
+    {
+      "path": "evidence/real-energy-20261103/lake_build_locked.log",
+      "bytes": 3098,
+      "sha256": "b6fa356cfef629c6057527f707fc637dfdb49c570f5428465c0b33c21efac24b"
+    },
+    {
+      "path": "evidence/real-energy-20261103/lake_generate_lock.log",
+      "bytes": 169,
+      "sha256": "ca2caf39ef9cd94019e553f8dacbf5b50c6e55b978903b00bb158962d0536b9c"
+    },
+    {
+      "path": "evidence/real-energy-20261103/native_run_41616823386.log",
+      "bytes": 287727,
+      "sha256": "e877045ede09821add5ad80c959c13474772ff4cc2e5611a94f0bd5acf53dab4"
+    },
+    {
+      "path": "evidence/real-energy-20261103/original_mathlib_recovery.log",
+      "bytes": 427,
+      "sha256": "cd3ed8183929642ae6513ea5ba4631df863e54cb20f749fa6046279bf5126e25"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/.gitignore",
+      "bytes": 68,
+      "sha256": "162dc86ba4b04c999ad01d223093a3580183172298994838e1a02f982a162798"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/CHECKER_SELFTEST.json",
+      "bytes": 646,
+      "sha256": "b2195f5eb10338a424f5404fe244183b45957160783a4064ede5d65c6f609868"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/LICENSES/CC-BY-NC-ND-4.0.txt",
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "bytes": 4563,
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/MATHLIB_SOURCE_MANIFEST.json",
+      "bytes": 1058444,
+      "sha256": "526d1e0a45df5d8cde128246b5bb7442eea93be3d832220bdc1584e8eadebc05"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/PlanckRealEnergyDomain.lean",
+      "bytes": 3467,
+      "sha256": "b98e619efab8c6289824c892c4cd5b3e8bcfecead278855f8cc45a6620c7d2ce"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/README.md",
+      "bytes": 4579,
+      "sha256": "58a7cf8590d837718c79755cc7135e66bc44c841b82cffc0b53881fd49dae4c2"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealEnergyAcceptanceAudit.lean",
+      "bytes": 549,
+      "sha256": "799ab42cbab9a4f40394bac15ec90589cef6570cbe105f4ebeae2d4f8ae471f3"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealEnergyAxiomAudit.lean",
+      "bytes": 638,
+      "sha256": "63b0852be9c1c9468bea5a20a7122ad729578de6b918ed6001c78a42008964a5"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealEnergyStatements.lean",
+      "bytes": 1889,
+      "sha256": "3fd5220b2bb3808e5b6def6ca7eae0e16df2693c068355addc9698056543e1cf"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/RealErasureBudget.lean",
+      "bytes": 1533,
+      "sha256": "2af5f2858b9b1941767f5fc2548fb886b09a318dd716fed03ee71b5181215f63"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/SOURCE_LOCK.json",
+      "bytes": 2781,
+      "sha256": "0c2361374ebb90777422aeca7e45c60a5183967012acaf25eeabb22399a3c821"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/THEOREM_INVENTORY.json",
+      "bytes": 5379,
+      "sha256": "2e29bdcaa2ed87c1de01c2f27f88f3574e0b739b56ec7e706b80ec6cb75c8c30"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/bootstrap_cold_source.log",
+      "bytes": 45,
+      "sha256": "f314e24e765c05a855e9709b8031ea0f415582a8d5178f76465adfac7ccbb671"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/bootstrap_existing_source.log",
+      "bytes": 54,
+      "sha256": "7093bf58715d92114982ad10b66a126ca019a8b5be796254d7cf70546e45b0a8"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/bootstrap_mathlib.py",
+      "bytes": 3151,
+      "sha256": "6b8945a2b7c9d6c06616ccd1adc4eaefaaf1ed4c8b432cd55f7c3ea11224c10e"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/check_real_successor.py",
+      "bytes": 8757,
+      "sha256": "034e44847bfc02435544bad7004df9f1a95b7c2027a70e76ba00272bd853ac59"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/checker_selftests/missing_compiler/RECEIPT.json",
+      "bytes": 494,
+      "sha256": "9483900c27f40c14d0b8081bc9657ff32dcd09e28a9230afbcb6b86a2394177a"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/checker_selftests/valid_preflight/RECEIPT.json",
+      "bytes": 550,
+      "sha256": "b531ddae1b75bba6024ab049e126526febbbc248fdf48020a349e60ff276b40b"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/checker_selftests/wrong_source/RECEIPT.json",
+      "bytes": 469,
+      "sha256": "8d4551133b877404416f53d625cbd4c07482e5c9e3daea461326dbafa4522ed9"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/lake-manifest.json",
+      "bytes": 2974,
+      "sha256": "6f5964b2526d7d9d2618d58f77df04909720eea9388b395488abe8adcc15bd1d"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/lake_build_locked.log",
+      "bytes": 3098,
+      "sha256": "b6fa356cfef629c6057527f707fc637dfdb49c570f5428465c0b33c21efac24b"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/lake_generate_lock.log",
+      "bytes": 169,
+      "sha256": "ca2caf39ef9cd94019e553f8dacbf5b50c6e55b978903b00bb158962d0536b9c"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/lake_update_after_bindings.log",
+      "bytes": 97,
+      "sha256": "019a5e6dc0f1aec9fdefd754f74b7c76db64de08bc9aba9f2248e55ff67d791f"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/lakefile.toml",
+      "bytes": 498,
+      "sha256": "82f1f7cb8141f7dfa151d74e1bc33f545fdf1e1958551979d0af402953086427"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/lean-toolchain",
+      "bytes": 25,
+      "sha256": "55e97be96000b5e9e290c9e74482e5e317861499a5540353ce845471bded8cea"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/negative/negative_gap.lean",
+      "bytes": 68,
+      "sha256": "cce06233c9dc548971cc096db40dbe54a0e6759bc4ccddcc74014169bbaff9e9"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/negative/over_budget.lean",
+      "bytes": 79,
+      "sha256": "653883e33566815282a8e2cbcb75d636d2712f5f2b59248264c6c84a4a406519"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/negative/upper_gap_endpoint.lean",
+      "bytes": 69,
+      "sha256": "569521a245ae081069bc1fba9a41332d86785f0de03607157173cbe9ca20bb6b"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/negative/zero_constants.lean",
+      "bytes": 65,
+      "sha256": "e23287b25835de7e2bcf0551066d253cd5c11c7aa9e3761503c28f2454412143"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/PlanckRealEnergyDomain.log",
+      "bytes": 228,
+      "sha256": "441651cb4d87e0edf752f27a295b1c8cd8fbe17f753e18757e5e338648109330"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/RECEIPT.json",
+      "bytes": 7236,
+      "sha256": "13d4a8533549c8d3993e349de7da1044bc65f7ef9fe3f2107dc10bae53fff3eb"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/RealEnergyAcceptanceAudit.log",
+      "bytes": 896,
+      "sha256": "c73e2dcb2ade176b0836bfc55a31d90e85d3734a5be66db6dc1bde0f1cfc2861"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/RealEnergyAxiomAudit.log",
+      "bytes": 991,
+      "sha256": "39b2f5940233577f34d69c5d37e7ee6e0b8367227f2fcbb6d2174a87fdc026e1"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/RealEnergyStatements.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/RealErasureBudget.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/lean_version.log",
+      "bytes": 78,
+      "sha256": "5362a246ce2545424db10a77de8fd4694f4cf8b0170dfd43fa727acf7f7f259b"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/negative_negative_gap.log",
+      "bytes": 109,
+      "sha256": "a0d918cc562f56b1b01d1e2928172cc4a0ba2eb58d74cc8a270a87879656783f"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/negative_over_budget.log",
+      "bytes": 108,
+      "sha256": "d0cd5c22253ecf025492ce7b228c8fb1d3ae8f601e32a8e6d669de1c841a5da4"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/negative_upper_gap_endpoint.log",
+      "bytes": 115,
+      "sha256": "4f523764e2eb0a6ca4038dd41e4d36ccf086449ef2964008a72edaef49e07ba8"
+    },
+    {
+      "path": "formalization/QIKVRT_RealEnergy_v1/verification/acceptance-001/negative_zero_constants.log",
+      "bytes": 111,
+      "sha256": "7baef66dd9a87473a4220f92c6501ab409cd6d50813a2d55d59fe02b2f2f8937"
+    },
+    {
+      "path": "package_completion.py",
+      "bytes": 1536,
+      "sha256": "6b6891595771f9d9dc5a4ccabfcfcb65c00ede662645d6800c579b66dd815a19"
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v1.schema.json",
+      "bytes": 2864,
+      "sha256": "3eefc4213d44c0fee8619e05527649595c3cbe030a7742845a0980ab1e51224a"
+    },
+    {
+      "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+      "bytes": 3806,
+      "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9"
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v1.schema.json",
+      "bytes": 6143,
+      "sha256": "b027b4b9071ae4c8d7b31d22ea94ad4ef647a6be9155152b5468f09bf7010504"
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "bytes": 6311,
+      "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e"
+    },
+    {
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+      "bytes": 8118,
+      "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912"
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v1.json",
+      "bytes": 2985,
+      "sha256": "039fe8617a39aaf2b20e99fc30d344f5d879ec26aedbd263647f3308dc19dc60"
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v2.json",
+      "bytes": 4992,
+      "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47"
+    },
+    {
+      "path": "policy/zenodo-machine-proof-policy-v3.json",
+      "bytes": 5608,
+      "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78"
+    },
+    {
+      "path": "source_archive/CLAIM_MATRIX.json",
+      "bytes": 6996,
+      "sha256": "ba662a42542c45827a6224d0ca6bbb50d9ca09b69a5680df85a552bea7a424b8"
+    },
+    {
+      "path": "source_archive/EXACT_UPLOAD_DECISION_REQUIRED.txt",
+      "bytes": 379,
+      "sha256": "0d0ea60b2bb3a1e3fea04a976c39735d4ed4eac7cac86343ec1ebf9eb612ae4a"
+    },
+    {
+      "path": "source_archive/KERNEL_RECEIPT.json",
+      "bytes": 2817,
+      "sha256": "ad3257308dd22b0186fe91584877bd18b42013b3366d16f3f0990c31b4a8b680"
+    },
+    {
+      "path": "source_archive/MACHINE_PROOF_BUNDLE.json",
+      "bytes": 15219,
+      "sha256": "ec1af67061caa7fd05994410ac368e29110703c45fe31e42306641c8058b4e26"
+    },
+    {
+      "path": "source_archive/MACHINE_PROOF_VALIDATION.json",
+      "bytes": 1737,
+      "sha256": "e49f89ea72c5f079a6a64ef2ac9a57e7a649cf312847752454128d35ee31c4c6"
+    },
+    {
+      "path": "source_archive/NATIVE_RECEIPT_STDOUT.json",
+      "bytes": 7236,
+      "sha256": "2e284a60af4b495851b783a008a927c9446e9b0fb128b15096cb79bdf7ca0c5e"
+    },
+    {
+      "path": "source_archive/OWNER_AUTHORIZATION_PENDING.json",
+      "bytes": 6851,
+      "sha256": "207c973cbc0cf25939ab13760682f17ad5365a0aa437d849f55be5ca5e915401"
+    },
+    {
+      "path": "source_archive/PREPUBLICATION_RETURN_RECEIPT.json",
+      "bytes": 1412,
+      "sha256": "b3d45886ec4d931086f7195789ba5fe261c58a089ecd39fd99572d57e18aa5fd"
+    },
+    {
+      "path": "source_archive/QIKVRT_Quellen_und_Modell_20261103.zip",
+      "bytes": 458670,
+      "sha256": "8c3b464c0d4a0315ab3fca30254964a926c066d76134c485c2798a4d339e8667"
+    },
+    {
+      "path": "source_archive/README.txt",
+      "bytes": 2658,
+      "sha256": "603fdf993cbc3af72b0aafea2059e447faff61d7077ef346b8c582bbfa53a880"
+    },
+    {
+      "path": "source_archive/SOURCE_FILES.json",
+      "bytes": 9596,
+      "sha256": "a7cd276f2c98be3d2681ee63e01bc4414161b977d809314876d774aad339f426"
+    },
+    {
+      "path": "source_archive/UPLOAD_PATHS.json",
+      "bytes": 927,
+      "sha256": "32d70c44e1ed196410f2377db5279000d99737c6614b5f2b831786176852025e"
+    },
+    {
+      "path": "source_archive/ZENODO_MANIFEST_PENDING.json",
+      "bytes": 4760,
+      "sha256": "5a2adc470afc7e587b643a8f3f415fcc991c2a813bac063900cb6e60abe6a697"
+    },
+    {
+      "path": "source_archive/ZENODO_METADATA.json",
+      "bytes": 919,
+      "sha256": "e6460beaa8ed85fcb9d4e6dce76ae635c842803ca5fb0c0cfa29a09a494c77c8"
+    },
+    {
+      "path": "state/work_units/QIKVRT_REAL_ENERGY_LOCKED_CONSUMER_20261103_V1.json",
+      "bytes": 2616,
+      "sha256": "c5b80b1d7d3d83075c02f976a7fa9a3d43a66f7b2ee51efcbdd2b958a549996c"
+    }
+  ],
+  "ordinary_release": false,
+  "effect_ack_done": false
+}

@@ -1,0 +1,687 @@
+{
+  "schema": "qikvrt-authority-succession-assurance/v1",
+  "artifact_class": "OPERATIONAL_CANDIDATE_NOT_SCIENTIFIC_PUBLICATION",
+  "observed_at": "2026-10-16T08:24:50.973413+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pr": 523,
+  "predecessor_head": "e8fbaae5cbd7ef04b718561d576cee521c51b9cd",
+  "predecessor_tree": "55c17ee5580c755e54a515219e90f0f3e7cd8f64",
+  "exact_test_binding": "SOURCE_FILE_DIGESTS_NOT_A_FULL_CHECKOUT_OR_NATIVE_CI_CLAIM",
+  "sources": [
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 217862,
+      "sha256": "c9f420cff61a986b83f7e97f492960a5e92a1380c1682db4808aeb20b5f200ef",
+      "git_blob_sha1": "2d73f623ec07dc36a04f6508a7ac2a58af4b44d1"
+    },
+    {
+      "path": "tests/test_self_host.py",
+      "bytes": 116531,
+      "sha256": "f0544918ba04ac9d326363c636df653246c97790741e51064488d0d633c0c39f",
+      "git_blob_sha1": "26851a22ab77dcb76bc05a6cc42eaab45c161cc7"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 16175,
+      "sha256": "ae7f388ff50f3124ece00ec6786e13344c5a7f8fe2644ca96194c39669b6c474",
+      "git_blob_sha1": "efca81a7e5c84eaf026ecf126c52448e1e025f85"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+      "bytes": 17888,
+      "sha256": "e8e236154b2a3c94242ee5220da9c01b2403c72e1224fa9a7e20b1cce9c143b0",
+      "git_blob_sha1": "25ba2bb65033aede7e1251950be9afaa68e897e7"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AxiomAudit.lean",
+      "bytes": 3133,
+      "sha256": "30d074057c4f5a101362ec5c9b2348bb1fae26bf6d99cb7965b60019fe6763cf",
+      "git_blob_sha1": "c71dddb7b4fd6421f28941e0693bd49fae06d846"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/audit_lean_axioms.py",
+      "bytes": 11232,
+      "sha256": "84a09457be6ccf16e45825e2a28f91cba055e863dfcd8c0cf09a9fdfb886851d",
+      "git_blob_sha1": "260bc489b1cdae04b810e91c3c8c4446de00990f"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 63999,
+      "sha256": "482745fe13e62cb59848904b4ac9272d7eaa8252333db15f4fbc659b5d92aaaa",
+      "git_blob_sha1": "e44b07bea6bc9a01ff28bc3572ff773534e497c8"
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "system": "Linux"
+  },
+  "cases": [
+    {
+      "case": "CONTACT_LOSS_REVOCATION",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_contact_loss_revocation",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": null,
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 1,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 10,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN",
+      "formal_refs": [
+        "QIKVRT.V2.AuthoritySuccession.expired_lease_rejected",
+        "QIKVRT.V2.AuthoritySuccession.retirement_irreversible"
+      ],
+      "formal_scope": "CONDITIONAL_SERIALIZED_MODEL_NOT_DISTRIBUTED_RUNTIME"
+    },
+    {
+      "case": "FENCED_MIRROR_TAKEOVER",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_fenced_mirror_takeover_preserves_originals_and_lost_ack",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "B",
+        "caught_up": {
+          "A": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "B": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae",
+        "epoch": 2,
+        "index": 1,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "B": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ],
+          "C": [
+            1,
+            "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [
+        {
+          "record": {
+            "authority": "A",
+            "digest": "d09998ad82c8e130a6227fcd22141f35399553c936f8b1bbc533f579fa2cdbae",
+            "epoch": 1,
+            "event": "effect",
+            "payload_sha256": "0aa95cdd57d619c6d435097da934ae3a9273917c5da57b13224aa60af17a5180",
+            "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+            "seq": 1,
+            "unit": "same-work-unit"
+          },
+          "payload_bytes": 14,
+          "payload_sha256": "0aa95cdd57d619c6d435097da934ae3a9273917c5da57b13224aa60af17a5180"
+        }
+      ],
+      "live_acceptance": "OPEN",
+      "formal_refs": [
+        "QIKVRT.V2.AuthoritySuccession.one_effective_writer",
+        "QIKVRT.V2.AuthoritySuccession.stale_epoch_rejected",
+        "QIKVRT.V2.AuthoritySuccession.qualified_successor_can_write"
+      ],
+      "formal_scope": "CONDITIONAL_SERIALIZED_MODEL_NOT_DISTRIBUTED_RUNTIME"
+    },
+    {
+      "case": "FORMER_AUTHORITY_REJOIN_WITHOUT_FAILBACK",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_former_authority_rejoin_without_failback",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "B",
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 2,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 11,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN",
+      "formal_refs": [
+        "QIKVRT.V2.AuthoritySuccession.retired_never_authority",
+        "QIKVRT.V2.AuthoritySuccession.run_retirement_persists"
+      ],
+      "formal_scope": "CONDITIONAL_SERIALIZED_MODEL_NOT_DISTRIBUTED_RUNTIME"
+    },
+    {
+      "case": "CONCURRENT_TAKEOVER",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_concurrent_takeover_persistent_votes_intersect",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "B",
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 2,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN",
+      "formal_refs": [
+        "QIKVRT.V2.AuthoritySuccession.majority_intersection",
+        "QIKVRT.V2.AuthoritySuccession.same_epoch_election_unique",
+        "QIKVRT.V2.AuthoritySuccession.one_effective_writer"
+      ],
+      "formal_scope": "CONDITIONAL_SERIALIZED_MODEL_NOT_DISTRIBUTED_RUNTIME"
+    },
+    {
+      "case": "NO_QUORUM_HOLD",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_no_quorum_hold_preserves_confirmed_reads",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": null,
+        "caught_up": {
+          "A": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67",
+        "epoch": 1,
+        "index": 1,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 10,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 10,
+        "replicas": {
+          "A": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ],
+          "B": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ],
+          "C": [
+            1,
+            "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67"
+          ]
+        },
+        "retired": [
+          "A"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [
+        {
+          "record": {
+            "authority": "A",
+            "digest": "45c8c99fbe1a808a494282f060c64059d04dead2cf0d9f8809a4f0c89d42cf67",
+            "epoch": 1,
+            "event": "confirmed",
+            "payload_sha256": "ba56c96ec6369cdd13ed2c5e050d2da529daf79431ce1d4ff5e91ad2cedfdf29",
+            "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+            "seq": 1,
+            "unit": "unit"
+          },
+          "payload_bytes": 15,
+          "payload_sha256": "ba56c96ec6369cdd13ed2c5e050d2da529daf79431ce1d4ff5e91ad2cedfdf29"
+        }
+      ],
+      "live_acceptance": "OPEN",
+      "formal_refs": [
+        "QIKVRT.V2.AuthoritySuccession.no_quorum_holds_writes"
+      ],
+      "formal_scope": "CONDITIONAL_SERIALIZED_MODEL_NOT_DISTRIBUTED_RUNTIME"
+    },
+    {
+      "case": "RETIRED_AUTHORITY_REPROMOTION_REJECTION",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_retired_authority_repromotion_rejected_at_every_new_epoch",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": null,
+        "caught_up": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epoch": 2,
+        "index": 0,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 20,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 20,
+        "replicas": {
+          "A": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "B": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ],
+          "C": [
+            0,
+            "0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        },
+        "retired": [
+          "A",
+          "B"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [],
+      "live_acceptance": "OPEN",
+      "formal_refs": [
+        "QIKVRT.V2.AuthoritySuccession.retired_repromotion_impossible",
+        "QIKVRT.V2.AuthoritySuccession.retirement_irreversible"
+      ],
+      "formal_scope": "CONDITIONAL_SERIALIZED_MODEL_NOT_DISTRIBUTED_RUNTIME"
+    },
+    {
+      "case": "SUCCESSOR_CONTACT_LOSS",
+      "test": "tests.test_self_host.AuthoritySuccessionModelTests.test_successor_contact_loss_applies_same_rule",
+      "status": "PASS_LOCAL_MODEL",
+      "final_state": {
+        "authority": "C",
+        "caught_up": {
+          "A": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "B": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "C": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ]
+        },
+        "digest": "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12",
+        "epoch": 3,
+        "index": 1,
+        "initial_authority": "A",
+        "initial_lease": 10,
+        "lease_until": 30,
+        "members": [
+          "A",
+          "B",
+          "C"
+        ],
+        "now": 20,
+        "replicas": {
+          "A": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "B": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ],
+          "C": [
+            1,
+            "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12"
+          ]
+        },
+        "retired": [
+          "A",
+          "B"
+        ],
+        "schema": "qikvrt-authority-succession-local-model/v1"
+      },
+      "confirmed_effects": [
+        {
+          "record": {
+            "authority": "B",
+            "digest": "aebe00f880089814f5b868d20a00f3cebbdb5e855a41cad0d7c18e595d5d7a12",
+            "epoch": 2,
+            "event": "second",
+            "payload_sha256": "144f799a1c798223ad6ed6e6ab2a66d3a6a1b3e0749875425edcc64bef870df9",
+            "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+            "seq": 1,
+            "unit": "same-unit"
+          },
+          "payload_bytes": 16,
+          "payload_sha256": "144f799a1c798223ad6ed6e6ab2a66d3a6a1b3e0749875425edcc64bef870df9"
+        }
+      ],
+      "live_acceptance": "OPEN",
+      "formal_refs": [
+        "QIKVRT.V2.AuthoritySuccession.run_preserves_invariant",
+        "QIKVRT.V2.AuthoritySuccession.run_epoch_monotone",
+        "QIKVRT.V2.AuthoritySuccession.retirement_irreversible"
+      ],
+      "formal_scope": "CONDITIONAL_SERIALIZED_MODEL_NOT_DISTRIBUTED_RUNTIME"
+    }
+  ],
+  "formal": {
+    "status": "NATIVE_KERNEL_VERIFIED",
+    "proposed_theorems": 18,
+    "source": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+    "local_blocker": "LEAN_APPLICATION_PATH_UNAVAILABLE: cached Lean 4.19 executable fails before --version; /proc/self/exe is readable, /proc/<reported-pid>/exe is absent. No kernel or application-path hook is installed.",
+    "next_action": "Existing push-triggered manuscript proof workflow on the exact successor; inspect original job logs and axiom reports.",
+    "failed_native_predecessor": {
+      "head": "b4aa5033baee6d26c1f102c032cb6edcc5d08139",
+      "tree": "02fc84195af2ad0fd9e35c531b9d67dd6a610043",
+      "run": 38872822889,
+      "job": 116880717783,
+      "log": "evidence/native-runtime-acceptance/authority-succession-20261016/native-first-kernel-failure.log",
+      "causes": [
+        "case alternative binds an indexed state parameter as a local variable",
+        "Decidable synthesis does not unfold WriteAdmitted"
+      ],
+      "repair": "Remove the extra case binder; prove the concrete counterexample by definitional simplification"
+    },
+    "native_success": {
+      "status": "SUCCESS",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "event": "push",
+      "head": "c64ddaf12bdae6511222dccc56dbdcc38e686e43",
+      "tree": "9945d9d9ea30033080502ea1a9ccc6f0745ee210",
+      "run_id": 38873177701,
+      "job_id": 116881886474,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38873177701/job/116881886474",
+      "lean_toolchain": "leanprover/lean4:v4.19.0",
+      "new_theorems_audited": 18,
+      "audit_summary": "PASS axiom audit: 86 checked theorems; 18 conditional authority-succession theorems checked",
+      "allowed_axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "log": "evidence/native-runtime-acceptance/authority-succession-20261016/native-kernel-success.log",
+      "log_bytes": 206386,
+      "log_sha256": "bfdfd5347a6214daf33ff48c81f6aa75d6f1ed8a736e67bffac4677ef9b91c1d",
+      "log_git_blob_sha1": "5e4df385ef6695dc16756cf03aa01d0c3c387156",
+      "scope": "Exact native candidate build and checked conditional model, not distributed implementation refinement or real node acceptance"
+    }
+  },
+  "logs": [
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/local-assurance.log",
+      "bytes": 8215,
+      "sha256": "8e6f00c5ac8468a5d3b509a97a537f1074b0a084ff75b98dc7da882c518bdf4e",
+      "git_blob_sha1": "2134f3178945db2c7f60ba434983dc09db9c8ebd"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/self-host-suite.log",
+      "bytes": 1087,
+      "sha256": "d2597cbd1b9e69c52753beb8e9b7263f85e0bd31b606854b19e50f9cc9610c00",
+      "git_blob_sha1": "911447350036bc02b78573b8369d644af7d1a9a7"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/formal-python-tests.log",
+      "bytes": 98,
+      "sha256": "5adee26b20a47146c05a9a8bbbf532621f841040ed470b7fa41305ab0e01d95b",
+      "git_blob_sha1": "5226ed687aaa29bde7cbd9a343b7141d5600dae4"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/mesh-gate.log",
+      "bytes": 76474,
+      "sha256": "dbb2bd12ecba267bb617eb72808d6cc4bd07bddd5578b118f3444177a4f47a16",
+      "git_blob_sha1": "866d077001a41fa4fde429d343a8291f0d07f1b2"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/authority-succession-20261016/lean-succession.log",
+      "bytes": 36,
+      "sha256": "c82df870ca9b5c1f3b845ad4db1390a1c2eb49cdd84e15c5945db5e5dc20089d",
+      "git_blob_sha1": "1150e371fe86eef7927aac09f6bd6cbb67c71cce"
+    }
+  ],
+  "model_assumptions": [
+    "Fixed authorized membership; distinct non-equivocating persisted voters",
+    "One serialized SQLite witness and sink; complete coverage is assumed, not established for Mesh",
+    "Supplied authenticated-catch-up/revocation booleans model verified external certificates, not actual cryptography",
+    "One supplied nondecreasing logical clock; no real independent-clock or lease-error qualification",
+    "No storage rollback, malicious file alteration or membership change; process-crash persistence only"
+  ],
+  "safety": "At most one admitted (owner,epoch) at the same serialized effect carrier; permanent retirement; no failback",
+  "progress": "Conditional on an available majority, eligible caught-up candidate, enforced carriers, authentication and eventually adequate communication. No guaranteed availability; two voters lose write progress after one loss; finite candidate exhaustion remains possible.",
+  "independent_live_multinode_acceptance": "OPEN",
+  "production_authority_takeover_verified": false,
+  "EFFECT_ACK_DONE": false,
+  "native_full_repository_ci": "Previous exact c5 full-test job116883772869 succeeded; its whole push CI is failure at productive Firefox job116883857967 (default-signing persistent installation rejected with error -5); AMO preflight reports HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE. Neither predecessor result nor this local repair establishes successor whole-CI or product acceptance.",
+  "live_execution_gap": {
+    "first_blocker": "AUTHENTICATED_DISTRIBUTED_VOTER_AND_ALL_EFFECT_CARRIER_BINDING_NOT_ESTABLISHED",
+    "evidence": [
+      "runtime/self-host/MESH_ACTIVATION.json#/required_node_runtime/existing_runtime_limit",
+      "registry/NODEMESH_INDEX.json (historical one-GUID index, not live membership)",
+      "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json (bounded observer/dispatch, not a succession runtime)"
+    ],
+    "smallest_next_step": "Bind real authenticated voter membership, lease clock bounds, anti-rollback state and every irreversible effect sink to the existing native workload; execute the seven independent live cases without bypassing protected governance.",
+    "no_repository_failure_is_revocation_proof": true
+  },
+  "native_model_regressions": {
+    "status": "SUCCESS",
+    "event": "push",
+    "head": "b4aa5033baee6d26c1f102c032cb6edcc5d08139",
+    "tree": "02fc84195af2ad0fd9e35c531b9d67dd6a610043",
+    "run_id": 38872822887,
+    "job_id": 116880718179,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38872822887/job/116880718179",
+    "make_test_exit": 0,
+    "terminal_disposition": "PASS mode=full-test",
+    "all_14_local_model_regressions_native": true,
+    "log": "evidence/native-runtime-acceptance/authority-succession-20261016/native-model-full-test-success.log",
+    "log_bytes": 216152,
+    "log_sha256": "7567be936f990353f753bd2c12f7af968c71c62975874ee0a27c52d502cc9837",
+    "log_git_blob_sha1": "e32fd64eecdad5e19857ef2c2dd19117d8546535",
+    "source_binding_limit": "Python model, tests and Makefile remain byte-identical on c64ddaf1. This predecessor did NOT pass the Lean build; its full-test success is not a whole-HEAD or productive Firefox acceptance."
+  },
+  "reproduction_consumer_repair": {
+    "state": "LOCAL_REGRESSION_CHECKS_VERIFIED_NATIVE_REPRODUCTION_PENDING",
+    "predecessor_head": "c5f961f14cf52e525d0b26d970048c5747d68926",
+    "predecessor_tree": "530cf362d6479ce6251233b35540e5eed7f7a9ed",
+    "observed_failure": {
+      "run_id": 38873766524,
+      "job_id": 116883796610,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38873766524/job/116883796610",
+      "actual_checked_out_head": "c5f961f14cf52e525d0b26d970048c5747d68926",
+      "error": "BLOCK hardware.txt report count 40 != 22",
+      "cause": "The existing 42-loop consumer retained its historical 22-report count after 18 conditional succession reports were appended to the shared hardware audit. This is a regression introduced by the assurance extension.",
+      "original_log": {
+        "path": "evidence/native-runtime-acceptance/authority-succession-20261016/native-reproduction-consumer-failure.log",
+        "bytes": 176924,
+        "sha256": "0e047dffaf876069f41c5b56d0a9e2a2bed5b4246821d23089aae48ced45c2f3",
+        "git_blob_sha1": "2fd21df166e172ef303031619d7a992281b66133"
+      }
+    },
+    "repair": "Reuse the existing workflow and auditor whitelist. Verify exact source-bound historical HardwareWitness identities (22) plus the separate AuthoritySuccession whitelist (18), reject duplicate/missing/substituted reports and forbidden axioms, and retain all 42 clean builds and matching fingerprints. No trigger, permission, timeout, axiom policy or theorem change.",
+    "changed_sources": [
+      {
+        "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+        "bytes": 8843,
+        "sha256": "6815458cc06b374e91428a0a7600006c1f555a7fcd86194aec921f813a54f4c1",
+        "git_blob_sha1": "ce57c58639257aa107dda1b1cc207b535b676582"
+      },
+      {
+        "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_measurement_transfer_audit.py",
+        "bytes": 5182,
+        "sha256": "a726b61c78d894e73d982d333beb158721b919930d439421828e8d7ec37b0d4d",
+        "git_blob_sha1": "73634f6ba65b8a790936763cc2edc505df0d64db"
+      }
+    ],
+    "local_verification": {
+      "command": "python3 -B -m unittest discover -s formalization/QIKVRT_Formalization_v2.0/tests -p 'test_*.py' -v",
+      "test_count": 43,
+      "result": "OK",
+      "new_consumer_regressions": 3,
+      "negative_cases": [
+        "missing theorem in either group",
+        "same-size substitution in either group",
+        "duplicate report",
+        "forbidden sorryAx",
+        "unexpected output"
+      ],
+      "fixture_scope": "Synthetic report parser fixtures execute the actual embedded workflow consumer; they do not establish a Lean kernel proof. Embedded Python syntax also checked."
+    },
+    "native_next_action": "Observe the existing pull_request-triggered 42-loop reproduction on the successor HEAD/TREE, read original logs and all 42-loop fingerprint receipts; no unchanged rerun/dispatch.",
+    "native_success_inferred": false
+  }
+}

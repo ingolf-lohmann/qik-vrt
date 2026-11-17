@@ -1,0 +1,19 @@
+{
+  "schema": "qikvrt-debian-package-layout/v2",
+  "packages": ["qikvrt-eap", "qikvrt-terminal", "qikvrt-web", "qikvrt-runtime", "qikvrt-server"],
+  "profile": "temdd",
+  "architecture": "all",
+  "runtime": {"python": "3.12.x", "node": "24.x", "systemd_minimum": 252},
+  "activation": "EXPLICIT_EXISTING_HOST_ADMISSION_REQUIRED",
+  "service_auto_start": false,
+  "credentials_included": false,
+  "source_ownership": "tools/qikvrt_debian.py:owner",
+  "exact_dependency_contract": "tools/qikvrt_debian.py:dependencies",
+  "predecessor": {
+    "branch": "codex/linux-debian-packages-v1",
+    "commit": "175d3f520c99b0d799426fd9843e1590af4448cb",
+    "schema": "qikvrt-debian-package-layout/v1",
+    "historical_bytes_unchanged": true,
+    "successor_reason": "Complete the native package lifecycle, five-module split and actual host-runtime seal while preserving the original S1 admission and deb-pack/deb-verify entrypoints."
+  }
+}

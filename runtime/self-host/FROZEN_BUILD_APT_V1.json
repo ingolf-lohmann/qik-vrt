@@ -1,0 +1,77 @@
+{
+  "effect_ack_done": false,
+  "original_job_id": 126915921892,
+  "original_run_id": 41925774870,
+  "original_snapshot": "20261013T000000Z",
+  "origins": {
+    "debian": "https://deb.debian.org/debian",
+    "debian-security": "https://deb.debian.org/debian-security"
+  },
+  "packages": [
+    {
+      "archive": "debian",
+      "bytes": 7264380,
+      "filename": "pool/main/g/git/git_2.39.5-0+deb12u3_amd64.deb",
+      "name": "git",
+      "sha256": "637a85ddd6247fab13bdd0592f2f39aff04ce4dbf0655d3ab553ac359a38ce6f",
+      "version": "1:2.39.5-0+deb12u3"
+    },
+    {
+      "archive": "debian",
+      "bytes": 2053236,
+      "filename": "pool/main/g/git/git-man_2.39.5-0+deb12u3_all.deb",
+      "name": "git-man",
+      "sha256": "904dbd8dbc3db34c6780fb0abfe35816d4a90a490126ef0a055a77a0c5dcab82",
+      "version": "1:2.39.5-0+deb12u3"
+    },
+    {
+      "archive": "debian",
+      "bytes": 395632,
+      "filename": "pool/main/m/make-dfsg/make_4.3-4.1_amd64.deb",
+      "name": "make",
+      "sha256": "a1a83af8cbd854af887b72ad196b1f4af58387815e21ced1000253a116a46e2a",
+      "version": "4.3-4.1"
+    },
+    {
+      "archive": "debian",
+      "bytes": 386008,
+      "filename": "pool/main/c/curl/libcurl3-gnutls_7.88.1-10+deb12u15_amd64.deb",
+      "name": "libcurl3-gnutls",
+      "sha256": "bf430ecf80f7808704e0187cddc582fd57fc98789ea356d4797651edad387ef3",
+      "version": "7.88.1-10+deb12u15"
+    },
+    {
+      "archive": "debian",
+      "bytes": 29032,
+      "filename": "pool/main/libe/liberror-perl/liberror-perl_0.17029-2_all.deb",
+      "name": "liberror-perl",
+      "sha256": "5a466348531b9c38c8e5ccb18c231f27a98b9fdab61b37ea22592553de5d2ced",
+      "version": "0.17029-2"
+    },
+    {
+      "archive": "debian",
+      "bytes": 183248,
+      "filename": "pool/main/o/openldap/libldap-2.5-0_2.5.13+dfsg-5_amd64.deb",
+      "name": "libldap-2.5-0",
+      "sha256": "4b6c30f6554149c594628d945edc6003f0eea8d0cc1341638c0e71375db147ed",
+      "version": "2.5.13+dfsg-5"
+    },
+    {
+      "archive": "debian",
+      "bytes": 60824,
+      "filename": "pool/main/r/rtmpdump/librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb",
+      "name": "librtmp1",
+      "sha256": "e1f69020dc2c466e421ec6a58406b643be8b5c382abf0f8989011c1d3df91c87",
+      "version": "2.4+20151223.gitfa8646d.1-2+b2"
+    },
+    {
+      "archive": "debian-security",
+      "bytes": 175976,
+      "filename": "pool/updates/main/libs/libssh2/libssh2-1_1.10.0-3+deb12u1_amd64.deb",
+      "name": "libssh2-1",
+      "sha256": "fff72a194e493f88e100a2567e22472bb4ab828d429c2956965c6f2f134f1b3a",
+      "version": "1.10.0-3+deb12u1"
+    }
+  ],
+  "schema": "qikvrt-frozen-build-apt/v1"
+}

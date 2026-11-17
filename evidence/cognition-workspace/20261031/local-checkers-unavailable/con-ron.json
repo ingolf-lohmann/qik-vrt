@@ -1,0 +1,42 @@
+{
+  "schema": "qikvrt-formal-receipt/v1",
+  "checker": "con-ron",
+  "commit": "dd8d8218892c871276b1e569d3decbb368bba1b6",
+  "version": "Lean4.35 bundle",
+  "module": "QIKVRTEffectAck.DeliveryReporting",
+  "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+  "source_bundle_sha256": "51e9a8ef71ffea9aa4b1cd35e6d816a12799dc7163a93823fa7ba3f39b727f47",
+  "source_digests": {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReporting.lean": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean": "bb0c17876c754f34c6c6fe46ff86e6d939ae687790334394a3c058b58f64fec3",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingVectors.lean": "eba0bbc2cb4c760026ebc32e9769de15b5a218f90bda6c5e252255228c82682a",
+    "formalization/QIKVRT_Formalization_v2.0/lakefile.toml": "ff2442639f2f5bd77e814ca7270809640f925aa3d9bd9ec878961b2e36dfcfcf",
+    "formalization/QIKVRT_Formalization_v2.0/lean-toolchain": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+    "tools/ai_handoff.py": "50913104d47dd7bc501ca37044f21a16087bce08a88c3984c2fbe92c28f25c6a",
+    "tests/test_delivery_reporting_proof.py": "617f2cf4b793dce843e6b2cbbb4f76ede4f0eb3ac9aea1a84d8e67909f1185e1",
+    "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json": "5789e95a976a339f193973240f8afb960de53e93f92ce6f76d6da163a0664a69",
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml": "89269d7356e8bd8823ccdfdf411f176d7df28502c322c3b341379a1535511fd3",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingReplay.lean": "2ac3033cd282caed1827dfaa4595c57442a64679ff59ad44f3ce2a9c8b0c28af",
+    "tools/qikvrt_pr_closure_engine.py": "e10184bae367fb1f87f712deeb661f982e7bf31cb937831397379c8843ab5507",
+    "tools/qikvrt_expected_head_promotion.py": "e00bc4e4783c2f319af25b9c2cf7e66a8f66cbf0569fb3e2e70cb1faef1678f5"
+  },
+  "export_or_olean_sha256": null,
+  "axioms": {},
+  "result": "UNVERIFIED",
+  "error": "command nonpass: /workspace/scratch/9058c439c984/formal-toolchains/lean-4.35.0-linux/bin/lean --version",
+  "log_sha256": "f4610a3486909f0716cb755efe621049eb9b89cc91452de3df91aeca3bda8afd",
+  "utc": "2026-10-31T20:34:27.990414+00:00",
+  "command": [
+    "con-ron",
+    "{export}"
+  ],
+  "exit_code": null,
+  "execution": {
+    "head": "unavailable",
+    "tree": "unavailable",
+    "run_id": null,
+    "run_attempt": null
+  },
+  "implementation_universally_proved": false,
+  "productive_effect": false
+}

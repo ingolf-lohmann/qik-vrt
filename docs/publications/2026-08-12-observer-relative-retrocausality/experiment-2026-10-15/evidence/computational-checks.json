@@ -1,0 +1,26 @@
+{
+  "witness": {
+    "class": "EXECUTABLE_FINITE_MODEL_NOT_PHYSICAL_MEASUREMENT",
+    "original_report_equal": true,
+    "source_gap": "1",
+    "old_delay": "3",
+    "new_delay": "1",
+    "gradient": "-10",
+    "gradient_units": "source_marker_units / local_change_index",
+    "delay_grid_cases": 1600,
+    "rational_mixture_cases": 201,
+    "physical_backward_effect": "NOT_ESTABLISHED"
+  },
+  "sensitivity": {
+    "class": "PROSPECTIVE_POWER_NOT_MEASURED_EFFECT",
+    "n": 200000,
+    "alpha": 0.001,
+    "rng_bias_bound": 0.001,
+    "target_match_advantage": 0.01,
+    "positive_critical_matches": 101072,
+    "negative_critical_matches": 98928,
+    "power_lower_bound_under_independent_alternative": 0.9998180611652182,
+    "power_numeric_under_independent_alternative": 0.9999835923922653,
+    "effect_size_predicted_by_qikvrt": false
+  }
+}

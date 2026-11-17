@@ -1,0 +1,19 @@
+test_accepted_tree_with_lost_502_response_continues_after_exact_readback (tests.test_qikvrt_autonomous_pr_continuation.RESTTransportRegressionTests.test_accepted_tree_with_lost_502_response_continues_after_exact_readback) ... ERROR
+
+======================================================================
+ERROR: test_accepted_tree_with_lost_502_response_continues_after_exact_readback (tests.test_qikvrt_autonomous_pr_continuation.RESTTransportRegressionTests.test_accepted_tree_with_lost_502_response_continues_after_exact_readback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9e54becc1c14/source/ingolf-lohmann-qik-vrt-8273ef8/tests/test_qikvrt_autonomous_pr_continuation.py", line 799, in test_accepted_tree_with_lost_502_response_continues_after_exact_readback
+    controller.export_rest_successor(api, self.root, plan, candidate)
+  File "/workspace/scratch/9e54becc1c14/source/ingolf-lohmann-qik-vrt-8273ef8/tools/qikvrt_autonomous_self_heal.py", line 730, in export_rest_successor
+    tree = api.call("POST", "git/trees", {"base_tree": parent_tree, "tree": entries})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9e54becc1c14/source/ingolf-lohmann-qik-vrt-8273ef8/tests/test_qikvrt_autonomous_pr_continuation.py", line 782, in call
+    raise controller.SelfHealBlock(f'REST POST git/trees: {failure}; no automatic retry')
+tools.qikvrt_autonomous_self_heal.SelfHealBlock: REST POST git/trees: 502; no automatic retry
+
+----------------------------------------------------------------------
+Ran 1 test in 0.137s
+
+FAILED (errors=1)

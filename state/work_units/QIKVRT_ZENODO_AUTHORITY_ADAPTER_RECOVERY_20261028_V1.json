@@ -1,0 +1,98 @@
+{
+  "schema": "qikvrt_publication_authority_adapter_recovery_v1",
+  "date": "2026-10-28",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "6d3e7d31c56352b3334a225b061f403a83efd2ac",
+  "base_tree": "702f8094dc2115f87160cf21caf9efdde16a5507",
+  "owner": "Ingolf Lohmann",
+  "owner_instruction": "Den bestehenden Zenodo-Publisher aus dem Goldkelch-Echo mit der vorhandenen Verarbeitungskette verbinden und vollumfaenglich in die neue Authority ingolf-lohmann/qik-vrt uebernehmen, einschliesslich der vorhandenen geschuetzten Credentials und Tokens.",
+  "contributions": {
+    "human": "Task, target, authorization, original QIK-VRT architecture and preserved publication assets: Ingolf Lohmann",
+    "artificial": "Source recovery, current-Authority port, package closure and regression cases: OpenAI Codex",
+    "unresolved": "Actual protected credential delivery and productive host activation"
+  },
+  "recovered_source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 463,
+    "head": "ef1d2953a30c1bf27c4a9bc385316c9f50c0c114",
+    "source_state": "OPEN_UNMERGED_HISTORICAL_ADAPTER",
+    "original_authority_binding": "Goldkelch/qik-vrt",
+    "files": {
+      "tools/qikvrt_self_host.py": {
+        "sha256": "5dc1e3680cdb648254e3519692e8754c4e0115a02212d16a219a857e3a7e94d7",
+        "git_blob_sha1": "b6e23b3132b5c63785d241f7311d09dcd209161f",
+        "byte_exact_original_verified": true
+      },
+      "tests/test_self_host_publication.py": {
+        "sha256": "d5b854b2f0de203a0e6f539395389b0d4fe6f63417af91d320a196dde66fb9b2",
+        "git_blob_sha1": "c947024dd8fed7c9279e90693a001d4902633909",
+        "byte_exact_original_verified": true
+      },
+      "runtime/self-host/PUBLICATION.md": {
+        "sha256": "1128228de229408912906445c744491746239c9549dacf7943b80e9533301aa4",
+        "git_blob_sha1": "c21eef88286a588daa9ac0edede02f1a6086e5bf",
+        "byte_exact_original_verified": true
+      },
+      "runtime/self-host/PUBLICATION_CREDENTIAL_REFERENCES.example.json": {
+        "sha256": "e5a1bd4aad58ace85cbc30f0afc5786bb57468cd6aae64afeeab9cb1ed86e3f0",
+        "git_blob_sha1": "bc7eb8c2ad48b553ad326fe960207e8c1854568e",
+        "byte_exact_original_verified": true
+      },
+      "runtime/self-host/PUBLICATION_REQUEST.example.json": {
+        "sha256": "6591771d01756d68a658f935cd47e351acdba74aebf55475e90f1bbf09b7730b",
+        "git_blob_sha1": "8dccb828350fd2c4f5b14fcb07f90172d6d8826d",
+        "byte_exact_original_verified": true
+      },
+      "evidence/self_host/PUBLICATION_RUNTIME_ADAPTER_20261005.json": {
+        "sha256": "0e03620a91efa39b2209b8b5d08d63aee926bcdfc772ef093d71a24e04490cb0",
+        "git_blob_sha1": "9a91c7b73a420550fb59c19280c8361586f543f3",
+        "byte_exact_original_verified": true
+      }
+    },
+    "protected_workflow_binding": {
+      "path": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+      "git_blob_sha1": "7eb73d96035101810e2f78cabd02cf99dad04773",
+      "sha256": "eef2d427d5bcc7b194ad35bde26dbbc69927a8ded79fa12ef7c4ba915e0bfd3a",
+      "environment": "zenodo-production",
+      "secret_reference": "secrets.ZENODO_ACCESS_TOKEN",
+      "actual_target_environment_and_secret_delivery": "UNVERIFIED_NOT_INFERRED_FROM_SOURCE"
+    }
+  },
+  "repair": [
+    "Recover original publication-check/resume/supervisor in the existing S1 launcher",
+    "Bind both committed role policies and the original publisher to current Authority",
+    "Include original publisher, transport, machine-proof modules and versioned proof contracts in the sealed S1 package",
+    "Reject package omission before export/verification",
+    "Reuse existing protected references and provider-managed credential files; never save values in source or receipts",
+    "Restore original zenodo-production protected environment on the existing Authority workflow job, retaining both original secret references."
+  ],
+  "preserved": [
+    "Original publication manifests, owner authorizations, consumed locks, prior receipts and historical records remain immutable",
+    "Existing workflow publisher and full v2 proof/return/recovery gates remain unchanged",
+    "Private registry schema, credential source, bounded child invocation and journal readback are reused"
+  ],
+  "open_work": [
+    {
+      "id": "PROTECTED_PUBLISHER_CREDENTIAL_DELIVERY",
+      "state": "OPEN",
+      "next_action": "On the original admitted host, reuse the existing provider provisioner and exact owner-only reference registry; verify GitHub authorization for current Authority and Zenodo account access through the original publisher without exporting values."
+    },
+    {
+      "id": "ORIGINAL_HOST_ACTIVATION",
+      "state": "OPEN",
+      "next_action": "Restore the existing admitted runtime binding and independently read back original native events before productive invocation."
+    },
+    {
+      "id": "AUTHORIZED_TWO_PDF_PUBLICATION",
+      "state": "OPEN",
+      "next_action": "Resume exact candidate-bound request through original publisher, reconcile prior ambiguous effects first and independently verify public PDF bytes and both QR targets."
+    }
+  ],
+  "evidence_boundary": {
+    "secret_values_read": false,
+    "credential_transfer_verified": false,
+    "host_activation_verified": false,
+    "new_zenodo_mutation": false,
+    "effect_ack_done": false
+  }
+}

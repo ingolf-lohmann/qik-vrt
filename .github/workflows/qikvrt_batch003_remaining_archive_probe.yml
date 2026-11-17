@@ -10,9 +10,15 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened]
   workflow_dispatch:
+    inputs:
+      archive_retry_evidence_path:
+        description: Versioned, original-failure-bound external response evidence
+        required: false
+        default: ""
 
 permissions:
-  contents: read
+  # Existing Git-Data journal fence only; no archive or publication mutation.
+  contents: write
 
 concurrency:
   group: qikvrt-batch003-remaining-archive-probe-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
@@ -26,11 +32,16 @@ jobs:
        github.head_ref == 'agent/batch003-subject-172dd-public-freeze-probe')
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    env:
+      QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ${{ github.repository }}
+      QIKVRT_ARCHIVE_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+      QIKVRT_GITHUB_TOKEN: ${{ github.token }}
+      QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: ${{ inputs.archive_retry_evidence_path || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.12'
       - name: Verify and recursively inventory remaining public archives
@@ -56,3 +67,13 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           path: probe-output/**
+      - name: Preserve archive causal diagnostics even when access is blocked
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-archive-causal-journal-probe-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: warn
+          include-hidden-files: true
+          path: .qikvrt/runtime/archive-get-journal/**
+

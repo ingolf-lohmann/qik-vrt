@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "/workspace/scratch/41d159cf0ae2/research_work/energy_cosmology/run_experiment.py",
+    "--output",
+    "/workspace/scratch/41d159cf0ae2/research_work/energy_cosmology/results"
+  ],
+  "started_at": "2026-11-03T05:32:50.320195+00:00",
+  "finished_at": "2026-11-03T05:32:50.458645+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "ea11f347753056439293d792341d26ff25bd00b2834c96242d3f937d469c1e42",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_sha256": "7e07aba6cad3b9dd0632a9081cf10c3581882da04b986c90ec6ad89fbc8cd9ac",
+  "predecessor": "RUN.json",
+  "change": "Add weak-field admissibility checks to algebraically constructed examples; keep the same four cosmological ODE models."
+}

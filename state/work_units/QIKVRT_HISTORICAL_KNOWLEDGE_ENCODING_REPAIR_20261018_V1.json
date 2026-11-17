@@ -1,0 +1,75 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_HISTORICAL_KNOWLEDGE_ENCODING_REPAIR_20261018_V1",
+  "execution_id": "QIKVRT_HISTORICAL_KNOWLEDGE_ENCODING_REPAIR_20261018_V1",
+  "created_at_utc": "2026-10-17T21:48:45.071094+00:00",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "system_family": "OpenAI Codex",
+    "model_build": "UNAVAILABLE"
+  },
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 523,
+  "source_commit": "53e5f65fed799599bb60acb53cbc1a8640c32f56",
+  "source_tree": "12ee0d8eae49281bd1851c84b95ad22045eb6f04",
+  "reuse": {
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "tests": "tests/test_ai_runtime_bootloader.py#ClientContinuationRegressionTests",
+    "policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json#/client_continuation/knowledge_continuity/historical_encoding_migration",
+    "new_executor": false,
+    "new_credential_store": false,
+    "new_trigger": false
+  },
+  "diagnosis": "Fourteen private inherited records use sorted finite UTF-8 JSON with spaced separators. Their stored digest does not match the normative compact encoding; the original strict validator correctly rejects them. The original receipt diagnostic identified the historical writer as the cause and required an explicit versioned source-pinned migration contract.",
+  "repair": {
+    "explicit_codec": "json-sorted-spaced-utf8/v1",
+    "migration_schema": "qikvrt-knowledge-historical-encoding-migration/v1",
+    "pinned_immediate_predecessor_required": true,
+    "per_record_original_and_compact_digests_recomputed": true,
+    "all_original_record_fields_and_digest_retained": true,
+    "new_records_remain_canonical": true,
+    "automatic_encoding_fallback": false,
+    "original_bytes_or_history_rewrite": false,
+    "semantic_or_epistemic_promotion": false
+  },
+  "verification": {
+    "local_client_regressions": 96,
+    "local_client_regressions_passed": true,
+    "new_regressions": 13,
+    "real_private_receipt_records": 74,
+    "real_private_historical_codec_records": 14,
+    "original_work_items_retained": 75,
+    "actual_original_cli_consistency": "VALID",
+    "actual_original_cli_state": "BLOCK",
+    "live_effect_verification": "NOT_PERFORMED",
+    "private_original_receipt_published": false,
+    "native_ci": "PENDING_ON_EXACT_SUCCESSOR",
+    "main_adoption": "NOT_CLAIMED",
+    "all_client_adoption": "NOT_CLAIMED",
+    "full_local_repository_suite": "NOT_RUN_IN_SPARSE_SOURCE_PROJECTION"
+  },
+  "tested_source_sha256": {
+    "tools/ai_handoff.py": "c7e67bf0ce6db9d9651cc60051acf28ae3076b3c7f678c25ae9a31560b9453bb",
+    "tests/test_ai_runtime_bootloader.py": "2d1e06123efcc7388cb600268050ec48dc59aec8549f705a59567648d84f4468",
+    "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json": "8334620a3442cfdaa21c00a0cf43e6f8ba03cb2be5610c76a1174fe7a412b1c6",
+    "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md": "ad4948da34db1c1796ecbe246cf8caae3222b27608dd286fc6baf2483de3ec51"
+  },
+  "open_obligations": [
+    "current-head-independent-native-code-owner-review",
+    "protected-AMO-credential-delivery-and-signing",
+    "actual-VPS-administration-and-host-admission",
+    "raumzeitterminal.de-exact-host-product-delivery"
+  ],
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false
+}

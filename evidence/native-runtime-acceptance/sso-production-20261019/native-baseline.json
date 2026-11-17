@@ -1,0 +1,93 @@
+{
+  "input": {
+    "schema": "qikvrt_temdd_native_event_v1",
+    "kind": "OBSERVE",
+    "subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 462,
+      "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+    },
+    "provenance": {
+      "source": "transputer",
+      "native_event_id": "sso-production-20261019:owner-input"
+    },
+    "observed_at": "2026-10-19T09:36:19.901991Z",
+    "message": "Owner-authorized SSO production task accepted through original bounded Terminal input contract",
+    "payload": {
+      "terminal_input": {
+        "schema": "qikvrt_terminal_input_v1",
+        "text": "Das Feature Single Sign-On ist nun zu produktivieren! Freigabe erteilt. Ingolf Lohmann, 2026-10-19T12:30:27+03:00. Target: existing QIK-VRT SSO; OneNote-only notes obligation retained."
+      },
+      "route": "EXISTING_IN_PROCESS_NATIVE_API",
+      "source_feature_pr": 462,
+      "new_production_effect": false,
+      "effect_ack_done": false
+    }
+  },
+  "native_receipt": {
+    "dod": false,
+    "evidence_transfer": "DENY",
+    "kind": "OBSERVE",
+    "message": "Owner-authorized SSO production task accepted through original bounded Terminal input contract",
+    "observed_at": "2026-10-19T09:36:19.901991Z",
+    "payload": {
+      "effect_ack_done": false,
+      "new_production_effect": false,
+      "route": "EXISTING_IN_PROCESS_NATIVE_API",
+      "source_feature_pr": 462,
+      "terminal_input": {
+        "schema": "qikvrt_terminal_input_v1",
+        "text": "Das Feature Single Sign-On ist nun zu produktivieren! Freigabe erteilt. Ingolf Lohmann, 2026-10-19T12:30:27+03:00. Target: existing QIK-VRT SSO; OneNote-only notes obligation retained."
+      }
+    },
+    "payload_digest": "27dba2b64d01d84835e755053df01bcd34e0b037040c346fcae618fc33684bc5",
+    "provenance": {
+      "native_event_id": "sso-production-20261019:owner-input",
+      "source": "transputer"
+    },
+    "recorded_at": "2026-10-19T09:36:19.914089Z",
+    "schema": "qikvrt_temdd_event_v1",
+    "subject": {
+      "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "pr": 462,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+    },
+    "id": "df8520fb97694751ab364668d1afac56:1",
+    "ledger_digest": "1b91b8a300b02de3768b4e6c73b00dd6ec89692c168805ff624e758288c41f6e"
+  },
+  "independent_terminal_readback": {
+    "dod": false,
+    "evidence_transfer": "DENY",
+    "kind": "OBSERVE",
+    "message": "Owner-authorized SSO production task accepted through original bounded Terminal input contract",
+    "observed_at": "2026-10-19T09:36:19.901991Z",
+    "payload": {
+      "effect_ack_done": false,
+      "new_production_effect": false,
+      "route": "EXISTING_IN_PROCESS_NATIVE_API",
+      "source_feature_pr": 462,
+      "terminal_input": {
+        "schema": "qikvrt_terminal_input_v1",
+        "text": "Das Feature Single Sign-On ist nun zu produktivieren! Freigabe erteilt. Ingolf Lohmann, 2026-10-19T12:30:27+03:00. Target: existing QIK-VRT SSO; OneNote-only notes obligation retained."
+      }
+    },
+    "payload_digest": "27dba2b64d01d84835e755053df01bcd34e0b037040c346fcae618fc33684bc5",
+    "provenance": {
+      "native_event_id": "sso-production-20261019:owner-input",
+      "source": "transputer"
+    },
+    "recorded_at": "2026-10-19T09:36:19.914089Z",
+    "schema": "qikvrt_temdd_event_v1",
+    "subject": {
+      "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+      "pr": 462,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+    },
+    "id": "df8520fb97694751ab364668d1afac56:1",
+    "ledger_digest": "1b91b8a300b02de3768b4e6c73b00dd6ec89692c168805ff624e758288c41f6e"
+  },
+  "scope": "LOCAL_TASK_OBSERVATION_ONLY_NO_SSO_OR_ONENOTE_ACCEPTANCE"
+}

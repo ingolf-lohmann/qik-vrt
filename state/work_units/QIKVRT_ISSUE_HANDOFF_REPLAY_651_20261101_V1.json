@@ -1,0 +1,54 @@
+{
+  "schema": "qikvrt_issue_handoff_replay_repair_v1",
+  "work_unit_id": "QIKVRT_ISSUE_HANDOFF_REPLAY_651_20261101_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "issue": 651,
+  "existing_pull_request": 653,
+  "existing_branch": "fix/issue-agent-causal-handoff-651",
+  "parents": [
+    "dac434d366df15b5c83c8556231ee7ccc4f9ab83",
+    "ee1f6f150cc479970793ae05a5ff2d48fa5821de"
+  ],
+  "authorization": {
+    "source": "Existing authenticated Owner command de5f082b v4 and standing repository-internal continuation grant",
+    "original_owner_text_sha256": "5ca9c4ea4fcd377cf46d8a12cc65c3f4fcf0ffe1106d290e466950a29277d9a3",
+    "grant_path": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "textual_principal_claim_is_authorization": false
+  },
+  "attribution": {
+    "human": "Ingolf Lohmann: existing authorization and original task",
+    "artificial_cognitive": "OpenAI Codex: isolated source reconciliation, bounded replay guard, tests and evidence; original PR653 contribution retained"
+  },
+  "defect": "Unchanged recovery with fresh runner/output loses prior POST attempt counters. Successful source no-op is not verified handoff.",
+  "repair": "Existing handoff readback-only mode forbids PR/comment POST on unchanged recovery. Matching PR and exact original notification are independently checked; wrong/missing subject, unavailable checker or mismatched original run remains blocked. Normal separately admitted changed-input transaction retained.",
+  "controls": {
+    "targeted_tests": 57,
+    "full_test": {
+      "exit": 0,
+      "seconds": 310.806,
+      "tree": "595d754b8af9504a612329facebf6a077452e668",
+      "head": "dac434d366df15b5c83c8556231ee7ccc4f9ab83",
+      "prospective_parents": [
+        "dac434d366df15b5c83c8556231ee7ccc4f9ab83",
+        "ee1f6f150cc479970793ae05a5ff2d48fa5821de"
+      ],
+      "log_bytes": 454663,
+      "log_sha256": "18cc7bba58d997bda14e8d4c8df72febb05b6bcf13c185c92e0895de02b40e36",
+      "reported_python_executions": 2313,
+      "unittest_summaries": 43,
+      "scope": "Local prepared index tree; Git HEAD still dac. Only evidence and generated integrity added afterward. Native final-commit CI remains separately mandatory."
+    },
+    "signature_or_product_claim": false
+  },
+  "source_fallback": {
+    "missing_commit_graph": "Initial merge result Already up to date contradicted missing-parent stderr and was rejected. Original684 commit was restored by exact Git SHA. Local ancestry remains incomplete; no complete history claim.",
+    "independent_merge_base": "GitHub original compare dac...ee1 confirms5a42baf45748e4407a8fa16aef287a77873e788d. Native git merge-tree used precisely this real merge base, no unrelated-history bypass. Only three generated projections conflicted."
+  },
+  "open_obligations": [
+    "Exact final-HEAD native CI, TESTED_SUBJECT, reviews, governance and expected-head merge before source integration claim",
+    "Original issue651 complete end-to-end criteria, P0 competing work, actual issue-agent run/PR654/readback remain independently open",
+    "Original host/SSO and admitted runtime, authenticated Claude response, separate migration25-source readback and R2 publication stop"
+  ],
+  "effect_ack_done": false,
+  "productive_effect_verified": false
+}

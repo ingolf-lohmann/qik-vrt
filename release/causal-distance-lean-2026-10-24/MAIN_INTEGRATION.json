@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt_causal_distance_main_integration_receipt_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 597,
+  "source_head": "b1863b75e29cb455b88740ade4441312af9caa8f",
+  "tested_tree": "184adc9c40b27cce1be4995d2eae895d3fbbd2ee",
+  "merge_commit": "a1a2204f429bcab7a184afaf51a57b7de03d4ee7",
+  "merge_tree": "184adc9c40b27cce1be4995d2eae895d3fbbd2ee",
+  "tree_equal_tested": true,
+  "native_run_id": 40090085658,
+  "native_job_id": 120860815507,
+  "terminal_lines": [
+    "2026-10-24T11:35:22.3743689Z QIKVRT_SUCCESSOR_REENTRY iteration=0 predecessor=290aef0a2f481b0050ad14d266587355bfd61803 successor=b1863b75e29cb455b88740ade4441312af9caa8f successor_tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee readback_head=b1863b75e29cb455b88740ade4441312af9caa8f readback_tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee",
+    "2026-10-24T11:46:38.2937114Z QIKVRT_FIXPOINT_REACHED iteration=1 head=b1863b75e29cb455b88740ade4441312af9caa8f tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee predecessor_test_status=0",
+    "2026-10-24T11:46:38.3142188Z QIKVRT_TERMINAL_DISPOSITION PASS mode=tested-fixpoint",
+    "2026-10-24T11:46:38.6736512Z QIKVRT_TESTED_SUBJECT head=b1863b75e29cb455b88740ade4441312af9caa8f tree=184adc9c40b27cce1be4995d2eae895d3fbbd2ee"
+  ],
+  "kernel_native_run_id": 40088317986,
+  "kernel_native_job_id": 120855663566,
+  "kernel_conclusion": "success",
+  "productive_runtime_acceptance": false,
+  "zenodo_published": false
+}

@@ -1,0 +1,156 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "schema": "qikvrt_self_heal_handoff_repair_work_unit_v1",
+  "work_unit_id": "QIKVRT_SELF_HEAL_REST_HANDOFF_REPAIR_20261008_V1",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "512ec968f0ee4c0b9154ffe56848ff1ce6dafa7d",
+    "tree": "726d722713d7dfd84b4bf0dee86fb43b5bca8d35"
+  },
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "role": [
+      "Product Owner",
+      "Code Owner"
+    ],
+    "instruction": "Repair repeated orphaned self-heal branch/PR transaction; preserve PR #498 and governance; separate reviewable successor; REST API only.",
+    "implementation_acceptance": "PENDING_NATIVE_REVIEW"
+  },
+  "artificial_contribution": {
+    "actor": "OpenAI Codex",
+    "model_family": "GPT-6",
+    "build": "UNAVAILABLE",
+    "scope": [
+      "causal diagnosis",
+      "bounded implementation",
+      "regression tests",
+      "REST successor preparation and independent effect readback"
+    ],
+    "retention": "METADATA_ONLY"
+  },
+  "reuse": {
+    "pull_request": 455,
+    "head": "d893de1db8d12466f57eae1b0b3823a97c637b14",
+    "components": [
+      "tools/qikvrt_self_heal_pr_materializer.py",
+      "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "tools/qikvrt_pipeline_contracts.py: typed REST transport"
+    ],
+    "adaptation": "Extract existing materializer into a self-contained current-Main handoff repair without adopting the broader unactivated pipeline or verifier-dispatch dependency."
+  },
+  "preserved_subject": {
+    "pull_request": 498,
+    "head": "19f0207e1d4cf6146cbdcdf1ef598273bab22e3a",
+    "tree": "5ca065d81c093278daf06ddee6f2212fb88c9bf9",
+    "branch": "automation/self-heal-f237f2d0d6c57af89fdeae30",
+    "mutation": "FORBIDDEN_IN_THIS_WORK_UNIT"
+  },
+  "defect": {
+    "workflow_blob": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+    "cause": "Existing branch GET success unconditionally exits before testing or completing the separate PR postcondition.",
+    "negative_control": "Executable historical shell guard observes branch success and performs zero PR operations."
+  },
+  "repair": {
+    "branch_and_pr_deduplication": "INDEPENDENT",
+    "existing_exact_pr": "NOOP_ALL_REMOTE_CALLS_GET",
+    "existing_branch_without_pr": "ONE_DRAFT_POST_THEN_INDEPENDENT_COLLECTION_AND_PR_GET",
+    "candidate_binding": [
+      "repository",
+      "observed_main_base",
+      "candidate_identity",
+      "semantic_fingerprint",
+      "staged_tree",
+      "actual_branch_head",
+      "single_commit_parent",
+      "PR_head_and_base"
+    ],
+    "ambiguous_post": "READ_BACK_NO_BLIND_RETRY",
+    "head_or_base_drift": "HOLD_NO_OVERWRITE",
+    "denied_write": "HOLD_CAPABILITY_BOUNDARY",
+    "closed_or_duplicate_pr": "HOLD_NO_REOPEN_OR_DUPLICATE",
+    "github_route": "REST_API_ONLY"
+  },
+  "source_bindings": [
+    {
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "bytes": 7019,
+      "sha256": "08f44c90da597718b4428b35c1d1f732e07b8aecef22a85e3678a965bc4b8c5c",
+      "git_blob_sha1": "d20435593d215ce3d9a70290cc9654f1e0c8592b"
+    },
+    {
+      "path": "tools/qikvrt_self_heal_pr_materializer.py",
+      "bytes": 17158,
+      "sha256": "22dec79739f2c39f6de2b5cf516a520cf8d8b6a60259136634f1a7ca9da070c6",
+      "git_blob_sha1": "63857396f7d048ad51ef0b21dcab65162874fd2d"
+    },
+    {
+      "path": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "bytes": 32281,
+      "sha256": "d2e162529d3b465e772e4b8ec0ecf06b05fb8a9c5e8fa4bc8dfdea0b11b31373",
+      "git_blob_sha1": "fdb0cb1ae41d26571a01e386fae167e9635f8557"
+    },
+    {
+      "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "bytes": 10350,
+      "sha256": "16dd96e1d1c871a36d51a383c459562f0a5ce45ed2a1e4ce05365958eaa99369",
+      "git_blob_sha1": "c54856ecd52e5bde6bc39093a78435e986c7e2c2"
+    },
+    {
+      "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+      "bytes": 8463,
+      "sha256": "41e403cb8c686a06f8dce413b1e83af1bb12d74fae03c1ba369aa42dc560dba2",
+      "git_blob_sha1": "532dcbc151f50c53dbf87dab8639b34947aada39"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 7832,
+      "sha256": "a6f66d4055c39dd87fc3eaec236b8db1eba412471e8ea2201689481438922103",
+      "git_blob_sha1": "f41f20edef53f6f94ac6dfaeaffb76ae74712650"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11432,
+      "sha256": "81d7b8ba5a535f3e6d99837ee03f92a32d1813ad4e1dc90ef5a0027c2d235559",
+      "git_blob_sha1": "4f1eb7c8b5c86bf2df1c1105ae9eb601d07bd150"
+    }
+  ],
+  "verification": {
+    "regression_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_self_heal_pr_materializer tests.test_qikvrt_autonomous_pre_effect_controller tests.test_qikvrt_continuous_auto_repair tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_expected_head_promotion",
+    "source_byte_bound_tests": 79,
+    "source_byte_bound_result": "PASS",
+    "regression_log_sha256": "74f533614f7b8139f7c3ed7ec02c4aab923c8fa71b1305beaa37e6569e10ae4e",
+    "subject_mode": "UNCOMMITTED_SOURCE_BYTES; exact committed-head and native checks must be freshly observed separately",
+    "real_workflow_shell_regression": true,
+    "historical_fixture_required": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+    "fixture_route": "REST_ARCHIVE_AND_HASH_VERIFIED_GIT_OBJECT_CLOSURE; not complete history",
+    "required_after_commit": [
+      "make test",
+      "79 focused regression checks",
+      "canonical repository integrity",
+      "tool cache verification",
+      "independent REST branch/commit/PR/main/review/run/status readbacks"
+    ]
+  },
+  "governance": {
+    "ruleset_change": false,
+    "permission_change": false,
+    "self_approval": false,
+    "merge_operation": false,
+    "promotion_policy_change": false,
+    "repair_allowlist_expansion": false,
+    "existing_pr_metadata_mutation": false
+  },
+  "effect_boundary": {
+    "candidate_delivery": "SEPARATE_DRAFT_PR",
+    "native_code_owner_approval": "NOT_INFERRED",
+    "main_activation": "NOT_PERFORMED",
+    "productive_writer_effect": "REQUIRES_GOVERNED_MAIN_ACTIVATION_AND_FRESH_NATIVE_EXECUTION",
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  }
+}

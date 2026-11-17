@@ -1,0 +1,62 @@
+{
+  "commands": [
+    {
+      "command": "python3 -B -m unittest -v tests.test_self_host tests.test_self_host_temdd.SourceRecoveryTests tests.test_temdd_runtime_subject_binding",
+      "exit_code": 0,
+      "skipped": 0,
+      "tests": 24
+    },
+    {
+      "command": "git diff --check; sh -n tools/bootstrap-runtime.sh; node --check docs/monitor/self-host.mjs; node --check tools/qikvrt_mesh_monitor_readback.mjs; Python AST parse of changed Python and original native source",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B tools/qikvrt_tool_cache.py render; python3 -B tools/qikvrt_tool_cache.py verify",
+      "coverage_percent": 100,
+      "declared_tools": 24,
+      "exit_code": 0
+    },
+    {
+      "command": "make test repository-monitor-test",
+      "exit_code": 0,
+      "not_run_control": "Optional verified GitHub CLI source-archive re-extraction: archive absent locally; retained full-install CI contract",
+      "scope": "COMPLETE_PORTABLE_REPOSITORY_SUITE_AND_24_MONITOR_TESTS"
+    },
+    {
+      "command": "python3 -B -m unittest -v tests.test_self_host_temdd.NativeStandaloneTests.test_native_subject_is_explicit_and_wrong_bindings_never_start",
+      "exit_code": 0,
+      "skipped": 0,
+      "tests": 1
+    },
+    {
+      "command": "sh tools/bootstrap-runtime.sh --check-only --profile self-host --adapter none",
+      "exit_code": 0
+    },
+    {
+      "command": "sh tools/bootstrap-runtime.sh --check-only --profile self-host-firefox --adapter none",
+      "exit_code": 20,
+      "state": "CONTINUE_DECLARED_BROWSER_TOOLS_UNAVAILABLE"
+    }
+  ],
+  "deployment_performed": false,
+  "effect_ack_done": false,
+  "local_native_runtime_constraint": {
+    "missing_gui_and_container_tools": [
+      "firefox-esr",
+      "Xvfb",
+      "x11vnc",
+      "websockify",
+      "xdpyinfo",
+      "xwininfo",
+      "docker"
+    ],
+    "observed_error": "EPERM Operation not permitted",
+    "positive_runtime_acceptance": "NOT_RUN_SUCCESSFULLY_HERE; REQUIRED_REAL_LINUX_CI_READBACK",
+    "syscall": "socket(AF_UNIX)"
+  },
+  "predecessor_evidence_transfer": false,
+  "schema": "qikvrt-self-host-local-validation/v1",
+  "scope": "WORKTREE_AND_LOCAL_PACKAGE_FIXTURES; NOT_COMMITTED_HEAD_CI_OR_DEPLOYMENT",
+  "source_parent_head": "dfddd74b031867c5113827780ad937379c85914f",
+  "source_parent_tree": "480a1275729bc96e3b71566b24fbaca41e948787"
+}

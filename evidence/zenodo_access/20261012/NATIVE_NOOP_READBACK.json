@@ -1,0 +1,116 @@
+[
+  {
+    "artifact": "archive-disposition-causal-observation.zip",
+    "sha256": "aed89cf27966237031dd990f51717abb6e8a07dca8416527419262d5a1ac58c1",
+    "observation_sha256": "69e01190ac91fe7af3bb5d170d8dfc5812e280ddc9b57ef149b9118eda4aae50",
+    "observation": {
+      "attempts": [],
+      "effect_ack_done": false,
+      "external_get_count": 0,
+      "final_pass": false,
+      "input_key": "b7138084b125b123f30efd30895250b649b99103031020ac2b0e7a77b6173137",
+      "original_failures": [
+        {
+          "archive_damage_established": false,
+          "error_key": "974750a5e6befeb75f1463f244aba976fed58e034e5a32d29d27648a30c89c6f",
+          "http_status": 504,
+          "input_key": "b7138084b125b123f30efd30895250b649b99103031020ac2b0e7a77b6173137",
+          "later_provider_recovery_established": false,
+          "original_logs": [
+            {
+              "bytes": 136526,
+              "job_id": 114735629033,
+              "observed_error_line": "2026-10-12T08:59:21.6330357Z tools.qikvrt_batch003_remaining_archive_probe.E: GET failed https://zenodo.org/api/records/21244412: HTTP Error 504: Gateway Time-out",
+              "path": "evidence/zenodo_access/20261012/JOB_114735629033_ORIGINAL.log",
+              "run_id": 38226630154,
+              "sha256": "1ff8bf2d67154309487124adc60a2e478a3bf920f5ccd76767ce2b5bc68af06d",
+              "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38226630154"
+            },
+            {
+              "bytes": 123125,
+              "job_id": 114735625164,
+              "observed_error_line": "2026-10-12T08:59:18.6947074Z tools.qikvrt_batch003_remaining_archive_probe.E: GET failed https://zenodo.org/api/records/21244412: HTTP Error 504: Gateway Time-out",
+              "path": "evidence/zenodo_access/20261012/JOB_114735625164_ORIGINAL.log",
+              "run_id": 38226629752,
+              "sha256": "dd93bba6bd40f812fefa662ad5471c12c42d128ef24b7d034c27b489ffd03543",
+              "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38226629752"
+            }
+          ],
+          "reason": "HTTP Error 504: Gateway Time-out",
+          "state": "failed",
+          "subject": {
+            "head": "8f9740018e1a864605a9fd0babff01454df4e1cc",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "tree": "097927c2fe98ee075d1034778f25ecc8638a7dae"
+          },
+          "url": "https://zenodo.org/api/records/21244412"
+        }
+      ],
+      "pass": false,
+      "reason": "NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET",
+      "resource": "a5cb8017625dd449382479a78f6852924fe70f193d68f9ce2f21f791fbfd639c",
+      "run_id": "38239970342",
+      "schema": "qikvrt_archive_get_causal_journal_v1",
+      "state": "NOOP_OR_BLOCK",
+      "url": "https://zenodo.org/api/records/21244412",
+      "workflow": "QIKVRT Batch-003 remaining subject disposition"
+    }
+  },
+  {
+    "artifact": "archive-materialization-causal-observation.zip",
+    "sha256": "feaef93892bdac677b311b98347bcbedc2f13ea493c0e171ec5c41f163a5abc8",
+    "observation_sha256": "426f62d667da5cb18fb4d43de3085bfe301cf96d808fe1923e52d61bdb436148",
+    "observation": {
+      "attempts": [],
+      "effect_ack_done": false,
+      "external_get_count": 0,
+      "final_pass": false,
+      "input_key": "b7138084b125b123f30efd30895250b649b99103031020ac2b0e7a77b6173137",
+      "original_failures": [
+        {
+          "archive_damage_established": false,
+          "error_key": "974750a5e6befeb75f1463f244aba976fed58e034e5a32d29d27648a30c89c6f",
+          "http_status": 504,
+          "input_key": "b7138084b125b123f30efd30895250b649b99103031020ac2b0e7a77b6173137",
+          "later_provider_recovery_established": false,
+          "original_logs": [
+            {
+              "bytes": 136526,
+              "job_id": 114735629033,
+              "observed_error_line": "2026-10-12T08:59:21.6330357Z tools.qikvrt_batch003_remaining_archive_probe.E: GET failed https://zenodo.org/api/records/21244412: HTTP Error 504: Gateway Time-out",
+              "path": "evidence/zenodo_access/20261012/JOB_114735629033_ORIGINAL.log",
+              "run_id": 38226630154,
+              "sha256": "1ff8bf2d67154309487124adc60a2e478a3bf920f5ccd76767ce2b5bc68af06d",
+              "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38226630154"
+            },
+            {
+              "bytes": 123125,
+              "job_id": 114735625164,
+              "observed_error_line": "2026-10-12T08:59:18.6947074Z tools.qikvrt_batch003_remaining_archive_probe.E: GET failed https://zenodo.org/api/records/21244412: HTTP Error 504: Gateway Time-out",
+              "path": "evidence/zenodo_access/20261012/JOB_114735625164_ORIGINAL.log",
+              "run_id": 38226629752,
+              "sha256": "dd93bba6bd40f812fefa662ad5471c12c42d128ef24b7d034c27b489ffd03543",
+              "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38226629752"
+            }
+          ],
+          "reason": "HTTP Error 504: Gateway Time-out",
+          "state": "failed",
+          "subject": {
+            "head": "8f9740018e1a864605a9fd0babff01454df4e1cc",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "tree": "097927c2fe98ee075d1034778f25ecc8638a7dae"
+          },
+          "url": "https://zenodo.org/api/records/21244412"
+        }
+      ],
+      "pass": false,
+      "reason": "NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET",
+      "resource": "a5cb8017625dd449382479a78f6852924fe70f193d68f9ce2f21f791fbfd639c",
+      "run_id": "38239970304",
+      "schema": "qikvrt_archive_get_causal_journal_v1",
+      "state": "NOOP_OR_BLOCK",
+      "url": "https://zenodo.org/api/records/21244412",
+      "workflow": "QIKVRT repository evidence materialization"
+    }
+  }
+]

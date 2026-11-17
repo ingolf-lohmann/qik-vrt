@@ -1,0 +1,3 @@
+/workspace/scratch/521855650fbb/qik-vrt/docs/proofs/evidence-recovery-2026-10-30/negative/FalseMissingEntryAccepted.lean:3:76: error: tactic 'decide' proved that the proposition
+  collect (fun x => none) [1] = some [7]
+is false

@@ -1,0 +1,20 @@
+{
+  "current_probe_required": true,
+  "effect_ack_done": false,
+  "inputs": {
+    "extension_blobs": {
+      "background.js": "f177c4471af23a9cf8c9e875c6931887cf92272c",
+      "content.js": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+      "manifest.json": "d311100e0cc14da7574f18a625d4e1feeedcbad7",
+      "options.html": "0b3e36fb7b0fbb3bb187e1def2b940669e98cc81",
+      "options.js": "60ef9dc9c8b85b8abe70a23d2f38faccdc7aa8a9",
+      "terminal.css": "817d1e58a80422367cb63d49dbb826428d452ee6"
+    },
+    "image_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
+    "probe_blob": "f4784754fbe51b61523ea6b366ee0b89941cc3aa",
+    "signed_xpi_artifact": null,
+    "terminal_entrypoint_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+    "upgrade_dockerfile_blob": "e4fae384b1a4a5e0cd061cf73d5c3d7f0f29a547"
+  },
+  "sha256": "3db359db3d8988e7d706ed2058e7736efc601014d6d09eec5d35aa6b9140387a"
+}

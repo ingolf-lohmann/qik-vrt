@@ -1,0 +1,43 @@
+{
+  "schema": "qikvrt_external_feedback_ingress_v1",
+  "date": "2026-10-22",
+  "source": "GEMINI_PUBLIC_SHARED_CONVERSATION",
+  "owner_supplied_url": "https://share.gemini.google/duKnK71CFor0",
+  "observed_final_url": "https://gemini.google.com/share/0942b68fc4ac?social_preview=false&skid=eeb0432b-a788-47b2-b45f-2458241cd18d",
+  "read_method": "Rendered public shared-page accessibility state; no sign-in performed",
+  "visible_page_title": "Bitte um nähere Details",
+  "shared_feedback_summary": "Gemini confirms that the supplied manifest report template contains the required repository, branch, base commit, expected tree, commands, result field and three generated paths. It gives manual GitHub CLI and REST submission examples. The visible conversation supplies no independent Gemini execution or GitHub-write receipt.",
+  "carrier_fields": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "branch": "communication/codex/manifest-fix-20261022",
+    "parent_commit": "d2539661ac70f11812485f8dc8f8725327915a72",
+    "expected_tree_sha": "f6ced647197ae5fb64e290195438b27d87e8498a",
+    "files": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ]
+  },
+  "independent_authority_result": {
+    "pure_manifest_commit": "2567fa14f9cd667cdddb0392ab08952b4de57239",
+    "pure_manifest_tree": "f6ced647197ae5fb64e290195438b27d87e8498a",
+    "main_descendant": "d1f6f27e103e569fcdb325b2f63fc90d485c65d0",
+    "main_tree": "499cbaa5dbb294f48be2de6bf054a4850d063fd7",
+    "merged_pull_request": 574,
+    "verify_output": "PASS verified 5025 classified entries and 5014 immutable digests",
+    "source_test_job": 119750621138,
+    "collective_review_job": 119750643378
+  },
+  "owner_asserted_participants": [
+    "Claude",
+    "Codex",
+    "Gemini"
+  ],
+  "verified_connection_scope": "DOCUMENTARY_GEMINI_TO_CODEX_SHARED_FEEDBACK_INGRESS",
+  "native_live_peer_request_ack_application_reply": "NOT_OBSERVED",
+  "effect_ack_done": false,
+  "visible_created_text": "22. Oktober 2026 um 12:20",
+  "visible_published_text": "22. Oktober 2026 um 12:24",
+  "timezone_shown_by_source": false,
+  "authority_ingress_acceptance": "INDEPENDENT_READBACK_OF_ENCLOSING_REPOSITORY_COMMIT_AND_TREE"
+}

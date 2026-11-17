@@ -1,0 +1,15 @@
+{
+  "status": "PASS_BOUNDED_FORWARD_SOFTWARE_CONTROL",
+  "n": 2048,
+  "early_matches": 1016,
+  "ordinary_reply_matches": 2048,
+  "one_sided_binomial_p_under_iid_fair_null": 0.6464067358586885,
+  "statistical_independence": "SOURCE_REVIEW_AND_TRUST_ASSUMPTION_NOT_PROVED_BY_JSON",
+  "physical_backsignaling": "NOT_TESTED",
+  "clock": "ONE_HOST_MONOTONIC_NS",
+  "process_pids": {
+    "A": 8,
+    "B": 7,
+    "C": 6
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "qikvrt-formal-receipt/v1",
+  "checker": "lean-default",
+  "commit": "eb6cafb7290e8bd5f2937522d8d804f58f02bafc",
+  "version": "4.35.0",
+  "module": "QIKVRTEffectAck.DeliveryReporting",
+  "source_sha256": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+  "source_bundle_sha256": "be5b939a4110be3c31ff3bb32c3e3863e0ee009d12cc8b1c9d587711b4d0aa8b",
+  "source_digests": {
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReporting.lean": "50a616018b8a21c9cd466fd98b1b4de3e2f18ba6c7e50f3858800ab41ec792b9",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingAxiomAudit.lean": "bb0c17876c754f34c6c6fe46ff86e6d939ae687790334394a3c058b58f64fec3",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingVectors.lean": "eba0bbc2cb4c760026ebc32e9769de15b5a218f90bda6c5e252255228c82682a",
+    "formalization/QIKVRT_Formalization_v2.0/lakefile.toml": "ff2442639f2f5bd77e814ca7270809640f925aa3d9bd9ec878961b2e36dfcfcf",
+    "formalization/QIKVRT_Formalization_v2.0/lean-toolchain": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87",
+    "tools/ai_handoff.py": "620f9ec309a83d245275976fccd28f3c7560bf56ba349e5b87d9c707ac967d97",
+    "tests/test_delivery_reporting_proof.py": "48626b814d79448ce6112c00a290f31586a20e432c3ab75a3765f505d80a113c",
+    "policy/QIKVRT_FORMAL_PROOF_OBLIGATION_V1.json": "3d78cecc244cf79e1684072e94c917262a595db4326f0d9966e1d9a80b4a0a0f",
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml": "89269d7356e8bd8823ccdfdf411f176d7df28502c322c3b341379a1535511fd3",
+    "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/DeliveryReportingReplay.lean": "2d0713a1ce326a3d071a7c9c56e869c3784f17e885a969dbdd56ca1c3ea195fa",
+    "tools/qikvrt_pr_closure_engine.py": "e10184bae367fb1f87f712deeb661f982e7bf31cb937831397379c8843ab5507",
+    "tools/qikvrt_expected_head_promotion.py": "e00bc4e4783c2f319af25b9c2cf7e66a8f66cbf0569fb3e2e70cb1faef1678f5"
+  },
+  "export_or_olean_sha256": "e3ef03954d67e41d20aa7eb1595587a70a6ef2919b0dfcbc51c517a001059c33",
+  "axioms": {
+    "QIKVRT.DeliveryReporting.T1": [
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T2": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T3": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QIKVRT.DeliveryReporting.T4": []
+  },
+  "result": "PASS",
+  "error": "",
+  "log_sha256": "54a62609688bbf41c3bacbf338a3e67e12cec8fe4925bfbd6f112909ac0ac772",
+  "utc": "2026-10-31T20:41:18.061688+00:00",
+  "command": [
+    "leanchecker",
+    "--silent",
+    "--from-export",
+    "{export}"
+  ],
+  "exit_code": 0,
+  "execution": {
+    "head": "unavailable",
+    "tree": "unavailable",
+    "run_id": "41240001030",
+    "run_attempt": "1"
+  },
+  "implementation_universally_proved": false,
+  "productive_effect": false
+}

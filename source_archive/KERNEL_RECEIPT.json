@@ -1,0 +1,72 @@
+{
+  "schema": "qikvrt-native-real-energy-publication-binding/v1",
+  "state": "KERNEL_VERIFIED",
+  "publication_id": "qikvrt-real-energy-model-source-20261103",
+  "theorems": [
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos",
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos",
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos",
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy",
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime",
+    "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound",
+    "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized",
+    "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget"
+  ],
+  "axioms_by_theorem": {
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "workflow": {
+    "conclusion": "success",
+    "exact_head_bound": true,
+    "head": "c71f0699e2e9feb22ce4a4d1d1ab860eae6de62c",
+    "run_id": 41616823386,
+    "run_attempt": 1,
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/41616823386"
+  },
+  "provenance": {
+    "raw_checker_json": "source_archive/NATIVE_RECEIPT_STDOUT.json",
+    "raw_job_log": "evidence/real-energy-20261103/native_run_41616823386.log",
+    "independent_run_api": "evidence/real-energy-20261103/NATIVE_RUN_41616823386.json",
+    "receipt_reconstruction": "Parsed JSON stdout emitted by original native job, not a download of its ZIP artifact. Original checker native_CI field remains untouched; this envelope binds the independent workflow API conclusion."
+  },
+  "scope": "Eight original conditional statements; eight separately checked bindings are not additional independent results. No physical measurement or global completion."
+}

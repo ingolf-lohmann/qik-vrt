@@ -43,3 +43,14 @@
 @media (max-width: 700px) {
   #qikvrt-ai-terminal-host {top:54px;left:8px!important;right:8px!important;width:auto;max-height:calc(100vh - 64px);}
 }
+
+body.qv-client {margin:0;padding:clamp(16px,4vw,48px);min-height:100vh;box-sizing:border-box;background:#030d1c;color:#f5f2e9;font:16px/1.6 system-ui,sans-serif;color-scheme:dark;}
+.qv-client-intro {max-width:880px;margin:0 auto 28px;}
+.qv-client-intro h1 {font-size:clamp(26px,5vw,42px);line-height:1.15;color:#d7a64a;}
+.qv-client-intro p {max-width:72ch;}
+body.qv-client #qikvrt-ai-terminal-host,
+body.qv-client #qikvrt-ai-terminal-host[data-position="left"] {position:relative;top:auto;left:auto!important;right:auto!important;width:100%;max-width:880px;max-height:none;margin:0 auto;}
+body.qv-client #qikvrt-ai-terminal-host .qv-body {max-height:none;}
+body.qv-client #qikvrt-ai-terminal-host .qv-head {gap:12px;flex-wrap:wrap;}
+body.qv-client #qikvrt-ai-terminal-host textarea {min-height:120px;}
+#qikvrt-ai-terminal-host :is(button,textarea):focus-visible {outline:3px solid var(--qv-accent);outline-offset:3px;}

@@ -1,0 +1,161 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "railway_exit_preparation_json"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "S1_RAILWAY_EXIT_STATE_RECOVERY_20261005",
+  "created_at": "2026-10-05T08:34:12.597Z",
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+  "source_commit": "c8b23fe05be7e1fed31250ffaa0f84d62e3dac2d",
+  "source_tree": "3ae383feb71bc7e0a5b85dabb1e9f200289ae2d2",
+  "fresh_base_head": "86d7062f25f174039da0a5df8a856127553036f1",
+  "git_history": {
+    "parent": "c8b23fe05be7e1fed31250ffaa0f84d62e3dac2d",
+    "history_rewritten": false,
+    "original_recovered_files_modified": false,
+    "successor_commit_binding": "CONTAINING_COMMIT_AND_NATIVE_IMMUTABLE_EVENT_HEAD"
+  },
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "instruction_source": "Current direct user request",
+    "identity_proof": "METADATA_ONLY_NOT_INFERRED"
+  },
+  "human_contributions": [
+    "Explicit authorization to do all necessary work to remove Railway dependence",
+    "Existing source/version/effect/readback/role-acceptance boundaries retained"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_family": "GPT-6",
+    "model_or_build_identity": "UNAVAILABLE",
+    "retention": "METADATA_ONLY"
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh applied/staged configuration inventory of all five Railway services",
+    "Extend original launcher with private exact-byte snapshot and create-only restore preserving original durable stores",
+    "Add actual native owner-Unix restart and real SQLite/WAL storage controls with required exact-head sanitized CI receipts",
+    "Document every remaining source/data/host/route/ownership/retirement boundary without claiming deployment"
+  ],
+  "reuse_evidence": {
+    "launcher": "tools/qikvrt_self_host.py",
+    "original_storage": "src/qikvrt_temdd_event_ledger.py and existing Node MonitorStore implementation",
+    "supervisor": "existing systemd supervisor, path unit and original writer locks",
+    "ci": "existing .github/workflows/qikvrt_effect_ack_http_terminal.yml",
+    "independent_client": "tools/qikvrt_mesh_monitor_readback.mjs",
+    "insufficiency": "No private exact-byte state transport/restoration operation in previous S1 launcher; live Railway legacy data and host capability remain separate"
+  },
+  "outputs": [
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 57419,
+      "sha256": "57608aeb24edc7b4eb8dfffc8af2e98d639234b03ce664da2867a2a7d58f5706",
+      "git_blob_sha1": "2cee7dc6678053329d5c3ae3df6c66f5145c3e97"
+    },
+    {
+      "path": "tests/test_self_host_temdd.py",
+      "bytes": 29647,
+      "sha256": "f52bb1ece05299dd7b4951007077140c50ba661807192a077214e2fc9e8c95f3",
+      "git_blob_sha1": "f3d60ed36c632664197f8cce79d182a1fa9e9e81"
+    },
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "bytes": 3963,
+      "sha256": "0b54f8f68550194620d354b955876bcc3871cca9611809fca49dbc7865e5c952",
+      "git_blob_sha1": "c8ca0d78346ac67a71e7a5bb5b41b02c11255979"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 23435,
+      "sha256": "b597afd96843e47dd45d63568d9e537c189b18a9b6d68b4b055d44ed4fdb6458",
+      "git_blob_sha1": "102c05fa56e4f5ea6178dc778afeae87d36ab6ff"
+    },
+    {
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "bytes": 9592,
+      "sha256": "4df4519f52e36f939ccdb9cc27622b28f2cba39d0b3215bb570b137fdeb20faa",
+      "git_blob_sha1": "fcf13f78491e6dc6e47f59f6bf3c16652be4cade"
+    },
+    {
+      "path": "evidence/self_host/RAILWAY_EXIT_PREPARATION_20261005.json",
+      "bytes": 9688,
+      "sha256": "7960d08a255be6999a3dd32fe0cf046f0da08a4de6bfdad8723fe70418b0b86f",
+      "git_blob_sha1": "1c98bbda3bae0773ac622ac54d09fe851aa6834e"
+    },
+    {
+      "path": "runtime/capabilities/S1_OWN_HOST_ADMISSION_20261005.json",
+      "bytes": 13047,
+      "sha256": "ba7ea836cdf97ef210557b9cc9e764bc2bc06bdedcbdb499b300b5304a722854",
+      "git_blob_sha1": "70999fa82b021d0545cb6555459b1a59402c7456"
+    }
+  ],
+  "verification": {
+    "local_standalone_source_and_original_storage_controls": {
+      "result": "PASS",
+      "command": "python3 -B -m unittest -v tests.test_self_host tests.test_self_host_temdd.SourceRecoveryTests tests.test_self_host_temdd.StateSnapshotBackendTests",
+      "tests": 32,
+      "log_sha256": "c015cdab4931128db17a93e78b66abd9f82ec7dbec597c15bed4d03b9fd64b02",
+      "scope": "Local original storage and portable exported-process controls; not owner-Unix E2E or target acceptance"
+    },
+    "local_owner_unix_boundary": {
+      "result": "UNAVAILABLE",
+      "observation": "AF_UNIX socket construction returns EPERM in this executor",
+      "controls_weakened_or_skipped_in_native_lane": false
+    },
+    "full_repository_and_monitor_gates": {
+      "result": "PASS",
+      "command": "make test repository-monitor-test",
+      "monitor_tests": 24,
+      "log_sha256": "b49a276dc964399eaacbabe822971c1b7c932989e929b59f840b07b432b427da",
+      "scope": "Complete existing repository targets plus original monitor tests; native owner-Unix, systemd and Firefox remain required on successor CI"
+    },
+    "native_owner_unix_systemd_firefox_and_complete_gates": "REQUIRED_ON_NEW_EXACT_HEAD; NO_PREDECESSOR_TRANSFER",
+    "native_fixture_correction": {
+      "failed_exact_head": "367de5c4ec53c3d1878def707561fbafb4b66670",
+      "failed_run": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37285783797",
+      "failed_job": 111684216066,
+      "cause": "Three new native negative fixtures had not created the original acknowledged monitor journal; snapshot correctly rejected EXISTING_MONITOR_STATE_REQUIRED.",
+      "repair": "Seed an actual original monitor acknowledgment in those three fixtures before native owner Prepare/Commit and daemon stop. Required runtime state guard and all native controls remain unchanged.",
+      "fresh_successor_required": true,
+      "failed_predecessor_not_pass": true
+    },
+    "browser_fixture_correction": {
+      "failed_exact_head": "c8b23fe05be7e1fed31250ffaa0f84d62e3dac2d",
+      "failed_run": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37286577845",
+      "failed_job": 111686787599,
+      "cause": "The new no-Git/gh recovery test removed required browser executables from PATH. Exact package verification correctly held on missing firefox-esr. Native snapshot/restore and systemd steps succeeded; the complete gate failed.",
+      "repair": "Retain all originally declared browser programs in the restricted runtime PATH, assert git/gh absent, and execute the unchanged required browser profile in network-none CI.",
+      "fresh_successor_required": true,
+      "failed_predecessor_not_pass": true,
+      "runtime_or_native_controls_weakened": false
+    }
+  },
+  "external_effects": {
+    "candidate_git_write": "AUTHORIZED_REVIEWABLE_FAST_FORWARD_SUCCESSOR",
+    "host_or_railway_configuration_changed": false,
+    "credential_values_persisted": false,
+    "private_state_snapshots_in_repository": false
+  },
+  "release_claims": {
+    "railway_configuration_or_staged_changes_mutated": false,
+    "legacy_data_exported": false,
+    "host_admission_verified": false,
+    "deployment_performed": false,
+    "external_https_readback_verified": false,
+    "deployed_restart_verified": false,
+    "railway_cutover_verified": false,
+    "S1_DONE": false,
+    "EFFECT_ACK_DONE": false,
+    "predecessor_pass_transfer": false
+  },
+  "first_causal_external_blocker": "No actually callable authorized own-host execution operation bound to persistent mount and HTTPS route; no exposed operation to export exact legacy Railway state. Approval alone supplies neither capability nor data/host acceptance.",
+  "next_action": "Finish fresh native CI on successor; expose authorized existing host and legacy volume export, independently verify exact original data, fence writers and complete deployment/external restart/consumer acceptance before Railway retirement."
+}

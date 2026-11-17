@@ -1,0 +1,17 @@
+$ node scripts/run-framework.mjs build
+
+  vinext build  (Vite 8.0.13)
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+[1/5] analyze client references...
+[2Ktransforming...✓ 361 modules transformed.
+rendering chunks...
+✓ built in 952ms
+[2/5] analyze server references...
+[2Ktransforming...✓ 132 modules transformed.
+rendering chunks...
+✓ built in 259ms
+[3/5] build rsc environment...
+[2Ktransforming...

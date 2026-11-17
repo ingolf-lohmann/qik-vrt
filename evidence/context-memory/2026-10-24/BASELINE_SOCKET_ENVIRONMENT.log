@@ -1,0 +1,195 @@
+E..E.E.....E.E.EE.EE...E............./workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/evidence/self_host/original-recovered/src/qikvrt_temdd_event_ledger.py:33: ImportWarning: can't resolve package from __spec__ or __package__, falling back on __name__ and __path__
+  from . import qikvrt_effect_ack_http_terminal as terminal
+.....................
+======================================================================
+ERROR: test_ai_surface_and_subject_are_served (tests.test_temdd_event_ledger.ProducerTests.test_ai_surface_and_subject_are_served)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 549, in test_ai_surface_and_subject_are_served
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_cli_append_is_finite_and_returns_durable_readback (tests.test_temdd_event_ledger.ProducerTests.test_cli_append_is_finite_and_returns_durable_readback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 581, in test_cli_append_is_finite_and_returns_durable_readback
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_cli_serve_reads_back_explicit_subject (tests.test_temdd_event_ledger.ProducerTests.test_cli_serve_reads_back_explicit_subject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 626, in test_cli_serve_reads_back_explicit_subject
+    listener = json.loads(child.stdout.readline())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_disconnect_releases_observer_without_a_new_event (tests.test_temdd_event_ledger.ProducerTests.test_disconnect_releases_observer_without_a_new_event)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 508, in test_disconnect_releases_observer_without_a_new_event
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_foreign_origin_and_rebinding_host_are_rejected (tests.test_temdd_event_ledger.ProducerTests.test_foreign_origin_and_rebinding_host_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 542, in test_foreign_origin_and_rebinding_host_are_rejected
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_invalid_http_cursor_and_browser_writes_fail_closed (tests.test_temdd_event_ledger.ProducerTests.test_invalid_http_cursor_and_browser_writes_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 532, in test_invalid_http_cursor_and_browser_writes_fail_closed
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_legacy_effect_ack_remains_exact_bound_and_single_use (tests.test_temdd_event_ledger.ProducerTests.test_legacy_effect_ack_remains_exact_bound_and_single_use)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 561, in test_legacy_effect_ack_remains_exact_bound_and_single_use
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_real_socket_restart_preserves_replay (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_restart_preserves_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 520, in test_real_socket_restart_preserves_replay
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_real_socket_sse_disconnect_replay_and_header_precedence (tests.test_temdd_event_ledger.ProducerTests.test_real_socket_sse_disconnect_replay_and_header_precedence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 493, in test_real_socket_sse_disconnect_replay_and_header_precedence
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+======================================================================
+ERROR: test_store_has_exclusive_owner_and_private_ingress (tests.test_temdd_event_ledger.ProducerTests.test_store_has_exclusive_owner_and_private_ingress)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 472, in test_store_has_exclusive_owner_and_private_ingress
+    self.start_servers()
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/tests/test_temdd_event_ledger.py", line 291, in start_servers
+    self.ingress = m.make_ingress(self.runtime)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9f4329b78f55/publication_run/source_archive/ingolf-lohmann-qik-vrt-b1863b7/src/qikvrt_temdd_event_ledger.py", line 524, in make_ingress
+    server = socketserver.UnixStreamServer(str(path), Ingress)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 453, in __init__
+    self.socket = socket.socket(self.address_family,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 233, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+PermissionError: [Errno 1] Operation not permitted
+
+----------------------------------------------------------------------
+Ran 58 tests in 1.868s
+
+FAILED (errors=10)

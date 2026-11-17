@@ -1,0 +1,1050 @@
+{
+  "schema": "qikvrt_full_corpus_prewrite_readback_v1",
+  "observed_at": "2026-10-15T09:00:41.189Z",
+  "pull_request": {
+    "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523",
+    "id": 4835023653,
+    "node_id": "PR_kwDOS-xnU88AAAABIDCbJQ",
+    "html_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/523",
+    "diff_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/523.diff",
+    "patch_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/523.patch",
+    "issue_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/523",
+    "number": 523,
+    "state": "open",
+    "locked": false,
+    "title": "Main integration: governance, Firefox and renewable authority credentials",
+    "user": {
+      "login": "ingolf-lohmann",
+      "id": 294949349,
+      "node_id": "U_kgDOEZSR5Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/294949349?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ingolf-lohmann",
+      "html_url": "https://github.com/ingolf-lohmann",
+      "followers_url": "https://api.github.com/users/ingolf-lohmann/followers",
+      "following_url": "https://api.github.com/users/ingolf-lohmann/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ingolf-lohmann/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ingolf-lohmann/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ingolf-lohmann/subscriptions",
+      "organizations_url": "https://api.github.com/users/ingolf-lohmann/orgs",
+      "repos_url": "https://api.github.com/users/ingolf-lohmann/repos",
+      "events_url": "https://api.github.com/users/ingolf-lohmann/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ingolf-lohmann/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "<!-- qikvrt-authority-outward-20261015:begin -->\n## Authority zuerst: notwendige Schichten und ausführbare Übergänge\n\nOwner-Anweisung vom 15.10.2026: „Beginne im Ingolf Lohmann QIK VRT Mesh Authority Node und gehe von da Schicht für Schicht nach außen, bis alles Notwendige enthalten ist.“\n\nAusgangspunkt ist **ingolf-lohmann/qik-vrt**, Einstieg `/AI`. Aktuell beobachtetes Main: `a5392b6fe81824522bb90eb89b3eb0c0937951ab`, TREE `f919b572ed7482053f3c32ec9628805e576035f3`. Dieser bestehende Integrationskandidat bleibt auf HEAD `37fef0667804d6ec15abe490b65177d2f3f2f30b`, TREE `6418d211c5e4bad3cbd94a96c0bc5adc6a82c8b7`. Kandidatenwerkzeuge und Main-Ausführung sind getrennte Gegenstände.\n\nDie folgenden Schichten bilden den zu prüfenden Arbeitsumfang. Eine vorhandene Datei, ein Credential-Name oder ein grüner Beobachter schließt den jeweiligen Übergang noch nicht. Jede offene Voraussetzung bleibt im selben Main-Träger, bis ihre eigentliche Wirkung unabhängig zurückgelesen ist.\n\n| Schicht | Vorhandener Weg / gebundene Quelle | Notwendiger Übergang / aktueller Nachweis |\n|---|---|---|\n| 0. Menschliche Authority, Rechte, Lizenz | Owner-Entscheidung; `policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`; bestehende Lizenzen | Ingolf Lohmann bleibt Principal, Product/Code Owner und Lizenzgeber. Bestehende Freigaben verwenden; unabhängige Plattformfreigabe und externe Wirkungen getrennt prüfen. |\n| 1. Repository und Einstieg | `AI`, `AI_CONTEXT.json`, `AGENTS.md`, `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` | Authority/Main und Kandidat mit eigenen HEAD/TREE binden; Goldkelch bleibt Mirror. Alle 4.380 Originalblobs und 534 Baumobjekte des aktuellen Kandidaten lokal unabhängig rekonstruiert und Git-identisch geprüft. Die vier historischen Original-ZIPs wurden über den vorhandenen Base64-Dateileser unverändert wiedergewonnen. Vollständige Historie/Backup wird daraus nicht abgeleitet. |\n| 2. Bootstrap, Werkzeuge, Integrität | `tools/ai_runtime_bootloader.py`, `tools/ai_handoff.py`, `tools/qikvrt_integrity.py`, `runtime/toolchains/*` | Handoff, Integrität und 32/32 Cacheverträge bestehen. Lokaler Bootzustand CONTINUE: einzelne IETF/Formal/Audio-Profile und gh fehlen weiterhin. Git-deklarierte CRLF-Checkoutfilter für CMD/PowerShell waren beim ursprünglichen Blobexport noch nicht angewandt; der unveränderte Integritätsverifier besteht nach ihrer Anwendung. Keine Manifest- oder Quellenreparatur dafür veröffentlicht. |\n| 3. Native Governance und Main | vorhandener Ruleset-Writer; Review-Gate; Expected-Head-Promotion; bestehender REST-Client | Main `protected=false`, `rulesets=[]`; fünf historische COMMENTED-Reviews, kein aktuelles unabhängiges APPROVED. PR bleibt Draft. Der reparierte App-first-Writer liegt im Kandidaten als Blob `05066f6fb83a7f3ba8799677db35647e06942fd2`; Main hat noch `1202d24c2f23eb8fa52ab7c562a583e79f9e8444`. Sicheren administrativen REST-Executor und exakt gebundene unabhängige Freigabe vor geschützter Main-Integration nachweisen. |\n| 4. Authentifizierung und tatsächliche Operationsfähigkeit | `scripts/qikvrt_api_client.py`; OpenAPI-Vertrag; bestehende geschützte GitHub-Secrets/Verbindungen | Connector-Profil und gemeldete Adminrechte sind verifiziert; Initial-`workflow_dispatch`, administrative Ruleset-Schreiboperation und sichere Secret-Bindung sind in diesem Client nicht als callable REST-Operation exponiert. Kein lokales QIKVRT/GitHub/AMO/IONOS-Credential in der Prozessumgebung bereitgestellt. Keine Tokenextraktion, neue Proxy-Trigger oder Browseranmeldung. Vorhandene sichere Bindung an den jeweiligen zugelassenen Executor liefern. |\n| 5. CI, Tests und Originalartefakte | `.github/workflows/qikvrt_ci.yml`; native Runs 38641314261 (PR) und 38641306209 (Push) | Beide vollständigen Testjobs und beide Browser-Engines success auf diesem HEAD. PR-Test 116117227559 einschließlich Fixpoint success; Push-Test 116117198826 success. Die gesamten CI-Läufe bleiben wegen des separaten XPI-Gates failure; weitere historische Archive-/Watchdog-HOLDs bleiben eigene Pflichten. |\n| 6. Mozilla-Signierung und Firefox | bestehender `amo_unlisted`-Job, `s1_firefox_extension`, Firefox-158-S1-Vertrag | Originale PR-/Push-AMO-Logs melden jeweils AMO_ISSUER_PRESENT=false, AMO_SECRET_PRESENT=false, SIGN_REQUESTED=false. Das ist die tatsächliche Credential-Lieferung an diese Jobs, keine Aussage über jeden sicheren Speicher. Erforderlich: AMO-Paar sicher binden, einmaliger source-bound Unlisted-Signierstart, Original-XPI/Signatur/SHA256 zurücklesen, reale Aktivierung und persistenter Firefox-Neustart. Keine unsignierte Ersatzfreigabe und kein unveränderter Installationsretry. |\n| 7. OCI und ursprüngliche Runtime-Archive | vorhandener `container_publish`; GHCR; aus #457 historienerhaltend integrierter Pfad | Native Jobausführung derzeit skipped. Erfordert geschütztes akzeptiertes Main, XPI-/Container-Gates und bestehende Produktionsadmission. Image-Digest, ursprüngliche Archive und öffentlich heruntergeladene Originalbytes eigenständig prüfen; Quellintegration ist keine Veröffentlichung. |\n| 8. Host, persistente Runtime und bestehende Plattformen | S1 `admit/supervisor/run-admitted`; mTLS-REST; vorhandenes Railway-Projekt `a2440de5-6250-4d02-8845-c166aeaa3d0d` | Railway production `1286f33e-9f11-43d9-b86c-be5df57718a0` enthält fünf Dienste, alle aktuell offline. `universal-terminal` `feb518e8-bfb2-450d-a36a-c992b052427c` hat persistenten 500-MB-Mount, aber alte Quellbindung `b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4`. Gemeinsamer Patch `9d4860c4-5003-48ef-a07f-d383f303b539` hat 22 lediglich vorgemerkte Änderungen. Kein aktueller Runtime-Executor oder erfolgreicher Neustart daraus ableitbar. Altes/ungeprüftes Staging nicht pauschal produktiv schalten. |\n| 9. IONOS, Registrar, DNS und TLS | bestehender IONOS GET-Verbraucher; getrennt erforderlicher Hosting-/Domainwriter | `secrets.IONOS_TOKEN` ist im bisherigen Vertrag Cloud-v6-GET-Inventar, kein Hosting-/Domain-/DNS-Writer. Produkt, Principal, Origin, sichere Referenz und unabhängigen Pin jeweils passend binden. Für **raumzeitterminal.de** bleiben HTTP 530 und rekursives NXDOMAIN beobachtet; Registrierung selbst daraus nicht beurteilt. DNS, TLS und tatsächliche Anwendung einzeln abnehmen. |\n| 10. Jeder Mesh-Knoten, Bus und Terminal | `registry/NODEMESH_INDEX.json`; `runtime/self-host/MESH_ACTIVATION.json`; S1 `mesh-contract` | Source-Gate SOURCE_OBLIGATIONS_BOUND. Vollständiges Knoteninventar, eigene Transputer-/Terminal-Runtime, authentifizierter nonce-/epochgebundener Ping, Original-Ledger-Readback an allen Terminals und Restart/Fencing/Crash/Loss/Partition/Lost-ACK/Takeover/Rejoin bleiben native Abnahmen. Monitor zeigt keine publizierten Runtime-Endpunkte; Mirror-Zugriff bleibt historisch ungeklärt. |\n| 11. Menschlicher Nutzpfad und Rückgabe | Firefox/Universal Terminal/TEMDD; bestehende Personal-Grenzen; Client-Receipt-Gate | Nützliche reale Aufgabe, erforderliche Personal-/SSO- und Gerätewitnesses, Originalbelege und frischer exakter Domain-Readback bleiben erforderlich. Beobachtung, Test, Veröffentlichung und Produktabnahme sind eigene Evidenzzustände. DONE nur für Working Software UND diese öffentliche URL UND frischen Anwendungsreadback. |\n\n**Bestehende Außenschichten tatsächlich geprüft:** Scheibenhard-Site `appgprj_6ac4018a3e0c8191a06187c296d6c7ea` ist aktiv auf Version 33; ihre exponierten Mesh-Operationen beobachten und lesen persistente Snapshots, führen aber keine native Runtime aus. Der frühere Snapshot `d20b3147-b187-47d2-8ca7-4086e38c1e32` wurde unabhängig bytegeprüft (SHA256 `28c83c9f72130e03c4bda876b27202cd8c3ee08e79187e8664d980cee1fce0ff`). Ein späterer Monitor-GitHub-Leseweg ist durch ein eigenes Provider-Ratelimit bis 02:29:16 UTC ausgesetzt; frische authentifizierte Connector-Reads von Authority/Main sind davon getrennt und erfolgreich. Alte Monitor-HEADs werden nicht als frisch ausgegeben. Plugin-Suche ergab keinen passenden zusätzlichen AMO-/IONOS- oder sicheren Credential-Schreibweg.\n\n**Konvergenz und Anschluss:** Vollständiger frischer Bestand über jeweils zwei REST-Seiten: 110 offene PRs und 7 Issues (#503, #466, #460, #458, #380, #363, #362). Dieser Abschnitt erweitert den bestehenden Träger und eröffnet keine parallele PR-/Issue-Schleife. Nächster erster Kontrollplaneffekt bleibt die tatsächliche sichere administrative REST-Writer-/Credential-Bindung am Authority-Knoten, gefolgt von unabhängiger Ruleset-/Review-/Main-Abnahme. Signier-, Host-, Domain- und Nutzpfadpflichten bleiben gebunden; unveränderte fehlgeschlagene Effekte bleiben NOOP.\n\nProvenienz: Ziel, Vorgehenskorrektur und bestehende Autorisierung durch Ingolf Lohmann; Rekonstruktion, Prüfung und dieser operative Nachweis durch OpenAI Codex. Keine neue wissenschaftliche Behauptung oder allgemeine EFFECT_ACK_DONE-Freigabe.\n<!-- qikvrt-authority-outward-20261015:end -->\n\n<!-- qikvrt-firefox158-s1-upgrade-readback-20261014:begin -->\nDer bestehende S1-Träger enthielt tatsächlich Firefox ESR 153.4.0 (`153.4.0esr-1~deb12u1`) und unterschritt damit die verbindliche Mindestversion 158.0. Auf den verifizierten ursprünglichen S1-Schichten ist der unterstützte Mozilla-Release-Pfad ergänzt: Paket `158.0~build2`, tatsächlicher Browser/Gecko 158.0, gebundene ELF `/usr/lib/firefox/firefox`. Mindestversion und alle sechs Standard-Erweiterungsdateien bleiben unverändert.\n\nAlle 13 vorhandenen nativen Firefox/noVNC/Start-/Neustartkontrollen bestehen auf [Quelle3136e142 / Run38601373928](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38601373928); die neun ursprünglichen S1-Schichten und Runtime-Komponenten werden weitergenutzt. Die Mozilla-ELF wird direkt ausgewählt, nachdem der Debian-Wrapper im begrenzten Runtime-PATH an seine ESR-Delegation gescheitert war. Dieser erste Fehler bleibt im Work Unit erhalten.\n\nDer 572776390-Byte-Image-Export (SHA-256 `9db43d3cc71aa7f9fb9432a5d656f8334dbe7923de147e00219351d61639139b`, Image-ID `sha256:05066840525880b1e790a799ac3b0c1c145973fc7ab82b350659c765c0082bf7`) wurde auf Quelle `fa6b6b6701d920320cac753432064c918208fb4f` nativ vollständig heruntergeladen und wieder importiert. [Run38604044266/job115990244184](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38604044266) bestätigt Archivhash, Image-Konfiguration, vollständige RootFS-/Elternschichten, Paket und ELF; kein Runtime-Neubau. Originaler kleiner Readback: Artefakt11914257517, 2681 Byte, unabhängig SHA-256 geprüft (`d8c55693647338414fc02a1faf1b42e0f82b2240eef07ec27738023e33ef114c`).\n\nDie tatsächliche Installation der unsignierten, quellengebundenen XPI erfolgte unter normaler Signaturprüfung über `AddonManager.getInstallForFile`. Firefox158 meldete `rejected_before_install`, Fehler -5, ohne Add-on. Nach echtem Prozess-Neustart blieb das Add-on abwesend, ohne aktive WebExtensionPolicy oder registrierten Background. Mindestversion erfüllt; Erweiterungsinstallation und Aktivierung weiterhin HOLD. Diese ursprüngliche negative Matrix gilt für den gebundenen Testgegenstand und wird nicht als Nachfolgerabnahme übertragen.\n\nOriginalmatrix-, Provisionierungs- und Reimport-Receipts sind im vorhandenen `state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json` gespeichert. Das vorhandene Source-Recovery-Verfahren archiviert beide geänderten Deployment-Originale bytegenau und prüft deren Nachfolger, unter Beibehaltung seiner bisherigen Assertions. Die aktuelle AMO-Vorbereitung bewahrt den vorbestehenden S1-Runtime-AST. Unveränderte Installationsfehler bleiben NOOP; die nächste reale Aktivierungsprüfung benötigt eine echte, quellenidentische Mozilla-signierte XPI.\n\nDer künftige saubere Containerbau nutzt denselben Provisionierer; sein vollständiger sauberer Build wurde nicht als Produktivinstallation abgenommen. Erweiterungsabnahme, geschützte Main-Integration und vollständige Inbetriebnahme von raumzeitterminal.de bleiben getrennte Pflichten.\nDie aktuelle vollständige [HTTP-/Container-/Provenienzprüfung38607642323](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38607642323), Job116002519644, ist auf HEAD `320e7cccb014ef9be0753ce3a0cdd518612d0eea` / TREE `97c85e14b83cc02e6e98e46e637ab71c0315017e` erfolgreich. Produktives Deployment und unabhängiger Produkt-HTTP-Readback wurden übersprungen. Push- und PR-`test`, beide Offline-Engines und Personal-Kontrollen sind ebenfalls erfolgreich; der XPI-Aktivierungsjob bleibt ausdrücklich failure/HOLD.\n<!-- qikvrt-firefox158-s1-upgrade-readback-20261014:end -->\n\n<!-- qikvrt-amo-unlisted-signing-20261014:begin -->\nDer bestehende Firefox-158-Kandidat enthält jetzt den offiziellen Mozilla-AMO-Unlisted-Signierweg. Exakter aktueller HEAD: `320e7cccb014ef9be0753ce3a0cdd518612d0eea`; TREE: `97c85e14b83cc02e6e98e46e637ab71c0315017e`. Die zwischenzeitlichen Nachfolger `fa6b6b6701d920320cac753432064c918208fb4f` und `2ee9668b094ab8656ebbe81abf26233ef4e1c3ec` bleiben vollständige Vorfahren. Kein zusätzlicher PR wurde erzeugt.\n\nDer vorhandene Python-Builder und die vorhandene QIKVRT-CI werden erweitert. Ausschließlich die sechs unveränderten Standard-Dateien werden aus dem gebundenen Git-Commit verpackt; README und Personal-Dateien bleiben außerhalb der Signiereingabe. Der offizielle REST-Signing-API-v4-Weg deklariert ausdrücklich `unlisted`, verwendet kurzlebige HS256-JWTs und gibt keine Credentials an Download-Redirects weiter. Der API-v4-Vertrag ist offiziell dokumentiert und frozen; Firefox bleibt mindestens 158.0. Es gibt weder einen Downgrade noch eine Signaturausnahme.\n\nEin bestätigter bestehender AMO-Versionsstand wird zuerst gelesen. Ein initialer PUT ist nur nach 404 und ohne vorangegangenen Upload zulässig; vorher wird ein privates, fsynctes, nicht geheimes Versuchsprotokoll gespeichert. Pending/unklare Ergebnisse werden über den vorhandenen REST-Readback und den ursprünglichen nativen Vorgänger fortgeführt, ohne eine identische Signiereinreichung zu wiederholen. Der Aufruf ist auf einen ausdrücklich angeforderten, Owner-authored workflow_dispatch mit erwarteter PR523-HEAD/TREE-Bindung beschränkt. Push und PR führen keinen AMO-Upload aus.\n\nEin tatsächlich zurückgeliefertes Original-XPI wird unverändert aufbewahrt, gegen Mozillas SHA-256 und alle sechs Quellen geprüft und über Repository, Run-ID, Artefaktname, Dateiname und XPI-SHA-256 an das bestehende S1-Installations-/Aktivierungs-/Prozess-Neustart-Gate übergeben. API-Flag und META-INF-Dateien sind keine kryptografische Browserabnahme. Das frühere Artefakt-Präfix wurde kausal korrigiert: der Consumer erhält die Dateien nun unmittelbar an der gebundenen Archivwurzel.\n\nNachweise für diesen exakten HEAD:\n- 31 lokale AMO-/XPI-/Standard-Personal-Kontrollen bestanden; reale sechs-Dateien-Git-Fixtures und simulierte AMO-HTTP-Antworten, keine Mozilla-Signatur.\n- 14 native AMO-Kontrollen bestanden in Push-Run https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38607628249 (Job116002471072) und PR-Run https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38607642100 (Job116002517988).\n- Vollständiger Push-`test` erfolgreich, MAKE_TEST_EXIT=0 / PASS mode=full-test, Job116002470881. Vollständiger PR-`test` samt abschließendem tested-fixpoint erfolgreich, Job116002516498. Chromium und WebKit sind in beiden Runs erfolgreich.\n- Native Originalbytes: Artefakt11916561413, 455 Bytes, ZIP-SHA-256 `1a0f7544eef8bd73e6ac132b1f3abc194ddb8f1b84d15048699f5ad08fdf8643`, unabhängig heruntergeladen und geprüft. Es enthält exakt `ACCESS_PREFLIGHT.json` an der Archivwurzel. Damit ist der vorbereitende Layout-Nachweis geschlossen; ein signiertes XPI enthält dieses Artefakt ausdrücklich nicht.\n- Dieser gebundene native Readback meldet `issuer_present=false`, `secret_present=false`, `amo_authentication_verified=false`, `credential_values_read=false`. `AMO_JWT_ISSUER` und `AMO_JWT_SECRET` sind für diesen sicheren CI-Weg nicht verfügbar. Die tatsächliche Signierung wurde übersprungen.\n- Sämtliche elf endgültigen geänderten Pfade, der vollständige remote Tree und die sechs unveränderten Standard-Git-Blobs sind unabhängig zurückgelesen. Die Integrität umfasst 4.241 klassifizierte Einträge / 4.230 unveränderliche Digests; die Toolstrategie bleibt 31/31 (100%).\n- Der geerbte S1-Runtime-AST ist unverändert gebunden. Beide nativen XPI-Gates bleiben korrekt failure/HOLD mit `NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE`; weder Browserinstallation noch Container-Upgrade werden ohne materiell geänderte Eingaben wiederholt. Der gesamte CI-Run ist deshalb keine grüne Produktabnahme.\n\nKonkrete externe Voraussetzung: autorisierte AMO-Developer-Hub-JWT-Zugangsdaten mit Berechtigung für `qikvrt-ai-terminal@goldkelch.local`, ausschließlich sicher als `AMO_JWT_ISSUER` / `AMO_JWT_SECRET` bereitgestellt, plus ein tatsächlich aufrufbarer REST workflow_dispatch für diesen erwarteten HEAD/TREE. Der aktuelle Connector exponiert keinen initialen workflow_dispatch-POST oder sicheren Secret-Konfigurationsschreibweg; bestehende unveränderte Zugangssperren wurden nicht erneut versucht. Keine Schlüssel oder Secrets in Chat, Git, Logs oder normalen Artefakten ablegen.\n\nXPI-Aktivierung und Neustart mit echter Mozilla-Signatur bleiben offen. Geschützte Main-Integration bleibt unabhängig offen: Main war zuletzt `32920fdf2ab8cfe52746f8670b6c141e9a3de8cc` / `fb9af33e8854412ed6b034ced6dd6167efa5d918`, ungeschützt; native Rulesets fehlen und keine aktuelle unabhängige APPROVED-Freigabe ist nachgewiesen. Das Produktziel https://raumzeitterminal.de/ bleibt im frischen Readback bei HTTP530 und rekursivem NXDOMAIN: https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=68bb63b7-2655-4463-a97b-d8ef805729a0. Signieranbindung, XPI-Abnahme, Main-Merge und produktive Domain-Inbetriebnahme sind getrennte Effekte; EFFECT_ACK_DONE bleibt false.\n\nPrimärquellen:\nhttps://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/\nhttps://mozilla.github.io/addons-server/topics/api/v4_frozen/signing.html\nhttps://mozilla.github.io/addons-server/topics/api/auth.html\n\nDie folgenden bisherigen Abschnitte bewahren historische Quell- und Integrationsnachweise. Ihre früheren HEADs, Runs und Pending-Marker sind keine aktuellen Abnahmebehauptungen.\n<!-- qikvrt-amo-unlisted-signing-20261014:end -->\n\n<!-- qikvrt-firefox158-s1-installation-20261014:v1 -->\nThe existing PR523 carrier now includes the source-bound S1 Firefox-158 installation diagnosis and reproducible CI gate. Current HEAD: `33a504702713cffc4d1f0168a09f379cefb3cba5`; TREE: `5110efa6821a91a3a49aa5779b4b7c90a2e1e29f`. The concurrent Owner-Authority and Standard/Personal boundary corrections remain preserved.\n\nThe original PR457 image is reused byte-exact without a runtime rebuild: source `c1cca8fae42166d456c776e5c876c23ac7689aea`, OCI digest `sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d`. Native [38586572118](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38586572118), job115930034762, directly observes Debian package `153.4.0esr-1~deb12u1` and live Firefox153.4.0 against the unchanged required minimum158.0. All four default/reference initial/restart observations are unaccepted. In the explicit ESR reference profile AddonManager reports `isCompatible=false`, `appDisabled=true`, `isActive=false`; neither WebExtensionPolicy nor background registration is active. Default signing policy removes the unsigned XPI. The checked S1 bootstrap-profile XPI path is absent in the original image.\n\nOriginal artifact11905542898 (16171 bytes, SHA-256 `a6d9f3d5b4f1a74a178b64528be3493fce284310d5063ca883a003e305306f4d`) was downloaded and hash-verified. The complete live matrix and exact XPI/source/component bindings are retained in the existing work unit `state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json`. Seven local negative controls pass. The vanished pinned Skopeo import dependency was repaired using existing Python/Docker components with original config, compressed-layer hashes and every uncompressed diff ID preserved; native Docker load verifies that scope.\n\nCurrent [38588127231](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38588127231), job115935494396, verifies `NOOP_UNCHANGED_FIREFOX_INSTALLATION_FAILURE`: no repeat download/import/browser attempt is issued for unchanged causal inputs. The acceptance job intentionally remains failure. Prior exact successor6db5da46 native complete-source test and both Chromium/WebKit controls passed in run38586777420. Current-head native push run38588127231 confirms the complete-source test plus both Chromium/WebKit controls successful on33a504702713cffc4d1f0168a09f379cefb3cba5. Native PR run38588139809 also completes with successful tested fixpoint on the unchanged current HEAD/TREE. Both runs retain the independent installation-admission failure; these green controls are not overall acceptance.\n\nThe supported forward path is official Mozilla Release158 or newer on the retained Debian/S1 components, with exact binary/package binding, a Mozilla-signed self-distributed XPI and the same persistent activation/restart gate. Upgrade/signing are proposed, not executed or accepted. The ESR signature exception does not replace signing on Release. The Owner's minimum was not lowered.\n\nProtected Main integration, an independent native approval and all production admission gates remain open. Fresh Main `fcd7bb8c290ce7557ec585ce841b090f64edb9b5` / TREE `00da1faf4dc7ce12f376e6420ea7e477a667f798` is unprotected. The byte-verified exact-host observation of 2026-10-14T15:18:18.670Z retains HTTP530 and recursive NXDOMAIN for https://raumzeitterminal.de/ : https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=758ad12d-01c4-45db-a1b2-b57e13f0d7d6 . Extension diagnosis is complete; product delivery and EFFECT_ACK_DONE are not established.\n\nThe following preserves the previous exact-subject consolidation history. Its heads, runs and acceptance scopes are historical and are not transferred to the current carrier.\n\nPR #523 is the existing carrier for protected Main integration. This successor incorporates PR #514's complete source history while retaining the already consolidated governance, REST/MCP, Personal Firefox/Argon and terminal-delivery changes.\n\nCurrent HEAD: `7f90df61995a81e1364fce25994803c15eb8a969`  \nCurrent TREE: `c231c5a49a616d69f2418498590ee595c0a721fa`  \nOrdered merge parents: `88eb20a219ba8187a2ffdcae9e4b4ccdb8209b38`, then PR #514 `b0180527940c546fff4822858d9288a42391cf61`.\n\nThe native REST comparison confirms `behind_by=0` and merge-base equal to #514's exact HEAD: all five previously divergent source commits are ancestors. A full recursive remote-tree readback verifies all 4,353 blobs against the prior carrier plus the seven intended changes; no paths were removed.\n\nThe integrity generator and all 11 existing integrity regressions were already present. The test files differed only by one blank line, so the carrier's exact test bytes remain. The six-language article retains the newer carrier version with visible copyable source URLs; #514's article equals the common merge-base. The missing original benchmark and its limited-scope historical measurement are now retained with their exact blobs, and the source work-unit superset preserves every prior carrier field plus the three later provenance sections.\n\nValidation on this exact successor:\n\n| Check | Evidence |\n| --- | --- |\n| Existing local integrity regressions | 11/11 pass in a bounded exact-source REST fixture; all 13 portable capsule Git objects restored and hash-checked |\n| Tool-cache contract | 29/29 declared components (100%) |\n| Deterministic integrity metadata | All three baseline outputs reconstructed byte-identically with the existing generator; native full-byte verification passes with 4,239 classified entries / 4,228 immutable digests |\n| Native push CI | [38561289609](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38561289609): success, MAKE_TEST_EXIT=0, PASS mode=full-test; Chromium and WebKit offline/restart controls pass |\n| Native PR CI | [38561297795](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38561297795): success, MAKE_TEST_EXIT=0, tested fixpoint at iteration 0; unchanged HEAD/TREE and predecessor_test_status=0 |\n| Native Personal/TEMDD | [38561297866](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38561297866): success on this exact HEAD |\n| Native HTTP/Firefox/container | [38561298320](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38561298320): success; productive deployment and domain acceptance are separate |\n\nThe reconstruction used unchanged manifest digests for unchanged native Git blobs and exact fresh bytes for the changed paths; it is a bounded source projection, not a full local checkout. Native CI supplies the actual full-tree byte and complete-suite verification. Historical performance observations are preserved with their original limits and were not rerun or promoted into portable throughput or delivery claims.\n\nPR #514 is now independently read back as `closed`, `merged=false`, unchanged source HEAD, after full ancestry and exact-head CI verification. The fresh complete open-PR inventory decreased from 112 to 111; the earlier 113 count is historical. Closure is not a native Main merge. No additional PR, issue, force push, Main write, deployment or publication was created by this work.\n\nA separate existing materializer/Batch-003 archive obligation remains HOLD. Both predecessor run 38559064428 and successor run 38561298315 stop at the same `NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET`; the successor materializer still passed integrity and the complete repository suite. No unchanged archive retry was issued. The repository watchdog and governance acceptance remain separate failing/open requirements; successful QIKVRT CI is not a claim that all workflow families are green.\n\nMain integration remains HOLD: fresh native Main reads show `protected=false`, no rulesets, and `CODE_OWNER_RULE_NOT_ENFORCED`; no independent current-head `APPROVED` review is established. #523 stays Draft under the existing REST-only agreement. Main protection, independent review, all applicable promotion checks and a permissible Ready transition remain separate required effects.\n\nFresh Main: `fcd7bb8c290ce7557ec585ce841b090f64edb9b5` / TREE `00da1faf4dc7ce12f376e6420ea7e477a667f798`.\n\nThe exact delivery target `https://raumzeitterminal.de/` remains unaccepted: the bounded readback reports HTTP 530 and recursive DNS NXDOMAIN. The working-software, DNS/TLS and authenticated-runtime obligations remain open; a candidate test or different hostname does not close them.\n\nThe durable existing work unit is `state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json`. The Owner's all-PR convergence rule remains normal backlog priority behind current productive delivery.\n\nHuman authority and constraints: Ingolf Lohmann. Original lifecycle contribution: Anthropic Claude. Controlled reconciliation and verification: OpenAI Codex / GPT-6, platform-session attribution only. Original sources, historical receipts and independent effect boundaries remain preserved.\n\nLatest persisted exact-host observation: https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=7019e0e7-60a1-419d-bdd3-b6d8f67baaea — snapshot SHA-256 `86b7c2b7218feef17ae93f8cd778dca5f5300f3110cb61d75d0291697e2ca25c`, observed 2026-10-14T12:15:38.126Z. This is domain observation evidence; the Monitor's temporarily rate-limited repository observation is not substituted for the independent authenticated GitHub HEAD/TREE reads above.\n\n\n<!-- qikvrt-firefox-authority-binding-20261014:begin -->\n### Firefox Authority correction — completed source repair, current readback 2026-10-14\n\nCurrent HEAD `33a504702713cffc4d1f0168a09f379cefb3cba5`, TREE `5110efa6821a91a3a49aa5779b4b7c90a2e1e29f`.\nRepair commits `d0d9e305667f4cb595074ae365398acdfda594b0` and `6db5da46f1b0c3a8add34e2bc08a6ed21eed7f9d` remain ancestors. The latest concurrent successor persists the existing S1 incompatibility observations in README/provenance; it preserves the corrected executable adapter, manifest, normative roles and Personal boundary. No additional PR was created.\n\nThe Firefox background observer now binds Main HEAD/TREE/workflow GETs to `ingolf-lohmann/qik-vrt` under `policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. `Goldkelch/qik-vrt` remains Mirror. Both Owner and both existing Mirror injection entrypoints are retained. Only the Owner Pages origin is added; one Owner-named github.com permission covers that shared origin. Authority failure remains HOLD without Mirror fallback; credentials are omitted and GitHub operations stay read-only. Minimum Firefox stays 158.0.\n\nThe dependent Standard/Personal classification conflict was repaired in its existing policy, specification and tests. A public Owner repository identity is a source binding. Personal payload paths, capabilities, state, credentials and evidence remain forbidden in the seven-file Standard package. All pre-existing DENY and authenticated-service/redistribution boundaries remain unchanged.\n\n| Current-head validation | Native evidence |\n|---|---|\n| Local adapter, contract and Personal boundary | 18 passed after the latest README readback; original wrong Authority/manifest rejected by four negative controls |\n| Native Standard/Personal boundary | 7 passed in [job 115935536885](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38588139683/job/115935536885) |\n| Native HTTP/adapter, Personal and Gemini tests | 61 passed in the same job, including all 38 HTTP-terminal cases and real loopback E2E |\n| Full push suite | [job 115935494807](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38588127231/job/115935494807): MAKE_TEST_EXIT=0; PASS mode=full-test |\n| Full PR suite | [job 115935537195](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38588139809/job/115935537195): success, tested fixpoint on unchanged exact HEAD/TREE |\n| Offline Chromium/WebKit restart controls | Both passed in current push and PR CI |\n| Standard XPI | Two current native builds byte-identical; SHA-256 `962f8f0c6f2d719debbe984d9bb0d578f7362e7c20377e5de3c3843fa8311f92` |\n| Independent repository readback | Both repair deltas verified by native tree/blob reads; latest README inspected and all executable/manifest/policy/test bindings retained |\n\nThis establishes the source Authority correction and its stated tests. It does not claim every workflow family is green or that the XPI is active in the productive browser.\n\nThe existing S1 image was actually read on the retained source path as Firefox `153.4.0esr` / Debian package `153.4.0esr-1~deb12u1`, below minimum `158.0`. Its installation/restart receipt is `HOLD_FIREFOX_BELOW_OWNER_MINIMUM`; default production-signing and explicit ESR-reference activation are unaccepted. The current [S1 gate](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38588139809/job/115935537913) remains failing/open and preserves the causal NOOP rule. These image/version/signing obligations are separate from the corrected repository observer; no minimum was lowered.\n\nMain remains `fcd7bb8c290ce7557ec585ce841b090f64edb9b5`, TREE `00da1faf4dc7ce12f376e6420ea7e477a667f798`, `protected=false`, `rulesets=[]`, with `CODE_OWNER_RULE_NOT_ENFORCED` and no independent current-head APPROVED review. #523 stays Draft. No Main write, review substitution, protection bypass, publication or deployment was performed.\n\nThe exact target `https://raumzeitterminal.de/` remains unaccepted: [independent persisted readback](https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=8a232d0a-2f57-4565-8341-7624dbb54957) reports HTTP530 and recursive NXDOMAIN. Working software on that public host, DNS/TLS and compatible native-runtime acceptance remain open.\n\nHuman task/contract authority: Ingolf Lohmann. Controlled implementation/verification: OpenAI Codex / GPT-6, platform-session attribution only. Durable provenance: `state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json`.\n<!-- qikvrt-firefox-authority-binding-20261014:end -->\n\n\n<!-- qikvrt-pr457-oci-consolidation-20261014:start -->\nControlled PR #457 OCI integration into this existing Main carrier.\n\nCurrent source HEAD `986b6daa5fe2bf8f40111a2a242d610c5908c952`, TREE `b81d098b34ab71032d2056c970c3e60f2bbc3367`. Merge predecessor `038a6b5e2f49dc7ba24737429068e446d9a0e383` retains ordered parents `320e7cccb014ef9be0753ce3a0cdd518612d0eea` and `c1cca8fae42166d456c776e5c876c23ac7689aea`. Native comparison confirms the complete #457 head is an ancestor (behind_by=0); all 34 source commits remain reachable. Native recursive tree reads verified all 4,380 Blob/mode bindings, the 51 intended resolutions against original #523, and the CI-completeness and runtime-provisioning successors. The 135 source deltas and separable human/AI contributions are bound in the existing `state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json`.\n\nThe existing CI now retains `container`, `container_publish`, `container_deploy`, and `container_public_readback`, immutable GHCR tags/digests and exact original-ZIP OCI encapsulation, independent pull/recovery/size/SHA-256 checks. Existing full-test and both tested-fixpoint passes retain #457's `make test repository-monitor-test self-host-test`. The earlier durable cold-start snapshot ordering and its original cold/restart regression are restored on the newer runtime. Original source receipts and archive declarations remain byte-exact historical evidence.\n\nProduction remains conditional on Firefox >=158.0, an unchanged six-component Standard payload in a real Mozilla-signed XPI, default-policy activation and restart in the actual final image, protected current Main, independent exact-head review/native checks and `qikvrt-production` admission. Original dependency layers remain in order; the Mozilla Release upgrade is frozen before the two independent final OCI builds. No signature exception, software downgrade, parallel publisher, permission expansion, new PR or Main bypass was introduced.\n\nLocal validation: 220 tests (219 passed, one environment-limited Unix-socket skip), 57 targeted post-change controls, then 49 controls for CI completeness and 50 for the explicit runtime-provisioning repair; 32/32 tool-cache coverage; all adopted YAML/Bash and embedded Python checked. The first merge's native push test (run 38623731771, job 116057485383) passed `MAKE_TEST_EXIT=0`, `PASS mode=full-test` and integrity 4,266 classified /4,255 immutable. That predecessor result is not transferred. The completeness successor 1aa6019d was rejected by native push job 116060442856 with LINUX_NODE24_PYTHON312_REQUIRED: the original setup-python/setup-node steps were still missing. This final successor restores their pinned existing actions before all complete source gates and adds a directed regression. Its current-head native runs must be read separately.\n\nThe native S1 gate on the first merge independently confirmed `NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE`; no unchanged installation/signing attempt was repeated. The exact upgrade recipe is checked against retained parent Git objects, while unrelated AMO/container CLI changes remain outside its causal runtime fingerprint. No signed runtime admission is inferred from an AMO preparatory job's success. OCI build/publication, host deployment and domain acceptance are skipped while this gate remains blocked.\n\nFresh artifact metadata confirms original carrier 11521962723 remains available: 382,994,793 bytes, SHA-256 `5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695`, expiry 2026-11-07T01:08:00Z. Historical #457 container/archive artifact 11854595565 remains available: 768,443,158 bytes, SHA-256 `b64fefe35ee7f28d8f556c2262c2079c99f13ac4fba84f467c24c6ce77042c78`, expiry 2026-11-12T22:12:01Z. These metadata reads do not claim new full binary downloads, registry publication or activation of a durable CI download source.\n\nMain remains `32920fdf2ab8cfe52746f8670b6c141e9a3de8cc`, `protected=false`, rulesets=[]; current-head independent APPROVED is absent and this PR remains Draft. Exact-host observation 1e58d699-5c44-4c7f-b660-fd73b9bd0b28 records HTTP530/recursive NXDOMAIN for https://raumzeitterminal.de/ . Fresh final repository/domain readback remains mandatory. Source consolidation is separate from Main integration, a published OCI version, durable archive-source activation and productive domain operation.\n\nHuman goal and authorization: Ingolf Lohmann. Source comparison, controlled implementation and verification: OpenAI Codex. PR #457 may be closed as superseded only after the bound source-completeness/native-readback condition is established; no branch deletion or Main-completion claim.\n<!-- qikvrt-pr457-oci-consolidation-20261014:end -->\n\n\n<!-- qikvrt-pr457-oci-final-native-evidence-20261014 -->\nFinal native source acceptance and historical consolidation:\nHEAD `986b6daa5fe2bf8f40111a2a242d610c5908c952`, TREE `b81d098b34ab71032d2056c970c3e60f2bbc3367`.\n\nThe **current-head** push CI test job [116063918771](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38625626690/job/116063918771) completed **success**. Its original log confirms `MAKE_TEST_EXIT=0`, `PASS mode=full-test`, integrity 4266 classified /4255 immutable, all 23 OCI/archive/admission controls, the restored cold-start/restart regression and declared-runtime provisioning regression, the complete monitor/standalone/native/state-migration gates. Both current-head offline engines completed success. Current-head native TEMDD and Personal lanes also completed success. The CI workflow as a whole is **not green**: its required S1 signing gate correctly retains the original unchanged failure and all productive OCI/deployment/domain jobs are skipped.\n\nNative current-head S1 job 116064104347 independently emits `NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE`; this is no installation, extension activation or signing effect. Real signed-XPI admission remains required before the new final-image native gate can build/publish. No predecessor PASS is transferred to the final image.\n\nPR #457 is now **CLOSED, unmerged, as historically superseded**, after the complete native ancestor/135-resolution/4380-blob readback and current-head full-test success. Its exact source branch/HEAD remains retained. Closure records source consolidation, not Main completion. The existing #523 carrier stays open/Draft for independent review and protected Main integration.\n\nCurrent-head PR test job 116063961623 is still executing and must be read separately; it supplies no inferred approval or publication. Publication, durable archive-download source activation and exact-host delivery remain unverified. No new PR, Main write, signature exception, unchanged installation retry or production effect was executed.\n\n\n<!-- qikvrt-pr457-oci-pr-ci-terminal-readback-20261014 -->\nFinal PR CI readback: run38625640158 is completed/failure because productive signing admission remains blocked. Its test job116063961623 is reported completed/cancelled by the native workflow-job collection; that outer result is **not reported as job success**.\n\nThe original terminal job log independently records `QIKVRT_FIXPOINT_REACHED iteration=0 head=986b6daa5fe2bf8f40111a2a242d610c5908c952 tree=b81d098b34ab71032d2056c970c3e60f2bbc3367 predecessor_test_status=0` and `QIKVRT_TERMINAL_DISPOSITION PASS mode=tested-fixpoint` at2026-10-14T19:58:17Z. Thus the complete exact-subject test/fixpoint execution is observed, while GitHub's outer cancelled disposition remains a separate unaccepted control-plane result. No explicit cancellation cause or timeout error was found in that original log. A matching elapsed duration alone is not treated as a proved cause; no blind rerun, unrelated source change, cancellation bypass or fabricated all-green claim was issued. Native push job116063918771 remains independently completed/success.\n\nThis terminal readback supersedes the earlier pending marker for this PR job. Main protection/independent approval, real signed-XPI acceptance, OCI publication and exact-domain delivery remain open. Source consolidation/PR457 closure remains bound to preserved ancestry, all resolved bytes/modes and the successful actual current-head push full suite.\n\n<!-- qikvrt-native-pr-terminal-readback-20261014 -->\nCurrent exact-subject terminal readback — source HEAD `986b6daa5fe2bf8f40111a2a242d610c5908c952`, TREE `b81d098b34ab71032d2056c970c3e60f2bbc3367`.\n\nPR run https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38625640158 is now terminal **failure**. Its test job https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38625640158/job/116063961623 is natively **cancelled**, independently confirmed through both the run/jobs REST collection and current-commit check-runs collection. The original log separately emits `QIKVRT_FIXPOINT_REACHED iteration=0` on the exact unchanged HEAD/TREE with `predecessor_test_status=0`, followed by `QIKVRT_TERMINAL_DISPOSITION PASS mode=tested-fixpoint`. Every substantive test/fixpoint step reports success. Those execution observations do **not** override the provider's cancelled check conclusion.\n\nThe original job ran from 19:40:30Z to 19:58:20Z. No cancellation or timeout cause is established from the inspected log. Three provider annotations are advertised at https://api.github.com/repos/ingolf-lohmann/qik-vrt/check-runs/116063961623/annotations; the current connector rejects that exact annotations resource as an unexposed GET, and the independent public REST-read fallback could not retrieve it. Preserve `NATIVE_PR_CHECK_CONCLUSION_CANCELLED_CAUSE_UNVERIFIED`. Read the original annotations through an admitted existing REST path before selecting a causal repair or retry. No unchanged rerun or speculative timeout patch was executed.\n\nThe exact-head push test remains natively **success** in run38625626690/job116063918771; all 132 fixed resolution blobs/modes and the three regenerated integrity files remain bound to the native source readback. PR457 is closed/unmerged as superseded, with its complete history and open Main/product obligations retained in this carrier. The current complete open-PR inventory contains 110 entries across two REST pages. This does not establish Main integration or repository-wide completion.\n\nProtected current Main and independent exact-head approval, real signed-XPI activation/restart, productive OCI/original-archive publication and durable source activation, and DNS/TLS/application delivery on https://raumzeitterminal.de/ remain OPEN. No credential, signature-policy or governance boundary was changed.\n\nIndependent verification/provenance: Ingolf Lohmann's authorized goal; OpenAI Codex verification through REST. This note records current evidence, not a production effect or general EFFECT_ACK_DONE.\n",
+    "created_at": "2026-10-12T21:10:20Z",
+    "updated_at": "2026-10-15T06:08:27Z",
+    "closed_at": null,
+    "merged_at": null,
+    "merge_commit_sha": "073d7b97af69ea832ba2e163219d3b64db11fabc",
+    "assignees": [],
+    "requested_reviewers": [],
+    "requested_teams": [],
+    "labels": [],
+    "milestone": null,
+    "draft": true,
+    "commits_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523/commits",
+    "review_comments_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523/comments",
+    "review_comment_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/comments{/number}",
+    "comments_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/523/comments",
+    "statuses_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/statuses/b2ff72d96d9d1b09836d46f38cbcdfe1e077d59b",
+    "head": {
+      "label": "ingolf-lohmann:integration/515-519-521-522-20261012-eceb9b63",
+      "ref": "integration/515-519-521-522-20261012-eceb9b63",
+      "sha": "b2ff72d96d9d1b09836d46f38cbcdfe1e077d59b",
+      "user": {
+        "login": "ingolf-lohmann",
+        "id": 294949349,
+        "node_id": "U_kgDOEZSR5Q",
+        "avatar_url": "https://avatars.githubusercontent.com/u/294949349?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/ingolf-lohmann",
+        "html_url": "https://github.com/ingolf-lohmann",
+        "followers_url": "https://api.github.com/users/ingolf-lohmann/followers",
+        "following_url": "https://api.github.com/users/ingolf-lohmann/following{/other_user}",
+        "gists_url": "https://api.github.com/users/ingolf-lohmann/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/ingolf-lohmann/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/ingolf-lohmann/subscriptions",
+        "organizations_url": "https://api.github.com/users/ingolf-lohmann/orgs",
+        "repos_url": "https://api.github.com/users/ingolf-lohmann/repos",
+        "events_url": "https://api.github.com/users/ingolf-lohmann/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/ingolf-lohmann/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "repo": {
+        "id": 1273784147,
+        "node_id": "R_kgDOS-xnUw",
+        "name": "qik-vrt",
+        "full_name": "ingolf-lohmann/qik-vrt",
+        "private": false,
+        "owner": {
+          "login": "ingolf-lohmann",
+          "id": 294949349,
+          "node_id": "U_kgDOEZSR5Q",
+          "avatar_url": "https://avatars.githubusercontent.com/u/294949349?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/ingolf-lohmann",
+          "html_url": "https://github.com/ingolf-lohmann",
+          "followers_url": "https://api.github.com/users/ingolf-lohmann/followers",
+          "following_url": "https://api.github.com/users/ingolf-lohmann/following{/other_user}",
+          "gists_url": "https://api.github.com/users/ingolf-lohmann/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/ingolf-lohmann/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/ingolf-lohmann/subscriptions",
+          "organizations_url": "https://api.github.com/users/ingolf-lohmann/orgs",
+          "repos_url": "https://api.github.com/users/ingolf-lohmann/repos",
+          "events_url": "https://api.github.com/users/ingolf-lohmann/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/ingolf-lohmann/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
+        "forks_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/forks",
+        "keys_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/teams",
+        "hooks_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/hooks",
+        "issue_events_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/events",
+        "assignees_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/tags",
+        "blobs_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/languages",
+        "stargazers_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/stargazers",
+        "contributors_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contributors",
+        "subscribers_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/subscribers",
+        "subscription_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/subscription",
+        "commits_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/merges",
+        "archive_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/downloads",
+        "issues_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/labels{/name}",
+        "releases_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/deployments",
+        "created_at": "2026-06-18T21:45:10Z",
+        "updated_at": "2026-10-15T04:36:03Z",
+        "pushed_at": "2026-10-15T07:21:30Z",
+        "git_url": "git://github.com/ingolf-lohmann/qik-vrt.git",
+        "ssh_url": "git@github.com:ingolf-lohmann/qik-vrt.git",
+        "clone_url": "https://github.com/ingolf-lohmann/qik-vrt.git",
+        "svn_url": "https://github.com/ingolf-lohmann/qik-vrt",
+        "homepage": null,
+        "size": 323033,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "language": "Python",
+        "has_issues": true,
+        "has_projects": true,
+        "has_downloads": false,
+        "has_wiki": true,
+        "has_pages": false,
+        "has_discussions": false,
+        "forks_count": 0,
+        "mirror_url": null,
+        "archived": false,
+        "disabled": false,
+        "open_issues_count": 117,
+        "license": {
+          "key": "other",
+          "name": "Other",
+          "spdx_id": "NOASSERTION",
+          "url": null,
+          "node_id": "MDc6TGljZW5zZTA="
+        },
+        "allow_forking": true,
+        "is_template": false,
+        "web_commit_signoff_required": false,
+        "has_pull_requests": true,
+        "pull_request_creation_policy": "all",
+        "topics": [],
+        "visibility": "public",
+        "forks": 0,
+        "open_issues": 117,
+        "watchers": 0,
+        "default_branch": "main"
+      }
+    },
+    "base": {
+      "label": "ingolf-lohmann:main",
+      "ref": "main",
+      "sha": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+      "user": {
+        "login": "ingolf-lohmann",
+        "id": 294949349,
+        "node_id": "U_kgDOEZSR5Q",
+        "avatar_url": "https://avatars.githubusercontent.com/u/294949349?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/ingolf-lohmann",
+        "html_url": "https://github.com/ingolf-lohmann",
+        "followers_url": "https://api.github.com/users/ingolf-lohmann/followers",
+        "following_url": "https://api.github.com/users/ingolf-lohmann/following{/other_user}",
+        "gists_url": "https://api.github.com/users/ingolf-lohmann/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/ingolf-lohmann/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/ingolf-lohmann/subscriptions",
+        "organizations_url": "https://api.github.com/users/ingolf-lohmann/orgs",
+        "repos_url": "https://api.github.com/users/ingolf-lohmann/repos",
+        "events_url": "https://api.github.com/users/ingolf-lohmann/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/ingolf-lohmann/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "repo": {
+        "id": 1273784147,
+        "node_id": "R_kgDOS-xnUw",
+        "name": "qik-vrt",
+        "full_name": "ingolf-lohmann/qik-vrt",
+        "private": false,
+        "owner": {
+          "login": "ingolf-lohmann",
+          "id": 294949349,
+          "node_id": "U_kgDOEZSR5Q",
+          "avatar_url": "https://avatars.githubusercontent.com/u/294949349?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/ingolf-lohmann",
+          "html_url": "https://github.com/ingolf-lohmann",
+          "followers_url": "https://api.github.com/users/ingolf-lohmann/followers",
+          "following_url": "https://api.github.com/users/ingolf-lohmann/following{/other_user}",
+          "gists_url": "https://api.github.com/users/ingolf-lohmann/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/ingolf-lohmann/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/ingolf-lohmann/subscriptions",
+          "organizations_url": "https://api.github.com/users/ingolf-lohmann/orgs",
+          "repos_url": "https://api.github.com/users/ingolf-lohmann/repos",
+          "events_url": "https://api.github.com/users/ingolf-lohmann/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/ingolf-lohmann/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
+        "forks_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/forks",
+        "keys_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/teams",
+        "hooks_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/hooks",
+        "issue_events_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/events",
+        "assignees_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/tags",
+        "blobs_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/languages",
+        "stargazers_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/stargazers",
+        "contributors_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contributors",
+        "subscribers_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/subscribers",
+        "subscription_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/subscription",
+        "commits_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/merges",
+        "archive_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/downloads",
+        "issues_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/labels{/name}",
+        "releases_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/deployments",
+        "created_at": "2026-06-18T21:45:10Z",
+        "updated_at": "2026-10-15T04:36:03Z",
+        "pushed_at": "2026-10-15T07:21:30Z",
+        "git_url": "git://github.com/ingolf-lohmann/qik-vrt.git",
+        "ssh_url": "git@github.com:ingolf-lohmann/qik-vrt.git",
+        "clone_url": "https://github.com/ingolf-lohmann/qik-vrt.git",
+        "svn_url": "https://github.com/ingolf-lohmann/qik-vrt",
+        "homepage": null,
+        "size": 323033,
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "language": "Python",
+        "has_issues": true,
+        "has_projects": true,
+        "has_downloads": false,
+        "has_wiki": true,
+        "has_pages": false,
+        "has_discussions": false,
+        "forks_count": 0,
+        "mirror_url": null,
+        "archived": false,
+        "disabled": false,
+        "open_issues_count": 117,
+        "license": {
+          "key": "other",
+          "name": "Other",
+          "spdx_id": "NOASSERTION",
+          "url": null,
+          "node_id": "MDc6TGljZW5zZTA="
+        },
+        "allow_forking": true,
+        "is_template": false,
+        "web_commit_signoff_required": false,
+        "has_pull_requests": true,
+        "pull_request_creation_policy": "all",
+        "topics": [],
+        "visibility": "public",
+        "forks": 0,
+        "open_issues": 117,
+        "watchers": 0,
+        "default_branch": "main"
+      }
+    },
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523"
+      },
+      "html": {
+        "href": "https://github.com/ingolf-lohmann/qik-vrt/pull/523"
+      },
+      "issue": {
+        "href": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/523"
+      },
+      "comments": {
+        "href": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/issues/523/comments"
+      },
+      "review_comments": {
+        "href": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523/comments"
+      },
+      "review_comment": {
+        "href": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/comments{/number}"
+      },
+      "commits": {
+        "href": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/523/commits"
+      },
+      "statuses": {
+        "href": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/statuses/b2ff72d96d9d1b09836d46f38cbcdfe1e077d59b"
+      }
+    },
+    "author_association": "OWNER",
+    "auto_merge": null,
+    "assignee": null,
+    "active_lock_reason": null,
+    "merged": false,
+    "mergeable": true,
+    "rebaseable": false,
+    "mergeable_state": "unstable",
+    "merged_by": null,
+    "comments": 3,
+    "review_comments": 0,
+    "maintainer_can_modify": false,
+    "commits": 154,
+    "additions": 165453,
+    "deletions": 1161,
+    "changed_files": 521
+  },
+  "main": {
+    "sha": "ad92fead9dad00544de8853af067d246b25c7fda",
+    "node_id": "C_kwDOS-xnU9oAKGFkOTJmZWFkOWRhZDAwNTQ0ZGU4ODUzYWYwNjdkMjQ2YjI1YzdmZGE",
+    "commit": {
+      "author": {
+        "name": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2026-10-15T04:35:58Z"
+      },
+      "committer": {
+        "name": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2026-10-15T04:35:58Z"
+      },
+      "message": "chore(mesh): renew mirror node lifecycle",
+      "tree": {
+        "sha": "797df68b3959fa4c8d5bde128264bff1ee5c1d72",
+        "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/trees/797df68b3959fa4c8d5bde128264bff1ee5c1d72"
+      },
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/ad92fead9dad00544de8853af067d246b25c7fda",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/ad92fead9dad00544de8853af067d246b25c7fda",
+    "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/ad92fead9dad00544de8853af067d246b25c7fda",
+    "comments_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/ad92fead9dad00544de8853af067d246b25c7fda/comments",
+    "author": {
+      "login": "github-actions[bot]",
+      "id": 41898282,
+      "node_id": "MDM6Qm90NDE4OTgyODI=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-actions",
+      "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "github-actions[bot]",
+      "id": 41898282,
+      "node_id": "MDM6Qm90NDE4OTgyODI=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-actions",
+      "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a5392b6fe81824522bb90eb89b3eb0c0937951ab",
+        "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/a5392b6fe81824522bb90eb89b3eb0c0937951ab",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/commit/a5392b6fe81824522bb90eb89b3eb0c0937951ab"
+      }
+    ],
+    "stats": {
+      "total": 18,
+      "additions": 10,
+      "deletions": 8
+    },
+    "files": [
+      {
+        "sha": "74e29f94a82b588261eedb52cfc7dd1e33b3c4f1",
+        "filename": "evidence/node_health/38682285825-1.json",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "blob_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_health%2F38682285825-1.json",
+        "raw_url": "https://github.com/ingolf-lohmann/qik-vrt/raw/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_health%2F38682285825-1.json",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/evidence%2Fnode_health%2F38682285825-1.json?ref=ad92fead9dad00544de8853af067d246b25c7fda",
+        "patch": "@@ -0,0 +1 @@\n+{\"qikvrt_event\":\"NODE_HEALTH_EVIDENCE\",\"guid\":\"a84f157a-cef2-4c47-bca9-8f407085bdbe\",\"repository\":\"ingolf-lohmann/qik-vrt\",\"status\":\"PASS\",\"heartbeat_utc\":\"2026-10-15T04:35:57Z\",\"expires_utc\":\"2026-10-16T05:35:57Z\",\"run_id\":\"38682285825-1\"}"
+      },
+      {
+        "sha": "74e29f94a82b588261eedb52cfc7dd1e33b3c4f1",
+        "filename": "evidence/node_health/LATEST.json",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 1,
+        "changes": 2,
+        "blob_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_health%2FLATEST.json",
+        "raw_url": "https://github.com/ingolf-lohmann/qik-vrt/raw/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_health%2FLATEST.json",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/evidence%2Fnode_health%2FLATEST.json?ref=ad92fead9dad00544de8853af067d246b25c7fda",
+        "patch": "@@ -1 +1 @@\n-{\"qikvrt_event\":\"NODE_HEALTH_EVIDENCE\",\"guid\":\"a84f157a-cef2-4c47-bca9-8f407085bdbe\",\"repository\":\"ingolf-lohmann/qik-vrt\",\"status\":\"PASS\",\"heartbeat_utc\":\"2026-10-14T21:39:32Z\",\"expires_utc\":\"2026-10-15T22:39:32Z\",\"run_id\":\"38641910552-1\"}\n+{\"qikvrt_event\":\"NODE_HEALTH_EVIDENCE\",\"guid\":\"a84f157a-cef2-4c47-bca9-8f407085bdbe\",\"repository\":\"ingolf-lohmann/qik-vrt\",\"status\":\"PASS\",\"heartbeat_utc\":\"2026-10-15T04:35:57Z\",\"expires_utc\":\"2026-10-16T05:35:57Z\",\"run_id\":\"38682285825-1\"}"
+      },
+      {
+        "sha": "3b37ac30ebb021c43b2bf661856bc76000b1d503",
+        "filename": "evidence/node_registration_renewal/38682285825-1.json",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "blob_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_registration_renewal%2F38682285825-1.json",
+        "raw_url": "https://github.com/ingolf-lohmann/qik-vrt/raw/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_registration_renewal%2F38682285825-1.json",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/evidence%2Fnode_registration_renewal%2F38682285825-1.json?ref=ad92fead9dad00544de8853af067d246b25c7fda",
+        "patch": "@@ -0,0 +1 @@\n+{\"qikvrt_event\":\"NODE_REGISTRATION_RENEWAL_EVIDENCE\",\"guid\":\"a84f157a-cef2-4c47-bca9-8f407085bdbe\",\"repository\":\"ingolf-lohmann/qik-vrt\",\"status\":\"PASS\",\"renewed_utc\":\"2026-10-15T04:35:57Z\",\"next_renewal_due_utc\":\"2026-10-16T04:35:57Z\",\"run_id\":\"38682285825-1\"}"
+      },
+      {
+        "sha": "3b37ac30ebb021c43b2bf661856bc76000b1d503",
+        "filename": "evidence/node_registration_renewal/LATEST.json",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 1,
+        "changes": 2,
+        "blob_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_registration_renewal%2FLATEST.json",
+        "raw_url": "https://github.com/ingolf-lohmann/qik-vrt/raw/ad92fead9dad00544de8853af067d246b25c7fda/evidence%2Fnode_registration_renewal%2FLATEST.json",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/evidence%2Fnode_registration_renewal%2FLATEST.json?ref=ad92fead9dad00544de8853af067d246b25c7fda",
+        "patch": "@@ -1 +1 @@\n-{\"qikvrt_event\":\"NODE_REGISTRATION_RENEWAL_EVIDENCE\",\"guid\":\"a84f157a-cef2-4c47-bca9-8f407085bdbe\",\"repository\":\"ingolf-lohmann/qik-vrt\",\"status\":\"PASS\",\"renewed_utc\":\"2026-10-14T21:39:32Z\",\"next_renewal_due_utc\":\"2026-10-15T21:39:32Z\",\"run_id\":\"38641910552-1\"}\n+{\"qikvrt_event\":\"NODE_REGISTRATION_RENEWAL_EVIDENCE\",\"guid\":\"a84f157a-cef2-4c47-bca9-8f407085bdbe\",\"repository\":\"ingolf-lohmann/qik-vrt\",\"status\":\"PASS\",\"renewed_utc\":\"2026-10-15T04:35:57Z\",\"next_renewal_due_utc\":\"2026-10-16T04:35:57Z\",\"run_id\":\"38682285825-1\"}"
+      },
+      {
+        "sha": "2d1e584af8da5676f1814b78d8336cd6a89aebb9",
+        "filename": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 3,
+        "changes": 6,
+        "blob_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ad92fead9dad00544de8853af067d246b25c7fda/qikvrt%2Fruntime%2Fonboarding%2FNODE_HEALTH.json",
+        "raw_url": "https://github.com/ingolf-lohmann/qik-vrt/raw/ad92fead9dad00544de8853af067d246b25c7fda/qikvrt%2Fruntime%2Fonboarding%2FNODE_HEALTH.json",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/qikvrt%2Fruntime%2Fonboarding%2FNODE_HEALTH.json?ref=ad92fead9dad00544de8853af067d246b25c7fda",
+        "patch": "@@ -5,10 +5,10 @@\n   \"seed_repository\": \"Goldkelch/qik-vrt\",\n   \"node_branch\": \"main\",\n   \"status\": \"ACTIVE\",\n-  \"heartbeat_utc\": \"2026-10-14T21:39:32Z\",\n-  \"expires_utc\": \"2026-10-15T22:39:32Z\",\n+  \"heartbeat_utc\": \"2026-10-15T04:35:57Z\",\n+  \"expires_utc\": \"2026-10-16T05:35:57Z\",\n   \"heartbeat_ttl_minutes\": 1500,\n-  \"run_id\": \"38641910552-1\",\n+  \"run_id\": \"38682285825-1\",\n   \"boundaries\": {\n     \"node_writes_only_to_node_repository\": true,\n     \"no_global_scanning\": true,"
+      },
+      {
+        "sha": "d49cc6d3d634af9d909f8483ab240df937f04944",
+        "filename": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 3,
+        "changes": 6,
+        "blob_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ad92fead9dad00544de8853af067d246b25c7fda/qikvrt%2Fruntime%2Fonboarding%2FNODE_REGISTRATION_RENEWAL.json",
+        "raw_url": "https://github.com/ingolf-lohmann/qik-vrt/raw/ad92fead9dad00544de8853af067d246b25c7fda/qikvrt%2Fruntime%2Fonboarding%2FNODE_REGISTRATION_RENEWAL.json",
+        "contents_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/contents/qikvrt%2Fruntime%2Fonboarding%2FNODE_REGISTRATION_RENEWAL.json?ref=ad92fead9dad00544de8853af067d246b25c7fda",
+        "patch": "@@ -5,9 +5,9 @@\n   \"seed_repository\": \"Goldkelch/qik-vrt\",\n   \"node_branch\": \"main\",\n   \"status\": \"RENEWED\",\n-  \"renewed_utc\": \"2026-10-14T21:39:32Z\",\n-  \"next_renewal_due_utc\": \"2026-10-15T21:39:32Z\",\n-  \"run_id\": \"38641910552-1\",\n+  \"renewed_utc\": \"2026-10-15T04:35:57Z\",\n+  \"next_renewal_due_utc\": \"2026-10-16T04:35:57Z\",\n+  \"run_id\": \"38682285825-1\",\n   \"boundaries\": {\n     \"node_writes_only_to_node_repository\": true,\n     \"no_global_scanning\": true,"
+      }
+    ]
+  },
+  "delivery_observation": {
+    "schema": "qikvrt-live-dashboard/v2",
+    "served_at": "2026-10-15T08:59:33.697Z",
+    "snapshot": {
+      "id": "90d86314-0720-4c14-a18e-e5ff0c2e336d",
+      "started_at": "2026-10-15T08:59:33.413Z",
+      "completed_at": "2026-10-15T08:59:33.574Z",
+      "source": "request",
+      "pages": [
+        {
+          "url": "https://raumzeitterminal.de/",
+          "method": "GET (ohne Redirect)",
+          "status": 530,
+          "observed_at": "2026-10-15T08:59:33.418Z",
+          "latency_ms": 5
+        },
+        {
+          "url": "https://goldkelch.github.io/",
+          "method": "GET (ohne Redirect)",
+          "status": 404,
+          "observed_at": "2026-10-15T08:59:33.466Z",
+          "latency_ms": 53
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/",
+          "method": "GET (ohne Redirect)",
+          "status": 404,
+          "observed_at": "2026-10-15T08:59:33.574Z",
+          "latency_ms": 161
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/mesh/live/",
+          "method": "GET (ohne Redirect)",
+          "status": 404,
+          "observed_at": "2026-10-15T08:59:33.574Z",
+          "latency_ms": 161
+        }
+      ],
+      "repositories": [
+        {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "role": "Authority",
+          "status": 403,
+          "head": null,
+          "tree": null,
+          "observed_at": "2026-10-15T08:56:22.208Z",
+          "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main",
+          "request_attempted": false,
+          "observation_kind": "HISTORICAL_RATE_LIMIT_CONTROL",
+          "http_diagnostic": {
+            "category": "RATE_LIMITED",
+            "response_sha256": "ec05968fa9130322c7a31abbd86cc7528368761a3507d7af5aca40a1d3576630",
+            "provider_request_id": "853F:4A314:F0FDCE:10043E4:6AD09536",
+            "rate_limit_remaining": 0,
+            "rate_limit_reset_at": "2026-10-15T09:01:53.000Z",
+            "retry_after_seconds": null
+          },
+          "error": "Die letzte Abfrage wurde vom Anbieter begrenzt. Ein neuer Abruf ist frühestens ab 2026-10-15T09:01:54.000Z zulässig; aktuell wurde keine Abfrage gesendet.",
+          "deferred_until": "2026-10-15T09:01:54.000Z"
+        },
+        {
+          "repository": "Goldkelch/qik-vrt",
+          "role": "Mirror",
+          "status": 404,
+          "head": null,
+          "tree": null,
+          "observed_at": "2026-10-09T12:46:05.056Z",
+          "source_url": "https://api.github.com/repos/Goldkelch/qik-vrt/commits/main",
+          "request_attempted": false,
+          "observation_kind": "HISTORICAL_ACCESS_BLOCK",
+          "http_diagnostic": {
+            "category": "NOT_FOUND",
+            "response_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+            "provider_request_id": "9A88:A16EC:4229D6:6338D8:6AC8E20C",
+            "rate_limit_remaining": 17,
+            "rate_limit_reset_at": "2026-10-09T12:50:34.000Z",
+            "retry_after_seconds": null
+          },
+          "error": "Historischer Zugriffsfehler (HTTP 404); unverändert nicht erneut angefragt. Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+          "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich."
+        }
+      ],
+      "mesh": {
+        "schema": "qikvrt_mesh_snapshot_v1",
+        "mesh_id": "qik-vrt",
+        "scope": "MESH",
+        "observed_at": "2026-10-15T08:59:33.413Z",
+        "health": "UNKNOWN",
+        "reasons": [
+          "Knotenverzeichnis derzeit nur teilweise lesbar.",
+          "2 von 2 Laufzeitzuständen unbekannt."
+        ],
+        "counts": {
+          "total": 2,
+          "healthy": 0,
+          "degraded": 0,
+          "unavailable": 0,
+          "unknown": 2,
+          "repository_readable": 0
+        },
+        "coverage_percent": 0,
+        "median_latency_ms": null,
+        "nodes": [
+          {
+            "id": "ingolf-lohmann/qik-vrt",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "role": "Authority",
+            "guid": null,
+            "ref": "main",
+            "registration": "CORE",
+            "heartbeat_at": null,
+            "expires_at": null,
+            "heartbeat_read_at": null,
+            "repository_observation": {
+              "repository": "ingolf-lohmann/qik-vrt",
+              "role": "Authority",
+              "status": 403,
+              "head": null,
+              "tree": null,
+              "observed_at": "2026-10-15T08:56:22.208Z",
+              "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main",
+              "request_attempted": false,
+              "observation_kind": "HISTORICAL_RATE_LIMIT_CONTROL",
+              "http_diagnostic": {
+                "category": "RATE_LIMITED",
+                "response_sha256": "ec05968fa9130322c7a31abbd86cc7528368761a3507d7af5aca40a1d3576630",
+                "provider_request_id": "853F:4A314:F0FDCE:10043E4:6AD09536",
+                "rate_limit_remaining": 0,
+                "rate_limit_reset_at": "2026-10-15T09:01:53.000Z",
+                "retry_after_seconds": null
+              },
+              "error": "Die letzte Abfrage wurde vom Anbieter begrenzt. Ein neuer Abruf ist frühestens ab 2026-10-15T09:01:54.000Z zulässig; aktuell wurde keine Abfrage gesendet.",
+              "deferred_until": "2026-10-15T09:01:54.000Z"
+            },
+            "runtime": {
+              "state": "UNKNOWN",
+              "endpoint": null,
+              "status": null,
+              "latency_ms": null,
+              "observed_at": null,
+              "error": "Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.",
+              "source": "NOT_ADVERTISED",
+              "metrics": {
+                "cpu_percent": null,
+                "memory_percent": null
+              }
+            },
+            "discovered_from": []
+          },
+          {
+            "id": "Goldkelch/qik-vrt",
+            "repository": "Goldkelch/qik-vrt",
+            "role": "Mirror",
+            "guid": null,
+            "ref": "main",
+            "registration": "CORE",
+            "heartbeat_at": null,
+            "expires_at": null,
+            "heartbeat_read_at": null,
+            "repository_observation": {
+              "repository": "Goldkelch/qik-vrt",
+              "role": "Mirror",
+              "status": 404,
+              "head": null,
+              "tree": null,
+              "observed_at": "2026-10-09T12:46:05.056Z",
+              "source_url": "https://api.github.com/repos/Goldkelch/qik-vrt/commits/main",
+              "request_attempted": false,
+              "observation_kind": "HISTORICAL_ACCESS_BLOCK",
+              "http_diagnostic": {
+                "category": "NOT_FOUND",
+                "response_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+                "provider_request_id": "9A88:A16EC:4229D6:6338D8:6AC8E20C",
+                "rate_limit_remaining": 17,
+                "rate_limit_reset_at": "2026-10-09T12:50:34.000Z",
+                "retry_after_seconds": null
+              },
+              "error": "Historischer Zugriffsfehler (HTTP 404); unverändert nicht erneut angefragt. Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+              "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich."
+            },
+            "runtime": {
+              "state": "UNKNOWN",
+              "endpoint": null,
+              "status": null,
+              "latency_ms": null,
+              "observed_at": null,
+              "error": "Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.",
+              "source": "NOT_ADVERTISED",
+              "metrics": {
+                "cpu_percent": null,
+                "memory_percent": null
+              }
+            },
+            "discovered_from": []
+          }
+        ],
+        "registry": {
+          "sources": [],
+          "complete": false,
+          "errors": [
+            "ingolf-lohmann/qik-vrt: Node-Verzeichnis nicht lesbar",
+            "Goldkelch/qik-vrt: Node-Verzeichnis nicht lesbar"
+          ],
+          "fixed_node_count": false
+        },
+        "role_assignment": {
+          "authority_repository": "ingolf-lohmann/qik-vrt",
+          "mirror_repository": "Goldkelch/qik-vrt",
+          "assigned_by": "Ingolf Lohmann",
+          "source": "OWNER_ROLE_ASSIGNMENT",
+          "assigned_on": "2026-10-07",
+          "network_name": "QIK VRT Mesh Netzwerk",
+          "human": {
+            "name": "Ingolf Lohmann",
+            "type": "NATURAL_PERSON",
+            "roles": [
+              "Principal",
+              "Schöpfer",
+              "Code Owner",
+              "Product Owner",
+              "Lizenzgeber"
+            ]
+          },
+          "identity_confirmed_on": "2026-10-13",
+          "production_authorization": {
+            "granted_by": "Ingolf Lohmann",
+            "granted_on": "2026-10-13",
+            "source": "Freigabe erteilt zur Produktivierung."
+          },
+          "native_activation_verified": false
+        },
+        "native_mesh_execution_verified": false
+      },
+      "delivery_dns": {
+        "schema": "qikvrt_public_dns_readback_v1",
+        "exact_host": "raumzeitterminal.de",
+        "interpretation": "NXDOMAIN_RECURSIVE_READBACK",
+        "observations": [
+          {
+            "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS",
+            "query_type": "NS",
+            "status": 200,
+            "observed_at": "2026-10-15T08:59:33.471Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "ea37f41a5d97551b449ea32747b4a5a12cab6d6ddffc41b171b77af782a1b1f0",
+            "answers": [],
+            "error": null
+          },
+          {
+            "source_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=NS",
+            "query_type": "NS",
+            "status": 200,
+            "observed_at": "2026-10-15T08:59:33.436Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "4e6005b16b82354817a963806881ce99e64214792510064866531da5c970246d",
+            "answers": [],
+            "error": null
+          },
+          {
+            "source_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=A",
+            "query_type": "A",
+            "status": 200,
+            "observed_at": "2026-10-15T08:59:33.469Z",
+            "rcode": 3,
+            "question_bound": true,
+            "response_sha256": "1ca60b7edddeba415e16aafadf10141b57934ef2801d94f38f4259d8e3fdddee",
+            "answers": [],
+            "error": null
+          }
+        ],
+        "scope": "PUBLIC_RECURSIVE_DNS_DIAGNOSIS_NOT_REGISTRAR_WRITE_OR_APPLICATION_ACCEPTANCE"
+      },
+      "native_runtime_start_observed": false,
+      "effect_ack_done": false,
+      "ordinary_release": false,
+      "continuation": {
+        "schema": "qikvrt_self_application_continuation_v1",
+        "rule_id": "QIKVRT_RECURSIVE_SELF_APPLICATION_20261013",
+        "owner": "Ingolf Lohmann",
+        "exact_host": "raumzeitterminal.de",
+        "source_snapshot_id": "90d86314-0720-4c14-a18e-e5ff0c2e336d",
+        "parent": {
+          "id": "5fd9b469-c6ef-4c5f-a98a-4838a45c6797",
+          "sha256": "ef043038028369da259600a65502686acfe3f7663f3d4c15e1fa8087933e953f"
+        },
+        "tasks": [
+          {
+            "id": "delivery:raumzeitterminal.de",
+            "layer": "DELIVERY",
+            "target": "raumzeitterminal.de",
+            "label": "Produktdomain in Betrieb nehmen",
+            "reason": "EXACT_HOST_NXDOMAIN_HTTP_530",
+            "acceptance": "DNS und TLS für raumzeitterminal.de, gebundene Anwendung und frischer Nutzpfad-Readback bestätigen.",
+            "subject": {
+              "url": "https://raumzeitterminal.de/"
+            },
+            "semantic_sha256": "5afbeef30fbb021c40ac673f137ee417af2ded95b522e5ace2167e1f07af92cc",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          },
+          {
+            "id": "governance:qik-vrt",
+            "layer": "GOVERNANCE",
+            "target": "ingolf-lohmann/qik-vrt",
+            "label": "Native Authority-Bindung bestätigen",
+            "reason": "NATIVE_AUTHORITY_BINDING_NOT_VERIFIED",
+            "acceptance": "Aktuelle Authority-Bindung, Governance und zugelassene Operation am exakten Gegenstand unabhängig zurücklesen.",
+            "subject": {},
+            "semantic_sha256": "3ce3d30b4a258ec59bfb8e6d5569ac84138276bb0748486f49d93017496e4b8e",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Neue gebundene Authority-/Governance-Evidenz und die erforderliche zugelassene Operation.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          },
+          {
+            "id": "native:qik-vrt",
+            "layer": "RUNTIME",
+            "target": "qik-vrt",
+            "label": "Native Terminal-Ausführung abnehmen",
+            "reason": "AUTHENTICATED_NATIVE_EXECUTION_NOT_ACCEPTED",
+            "acceptance": "Identitätsgebundene Ausführung und unabhängigen Effect-Readback am freigegebenen Runtime-Host nachweisen.",
+            "subject": {},
+            "semantic_sha256": "acfd89257d2e10c21f95ccb4d111bc45b9e8f64f748fb60471aaf860085dcdea",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          },
+          {
+            "id": "registry:qik-vrt",
+            "layer": "REGISTRY",
+            "target": "qik-vrt",
+            "label": "Knotenverzeichnis vollständig zurücklesen",
+            "reason": "REGISTRY_DISCOVERY_INCOMPLETE",
+            "acceptance": "Vollständige Quellen mit aktuellen HEAD/TREE-Bindungen lesen.",
+            "subject": {},
+            "semantic_sha256": "f9892acb87572ca11e0986104ebf6a04a0438fbdcb89ad0843b6662d4e5607ca",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          },
+          {
+            "id": "repository:Goldkelch/qik-vrt",
+            "layer": "REPOSITORY",
+            "target": "Goldkelch/qik-vrt",
+            "label": "Aktuellen Repository-Gegenstand lesen",
+            "reason": "REPOSITORY_NOT_FOUND",
+            "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+            "subject": {
+              "repository": "Goldkelch/qik-vrt",
+              "head": null,
+              "tree": null
+            },
+            "semantic_sha256": "a7bb27dcba97eea2252cf151e48b26e74415019d93f90d22e15c5bacd75352b0",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          },
+          {
+            "id": "repository:ingolf-lohmann/qik-vrt",
+            "layer": "REPOSITORY",
+            "target": "ingolf-lohmann/qik-vrt",
+            "label": "Aktuellen Repository-Gegenstand lesen",
+            "reason": "REPOSITORY_RATE_LIMITED",
+            "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+            "subject": {
+              "repository": "ingolf-lohmann/qik-vrt",
+              "head": null,
+              "tree": null
+            },
+            "semantic_sha256": "452e066819947d286f891b27aa36018c470d5ac423615123741d50e7df73386f",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          },
+          {
+            "id": "runtime:Goldkelch/qik-vrt",
+            "layer": "RUNTIME",
+            "target": "Goldkelch/qik-vrt",
+            "label": "Knoten-Runtime anschließen",
+            "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+            "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+            "subject": {
+              "repository": "Goldkelch/qik-vrt",
+              "head": null,
+              "tree": null
+            },
+            "semantic_sha256": "470f253ac5e04fdacbf4262d1f03ccee465c8822e89312675cb46cc3f5549ed1",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          },
+          {
+            "id": "runtime:ingolf-lohmann/qik-vrt",
+            "layer": "RUNTIME",
+            "target": "ingolf-lohmann/qik-vrt",
+            "label": "Knoten-Runtime anschließen",
+            "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
+            "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+            "subject": {
+              "repository": "ingolf-lohmann/qik-vrt",
+              "head": null,
+              "tree": null
+            },
+            "semantic_sha256": "a3af1fe781dd9e39f1eeefe027123bfaceb723b890f7af5ed82603b3737e7bdc",
+            "state": "OPEN",
+            "transition": "UNCHANGED",
+            "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+            "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE"
+          }
+        ],
+        "open_count": 8,
+        "external_effect_dispatch_count": 0,
+        "effect_ack_done": false,
+        "scope": "OBSERVED_GAP_CONTINUATION_NOT_NATIVE_EXECUTION_OR_PRODUCT_ACCEPTANCE"
+      }
+    },
+    "age_ms": 123,
+    "stale": false,
+    "persistence": {
+      "verified": true,
+      "snapshot_sha256": "9e8a03a174e45bc6d3c9176531cac850fdb64b655b89e272b7aec0c4894c0d2c"
+    },
+    "dashboard_persistent": true,
+    "effect_ack_done": false,
+    "ordinary_release": false,
+    "history": [
+      {
+        "id": "90d86314-0720-4c14-a18e-e5ff0c2e336d",
+        "completed_at": "2026-10-15T08:59:33.574Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "5fd9b469-c6ef-4c5f-a98a-4838a45c6797",
+        "completed_at": "2026-10-15T08:56:22.298Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "42f51de5-5ae7-42e4-b70a-005d5164adab",
+        "completed_at": "2026-10-15T08:48:43.427Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "a7eff1ed-27a1-48e5-9c08-ed2b736e5124",
+        "completed_at": "2026-10-15T08:42:35.916Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "f0a95380-10e0-46e1-809a-6773268e42c5",
+        "completed_at": "2026-10-15T08:12:33.377Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "8542581c-cb72-4a85-ac42-11f6b2dc690b",
+        "completed_at": "2026-10-15T08:01:27.535Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "82557387-1734-4ad1-804c-d20351124b2c",
+        "completed_at": "2026-10-15T07:49:37.402Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "42bb310e-bd22-4080-b132-2e23d30d4e92",
+        "completed_at": "2026-10-15T07:42:55.408Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "56c88060-f3e0-4702-822e-ec152fa8f872",
+        "completed_at": "2026-10-15T07:01:32.649Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "15e64bd8-a008-4e95-80c0-dfc05e126daa",
+        "completed_at": "2026-10-15T06:50:49.793Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "e1a0b553-61b7-453e-ac4c-61fe256b1e0a",
+        "completed_at": "2026-10-15T06:45:47.892Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      },
+      {
+        "id": "6a7bf1ec-47b9-45fe-aee9-b25f26059432",
+        "completed_at": "2026-10-15T06:25:27.877Z",
+        "source": "request",
+        "health": "UNKNOWN",
+        "node_count": 2
+      }
+    ],
+    "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=90d86314-0720-4c14-a18e-e5ff0c2e336d"
+  }
+}

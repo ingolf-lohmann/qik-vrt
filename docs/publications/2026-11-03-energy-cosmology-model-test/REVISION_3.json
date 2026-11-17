@@ -1,0 +1,16 @@
+{
+  "schema": "qikvrt_research_revision_v1",
+  "revision": 3,
+  "predecessor_commit": "747fc392251831c06627a0fa54643ab49ce5064a",
+  "new_formal_core_theorems": 8,
+  "statement_bindings": 8,
+  "false_statements_rejected": 4,
+  "checker_selftests_passed": 3,
+  "source_lock_sha256": "0c2361374ebb90777422aeca7e45c60a5183967012acaf25eeabb22399a3c821",
+  "numerical_source_unchanged": true,
+  "numerical_results_unchanged": true,
+  "native_CI": "NOT_EXECUTED",
+  "original_source_gate": "PENDING",
+  "publication_complete": false,
+  "effect_ack_done": false
+}

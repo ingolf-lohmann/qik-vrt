@@ -1,0 +1,99 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "firefox-minimum-158-20261014",
+  "created_at": "2026-10-14T07:12:18.999062+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+  "source_tree": "e942e730c0e928a634c87c87d4b0b5856d4c1a99",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "identity_source": "explicit Owner instruction in current conversation",
+    "platform_account_is_identity_proof": false
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6 family; exact build UNAVAILABLE",
+    "session_or_run_id": "firefox-minimum-158-20261014",
+    "tools_and_adapters": [
+      "local source inspection",
+      "existing Python unittest suites",
+      "GitHub REST connector"
+    ],
+    "identity_and_observation_limits": "Connector commit authorship is not proof of the natural person or model identity."
+  },
+  "human_contributions": [
+    {
+      "class": "HUMAN",
+      "kind": "goal_and_authorization",
+      "description": "Raise the declared Firefox minimum from 121 to 158."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "description": "Manifest edit, installation documentation, existing regression tests, canonical integrity regeneration and reviewable draft candidate."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "ref": "main",
+      "commit": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+      "paths": [
+        "browser/firefox/qikvrt-terminal/manifest.json",
+        "browser/firefox/qikvrt-terminal/README.md"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "path": "browser/firefox/qikvrt-terminal/manifest.json",
+      "bytes": 1040,
+      "sha256": "26ae88693a30b90402afe765e76d15eb8596417a5e115320fc56667b52fb323a"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/README.md",
+      "bytes": 2510,
+      "sha256": "ae97d70cbc100bc723c5887536b52807d3fb8b693b03ec475b76a72b35a71665"
+    }
+  ],
+  "git_history": {
+    "parent": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+    "branch": "work/firefox-minimum-158-20261014",
+    "candidate_commit": "bind via containing commit and independent PR readback; no self-reference"
+  },
+  "verification": {
+    "targeted_unittest_command": "python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary tests.test_qikvrt_effect_ack_http_terminal",
+    "targeted_tests": 12,
+    "targeted_result": "PASS",
+    "javascript_syntax": "node --check on background.js, content.js and options.js: PASS",
+    "tool_cache": "14/14 declared strategies: PASS",
+    "base_integrity": "BLOCK before edits: 20 lifecycle receipt entries absent and four lifecycle hashes stale in Main integrity metadata. Regenerate existing canonical trio; retain original source bytes.",
+    "candidate_integrity": "verify after deterministic regeneration; result must be read back independently",
+    "full_native_ci": "PENDING",
+    "live_firefox158_execution": "NOT_PERFORMED"
+  },
+  "human_decision": {
+    "instruction": "ACCEPTED_GOAL",
+    "generated_candidate_review": "PENDING"
+  },
+  "external_effects": {
+    "authorized_scope": "review branch and draft PR for requested minimum-version change; no Main integration or release",
+    "submission_state": "PENDING_AT_RECORD_CREATION"
+  },
+  "compatibility_effect": {
+    "strict_min_version": "158.0",
+    "below_floor": "Firefox121-157 and ESR153 are below the declared minimum",
+    "compatibility_success_claimed": false
+  },
+  "release_claims": {
+    "ordinary_release": false,
+    "merge": false,
+    "deployment": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

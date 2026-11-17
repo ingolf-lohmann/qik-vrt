@@ -1,0 +1,24 @@
+{
+  "archive_sha256": "9d491337e1850df39362be640c23f9751bf0fbd33fc232c2a580bb87b70d62fd",
+  "files": {
+    "docs/monitor/origin/vendor/SQLJS_LICENSE.txt": {
+      "bytes": 2199,
+      "sha256": "60a3f6e4d7b29b4321359e683b36cf198d24f58e24582070f56e6fa89d5ee2be"
+    },
+    "docs/monitor/origin/vendor/sql-wasm.js": {
+      "bytes": 46535,
+      "sha256": "f1c84000dbc856c9d87f4f3aabc4d3654bd436165db4be3da13751db3a9c20d7"
+    },
+    "docs/monitor/origin/vendor/sql-wasm.wasm": {
+      "bytes": 658410,
+      "sha256": "38c14f6e379210bc942bdc4ebca44e7bfdb4318ecc1c72ca666a28fdce96670a"
+    }
+  },
+  "license": "MIT; bundled SQLite public domain and Emscripten notices retained",
+  "package": "sql.js",
+  "schema": "qikvrt-origin-sqlite-lock/v1",
+  "scope": "Read-only validation of the original SQLite carrier; no native Python execution in browser",
+  "source": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz",
+  "source_integrity": "sha512-3ZGPovObMFrdw79zrUHbfdE/DLIsy8jdNdssmMSQuRAymedU6q84asPt0kgiqrdMYlPegDItiIMfmIXzZnYFcw==",
+  "version": "1.14.2"
+}

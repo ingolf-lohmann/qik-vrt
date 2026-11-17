@@ -13,6 +13,7 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
     def setUp(self) -> None:
         self.spec = SPEC.read_text(encoding="utf-8")
         self.policy = json.loads(POLICY.read_text(encoding="utf-8"))
+        self.roles = json.loads((ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").read_text(encoding="utf-8"))
 
     def test_normative_boundary_matches_machine_contract(self) -> None:
         self.assertEqual(
@@ -21,8 +22,10 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
         )
         self.assertEqual(
             self.policy["source_subject"]["standard_repository"],
-            "Goldkelch/qik-vrt",
+            self.roles["canonical_upstream"]["repository"],
         )
+        self.assertEqual(self.policy["source_subject"]["mirror_repository"], self.roles["mirror"]["repository"])
+        self.assertEqual(self.policy["source_subject"]["repository_roles_source"], "policy/CANONICAL_UPSTREAM_REMOTE_V1.json")
         self.assertEqual(
             self.policy["source_subject"]["personal_repository"],
             "ingolf-lohmann/qik-vrt",
@@ -59,9 +62,30 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
             path = root / relative
             self.assertTrue(path.is_file(), relative)
             data = path.read_text(encoding="utf-8")
-            for marker in package["forbidden_personal_markers"]:
-                with self.subTest(path=relative, marker=marker):
-                    self.assertNotIn(marker, data)
+            with self.subTest(path=relative):
+                self.assert_standard_payload(data)
+
+    def assert_standard_payload(self, data: str) -> None:
+        for marker in self.policy["standard_firefox_package"]["forbidden_personal_markers"]:
+            self.assertNotIn(marker, data)
+
+    def test_public_owner_binding_is_not_personal_payload(self) -> None:
+        authority = self.roles["canonical_upstream"]["repository"]
+        self.assert_standard_payload(f'const AUTHORITY = "{authority}";')
+        self.assertNotIn(authority, self.policy["standard_firefox_package"]["forbidden_personal_markers"])
+        self.assertIn("ordinary source bindings", self.spec)
+
+    def test_personal_payload_and_credentials_still_fail_closed(self) -> None:
+        for marker in (
+            "personal/ingolf-lohmann/firefox-assistant/ui.js",
+            "qikvrt_personal_assistant",
+            "QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1",
+            "QIKVRT_PERSONAL_FIREFOX",
+            "OPENAI_API_KEY",
+            "CHATGPT_ACCESS_TOKEN",
+        ):
+            with self.subTest(marker=marker), self.assertRaises(AssertionError):
+                self.assert_standard_payload(marker)
 
     def test_standard_manifest_remains_standard_surface(self) -> None:
         manifest = json.loads(
@@ -71,15 +95,22 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
             ).read_text(encoding="utf-8")
         )
         serialized = json.dumps(manifest, sort_keys=True)
-        self.assertIn("https://github.com/Goldkelch/qik-vrt/*", serialized)
-        self.assertNotIn("ingolf-lohmann", serialized)
+        authority = self.roles["canonical_upstream"]["repository"]
+        mirror = self.roles["mirror"]["repository"]
+        self.assertIn(f"https://github.com/{authority}/*", manifest["host_permissions"])
+        self.assertIn(f"https://github.com/{authority}/blob/main/AI*", manifest["content_scripts"][0]["matches"])
+        self.assertIn(f"https://github.com/{mirror}/blob/main/AI*", manifest["content_scripts"][0]["matches"])
+        self.assertCountEqual(manifest["permissions"], ["storage", "alarms"])
+        self.assertNotIn("personal/ingolf-lohmann/", serialized)
         self.assertNotIn("chatgpt.com", serialized)
         self.assertNotIn("openai.com", serialized)
 
     def test_personal_release_stays_hold_until_fresh_runtime_evidence(self) -> None:
         candidate = self.policy["personal_release_acceptance"]["current_candidate"]
         self.assertTrue(candidate["boundary_contract_materialized"])
-        self.assertFalse(candidate["personal_capability_manifest_materialized"])
+        self.assertTrue(candidate["personal_capability_manifest_materialized"])
+        self.assertTrue((ROOT / candidate["personal_capability_manifest"]).is_file())
+        self.assertFalse(candidate["normal_baseline_runtime_readback"])
         self.assertFalse(candidate["authenticated_runtime_readback"])
         self.assertFalse(candidate["personal_release_effect_ack_done"])
         self.assertEqual(candidate["state"], "HOLD")

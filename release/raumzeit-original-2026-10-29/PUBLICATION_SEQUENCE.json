@@ -1,0 +1,24 @@
+{
+  "schema": "raumzeit-owner-authorized-publication-sequence/v1",
+  "owner_instruction_verbatim": "Ja\n\nJetzt veröffentliche",
+  "original_sha256": "88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68",
+  "steps": [
+    {
+      "step": 1,
+      "manifest_path": "release/raumzeit-original-2026-10-29/publish-request.json",
+      "state": "PREPARED_NOT_PUBLISHED"
+    },
+    {
+      "step": 2,
+      "input": "Original PDF plus verified first-publication QR on title page",
+      "state": "AWAITING_FIRST_PUBLIC_RECORD_READBACK"
+    },
+    {
+      "step": 3,
+      "input": "Original PDF plus verified second-publication QR on title page",
+      "state": "AWAITING_SECOND_PUBLIC_RECORD_READBACK"
+    }
+  ],
+  "use_existing_publisher_only": true,
+  "no_publication_claim_without_public_record_and_exact_byte_redownload": true
+}

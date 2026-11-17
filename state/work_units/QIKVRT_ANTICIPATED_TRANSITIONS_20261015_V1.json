@@ -1,0 +1,53 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_ANTICIPATED_TRANSITIONS_20261015_V1",
+  "classification": "OPERATIONAL_IMPLEMENTATION_NOT_SCIENTIFIC_PUBLICATION",
+  "human_origin": {
+    "owner": "Ingolf Lohmann",
+    "instruction_at": "2026-10-15T08:51:24+03:00",
+    "instruction": "Ja,\nalso anwenden,\numsetzen und\nrealisieren!",
+    "goal": "Use emerging transitions to improve responsiveness and adaptability when interacting with human cognition."
+  },
+  "artificial_cognitive_contribution": {
+    "system": "OpenAI Codex",
+    "scope": "Existing client-gate implementation, regression cases, operational documentation and source-bound verification."
+  },
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 523,
+    "head": "37fef0667804d6ec15abe490b65177d2f3f2f30b",
+    "new_pull_request_created": false
+  },
+  "reuse": [
+    "tools/ai_handoff.py --client-receipt",
+    "tests/test_ai_runtime_bootloader.py",
+    "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+    "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+    "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+    "docs/operations/AUTONOMOUS_PR_CONTINUATION.md"
+  ],
+  "verified_delta": {
+    "predecessor": "The prior gate accepted terminal BLOCK despite executable preparation and accepted a plan bound to superseded input when a native execution was pending.",
+    "successor": "The existing gate considers admitted preparation, checks current input and subject bindings, retains independent alternatives and emits ready actions with missing activation conditions.",
+    "local_client_regressions": {"passed": 72, "new_cases": 12},
+    "original_bug_regressions_failed_before_repair": 2,
+    "tool_cache_contract": "32/32 declared tools; 100 percent coverage",
+    "integrity_method": "Exact Git-tree inventory and source-bound original integrity records reconstruct the original detached manifest byte identity before incremental changes; unchanged records remain exact-bound. Full-file regeneration is deferred to the existing native CI gate, not claimed locally."
+  },
+  "boundaries": {
+    "plan_executes_effects": false,
+    "receipt_proves_live_truth_or_complete_inventory": false,
+    "measured_speedup": false,
+    "other_client_adoption": false,
+    "unattended_consumer_activation": false,
+    "main_integration": false,
+    "domain_delivery": false,
+    "effect_ack_done": false
+  },
+  "open_obligations": [
+    "Fresh native exact-candidate CI and full-byte integrity verification after fast-forwarding the existing PR branch.",
+    "Protected Main integration and independent current-head review under the existing governance contract.",
+    "Authenticated runtime use by other clients and comparative latency/correction measurements before reporting a performance gain.",
+    "Existing signed-XPI, OCI/archive persistence, domain/DNS/TLS and raumzeitterminal.de application-acceptance obligations remain open."
+  ]
+}

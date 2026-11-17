@@ -1,0 +1,23 @@
+name = "QIKVRTRealEnergy"
+version = "0.2.0"
+defaultTargets = ["PlanckRealEnergyDomain", "RealErasureBudget", "RealEnergyStatements", "RealEnergyAxiomAudit", "RealEnergyAcceptanceAudit"]
+moreLeanArgs = ["-E", "hasSorry"]
+
+[[require]]
+name = "mathlib"
+path = "vendor/mathlib"
+
+[[lean_lib]]
+name = "PlanckRealEnergyDomain"
+
+[[lean_lib]]
+name = "RealErasureBudget"
+
+[[lean_lib]]
+name = "RealEnergyAxiomAudit"
+
+[[lean_lib]]
+name = "RealEnergyStatements"
+
+[[lean_lib]]
+name = "RealEnergyAcceptanceAudit"

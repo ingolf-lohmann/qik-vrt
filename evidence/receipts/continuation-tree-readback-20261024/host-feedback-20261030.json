@@ -1,0 +1,51 @@
+{
+  "schema": "qikvrt-original-ci-feedback-replay/v1",
+  "method": "LOCAL_NEW_CHECKER_REPLAY_OF_INDEPENDENTLY_DOWNLOADED_ORIGINAL_ARTIFACT_BYTES",
+  "live_receiver_execution": false,
+  "original_run": 41006114646,
+  "source_head": "bb541e864bbab6dcf255f824e1e2c5cceff45a39",
+  "source_tree": "1a331eff15a7a2e4a78384ca8ff782cd07fcf1f1",
+  "checker_sha256": "0bb978b4f3820424749ce9b79f73cf92144cee741f5cad5a1ebfc1f20e9d0e7c",
+  "original_artifacts": {
+    "12956475940": "691cd3126e0b490110cfcea86abb6dfe3c3971df3e1554c3431f0c42ddfc1d24",
+    "12956495033": "e85f0a0b78d5e294854c77c3f4168af028bb596e4cec546f5706cc90859a9d93"
+  },
+  "source_tests_verified": true,
+  "ci_verified": false,
+  "protected_host_handoff": {
+    "schema": "qikvrt-protected-host-completion-feedback/v1",
+    "state": "HOLD_PROTECTED_INPUT_DELIVERY",
+    "scope": "JOB_INPUT_PRESENCE_ONLY",
+    "target_failure_detected": true,
+    "job_credential_delivery_verified": false,
+    "host_identity_verified": false,
+    "retry_original_failed_job": false,
+    "effect_ack_done": false,
+    "run_id": 41006114646,
+    "run_attempt": 1,
+    "job_id": 123905386576,
+    "source_head": "bb541e864bbab6dcf255f824e1e2c5cceff45a39",
+    "source_tree": "1a331eff15a7a2e4a78384ca8ff782cd07fcf1f1",
+    "missing_bindings": [
+      "QIKVRT_HOST_BINDING",
+      "QIKVRT_HOST_BINDING_SHA256",
+      "QIKVRT_HOST_CA",
+      "QIKVRT_HOST_CERT",
+      "QIKVRT_HOST_KEY"
+    ],
+    "artifact_name": "qikvrt-s1-host-start-bb541e864bbab6dcf255f824e1e2c5cceff45a39",
+    "receipt_sha256": "a2612d90da8fb71904640c4f29b0154aac56ff6b7b45f4098748cfbbf063647c",
+    "next_required_readback": {
+      "route": "ORIGINAL_NATIVE_SSO_REST",
+      "method": "GET",
+      "operation": "productionEnvironmentReadback",
+      "path": "/repos/ingolf-lohmann/qik-vrt/qikvrt/production-environment",
+      "query": {
+        "schema": "qikvrt-production-environment-rest/v1",
+        "request_id": "host-input-41006114646-1"
+      }
+    },
+    "retry_condition": "ORIGINAL_BOUND_METADATA_READBACK_AND_JOB_INPUT_REPAIR_REQUIRED"
+  },
+  "effect_ack_done": false
+}

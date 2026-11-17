@@ -165,17 +165,19 @@ def _reject_symlink(path: Path) -> None:
         raise IntegrityIsolationError(f"symlink path is not permitted: {path}")
 
 
-def _safe_root(root: Path) -> Path:
-    root.mkdir(parents=True, exist_ok=True)
+def _safe_root(root: Path, *, create: bool = True) -> Path:
+    if create:
+        root.mkdir(parents=True, exist_ok=True)
     _reject_symlink(root)
     return root.resolve()
 
 
-def dirs(root: Path) -> dict[str, Path]:
-    root = _safe_root(root)
+def dirs(root: Path, *, create: bool = True) -> dict[str, Path]:
+    root = _safe_root(root, create=create)
     qikvrt_root = root / ".qikvrt"
     _reject_symlink(qikvrt_root)
-    qikvrt_root.mkdir(exist_ok=True)
+    if create:
+        qikvrt_root.mkdir(exist_ok=True)
     _reject_symlink(qikvrt_root)
     state = qikvrt_root / "api"
     result = {
@@ -191,7 +193,8 @@ def dirs(root: Path) -> dict[str, Path]:
     }
     for path in result.values():
         _reject_symlink(path)
-        path.mkdir(parents=True, exist_ok=True)
+        if create:
+            path.mkdir(parents=True, exist_ok=True)
         _reject_symlink(path)
     return result
 
@@ -1085,8 +1088,8 @@ def _verify_ingest_provenance(
     if not owner or len(owner) > 256:
         raise IntegrityIsolationError("ingest provenance responsibility owner is invalid")
 
-    transaction_path = dirs(cfg.root)["transactions"] / f"{request_id}.json"
-    receipt_path = dirs(cfg.root)["replay"] / f"{request_id}.json"
+    transaction_path = dirs(cfg.root, create=False)["transactions"] / f"{request_id}.json"
+    receipt_path = dirs(cfg.root, create=False)["replay"] / f"{request_id}.json"
     for evidence_path in (transaction_path, receipt_path):
         _assert_safe_target(evidence_path)
         if not evidence_path.exists():
@@ -1243,6 +1246,58 @@ def _verify_ingest_provenance(
         "receipt_sha256": sha256_bytes(receipt_bytes),
         "protocol_hash": protocol.protocol_hash,
     }
+
+
+def read_ingested_artifact(cfg: HandlerConfig, *, max_bytes: int = MAX_PAYLOAD_BYTES) -> tuple[bytes, dict[str, Any]]:
+    """Read existing bytes and their committed ingest proof without writing state.
+
+    Reuse the stage provenance validator and the writer's process lock. A
+    shared lock on the existing descriptor never creates a missing store.
+    This is byte-storage readback only; it cannot issue a product release.
+    """
+    artifact_id = safe_id(cfg.artifact_id)
+    request_id = safe_id(cfg.request_id, field="request_id")
+    expected = require_sha(cfg.expected_sha256)
+    if not cfg.origin_authenticated or not cfg.responsibility_owner:
+        raise PolicyBlockError("authenticated readback principal is required")
+    d = dirs(cfg.root, create=False)
+    lock_path = d["state"] / "handler.lock"
+    _assert_safe_target(lock_path)
+    with _HANDLER_LOCK:
+        descriptor = os.open(lock_path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        try:
+            if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+                raise IntegrityIsolationError("readback lock is not a regular file")
+            fcntl.flock(descriptor, fcntl.LOCK_SH)
+            payload_path = d["inbox"] / f"{artifact_id}.bin"
+            sidecar_path = d["inbox"] / f"{artifact_id}.bin.sha256"
+            metadata_path = d["provenance"] / f"{artifact_id}.{request_id}.json"
+            payload = secure_read_bytes(payload_path, max_bytes=max_bytes)
+            actual = sha256_bytes(payload)
+            if actual != expected:
+                raise IntegrityIsolationError("readback bytes differ from the expected hash")
+            sidecar = secure_read_bytes(sidecar_path, max_bytes=1024)
+            if sidecar != f"{actual}  {artifact_id}.bin\n".encode("utf-8"):
+                raise IntegrityIsolationError("readback sidecar differs")
+            provenance = _verify_ingest_provenance(
+                cfg, artifact_id=artifact_id, payload_path=payload_path,
+                sidecar_path=sidecar_path, metadata_path=metadata_path,
+                payload=payload, sidecar_bytes=sidecar,
+            )
+            if provenance["responsibility_owner"] != cfg.responsibility_owner:
+                raise PolicyBlockError("readback is outside the authenticated principal scope")
+            return payload, {
+                "schema": "qikvrt_artifact_readback_v1",
+                "repository": cfg.repository, "artifact_id": artifact_id,
+                "request_id": request_id, "sha256": actual, "size": len(payload),
+                "provenance": provenance, "readback_verified": True,
+                "effect_scope": "opaque-byte-storage-readback-only",
+                "effect_state": EffectState.EFFECT_ACK_CONTINUE.value,
+                "ordinary_release": False,
+            }
+        finally:
+            fcntl.flock(descriptor, fcntl.LOCK_UN)
+            os.close(descriptor)
 
 
 def _verified_inbox_entries(cfg: HandlerConfig) -> list[dict[str, Any]]:

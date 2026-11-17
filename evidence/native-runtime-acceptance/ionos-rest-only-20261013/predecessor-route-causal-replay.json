@@ -1,0 +1,18 @@
+{
+  "schema": "qikvrt-client-route-causal-replay/v1",
+  "classification": "DETERMINISTIC_TEST_NO_LIVE_PROVIDER_EFFECT",
+  "predecessor_head": "cfd22e2c15258202413141354b42225d16e0c8b2",
+  "predecessor_tree": "5261b557928427364e354afdbcfae0a1e8c7a397",
+  "predecessor_gate_git_blob_sha1": "1867b9d78e250d02a3e095268c35909a0dc5595d",
+  "predecessor_gate_sha256": "2b7f22ae426ae3a9e18069675feda107e5bc2c819e9bea06c159de26396efdf3",
+  "fixture_transport": "BROWSER",
+  "fixture_service": "ionos",
+  "predecessor_admitted_fixture": true,
+  "successor_result": {
+    "exit_code": 2,
+    "diagnostic": "AI_HANDOFF_BLOCK: CLIENT_IONOS_ROUTE_FORBIDDEN"
+  },
+  "live_requests": 0,
+  "credential_values_used": false,
+  "exact_domain_delivery": false
+}

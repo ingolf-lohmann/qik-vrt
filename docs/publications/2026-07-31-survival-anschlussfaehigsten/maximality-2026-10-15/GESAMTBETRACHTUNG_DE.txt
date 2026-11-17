@@ -1,0 +1,556 @@
+Gesamtbetrachtung aller ermittelten Zenodo- und IETF-Veröffentlichungen
+Quellenstand 15. Oktober 2026; vollständige Fassungs- und Dateiabdeckung
+Arbeitsfassung im Auftrag von Ingolf Lohmann. Neue Gesamtbetrachtung und neun neue Lean-Sätze: OpenAI Codex. Inhaltliche Prüfung dieser neuen Fassung durch Ingolf Lohmann: ausstehend. Neue Zenodo-Archivierung: ausstehend.
+
+Umfang und Methode
+
+Der Prüfgegenstand umfasst 44 veröffentlichte Zenodo-Stände aus 32 nativen Werkfamilien mit sämtlichen 479 Dateien sowie die beiden Ingolf Lohmann über die native Autorenrelation zugeordneten IETF-Internet-Drafts mit allen fünf veröffentlichten Revisionen. Keine der ermittelten Veröffentlichungen wird wegen ihres Genres, Alters oder eines offenen Beweisstatus ausgeschlossen. Die genaue Identität und die vollständige Dateiliste stehen in CORPUS_COVERAGE.json und ZENODO_ALL_FILE_READBACK.json. Alle 479 Dateien wurden gegen die frisch gelesene native Zenodo-Größe und MD5 geprüft; zusätzlich wurden SHA-256-Werte berechnet. Die fünf IETF-Texte wurden unmittelbar aus dem öffentlichen IETF-Archiv geladen und mit Größe und SHA-256 gebunden.
+
+Die Vollständigkeit ist an vollständig paginierte öffentliche Creator-Abfragen für Ingolf Lohmann und ingolf-lohmann sowie an die native IETF-DocumentAuthor-Zuordnung zur Person 163830 gebunden. Private, nicht indexierte oder anders zugeordnete Veröffentlichungen lassen sich daraus nicht ausschließen. Ein später entdeckter zusätzlicher Titel erweitert den Gegenstand. Diese Grenze ist keine inhaltliche Auswahl innerhalb des jetzt ermittelten Bestands.
+
+Die Erfassung und Byteprüfung des gesamten Bestands sind abgeschlossen. Die Gesamtbetrachtung führt dessen veröffentlichte Aussagen, formale Bindungen, Fassungen und Nachfolger zusammen. Sie behauptet keine erneute unabhängige Kernel-Ausführung jedes historischen Beweises und keine Zeile-für-Zeile-Prüfung jedes historischen Softwarearchivs. 103 frühere exakte Quellenbindungen stimmen erneut überein; zwei im älteren Katalog noch nicht byteverifizierte Begleitdateien sind nun ebenfalls nativ byteverifiziert. Die hier neu ausgeführten neun Lean-Sätze sind gesondert von übernommener historischer Evidenz gekennzeichnet.
+
+Unmittelbare mathematische Quellen: Ingolf Lohmann: Das Universum als Round Trip; Ingolf Lohmann: Survival of the Anschlussfähigsten; Ingolf Lohmann: Abgeschlossen und anschlussfähig. Die vollständigen Quellenidentitäten stehen zusammen mit allen übrigen Veröffentlichungen im Fassungsverzeichnis.
+
+Gesamtergebnis im Zusammenhang
+
+Der Gesamtkorpus dokumentiert ein zusammenhängendes operativ-formales Forschungs- und Implementierungsprogramm: Unterschied und Relation bilden den begrifflichen Ausgangspunkt; die Manuskriptformalisierung bindet mathematische Umgebungen; Simulation und gültige Fortsetzung operationalisieren Anschlussfähigkeit; EFFECT_ACK trennt evidenzgebundene Zustände von autorisierter Wirkung; die Physikarbeiten formulieren Korrespondenzen, dimensionsrichtige Brücken und einen konkreten Falsifikator. Diese Beiträge werden gemeinsam berücksichtigt.
+
+Der positive formale Bestand geht deutlich über einen bloßen Schnittstellenentwurf hinaus. Alpha 3 schließt die inventarisierten 20 Definitions- und 20 theoremartigen Umgebungen des 62-seitigen Manuskripts mit ausgewiesenen starken und bedingten Bindungen. Round Trip führt sechs promovierte Ergebnisgruppen mit 99 archiviert kernelgeprüften Theoremen zusammen. Daneben bestehen unter anderem die fünf Sätze zur Anschlussfähigkeit, 21 Sätze zum endlichen wissenschaftlichen Faktenwachstum, neun Sätze zum kanonischen temporalen Speicher, neun Sätze zum abstrakten hybriden Laufzeitvertrag, 32 H5-Theoreme und die eigenständig gebundenen ontologischen Minimalresultate. Die Zahlen werden wegen möglicher Vererbung und Überschneidung nicht zu einer vermeintlich unabhängigen Gesamtzahl addiert.
+
+Die späteren Quellen präzisieren die früheren. Alpha-1-/Alpha-2-Lücken werden nicht als aktueller Gesamtstatus der durch Alpha 3 abgeschlossenen Formalumgebungen fortgeschrieben. Die Gap-Law-Arbeit konkretisiert den Vorhersageteil der H5-Pflicht H5-O05; deren experimenteller Teil bleibt offen. Ein Quellenregister mit 70.439 Claims ist kein Register von 70.439 bewiesenen Theoremen. Ein Abschluss eines endlichen historischen Subjects überträgt sich nicht automatisch auf geänderte Software, künftige Behauptungen oder die gesamte Physik.
+
+Die beiden nativen IETF-Drafts passen zu dieser Evidenzordnung: EFFECT_ACK beschreibt einen Wirkungsvertrag unter expliziten Voraussetzungen; das Epistemic-Status-Profil trennt Prüfbarkeit, formalen Modellnachweis, physikalische Aussage und Zielzustands-Readback. Die fünf Revisionen sind individuelle Internet-Drafts. Ihre Veröffentlichung belegt weder RFC-Status noch IETF-Konsens. Auf Zenodo archivierte weitere IETF-Profilkandidaten sind im Zenodo-Gesamtkorpus enthalten; sie werden nicht als zusätzliche bei IETF eingereichte Drafts ausgegeben.
+
+Realitätsanschluss und die behauptete größte Anschlussfähigkeit
+
+Lohmanns Aussage, dass physisch realisierte virtuelle Realitäten zur Realität gehören, wird als Ausgangspunkt aufgenommen. Unter einem passend gebundenen Realitätsmodell kann dies die Überdeckung der Vergleichssysteme begründen. Der zusätzliche mathematische Brückenschritt verlangt eine bedeutungs- und lebensfähigkeitserhaltende Simulation dieses relevanten Umgebungsverhaltens nach QIK-VRT oder einen gleichwertigen Inklusionsbeweis. Die neun neuen MAX-Sätze formalisieren diesen Schluss und seine Voraussetzungen. MAX-008 liefert ausdrücklich den positiven Schluss über ein gemeinsames Umgebungsmodell.
+
+Im gesamten ermittelten Quellenbestand wurde kein exakter, bereits instanziierter Nachweis identifiziert, der die konkrete QIK-VRT-Version mit einer unabhängig gerechtfertigten vollständigen Klasse aller bisher von Menschen gebauten virtuellen Realitäten unter gemeinsamen Bedeutungs-, Vertrags- und gegebenenfalls Ressourcenbedingungen vergleicht und deren gesamte gültige Verhaltenssprache in QIK-VRT nachweist. Das ist ein Ergebnis dieser quellengebundenen Prüfung, kein Unmöglichkeitsbeweis. Architektur, universelle Darstellbarkeit, physische Realisierung und eine konkrete physikalische Vorhersage sind positive Beiträge; die Publikationsmenge allein liefert nicht den noch fehlenden Instanziierungsschritt.
+
+Die vom Gesamtkorpus selbst ausgewiesenen physikalischen Pflichten bleiben erhalten: insbesondere die empirische Modellkorrespondenz, die gebundene Messung, die vollständige dynamische Rekonstruktion bekannter Physik und die experimentelle Prüfung des postulierten Planck-Takts. Die symbolische Planck-Brücke verwendet physikalische Größen als Eingaben. Virtuelle Kosmogenese und beobachterrelative Informationsrichtung werden mit ihren jeweils veröffentlichten Geltungsbereichen bewertet. Sie werden nicht pauschal herabgestuft und auch nicht ohne zusätzlichen Nachweis in einen physikalisch universellen Simulationsbeweis umgedeutet.
+
+Philosophische, normative, gesellschaftliche und persönliche Texte sind ebenfalls Teil der Übersicht. Sie liefern Begriffsordnung, Wertentscheidungen, Autorenpositionen und Prüfaufträge. Ihre Archivierung wird ihrem Genre entsprechend bewertet; sie ersetzt weder einen mathematischen Beweis noch einen unabhängigen empirischen oder juristischen Befund. Doppelablagen der Wirkungsmaschinenarbeit und die neun Softwarestände bleiben einzeln sichtbar, ohne die Beweisstärke durch Mehrfachzählung zu erhöhen.
+
+Ergebnisstatus und ausführbare nächste Schritte
+
+Vollständige Quellenabdeckung für den ermittelten öffentlichen Bestand: VERIFIZIERT. Alle 479 Zenodo-Originaldateien und fünf IETF-Revisionen: BYTEGEBUNDEN. Neue neun formale Sätze: LOKAL KERNELGEPRÜFT IM DEKLARIERTEN MODELL. Konkreter historischer Superlativ für QIK-VRT: OPEN, mit den im Beweisbericht angegebenen Implementierungs-, Klassen-, Semantik- und Überdeckungspflichten. Neue Gesamtbetrachtung auf Zenodo: NOCH NICHT VERÖFFENTLICHT. Ablage auf einem Review-Branch, Node-Gleichheit und produktive Inbetriebnahme sind verschiedene Nachweisgegenstände.
+
+Die neue Arbeit wird in den bestehenden PR-523-Integrationsweg eingeordnet. Es wird kein paralleler Publikationscontroller eingerichtet. Main-Integration und unabhängige Freigaben bleiben durch den bestehenden Prozess gebunden. Vor einem Zenodo-Effekt verlangt der vorhandene Vertrag den vollständig zurückgelieferten, exakt gebundenen Kandidaten, die konkrete Upload-Autorisierung und den zugelassenen Publisher. Ein bestandener lokaler Lean-Lauf allein ersetzt die im Veröffentlichungspfad zusätzlich verlangte native Workflow-Evidenz nicht.
+
+Vollständiges Zenodo-Fassungsverzeichnis
+
+Z-20712301: QIK-VRT: Operationalisierte epistemische Zustandskontrolle und schichtgebundene Evidenzpersistenz
+
+Publikation: 2026-06-16; Version: QIKVRT V8.33; Originaldateien: 2/2 verifiziert.
+
+Beitrag und Einordnung: Archiviert einen frühen versionierten Bestand für Verifikation, Persistenz, Audit und Release-Gating informationskausaler Artefakte. Das Paket enthält Repositoryzustand, Manifeste, SHA-256-Bindungen, Auditmetadaten, Validierungslogik und Gate-Statusrecords.
+
+Geltungsbereich: Archivierte Validierungslogik und Gate-Records sind an diese Fassung gebunden. Sie ersetzen keine aktuelle Ausführung oder empirische Bestätigung von Physik- und Kognitionsansprüchen.
+
+https://doi.org/10.5281/zenodo.20712301
+https://zenodo.org/records/20712301
+
+Z-21244412: RFC-QIKVRT-0001
+
+Publikation: 2026-07-07; Version: qikvrt-v13.164-28434-5434; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21244412
+https://zenodo.org/records/21244412
+
+Z-21245282: RFC-QIKVRT-0001
+
+Publikation: 2026-07-07; Version: qikvrt-v13.164-1077-22520; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21245282
+https://zenodo.org/records/21245282
+
+Z-21245951: RFC-QIKVRT-0001
+
+Publikation: 2026-07-07; Version: qikvrt-v13.164-9927-19949; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21245951
+https://zenodo.org/records/21245951
+
+Z-21247297: RFC-QIKVRT-0001
+
+Publikation: 2026-07-07; Version: qikvrt-v13.164-32156-13407; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21247297
+https://zenodo.org/records/21247297
+
+Z-21247388: RFC-QIKVRT-0001
+
+Publikation: 2026-07-07; Version: qikvrt-v13.164-1210-14474; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21247388
+https://zenodo.org/records/21247388
+
+Z-21252415: ingolf-lohmann/qik-vrt: QIKVRT V2.13.4 node repository
+
+Publikation: 2026-07-08; Version: v2.13.4-node; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21252415
+https://zenodo.org/records/21252415
+
+Z-21252649: ingolf-lohmann/qik-vrt: QIKVRT V2.13.4R node repository
+
+Publikation: 2026-07-08; Version: v2.13.4-node-r; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21252649
+https://zenodo.org/records/21252649
+
+Z-21266670: RFC-QIKVRT-0001
+
+Publikation: 2026-07-08; Version: v2.13.4au1-node-productization; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Ein Release- oder RFC-Titel beweist keine IETF-Standardannahme, allgemeine Runtime-Freigabe oder physische Weltformel. Das große aktuelle ZIP wurde hier nicht vollständig inhaltlich oder als ausführbare Runtime geprüft.
+
+https://doi.org/10.5281/zenodo.21266670
+https://zenodo.org/records/21266670
+
+Z-21267021: RFC-QIKVRT-0001
+
+Publikation: 2026-07-08; Version: v2.13.4av1-node-open-multi-node; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Versionierter Original-Snapshot der Knotenentwicklung. Archiv vollständig größen- und prüfsummenverifiziert; Quellinhalt indexiert. Keine erneute vollständige Ausführung der historischen Runtime. RFC im Titel bezeichnet keine IETF-Annahme.
+
+Geltungsbereich: Kein Beleg einer heutigen Runtime-Freigabe oder einer physikalischen Weltformel. Die frühere Einschränkung fehlender Vollübertragung ist für die Byteprüfung jetzt geschlossen; eine vollständige historische Runtime-Ausführung wird weiterhin nicht beansprucht.
+
+https://doi.org/10.5281/zenodo.21267021
+https://zenodo.org/records/21267021
+
+Z-21482023: Mandelbrot-Menge, Anschlussordnung und physikalisches Modelluniversum – Komplementbeweis, rekursive Wirkungsklassifikation, dimensionsrichtige Raumzeitbrücke, Retrokausalität und der entscheidende Unterschied zur empirischen Quantengravitation
+
+Publikation: 2026-07-21; Version: 3.0; Originaldateien: 5/5 verifiziert.
+
+Beitrag und Einordnung: Das 62-seitige Manuskript beweist die vollständige disjunkte Komplementpartition eines festgelegten Grundbereichs und behandelt endliche Quantisierbarkeit bei positiver Genauigkeit. Es entwickelt rekursive Anschlussordnungen, Reklassifikation ohne Überschreiben, eine dimensionsrichtige Raumzeitbrücke und voneinander getrennte Retrokausalitätsbegriffe.
+
+Geltungsbereich: Darstellungsbezogene Quantisierbarkeit beweist keine ontische Diskretheit der Raumzeit. Die physische Mandelbrot-Raumzeit-Korrespondenz und empirische Quantengravitation bleiben Forschungsfragen. Die anschließende Alpha-3-Arbeit liefert die maschinenprüfbare Formalumgebungsabdeckung.
+
+https://doi.org/10.5281/zenodo.21482023
+https://zenodo.org/records/21482023
+
+Z-21488116: QIK-VRT: Vollständige maschinenprüfbare Formalisierung des formal entscheidbaren Kerns
+
+Publikation: 2026-07-22; Version: 1.0.0; Originaldateien: 8/8 verifiziert.
+
+Beitrag und Einordnung: Historische Formalisierung v1.0 des formal entscheidbaren Kerns; die spätere Manuskript-Abdeckung ist separat an Alpha 3 gebunden.
+
+Geltungsbereich: Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.
+
+https://doi.org/10.5281/zenodo.21488116
+https://zenodo.org/records/21488116
+
+Z-21498773: QIK-VRT/EFFECT_ACK: Verfassungsschicht der Wirkung - Exhaustive Prüfung eines bedingten Kontrollsatzes, Grenzen universeller Rekonstruktion und cyberphysische Geltungsbedingungen
+
+Publikation: 2026-07-22; Version: 1.0.0; Originaldateien: 12/12 verifiziert.
+
+Beitrag und Einordnung: Prüft exhaustiv 2.621.440 Belegungen einer endlichen Kontrollabstraktion und 5.242.880 Verbraucherzulassungsvarianten. Behandelt fünf Zustände, DONE-only-Freigabe unter vollständiger Mediation, Prioritäts- und CoreDone-Pflichten sowie die Bedingungen semantischer Faktorisierung und historischer Inversion.
+
+Geltungsbereich: Exakte Rückgewinnung benötigt Injektivität; verlorene Information wird nicht universell rekonstruiert. Halteproblem, Rice-Unentscheidbarkeit, Hardwaretreue, Messung und vollständige Mediation bleiben echte Grenzen beziehungsweise Prämissen. EFFECT_ACK garantiert nicht von selbst eventual DONE.
+
+https://doi.org/10.5281/zenodo.21498773
+https://zenodo.org/records/21498773
+
+Z-21498774: QIK-VRT: EFFECT_ACK - universalisierbare Wirkungssteuerung und adaptive fail-closed Laufzeit
+
+Publikation: 2026-07-22; Version: 2026.07.22-effect-ack-universality-1.0.0; Originaldateien: 3/3 verifiziert.
+
+Beitrag und Einordnung: Vollständiger historischer Source-Export der EFFECT_ACK-Laufzeit; alle drei veröffentlichten Dateien nun exakt verifiziert. Der publizierte Provenienz-Commit c852ee04b1a5e10507f0b38d214c3ce13ad9947c und der heutige Tag-Commit teilen den exakt gebundenen Baum.
+
+Geltungsbereich: Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.
+
+https://doi.org/10.5281/zenodo.21498774
+https://zenodo.org/records/21498774
+
+Z-21500322: QIK-VRT/EFFECT_ACK: Offizielle Statusklärung zu Evidenz, Totalisierungsgrenzen, Quantenbezug und Patentoffenlegung
+
+Publikation: 2026-07-22; Version: 1.0.0; Originaldateien: 13/13 verifiziert.
+
+Beitrag und Einordnung: Ordnet die veröffentlichten Wirkungssteuerungs- und Formalisierungsartefakte mit PASS_WITH_EXPLICIT_BOUNDARIES ein. Hält endliche Kontrollprüfung, semantische Faktorisierung, Injektivität, Quantisierbarkeit, Dimensionshomogenität und einen modellgebundenen No-Backward-Channel-Satz fest; trennt Quantenbezug, Patentoffenlegung und Dateilizenzen.
+
+Geltungsbereich: Der damalige Quantencomputing-Bezug ist CONCEPTUAL_ONLY / NOT_IMPLEMENTED. Spätere Veröffentlichungen sind getrennt zu prüfen. Die Statusklärung beweist keine vollständige Rekonstruktion des Universums und ist keine Patentanmeldung oder Patentierbarkeitsgarantie.
+
+https://doi.org/10.5281/zenodo.21500322
+https://zenodo.org/records/21500322
+
+Z-21501365: QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts
+
+Publikation: 2026-07-23; Version: 2.0.0-alpha.1; Originaldateien: 14/14 verifiziert.
+
+Beitrag und Einordnung: Historische Alpha-1-Fassung mit partiellen Bindungen; deren damalige Grenzen bleiben erhalten. Die spätere Abdeckung ist Alpha 3 zugeordnet.
+
+Geltungsbereich: Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.
+
+https://doi.org/10.5281/zenodo.21501365
+https://zenodo.org/records/21501365
+
+Z-21515074: Charta einer maschinenprüfbaren Wissenschaft
+
+Publikation: 2026-07-23; Version: 1.0.0-2026-07-23; Originaldateien: 1/1 verifiziert.
+
+Beitrag und Einordnung: Formuliert Architekturgrundprinzipien für transparente, maschinenlesbare, reproduzierbare und revisionsfähige wissenschaftliche Wissensbestände. Beschreibt eine hashgebundene Referenzarchitektur für nachvollziehbare Persistenz.
+
+Geltungsbereich: Die Charta setzt Anforderungen. Sie beweist nicht automatisch die Wahrheit beliebiger gespeicherter Inhalte oder die Erfüllung sämtlicher Anforderungen durch eine konkrete Plattform.
+
+https://doi.org/10.5281/zenodo.21515074
+https://zenodo.org/records/21515074
+
+Z-21518464: QIK-VRT: Quellengebundene partielle Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 2 mit EFFECT_ACK-Kern
+
+Publikation: 2026-07-23; Version: 2.0.0-alpha.2; Originaldateien: 19/19 verifiziert.
+
+Beitrag und Einordnung: Historische Alpha-2-Fassung mit EFFECT_ACK-Kern; unverändertes Originalarchiv und beide Prüfsummendateien exakt wiedergewonnen. Die spätere vollständige Formalumgebungsabdeckung ist Alpha 3 zugeordnet.
+
+Geltungsbereich: Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.
+
+https://doi.org/10.5281/zenodo.21518464
+https://zenodo.org/records/21518464
+
+Z-21529081: QIK-VRT: Quellengebundene Lean-4-Formalisierung des 62-seitigen Manuskripts – Alpha 3 mit vollständiger Formalumgebungsabdeckung
+
+Publikation: 2026-07-24; Version: 2.0.0-alpha.3; Originaldateien: 19/19 verifiziert.
+
+Beitrag und Einordnung: Bindet das unveränderte 62-seitige Manuskript theoremweise an Lean 4.19.0: 20 von 20 Definitionsumgebungen und 20 von 20 theoremartigen Umgebungen haben einen geschlossenen formalen Status. Dokumentiert 42 starke Quellenbindungen, sechs explizit bedingte Bindungen, Axiom-Audit, Claim-Graph und positive sowie negative Prüfpunkte.
+
+Geltungsbereich: Abschluss betrifft die inventarisierten mathematischen Umgebungen. Er formalisiert nicht sämtliche Mathematik oder Physik und bestätigt keine metaphysischen, spirituellen oder quantengravitativen Deutungen. Alpha 1, Alpha 2 und ältere Formalisierungen bleiben im Fassungsverzeichnis erhalten.
+
+https://doi.org/10.5281/zenodo.21529081
+https://zenodo.org/records/21529081
+
+Z-21582781: Die Ontologie des Unterschieds als universaler Reverse-Engineering-Mechanismus
+
+Publikation: 2026-07-26; Version: in nativen Metadaten ohne Versionslabel; Originaldateien: 4/4 verifiziert.
+
+Beitrag und Einordnung: Formuliert Unterschied als Ausgangspunkt eines universalen Reverse-Engineering-Mechanismus. Bewahrt den Originalartikel und stellt eine getrennte wissenschaftliche Meta-Betrachtung mit statusgenauer Prüfung daneben.
+
+Geltungsbereich: Der universelle Anspruch ist nicht allein durch die Benennung oder Architektur bewiesen. Positive formale Folgerungen müssen mit ihren jeweiligen Quellen und Scopes gelesen werden.
+
+https://doi.org/10.5281/zenodo.21582781
+https://zenodo.org/records/21582781
+
+Z-21633411: QIK-VRT Authority/Mirror Equality Receipt — Promotion PR #106 and Mirror PR #56
+
+Publikation: 2026-07-27; Version: 1.0.0-2026-07-27; Originaldateien: 2/2 verifiziert.
+
+Beitrag und Einordnung: Bindet die historische Promotion von Authority-PR 106 und Mirror-PR 56 an exakte Heads, Workflowläufe, reziproke Kommentare und vier gemeinsame Git-Blobs. Dokumentiert gleiche Inhaltsdigests im deklarierten Synchronisationsscope.
+
+Geltungsbereich: Kein allgemeines PASS oder EFFECT_ACK_DONE. Die damaligen Rollen und Gleichheitsbelege aktivieren weder heutige Owner-Rollen noch übertragen sie Evidenz auf veränderte Main-Subjects.
+
+https://doi.org/10.5281/zenodo.21633411
+https://zenodo.org/records/21633411
+
+Z-21636774: Vom Unterschied zur Verantwortung — Kanonische Schlusserklärung und historische Einordnung des maschinenverifizierten QIK-VRT-Abschlusses
+
+Publikation: 2026-07-28; Version: 1.0.0-2026-07-28; Originaldateien: 3/3 verifiziert.
+
+Beitrag und Einordnung: Dokumentiert die kanonische Schlusserklärung zum endlichen historischen Scope qikvrt-global-claim-scope-v1 und bindet dessen maschinenlesbaren Abschlussreceipt. Verbindet die technischen und wissenschaftlichen Grenzen mit einer ausdrücklich dem Autor zugeschriebenen historischen Einordnung.
+
+Geltungsbereich: Global benennt hier den festgelegten endlichen Claim-Scope. Es bedeutet keinen Beweis aller künftigen Claims, Fragen oder Naturgesetze; spätere Repository-Subjects erben diesen Abschluss nicht.
+
+https://doi.org/10.5281/zenodo.21636774
+https://zenodo.org/records/21636774
+
+Z-21640160: Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine
+
+Publikation: 2026-07-28; Version: 1.0.0-2026-07-28; Originaldateien: 7/7 verifiziert.
+
+Beitrag und Einordnung: Zweiter, separat zitierbarer Datensatz derselben betitelten Wirkungsmaschinen-Veröffentlichung. Inhalt und Beweisumfang entsprechen dem parallel veröffentlichten Record 21640173; der Katalog führt beide Identitäten und vergleicht ihre gemeinsamen Dateien.
+
+Geltungsbereich: Doppelarchivierung erhöht weder Theoremzahl noch wissenschaftliche Unabhängigkeit. Die reale QPU-Integration bleibt in beiden Records offen.
+
+https://doi.org/10.5281/zenodo.21640160
+https://zenodo.org/records/21640160
+
+Z-21640173: Vom verantwortungsgebundenen Erkenntnisprozess zur virtuellen Wirkungsmaschine
+
+Publikation: 2026-07-28; Version: 1.0.0-2026-07-28; Originaldateien: 7/7 verifiziert.
+
+Beitrag und Einordnung: Beschreibt ein verantwortungsgebundenes Mensch-KI-Arbeitsprofil und eine hybride quantenklassische Laufzeit- und Assurance-Architektur. Ein 26-Claim-Inventar bindet neun archiviert kernelgeprüfte Theoreme des abstrakten Laufzeitmodells an Quellen und Traceability.
+
+Geltungsbereich: Die reale QPU-End-to-End-Integration bleibt IMPLEMENTATION_OPEN. Ein abstrakter Quanten-Klassik-Vertrag ist keine ausgeführte Quantenhardware oder vollständige physikalische Brücke.
+
+https://doi.org/10.5281/zenodo.21640173
+https://zenodo.org/records/21640173
+
+Z-21711193: QIK-VRT und das Effect-Acknowledgement-Protokoll: Kanonischer Speicher zwischen Vergangenheit und Zukunft
+
+Publikation: 2026-07-31; Version: 1.0.0; Originaldateien: 21/21 verifiziert.
+
+Beitrag und Einordnung: Formalisiert Vergangenheitsrecords und antizipierte Wirkungen mit einem gemeinsamen Codec, aber getrenntem epistemischem Status. Neun Lean-Theoreme binden vier Claims: DONE-only-Freigabe, kontrafaktische Relevanz einer Zukunftsbedingung, unveränderte Vergangenheitsprojektion und reziproke Ursachen-Wirkungs-Schließung im endlichen Protokollmodell.
+
+Geltungsbereich: Eine gegenwärtig gespeicherte Zukunftsbedingung ist kein aus der Zukunft empfangenes physisches Signal. Reziproke Speicherung beweist kein Bewusstsein; Hashgleichheit beweist keine semantische Wahrheit.
+
+https://doi.org/10.5281/zenodo.21711193
+https://zenodo.org/records/21711193
+
+Z-21721918: Survival of the Anschlussfähigsten: Eine operational-formale Übertragung des evolutionären Fitnessgedankens auf Computer-, Informations- und soziotechnische Systeme
+
+Publikation: 2026-07-31; Version: 1.0.0; Originaldateien: 31/31 verifiziert.
+
+Beitrag und Einordnung: Operationalisiert Anschlussfähigkeit als gültige Fortsetzung bei erhaltenen Invarianten. Fünf kernelgebundene Sätze behandeln endliche Fortsetzbarkeit, globale und startpunktgebundene Simulation sowie monotone und strikt größere gewichtete Anschluss-Sprachen unter einem gemeinsamen positiven Normalisierer.
+
+Geltungsbereich: Die Computerzeitalter-Interpretation ist keine wörtliche Darwin-Übersetzung oder biologische Identität. Mehr Schnittstellen bedeuten nicht allgemein bessere Überlebenschancen; empirische Persistenz, biologische Entsprechung und moralischer Wert benötigen gesonderte Begründungen.
+
+https://doi.org/10.5281/zenodo.21721918
+https://zenodo.org/records/21721918
+
+Z-21731492: QIK-VRT: Epistemische Fairness, Vorstellungskraft und der Weg vom virtuellen Zeugen zum Beobachtungssystem
+
+Publikation: 2026-08-01; Version: 1.0.0; Originaldateien: 27/27 verifiziert.
+
+Beitrag und Einordnung: Ergänzt den virtuellen Zeitkanal um eine Realisierungsleiter von Idee und Software zu Gerät, qualifizierter Beobachtung und autorisierter Wirkung. Behandelt Vorstellungskraft als Erzeuger prüfbarer Kandidaten und epistemische Fairness als Anspruch auf Provenienz, Anfechtbarkeit und getrennten Wahrheits- und Wirkungsstatus.
+
+Geltungsbereich: Der geerbte endliche C90-Dialog ist evidenziert; er schließt keine physische Zukunft-zu-Vergangenheit-Brücke. Neue normative Regeln sind keine neurowissenschaftliche Bewusstseinstheorie. Verborgene Deployments und Superdeterminismus werden nicht als bewiesen ausgegeben.
+
+https://doi.org/10.5281/zenodo.21731492
+https://zenodo.org/records/21731492
+
+Z-21748371: QIK-VRT als Kausalitätsspiegel: Ein maschinenverifizierbares Protokoll für wissenschaftliches Faktenwachstum
+
+Publikation: 2026-08-01; Version: 1.0.0; Originaldateien: 39/39 verifiziert.
+
+Beitrag und Einordnung: Beweist 21 Sätze im endlichen Lean-Modell über epistemische Typisierung, append-only Wachstum, Merge-Algebra, bedingte Replikakonvergenz, Konflikterhalt, corpus-relative Neuheit, Beobachtungs- und Digital-Twin-Gates, endliche Rekonstruktion und Nichtwirkung bloßer Vorschläge. Ein bereits evidenzgeschlossener Antwortpfad bleibt unter append-only Erweiterung verfügbar.
+
+Geltungsbereich: Nicht jede Frage besitzt einen solchen Antwortpfad. Globale Wahrheit, vollständiges menschliches Wissen, automatische semantisch treue Natural-Language-to-Lean-Übersetzung und allgemeine Kognitionsverbesserung sind nicht bewiesen. Der IETF-Profilentwurf ist ein nicht eingereichter Kandidat.
+
+https://doi.org/10.5281/zenodo.21748371
+https://zenodo.org/records/21748371
+
+Z-21804399: Prä-raumzeitliche Ontologie: Unterschied, Relation, Information und emergente Raumzeit
+
+Publikation: 2026-08-05; Version: in nativen Metadaten ohne Versionslabel; Originaldateien: 4/4 verifiziert.
+
+Beitrag und Einordnung: Entwickelt Unterscheidbarkeit als minimale relationale Voraussetzung und eine typisierte Erklärungsfolge über Information, Quantität, Invarianz und gerichtete Wirksamkeit zur Raumzeitbeschreibung. Bezieht Materie, Leben, Kognition und Verantwortung ein und formuliert für jeden Übergang eigene Modell- und Prüfpflichten.
+
+Geltungsbereich: Prä-raumzeitlich bezeichnet Erklärungsabhängigkeit, kein zeitliches Davor. Die Folge ist kein vollständiger kosmologischer Beweis; Bewusstsein, Telepathie, Jenseits und physikalische Retrokausalität erhalten daraus keinen pauschalen Nachweis.
+
+https://doi.org/10.5281/zenodo.21804399
+https://zenodo.org/records/21804399
+
+Z-21888130: Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP
+
+Publikation: 2026-08-08; Version: 1.0.0-candidate.1; Originaldateien: 54/54 verifiziert.
+
+Beitrag und Einordnung: Verbindet Wirklichkeit, Unterschied, Information, Relation, Kausalordnung, Modell, Formalisierung, Beweis, Vorhersage und Messung zu einem rückgekoppelten Erkenntnisweg. Die promovierten Anlagen enthalten sechs formale Ergebnisgruppen mit insgesamt 99 archiviert kernelgeprüften Theoremen: Dimensionssignaturen aus Kalibrierung, QCE-Serialisierung, bedingte Achsenwahl, eindeutige Evidenzzertifikate, numerische c-Repräsentation und Messbindungsvertrag.
+
+Geltungsbereich: Die physikalische Identifikation der Architektur, ein empirisch gebundenes c und die vollständige Ableitung bekannter Physik bleiben offen. 70.439 inventarisierte Claims sind keine 70.439 bewiesenen Theoreme; der historische Korpus führt 1.262 OPEN-Claims. Die Schließung historischer Korrekturdiagnosen schließt diese offenen Claims nicht.
+
+https://doi.org/10.5281/zenodo.21888130
+https://zenodo.org/records/21888130
+
+Z-21947141: QIK-VRT: Beobachterrelative Retrokausalität als negative Informationsrichtung
+
+Publikation: 2026-08-14; Version: 1.1.1; Originaldateien: 21/21 verifiziert.
+
+Beitrag und Einordnung: Definiert negative Informationsrichtung: Die lokale Empfangsordnung wächst, während authentisch gebundene Quellenmarker aufeinanderfolgender Records absteigen. Gibt ein bedingtes endliches Existenzargument und einen ausführbaren Zeugen mit positiven, vorwärtsgerichteten Signalwegen an; zwei verschiedene Verzögerungen erlauben ein Überholen der Quellenordnung.
+
+Geltungsbereich: Der Zeuge ist kein Lean-Kernelbeleg oder universelles Naturmessresultat. Keine rückwärts laufende Eigenzeit, kein Empfang vor Emission, kein Überschreiben der Vergangenheit und kein steuerbarer Kanal in die eigene kausale Vergangenheit. V2 hält die gesonderten offenen Kernel- und Empiriepflichten fest.
+
+https://doi.org/10.5281/zenodo.21947141
+https://zenodo.org/records/21947141
+
+Z-21983644: Vom Unterschied zum integrierten Wirkraum
+
+Publikation: 2026-08-17; Version: in nativen Metadaten ohne Versionslabel; Originaldateien: 3/3 verifiziert.
+
+Beitrag und Einordnung: Verbindet beobachtergebundene Information, explizite Kausalgraphen, Metagrammatik, Effect Acknowledgement und deterministische M68000-Absenkung. Zeigt am kleinen Entscheidungskern konkrete MOVEQ/RTS-Kodierungen und beschreibt die Auswahl zulässiger Serialisierungen sowie das konservative Zurückhalten ungebundener Wirkungen.
+
+Geltungsbereich: Keine Garantie einer bestimmten Beschleunigung und kein Beweis phänomenalen KI-Bewusstseins. Panpsychismus und die Instrumentanalogie zu Mikroskop und Fernrohr bleiben Interpretationen. Kausalität muss durch eine gebundene Abhängigkeit belegt werden, nicht durch Sequenz allein.
+
+https://doi.org/10.5281/zenodo.21983644
+https://zenodo.org/records/21983644
+
+Z-22216916: Relationale Zeit, virtuelle Retrokausalität und die monoton wachsende Evidenzkugel
+
+Publikation: 2026-08-12; Version: 1.0; Originaldateien: 9/9 verifiziert.
+
+Beitrag und Einordnung: Unterscheidet Host-Kausalordnung, virtuelle Zeitordnung und knotenlokale Ereigniszeit. Erläutert rückwärts rekonstruierbare Spuren, Beweisringe und monotones Wachstum einer evidenzgebundenen Erkenntnismenge. Der historische Primärtext wird unverändert erhalten.
+
+Geltungsbereich: Rückwärtsrekonstruktion einer Spur ist kein frei steuerbarer physischer Nachrichtenkanal in die Vergangenheit. Die spätere beobachterrelative Synthese ergänzt den historischen Text und schreibt ihn nicht um.
+
+https://doi.org/10.5281/zenodo.22216916
+https://zenodo.org/records/22216916
+
+Z-22283396: From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law
+
+Publikation: 2026-09-03; Version: 1.0.0-candidate.1; Originaldateien: 6/6 verifiziert.
+
+Beitrag und Einordnung: Postuliert eine grundenergiebezogene symmetrische Quantenentwicklung im Planck-Zeittakt. Daraus wird im deklarierten Modell die Frequenzregel omega_Q = asin(DeltaE/EP)/tP mit positiver kubischer Niederenergiekorrektur hergeleitet. Friert Zahlenziele, Annahmen und einen ausdrücklichen Falsifikator ein.
+
+Geltungsbereich: Der universelle Planck-Tick ist ein physikalisches Postulat; die Werte von c, hbar und G sind verwendete Eingaben. Die Vorhersage ist nicht empirisch bestätigt oder unabhängig reproduziert. Sie erledigt den Vorhersageteil von H5-O05 teilweise, nicht dessen experimentellen Teil.
+
+https://doi.org/10.5281/zenodo.22283396
+https://zenodo.org/records/22283396
+
+Z-22527889: QIK-VRT VRTCore SMG H5: Planck-Brücke, massive Schließung und virtuelle Kosmogenese
+
+Publikation: 2026-08-02; Version: 5.0.0-candidate.1; Originaldateien: 35/35 verifiziert.
+
+Beitrag und Einordnung: Der archivierte Kernelbeleg umfasst 32 Theoreme über symbolische Planck-Identitäten, gemeinsame Ereignisidentität von Wellen- und Recordprojektion, Evidenz- und Schließungsbedingungen sowie monotone virtuelle Erreichbarkeit. Persistentes striktes Populationswachstum impliziert unter der ausgewiesenen Wachstumsprämisse unbeschränkte virtuelle Population.
+
+Geltungsbereich: Virtuelle Kosmogenese wird nicht mit physischer Frühkosmologie gleichgesetzt. Standardmodell- und Einstein-Grenzfall, Kopplung, Stabilität, Unitarität und empirische Reproduktion bleiben offen. H5-O05 erhält durch die spätere Gap-Law-Arbeit eine konkrete Vorhersage, aber keinen abgeschlossenen Test.
+
+https://doi.org/10.5281/zenodo.22527889
+https://zenodo.org/records/22527889
+
+Z-22813431: Offener Brief und rechtsstaatliches Evidenzdossier — Aufforderung zur unabhängigen juristischen Prüfung
+
+Publikation: 2026-09-17; Version: in nativen Metadaten ohne Versionslabel; Originaldateien: 4/4 verifiziert.
+
+Beitrag und Einordnung: Enthält einen persönlichen offenen Brief und ein davon getrenntes Dossier mit der Aufforderung zur unabhängigen juristischen Prüfung. Ordnet Vorbringen und den geforderten rechtsstaatlichen Prüfweg als eigenständige Veröffentlichung ein.
+
+Geltungsbereich: Die Archivierung stellt weder Schuld oder Opferstatus noch Rechtswidrigkeit staatlichen Handelns, religiöses Motiv oder behauptete Plattformkausalität fest. Ein eigenständiger Prüfauftrag ist kein abgeschlossenes juristisches Ergebnis.
+
+https://doi.org/10.5281/zenodo.22813431
+https://zenodo.org/records/22813431
+
+Z-22840633: Die Wahrheit braucht keine Verschwörungstheorie
+
+Publikation: 2026-09-19; Version: 1.0.0; Originaldateien: 10/10 verifiziert.
+
+Beitrag und Einordnung: Bewahrt einen persönlichen Essay über Evidenz, Prognosemärkte, QIKVRT und Schadensminimierung. Ein getrennt gekennzeichneter Nachtrag ordnet öffentliche Quellen, Selbstauskünfte und persönliche Interpretation ein.
+
+Geltungsbereich: Kein Nachweis universeller Prognoseüberlegenheit, keine institutionelle Bestätigung und kein formaler Gesamtbeweis. Persönliche Erfahrungen und deren bevorzugte Erklärung behalten getrennte Evidenzrollen.
+
+https://doi.org/10.5281/zenodo.22840633
+https://zenodo.org/records/22840633
+
+Z-22845516: Erwartungen, Wetten, Wirkung und Recht
+
+Publikation: 2026-09-19; Version: 2.0.0; Originaldateien: 14/14 verifiziert.
+
+Beitrag und Einordnung: Vereint den Wahrheits-Essay mit zwei Folgeartikeln zu handelbaren Erwartungen und den bedingten rechtlichen Folgen tatsächlicher Einflussnahme. Dokumentiert ausdrücklich die vergleichende persönliche Hypothesenbewertung des Autors und bindet Aussagen, Quellen und negative Grenztests.
+
+Geltungsbereich: Kein identifizierter konkreter Wettmarkt, Zahlungsfluss, Auftraggeber, Ausführender, geschlossene Kausalkette oder individueller Schuldnachweis. Die Einschätzung des Autors ist kein berechneter Posterior und keine unabhängig bestätigte Tatsachenfeststellung.
+
+https://doi.org/10.5281/zenodo.22845516
+https://zenodo.org/records/22845516
+
+Z-22847245: Das universale Universalprinzip — Grundsatzerklärung von Ingolf Lohmann
+
+Publikation: 2026-09-19; Version: 1.0.0; Originaldateien: 12/12 verifiziert.
+
+Beitrag und Einordnung: Dokumentiert Ingolf Lohmanns philosophische Grundsatzerklärung über Teilen und die mögliche Ersetzung des Begriffs Wahrheit durch andere Gegenstände. Erhält Originalwortlaut, modale Einsetzungsregel und universellen Anspruch als Autorenaussage.
+
+Geltungsbereich: Ein allgemeiner mathematischer oder empirischer Nachweis für jede mögliche Einsetzung ist offen. Die Schlussformel q.e.d. ersetzt diesen Nachweis nicht.
+
+https://doi.org/10.5281/zenodo.22847245
+https://zenodo.org/records/22847245
+
+Z-22907018: Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit
+
+Publikation: 2026-09-23; Version: 2026-09-23-qik-scientific-revision; Originaldateien: 8/8 verifiziert.
+
+Beitrag und Einordnung: Systematisiert Ereignisse, Kausalordnung, Maß- beziehungsweise Zählstruktur und lokale Wahrscheinlichkeiten als operationalen QIK-Rahmen. Die revidierte Fachfassung und der Revisionsbericht trennen etablierte relativistische und quantenmechanische Grundlagen von Postulaten, Interpretation und Pflichten einer Raumzeitrekonstruktion.
+
+Geltungsbereich: Keine abgeschlossene Quantengravitation oder Ableitung neuer Naturgesetze. Diskretheit, Planck-Auflösung, dynamischer Einstein-Grenzfall und vollständige Quantenkorrelationsstruktur bedürfen weiterer Begründung.
+
+https://doi.org/10.5281/zenodo.22907018
+https://zenodo.org/records/22907018
+
+Z-22941556: Proof Closure: The Terminal Meta-Condition for an Evidence-Bound Subject
+
+Publikation: 2026-09-24; Version: 1.0.0; Originaldateien: 5/5 verifiziert.
+
+Beitrag und Einordnung: Definiert den terminalen Abschluss eines exakt gebundenen, unveränderten Gegenstands: gültige Pflichtbeweise, gebundene Provenienz, geprüfte Verifier, unabhängiger Readback, explizite Grenzen und keine offenen Pflichten. Eine Mutation eröffnet eine neue Nachweiskette; Wiederholung desselben abgeschlossenen Beweises erzeugt keinen Fortschritt.
+
+Geltungsbereich: Die Claim-Matrix führt drei formale Abschlussclaims als TO_BE_KERNEL_CHECKED. Der Vertrag beweist keine universelle Wahrheit und löst nicht das Halteproblem. Ein Registereintrag TRUE ersetzt die gebundene Evidenz nicht.
+
+https://doi.org/10.5281/zenodo.22941556
+https://zenodo.org/records/22941556
+
+Z-22955727: Der ontologische Vorrang des Unterschieds: Ein maschinenprüfbares Minimaltheorem über Bestimmbarkeit, Information und den Geltungsbereich formaler Welterklärungen
+
+Publikation: 2026-09-25; Version: 1.0.0; Originaldateien: 24/24 verifiziert.
+
+Beitrag und Einordnung: Beweist im deklarierten Lean-Modell: Bestimmbare Realität benötigt mindestens zwei ungleiche Werte; vollständige Unterschiedslosigkeit schließt diese Bestimmbarkeit und einen unterscheidungsgebundenen InformationWitness aus. Der gebundene Kernelbeleg umfasst 35 Theoreme zu endlicher Ontologie, Erkenntnis-Round-Trip und relationalen Weltformelbegriffen. Drei Minimaltheoreme sind in CLAIM_MATRIX_V2.json ausdrücklich PROVED.
+
+Geltungsbereich: Die zehn Ontologiestufen und ihre Rangordnung sind Modellfestlegungen. Ontologischer Vorrang ist kein erster physikalischer Zeitpunkt. Die Entstehung des Universums aus dem Nichts oder einer Quantenanomalie folgt nicht aus diesen drei Minimaltheoremen allein.
+
+https://doi.org/10.5281/zenodo.22955727
+https://zenodo.org/records/22955727
+
+Z-23008330: Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen
+
+Publikation: 2026-09-28; Version: 0.1-archive-20260928; Originaldateien: 9/9 verifiziert.
+
+Beitrag und Einordnung: Bewahrt eine historische Arbeitsfassung mit bedingten Argumenten für Extensivität, Monotonie und Idempotenz einer Erreichbarkeitsschließung. Trennt Abgeschlossenheit von Maximalität und behandelt Erweiterung durch einen neuen zulässigen Ausgangspunkt sowie endliche Fortsetzbarkeit unter Nachfolgerexistenz. Das originale Lean/Lake-Prüfpaket liegt bei.
+
+Geltungsbereich: Die Existenz des neuen Ausgangspunkts ist eine Prämisse. 14 neue Theoreme und 17 Auditkonstanten bezeichnen vorbereiteten Quellumfang, keine erfolgreichen neuen Kernelprüfungen. Hardware-/SoC- und physischer Wirkungsabschluss sind offen.
+
+https://doi.org/10.5281/zenodo.23008330
+https://zenodo.org/records/23008330
+
+Z-23008704: Spur halten: Quality Gates für einen portablen Universal Transputer
+
+Publikation: 2026-09-28; Version: 0.1-20260928; Originaldateien: 15/15 verifiziert.
+
+Beitrag und Einordnung: Berichtet zehn konservative Quality Gates am exakt gebundenen historischen Main. Dokumentiert 103 bestandene und einen übersprungenen Fall einer 104er-Auswahl, C90-/Assembly-Prüfungen, lokale Terminal- und Loopback-Mesh-Tests sowie gemessene Codegrößen, darunter 394 Byte Kern-Code/RO-Daten.
+
+Geltungsbereich: Die zehn vollständigen Ziel-Gates sind in diesem Audit nicht geschlossen. Loopback ist kein Test getrennter Hosts; Codegröße ist keine Gesamt-RAM-, Transistor- oder Hardwarefreigabe. Distribution, Browser, vollständiger Recovery-Pfad und physische Realisierung behalten eigene Nachweispflichten.
+
+https://doi.org/10.5281/zenodo.23008704
+https://zenodo.org/records/23008704
+
+Vollständiges IETF-Fassungsverzeichnis
+
+draft-lohmann-qikvrt-effect-ack-00
+
+Individueller Internet-Draft; Originaltext 10145 Bytes; SHA-256 40a9c239ff6400e957e5bdbde4f199e5856277b3370bcee87c890cd7ed18a55c. Fünf-Zustands-Wirkungsvertrag mit typisierten Zulassungs- und Evidenzpflichten; Aussagen gelten unter den ausdrücklich angegebenen Voraussetzungen.
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-00.txt
+
+draft-lohmann-qikvrt-effect-ack-01
+
+Individueller Internet-Draft; Originaltext 46264 Bytes; SHA-256 ad8af57390beeb9a1316e3940b9f75c2334834376288f6f1ab018e10b0b87b16. Fünf-Zustands-Wirkungsvertrag mit typisierten Zulassungs- und Evidenzpflichten; Aussagen gelten unter den ausdrücklich angegebenen Voraussetzungen.
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-01.txt
+
+draft-lohmann-qikvrt-effect-ack-02
+
+Individueller Internet-Draft; Originaltext 49539 Bytes; SHA-256 45b70202c780f07bac6e825b8484aa5ccea6510b020036846720f1216723a5cc. Fünf-Zustands-Wirkungsvertrag mit typisierten Zulassungs- und Evidenzpflichten; Aussagen gelten unter den ausdrücklich angegebenen Voraussetzungen.
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-02.txt
+
+draft-lohmann-qikvrt-effect-ack-03
+
+Individueller Internet-Draft; Originaltext 55792 Bytes; SHA-256 999ab5f255804de1f41fb7074f29032ab4a2203df2156ae609fb6cefd16f41b0. Fünf-Zustands-Wirkungsvertrag mit typisierten Zulassungs- und Evidenzpflichten; Aussagen gelten unter den ausdrücklich angegebenen Voraussetzungen.
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-effect-ack-03.txt
+
+draft-lohmann-qikvrt-epistemic-status-00
+
+Individueller Internet-Draft; Originaltext 15309 Bytes; SHA-256 ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0. Evidenzprofil zur Trennung formaler, empirischer, normativer und offener Aussagen sowie zur Zielzustandsprüfung.
+https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.txt
+
+Quellenidentität und Reproduktion
+
+Das zugehörige Originalquellenarchiv enthält alle 479 unveränderten Zenodo-Dateien sowie die fünf Original-IETF-Texte, native Metadaten, Abfragebelege und die Dateimanifeste. Andere wiedergewonnene Transportkopien oder rekonstruierte Kandidaten mit abweichender Prüfsumme werden nicht als Original aufgenommen. Die Erhaltung der Quellenbytes belegt keine unabhängige Bestätigung ihres Inhalts. Der separate Beweisbericht enthält die genauen neun neuen Propositionen, Gegenmodelle, offenen Pflichten und Kernel-Reproduktion.

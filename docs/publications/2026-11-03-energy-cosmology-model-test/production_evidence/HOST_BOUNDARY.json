@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt_original_host_boundary_v1",
+  "target": "https://raumzeitterminal.de/",
+  "baseline_main": "40fa8eb1a6b413801ba8554dca35f915d54316c7",
+  "current_native_adapter": {
+    "operator_authorized": true,
+    "ready": false,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ]
+  },
+  "local_original_SSO_binding_check": {
+    "uid": 0,
+    "registered_QIKVRT_SSO_environment_bindings": 0,
+    "registered_keyring_or_qikvrt_process_found": false,
+    "system_secret_tool_present": false,
+    "registered_native_mount_found": false,
+    "scope": "This execution container, not the original IONOS or desktop host."
+  },
+  "original_recovery_contract": "runtime/self-host/README.md#original-sso-session-and-protected-environment-handoff",
+  "original_readback_operation": "productionEnvironmentReadback",
+  "restore_before_delivery": "Only in original admitted process with registered PersonalAuth profile, OS Secret Service, clean Main and existing protected host material.",
+  "next_native_evidence": "Actual consuming-job receipt for five original inputs, then mTLS host identity, installation, systemd persistence/restart, HTTPS and EAP effect readback.",
+  "installation_performed": false,
+  "effect_ack_done": false
+}

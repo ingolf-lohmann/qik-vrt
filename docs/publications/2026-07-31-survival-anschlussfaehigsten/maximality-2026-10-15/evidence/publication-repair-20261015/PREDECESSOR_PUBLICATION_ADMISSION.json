@@ -1,0 +1,31 @@
+{
+  "schema": "qikvrt_full_corpus_publication_admission_v1",
+  "state": "BLOCK_NOT_PUBLISHED",
+  "new_proofs_locally_kernel_checked": true,
+  "exact_head_native_workflow_receipt": "PENDING",
+  "full_candidate_return_to_owner": "PENDING_FINAL_DELIVERY",
+  "candidate_specific_exact_upload_authorization": "NOT_RECORDED",
+  "authenticated_zenodo_publisher": "NOT_AVAILABLE_IN_THIS_CLIENT",
+  "mirror_read_write": "CONCRETE_GETS_404",
+  "no_parallel_controller_created": true,
+  "main_merge_performed": false,
+  "production_delivery_claimed": false,
+  "next_action": "Persist exact candidate on existing review carrier; return complete bytes and change notice; obtain native workflow and exact admitted publisher/authorization before any Zenodo effect.",
+  "validator": {
+    "argv": [
+      "python3",
+      "-B",
+      "tools/qikvrt_zenodo_machine_proof.py",
+      "--proof-bundle",
+      "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/MACHINE_PROOF_BUNDLE_DRAFT.json"
+    ],
+    "exit_code": 2,
+    "log": {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/evidence/publication-admission-check.log",
+      "bytes": 146,
+      "sha256": "405eb65d63891d197dc805b0b7d4536cb133dd886766caf96a5eca3513e54245",
+      "git_blob_sha1": "d806c015568889bafa2abb7aa039a14d92101769"
+    },
+    "gate_pass_claimed": false
+  }
+}

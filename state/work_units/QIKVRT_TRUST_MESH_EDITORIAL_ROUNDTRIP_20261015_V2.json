@@ -1,0 +1,112 @@
+{
+  "schema": "qikvrt-work-unit-v1",
+  "work_unit_id": "QIKVRT_TRUST_MESH_EDITORIAL_ROUNDTRIP_20261015_V2",
+  "owner": "Ingolf Lohmann",
+  "human_contribution": "Original project and publications; request to correct the supplied assessment; 2026-10-15 clarification on empirical model correspondence.",
+  "artificial_cognitive_contribution": "OpenAI Codex: source reconciliation, editorial synthesis, timeline, document generation and scoped validation.",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "integration/515-519-521-522-20261012-eceb9b63",
+    "source_head": "7af0b7c68ad80352dd9ff6f91600cdca2616dfc9",
+    "source_tree": "43877842d34f93c6de55c240e8f24f88c9b1d41b"
+  },
+  "state": "CANDIDATE_MATERIALIZED_PUBLICATION_REVIEW_PENDING",
+  "artifact_root": "docs/publications/2026-10-15-trust-mesh-roundtrip",
+  "frozen_primary_files": [
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.pdf",
+      "bytes": 245731,
+      "sha256": "d93882e5446443aded564e6895c6b7856d0ea7b51de7226b80690a6270961403",
+      "git_blob_sha1": "8b8cc3e2bcc95c31d628bcbafaac92452671afcb",
+      "name": "GESAMTDARSTELLUNG_DE.pdf",
+      "role": "PRIMARY"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.md",
+      "bytes": 107788,
+      "sha256": "ab9bf059ba16201a62c25c05de4fe1bf7bb5924de1390470d34c8b4308801fa4",
+      "git_blob_sha1": "9b8a7a44008775483bd2128fd5317d143c6ac42e",
+      "name": "GESAMTDARSTELLUNG_DE.md",
+      "role": "SUPPLEMENT"
+    },
+    {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/GESAMTDARSTELLUNG_DE.txt",
+      "bytes": 106821,
+      "sha256": "da75582580bc86b7424dae0f056714cdd5bb8a1fb0a8b9118948b27a68924a1d",
+      "git_blob_sha1": "df5cb03b2ec3a582e344a4e6d0cb38569f560ebe",
+      "name": "GESAMTDARSTELLUNG_DE.txt",
+      "role": "SUPPLEMENT"
+    }
+  ],
+  "verified_scope": [
+    "54 published-source locator displays in all three formats",
+    "20 structured milestones",
+    "176 source-attributed or declared editorial units with reference resolution",
+    "110 existing focused regressions",
+    "Exact source-snapshot and measured-successor blob/tree identity",
+    "All frozen artifact/source-archive hashes"
+  ],
+  "open_work": [
+    {
+      "id": "MAIN_INTEGRATION",
+      "reason": "Existing protected review/integration process remains separate."
+    },
+    {
+      "id": "MIRROR_PROPAGATION",
+      "reason": "Authenticated current GET of Goldkelch/qik-vrt returns HTTP 404; no causal access repair established."
+    },
+    {
+      "id": "OTHER_NODE_COVERAGE",
+      "reason": "A current complete admitted node inventory is not established; unavailable nodes are not erased."
+    },
+    {
+      "id": "ZENODO_EXACT_CANDIDATE_RETURN_AND_OWNER_DECISION",
+      "reason": "Existing v2 rule requires actual return of corrected bytes followed by the canonical candidate-bound authorization event."
+    },
+    {
+      "id": "ZENODO_AUTHENTICATED_PUBLISHER",
+      "reason": "No Zenodo token in the client; no callable initial GitHub workflow-dispatch operation; targeted Zenodo plugin search returned no result."
+    },
+    {
+      "id": "REPOSITORY_SCIENTIFIC_SOURCE_ARCHIVAL",
+      "reason": "Operational/new research sources are included as unpublished original-byte provenance and keep the separate archive-publication gate pending."
+    },
+    {
+      "id": "EXACT_HOST_DELIVERY",
+      "reason": "Fresh observed host at the start was HTTP 530 / recursive NXDOMAIN; product delivery is separate."
+    }
+  ],
+  "ietf_disposition": "NO_NEW_SUBMISSION_FOR_GENERAL_PROJECT_SYNTHESIS",
+  "effect_ack_done": false,
+  "ordinary_release": false,
+  "predecessor_evidence_transfer": false,
+  "new_workflow_or_pr_created": false,
+  "credential_values_persisted": false,
+  "editorial_successor_20261015_1851": {
+    "state": "BYTE_EXACT_PR_INTEGRATED_EDITORIALLY_APPROVED_PUBLICATION_BLOCKED",
+    "source_head": "a16c12134789c1d765b19dcd899106f8fb7dbf31",
+    "source_tree": "e7ed85186d6a07908ec98fda0ec2d86e9dbb8a90",
+    "current_primary": {
+      "path": "docs/publications/2026-10-15-trust-mesh-roundtrip/QIKVRT_Gesamtdarstellung_neu_2026-10-15.md",
+      "bytes": 61037,
+      "sha256": "84e37878f497208bdf6b2db04c8a4f83ee642559ad6db794d408e159c4c94c2c",
+      "git_blob_sha1": "2cc98ab526e76c8d48737e596d6da2c61d941019"
+    },
+    "integration_receipt": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_INTEGRATION.json",
+    "predecessor_checks_transferred": false,
+    "predecessor_freeze_remains_historical": true,
+    "publication_requires_fresh_candidate_bound_proof_and_return": true,
+    "all_preceding_open_work_preserved": true,
+    "integrated_head": "c451de6d25dd064e47f3b3a3c2ea9b029c5b9393",
+    "integrated_tree": "757a9679c1e7863ed668674d8a9482ec9c61fe42",
+    "author_approval_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_AUTHOR_APPROVAL.json",
+    "author_decision": "EDITORIALLY_APPROVED",
+    "source_index_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_TEXT_SOURCE_INDEX.json",
+    "publication_continuation_path": "docs/publications/2026-10-15-trust-mesh-roundtrip/EDITORIAL_PUBLICATION_CONTINUATION.json",
+    "actual_candidate_return_acknowledged": true,
+    "same_editorial_approval_requested_again": false,
+    "prior_open_work_dispositions": {
+      "ZENODO_EXACT_CANDIDATE_RETURN_AND_OWNER_DECISION": "Exact primary returned and editorial approval completed; current full production fileset/proof protocol remains a technical obligation, not a request to repeat editorial approval."
+    }
+  }
+}

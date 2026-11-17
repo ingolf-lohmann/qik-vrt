@@ -1,0 +1,32 @@
+{
+  "schema": "qikvrt_temdd_native_event_v1",
+  "kind": "OBSERVE",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 422,
+    "head": "fbc450c4d2d5045335577aa59be7509cda16adeb",
+    "tree": "15eb1a7bdd2c1880405df1026b14756f0fe72714"
+  },
+  "provenance": {
+    "source": "transputer",
+    "native_event_id": "siemens-restore:owner-input:20261019"
+  },
+  "observed_at": "2026-10-19T12:22:46.127885Z",
+  "message": "Bounded Owner task admitted through existing Terminal input contract to original own-session Runtime; socket path separately HOLD EPERM",
+  "payload": {
+    "terminal_input": {
+      "schema": "qikvrt_terminal_input_v1",
+      "text": "Owner task 2026-10-19: restore the existing Siemens Digital Twin reference integration by reusing missing components from PR422; verify versions, independent readback and simulation/effect separation. No productive Siemens compatibility claim without actual end-to-end evidence."
+    },
+    "input_hash": "sha256:21c549775389690930ec58959996146cb4eb973235b5647a31be00aa1491dd6c",
+    "request_field": {
+      "v": 1,
+      "mode": "prepare"
+    },
+    "route": "ORIGINAL_IN_PROCESS_API",
+    "socket_route": "HOLD_EPERM",
+    "scope": "INPUT_PERSISTENCE_ONLY",
+    "predecessor": "libfile_8ff514ee33a08191a6573ae98c5acb5a/version12",
+    "authority_head": "fbc450c4d2d5045335577aa59be7509cda16adeb"
+  }
+}

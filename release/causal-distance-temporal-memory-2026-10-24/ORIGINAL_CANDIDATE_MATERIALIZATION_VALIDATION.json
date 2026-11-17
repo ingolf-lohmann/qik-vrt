@@ -1,0 +1,14 @@
+{
+  "schema": "qikvrt_original_candidate_materialization_validation_v1",
+  "validator": "tools/qikvrt_zenodo_machine_proof.py",
+  "proof_bundle": "release/causal-distance-temporal-memory-2026-10-24/MACHINE_PROOF_BUNDLE.json",
+  "exit_code": 0,
+  "machine_proof_state": "verified",
+  "machine_proof_sha256": "17bb3e59efaf2c76b88ee049039b113df77af2e7708ae969c03886a118c38c15",
+  "machine_proof_git_blob": "e1df49f2e471fd40213e76e3288900300aa368ea",
+  "claim_count": 15,
+  "scope": "ORIGINAL_FROZEN_20_FILE_CANDIDATE_ONLY",
+  "raw_stdout": "ZENODO_MACHINE_PROOF_STATE=verified\nZENODO_MACHINE_PROOF_SHA256=17bb3e59efaf2c76b88ee049039b113df77af2e7708ae969c03886a118c38c15\nZENODO_MACHINE_PROOF_GIT_BLOB=e1df49f2e471fd40213e76e3288900300aa368ea\nZENODO_MACHINE_PROOF_CLAIMS=15\n",
+  "zenodo_published": false,
+  "extended_lean_publication_candidate_return_pending": true
+}

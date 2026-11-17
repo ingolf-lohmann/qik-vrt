@@ -1,0 +1,88 @@
+{
+  "schema": "qikvrt-work-unit/v1",
+  "work_unit_id": "QIKVRT-LEAN-PROVISIONING-REPAIR-20261028",
+  "state": "SOURCE_REPAIR_PENDING_EXACT_HEAD_CI",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "principal": "Ingolf Lohmann",
+  "authorization": "Owner prioritization of linked pipeline job in current session; existing repository continuation and conditional merge grants retained.",
+  "predecessor": {
+    "pull_request": 623,
+    "head": "7ec67b0985027e77d86e6bcae7607c510ec07ac1",
+    "tree": "ada5863c54a95c3e003a2b35eeff57a0c30974dd",
+    "main": "50e7e9aa3e2f6f85518ef42cd06d66d2cca3eda4"
+  },
+  "diagnosis": {
+    "owner_linked_run": 40330803688,
+    "owner_linked_job": 122777301964,
+    "linked_job_state": "SKIPPED_BEFORE_ALL_STEPS",
+    "linked_job_guard": "pull_request head must equal infra/live-status-default-branch",
+    "linked_commit": "ba16ac9838d06454bb07c1e67eecb8ada14a0e7a",
+    "linked_pr": 604,
+    "linked_pr_merged_at": "2026-10-26T13:31:47Z",
+    "no_rerun_issued": true,
+    "actual_failing_run": 40676429511,
+    "actual_failing_job": 122775926186,
+    "failing_step": "leanprover/lean-action: install elan",
+    "observed_error": "curl code56 Connection reset by peer",
+    "installer_duration_ms": 573122,
+    "kernel_check_executed": false
+  },
+  "repair": {
+    "reuse": "Existing ontology workflow plus original shell-fallback official Lean release path and existing runtime cache registry. No new executor or workflow trigger.",
+    "lean_version": "4.19.0",
+    "official_asset_id": 250981932,
+    "official_asset_size": 343842845,
+    "archive_sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+    "provider_digest": "NOT_PUBLISHED_IN_RELEASE_METADATA",
+    "archive_hash_provenance": "Independent public octet-stream retrieval of official asset, locally hashed on2026-10-28; not an upstream signature.",
+    "cache": "Exact hash-locked archive only; fresh extraction and exact Lean/Lake self-tests on every run; trusted Main dispatch-only save.",
+    "failure_boundaries": [
+      "transport deadlines",
+      "size/hash mismatch rejected before extraction or execution",
+      "source toolchain drift rejected",
+      "incomplete extraction not activated",
+      "prior runtime not overwritten",
+      "wrong cached bytes not silently redownloaded"
+    ],
+    "original_gates_retained": [
+      "All three default Lean libraries",
+      "QIKVRTUniversalOntology build",
+      "32-constant core axiom audit",
+      "71-constant extended audit",
+      "Original boundary regressions",
+      "Exact-head execution-bound kernel receipt"
+    ]
+  },
+  "verification": {
+    "isolated_shell_regressions": 11,
+    "original_unbounded_provisioning_rejected": true,
+    "actual_official_archive_size_and_sha256_verified": true,
+    "actual_local_lean_self_test": "UNAVAILABLE: error: failed to locate application",
+    "local_self_test_is_hosted_kernel_failure": false,
+    "hosted_successor_kernel_receipt": "REQUIRES_FRESH_EXACT_HEAD_RUN"
+  },
+  "open_work": [
+    "PR623 exact-head full CI and Lean kernel execution/readback",
+    "PR623 Principal review/status and admitted Draft-to-Ready REST operation",
+    "Existing VPS static REST/runtime installation and protected SSH binding",
+    "IONOS zone/host delivery, TLS and exact https://raumzeitterminal.de acceptance",
+    "Preserve original predecessor journals, private storage transfer duties and unavailable peer obligations"
+  ],
+  "native_route": {
+    "operator_authorized": true,
+    "ready": false,
+    "open_gate": "ADMITTED_MESH_RUNTIME_ENDPOINT",
+    "observed_exact_host_http_status": 525,
+    "native_input_submitted": false
+  },
+  "effect_boundaries": {
+    "merge": false,
+    "deployment": false,
+    "public_host_delivery": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "attribution": {
+    "human": "Pipeline priority and prior repository authorization — Ingolf Lohmann",
+    "artificial_cognitive": "Diagnosis, bounded source repair and verification — OpenAI Codex"
+  }
+}

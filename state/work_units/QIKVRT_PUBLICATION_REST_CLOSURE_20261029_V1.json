@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt_publication_rest_closure_v1",
+  "date": "2026-10-29",
+  "owner": "Ingolf Lohmann",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_head": "dafe3c15c42dd228642698167043d7677eb0c92f",
+  "base_tree": "4f11b6526ea6c304360b65a0ae5f09d126415bcb",
+  "owner_instruction": "Continue the already authorized publication repair through the existing REST API. Preserve the exact original manuscript and its existing upload authorization.",
+  "contributions": {
+    "human": "Original manuscript, publication decision and REST continuation: Ingolf Lohmann",
+    "artificial": "Source recovery, original REST/launcher integration and bounded regression checks: OpenAI Codex"
+  },
+  "reuse": {
+    "pull_request": 463,
+    "original_head": "ef1d2953a30c1bf27c4a9bc385316c9f50c0c114",
+    "closure_path": "Reuse existing PR463 and its branch; retain original head as an ordered merge parent, retarget to current Main, then verify applicable native CI and conditional merge. No new PR is created.",
+    "original_components": [
+      "src/qikvrt_github_api_shim.py",
+      "tools/qikvrt_authority_credentials.py",
+      "tools/qikvrt_self_host.py::publication_request",
+      "tools/qikvrt_self_host.py::publication_resume",
+      "tools/qikvrt_zenodo_publish.py",
+      "Original OSSecretStore/OIDC session and protected credential-reference files"
+    ]
+  },
+  "repair": [
+    "Expose the original publication-check/resume through the existing loopback native REST listener",
+    "Admit only the server-selected exact private request; caller supplies no paths, credentials, provider URLs or new grant",
+    "Persist original native invocation intent before the existing publisher; duplicate or unknown candidates remain GET-only",
+    "Reobserve actual Authority Main HEAD/TREE/Main immediately before the original publisher child",
+    "Preserve original v2 proof/return/authorization/consumption/public byte-readback gates and all prior receipts"
+  ],
+  "local_validation": {
+    "focused_tests": 75,
+    "focused_skipped": 1,
+    "scope": "Disposable fixtures, real local HTTP listener, original private-file negative path and original-launcher source-drift rejection. No production acceptance.",
+    "full_make_test_exit": 0,
+    "full_make_test_log_sha256": "ae011e36e28f2ecd259139b9bea2f225ba65357742fde81524aaed629c594a33",
+    "runtime_source_sha256": {
+      "tools/qikvrt_authority_credentials.py": "d0a505b0f7396395bbc96f5149b92efdac90304a9f1bef6eeadc1a99e3f40213",
+      "tools/qikvrt_self_host.py": "c120418e74d70d4a420df2ef9becf1b3c59255a379bb51a51a1e81f9fbbc0810",
+      "src/qikvrt_github_api_shim.py": "a2db6c6c026b36427be144bb167a5c9f6cdb6e714234e7b8ca198b38634c8ff4",
+      "tests/test_publication_rest.py": "79a56210846520063cf26e5523f715120cf2e3fef77184329cf8d2208a9b8823"
+    }
+  },
+  "open_work": [
+    {
+      "id": "EXACT_CANDIDATE_NATIVE_CI_AND_MAIN_INTEGRATION",
+      "state": "OPEN",
+      "next_action": "Push the actual candidate, verify its complete applicable CI/review state, conditionally merge PR463 and independently read Main tree and ordered parents."
+    },
+    {
+      "id": "ORIGINAL_ADMITTED_RUNTIME_AND_PROTECTED_SOURCE",
+      "state": "OPEN",
+      "next_action": "Read back the original running listener, registered native SSO and independently pinned existing private request/registry. Source code and secret metadata do not establish delivery."
+    },
+    {
+      "id": "PUBLISH_ORIGINAL_AND_PUBLIC_BYTE_READBACK",
+      "state": "OPEN",
+      "manifest": "release/raumzeit-original-2026-10-29/publish-request.json",
+      "manifest_sha256": "16207e098f14732c9a28ff2f5264331f8167bde37e9026713f8cbfb991311c4d",
+      "pdf_sha256": "88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68",
+      "next_action": "Reconcile original receipts/consumption ref, invoke only through an actually admitted original path and independently verify every public file and DOI."
+    },
+    {
+      "id": "PDF2_QR1_PUBLICATION",
+      "state": "OPEN",
+      "next_action": "After public original readback, create PDF2 from the original with QR1 on its title page and pass the unchanged exact-candidate publication gates."
+    },
+    {
+      "id": "PDF3_QR2_PUBLICATION_AND_RETURN",
+      "state": "OPEN",
+      "next_action": "After public PDF2 readback, return QR2, create PDF3 from the original with QR2, publish through exact-candidate gates and return the final PDF."
+    }
+  ],
+  "evidence_boundary": {
+    "production_secret_values_read": false,
+    "original_runtime_activation_verified": false,
+    "credential_delivery_verified": false,
+    "zenodo_mutation_performed": false,
+    "publication_verified": false,
+    "all_node_adoption_verified": false,
+    "effect_ack_done": false
+  }
+}

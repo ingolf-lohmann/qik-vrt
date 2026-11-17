@@ -1,0 +1,27 @@
+PASS 1 Unauthenticated workspace read rejected
+PASS 2 Unauthenticated task creation rejected
+PASS 3 Foreign-origin writes rejected
+PASS 4 Whitespace-only task rejected
+PASS 5 Client cannot select a different identity
+PASS 6 Malformed JSON rejected
+PASS 7 Oversized body rejected
+PASS 8 Historical import retains date and closed native execution
+PASS 9 REST task persists with bounded public fields
+PASS 10 Separate GET reads exact persisted Unicode title
+PASS 11 Repeated create with request ID does not duplicate task
+PASS 12 Idempotency key cannot be reused with different content
+PASS 13 Another user cannot read a task
+PASS 14 Another user cannot update a task
+PASS 15 MCP reads the same REST task
+PASS 16 MCP updates task with version precondition
+PASS 17 Stale version is rejected without overwriting
+PASS 18 Exactly one concurrent writer succeeds
+PASS 19 Only successful changes enter transactional journal
+PASS 20 Both access channels are recorded in the same journal
+PASS 21 MCP creation defaults to artificial self-declaration
+PASS 22 MCP data calls require authenticated identity
+PASS 23 Unknown tool returns explicit failure
+PASS 24 Stateless MCP discovery exposes supported protocol
+PASS 25 Five actual MCP tools are discoverable
+PASS 26 Private workspace lists remain separated
+{"checks":26,"passed":true,"scope":"isolated Worker + D1; synthetic local identities; no production effects"}

@@ -1,0 +1,108 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_STORAGE_RIGHTS_LEAN_ARTICLES_20261030_V1",
+  "state": "LOCAL_TESTS_AND_KERNEL_VERIFIED_NATIVE_EXACT_HEAD_REQUIRED",
+  "source_subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "6fc9c45a272fb661f09bf5547e63e70e42d45271",
+    "tree": "7b705174f4a8d1948d884930ffa2e6cee6c23304"
+  },
+  "authorization": {
+    "principal": "Ingolf Lohmann",
+    "source": "Direct Owner instruction of 2026-10-30 in this work unit",
+    "decision": "Freigabe erteilt",
+    "scope": "Rights-bearing storage elements, tamper diagnosis, Lean model proof, technical and general-audience articles; reuse standing conditional repository integration grant.",
+    "renewed_permission_required": false
+  },
+  "contributions": {
+    "human": {
+      "actor": "Ingolf Lohmann",
+      "class": "HUMAN",
+      "contribution": "Concept, purpose, originator/rights attribution, private/commercial licensing requirements, proof and article request, authorization"
+    },
+    "artificial_cognitive": {
+      "actor": "OpenAI Codex",
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": "Implementation, formal-model scope correction, Lean code, tests, evidence and article drafts",
+      "model_build": "UNAVAILABLE"
+    },
+    "human_acceptance_changes_generated_origin": false
+  },
+  "reuse": [
+    "src/qikvrt_standpoint_codex.py",
+    "src/qikvrt_codec.py",
+    "formalization/QIKVRT_Formalization_v2.0",
+    ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+    "tools/qikvrt_publication_overview.py",
+    "tools/qikvrt_integrity.py"
+  ],
+  "implementation_scope": {
+    "explicit_new_rights_profile": true,
+    "historical_v1_signature_changed": false,
+    "old_unlicensed_v1_silently_admitted": false,
+    "all_existing_consumers_migrated": false,
+    "private_keys_created_or_exported": false,
+    "new_external_alarm_service": false,
+    "automatic_future_adapter_existence_proved": false,
+    "physical_superdeterminism_proved": false
+  },
+  "evidence": {
+    "local_kernel_receipt": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/LOCAL_KERNEL_RECEIPT.json",
+    "claims": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/CLAIM_MATRIX.json",
+    "local_codec_tests": 69,
+    "new_rights_tests": 12,
+    "signature_bit_mutations": 6400,
+    "lean_theorems": 22,
+    "lean_axioms": [],
+    "negative_controls": 3,
+    "full_suite": "PASS, exit 0; see TEST_RESULTS.json; final evidence-only additions are covered by regenerated integrity and subsequent native exact-head CI.",
+    "native_exact_head": "REQUIRED_BEFORE_MERGE"
+  },
+  "open_duties": [
+    {
+      "id": "ALL_CONSUMER_ADOPTION",
+      "state": "OPEN",
+      "next_action": "Migrate individual native/hardware consumers through their versioned, tested profile contracts; do not infer adoption."
+    },
+    {
+      "id": "MODEL_CODE_REFINEMENT",
+      "state": "OPEN",
+      "next_action": "If required, verify actual parser/codec implementations against the model; keep cryptographic trust and legal attribution separate."
+    },
+    {
+      "id": "FUTURE_ADAPTERS",
+      "state": "OPEN",
+      "next_action": "Provide and verify an adapter for each concrete new runtime; do not claim automatic universal adapter existence."
+    },
+    {
+      "id": "PRODUCTION_HOST_DOMAIN",
+      "state": "OPEN",
+      "next_action": "Continue original authenticated SSO and host path under existing authorization; no substitution or productive acceptance claimed by this work."
+    }
+  ],
+  "effect_ack_done": false,
+  "zenodo_or_ietf_publication_performed": false,
+  "native_predecessor_evidence": {
+    "head": "3abf28c25e782ac4c278e9fbce2dd037af946acd",
+    "tree": "8407c49e854ef4b27b54d37c3af954de3a70d14b",
+    "workflow_run": 41055165073,
+    "artifact_id": 12977005086,
+    "artifact_sha256": "76809f752f99e141233a47e5f40529dfebd76d0ecf13e73552ed0621e891a88c",
+    "kernel_theorems": 22,
+    "axioms": [],
+    "negative_controls": 3,
+    "receipt": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/NATIVE_KERNEL_RECEIPT_PREDECESSOR.json",
+    "successor_head_requires_new_ci": true
+  },
+  "ci_repair": {
+    "failed_run": 41055250522,
+    "failed_job": 124061032544,
+    "cause": "Manuscript project-wide proof audit imports StorageIntegrityAxiomAudit before the additive StorageIntegrity module was built.",
+    "repair": "Build QIKVRTEffectAck.StorageIntegrity explicitly before the existing proof-escape audit; preserve pinned older root imports, lakefile and proof references.",
+    "local_release_and_source_binding_regressions": {
+      "tests": 13,
+      "exit_code": 0
+    },
+    "no_gate_skipped": true
+  }
+}

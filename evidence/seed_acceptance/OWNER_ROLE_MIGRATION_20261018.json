@@ -1,0 +1,77 @@
+{
+  "schema": "qikvrt_seed_role_migration_proposal/v1",
+  "run_id": "owner-seed-role-migration-20261018-e0ad3755",
+  "execution": "Actual local invocation of unchanged existing Seed producer; not a GitHub Actions run or a live node acceptance.",
+  "parent_commit": "e0ad3755b050f367d85e3615fd07af8d5a466d01",
+  "parent_tree": "e21c311da23f65982726dd4c8c07a1217f4bf0ff",
+  "request_input": {
+    "path": "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json",
+    "git_blob_sha1": "b788f21b62f00becc8f3882094ef85ee7d15a7fd",
+    "sha256": "4cdeb0eb420cde38eb051709b594a385883f55622459b8997bcc975e0e273889",
+    "remote_original_bytes_verified": true
+  },
+  "previous_entry": {
+    "path": "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+    "sha256": "e2a33ed2fd0bf3231c3c47ae9bf08aea98e12ef77cdc319cd0788bd296ef3ce5",
+    "git_blob_sha1": "bf29b0026cd6b01f0954f7f143ffe02b950ac8bd",
+    "original_retained_at_parent_commit": true
+  },
+  "ledger_original_prefix_preserved": true,
+  "ack_original_bytes_unchanged": true,
+  "ack_state": "PENDING_SEED_ACCEPTANCE",
+  "structural_acceptance": {
+    "schema": "qikvrt_seed_acceptance_run_v2",
+    "qikvrt_event": "AUTONOMOUS_SEED_ACCEPTANCE_EVIDENCE",
+    "generated_utc": "2026-10-18T05:30:39Z",
+    "run_id": "owner-seed-role-migration-20261018-e0ad3755",
+    "status": "PASS",
+    "seed_repository": "ingolf-lohmann/qik-vrt",
+    "node_count": 1,
+    "accepted_count": 1,
+    "suspended_count": 0,
+    "revoked_count": 0,
+    "fail_count": 0,
+    "errors": [],
+    "results": [
+      {
+        "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "policy_status": "ACTIVE",
+        "result_status": "ACCEPTED",
+        "request_sha256": "4cdeb0eb420cde38eb051709b594a385883f55622459b8997bcc975e0e273889",
+        "workflow_executor_receipt_url": null,
+        "workflow_executor_receipt_sha256": null
+      }
+    ]
+  },
+  "maintenance_status": "CONTINUE",
+  "active_count": 0,
+  "registry_status": "ACCEPTED",
+  "effective_status": "STALE",
+  "revalidation_status": "CONTINUE",
+  "readback_inputs": {
+    "mode": "Verified cached Main request/ref and actual public snapshot404 from current authorized connector; no new network calls claimed by this local producer.",
+    "recorded_at": "2026-10-18T05:30:39.377Z",
+    "public_snapshot_observation": {
+      "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#get-a-reference\",\"status\":\"404\"}",
+      "error_code": "NOT_FOUND",
+      "error_data": {
+        "message": "Not Found",
+        "documentation_url": "https://docs.github.com/rest/git/refs#get-a-reference",
+        "status": "404"
+      }
+    },
+    "api_calls": [
+      {
+        "method": "GET",
+        "path": "git/ref/heads/main"
+      },
+      {
+        "method": "GET",
+        "path": "git/ref/heads/qikvrt/node-lifecycle"
+      }
+    ]
+  },
+  "effect_ack_done": false,
+  "ordinary_release": false
+}

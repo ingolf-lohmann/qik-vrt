@@ -1,0 +1,38 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2",
+  "publication_id": "qikvrt-real-energy-model-source-20261103",
+  "content_changed": false,
+  "original_files": [],
+  "candidate_files": [
+    {
+      "path": "source_archive/README.txt",
+      "bytes": 2658,
+      "sha256": "603fdf993cbc3af72b0aafea2059e447faff61d7077ef346b8c582bbfa53a880",
+      "git_blob_sha1": "c6d1ea0e5fae7fc4383bace52078b55164af606b"
+    },
+    {
+      "path": "source_archive/QIKVRT_Quellen_und_Modell_20261103.zip",
+      "bytes": 458670,
+      "sha256": "8c3b464c0d4a0315ab3fca30254964a926c066d76134c485c2798a4d339e8667",
+      "git_blob_sha1": "eacf692c5d5875da9ee2530df7c8f5b849876007"
+    }
+  ],
+  "changed_claim_ids": [],
+  "change_reasons": [],
+  "change_notice_path": null,
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "Current ChatGPT Work session commentary: directly linked exact source ZIP and README.txt before any production upload.",
+    "returned_at": "2026-11-03T10:14:45.108885+00:00",
+    "visible_change_notice_returned": false
+  }
+}

@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann. Implementation contribution: Claude (Anthropic).
+#
+# Public TLS edge for a self-hosted node (compose profile "public-tls").
+# Replaces the TLS termination that Railway previously supplied in front of
+# the unprivileged nginx gateway. Certificates come from ACME (HTTP-01/TLS-ALPN)
+# and are renewed automatically; they persist in the qikvrt_edge_data volume.
+#
+# Precondition: the public A record of QIKVRT_PUBLIC_HOST points at this host
+# (see tools/qikvrt_ionos_dns.py) and TCP 80/443 are reachable. Without it,
+# certificate issuance fails closed and no certificate is invented.
+{
+	admin off
+}
+
+{$QIKVRT_PUBLIC_HOST} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		-Server
+	}
+	reverse_proxy 10.73.0.2:8080 {
+		header_up X-Forwarded-Proto https
+	}
+}

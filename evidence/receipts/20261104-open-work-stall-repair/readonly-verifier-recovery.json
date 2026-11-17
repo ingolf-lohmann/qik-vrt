@@ -1,0 +1,2068 @@
+{
+  "artifact_roundtrip_source_repair": {
+    "candidate_cases": {
+      "continuation": 49,
+      "execution": "NEW_NATIVE_EXACT_HEAD_REQUIRED",
+      "frozen_apt_and_artifacts": 10,
+      "specification": 23,
+      "total": 137,
+      "watchdog": 55
+    },
+    "causal_gaps": [
+      "Artifact upload omitted the two manifest-bound hidden files.",
+      "The split carrier remained preserved, but the existing publication consumer did not download its separate artifact."
+    ],
+    "correction": [
+      "Include hidden package files in the existing non-secret container artifact.",
+      "Download the original carrier through the existing publication consumer before its original archive check.",
+      "Read both actual uploaded artifacts back in the existing native S1 job; validate exact native producer identity, original package bytes/modes, original package verifier, every OCI blob and the immutable original carrier archive.",
+      "Restore only original manifest-bound file permissions after complete byte validation, including before the existing public-domain readback."
+    ],
+    "local_environment": {
+      "effect": "No local successor test or CLI preflight execution claimed after this failure; native complete checkout tests must run.",
+      "error": "apply_patch verification failed: exec-server transport closed",
+      "state": "UNAVAILABLE_DURING_PATCH_BEFORE_SOURCE_CHANGE"
+    },
+    "merge_performed": false,
+    "original_artifacts": {
+      "carrier": {
+        "id": 13378557846,
+        "independent_original_byte_readback": true,
+        "original_archive_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+        "zip_bytes": 377733146,
+        "zip_sha256": "6898cb71fc343bb5b1a9f9b1c9f922f8bb06c82428bbbfbf5eb9024a0c630138"
+      },
+      "image": {
+        "id": 13378304142,
+        "independent_original_byte_readback": true,
+        "manifest_files": 199,
+        "missing_package_files": [
+          ".github/CODEOWNERS",
+          ".well-known/qik-vrt-self-disclosure.json"
+        ],
+        "oci_bytes": 1142170112,
+        "oci_sha256": "f665649ab0c35fc9d0e0636b0f8a339bc2b49fd0c0a3f450198e6f9144a01214",
+        "zip_bytes": 392040345,
+        "zip_sha256": "314c2ae8ece02c165b35b2fcdd68d11ae39ada89d5098ce82cb912212a1973d2"
+      }
+    },
+    "predecessor": {
+      "head": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+      "native_ci": 41944160618,
+      "native_s1_job": 126977054766,
+      "source_owner_review": 5778176608,
+      "technical_review": 5778312264,
+      "terminal_checks": {
+        "failed": 0,
+        "skipped": 15,
+        "success": 30
+      },
+      "tree": "1c9c1f42e3f37a99d82a68497d8bbf108d07a6c7"
+    },
+    "preserved_local_result": {
+      "head": "49a2e37707a676040746cec468886e2a9c9e9dcc",
+      "scope": "HISTORICAL_ONLY",
+      "targeted_tests": 135
+    },
+    "productive_effect_ack_done": false
+  },
+  "changed_scope": "ONLY_PINNED_READONLY_WATCHDOG_BUDGET_RECOVERY_FOR_EXACT_RUN_ATTEMPT",
+  "current_limit": 20,
+  "current_required_requests": 20,
+  "deployment_publication_approval_scope_unchanged": true,
+  "effect_ack_done": false,
+  "independent_s1_parent_byte_readback": {
+    "all_referenced_blobs_checked": true,
+    "image_digest": "sha256:06120dea36a830045eae651ef5e19183e23cc8b7a61d1a252081ecaa7374f8e6",
+    "independent_native_rebuild_equal": true,
+    "job_id": 126962985046,
+    "native_smoke_restart_verified": true,
+    "oci_bytes": 1142169600,
+    "oci_sha256": "41529cd99477b02ae0fd9238c21892c4b918f58122dde78966852af14df218a0",
+    "productive_effect_ack_done": false,
+    "run_id": 41939852727,
+    "source_head": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+    "source_tree": "8c55a63f8bcb6873b21dd6751edc99872f338174",
+    "unprivileged_user_checked": "10001:10001",
+    "zip_artifact_id": 13376707392,
+    "zip_bytes": 392038527,
+    "zip_sha256": "223d3fdc0a7dd603bb81c08348cb4461aaac3389d4fd9e452ebf11a6512e8d3c"
+  },
+  "native_installation_rate_recovery": {
+    "actual_identical_input_replay": {
+      "source_successor": {
+        "disposition": "ALLOWED"
+      },
+      "unchanged_d3_predecessor": {
+        "disposition": "BLOCKED",
+        "exit_code": 2
+      }
+    },
+    "attempt": 2,
+    "failure_artifact": {
+      "bytes": 3866,
+      "id": 13376950075,
+      "independent_byte_verification": true,
+      "sha256": "76645b9e484cc1b76ff52e9921a3e5a24f3c89007046887aad35cc4cfeb733ac"
+    },
+    "failure_run": 41939852801,
+    "later_native_api_step": {
+      "completed_at": "2026-11-05T00:28:43Z",
+      "credential_realm": "ORIGINAL_REPOSITORY_GITHUB_TOKEN",
+      "job_id": 126962985046,
+      "run_id": 41939852727,
+      "step": "Verify and reuse original PR494 Docker carrier"
+    },
+    "new_source_native_acceptance_required": true,
+    "original_failure": {
+      "boundaries": {
+        "artifact_upload_is_gate_success": false,
+        "external_effect": false,
+        "historical_receipt_is_fresh_evidence": false,
+        "observation_failure_is_quiescence": false,
+        "repository_mutation": false
+      },
+      "completion_claims": {
+        "AUTHORITY_MIRROR_EQUALITY": false,
+        "EFFECT_ACK_DONE": false,
+        "FINAL_PASS": false,
+        "PASS": false
+      },
+      "disposition": "HOLD",
+      "effect_ack_done": false,
+      "effect_already_occurred": false,
+      "expected_head_matches_checkout": true,
+      "expected_head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+      "failure": {
+        "exit_code": 5,
+        "stage": "BASELINE_READBACK"
+      },
+      "first_blocker": "REPOSITORY_REOBSERVATION_FAILED",
+      "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+      "live_subject_reobserved": false,
+      "next_action": "RESTORE_FAILED_READ_PATH_THEN_REOBSERVE_EXISTING_WORK_UNIT",
+      "observed_at": "2026-11-05T00:19:43Z",
+      "pipeline_progress": "UNKNOWN",
+      "productive_edge": false,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "retry_condition": "FAILED_READ_PATH_RECOVERED_AND_EXACT_SUBJECT_REOBSERVED",
+      "run_attempt": 2,
+      "run_id": 41939852801,
+      "safe_continuation": false,
+      "schema": "qikvrt_reflexive_observation_failure_receipt_v1",
+      "semantic_fingerprint": "cc99c643b1516ade9621d05a31d9199bd33a44fbced3032d02370f1f96f2fe4e",
+      "state": "OBSERVATION_FAILED",
+      "tree_sha": "8c55a63f8bcb6873b21dd6751edc99872f338174"
+    },
+    "original_native_log_sha256": "be7f278faee6a1941bb9120098cf30c192c124144e2f5862632d07323753bc3b",
+    "retry_artifact": {
+      "bytes": 722456,
+      "id": 13378360196,
+      "independent_byte_verification": true,
+      "sha256": "aa282ed7df578af1544620c282f38ce4725a6ae683729ed77a7bdd0a116dcab8"
+    },
+    "retry_attempt": 3,
+    "retry_count": 1,
+    "retry_outcome": "NATIVE_OBSERVER_SUCCESS",
+    "retry_receipt": {
+      "authority_observation": null,
+      "baseline": {
+        "age_seconds": null,
+        "available": false,
+        "same_head_and_tree": false,
+        "same_progress_fingerprint": false
+      },
+      "boundaries": {
+        "action_required_is_trusted_execution": false,
+        "automatic_writer_cancellation": false,
+        "external_effect": false,
+        "gatewatch_terminality_is_gate_success": false,
+        "liveness_record_observation_mutates_repository": false,
+        "no_active_runner_is_pipeline_empty": false,
+        "repository_mutation": false,
+        "watchdog_terminality_is_gate_success": false,
+        "zero_job_is_trusted_execution": false
+      },
+      "completion_claims": {
+        "AUTHORITY_MIRROR_EQUALITY": false,
+        "DEADLOCK_FREEDOM_PROVED": false,
+        "EFFECT_ACK_DONE": false,
+        "FINAL_PASS": false,
+        "PASS": false
+      },
+      "continuation_obligation": {
+        "effect_permission": false,
+        "inventory_verified": true,
+        "next_action": "RESUME_ADMITTED_OPEN_WORK_THROUGH_EXISTING_CONTINUATION",
+        "productive_execution_observed": false,
+        "required": true,
+        "silent_idle_allowed": false
+      },
+      "contract_id": "qikvrt-workflow-executor-mesh-v1",
+      "disposition": "HOLD",
+      "effect_ack_done": false,
+      "effect_already_occurred": false,
+      "first_blocker": "OPEN_WORK_WITHOUT_PRODUCTIVE_EXECUTION",
+      "gatewatch": {
+        "active_required_gates": [],
+        "executed_failures": [],
+        "gates": [
+          {
+            "name": "QIKVRT CI",
+            "reason": "TERMINAL_SUCCESS_WITH_EXECUTED_JOB_EVIDENCE",
+            "required": true,
+            "run": {
+              "conclusion": "success",
+              "created_at": "2026-11-05T00:14:33Z",
+              "id": "41939852727",
+              "jobs": {
+                "executed_failures": 0,
+                "in_progress": 0,
+                "other_terminal": 0,
+                "queued": 0,
+                "skipped": 4,
+                "success": 5,
+                "total": 9
+              },
+              "status": "completed",
+              "updated_at": "2026-11-05T00:31:32Z"
+            },
+            "state": "SUCCESS"
+          },
+          {
+            "name": "QIKVRT repository evidence materialization",
+            "reason": "TERMINAL_SUCCESS_WITH_EXECUTED_JOB_EVIDENCE",
+            "required": true,
+            "run": {
+              "conclusion": "success",
+              "created_at": "2026-11-05T00:14:34Z",
+              "id": "41939852845",
+              "jobs": {
+                "executed_failures": 0,
+                "in_progress": 0,
+                "other_terminal": 0,
+                "queued": 0,
+                "skipped": 0,
+                "success": 1,
+                "total": 1
+              },
+              "status": "completed",
+              "updated_at": "2026-11-05T00:28:50Z"
+            },
+            "state": "SUCCESS"
+          },
+          {
+            "name": "QIKVRT Collective Proposal Review",
+            "reason": "TERMINAL_SUCCESS_WITH_EXECUTED_JOB_EVIDENCE",
+            "required": false,
+            "run": {
+              "conclusion": "success",
+              "created_at": "2026-11-05T00:14:34Z",
+              "id": "41939852743",
+              "jobs": {
+                "executed_failures": 0,
+                "in_progress": 0,
+                "other_terminal": 0,
+                "queued": 0,
+                "skipped": 0,
+                "success": 1,
+                "total": 1
+              },
+              "status": "completed",
+              "updated_at": "2026-11-05T00:24:23Z"
+            },
+            "state": "SUCCESS"
+          },
+          {
+            "name": "QIK-VRT global claim completion",
+            "reason": "TERMINAL_SUCCESS_WITH_EXECUTED_JOB_EVIDENCE",
+            "required": false,
+            "run": {
+              "conclusion": "success",
+              "created_at": "2026-11-05T00:14:34Z",
+              "id": "41939852836",
+              "jobs": {
+                "executed_failures": 0,
+                "in_progress": 0,
+                "other_terminal": 0,
+                "queued": 0,
+                "skipped": 1,
+                "success": 1,
+                "total": 2
+              },
+              "status": "completed",
+              "updated_at": "2026-11-05T00:27:10Z"
+            },
+            "state": "SUCCESS"
+          },
+          {
+            "name": "QIKVRT Batch-003 remaining subject disposition",
+            "reason": "TERMINAL_SUCCESS_WITH_EXECUTED_JOB_EVIDENCE",
+            "required": false,
+            "run": {
+              "conclusion": "success",
+              "created_at": "2026-11-05T00:14:34Z",
+              "id": "41939852864",
+              "jobs": {
+                "executed_failures": 0,
+                "in_progress": 0,
+                "other_terminal": 0,
+                "queued": 0,
+                "skipped": 0,
+                "success": 1,
+                "total": 1
+              },
+              "status": "completed",
+              "updated_at": "2026-11-05T00:24:22Z"
+            },
+            "state": "SUCCESS"
+          },
+          {
+            "name": "QIKVRT adaptive runtime",
+            "reason": "TERMINAL_SUCCESS_WITH_EXECUTED_JOB_EVIDENCE",
+            "required": false,
+            "run": {
+              "conclusion": "success",
+              "created_at": "2026-11-05T00:14:34Z",
+              "id": "41939852746",
+              "jobs": {
+                "executed_failures": 0,
+                "in_progress": 0,
+                "other_terminal": 0,
+                "queued": 0,
+                "skipped": 1,
+                "success": 3,
+                "total": 4
+              },
+              "status": "completed",
+              "updated_at": "2026-11-05T00:15:40Z"
+            },
+            "state": "SUCCESS"
+          },
+          {
+            "name": "QIKVRT Seed Dashboard Build",
+            "reason": "NO_EXACT_HEAD_RUN_NOT_REQUIRED",
+            "required": false,
+            "run": null,
+            "state": "NOT_OBSERVED"
+          },
+          {
+            "name": "QIKVRT Seed Mesh Maintenance",
+            "reason": "NO_EXACT_HEAD_RUN_NOT_REQUIRED",
+            "required": false,
+            "run": null,
+            "state": "NOT_OBSERVED"
+          },
+          {
+            "name": "QIKVRT Seed Node Revalidation",
+            "reason": "NO_EXACT_HEAD_RUN_NOT_REQUIRED",
+            "required": false,
+            "run": null,
+            "state": "NOT_OBSERVED"
+          }
+        ],
+        "node_liveness": {
+          "authority_head": "4e57edd6878d593c9a116aa200a481d8eba9df9f",
+          "blocking_records": [
+            {
+              "reason": "SEED_ACCEPTANCE_AUTHORITY_HEAD_STALE",
+              "record": "seed_acceptance"
+            },
+            {
+              "reason": "NODE_REGISTRATION_RENEWAL_OVERDUE",
+              "record": "renewal"
+            },
+            {
+              "reason": "NODE_HEALTH_EXPIRED",
+              "record": "health"
+            }
+          ],
+          "records": {
+            "health": {
+              "content_sha256": "884d31575b55f37f9bff26542015d18c512a77b11b95e29347ff52319c37babf",
+              "expires_utc": "2026-10-19T05:30:01Z",
+              "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+              "present": true,
+              "reason": "NODE_HEALTH_EXPIRED",
+              "state": "EXPIRED"
+            },
+            "renewal": {
+              "content_sha256": "e417d190c03801a0a2592bee130d5f66a5c114a467ced89d336d2452421b0f78",
+              "next_renewal_due_utc": "2026-10-19T04:30:01Z",
+              "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+              "present": true,
+              "reason": "NODE_REGISTRATION_RENEWAL_OVERDUE",
+              "state": "OVERDUE"
+            },
+            "seed_acceptance": {
+              "content_sha256": "3214416300806fa4cb82579dcad4454150531c3de2f0631b92064ee5b0430a6c",
+              "observed_authority_commit": null,
+              "path": "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
+              "present": true,
+              "reason": "SEED_ACCEPTANCE_AUTHORITY_HEAD_STALE",
+              "state": "STALE"
+            }
+          },
+          "records_root": "qikvrt/runtime/onboarding",
+          "schema": "qikvrt_node_liveness_gatewatch_v1",
+          "state": "HOLD"
+        },
+        "observation_freshness_seconds": 900,
+        "required_evidence_gaps": [],
+        "required_workflow_names": [
+          "QIKVRT CI",
+          "QIKVRT repository evidence materialization"
+        ],
+        "schema": "qikvrt_exact_head_trusted_gate_matrix_v1",
+        "scope": "PULL_REQUEST_MAIN"
+      },
+      "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+      "last_progress_at": "2026-11-05T00:45:24Z",
+      "leases": {
+        "progress_lease_seconds": 900,
+        "queue_lease_seconds": 600,
+        "writer_lease_seconds": 1200
+      },
+      "observations": {
+        "active_productive_runs": [],
+        "active_writers": [],
+        "exact_head_run_count": 22,
+        "job_readback_plan": {
+          "effect_ack_done": false,
+          "expected_head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+          "first_blocker": null,
+          "inventory_sha256": "5c689ae769812698ec7c9e756d19f07b2846eda514488c8bbec63bf56a346fa6",
+          "max_job_requests": 20,
+          "metadata_only_run_ids": [
+            41939844170,
+            41939844230,
+            41939852862
+          ],
+          "reported_run_count": 22,
+          "required_job_request_count": 19,
+          "returned_run_count": 22,
+          "run_ids": [
+            41939852723,
+            41939852727,
+            41939852743,
+            41939852746,
+            41939852752,
+            41939852801,
+            41939852813,
+            41939852814,
+            41939852830,
+            41939852836,
+            41939852845,
+            41939852855,
+            41939852864,
+            41939852896,
+            41939852902,
+            41939852904,
+            41939853003,
+            41939853077,
+            41940058844
+          ],
+          "schema": "qikvrt_job_readback_budget_v1",
+          "selection": "LATEST_PER_WORKFLOW_AND_ALL_ACTIVE_V1",
+          "state": "READY"
+        },
+        "run_job_evidence": [],
+        "runs": [
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:29Z",
+            "event": "push",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939844170",
+            "jobs": null,
+            "jobs_observed": false,
+            "name": "QIK-VRT universal ontology finite-model verification",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:17:04Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:29Z",
+            "event": "push",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939844230",
+            "jobs": null,
+            "jobs_observed": false,
+            "name": "QIKVRT CI",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:31:02Z"
+          },
+          {
+            "conclusion": "skipped",
+            "created_at": "2026-11-05T00:14:33Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852723",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 1,
+              "success": 0,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT Batch-003 subject 172dd public archive probe",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:14:35Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:33Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852727",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 4,
+              "success": 5,
+              "total": 9
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT CI",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:31:32Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852743",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT Collective Proposal Review",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:24:23Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852746",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 1,
+              "success": 3,
+              "total": 4
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT adaptive runtime",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:15:40Z"
+          },
+          {
+            "conclusion": "skipped",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852752",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 1,
+              "success": 0,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT PR18 integrity repair",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:14:35Z"
+          },
+          {
+            "conclusion": null,
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852801",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 1,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 0,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT reflexive repository watchdog",
+            "status": "in_progress",
+            "updated_at": "2026-11-05T00:44:51Z"
+          },
+          {
+            "conclusion": "failure",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852813",
+            "jobs": {
+              "executed_failures": 1,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 2,
+              "success": 0,
+              "total": 3
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:21:33Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852814",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIK-VRT universal ontology finite-model verification",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:17:37Z"
+          },
+          {
+            "conclusion": "skipped",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852830",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 1,
+              "success": 0,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT Batch-003 remaining archive probe",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:14:35Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852836",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 1,
+              "success": 1,
+              "total": 2
+            },
+            "jobs_observed": true,
+            "name": "QIK-VRT global claim completion",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:27:10Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852845",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT repository evidence materialization",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:28:50Z"
+          },
+          {
+            "conclusion": "failure",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852855",
+            "jobs": {
+              "executed_failures": 1,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 0,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT live status watch",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:18:08Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852862",
+            "jobs": null,
+            "jobs_observed": false,
+            "name": "QIKVRT code-owner review observer",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:14:39Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852864",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT Batch-003 remaining subject disposition",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:24:22Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852896",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT requested review executor",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:14:55Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852902",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT productive TEMDD S1 carrier",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:20:06Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939852904",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT workflow executor watchdog",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:15:18Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939853003",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT live Authority Mirror A-B benchmark",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:14:51Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:14:34Z",
+            "event": "pull_request",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41939853077",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 2,
+              "total": 2
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT Personal Firefox capability boundary",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:17:28Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-11-05T00:16:08Z",
+            "event": "pull_request_review",
+            "head_sha": "d3d7efe87e0a23192721fd737e8ec540e7ffd7f1",
+            "id": "41940058844",
+            "jobs": {
+              "executed_failures": 0,
+              "in_progress": 0,
+              "other_terminal": 0,
+              "queued": 0,
+              "skipped": 0,
+              "success": 1,
+              "total": 1
+            },
+            "jobs_observed": true,
+            "name": "QIKVRT code-owner review observer",
+            "status": "completed",
+            "updated_at": "2026-11-05T00:16:15Z"
+          }
+        ],
+        "stale_writers": [],
+        "untrusted_terminal_runs": [],
+        "waiting_productive_runs": []
+      },
+      "observed_at": "2026-11-05T00:45:24Z",
+      "open_work": {
+        "complete": true,
+        "first_blocker": null,
+        "inventory_sha256": "d3eee8d4e67ad6f1296bc72633a8f2784d1630f528534fa63cdebc5a3f93f7d6",
+        "items": [
+          {
+            "id": 5204369591,
+            "kind": "ISSUE",
+            "number": 362
+          },
+          {
+            "id": 5204540716,
+            "kind": "ISSUE",
+            "number": 363
+          },
+          {
+            "id": 5267591418,
+            "kind": "PULL_REQUEST",
+            "number": 366
+          },
+          {
+            "id": 5269102745,
+            "kind": "PULL_REQUEST",
+            "number": 367
+          },
+          {
+            "id": 5307774470,
+            "kind": "PULL_REQUEST",
+            "number": 369
+          },
+          {
+            "id": 5307775717,
+            "kind": "PULL_REQUEST",
+            "number": 370
+          },
+          {
+            "id": 5307894427,
+            "kind": "PULL_REQUEST",
+            "number": 371
+          },
+          {
+            "id": 5308073878,
+            "kind": "PULL_REQUEST",
+            "number": 372
+          },
+          {
+            "id": 5336169196,
+            "kind": "PULL_REQUEST",
+            "number": 373
+          },
+          {
+            "id": 5363717233,
+            "kind": "PULL_REQUEST",
+            "number": 375
+          },
+          {
+            "id": 5415922276,
+            "kind": "PULL_REQUEST",
+            "number": 377
+          },
+          {
+            "id": 5421568945,
+            "kind": "PULL_REQUEST",
+            "number": 378
+          },
+          {
+            "id": 5439255141,
+            "kind": "PULL_REQUEST",
+            "number": 379
+          },
+          {
+            "id": 5462757566,
+            "kind": "ISSUE",
+            "number": 380
+          },
+          {
+            "id": 5467749045,
+            "kind": "PULL_REQUEST",
+            "number": 381
+          },
+          {
+            "id": 5499764327,
+            "kind": "PULL_REQUEST",
+            "number": 382
+          },
+          {
+            "id": 5510523846,
+            "kind": "PULL_REQUEST",
+            "number": 383
+          },
+          {
+            "id": 5512131012,
+            "kind": "PULL_REQUEST",
+            "number": 384
+          },
+          {
+            "id": 5529379833,
+            "kind": "PULL_REQUEST",
+            "number": 385
+          },
+          {
+            "id": 5536470777,
+            "kind": "PULL_REQUEST",
+            "number": 387
+          },
+          {
+            "id": 5536577364,
+            "kind": "PULL_REQUEST",
+            "number": 388
+          },
+          {
+            "id": 5538072305,
+            "kind": "PULL_REQUEST",
+            "number": 389
+          },
+          {
+            "id": 5546758483,
+            "kind": "PULL_REQUEST",
+            "number": 391
+          },
+          {
+            "id": 5546966748,
+            "kind": "PULL_REQUEST",
+            "number": 392
+          },
+          {
+            "id": 5547395374,
+            "kind": "PULL_REQUEST",
+            "number": 393
+          },
+          {
+            "id": 5550929049,
+            "kind": "PULL_REQUEST",
+            "number": 396
+          },
+          {
+            "id": 5551336792,
+            "kind": "PULL_REQUEST",
+            "number": 397
+          },
+          {
+            "id": 5553721231,
+            "kind": "PULL_REQUEST",
+            "number": 398
+          },
+          {
+            "id": 5553769004,
+            "kind": "PULL_REQUEST",
+            "number": 399
+          },
+          {
+            "id": 5555833054,
+            "kind": "PULL_REQUEST",
+            "number": 400
+          },
+          {
+            "id": 5571343026,
+            "kind": "PULL_REQUEST",
+            "number": 402
+          },
+          {
+            "id": 5578977336,
+            "kind": "PULL_REQUEST",
+            "number": 403
+          },
+          {
+            "id": 5579965369,
+            "kind": "PULL_REQUEST",
+            "number": 404
+          },
+          {
+            "id": 5583073883,
+            "kind": "PULL_REQUEST",
+            "number": 408
+          },
+          {
+            "id": 5593465016,
+            "kind": "PULL_REQUEST",
+            "number": 410
+          },
+          {
+            "id": 5605589370,
+            "kind": "PULL_REQUEST",
+            "number": 414
+          },
+          {
+            "id": 5607275414,
+            "kind": "PULL_REQUEST",
+            "number": 415
+          },
+          {
+            "id": 5607579376,
+            "kind": "PULL_REQUEST",
+            "number": 416
+          },
+          {
+            "id": 5614682017,
+            "kind": "PULL_REQUEST",
+            "number": 417
+          },
+          {
+            "id": 5650437248,
+            "kind": "PULL_REQUEST",
+            "number": 418
+          },
+          {
+            "id": 5655039588,
+            "kind": "PULL_REQUEST",
+            "number": 421
+          },
+          {
+            "id": 5659703634,
+            "kind": "PULL_REQUEST",
+            "number": 422
+          },
+          {
+            "id": 5660616003,
+            "kind": "PULL_REQUEST",
+            "number": 423
+          },
+          {
+            "id": 5661042401,
+            "kind": "PULL_REQUEST",
+            "number": 425
+          },
+          {
+            "id": 5661729049,
+            "kind": "PULL_REQUEST",
+            "number": 426
+          },
+          {
+            "id": 5661914057,
+            "kind": "PULL_REQUEST",
+            "number": 427
+          },
+          {
+            "id": 5662061331,
+            "kind": "PULL_REQUEST",
+            "number": 428
+          },
+          {
+            "id": 5662400569,
+            "kind": "PULL_REQUEST",
+            "number": 429
+          },
+          {
+            "id": 5662407677,
+            "kind": "PULL_REQUEST",
+            "number": 430
+          },
+          {
+            "id": 5662421472,
+            "kind": "PULL_REQUEST",
+            "number": 431
+          },
+          {
+            "id": 5663021898,
+            "kind": "PULL_REQUEST",
+            "number": 432
+          },
+          {
+            "id": 5663301769,
+            "kind": "PULL_REQUEST",
+            "number": 433
+          },
+          {
+            "id": 5663723835,
+            "kind": "PULL_REQUEST",
+            "number": 434
+          },
+          {
+            "id": 5664996449,
+            "kind": "PULL_REQUEST",
+            "number": 435
+          },
+          {
+            "id": 5665841974,
+            "kind": "PULL_REQUEST",
+            "number": 436
+          },
+          {
+            "id": 5668622274,
+            "kind": "PULL_REQUEST",
+            "number": 438
+          },
+          {
+            "id": 5668859830,
+            "kind": "PULL_REQUEST",
+            "number": 439
+          },
+          {
+            "id": 5671425639,
+            "kind": "PULL_REQUEST",
+            "number": 440
+          },
+          {
+            "id": 5671545038,
+            "kind": "PULL_REQUEST",
+            "number": 441
+          },
+          {
+            "id": 5675765980,
+            "kind": "PULL_REQUEST",
+            "number": 442
+          },
+          {
+            "id": 5675944766,
+            "kind": "PULL_REQUEST",
+            "number": 443
+          },
+          {
+            "id": 5677357763,
+            "kind": "PULL_REQUEST",
+            "number": 444
+          },
+          {
+            "id": 5683741846,
+            "kind": "PULL_REQUEST",
+            "number": 445
+          },
+          {
+            "id": 5685426361,
+            "kind": "PULL_REQUEST",
+            "number": 446
+          },
+          {
+            "id": 5689538447,
+            "kind": "PULL_REQUEST",
+            "number": 448
+          },
+          {
+            "id": 5689713757,
+            "kind": "PULL_REQUEST",
+            "number": 449
+          },
+          {
+            "id": 5690021297,
+            "kind": "PULL_REQUEST",
+            "number": 450
+          },
+          {
+            "id": 5694853605,
+            "kind": "PULL_REQUEST",
+            "number": 451
+          },
+          {
+            "id": 5694856864,
+            "kind": "PULL_REQUEST",
+            "number": 452
+          },
+          {
+            "id": 5696637910,
+            "kind": "PULL_REQUEST",
+            "number": 453
+          },
+          {
+            "id": 5696921597,
+            "kind": "PULL_REQUEST",
+            "number": 454
+          },
+          {
+            "id": 5698055393,
+            "kind": "PULL_REQUEST",
+            "number": 455
+          },
+          {
+            "id": 5699632995,
+            "kind": "PULL_REQUEST",
+            "number": 456
+          },
+          {
+            "id": 5705351789,
+            "kind": "ISSUE",
+            "number": 458
+          },
+          {
+            "id": 5708451304,
+            "kind": "PULL_REQUEST",
+            "number": 459
+          },
+          {
+            "id": 5708675750,
+            "kind": "ISSUE",
+            "number": 460
+          },
+          {
+            "id": 5710632617,
+            "kind": "PULL_REQUEST",
+            "number": 461
+          },
+          {
+            "id": 5715759126,
+            "kind": "PULL_REQUEST",
+            "number": 464
+          },
+          {
+            "id": 5719849642,
+            "kind": "PULL_REQUEST",
+            "number": 465
+          },
+          {
+            "id": 5723555960,
+            "kind": "ISSUE",
+            "number": 466
+          },
+          {
+            "id": 5724286143,
+            "kind": "PULL_REQUEST",
+            "number": 467
+          },
+          {
+            "id": 5724343749,
+            "kind": "PULL_REQUEST",
+            "number": 468
+          },
+          {
+            "id": 5725396075,
+            "kind": "PULL_REQUEST",
+            "number": 471
+          },
+          {
+            "id": 5725536419,
+            "kind": "PULL_REQUEST",
+            "number": 472
+          },
+          {
+            "id": 5726280934,
+            "kind": "PULL_REQUEST",
+            "number": 474
+          },
+          {
+            "id": 5726575877,
+            "kind": "PULL_REQUEST",
+            "number": 475
+          },
+          {
+            "id": 5726651368,
+            "kind": "PULL_REQUEST",
+            "number": 476
+          },
+          {
+            "id": 5732237633,
+            "kind": "PULL_REQUEST",
+            "number": 477
+          },
+          {
+            "id": 5735896943,
+            "kind": "PULL_REQUEST",
+            "number": 481
+          },
+          {
+            "id": 5735950519,
+            "kind": "PULL_REQUEST",
+            "number": 482
+          },
+          {
+            "id": 5736724899,
+            "kind": "PULL_REQUEST",
+            "number": 483
+          },
+          {
+            "id": 5736911910,
+            "kind": "PULL_REQUEST",
+            "number": 484
+          },
+          {
+            "id": 5740024677,
+            "kind": "PULL_REQUEST",
+            "number": 485
+          },
+          {
+            "id": 5745211094,
+            "kind": "PULL_REQUEST",
+            "number": 487
+          },
+          {
+            "id": 5745523293,
+            "kind": "PULL_REQUEST",
+            "number": 488
+          },
+          {
+            "id": 5748408997,
+            "kind": "PULL_REQUEST",
+            "number": 489
+          },
+          {
+            "id": 5748409038,
+            "kind": "PULL_REQUEST",
+            "number": 490
+          },
+          {
+            "id": 5751996781,
+            "kind": "PULL_REQUEST",
+            "number": 491
+          },
+          {
+            "id": 5753585026,
+            "kind": "PULL_REQUEST",
+            "number": 492
+          },
+          {
+            "id": 5753588927,
+            "kind": "PULL_REQUEST",
+            "number": 493
+          },
+          {
+            "id": 5753997413,
+            "kind": "PULL_REQUEST",
+            "number": 494
+          },
+          {
+            "id": 5754281278,
+            "kind": "PULL_REQUEST",
+            "number": 495
+          },
+          {
+            "id": 5756867682,
+            "kind": "PULL_REQUEST",
+            "number": 496
+          },
+          {
+            "id": 5757088464,
+            "kind": "PULL_REQUEST",
+            "number": 497
+          },
+          {
+            "id": 5758885162,
+            "kind": "PULL_REQUEST",
+            "number": 498
+          },
+          {
+            "id": 5774354725,
+            "kind": "ISSUE",
+            "number": 503
+          },
+          {
+            "id": 5774398435,
+            "kind": "PULL_REQUEST",
+            "number": 504
+          },
+          {
+            "id": 5774909865,
+            "kind": "PULL_REQUEST",
+            "number": 506
+          },
+          {
+            "id": 5776236900,
+            "kind": "PULL_REQUEST",
+            "number": 507
+          },
+          {
+            "id": 5786154201,
+            "kind": "PULL_REQUEST",
+            "number": 516
+          },
+          {
+            "id": 5786466349,
+            "kind": "PULL_REQUEST",
+            "number": 517
+          },
+          {
+            "id": 5787005747,
+            "kind": "PULL_REQUEST",
+            "number": 518
+          },
+          {
+            "id": 5789462810,
+            "kind": "PULL_REQUEST",
+            "number": 520
+          },
+          {
+            "id": 5874988125,
+            "kind": "PULL_REQUEST",
+            "number": 526
+          },
+          {
+            "id": 5907341584,
+            "kind": "PULL_REQUEST",
+            "number": 528
+          },
+          {
+            "id": 5910737271,
+            "kind": "PULL_REQUEST",
+            "number": 532
+          },
+          {
+            "id": 5911524548,
+            "kind": "PULL_REQUEST",
+            "number": 533
+          },
+          {
+            "id": 5920608048,
+            "kind": "PULL_REQUEST",
+            "number": 540
+          },
+          {
+            "id": 5921417127,
+            "kind": "PULL_REQUEST",
+            "number": 541
+          },
+          {
+            "id": 5923714330,
+            "kind": "PULL_REQUEST",
+            "number": 544
+          },
+          {
+            "id": 5924130633,
+            "kind": "PULL_REQUEST",
+            "number": 548
+          },
+          {
+            "id": 5924138495,
+            "kind": "PULL_REQUEST",
+            "number": 549
+          },
+          {
+            "id": 5927657169,
+            "kind": "PULL_REQUEST",
+            "number": 552
+          },
+          {
+            "id": 5932888950,
+            "kind": "PULL_REQUEST",
+            "number": 553
+          },
+          {
+            "id": 5943840093,
+            "kind": "PULL_REQUEST",
+            "number": 556
+          },
+          {
+            "id": 5947462675,
+            "kind": "PULL_REQUEST",
+            "number": 557
+          },
+          {
+            "id": 5950167876,
+            "kind": "PULL_REQUEST",
+            "number": 558
+          },
+          {
+            "id": 5951178790,
+            "kind": "ISSUE",
+            "number": 560
+          },
+          {
+            "id": 5951220492,
+            "kind": "ISSUE",
+            "number": 561
+          },
+          {
+            "id": 5956403656,
+            "kind": "PULL_REQUEST",
+            "number": 568
+          },
+          {
+            "id": 5956998749,
+            "kind": "PULL_REQUEST",
+            "number": 569
+          },
+          {
+            "id": 5963689648,
+            "kind": "PULL_REQUEST",
+            "number": 573
+          },
+          {
+            "id": 5981173815,
+            "kind": "PULL_REQUEST",
+            "number": 576
+          },
+          {
+            "id": 5983464083,
+            "kind": "PULL_REQUEST",
+            "number": 577
+          },
+          {
+            "id": 5990091776,
+            "kind": "PULL_REQUEST",
+            "number": 578
+          },
+          {
+            "id": 5992024224,
+            "kind": "PULL_REQUEST",
+            "number": 579
+          },
+          {
+            "id": 5994365118,
+            "kind": "ISSUE",
+            "number": 580
+          },
+          {
+            "id": 5995208611,
+            "kind": "PULL_REQUEST",
+            "number": 582
+          },
+          {
+            "id": 5995233519,
+            "kind": "PULL_REQUEST",
+            "number": 583
+          },
+          {
+            "id": 5995592280,
+            "kind": "ISSUE",
+            "number": 585
+          },
+          {
+            "id": 5995698145,
+            "kind": "PULL_REQUEST",
+            "number": 586
+          },
+          {
+            "id": 5998300353,
+            "kind": "PULL_REQUEST",
+            "number": 588
+          },
+          {
+            "id": 5998636791,
+            "kind": "PULL_REQUEST",
+            "number": 589
+          },
+          {
+            "id": 5998644695,
+            "kind": "PULL_REQUEST",
+            "number": 590
+          },
+          {
+            "id": 6000198115,
+            "kind": "PULL_REQUEST",
+            "number": 591
+          },
+          {
+            "id": 6007231470,
+            "kind": "PULL_REQUEST",
+            "number": 593
+          },
+          {
+            "id": 6008333302,
+            "kind": "PULL_REQUEST",
+            "number": 594
+          },
+          {
+            "id": 6013209569,
+            "kind": "PULL_REQUEST",
+            "number": 599
+          },
+          {
+            "id": 6013646116,
+            "kind": "PULL_REQUEST",
+            "number": 601
+          },
+          {
+            "id": 6018039476,
+            "kind": "PULL_REQUEST",
+            "number": 603
+          },
+          {
+            "id": 6024773865,
+            "kind": "PULL_REQUEST",
+            "number": 605
+          },
+          {
+            "id": 6059070745,
+            "kind": "PULL_REQUEST",
+            "number": 613
+          },
+          {
+            "id": 6059332937,
+            "kind": "PULL_REQUEST",
+            "number": 615
+          },
+          {
+            "id": 6065145830,
+            "kind": "PULL_REQUEST",
+            "number": 619
+          },
+          {
+            "id": 6069163410,
+            "kind": "PULL_REQUEST",
+            "number": 621
+          },
+          {
+            "id": 6080100228,
+            "kind": "PULL_REQUEST",
+            "number": 625
+          },
+          {
+            "id": 6122986146,
+            "kind": "ISSUE",
+            "number": 645
+          },
+          {
+            "id": 6130457793,
+            "kind": "PULL_REQUEST",
+            "number": 647
+          },
+          {
+            "id": 6130646177,
+            "kind": "PULL_REQUEST",
+            "number": 648
+          },
+          {
+            "id": 6130829972,
+            "kind": "ISSUE",
+            "number": 649
+          },
+          {
+            "id": 6131024554,
+            "kind": "ISSUE",
+            "number": 650
+          },
+          {
+            "id": 6131114507,
+            "kind": "ISSUE",
+            "number": 651
+          },
+          {
+            "id": 6131156362,
+            "kind": "PULL_REQUEST",
+            "number": 652
+          },
+          {
+            "id": 6133348582,
+            "kind": "PULL_REQUEST",
+            "number": 656
+          },
+          {
+            "id": 6134776126,
+            "kind": "PULL_REQUEST",
+            "number": 657
+          },
+          {
+            "id": 6151004885,
+            "kind": "ISSUE",
+            "number": 669
+          },
+          {
+            "id": 6200169489,
+            "kind": "ISSUE",
+            "number": 682
+          },
+          {
+            "id": 6200372247,
+            "kind": "PULL_REQUEST",
+            "number": 684
+          },
+          {
+            "id": 6210051897,
+            "kind": "PULL_REQUEST",
+            "number": 686
+          }
+        ],
+        "state": "OPEN",
+        "total_count": 169
+      },
+      "productive_edge": "RESUME_ADMITTED_OPEN_WORK_THROUGH_EXISTING_CONTINUATION",
+      "progress_clock_basis": "FIRST_VERIFIED_OBSERVATION",
+      "progress_fingerprint": "8c6c433c9d229f9357a3b51f12e1d33f95d0ea16945315ba2acd0fb24ebe36c7",
+      "progress_markers": [
+        "0035792aa40da8bef0c6899d4971c6ff2e822b35575e49173a42798af08a42ec",
+        "007fe89bbf29ceb540a294b13c6ceba40115a5a24e7ff295fde0dc202e42bb31",
+        "00a4b0e65b9ea8de14887289d27a1bca8eb714602bad517afcfad8e11f208b60",
+        "00febc396f319eaa0282aa838ab6cc5b9b2af9da0c758e3fb3a4a00e5afe21cf",
+        "01619932efa529d927b9711e9afd59ececfe43d9d667890cdcf20063efa10d87",
+        "02a270c1bdd80ddfbcc93a16ac0d0201b201c54985fac56c640686dd7bcfcdd7",
+        "04118cd69fe85c0042042745c41b65853c3b2b62af080f7de0203fd683e3b652",
+        "0497429083788b5ccd37f700d3d986d184c0c7f834c0b6aab0371f9fd54b7d59",
+        "085a22251a496ac596cbdb4aa7ceab301344001f788d84ed84ee65e8d339a5c1",
+        "0ae85da664dc6ddee83e77be888b40974ad76c4ea49eaceeb3c3ff88a1b12608",
+        "0bdceccdc5b529bd595ffc9fe9ccc7bd91e9941bf785d32318e00e7bb28f9ca2",
+        "0cd26aff85e1d7f1251ffe4687efeacf5bf3124fdf333ccbd7c9ef37ba1c2ec5",
+        "0dd49dd98bd09174fb55a026f4ae4275dad8b0e0e3d8fb7b87ccab70ac7fdb2e",
+        "0e3ad3179118e019756c8b0cc4bd75feb18000cff7ed06ee1e9789e596ff118f",
+        "0fffde519c838f638e9a87c0dd199a22de83fcfd8b87eded996160901b43210f",
+        "1092e199f5859aaee986b9fc9d45ace8f4189a450a0b90ef9886cd7aa30c2d35",
+        "11074b11ac2b7a0bd6d4aed33968fa66dcf941460cb8e0eba7e0036d7a1e28f8",
+        "11ae1cb20c6502162087b7450e7e59a8f162e402166b3e7cf4042a0187bf800c",
+        "11d3b77cddcd399a0da5c62beca00dc8458f03893d5e4383af43504792e7236a",
+        "15a04259616d466138b778fe610c6f33982f4347e3826f1b97e699fe42ea73a7",
+        "15c1a487cd9d4d0257ee94bbc4778c13ec883fed0a1ffe63c1fdcc1abe0e9eeb",
+        "15fceff0e1c0c0e14f543d9bf5c40b4e072d222528b518dca06a6283f258616b",
+        "1842108ab74bbc8f466ad0e79fc4cbd8f4c139a8d3fad7d6d6eed42bfa88d5d0",
+        "185934ab8f2d3cdd21e237e32ef06da3d90f4d0553e28969bbf8a5b33ae4a803",
+        "18951e44389bd1a73ec6d4ba714cb03b3413762d7d9c69d29f80724da60ad31c",
+        "197b91b42be531c874c6e6f76fded7233984133b8dca5ca9e69c649c4a9fe88c",
+        "1bd4c4304f4e5cc4c5c627a04f933d71943799fcf4440a6d338392ab4da730fd",
+        "1cbe751bdfb1842a4d31e41e8e1adf3e506669fa4db4b1bc56226406aebf7ee3",
+        "1cc4c9624f263be097250be13bcb774894c8314f27af7f471304934aee111d1c",
+        "1d529be9c2e5d946b7d7a088ce3160520047bcd767a398d886f8b5265fa44c0c",
+        "1d75725676ff7041c972c744fc59c08d5f386ddfb7b8537a16592ca943652a60",
+        "1e771ba1fc9eb0f24d8dc03f7308d5d277abdd6d3d329565b7a753f1dd78a17c",
+        "20254e0f455338ee2a92f94d4110466f765d00f7660d7407c2af6017f34e3788",
+        "20ac20b5c79961f607f0a906c9ab0d3d1a4cdb8301f47d676cb5782ec6d31d31",
+        "22836fc46f0a88ce5092907d2f078cef429497c8b0f412a0fe5cca03a71ffbc5",
+        "255d75922085f8cd546b13da87c4ec3f2d3554ba231ab14d889e6261da4c8fe9",
+        "25a88d6a244f236b5dbdc55eead5467b763b3167843c89a8a48d11cf88272eca",
+        "26d9c81fbc87b01e1274a5af38b855c39f75f0abd8b28a32c9ce0d863b59e21c",
+        "26f5966bf0c4168ee58029121ad22ad45a91c83cde0e5d9aa1381a8a2e884a1f",
+        "276927d96a1aced7eec5c3ae83edc5bfb543e60a404a154daad1b8b1f9319afe",
+        "27967479168a5ebc0051c693d5988c9047a405fb326ac1463a9d315b64b60636",
+        "27b96e9dfcb87ddb619a3355db1f25d822a78588ce17132420208cd54d0a3990",
+        "293f8f07668f5ceeb738dd6a2cffb7d6e6fcdd33e3380b4fd6f7432cc2549ea6",
+        "29f6f1ff5ddb5ed7e50e7e3b8a586d7e1949c360583d18bd88e8ab279d45e619",
+        "2cd28c328165c81a0aa12e05c5dfcfdc775363b9006e6c22f68a219ccee83620",
+        "2d2c936e6bef94655f419f12f72e10f6bda287a22940b355782f167ada4ee25c",
+        "2dfefe41f253d066b7af45fa9f991f4cbe1356c8f292365feb4d4f3c414c6922",
+        "2e11c4165a60081e265262f1515fb31712d890454c313d04fe4c2a0772d32610",
+        "2e7e87e05b43c74cafa4782271492aaf8c37209adf5e7de8016a3f32e4c09cc0",
+        "2e8e03cdf5c27cb37837dd4135f93dd379a937717e54a73b3ab76e6ddff64201",
+        "2f57787d7494bd56898f4e15736505742a9a79e0a7eda7b9552ca5fabda372ad",
+        "3047dba0eb4c46a781c23f56d4c56e26841c684c0a51ef44ceadd6e25d3dec53",
+        "3079cc5f90a0143038321a60ce9da1d68e9ea89a45caa154776ba771fd8b958d",
+        "30ee3ca48b2e552dbb75c05df9bd04dcd6f25743d85f0dd749cea98a3a48a243",
+        "324b6c3e27f8499bef634b23d8a61feb3d73b217fd49831c568d43ac91e7ace6",
+        "32d77f9350a0f83ad93234faf1561d451aa28a527f73a81ee39d056d1d0c7c2d",
+        "350b4d60e3a79612a9d5a9449f68b34e913af28a1f3205c3904ce8141888c10a",
+        "35fecd6d9c30b13071a7a891e910313ae8b0f1e84c43f717be5ebcafb67f7570",
+        "36177579dbf418cb0b735c8d5b88b605f646489bf54fb681d3dd1a7dfe2f012f",
+        "36d2e0e8f4263e005edff9600e181d224d7bf32b3e633c2d8c7c65245545a6f3",
+        "36d3f5adb2f06dab38e8757e5ebcc7d459dfe8620cbb9e3ea8022e9794645efa",
+        "36e05de1fa89c5625a02cbf582088096184c440c1a66f38052e3f60e0dd158bd",
+        "3754527fa1083eb3e8433505450350ae8fd1e75e8865cefdecb6c09a92f69fde",
+        "37beeff4c6e49209a03e77157850bdf9843081862c629ac193587a3aae20f4d5",
+        "394a11601684c9a8e688a313f478c093b58dd36aeac73cdb533fef01aba42630",
+        "39eff663704cce3bd023f5d6ec683842b06a5ee028d323d7df0e3bbd2b3ed7a8",
+        "3b7fcd5283b1e402a63a6536a9bbc7ee14fd8cf3cae8ee0e1f4b85969e708ba6",
+        "3d0b506b49418ec304fdd0bca8d2bc451c068b72aaabbb09a2bf225c9e28169f",
+        "407bf74c58d53821fd600046f9916744f1fc928df73f793dfa557bc512215736",
+        "408b75b21542f12c90f982e8331ed44b54bda33fee05c43b186e28ce54ebecb1",
+        "409110fc50e74ee88009d9612fdf255c497badc1cfa4689d51a5c576065699f2",
+        "41d70a342417f1afa35053824d9b61eecff97b0c1450461017cc7dd9e78625d4",
+        "486e84c5948d831a6013484a01bbccbd096a6711f6c8c9762214dc4e708cdfc3",
+        "489952a1230cabb82aa17c6d3bd56a75ca64de33d13d9ed083110a6466bf550f",
+        "48f0c84fe2512dc466b1cce887b986f5eecd5c188be75c1ad90ef40691235723",
+        "49c759b1b810a0fa8a5c08749681dec64a1eb1218d19dedab2c33ffb973179e6",
+        "4a67728ea8c00225fce138e2e4289754ea84aa926ee70417dac0023713f1e5ae",
+        "4ac1d2ac1638d4bb3031c5bb4da4593ccd1aa376e2ea5cddb20189e7bf5d1975",
+        "4b8e89389ea32014d25c34a72d1a780ebb2e9d8263e73aaf9ec3a1af96a9943b",
+        "4be9c836135a1f831fca39e71c7e14fcc229dd62d583e7269ed6444c2adbe3dc",
+        "4cdf5b6cec4f3dd5b7626f81386354e4ffb926a460a1db4b146f958c2bff2d67",
+        "4f426ba21f64d3fad679ab18e12e23eaa18f1623809cda12c5511eb8a97a4a2b",
+        "500d0b59d9db91f62a70c783ed3baaa7d4f786f2e8eba1a233a141dec3a34a4d",
+        "5197f8a3d9267528c8fbabda172446b9d5e567e385094da983d64907202e9699",
+        "5331002a6062f94169ab83f1f930f2266ce1a52ccd8a6ef7b9f9a13f032a6c67",
+        "53d98ee1128f12a05c0a78b8bcd3f9107aaf45b83c9ae0c8501c0b28ec6189db",
+        "53e3b1bfd22faebca3ba497eb32f5e40cc2e41bab934e9719b4dbe8b07431d9d",
+        "54726e5630f61df920f98baae418ef027f812d9deda5670b5c3126b2867b90a0",
+        "555cd2046030ebdfb429687ff0f31170f1a0e3568021477ae580cbd437ea4e9c",
+        "55866b95e1001e01c33f6a178435c81f73d7e046e100187acee5fd14e484138d",
+        "59e43ec6e4f8e70580df1fd7d8130e0b31fea5cf9031024f56ed9a04a6a22759",
+        "5ada35709dcb0e8c66152e3289dd8a22f4ea4b5aed9ff995f1ca3cb96b2f35b5",
+        "5be03fbbe94a95511cd9dbf6530f3db801c601095987532dba9e43836addd568",
+        "5be769538af798deac7d15746f08e0075e188883afb3b077578fc9d968403c3f",
+        "5c16f0ad7d17e702097f548e5cc892f5fd5bae3b6f211045f14f2175628cf167",
+        "5dc5b7a2e83dcedfc99afd8d6b2725441ffae0893cfb0ade39cbcad8e4011615",
+        "5ea4e2424b7e8f01a005dc575155bf851f1e12ab8f7e776fdd53c270b9709504",
+        "62a26f3fd74a6c71045b916d86d3281f61c1efe2d26d2d120ac30e24805f9a5b",
+        "63498a468ae0de74af38b9dc9fe59aab17f376a7c3d4a21c86e120bde8f015ca",
+        "636cedd52a502fc1c3aac313fb18276bc597eba50a01d3e12c5ef121c5c4fb7f",
+        "637c624ff7c32cbfef8532ff63aeb0a8815ce878f167c91e6417fb6817b2e734",
+        "671e49746dd1e1bb0ba0666a21af7a08bcce57475bf50f49315e4d8994c91250",
+        "681b0271bd71b6a8352a2069fd4028dfbd7c43db057bfccd8284700658ec9f39",
+        "6874ae1d2249f0af5459ad2c044fd7a59aa3a34456db7de67f2dad2fb13c1552",
+        "691b61770838711cc232a3a587adf1e029af66c485dff4c01cc4486a71135b3f",
+        "694c22e66e5b8eb55fcfdbfba2b1a530985f489a0ddca604280353122e922162",
+        "6dd0dad0649e229f40033ccbf3fbb621c2e323a6842e2db393a40c7fe898fbf4",
+        "6f761444dc201f828fc0c9882b559de85cdcd8e36a5cbbded5dff7334880d746",
+        "6fb98aaa40936814263964d3fc1b8cc9ad3ed7384e54cfbfd8e861c80601f10f",
+        "70c20514d8de3307991e5bf4cf1202075d2499dfd50b28d827239e470b790701",
+        "7100db5d3b859da8c3683dc9e2691cd3316ed96d3b32376aa73965545ab84fa6",
+        "72655e02a6bb18db1fbd9069cf78c4dd28909497dfef010e4c361da253c3309d",
+        "730e574865713e6dcb3d16c9a8fe9b1cb4bf80e870954269e40707253cd53420",
+        "7359ae750c164e6d55ab6ee2387bc6156f84f8706f1c51a5b7256ca40348c7de",
+        "738239466cfe7670a33b138e057ea640dfe2b56223afe15ffd44909450be8b9e",
+        "7452d70717530c32c636dac1ff29235e653c1690108280ebc4f5020666f549e0",
+        "746c9b03cb5a7aec87e4d7f33e7594e8a5f187c7a608ba8d333adefd0d8aa13e",
+        "74b5ac5603472f5d19d915873ecee37c7623b617018be76ad0b579fdc0f2a404",
+        "74f18cdb1826e7cd6ffcca2b940cc4e264b51bda68b62aae303b4781eca1542c",
+        "74f94ef7131632327214d0f268700e35d0411fce3be786b29d43176bdef5732e",
+        "74faedc48ff9acbc2cb85d80d901cdb14393cc8e3c0451e3c6e33a7fc135bde1",
+        "759138a899da825a2e394df0414f06b880e5f113574b47486040e7d0705315ae",
+        "777aa7c052480aade66c4173a8a07bc608c1f91545d69d01a5f7865e507db406",
+        "791830deb5a42d857f6fd9129a35e3948e7cc02e093220cb03a76ef5de3af39f",
+        "7a52638671f07890da53550bc9fd704e274c2e055ce58c257263d2461991132a",
+        "7a9559cf3578a222a59304a63c1cf8b2768e91ab0f0e0e0d6b85c04bdf83b539",
+        "7ae6d396f68601d54fa1af56e08bd55e2bf23f2ef83b1e891f4871499616bbba",
+        "7b7fe40672067d53ab37258648fe5df5d5b0ce2cc41fe0ea8e8069ac588550dd",
+        "7cd75cf323845f53487ee9ec055afc7a11bdb927fe9fb2de54fcc73848c14fd4",
+        "7d4c418b276a0a8b46d2d6019c33c8eae6f7dd95682000143a4879fc8fc07847",
+        "8072c2b1f3a58862f935f705e1368f332842851410a4f0e6e8d9e5fd0d227f91",
+        "80b8e310c3ade8b4cf978770a43f883fd19a6ab6211703ebf5e95bda25ec5922",
+        "80b9b6559ba148babcfd8e58e54315687027fb1a511915eb2b825bbc863d6f5e",
+        "82c7b9f5734c3ba19d694886a27308c924c275c9ce39543e4fb446e002f7c8dc",
+        "833272008a99046ddbbbe2920a3efafc3a013c66e6eefa256c14b813ccc52e70",
+        "83d7794637c5bde42b79ff3a6d09803aaa3efd1a55ec4c88977df4d8c238b4c2",
+        "8483bea54843f41b567dfe8a158c762a6aa0857460e8b50dcca7b9277fb1332d",
+        "85298e7c6e4f874cc49c879ef6e9044323b45a5be705fbc73585c2a5f5075b5f",
+        "868165ba805caa9cc2aca1b339a4b5eb2f8bd2415f5c6107882d3becea48b16e",
+        "87553efd91039bb516889ca535532ea744206d1dcba55b3e67b210656017010c",
+        "87d848049175c9eafb350bf6f843f4ff900dae1fac7c5779d27b44126e9ad001",
+        "8849cea7b38ae8d74f79aa37fbd040043df35b80f617cfe1a62db572e6395342",
+        "88e6a29109525c00eb4756e56104a61ddf603cfb49242331c671d78133883aee",
+        "8a101f720e870b38587fd6918c164406a3704c2ec58afe8c6a6b2da8a337a87a",
+        "8b1010827de57dc9f4f211f68d4973248c4be4459ba4411b787ad413474d5d74",
+        "8bed976a4811ccc7b6850622dbc672ba57119489838953e84f4309638b6d5e8b",
+        "8c9ce1a18cd41dc0b4c9a2556e9d6aba7ac13fbf02f694d681fa4b39a7a0d511",
+        "8d0bec437879f2a33f5d56929132ebe20713f03c478e90a958b4d61b1a0463cb",
+        "8d18350526f5d04a58c0c7f66cd7f84b8de927d724b00d374011fc33aae14c10",
+        "8eb3bd094cf92847c77e7e6c97e8fbb697242deda304a49f1567be8a445415cf",
+        "909e6bff12d9490bedf8b5ff9df05cc5205c76c29d6a4cdcdfd55c5d22213fee",
+        "912e18b2987f40a2459c627aebb3e8effb6f15ed71d7a2ec804d0bce5eb5a13f",
+        "919218a358a1ada05930fea08649ce5b58c525c5e51f17196dcc2d82940a3238",
+        "91d02954d7e71b058a3fe9d9232e7e6ef2d0667e0636a598fb10793a641b15d0",
+        "939eeff5d9a1c26a16f740adf8338799611c865e71280489f654b367b2f2c52a",
+        "93b7a5da0d4f93627b0ecb7538ebe1cd58b8b06fc88f33b949f4889ff9dba0d6",
+        "953e7ae12e0c1ff63e3c7a7fceeecc432320e9baa13bcfc26bf1342fb1c834d9",
+        "95884dbff4eedc210d733f36accc8c9bd14318719bb176f29998b6de50086021",
+        "96264129cfbad098539ab4e2cc6ce051163c16858e46df292c74ecd1775c5d54",
+        "963f878c082f234f84746f344d3abda7ffcbebf60818407163042521d1713191",
+        "9699c44d277afbabb6b18b02bc873ae5a6ac786f4a954bb9918110d925cae92f",
+        "97cb6c9de895fa1bde6f777190c9a1a4bd63c1671239dd80183cb2758ef4586c",
+        "990d443b2ffb9083680ec6a554f5599850226697f5bdd680d9512b7af6467841",
+        "9911e2da678640a3d94e9a77a8be817d3d803a6cf33a955362494dce3c432dfa",
+        "99a176cededde7d53115224a2c53ee38ac4c4050ceed64a4b1659cccc5200529",
+        "9a6de546b4da54f4789d4b8ee39cc5663d6a7c210864cc0d6ea579821810a089",
+        "9a86e0daee6ca705455232900aa5e76ca7771040e63e2420eb8cd0d46f86981d",
+        "9bc2529bf87699fc01da5bb602645651579ec36a292bd93e5447136d28bab292",
+        "9c65e0a8309148445adf09e9462fd8e146db4fbe6a9d72c3f032054111302748",
+        "9d04dea35290744dc0cf5e14463676a0a96ffd43bcc0d46c57c9d8e18ce6a9b0",
+        "9d0e9bd97d78788e545850000068734fb3d82344c0db23b0f790f2d0fe8cc73e",
+        "9d8d34302ee22284bd86f3184628391e138ab98045d90aa37106de0fe8abf4a1",
+        "9f0c97970112cd710fa8b1647ee87c30df0c223e7c53abd91ea4e90796ede388",
+        "9f3c129273c9ac6ec1ad23745b5ef84d3e230ea00fb7773be171bdacd217d2f4",
+        "a0f20a2926e190759c7c99c2e77f3577219e5dea76781ff1c9fb5f2df6e040f5",
+        "a175c1e4b03d55e480c780741b8b6cd8afe9707814c970620367a2ca3803a080",
+        "a1e3407a2c1f95f7cfba78f6e504d0ef06139296f08c6931d1d7979bff854094",
+        "a260cdbb94f819ae36c0aca94703d5f137dd5b1924eedaed22a0f9e34f3ce837",
+        "a29bc29a233125f87c33b492dfddbf8421bfcb672d9c3d4621de5388867d2400",
+        "a29fcb40eb2ff9ba1310a81e378b5e180b863ad970f8e29c20368cd227b5991f",
+        "a308d2014e55e9f877b32e6c1834e6c9cbfa7fdfd37b767d42c663fae30e037e",
+        "a457833e38aa8b0f0185da695c4b2794ef19c2a554abcfe8df7335e49d062c95",
+        "a60a806c1db1000ec346f90c4118c4a096c4fb8ee1b5fbad07bda3e8ccded219",
+        "a64d178bdda558903efc71c853202174e8888f18e60fdec74a7defe36c4d79b1",
+        "a697b9ab541fbd30c962c982b073ea63c580c167a4e23300ddead6d9a05ff82b",
+        "a7590b3897226ac75ca13c92eb7e1fada7ae88dd0cf0e02c12a9038884c58856",
+        "aa85411bdc0077645925ab13137770c26902c427816cc23c5e4623e5907501ba",
+        "abf8f244fb3e22fc903d2fed7b397f24dd9c218e0a6bc6df6a8eef067b253ef8",
+        "ad06d0116c63eb343aa9fb060da7045c2ea03dcb5e2bd24fb96749eb85ff5e01",
+        "ad45fa25a02fbdcd236b27ff4cf86d872bf8cb9509fe96db6145d5e1b5922a84",
+        "ad84cdfaca2e6fdcf882abe4cb6fa7f9da2315527a0f0bdf6c18890168e6c361",
+        "ada2270413f460d8ea1fb695940a710dc91d34bb77fe02d8a74603908632d95a",
+        "afb928de720b1806c3a89971b52b929ae1193a24c2aaf5a13e04147f563ba88d",
+        "affe9951af1943bf38ab1fdd08fb6767b6dd945a75258cae2d433603f1f1594b",
+        "b0077238ff2233243a733c50ec7c1dad26ef529b1cf65bc4f12ab5b4d644e650",
+        "b0f9ba9149cf54e5e0fc615443bf3cd064356011be8fb1c088e1778dd5ed231e",
+        "b38848fe7d503b0f5625f1554a8f1bfbe1e6df7add2d83f520b591c5ec3c641e",
+        "b3cc8b1a38533023824038483ee204f3d89ddd8cc18046396cfe330018f8ec12",
+        "b44c666d9c08454a7f48b03495d70555c62a07cbbf32b5f87624cf81461eafc7",
+        "b45ba0bf2bd3742077a5528bfd3d1da670ae3fa124bd53c97de34778bce872b6",
+        "b48f334ccfa22819ff16534ddb081751eeb204475e14788470051bc06d5ae90c",
+        "b4fe8117e9690590753919c228c43076327e2d2ae8f0168e9f85d095ad5e2b51",
+        "b7764523eb664793960bf83f37bc793a0f51b8da2602ed336aa4d43dc9407586",
+        "b81fb0d393cf4c5a46f9938e093ff8dc6af5fac7ff888770e9fc3557e4fdd414",
+        "b8b5545d43d9220fda772d3740cf57229fbaf06a3868b7d64d54a965cfd0a3f9",
+        "b952e4f638a802dc9d7c4fce266dfd4b70f05cc2dabf5cdd8e9dc42d1e665686",
+        "bb64cea087408ec3b4e7cc3c5734715138c9a9c44c030abab086e8d390fa1e12",
+        "bb81ba8796d711759fd763040f07c874c96a86b08c27b6fca0931970a7d31b4d",
+        "bbddba071b20cc4f13ee0dccdbb449d8a304f795eed8c93552effac631f6d78f",
+        "bc3165d4be19e6839486b66b36c01424ccd90b993779cfb053509769fe2f2dae",
+        "bc5944fcd17668418ae6e826160220b2e77694029244f7143d632036b2c58654",
+        "bf7df6ca53516a2699ec1766adbbb412dca8e562a8bb3214244f7e319201a37c",
+        "c1adf1b7e26db3bbf3d5344822ea7d5a323e35eb35a76762ace19968a3ab34e5",
+        "c3ddfc821bf8cbeb61035890e3f339e4833cb4e51b35f83b1e093242db890a8f",
+        "c65c17b972f397a1de832b6d8b68de7d55180e97f33996ca0b06a548679cc0cc",
+        "c6f4939f899d398f253298751af9e6e9402f08a21fd96fbad0d4bf0113972f08",
+        "c71b8fed399510f9f31b2155ffeb14452d6c9489f4aa5791e70601b2b12464ef",
+        "c748effce2a7d9d25f022c1a9aacb70080d75a73efe5ed445ce5bed87dbe0f44",
+        "c74d29aa8ab02b9017ad433dcb9a903c969a863c8680add3b74cb312f1cbaf27",
+        "c9060464b8d7d522f4e8f0d8f78d73402834f45f4fd3c8fb313fa90a0667c8d8",
+        "ca4956b2f0a1c97b092b32c3b2d95ae282c1848278c7363263d4cf35bc6b6eb3",
+        "ca79bfe39b0365ff6989b1526361614667e272f51e4f3f49e7503466063deea2",
+        "cad590986b10df16bd1bcd568de8159919ba6a498e2c7e5b459aab3f1470b3c2",
+        "cbb8b52452d2ce9a717d58850b64b0f6da76c62bed77397936d5c23e9b77903d",
+        "cc661ab5e51fecc47826a74daffe1e23c003af14ba1470e1defc7df6bfb99bb8",
+        "cc6ce9dfa82d5d74b250716eac21f844630994716d514a2b106970dee44ae716",
+        "cc7f0fa27595c1148f5d3b206783fd93726bc09dad67bd6bcc127b4ee82ddb69",
+        "cd1a82f6fef89ee06ad273dd4fbf7d3243dd2ea3c7f10e704675a7154be7b79a",
+        "cf23d6f2bacc70945cc9386f2165045c20ac6b47d34d13411da7c419bad22216",
+        "d0e99de5f73a465529be383458ee24066b082e364ecd484dddcd4c4fdef26714",
+        "d13de044ce9889ebc852dbd5b9c29741883cb41b820fd4925c4b82407fbde31c",
+        "d2022c8d7d54965c102268965668f854713dfeee8d9af62c03dadbd7e6343fc5",
+        "d24b3fbe1fac969569be285fd797e5fba6a833ec831bfe1e2601660fe85e1c5a",
+        "d3057030b769032aa7f5d5d623030721f9e36d5f9c9731ff446a921baf3efcdb",
+        "d3b91032e8f704fe7498ef3c6099585f79c9ac7622d9beb2039e6ad9ce1446dd",
+        "d4f02267f58f66b9b7cb0059ca4ce343ec472dfc8f244c34924336a9d158b562",
+        "d615ad7ebb3429632698eabf1d25912a4d3f6550ec155fc4fc68c984e258ac7e",
+        "d69727cba8bfbe09030e6f4dd78f038bc504eb12639cbc0ff9bb785b48872774",
+        "d7855a79f10687f48586050598eebbb9719ed60b505ec91880e068fb5ba5b42d",
+        "d78e96182145c911fa2259334f07d7e34a6c388932c8b5282a6868a12c071958",
+        "d7d10589842a63805b59acb69fc6fe9fef3fa72fffb5b3feab36ac2f17d4af00",
+        "d9290aa2584c8f197f771022d24e9c7b29bcc99aa3c3f55acba7fdaddd1b1713",
+        "dd71404dac6d73c120fe9a5f0aa06b9742894d4d770ed282de61c4013a5e663e",
+        "df2b096fa9d618f046ba45389a320b41e23ea6e87875e6f0f207ee25203f56b2",
+        "e130705b33595a1839a2c7cdf717299865eff499c35343f87b325144a70660da",
+        "e2b24f692808c1802765de2ed17291134f9f10a1742ca253d9e241a2986ddab1",
+        "e58d20397eeaca734f9f40a636e1750cf27108d88fba2a1e371f56fe0c725e66",
+        "e5c3f4118d968f5b504fd9308fa1f4d0b34fb4e4bb45aa524c8b1b4c475f186b",
+        "e5e0961a906ee6775c3841e8f7bd2c812b41a9c8c9892140f823aa0776285992",
+        "e69fc7f42b724cc44cc54a5f6f9d7c1691a1acdba5f3428f92a43a504578be16",
+        "e7126e5f57425691339b3a4caf529f6a9ed29f0161e5600cc95ab0e48a5c5bc3",
+        "e72a9ac3f801842867bce8b8845f390e71d2b6f2477a4c1740c345e76776dbe6",
+        "e75d69a28e88a4e0470e081c85327308b2e59bbb952d566522cdce46533b51a7",
+        "e7abebe6c4c55fd0c8e8c56b05b91416335da4a9f866169e20c6518fd397ac6f",
+        "e8414c85a7d9e95a52f78529e0dab6a86f1450b861c8011c0d3940623980fd0e",
+        "ea3e83081e5640386844b16f0ff8d90a5a00615f196ab420e025255a3a53c0f5",
+        "ece947b336b80b2d760f8d7415828dda3c89c58f104b03581ef122bfbec10e66",
+        "eded06eb760ad9760df05a9cb2da699960e614803aba4a78dc5e0a0effa32711",
+        "ee37ea0745dd913d0a60ab30621d036c1a7b6cfc21ccc8912885cad2b12b13d5",
+        "ee63a95fbc2f227ccdbc7af561e8992aef96b52611785103ad2d649fadd0dbb7",
+        "eef8f46bad2045300c40e0bb7a18fcc048e0a470b6533d6709e5ef9465f1ddc8",
+        "ef0180cd6a677d790cb7a186e7bc70c61d8d94725ee89dfbdc7152804be810e3",
+        "f162ebfa989b37c4a147de421de6261a9d6ab88edd928578912dedd9b652b907",
+        "f188f275eb4e5e0ad5854fe5582480becfaa27a4540636f851c6edb170829538",
+        "f461ab4b319a9bc9bac50ebda754692aeac840642315a44e4f8997ae55e23c8b",
+        "f89907ab620f9271e9fbb9560b878c5e95e86e0f7e2357e016ebaf9ee41fef58",
+        "f8d488fea118fc739ecdf523897144639c3c86183fd7c3fa04097c6cd67de433",
+        "f9c39ac8d5165736b1303c87acce920471532d9080d680538fa14128d628b6ec",
+        "fbb7c81ec8defe3db0516af3ad4e961a3826f7fa0bcd04f7cf03f41f7a594e2e",
+        "fc13f31e22c60387df47fc864c5141534f73745aabb3ee3e9d313430ace68237",
+        "fc5b02dd47e8d2702d360935e9a22477351db1139aa4787012d63c5befeef571",
+        "fd0088ae552dcd71d4a3187500ca1d710727c60d7bf7abe190099b99048e8f7a",
+        "fd36be5cca07a5e9ec9c66da1524093af186cde299f39ece5df428dbaafb5f59",
+        "fe4e59693212660822f7695712543aaa39ada1bc5ae76132003f7d669a13bd4e",
+        "fefb9c59ff6c21af221d30a25230b3143f128e533ec59b93f2fc27750899ef1c",
+        "ff078a9fa125480de4083cbc759ece0f00278f9fb6927d8ee025d09bb99e594a",
+        "ff4cf7b72d1b72cce5b0461e4e476b025180ad3acc28626823287f739c9f7120",
+        "ffa0ab59195cd7d60e5ffc270ad1aaeb1b2fa889a70440941392010d779e66c9"
+      ],
+      "repository": "ingolf-lohmann/qik-vrt",
+      "resource_graph": {
+        "cycle_detected": false,
+        "pre_cycle_conflict_detected": false,
+        "resources": [
+          {
+            "capacity": 1,
+            "conflicting_holders_or_requesters": [],
+            "holders": [],
+            "resource": "REPOSITORY_WRITE_LEASE"
+          },
+          {
+            "capacity": "PLATFORM_MANAGED_UNKNOWN",
+            "observed_holders": [],
+            "observed_waiters": [],
+            "resource": "RUNNER_CAPACITY"
+          }
+        ],
+        "schema": "qikvrt_repository_resource_graph_v1"
+      },
+      "safe_continuation": "Triage preserved open work in the existing consumer and execute only an already admitted successor.",
+      "schema": "qikvrt_reflexive_repository_watchdog_receipt_v1",
+      "semantic_fingerprint": "dc61d3e37b807374ab1b620fee83122e7633d1087003b81ef953998f1b9486c9",
+      "state": "CONTINUATION_REQUIRED_OPEN_WORK",
+      "tree_sha": "8c55a63f8bcb6873b21dd6751edc99872f338174",
+      "unchanged_for_seconds": 0
+    },
+    "scope": "RETRY_PREREQUISITE_NOT_FAILED_OBSERVER_ACCEPTANCE"
+  },
+  "native_retry_executed": false,
+  "new_checker_consistency": "READY",
+  "original_error": "AI_HANDOFF_BLOCK: SPECIFICATION_HISTORICAL_SOURCE_REPAIR_SCOPE_REQUIRED",
+  "predecessor_git_blob": "35dd3711a73997ac486900a4e12f31ee631748ea",
+  "predecessor_head": "66d93bdfda7f83a281ff684be878bc32eda6bd09",
+  "previous_required_requests": 22,
+  "same_actual_failure_receipt": true,
+  "schema": "qikvrt_exact_readonly_verifier_recovery_replay_v1",
+  "scope": "FROZEN_SOURCE_CLIENT_PREFLIGHT_ONLY_NOT_NATIVE_EXECUTION"
+}

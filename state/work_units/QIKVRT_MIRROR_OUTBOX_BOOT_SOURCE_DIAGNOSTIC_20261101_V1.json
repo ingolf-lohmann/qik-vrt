@@ -1,0 +1,58 @@
+{
+  "schema": "qikvrt-mirror-outbox-source-diagnostic-repair/v1",
+  "owner": "Ingolf Lohmann",
+  "authorization": "Existing Owner continuation delegation and current next(); linked workspace fe5e98c2-98d5-4db6-bca4-10a71e00e14e v2",
+  "issue": 669,
+  "base_head": "ca3b6f225d8cc13e4d29f257b07211a03ca08b85",
+  "authority_main": "d5e3181db664258bba8815d6d2a962dfcda80e31",
+  "authority_tree": "c6fafcb1a94bef904b4935d0a0797fb0045b1378",
+  "reuse": "Existing issue-agent/669 branch, ai_runtime_bootloader and its regression suite; no new executor or outbox implementation.",
+  "causal_gap": "Boot reported no observation for its mandatory original Mirror outbox source; missing source was discovered separately after startup.",
+  "change": "Expose local source-presence observations during bootstrap; keep missing source distinct from an unavailable checker and present unverified bytes. Preserve CONTINUE for separately admitted recovery and work.",
+  "source_bindings": {
+    "tools/ai_runtime_bootloader.py": "3beb26aa968065c034b91da6857071646e05ee9793835179e76d570a391f3e06",
+    "tests/test_ai_runtime_bootloader.py": "5fe82e1bc3e2db2f5ae71cb2cea4a753aa3e8987680555cb5872c2544f9ce1b9"
+  },
+  "policy_path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+  "policy_sha256": "b902b44710e3f1ff869d07a7ff598bef826ffb538d3bb23128f5ed8e7008d427",
+  "local_targeted_verification": {
+    "command": "python3 -B -m unittest -v tests.test_ai_runtime_bootloader.MirrorOutboxSourceObservationTests",
+    "tests": 7,
+    "result": "PASS",
+    "scope": "Isolated local source-observation cases, not native effects"
+  },
+  "remaining_checks": [
+    "repository-native integrity regeneration and verification",
+    "full make test on the frozen candidate",
+    "native exact-subject CI and governance before any integration"
+  ],
+  "original_source_recovered": false,
+  "original_writer_admitted": false,
+  "assessment_performed": false,
+  "issue_669_closed": false,
+  "main_integration_verified": false,
+  "runtime_admission_verified": false,
+  "effect_ack_done": false,
+  "open_duties": [
+    "Recover actual original source and provenance through admitted carriers",
+    "Admit original writer and verify native peer request/ACK/reply",
+    "Original host and exact-domain acceptance remain separate",
+    "Issue651 native handoff and R2 publication stop remain unchanged"
+  ],
+  "contribution": {
+    "human": "Existing architecture, source-selection and continuation instruction: Ingolf Lohmann",
+    "artificial": "Scoped dependency diagnostic, regression cases and local verification: OpenAI Codex"
+  },
+  "evidence_limits": [
+    "Additional Library search returned historical report chunks; no original source was recovered and no universal absence is claimed.",
+    "Local port8766 health connection failed; no inference about protected remote store contents."
+  ],
+  "local_full_suite_attempt_1": {
+    "result": "FAIL",
+    "step": "ai-runtime-contract",
+    "test": "StandpointDiscoveryTests.test_startup_reports_the_standpoint_and_does_not_hide_a_block",
+    "cause": "Existing PASS expectation did not retain CONTINUE for the newly observed missing source; standalone source observation must also bind current ROOT. Both corrected.",
+    "log_sha256": "4b593a55121b5087ccbaa928f6d80787327d6d5d52450992d5d1dfe2fe81ed2c",
+    "scope": "LOCAL_ONLY"
+  }
+}

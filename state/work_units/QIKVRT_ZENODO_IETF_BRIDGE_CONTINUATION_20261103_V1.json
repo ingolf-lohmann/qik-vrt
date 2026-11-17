@@ -1,0 +1,104 @@
+{
+  "schema": "qikvrt-work-unit/v1",
+  "id": "QIKVRT_ZENODO_IETF_BRIDGE_CONTINUATION_20261103_V1",
+  "owner": "Ingolf Lohmann",
+  "implementation": "OpenAI Codex",
+  "basis": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "main": "6af367872a7de123e0bd1b341dbc7820002dd87b",
+    "tree": "7fc84c4cb17c4d3b3f7c9fd7a522f9dec8bf6cea"
+  },
+  "owner_instruction": {
+    "source": "authenticated_current_chat",
+    "utf8_bytes": 915,
+    "sha256": "42e9337bc59a70f3c0146885ef0c4dc6b4a70490f0333c328676e957cbf48d9c",
+    "scope": [
+      "repair_existing_Zenodo_credential_delivery",
+      "persist_and_publish_IETF_supplement",
+      "apply_accepted_contracts_to_existing_repository",
+      "use_existing_Mega_ST_bridge_for_IONOS_deployment"
+    ],
+    "authorization_retained": true,
+    "authorization_is_execution_evidence": false
+  },
+  "predecessors": [
+    {
+      "id": "7de55d50-f3e9-561b-930f-b3fc1ca9573c",
+      "version": 21
+    },
+    {
+      "id": "26a7ab30-111d-5501-8250-7b67c83707da",
+      "version": 6
+    },
+    {
+      "id": "03c93430-ee62-4223-a21c-6518d3442d93",
+      "version": 2
+    },
+    {
+      "id": "63ea72f9-d541-45ef-b0a7-ba51234703e5",
+      "version": 2
+    }
+  ],
+  "change": {
+    "source_recovery": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.xml",
+    "provenance": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.PROVENANCE.json",
+    "index": "docs/publications/index.json",
+    "existing_http00_adapter_retained": true
+  },
+  "observed_boundaries": [
+    {
+      "id": "ZENODO_ACCESS",
+      "state": "OPEN",
+      "evidence": "Original run 41637836620 attempt1 remains FAILURE; requested-zenodo maps secrets.ZENODO_ACCESS_TOKEN in zenodo-production. Registered original SSO/private request/provider-reference bindings are not attached in this execution context.",
+      "next_action": "Reconnect the registered original process and protected credential provisioner; inspect current Main, consumption and provider state, then resume the same original publisher."
+    },
+    {
+      "id": "IETF_SUBMISSION",
+      "state": "OPEN",
+      "evidence": "https://datatracker.ietf.org/submit/ states submission closure after 2026-11-02T23:59Z and reopening after 2026-11-14T23:59-08:00.",
+      "next_action": "After reopening, resolve exact candidate and first-submission revision admission; validate/render and use original submission path, then independently read back posting."
+    },
+    {
+      "id": "MEGA_ST_IONOS",
+      "state": "OPEN",
+      "evidence": "Native connection observed 2026-11-03T18:31:57.919Z: ready=false, ADMITTED_MESH_RUNTIME_ENDPOINT, raumzeitterminal.de HTTP525. No registered VM control endpoint observed here.",
+      "next_action": "Attach existing original host/VM control route; read actual VM state, then original deployment and independent service/restart/HTTPS/EAP readbacks."
+    }
+  ],
+  "boundaries": {
+    "source_only": true,
+    "new_publisher_or_executor": false,
+    "credentials_copied": false,
+    "runtime_deployed": false,
+    "ietf_submitted": false,
+    "zenodo_published": false,
+    "effect_ack_done": false
+  },
+  "internal_reference": {
+    "state": "INTERNAL_HISTORICAL_REFERENCE",
+    "classification": "HISTORICAL_EXACT",
+    "source_commit": "a09bef1a94dce870b017c16147b80a52f72e8a6c",
+    "source_tree": "5c6abd5e2efecc191d8c2b836ed6aa64c1cdeceb",
+    "xml_path": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-01.xml",
+    "xml_bytes": 10307,
+    "xml_sha256": "11fd502eeec40a017fab27572cb8e4cd59b6d0e1e4c68769aabe5a435dc34ac2",
+    "verify_digest_before_use": true,
+    "scope": "Internal source review and conformance checks against the recovered candidate. Live runtime and deployment actions retain their own admission and specification-currentness requirements.",
+    "working_rules": {
+      "causal_authority": "Require explicit authority, evidence and dependency bindings. Preserve non-commutative effect order, authority, leases, exact versions and Effect-Ack dependencies across execution projections.",
+      "prepare_and_commit": "Prepare leaves the protected effect pending. Commit must bind the same exact request, full responsibility record and fresh single-use token.",
+      "post_effect": "A pre-execution DONE record authorizes at most the bound effect. Claim actual completion only from a distinct, independently verified observation of the resulting state. Transport success and terminal input are evidence within their own scopes."
+    },
+    "ietf_submission": "OPEN",
+    "submission_channel_reopens_after": "2026-11-14T23:59:00-08:00",
+    "submission_channel": "https://datatracker.ietf.org/submit/",
+    "wire_profile": "HTTP/00",
+    "deployment_target": "https://raumzeitterminal.de",
+    "deployment_acceptance": "OPEN",
+    "owner_instruction": {
+      "source": "authenticated_current_chat",
+      "utf8_bytes": 303,
+      "sha256": "3f9ed71e269c1dfc2199f31566bab1865d415cbb02af5e1ee45d0ff20b688044"
+    }
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "schema": "qikvrt-locked-real-energy-verification/v2",
+  "started_at": "2026-11-03T10:11:14.283903+00:00",
+  "status": "VERIFIED_LOCAL_KERNEL",
+  "cases": [
+    {
+      "name": "lean_version",
+      "started_at": "2026-11-03T10:11:14.650163+00:00",
+      "finished_at": "2026-11-03T10:11:14.714213+00:00",
+      "exit": 0,
+      "log": "lean_version.log",
+      "log_bytes": 78,
+      "log_sha256": "5362a246ce2545424db10a77de8fd4694f4cf8b0170dfd43fa727acf7f7f259b"
+    },
+    {
+      "name": "PlanckRealEnergyDomain",
+      "started_at": "2026-11-03T10:11:14.714490+00:00",
+      "finished_at": "2026-11-03T10:11:17.335823+00:00",
+      "exit": 0,
+      "log": "PlanckRealEnergyDomain.log",
+      "log_bytes": 253,
+      "log_sha256": "f1e993c89eedecc3d906fd67b7bec459b2f82bc08e410e5622602f2377af1b12",
+      "olean_sha256": "121bf544a6899cd54c9f34adbb12b382bda90930f9c0232de0f4b020a1a94e45"
+    },
+    {
+      "name": "RealErasureBudget",
+      "started_at": "2026-11-03T10:11:17.336291+00:00",
+      "finished_at": "2026-11-03T10:11:18.804479+00:00",
+      "exit": 0,
+      "log": "RealErasureBudget.log",
+      "log_bytes": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "olean_sha256": "765513b95aa0f57c8d7498175101a7a1d80e113b76ac253eecefadade9948470"
+    },
+    {
+      "name": "RealEnergyStatements",
+      "started_at": "2026-11-03T10:11:18.804791+00:00",
+      "finished_at": "2026-11-03T10:11:20.222688+00:00",
+      "exit": 0,
+      "log": "RealEnergyStatements.log",
+      "log_bytes": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "olean_sha256": "fc0f03a217e2f05811dfdc070314c3d3afac29a09e67bb97bfa93376bf1581a8"
+    },
+    {
+      "name": "RealEnergyAxiomAudit",
+      "started_at": "2026-11-03T10:11:20.222990+00:00",
+      "finished_at": "2026-11-03T10:11:23.145037+00:00",
+      "exit": 0,
+      "log": "RealEnergyAxiomAudit.log",
+      "log_bytes": 991,
+      "log_sha256": "39b2f5940233577f34d69c5d37e7ee6e0b8367227f2fcbb6d2174a87fdc026e1",
+      "olean_sha256": "8ac08cfb4e0ce8266fd95f6ffbd2cac643eed75267d4feb0faf46d71f0acd88e",
+      "axiom_map": {
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_planckMass_pos": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_planckTime_pos": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_planckEnergy_pos": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_planckTime_mul_planckEnergy": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_planckEnergy_eq_hbar_div_planckTime": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_real_bit_bound": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_gap_normalized": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_planck_budget": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "name": "RealEnergyAcceptanceAudit",
+      "started_at": "2026-11-03T10:11:23.145495+00:00",
+      "finished_at": "2026-11-03T10:11:26.017633+00:00",
+      "exit": 0,
+      "log": "RealEnergyAcceptanceAudit.log",
+      "log_bytes": 896,
+      "log_sha256": "c73e2dcb2ade176b0836bfc55a31d90e85d3734a5be66db6dc1bde0f1cfc2861",
+      "olean_sha256": "e7fdbc43426ee7c3ca8075ddbba62f8fe87133e7dc8e03a52bf8c5b31da3d4d6",
+      "axiom_map": {
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T01_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T02_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T03_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T04_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.PRE_T05_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T01_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T02_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "QIKVRT.V2.Physics.PlanckRealEnergy.REB_T03_checked": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "name": "negative_negative_gap",
+      "started_at": "2026-11-03T10:11:26.018257+00:00",
+      "finished_at": "2026-11-03T10:11:27.386028+00:00",
+      "exit": 1,
+      "log": "negative_negative_gap.log",
+      "log_bytes": 134,
+      "log_sha256": "f69e7d5ef48c5667e338baa42b00a8795af7189fcfe125dbde9b3e82df39c856",
+      "outcome": "VERIFIED_REJECTION"
+    },
+    {
+      "name": "negative_over_budget",
+      "started_at": "2026-11-03T10:11:27.386626+00:00",
+      "finished_at": "2026-11-03T10:11:28.804439+00:00",
+      "exit": 1,
+      "log": "negative_over_budget.log",
+      "log_bytes": 133,
+      "log_sha256": "1b81b17208b9d12773a2f90d0b8e7adadd44d1bea76d696df1cc22af5cfffbbd",
+      "outcome": "VERIFIED_REJECTION"
+    },
+    {
+      "name": "negative_upper_gap_endpoint",
+      "started_at": "2026-11-03T10:11:28.804589+00:00",
+      "finished_at": "2026-11-03T10:11:30.172597+00:00",
+      "exit": 1,
+      "log": "negative_upper_gap_endpoint.log",
+      "log_bytes": 140,
+      "log_sha256": "c1903905c1683273ed9b7c7d814a752fa6863bae21ee5ae93ec052525f56e10f",
+      "outcome": "VERIFIED_REJECTION"
+    },
+    {
+      "name": "negative_zero_constants",
+      "started_at": "2026-11-03T10:11:30.172739+00:00",
+      "finished_at": "2026-11-03T10:11:31.540463+00:00",
+      "exit": 1,
+      "log": "negative_zero_constants.log",
+      "log_bytes": 136,
+      "log_sha256": "445f304b4f3ec8ef493bdd1639fac85193ef28253fd28b789e09252e2d0200ea",
+      "outcome": "VERIFIED_REJECTION"
+    }
+  ],
+  "source_lock_sha256": "0c2361374ebb90777422aeca7e45c60a5183967012acaf25eeabb22399a3c821",
+  "native_CI": "NOT_EXECUTED",
+  "seven_independent_checkers": "NOT_EXECUTED",
+  "empirical_correspondence": "NOT_MEASURED",
+  "effect_ack_done": false,
+  "lean_executable_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+  "core_theorems": 8,
+  "checked_bindings": 8,
+  "negative_controls": 4,
+  "finished_at": "2026-11-03T10:11:31.902759+00:00",
+  "reason": "Eight original claims and eight statement bindings checked with exact sources; four false statements rejected"
+}

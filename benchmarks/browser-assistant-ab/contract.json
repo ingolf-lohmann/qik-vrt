@@ -1,0 +1,40 @@
+{
+  "schema": "qikvrt_browser_interruption_ab_contract_v1",
+  "license": "CC-BY-NC-ND-4.0",
+  "version": "1.0.0",
+  "evidence_boundary": "HARNESS_ONLY_PRODUCT_EXECUTION_NOT_IMPLEMENTED",
+  "product_claim_allowed": false,
+  "arms": ["baseline", "qikvrt"],
+  "fixture_ids": ["research-costs", "document-recovery"],
+  "interruption_classes": ["assistant_process_loss", "conversation_context_reset"],
+  "design": {
+    "paired_identical_task_and_checkpoint": true,
+    "balanced_arm_order": true,
+    "default_pairs_per_task": 6,
+    "seed": 20261005,
+    "interruption_seconds": 60,
+    "resume_horizon_seconds": 180,
+    "baseline_retention": "Keep ordinary restored tabs, saved draft and any history actually provided by the selected comparator. Do not delete normal baseline persistence. Bind its configuration before execution.",
+    "controls": ["same Firefox build and host", "same assistant/model build, settings and tools", "same sources and source hashes", "same pre-interruption work and task", "same network/cache policy", "fresh isolated assistant and browser profiles per trial", "no oracle access by the assistant", "no cross-arm memory transfer"],
+    "learning_effect": "Human repeated exposure is a confound. Use separate matched participants or disjoint task variants with an explicitly revised design; report order strata and participant clustering. Scripted pairs are harness checks only."
+  },
+  "metrics": {
+    "reliable_resume_ms": "Observer monotonic time from resume_signal to the first correct resume_probe followed by an independently correct pending step. Null and right-censored at the horizon if unsuccessful. Includes restore, authentication, context entry and readback after the signal.",
+    "context_reentered_characters": "Sum of Unicode code points in human_input(kind=context_reentry), including paste. Also retain UTF-8 bytes and message count. Automatic continuation bytes are separate, never human input.",
+    "false_completed_step_claims": "Every step_claim or task_claim unsupported by the independently evaluated source-bound step output at the claim time. Retain event count and distinct falsely completed step IDs.",
+    "human_interventions": "Count of unique human_input gestures after resume_signal: context_reentry, instruction, correction, approval, restart or escalation. Fixed start/checkpoint/interrupt/resume/finish protocol actions are separate and excluded.",
+    "task_success": "Every required step is independently source-validated at trial end. A self-reported completion is not success.",
+    "time_to_valid_completion_ms": "Observer time from resume_signal to all required step outputs passing the oracle; null if absent or beyond horizon."
+  },
+  "event_order": ["trial_start", "checkpoint_readback", "interruption_observed", "resume_signal", "resume_probe|step_output|human_input|automatic_context|step_claim|task_claim", "trial_end"],
+  "future_product_execution_requires": [
+    "An executable Personal Firefox assistant adapter with authenticated runtime; the current reference bridge only accepts local terminal text.",
+    "Exact baseline identity, version and ordinary retention policy; no intentionally handicapped baseline.",
+    "Exact Firefox executable/package identity, extension package hash, OS/host and same model/settings/tools for both arms.",
+    "Actual equivalent pre-interruption sessions and independently observed process/context loss and restart evidence.",
+    "Product-generated checkpoint and continuation artifact bound to task/source/checkpoint; no harness oracle supplied as continuation.",
+    "Independent observer outside the interrupted processes, browser traces/screenshots, product readbacks and raw artifact digests.",
+    "Complete preregistered pairs including failures, censored observations, order strata and participant/agent independence disclosure."
+  ],
+  "publication": "No Gmail message, Zenodo publication, release or product-benefit claim follows from this harness."
+}

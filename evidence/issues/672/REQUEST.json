@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "Owner instruction, 2026-11-02: package QIK-VRT, Effect Acknowledgement Protocol and the existing server for unattended installation into an existing Linux on the already owned IONOS VPS.\n\nThe exact Main source is c6b41be686e284b2907b30fa5e7874a04e363274 / tree 104141560dc2c71ac0d717cbae02d31443304a42. Reuse `tools/qikvrt_self_host.py`, its `PACKAGE.json`, original Terminal/Transputer, EAP and React assets, plus the existing exact-host admission and systemd supervisor. There is no native split `.deb` distribution in the current source.\n\nAcceptance for this bounded source issue:\n- Real reproducible `.deb` packages with disjoint EAP, Terminal/Transputer, Web, runtime and server ownership and exact inter-package dependencies.\n- Validate the complete original S1 manifest before packaging; preserve original bytes, licenses and source identity.\n- Installation binds the original verified sources to actual compatible host runtime bytes through a derived S1 manifest, without granting host admission or altering an existing writer/configuration.\n- Test native package metadata/extraction and isolated package-manager install, upgrade and removal; preserve private state.\n- Integrate into existing Make/CI and retain integrity metadata.\n\nIssue closure means this package source path is implemented and tested, not that the IONOS host, TLS/domain or productive EFFECT_ACK_DONE has passed. Those existing obligations stay open. Railway remains disconnected; no new VPS, provider, scheduler or parallel runtime is authorized by this issue.",
+  "created_at": "2026-11-02T04:08:50Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/672",
+  "issue_number": 672,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Package the existing S1 QIK-VRT/EAP server as native Debian/Ubuntu modules",
+  "updated_at": "2026-11-02T04:08:50Z"
+}

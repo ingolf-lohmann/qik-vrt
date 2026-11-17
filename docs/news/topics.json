@@ -1,0 +1,220 @@
+{
+  "schema": "RAUMZEIT_TERMINAL_EDITORIAL_TOPICS_V1",
+  "established_on": "2026-10-12",
+  "owner": "Ingolf Lohmann",
+  "publisher": "Raumzeit Terminal Verlag",
+  "purpose": "Permanente Themenblöcke verfolgen und reflektieren; neue Evidenz mit dem vorhandenen Stand verbinden.",
+  "provenance": {
+    "human_contribution": "Festlegung der drei dauerhaften redaktionellen Themenblöcke durch Ingolf Lohmann.",
+    "artificial_cognitive_contribution": "Ausformulierung der Ressortbeschreibungen, Redaktionskriterien und Website-Integration."
+  },
+  "topics": [
+    {
+      "id": "zutrittskontrolle",
+      "title": "Hochsicherheits-Zutrittskontrolle",
+      "href": "/news/#zutrittskontrolle",
+      "permanent": true,
+      "scope": [
+        "Kritische Infrastruktur",
+        "Standards und Regulierung",
+        "Produktarchitektur",
+        "Safety/Security Engineering",
+        "Identitäten und Credentials",
+        "Schlüsselverwaltung",
+        "Firmware und Updates",
+        "Ausfallbetrieb und Redundanz",
+        "Fluchtwege und Notfallbetrieb",
+        "Relevante Marktbewegungen"
+      ],
+      "publication_source_ids": [
+        "zenodo-21515074"
+      ],
+      "article_ids": []
+    },
+    {
+      "id": "kuenstliche-intelligenz",
+      "title": "Künstliche Intelligenz",
+      "href": "/news/#kuenstliche-intelligenz",
+      "permanent": true,
+      "scope": [
+        "KI-Browser und persönliche Assistenten",
+        "Modelle und Agenten",
+        "Schnittstellen und Interoperabilität",
+        "Identitäten und Berechtigungen",
+        "Messbarer Nutzen",
+        "Datenschutz und Sicherheit",
+        "Anbieterabhängigkeit",
+        "Preis, Paketierung und Lizenzmodelle"
+      ],
+      "publication_source_ids": [
+        "zenodo-23008704"
+      ],
+      "article_ids": []
+    },
+    {
+      "id": "physik",
+      "title": "Aktuelle Physik und Quantenfundamente",
+      "href": "/news/#physik",
+      "permanent": true,
+      "scope": [
+        "Aktuelle physikalische Erkenntnisse",
+        "Zeitordnung und Kausalität",
+        "Quantenfundamente",
+        "Experimentell prüfbare Messprotokolle",
+        "Reproduzierbarkeit",
+        "Unabhängige Bestätigung",
+        "Modell- und Evidenzgrenzen"
+      ],
+      "publication_source_ids": [
+        "zenodo-21888130",
+        "zenodo-22907018",
+        "zenodo-22283396"
+      ],
+      "article_ids": [
+        "universaler-transputer",
+        "physics-nobel-2026-decay-continuity"
+      ]
+    }
+  ],
+  "editorial_requirements": {
+    "prefer_primary_sources": true,
+    "visible_source_urls": true,
+    "separate_publication_and_event_dates": true,
+    "separate_evidence_marketing_inference_and_open_questions": true,
+    "state_verification_and_certification_scope": true,
+    "explain_practical_or_scientific_relevance": true,
+    "avoid_repetition_without_new_evidence": true,
+    "retain_dated_corrections_and_historical_context": true,
+    "repository_derived_scientific_citations_require_verified_zenodo_archive": true
+  },
+  "article_publication": {
+    "status": "EDITORIAL_TOPICS_ESTABLISHED",
+    "automatic_article_publication_verified": false,
+    "rule": "Neue Beiträge benötigen Quellenprüfung und die für ihren Inhalt geltende Veröffentlichungsfreigabe. Die Ressortfestlegung allein belegt keine automatische Veröffentlichung."
+  },
+  "owner_topic_decision_on": "2026-09-30",
+  "updated_on": "2026-10-13",
+  "publication_index": {
+    "html": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html",
+    "json": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.json",
+    "repository_snapshot_observed": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+    "boundary": "Der Repository-Atlas und der vollständigere verifizierte Zenodo-Katalog haben unterschiedliche Bestände. Ein Themenverweis ist keine bewiesene Abhängigkeit.",
+    "local_alias": "/publications/",
+    "alias_resolution": "TEMPORARY_REDIRECT_TO_EXISTING_REPOSITORY_INDEX"
+  },
+  "evidence_classes": {
+    "TECHNICAL_RESULT": "Belegtes technisches Ergebnis",
+    "FORMAL_MODEL_RESULT": "Formales Modellresultat",
+    "SCIENTIFIC_HYPOTHESIS": "Wissenschaftliche Hypothese",
+    "EDITORIAL_INTERPRETATION": "Redaktionelle Einordnung",
+    "NORMATIVE_SOURCE": "Normativer Maßstab"
+  },
+  "publication_sources": [
+    {
+      "id": "zenodo-21515074",
+      "author": "Ingolf Lohmann",
+      "title": "Charta einer maschinenprüfbaren Wissenschaft",
+      "record_url": "https://zenodo.org/records/21515074",
+      "doi": "10.5281/zenodo.21515074",
+      "evidence_class": "NORMATIVE_SOURCE",
+      "scope": "Maßstab für nachvollziehbare Nachweise; keine Zertifizierung eines Zutrittskontrollprodukts.",
+      "catalog_version": "2026-10-11.1",
+      "evidence_boundary": "Die Charta setzt Anforderungen. Sie beweist nicht automatisch die Wahrheit beliebiger gespeicherter Inhalte oder die Erfüllung sämtlicher Anforderungen durch eine konkrete Plattform.",
+      "publication_date": "2026-07-23",
+      "version": "1.0.0-2026-07-23"
+    },
+    {
+      "id": "zenodo-23008704",
+      "author": "Ingolf Lohmann",
+      "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+      "record_url": "https://zenodo.org/records/23008704",
+      "doi": "10.5281/zenodo.23008704",
+      "evidence_class": "TECHNICAL_RESULT",
+      "scope": "Archivierte technische Tests am dort gebundenen historischen Stand; kein Nachweis eines messbaren KI-Produktnutzens.",
+      "catalog_version": "2026-10-11.1",
+      "evidence_boundary": "Die zehn vollständigen Ziel-Gates sind in diesem Audit nicht geschlossen. Loopback ist kein Test getrennter Hosts; Codegröße ist keine Gesamt-RAM-, Transistor- oder Hardwarefreigabe. Distribution, Browser, vollständiger Recovery-Pfad und physische Realisierung behalten eigene Nachweispflichten.",
+      "publication_date": "2026-09-28",
+      "version": "0.1-20260928"
+    },
+    {
+      "id": "zenodo-21888130",
+      "author": "Ingolf Lohmann",
+      "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
+      "record_url": "https://zenodo.org/records/21888130",
+      "doi": "10.5281/zenodo.21888130",
+      "evidence_class": "FORMAL_MODEL_RESULT",
+      "scope": "Einstieg in den Round Trip mit benannten Modellgrenzen; physikalische Identifikation gesondert prüfen.",
+      "catalog_version": "2026-10-11.1",
+      "evidence_boundary": "Die physikalische Identifikation der Architektur, ein empirisch gebundenes c und die vollständige Ableitung bekannter Physik bleiben offen. 70.439 inventarisierte Claims sind keine 70.439 bewiesenen Theoreme; der historische Korpus führt 1.262 OPEN-Claims. Die Schließung historischer Korrekturdiagnosen schließt diese offenen Claims nicht.",
+      "publication_date": "2026-08-08",
+      "version": "1.0.0-candidate.1"
+    },
+    {
+      "id": "zenodo-22907018",
+      "author": "Ingolf Lohmann",
+      "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
+      "record_url": "https://zenodo.org/records/22907018",
+      "doi": "10.5281/zenodo.22907018",
+      "evidence_class": "SCIENTIFIC_HYPOTHESIS",
+      "scope": "Operationales Rahmenmodell; Postulate, Interpretation und offene physikalische Nachweispflichten bleiben getrennt.",
+      "catalog_version": "2026-10-11.1",
+      "evidence_boundary": "Keine abgeschlossene Quantengravitation oder Ableitung neuer Naturgesetze. Diskretheit, Planck-Auflösung, dynamischer Einstein-Grenzfall und vollständige Quantenkorrelationsstruktur bedürfen weiterer Begründung.",
+      "publication_date": "2026-09-23",
+      "version": "2026-09-23-qik-scientific-revision"
+    },
+    {
+      "id": "zenodo-22283396",
+      "author": "Ingolf Lohmann",
+      "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
+      "record_url": "https://zenodo.org/records/22283396",
+      "doi": "10.5281/zenodo.22283396",
+      "evidence_class": "SCIENTIFIC_HYPOTHESIS",
+      "scope": "Falsifizierbare Planck-Tick-Hypothese mit Modellableitung; unabhängige empirische Bestätigung bleibt offen.",
+      "catalog_version": "2026-10-11.1",
+      "evidence_boundary": "Der universelle Planck-Tick ist ein physikalisches Postulat; die Werte von c, hbar und G sind verwendete Eingaben. Die Vorhersage ist nicht empirisch bestätigt oder unabhängig reproduziert. Sie erledigt den Vorhersageteil von H5-O05 teilweise, nicht dessen experimentellen Teil.",
+      "publication_date": "2026-09-03",
+      "version": "1.0.0-candidate.1"
+    }
+  ],
+  "articles": [
+    {
+      "id": "universaler-transputer",
+      "href": "universaler-transputer/",
+      "metadata_href": "universaler-transputer/index.json",
+      "title": "Alles ist ein universaler Transputer",
+      "date": "2026-10-12",
+      "classification": "AUTHOR_THESIS_WITH_SOURCE_BOUND_MODEL_SCOPE",
+      "canonical_url": "https://raumzeitterminal.de/news/universaler-transputer/",
+      "languages": [
+        "de"
+      ],
+      "variants": [
+        "full"
+      ],
+      "metadata_sha256": "6674e05c81588739861f1f1d6be908318138e686bfe5b696b8455a38907aed22",
+      "updated_on": "2026-10-13"
+    },
+    {
+      "id": "physics-nobel-2026-decay-continuity",
+      "href": "physics-nobel-2026-decay-continuity/",
+      "metadata_href": "physics-nobel-2026-decay-continuity/index.json",
+      "title": "Zeit, Zerfall und Versiegelung",
+      "date": "2026-10-10",
+      "classification": "COMMENTARY_ANALYSIS",
+      "canonical_url": "https://raumzeitterminal.de/news/physics-nobel-2026-decay-continuity/",
+      "languages": [
+        "de",
+        "en",
+        "fr",
+        "ru",
+        "fa",
+        "zh"
+      ],
+      "variants": [
+        "full",
+        "short"
+      ],
+      "metadata_sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817"
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "state": "publish",
+  "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "metadata": {
+    "title": "Kausale Distanz im doppelkanonischen QIKVRT-Speicher: Lean-Beweisführung, Fachartikel und Prosabegleiter",
+    "upload_type": "publication",
+    "publication_type": "workingpaper",
+    "description": "<p>Eigenständige Anschlussarbeit zu DOI 10.5281/zenodo.21711193. Enthält Fachartikel, ausführlichen Prosabegleiter und reine Vorlesefassung sowie die bis zum bestehenden Lean-4.19.0-/Std-Kern angeschlossene Kausalmetrik und Protokollbrücke.</p><p>36 neue kernelgeprüfte Theoreme mit exakten Axiomabhängigkeiten, vier negativen Lean-Kontrollen, vier Mutationstests und reproduzierbarem Quellpaket. Die ursprünglichen 61 lokalen Tests und sechs Tests der lesenden Framework-Erweiterung bleiben getrennte Nachweisscopes. Die Quelle ist nach vollständigem Repository-Test auf Main integriert.</p><p>Die mathematischen und protokollbezogenen Aussagen gelten für das deklarierte Modell. Keine Behauptung einer universellen physikalischen Kausalmetrik, biologischer Kognition, physikalischer Rückwärtswirkung oder eines vollständig produktiv abgenommenen persönlichen Digital Twin.</p>",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf",
+        "affiliation": "Independent Researcher; QIKVRT"
+      }
+    ],
+    "version": "2.0.0-lean",
+    "publication_date": "2026-10-24",
+    "access_right": "open",
+    "license": "cc-by-nc-nd-4.0",
+    "language": "deu",
+    "prereserve_doi": true,
+    "keywords": [
+      "QIKVRT",
+      "causal distance",
+      "canonical temporal memory",
+      "Effect Acknowledgement",
+      "provenance",
+      "personal digital twin",
+      "Lean 4",
+      "formal verification",
+      "extended quasi-metric"
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.21711193",
+        "relation": "isSupplementTo",
+        "scheme": "doi"
+      },
+      {
+        "identifier": "10.5281/zenodo.21888130",
+        "relation": "references",
+        "scheme": "doi"
+      }
+    ],
+    "notes": "Idee, Begriffsarbeit, Architektur und wissenschaftliche Verantwortung: Ingolf Lohmann. Formalisierung, Textausarbeitung, Programmierung und technische Prüfungen mit Codex im autorisierten Auftrag. Keine unabhängige Begutachtung behauptet. Die historischen Veröffentlichungen und der frühere Artikelkandidat bleiben unverändert."
+  },
+  "files": [
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+      "name": "QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+      "git_blob_sha": "a23b5e1081037d2614b9cd2219eb4f429423b549"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+      "name": "QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+      "git_blob_sha": "0f00df3cd8b3808716b603b50203a3dda091d897"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/Fachartikel.md",
+      "name": "Fachartikel.md",
+      "git_blob_sha": "6f0c7ff7ac59376c77b6c5e448df7c53310e66b6"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/Prosaartikel.txt",
+      "name": "Prosaartikel.txt",
+      "git_blob_sha": "2895785d4f1cb737d1140587e2f7cdc6a0c7b70c"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Prosa_Vorlesetext.txt",
+      "name": "QIKVRT_Prosa_Vorlesetext.txt",
+      "git_blob_sha": "9a28b62c912ff174aa59d6848f44d315e1db0a69"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Causal_Distance_20261024.zip",
+      "name": "QIKVRT_Causal_Distance_20261024.zip",
+      "git_blob_sha": "87d485faf527dab24a1bc98dd28cd7ab532a764a"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Framework_Selbstvermessung_20261024.zip",
+      "name": "QIKVRT_Framework_Selbstvermessung_20261024.zip",
+      "git_blob_sha": "9d604052aab7807bdfd394467efe2b5dc62bad65"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/LESEPFAD_NACH_INTERESSE.md",
+      "name": "LESEPFAD_NACH_INTERESSE.md",
+      "git_blob_sha": "9e9a2c23436f43d5866e48c1534c5dae00ce3aa3"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Lean_Anschluss_20261024.zip",
+      "name": "QIKVRT_Lean_Anschluss_20261024.zip",
+      "git_blob_sha": "f5dd753352370e665d89625cb0d4e2270b407ff3"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/LEAN_ANBINDUNG.md",
+      "name": "LEAN_ANBINDUNG.md",
+      "git_blob_sha": "3b5b918c1b1b16f9a83ca3426288df7a9de97eda"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/CLAIM_MATRIX.json",
+      "name": "CLAIM_MATRIX.json",
+      "git_blob_sha": "c7c81bcb3805a8cdba07a97a0998f511821e3301"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/SOURCES.json",
+      "name": "SOURCES.json",
+      "git_blob_sha": "6607411ddba0793eabde401a95b3cedd2c86de2c"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/SOURCE_BINDINGS.json",
+      "name": "SOURCE_BINDINGS.json",
+      "git_blob_sha": "c7db93aa497855151a367b1fb3439a2d2c237fa1"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/EVIDENCE_INDEX.json",
+      "name": "EVIDENCE_INDEX.json",
+      "git_blob_sha": "a3b95c6ef169f843d4049fd267ee40627c30abc7"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/BOUNDARY_TESTS.json",
+      "name": "BOUNDARY_TESTS.json",
+      "git_blob_sha": "6d8d0b77f95b212c9c1e22c04d35d9262c534ec9"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/CHANGE_NOTICE.md",
+      "name": "CHANGE_NOTICE.md",
+      "git_blob_sha": "b9545e6b5e73e3a8f48ea4971774bd0450943e8c"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/PREPUBLICATION_RETURN_RECEIPT.json",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "git_blob_sha": "fde9eb085489f6f4a5ecd99ea9792ac34193fab0"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/METADATA.json",
+      "name": "METADATA.json",
+      "git_blob_sha": "14478ed4a4b3b019c586f18b1de01c48acb6c085"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/MAIN_INTEGRATION.json",
+      "name": "MAIN_INTEGRATION.json",
+      "git_blob_sha": "f251276b4f0a60ad6503d5e31811a416622a676e"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/validate_article_sources.py",
+      "name": "validate_article_sources.py",
+      "git_blob_sha": "71c105e61f1d68d323aff304e8c47bc75d6072ba"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/build_pdfs.py",
+      "name": "build_pdfs.py",
+      "git_blob_sha": "dc2a049e002a057b754672d16416050f21339174"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/NATIVE_KERNEL_RECEIPT.json",
+      "name": "NATIVE_KERNEL_RECEIPT.json",
+      "git_blob_sha": "9b191748a18c7962befd49bd717058a1dd5d3bc5"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/PUBLICATION_KERNEL_RECEIPT.json",
+      "name": "PUBLICATION_KERNEL_RECEIPT.json",
+      "git_blob_sha": "652f2f09791b6e31f96a288c467b6e7c31d188d1"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/KERNEL_PROOF_PLAN.json",
+      "name": "KERNEL_PROOF_PLAN.json",
+      "git_blob_sha": "8897c20d94dbc0e3948d502cb75af7fe68972296"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/CATALOG_METADATA_REFRESH.json",
+      "name": "CATALOG_METADATA_REFRESH.json",
+      "git_blob_sha": "bd2d03d6afd05d8c99c15a9f70ba514b9199b54d"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/SOURCE_METADATA_OBSERVATION.json",
+      "name": "SOURCE_METADATA_OBSERVATION.json",
+      "git_blob_sha": "028f8a1599870bce81981bb56a65e4af9f01a27a"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/VISIBLE_SOURCE_AND_LAYOUT_CHECK.json",
+      "name": "VISIBLE_SOURCE_AND_LAYOUT_CHECK.json",
+      "git_blob_sha": "d662138459961e83810aeaf17825c14981badb47"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/MACHINE_PROOF_BUNDLE.json",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "git_blob_sha": "e40748a90ff945f80b9940707ecbfc06241fc586"
+    }
+  ],
+  "evidence_path": "release/causal-distance-lean-2026-10-24/zenodo-publication.json",
+  "source_head": "da744fc23aef09306d81f76cca5ea2ad6861ed64",
+  "machine_proof": {
+    "path": "release/causal-distance-lean-2026-10-24/MACHINE_PROOF_BUNDLE.json",
+    "git_blob_sha": "e40748a90ff945f80b9940707ecbfc06241fc586",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "owner_authorization": {
+    "path": "release/causal-distance-lean-2026-10-24/OWNER_ZENODO_AUTHORIZATION.json",
+    "bytes": 11467,
+    "sha256": "80bee9382889f2aadc83a7b9bc0dd2b21e9f1da8735df6c9c0972503ff32c3a5",
+    "git_blob_sha": "f2b10b654895cd425d69ed8a30cd4c604ca919a1"
+  }
+}

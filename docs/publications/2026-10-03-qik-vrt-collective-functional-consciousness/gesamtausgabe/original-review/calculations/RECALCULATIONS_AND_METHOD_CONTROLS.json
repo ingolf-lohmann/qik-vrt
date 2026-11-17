@@ -1,0 +1,125 @@
+{
+  "kind": "local_arithmetic_and_isolated_method_controls_not_live_distributed_benchmark",
+  "source_sha256": "e07cd0673e72f6f84becb234c015ea00989e5ee283ec7ba32e59a982da047eb3",
+  "micro_rows": [
+    {
+      "N": 1000,
+      "drift": 0.01,
+      "control_ms": 1.5970859999470122,
+      "delta_ms": 0.6132339999567193,
+      "speedup": 2.6043663594316864,
+      "comparison_saved_fraction": 0.99
+    },
+    {
+      "N": 1000,
+      "drift": 0.05,
+      "control_ms": 1.5462689999594659,
+      "delta_ms": 0.7611669999505466,
+      "speedup": 2.031445136297196,
+      "comparison_saved_fraction": 0.95
+    },
+    {
+      "N": 1000,
+      "drift": 0.2,
+      "control_ms": 2.0615660000657954,
+      "delta_ms": 1.6270320001012806,
+      "speedup": 1.2670715756896396,
+      "comparison_saved_fraction": 0.8
+    },
+    {
+      "N": 10000,
+      "drift": 0.01,
+      "control_ms": 16.501961000017218,
+      "delta_ms": 6.42777300004127,
+      "speedup": 2.567290568585926,
+      "comparison_saved_fraction": 0.99
+    },
+    {
+      "N": 10000,
+      "drift": 0.05,
+      "control_ms": 17.19602599996506,
+      "delta_ms": 8.312463000038406,
+      "speedup": 2.068704065195311,
+      "comparison_saved_fraction": 0.95
+    },
+    {
+      "N": 10000,
+      "drift": 0.2,
+      "control_ms": 22.284131999981582,
+      "delta_ms": 16.953931999978522,
+      "speedup": 1.314393144906433,
+      "comparison_saved_fraction": 0.8
+    },
+    {
+      "N": 100000,
+      "drift": 0.01,
+      "control_ms": 182.4231340000324,
+      "delta_ms": 72.05587399994329,
+      "speedup": 2.5316899771443473,
+      "comparison_saved_fraction": 0.99
+    },
+    {
+      "N": 100000,
+      "drift": 0.05,
+      "control_ms": 213.31112299992583,
+      "delta_ms": 105.56102100008502,
+      "speedup": 2.0207375883542658,
+      "comparison_saved_fraction": 0.95
+    },
+    {
+      "N": 100000,
+      "drift": 0.2,
+      "control_ms": 340.1562819999526,
+      "delta_ms": 254.99948200001654,
+      "speedup": 1.3339489136685014,
+      "comparison_saved_fraction": 0.8
+    }
+  ],
+  "linux_ratios_of_documented_medians": [
+    1.0,
+    1.623980761806418,
+    2.1413728809401142
+  ],
+  "linux_time_reductions_from_documented_medians": [
+    0.0,
+    0.38422915867078344,
+    0.5330098700227417
+  ],
+  "amdahl_scenarios_not_measurements": [
+    {
+      "p": 0.1,
+      "s_local": 2.5,
+      "s_total": 1.0638297872340425,
+      "time_saved": 0.06
+    },
+    {
+      "p": 0.3,
+      "s_local": 2.5,
+      "s_total": 1.2195121951219512,
+      "time_saved": 0.18
+    },
+    {
+      "p": 0.5,
+      "s_local": 2.5,
+      "s_total": 1.4285714285714286,
+      "time_saved": 0.3
+    },
+    {
+      "p": 0.8,
+      "s_local": 2.5,
+      "s_total": 1.923076923076923,
+      "time_saved": 0.48
+    }
+  ],
+  "historical_structural_example": {
+    "files": 3928,
+    "median_delta": 20,
+    "ratio": 196.4,
+    "saved_fraction": 0.994908350305499
+  },
+  "negative_controls": {
+    "binary_utf8_text_path_rejected": true,
+    "mode_only_equal_blob_bytes_but_nonempty_git_diff": true
+  },
+  "scope_limit": "No current Authority fetch, remote mutations, global runtime verification or kernel proof executed."
+}

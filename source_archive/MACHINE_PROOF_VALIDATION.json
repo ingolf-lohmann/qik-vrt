@@ -1,0 +1,39 @@
+{
+  "machine_proof": {
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "publication_id": "qikvrt-real-energy-model-source-20261103",
+    "path": "source_archive/MACHINE_PROOF_BUNDLE.json",
+    "bytes": 15219,
+    "sha256": "ec1af67061caa7fd05994410ac368e29110703c45fe31e42306641c8058b4e26",
+    "git_blob_sha": "792d21e71d59a774d373826a79cacff992dd5afc",
+    "candidate_return_receipt": {
+      "path": "source_archive/PREPUBLICATION_RETURN_RECEIPT.json",
+      "bytes": 1412,
+      "sha256": "b3d45886ec4d931086f7195789ba5fe261c58a089ecd39fd99572d57e18aa5fd",
+      "git_blob_sha": "9f984bf5068c018e2657dd33cf0dda83712acdc6"
+    },
+    "prepublication_returned_at": "2026-11-03T10:14:45.108885+00:00",
+    "returned_candidate_files": [
+      {
+        "path": "source_archive/README.txt",
+        "bytes": 2658,
+        "sha256": "603fdf993cbc3af72b0aafea2059e447faff61d7077ef346b8c582bbfa53a880",
+        "git_blob_sha": "c6d1ea0e5fae7fc4383bace52078b55164af606b"
+      },
+      {
+        "path": "source_archive/QIKVRT_Quellen_und_Modell_20261103.zip",
+        "bytes": 458670,
+        "sha256": "8c3b464c0d4a0315ab3fca30254964a926c066d76134c485c2798a4d339e8667",
+        "git_blob_sha": "eacf692c5d5875da9ee2530df7c8f5b849876007"
+      }
+    ],
+    "claim_count": 11,
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  },
+  "exact_upload_files": 16,
+  "owner_general_grant": "Dann schließe den Publikationsprozess jetzt ab. Freigabe erteilt",
+  "exact_new_archive_decision_recorded": false,
+  "original_publisher_blocker": "owner authorization authorization_event.authorized_at must be non-empty, bounded text without control characters",
+  "production_mutation_performed": false
+}

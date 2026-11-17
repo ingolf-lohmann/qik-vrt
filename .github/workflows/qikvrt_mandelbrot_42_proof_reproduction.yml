@@ -53,7 +53,7 @@ jobs:
           lake-package-directory: formalization/QIKVRT_Formalization_v2.0
           test: false
 
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
 
@@ -87,10 +87,19 @@ jobs:
 
             LOOP_DIR="$out" HEAD_SHA="$HEAD_SHA" TREE_SHA="$TREE_SHA" LEAN_VERSION="$lean_version" python3 - <<'PY'
           import hashlib, json, os, pathlib, re
+          from scripts.audit_lean_axioms import SUCCESSION_EXPECTED
           d = pathlib.Path(os.environ['LOOP_DIR'])
           pat = re.compile(r"^'(?P<n>[^']+)' (?:does not depend on any axioms|depends on axioms: \[(?P<a>[^]]*)\])$")
           allowed = {'propext', 'Classical.choice', 'Quot.sound'}
-          specs = [('core.txt',32,False),('extended.txt',71,False),('measurement.txt',9,True),('hardware.txt',22,False)]
+          historical_hardware = {
+              line.removeprefix('#print axioms ')
+              for line in pathlib.Path('QIKVRTFormalization/Hardware/AxiomAudit.lean').read_text().splitlines()
+              if line.startswith('#print axioms QIKVRT.V2.HardwareWitness.')
+          }
+          if len(historical_hardware) != 22 or len(SUCCESSION_EXPECTED) != 18:
+              raise SystemExit('BLOCK hardware source inventory drift')
+          hardware_expected = historical_hardware | SUCCESSION_EXPECTED
+          specs = [('core.txt',32,False),('extended.txt',71,False),('measurement.txt',9,True),('hardware.txt',len(hardware_expected),False)]
           payload = []
           for name, count, zero in specs:
               raw = (d/name).read_bytes(); payload.append(raw)
@@ -100,8 +109,11 @@ jobs:
                   m = pat.fullmatch(line.strip())
                   if not m: raise SystemExit(f'BLOCK unexpected {name} output: {line}')
                   axioms = {x.strip() for x in (m.group('a') or '').split(',') if x.strip()}
+                  if m.group('n') in reports: raise SystemExit(f'BLOCK duplicate report in {name}: {m.group("n")}')
                   reports[m.group('n')] = axioms
               if len(reports) != count: raise SystemExit(f'BLOCK {name} report count {len(reports)} != {count}')
+              if name == 'hardware.txt' and set(reports) != hardware_expected:
+                  raise SystemExit('BLOCK hardware theorem identity mismatch')
               if any(a-allowed for a in reports.values()): raise SystemExit(f'BLOCK forbidden axiom in {name}')
               if zero and any(reports.values()): raise SystemExit(f'BLOCK nonempty axiom dependency in {name}')
           policy=(d/'policy.txt').read_bytes(); payload.append(policy)
@@ -111,6 +123,7 @@ jobs:
               h.update(len(v).to_bytes(8,'big')); h.update(v)
           fp=h.hexdigest()
           receipt={'loop':int(d.name[-2:]),'source_commit':os.environ['HEAD_SHA'],'source_tree':os.environ['TREE_SHA'],'lean_version':os.environ['LEAN_VERSION'],'evidence_fingerprint_sha256':fp,'physical_correspondence':'NOT_INFERRED','empirical_confirmation':'NOT_INFERRED','PASS':False,'FINAL_PASS':False,'EFFECT_ACK_DONE':False}
+          receipt['hardware_axiom_report_groups']={'historical_authority_mirror':len(historical_hardware),'conditional_authority_succession':len(SUCCESSION_EXPECTED)}
           (d/'LOOP_RECEIPT.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           print(fp)
           PY
@@ -128,6 +141,7 @@ jobs:
           fps={r['evidence_fingerprint_sha256'] for r in rs}
           if len(fps)!=1: raise SystemExit('BLOCK fingerprint divergence')
           receipt={'schema':'qikvrt_mandelbrot_42_proof_reproduction_receipt_v1','repository':os.environ['GITHUB_REPOSITORY'],'source_commit':os.environ['HEAD_SHA'],'source_tree':os.environ['TREE_SHA'],'workflow_run_id':os.environ['GITHUB_RUN_ID'],'workflow_run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'requested_loops':42,'completed_loops':42,'unique_evidence_fingerprints':1,'evidence_fingerprint_sha256':next(iter(fps)),'formal_reproduction_result':'FORTY_TWO_IDENTICAL_FORMAL_REPRODUCTIONS','physical_correspondence':'NOT_INFERRED','empirical_confirmation':'NOT_INFERRED','scientific_consensus':'NOT_INFERRED','completion_claims':{'PASS':False,'FINAL_PASS':False,'EFFECT_ACK_DONE':False}}
+          receipt['hardware_axiom_report_groups']=rs[0]['hardware_axiom_report_groups']
           canonical=json.dumps(receipt,sort_keys=True,separators=(',',':')).encode();receipt['receipt_payload_sha256']=hashlib.sha256(canonical).hexdigest()
           (root/'MANDELBROT_42_PROOF_REPRODUCTION_RECEIPT.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           print(json.dumps(receipt,sort_keys=True,indent=2))

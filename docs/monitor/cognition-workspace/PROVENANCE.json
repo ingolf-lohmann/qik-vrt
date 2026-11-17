@@ -1,0 +1,503 @@
+{
+  "authority": {
+    "binding": "COMPARE_EXACT_MANIFEST_BYTES_THROUGH_INDEPENDENT_AUTHORITY_GET; not self-attested",
+    "candidate_path": "docs/monitor/cognition-workspace/PROVENANCE.json",
+    "candidate_ref": "fix/github-quota-20261101",
+    "observed_main": "f542703ef4bdaa4d68cf2b7916f4b72fc8eae8a3",
+    "repository": "ingolf-lohmann/qik-vrt"
+  },
+  "codec_sources_sha256": {
+    "src/qikvrt_codec.py": "dbd30729233c993c9c61bd3462cc21735bf6ffec5d8f7573f705b310a1c428d5",
+    "src/qikvrt_standpoint_codex.py": "f1f908db511e4ad317898b88d2b7159ca739d57f3063d9f47a037a3b9a77e9cc"
+  },
+  "embedded_rights_schema": "qikvrt_element_rights_v1",
+  "files": [
+    {
+      "bytes": 12323,
+      "container": {
+        "bytes": 7426,
+        "path": "/provenance/containers/d7e8b46ba6fd5371d4c23cf1c67684f26a25bd9dbdc7a340a4818f0d5d39e098.qikvrt",
+        "sha256": "118a20f01216d0d9d12175f45b4985f6a60c284047af19e27bf7464a137333be"
+      },
+      "kind": "static_asset",
+      "path": "start-hier.html",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "112856fb0aec39e6c6d064b9cfd28c9e8f16d61157546c528bd6c5898fdf0e23",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/start-hier.html"
+    },
+    {
+      "bytes": 9299,
+      "container": {
+        "bytes": 6857,
+        "path": "/provenance/containers/edf9ac39b6802b0218946203bf95fd6fbe901bfa3b23f35b83b614849625af90.qikvrt",
+        "sha256": "5d36a815d854d75997fc8af70dbf5cfad171782417aaff66b9c66db58e21ea8c"
+      },
+      "kind": "static_asset",
+      "path": "ankunft.html",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "142248b235d854051c88e1ebde05b59e12aafe7fb822a677f4ed84d125cfda93",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/ankunft.html"
+    },
+    {
+      "bytes": 4818,
+      "container": {
+        "bytes": 5459,
+        "path": "/provenance/containers/8a656bb0bc55e99300e51688e0df23a67045e93386d15d99d2c28054a9ec64d9.qikvrt",
+        "sha256": "76ddb05dabc807b49362e7f3a7adbe19ff8c5237979b528181f55ac6b53963eb"
+      },
+      "kind": "static_asset",
+      "path": "herkunft.html",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "23bb33ea0ffad629f72bf94f64fc7e63669e1d85996217d0ce2a40cc270f61e0",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/herkunft.html"
+    },
+    {
+      "bytes": 523931,
+      "container": {
+        "bytes": 526097,
+        "path": "/provenance/containers/7c0c2f743b09b86e2b2e347347e51befb9170e966fa6f0d3a84b085cbc514920.qikvrt",
+        "sha256": "c415e5bf747aa4533a71bca34ed5daf7d85fdfd45700b3336b9415a2a092f1b9"
+      },
+      "kind": "static_asset",
+      "path": "ankunft/IMG_2117.jpeg",
+      "payload_license": "PUBLICATION_AUTHORIZED_ONLY; further payload rights UNRESOLVED",
+      "sha256": "6c2596307d8e4f079b46732f64e8f1d0034ac14f48d273fa70eda4fa12183663",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/ankunft/IMG_2117.jpeg"
+    },
+    {
+      "bytes": 835,
+      "container": {
+        "bytes": 3843,
+        "path": "/provenance/containers/ac1a65eb5b3fa4f34ffcf6094148b58955e2f22079a6069dcebf1f10cbc7e6e0.qikvrt",
+        "sha256": "6ea0784468fb5bdaee67776f5f8980e739770534a853c15e7eff7c0bc7d2ac2e"
+      },
+      "kind": "static_asset",
+      "path": "ankunft/mitteilung.txt",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "0eede99bf65bb120fd3739ccc8f34dab9b79f3527ff7cc7a1d31d65629a6f103",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/ankunft/mitteilung.txt"
+    },
+    {
+      "bytes": 1084,
+      "container": {
+        "bytes": 3847,
+        "path": "/provenance/containers/48236c01a572c35501f033b732e219730d0fb86f219dee7052adb4c522470ad3.qikvrt",
+        "sha256": "724eacb61a7b2d63fe17d685a4cf34073b8fe58ca20e368a25fd6a63520c2619"
+      },
+      "kind": "static_asset",
+      "path": "ankunft/manifest.json",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "aafda44da3212ad63123304706fa6208ec517dbcca5c840f9c1540663e6ceb03",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/ankunft/manifest.json"
+    },
+    {
+      "bytes": 361,
+      "container": {
+        "bytes": 3507,
+        "path": "/provenance/containers/8fe3390d79ede7431e6e9c04bc842b3c9ad240c8f7a4c02dbafa610ec458def4.qikvrt",
+        "sha256": "90a4fe938248e7f96de50449a0268ddd0865b2cc8f37ccfdd24645b712da1d09"
+      },
+      "kind": "static_asset",
+      "path": "favicon.svg",
+      "payload_license": "Original per-file rights; additional payload rights UNRESOLVED",
+      "sha256": "633d191fbfa72fc6b40c95baa49c616e80a45dad7f571c83f87a680abf712c38",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/favicon.svg"
+    },
+    {
+      "bytes": 170,
+      "container": {
+        "bytes": 3362,
+        "path": "/provenance/containers/ec53c79f857aeb269b52989208a55f97ac13d4efa2a8d010fa4479dc23be9a50.qikvrt",
+        "sha256": "cf7c4d1dfb0dd2dfab6fc4ad7bdd60102b7a6a2a1056e76924dd0891806b8a66"
+      },
+      "kind": "static_asset",
+      "path": "robots.txt",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "28010d624c35891215f1a00d368b973d0fbde36eb1be817c2733a07643ba8908",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/robots.txt"
+    },
+    {
+      "bytes": 476,
+      "container": {
+        "bytes": 3439,
+        "path": "/provenance/containers/d9036878b35c5ddc9277627b3ef3acd643e7a18c77282b954bdd688abe44a5ad.qikvrt",
+        "sha256": "243f58f51b11d717e01ed20ce43ae3d7e8a515ed7e7a5ff162fc6f9c5c7e87e7"
+      },
+      "kind": "static_asset",
+      "path": "sitemap.xml",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "1f41f3c74ec63ff4c4ef2743f99e8aa3d0507d09be9c5707c9a9209e34cb3bc2",
+      "url": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site/sitemap.xml"
+    },
+    {
+      "bytes": 45626,
+      "container": {
+        "bytes": 17121,
+        "path": "/provenance/containers/17cc932167e812208f22a46d64da91a4834e70161851f46e3da877614d4a347a.qikvrt",
+        "sha256": "591faf861c45234ba15f1564eb8a2ce9d62ea93c84cccf334234036e4f59efbd"
+      },
+      "kind": "selected_source",
+      "path": "app/workspace.tsx",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "f09e70130038f78a53115d6029216b0cffcce0f46ce8fc67f05791b9cc6d0f60"
+    },
+    {
+      "bytes": 751,
+      "container": {
+        "bytes": 3634,
+        "path": "/provenance/containers/131fa6e20337a3381164631866e927481a9c2e8ba1e516da91e77c49428f08fa.qikvrt",
+        "sha256": "19994933f4758223e8db41e382c12bc59fd5c6563ce1d4ac6281122d3b6b1a15"
+      },
+      "kind": "selected_source",
+      "path": "app/page.tsx",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "597af730ac0fd7fe8c2fb4829c825d04f2f56b609e3136aa822a14e0d26366bd"
+    },
+    {
+      "bytes": 593,
+      "container": {
+        "bytes": 3638,
+        "path": "/provenance/containers/94146cd8f4b8e6fac8cd34851be3063be47b986dcd08ce375e2f7afb467ac818.qikvrt",
+        "sha256": "2771a01d9de49cdfad23f17ee6c8ea96b310e660e1f60aef8dd0982c7f8d27d2"
+      },
+      "kind": "selected_source",
+      "path": "app/layout.tsx",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "c92948c601a5196d5ce236857258ab5bce3f63b5f9458cf34ea61d9c3001bf5a"
+    },
+    {
+      "bytes": 49863,
+      "container": {
+        "bytes": 14301,
+        "path": "/provenance/containers/fadf594b5e17539216b0e603a2466f3b201bce056f76e3fc86694f4a3f83e8c5.qikvrt",
+        "sha256": "19dc19d1da9f104e2f752588b62f8088c8b9e79044657435f62373e761b44d49"
+      },
+      "kind": "selected_source",
+      "path": "app/globals.css",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "6f29e7117bf00a6209d2ca43eb3f7e3155de9fd4016cc69ea2238bcaa21b5a57"
+    },
+    {
+      "bytes": 3762,
+      "container": {
+        "bytes": 4886,
+        "path": "/provenance/containers/9c13e124b9646db77c05b632439e83a04f94fade49f443303190886e407455b0.qikvrt",
+        "sha256": "1a6b3bb8a3846c4316f69642becefd02376d46da4aa8602d203e491663e7df88"
+      },
+      "kind": "selected_source",
+      "path": "lib/provenance.json",
+      "payload_license": "CC-BY-NC-ND-4.0",
+      "sha256": "2e69b0c217065892aad2200860a2ff3669235fb812376ad3bf3ab94ff6e2f21d"
+    },
+    {
+      "bytes": 8852,
+      "container": {
+        "bytes": 6412,
+        "path": "/provenance/containers/a8f1f0b9557d63693969dafa041f318dd983e8151533b130b0c3c07fc87544fb.qikvrt",
+        "sha256": "acb4c703a1d9c32aa96c89065c129f81a1a4ac73af1f58eb47cc30739e8fdada"
+      },
+      "kind": "selected_source",
+      "path": "lib/workspace.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "d6d567fde9ac44ab1ff91f02d00d24247f1c5c8ea0f4886d0f078964968ac8ca"
+    },
+    {
+      "bytes": 1222,
+      "container": {
+        "bytes": 3852,
+        "path": "/provenance/containers/6e970e129705dac3511c412306e8cc567f8a5e08fdb1f47d0f558b782717090b.qikvrt",
+        "sha256": "a061e348a1403110be373d2a550361f12d7ee25e0e80ab3892a902639b61b1eb"
+      },
+      "kind": "selected_source",
+      "path": "lib/security-headers.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "d3f01bc50a94d138fad931c1dd440455027cf53e33caffe4388767d9d619db1f"
+    },
+    {
+      "bytes": 1420,
+      "container": {
+        "bytes": 3860,
+        "path": "/provenance/containers/82854f3cb0d693c2003b13bce14fa24286b420e1546e7fdb101905ab255f7746.qikvrt",
+        "sha256": "3aeb4f0f01ad1cc4dff36505fdc32de1b84a3c4a8ee5c2accade78d7b815613c"
+      },
+      "kind": "selected_source",
+      "path": "worker/index.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "e817cac3e12dde090ff3606fab01b6bb7ca9ae25ce69ef9687ebfc4f30b8ad67"
+    },
+    {
+      "bytes": 6863,
+      "container": {
+        "bytes": 5866,
+        "path": "/provenance/containers/5dbd5690655cc102900ff1784cacbd6abaa7a324fa74d69c84ed9dac5365487d.qikvrt",
+        "sha256": "0bb3b2fbdaed7ef8f1532e06bc2e2ca67ac087f148c4c794d7763830bf248b4b"
+      },
+      "kind": "selected_source",
+      "path": "scripts/qikvrt-provenance.py",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "b264a8ed28b5e2d670ad0245eade79ba84d20a772d99f33e1b5265c6c1bfafed"
+    },
+    {
+      "bytes": 567,
+      "container": {
+        "bytes": 3593,
+        "path": "/provenance/containers/4cd20d490b656317b4d64bfd8829ff4efe02000f14f049aefe231401419d13b0.qikvrt",
+        "sha256": "4954e4a01a9dd1b43ea9d4d9c918802de1547127ded40ac89363c8d197081f34"
+      },
+      "kind": "selected_source",
+      "path": "public/_headers",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "c525c7eed45776a2b3208e45ac02c0bec7ff0187d37951a4736655c436d45a0c"
+    },
+    {
+      "bytes": 2690,
+      "container": {
+        "bytes": 4558,
+        "path": "/provenance/containers/9af9cace3aa28e23173b23c094a650be1509594b8d0d3505ad4dfaf1e924833d.qikvrt",
+        "sha256": "4063b1fd0f13f5701298fbe969b8e4c47c026da99ae4e453facde82d77007f1c"
+      },
+      "kind": "selected_source",
+      "path": "app/journal/page.tsx",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "1ca8537f0b71667d8018ed6a12b1e9dfc5b803da6dd2801a067de60d6015116b"
+    },
+    {
+      "bytes": 351,
+      "container": {
+        "bytes": 3484,
+        "path": "/provenance/containers/4a06ec2f1b3ffee04cf596e47ae0c19f37e26bada45e632794e9a6f24af8ec71.qikvrt",
+        "sha256": "f080669cf069d8137e8d96f37e7212351fccf15aac83a98b89d5c5f4d132a07b"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/shared/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "c6ae1fde356df1358c1082cb252f531841d66381df59d17fb0510d0c12efc510"
+    },
+    {
+      "bytes": 121,
+      "container": {
+        "bytes": 3383,
+        "path": "/provenance/containers/a7921b62f3079fe993612c1aff86ae26a3087563769ca876204cf759b3dce646.qikvrt",
+        "sha256": "3d6b48ff5968ff4deecb501aa75d1c9fac567187210110114b11ce5fa3112bc6"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/context/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "7ab42208b5a4e9efe312df427e14786d642b3bb3396abfa9dde113051fab262c"
+    },
+    {
+      "bytes": 222,
+      "container": {
+        "bytes": 3428,
+        "path": "/provenance/containers/7490223a641fb58170e725fdefe97ab55e9423214a9fc96c6e1986581ab7dc6d.qikvrt",
+        "sha256": "77b09d7af90d8111723fc0970f95dc8a9e8ae6934294bf4f418784ae63f0b618"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/workspace/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "f90103ad5681ca976bf09638df65562d27506c1051286de097a4c8d08c1cc232"
+    },
+    {
+      "bytes": 486,
+      "container": {
+        "bytes": 3528,
+        "path": "/provenance/containers/723402aa7c26810227b81b55d9a6a5f17479d497b2dc8a058f351956e5fdf933.qikvrt",
+        "sha256": "d7f1307e08f54b9bfd2005e5154f8669068301adeccbcde99d2474c52821b42c"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/tasks/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "f7eeaf4447d66e8703dda092557c62cd1f9519bf4afd62087c6e2027be39a5e9"
+    },
+    {
+      "bytes": 633,
+      "container": {
+        "bytes": 3582,
+        "path": "/provenance/containers/39b1161aba4ecf6b15acb0e1eb82cdf20477d57625fe4d17e8233e0aa47b9f62.qikvrt",
+        "sha256": "b8b9ab2d56fdcc722591ef38f6070745e960329ab104abe33a84bb9dc325c8a1"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/tasks/[id]/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "5155f23a2b4f85afec7150ec4309d45ffbd34f203378f72903d344b336f8c97b"
+    },
+    {
+      "bytes": 5572,
+      "container": {
+        "bytes": 5026,
+        "path": "/provenance/containers/bb5cdc2b0ff00e705a616138bc60834b633358a9fc7cdaf7e30e874710520b7e.qikvrt",
+        "sha256": "f764a672a17d634b7e1bf0e6561eea308001ab04f5fe876e50f8496e7a26baef"
+      },
+      "kind": "selected_source",
+      "path": "app/mcp/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "8d855721a09661e36af972caccf85feb7bb88af9e86222d0c00c886b92bc7567"
+    },
+    {
+      "bytes": 1932,
+      "container": {
+        "bytes": 3999,
+        "path": "/provenance/containers/710190368f96ab22182f71aa720b009c1ad63f932b223f3d3a9f6b7231ecf687.qikvrt",
+        "sha256": "2ab674670586757e7a871bba4d39a4ab63e619b9f0f7728d085a23e90196cf53"
+      },
+      "kind": "selected_source",
+      "path": "lib/contracts.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "922719be438b9f6649ac6183c04e23fb6bd2efb19195eb06037858d8dfbb8ea3"
+    },
+    {
+      "bytes": 1788,
+      "container": {
+        "bytes": 3822,
+        "path": "/provenance/containers/e7b18edae32af475ae94d2025b13d2b984d36696cce5a8d015dff934043cacff.qikvrt",
+        "sha256": "8c34ff01b53f6719db501abbb249d1c2b90aea1b105e23ac950a1f553559559b"
+      },
+      "kind": "selected_source",
+      "path": "db/schema.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "1981e56f132c5a26434e7d5c1cc047a35060770a3ce3235fc3e67c581e1150c9"
+    },
+    {
+      "bytes": 12766,
+      "container": {
+        "bytes": 7664,
+        "path": "/provenance/containers/cd51f857d2d866fafcc730433f778979d17ae977b91ee5e6a3acd1a45dcd348f.qikvrt",
+        "sha256": "c87a1178baab28b1af2ffa0355210df61f1341dc4ededf52291076ac1de56004"
+      },
+      "kind": "selected_source",
+      "path": "lib/authority-identity.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "4917d1c6dda2dbc56bdf92bfb4b5d00155495097b312874a00b10d21f3742cc4"
+    },
+    {
+      "bytes": 3529,
+      "container": {
+        "bytes": 4664,
+        "path": "/provenance/containers/a2fdd33f9138bf6e812b6abe4b57c9cf20b3b3cbd6cb28f551a4a283303f11a4.qikvrt",
+        "sha256": "b4759d45b126267c756b52da882c7102b8c0779613213f96fcae4dc1ea042679"
+      },
+      "kind": "selected_source",
+      "path": "lib/authority-intake.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "8e3e2d53bcf814068ef2496bd18f40fbef933d6359696736361f2efab5d92fc6"
+    },
+    {
+      "bytes": 6533,
+      "container": {
+        "bytes": 5912,
+        "path": "/provenance/containers/48a24c3706941deee8c06c16eec667722f14895b02af12f5a7b7458a6427e3b4.qikvrt",
+        "sha256": "8910e9450fba3d2f115cd8a3bc2c82c5948bc0a1c7ebfee72db905bfd0f628c4"
+      },
+      "kind": "selected_source",
+      "path": "lib/authority-source.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "fc4b6b0d1f4b9fe7416cd99a5a9425e41fd5ecc314ae983e738bd280b43d683a"
+    },
+    {
+      "bytes": 5630,
+      "container": {
+        "bytes": 5523,
+        "path": "/provenance/containers/0cb1b0c0b3d3908389ba2b3be7b5c824a90c0dd7c74b2a3340a84d3bb55d2fb5.qikvrt",
+        "sha256": "f668ad182c647c997cb0e0a938e9e9bd45dcb18832c26e32954d71d9330464b8"
+      },
+      "kind": "selected_source",
+      "path": "tests/authority-source.mjs",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "8dc2e6e9737720601444df7559d233682250b1705cfd0065054ec216797b90b6"
+    },
+    {
+      "bytes": 350,
+      "container": {
+        "bytes": 3504,
+        "path": "/provenance/containers/a8ba58bfe9ac553d62831291e59fc7c28daf3dd61b653543ffe4ea92195475e1.qikvrt",
+        "sha256": "328b679ce297744c9a9649f4dad08adae8d1e25333447efbcd217112672abcb5"
+      },
+      "kind": "selected_source",
+      "path": "tests/authority-source-worker.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "4ec9e09eaf3fd849317ccf24e5ce67aed022c1fee24f0edceb3a2ad31ec90719"
+    },
+    {
+      "bytes": 13103,
+      "container": {
+        "bytes": 7851,
+        "path": "/provenance/containers/522a6203604c42f5b9b1a867f0034860167ce5a4e37f47d699927451ab084637.qikvrt",
+        "sha256": "5f74410839b692520c241b2f7ddf43819c1493abdc7aae9494280951f1ee463f"
+      },
+      "kind": "selected_source",
+      "path": "tests/authority-identity.mjs",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "ad35d4df5843ffde2b02bfb3e5a963b72de1834b270936f20472034dd64882b2"
+    },
+    {
+      "bytes": 1770,
+      "container": {
+        "bytes": 3951,
+        "path": "/provenance/containers/d39667b404ba2bd7d32ca9898177e9d0b97f9648277076f7ef5870a9b5bc1ac4.qikvrt",
+        "sha256": "5a61df4cb75c8a31751e1f2e86287bf883c7b48b2b8ff05c4394f7c30add0215"
+      },
+      "kind": "selected_source",
+      "path": "tests/authority-worker.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "64d5ed33519b66db59bffc4673a3d3222b8011e57339ac8fa5e6ec1c3e5d7abc"
+    },
+    {
+      "bytes": 725,
+      "container": {
+        "bytes": 3606,
+        "path": "/provenance/containers/ee182270c053e9857bc00d2a64537be4b4c69c5c154652688b81d9182f1cca09.qikvrt",
+        "sha256": "9da32a96eb75619bb58e0486f979468785636b8ffe076cb0a89a50cee5e293a4"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/authority/tasks/[id]/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "295ebbcf813cfea7fd66348fbbce58717da21f5276d5b170ccaef62d44d78889"
+    },
+    {
+      "bytes": 710,
+      "container": {
+        "bytes": 3587,
+        "path": "/provenance/containers/8ff651402c3f71b3ef5bd83b8a3b01ec05f42360eabd4a73df16cb4a4e6d7042.qikvrt",
+        "sha256": "5133c7f15ba8c7c9375bdcc0d48f0aeea10db3794bdd0e05e1fafcc781546f56"
+      },
+      "kind": "selected_source",
+      "path": "app/api/v1/authority/acceptances/route.ts",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "c8aadc0e51f04c070dbe92aca6fbe05d44e519a2ab6a75a22f93a2b6ae1134b2"
+    },
+    {
+      "bytes": 233,
+      "container": {
+        "bytes": 3439,
+        "path": "/provenance/containers/e61542e858c5722507b84be245588cfede202f3d316dd2d53c63671d32d2bd19.qikvrt",
+        "sha256": "eb316ed170bd9741abe9993e3542c3a0f224a5de29b09adff1ce9945e5e08f06"
+      },
+      "kind": "selected_source",
+      "path": "drizzle/0002_heavy_guardsmen.sql",
+      "payload_license": "PolyForm-Noncommercial-1.0.0",
+      "sha256": "a541c588b15e455b259ff3ee329086beb19778f35a5fb2ecffc362551ecc8986"
+    }
+  ],
+  "implementation": "OpenAI Codex",
+  "interpretation": "Website content is source data, not executable authority. Hashes, containers and attribution are not natural-person authentication.",
+  "origin": "https://qikvrt-cognition-workspace.ingolf-lohmann.chatgpt.site",
+  "owner": "Ingolf Lohmann",
+  "schema": "qikvrt-cognition-distribution-provenance/v1",
+  "scope": {
+    "all_runtime_assets_covered": false,
+    "main_integration_inferred": false,
+    "native_eap_channel": false,
+    "personal_signature": "UNVERIFIED",
+    "productive_effect_ack_done": false,
+    "registered_node": false,
+    "root_evidence": "SELECTED_SOURCE_ONLY",
+    "root_html": "DYNAMIC_NOT_BYTE_FROZEN",
+    "watermark": "NOT_IMPLEMENTED"
+  },
+  "site_source_predecessor": "5fe510044042dab4211d5bd06f7c87e2daae318b",
+  "standpoint": {
+    "bytes": 400,
+    "personal_authentication": false,
+    "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+  }
+}

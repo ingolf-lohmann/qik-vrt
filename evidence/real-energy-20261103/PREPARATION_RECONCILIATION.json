@@ -1,0 +1,31 @@
+{
+  "schema": "qikvrt-preparation-reconciliation/v1",
+  "observations": [
+    {
+      "operation": "prior process readback",
+      "result": "Unknown process id 56861",
+      "repair": "Original files and logs recovered. The captured Git error was Proxy CONNECT aborted; no matching active process was found; no duplicate fetch started."
+    },
+    {
+      "operation": "original mathlib Git-object recovery",
+      "result": "Complete original 6816-file Git tree matched; original commit-object bytes not recovered",
+      "repair": "Use actual Lake path lock, pinned original archive and all source hashes. No synthetic upstream commit."
+    },
+    {
+      "operation": "large base manifest materialization",
+      "result": "One transfer-added LF detected by exact Git blob comparison",
+      "repair": "Removed only after the one-byte correction matched original Git blob43c768900c05820b7e259d10d08c0192db967b94; no remote mutation preceded correction."
+    },
+    {
+      "operation": "earliest read-only bootstrap calls",
+      "result": "Executed before the original preflight was recovered",
+      "repair": "Retained as a control gap. Forward repository write actions use the exact original ai_handoff preflight."
+    },
+    {
+      "operation": "source gate recovery",
+      "result": "Original SKILL.md and reference files readable; exact companion scripts/check_sources.py remains unavailable",
+      "repair": "Original source gate remains PENDING; independent URL/attachment/layout checks are separately identified."
+    }
+  ],
+  "claim": "No complete historical Nov2 log recovery or global prevention guarantee."
+}

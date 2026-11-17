@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "passed": 44,
+  "total": 44,
+  "failed": [],
+  "closed_model_final": {
+    "proper_time": 1.0,
+    "a": 2.518897464778543,
+    "H": 0.896053993393605,
+    "full_or_cell_volume": 9976.109535267055,
+    "matter_energy": 22.35282359811535,
+    "radiation_energy": 0.0029580168719203687,
+    "vacuum_energy": 952.5292061824632,
+    "material_total": 974.8849877974505,
+    "material_total_initial": 81.96035319281775,
+    "integrated_minus_p_dV": 892.9246346046752,
+    "radial_null_coordinate": 0.20482484849233767,
+    "photon_energy": 3.9699908947580766,
+    "redshift_from_a1": 1.5188974647785431,
+    "temperature_reference_over_a": 0.3969990894758069,
+    "conditional_bit_ceiling_eta_half": 7.213475204444831,
+    "radial_metric_determinant": -63.44844438067768
+  },
+  "convergence_ratios": [
+    16.527908789191994,
+    16.27251515294477,
+    16.138716797113993
+  ]
+}

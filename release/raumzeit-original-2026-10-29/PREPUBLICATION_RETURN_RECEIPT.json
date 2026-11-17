@@ -1,0 +1,38 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2",
+  "publication_id": "raumzeit-original-en-de-20261020-20261029",
+  "content_changed": false,
+  "original_files": [],
+  "candidate_files": [
+    {
+      "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_EN_DE.pdf",
+      "bytes": 376446,
+      "sha256": "88d0eb41fa8d3b11a809419f9587cf97783d7b253a50d5297fac016a41a30d68",
+      "git_blob_sha1": "051bc588b083c73ea5fee2c9ccbd0302262b7953"
+    },
+    {
+      "path": "release/raumzeit-original-2026-10-29/Raumzeit_arXiv_Quellen_EN_DE.zip",
+      "bytes": 32047,
+      "sha256": "da5fc1d6ff07727ee2c9227a4bef3d82f292b1a80603df611523e4882175491a",
+      "git_blob_sha1": "cf22ae20860a90b55da96b2335dc3542e9d9a896"
+    }
+  ],
+  "changed_claim_ids": [],
+  "change_reasons": [],
+  "change_notice_path": null,
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "The unchanged original PDF and source ZIP were linked in the immediately preceding assistant final response in this conversation. This timestamp records receipt materialization, not an independently measured transport time. The Owner subsequently replied: Ja / Jetzt veröffentliche.",
+    "returned_at": "2026-10-29T12:45:47.368209+00:00",
+    "visible_change_notice_returned": false
+  }
+}

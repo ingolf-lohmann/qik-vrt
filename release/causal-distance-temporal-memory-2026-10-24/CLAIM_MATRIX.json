@@ -1,0 +1,169 @@
+{
+  "publication_id": "qikvrt-causal-distance-20261024",
+  "claim_count": 15,
+  "claims": [
+    {
+      "claim_id": "CD-001",
+      "statement": "Die Vorarbeit trennt OBSERVED und ANTICIPATED und definiert eine enge operationale Protokoll-Retrokausalität.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "boundary": "Archivierter Scope von DOI 21711193.",
+      "proof_refs": [],
+      "sources": [
+        "S1"
+      ]
+    },
+    {
+      "claim_id": "CD-002",
+      "statement": "Der Messgraph bindet Gegenstand, Ereignisauflösung, Relationstyp und positive ganzzahlige Kantengewichte.",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "boundary": "Definition dieses endlichen Modellobjekts.",
+      "proof_refs": [],
+      "sources": []
+    },
+    {
+      "claim_id": "CD-003",
+      "statement": "Gerichtete Distanz ist der kürzeste gewichtete Abhängigkeitspfad; die symmetrische Projektion hat einen anderen Interpretationsbereich.",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "boundary": "Definierte Messvorschrift; keine universelle Naturmetrik.",
+      "proof_refs": [],
+      "sources": []
+    },
+    {
+      "claim_id": "CD-004",
+      "statement": "Die analytische Herleitung ergibt eine erweiterte Quasimetrik und eine Metrik je schwacher Komponente der Projektion.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "boundary": "Angegebene endliche positive Graphdefinition; keine neue Lean-Ausführung.",
+      "proof_refs": [],
+      "sources": [
+        "MATH",
+        "S3"
+      ]
+    },
+    {
+      "claim_id": "CD-005",
+      "statement": "Vier kontrollierte Fälle unterscheiden die freigegebene Dateiänderung 2 nach 3 von drei verweigerten Änderungen.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "boundary": "Isolierter lokaler Programmlauf.",
+      "proof_refs": [],
+      "sources": [
+        "FOUR_CASES"
+      ]
+    },
+    {
+      "claim_id": "CD-006",
+      "statement": "Elf native Testjournalereignisse wurden über den originalen Terminal-Leser nach erneutem Öffnen bestätigt.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "boundary": "Frisches lokales Testjournal; keine produktive Mesh-Replikation.",
+      "proof_refs": [],
+      "sources": [
+        "JOURNAL"
+      ]
+    },
+    {
+      "claim_id": "CD-007",
+      "statement": "Die dokumentierten ursprünglichen Tests bestehen aus 16 neuen, 41 originalen EAP- und vier ausgewählten originalen Ledger-Tests.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "boundary": "61 Tests am eingefrorenen ursprünglichen Kandidaten.",
+      "proof_refs": [],
+      "sources": [
+        "CORE_TESTS"
+      ]
+    },
+    {
+      "claim_id": "CD-008",
+      "statement": "Alle 4096 gerichteten Graphen auf vier Knoten werden gegen eine unabhängige Floyd-Warshall-Auswertung geprüft.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "boundary": "Endliche Implementierungsprüfung; kein Ersatz des allgemeinen analytischen Arguments.",
+      "proof_refs": [],
+      "sources": [
+        "GRAPH_TESTS"
+      ]
+    },
+    {
+      "claim_id": "CD-009",
+      "statement": "Ereignisordnung, Provenienz und kausale Intervention sind unterschiedliche wissenschaftliche Begriffe.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "boundary": "Geltungsbereiche der benannten Primärquellen.",
+      "proof_refs": [],
+      "sources": [
+        "S4",
+        "S5",
+        "S6"
+      ]
+    },
+    {
+      "claim_id": "CD-010",
+      "statement": "Physische Future-Input-Abhängigkeit ist von heutiger Zielrepräsentation und Retrodiktion zu unterscheiden.",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "boundary": "Modellbegriff der benannten quantenphysikalischen Primärquelle und Vorarbeit.",
+      "proof_refs": [],
+      "sources": [
+        "S1",
+        "S7"
+      ]
+    },
+    {
+      "claim_id": "CD-011",
+      "statement": "Neue Lean-Kernelprüfung und unabhängige externe Reproduktion der Distanz-Erweiterung bleiben offen.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "boundary": "Keine solche Ausführung oder Fremdreproduktion behauptet.",
+      "proof_refs": [],
+      "sources": [
+        "LIMITS"
+      ]
+    },
+    {
+      "claim_id": "CD-012",
+      "statement": "Ein vollständiger produktiver persönlicher Digital Twin und eine universelle physische Anschlussfähigkeit sind nicht abgenommen.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "boundary": "Separate Identitäts-, Rechte-, Runtime- und empirische Nachweise nötig.",
+      "proof_refs": [],
+      "sources": [
+        "CURRENT_COMPLETION"
+      ]
+    },
+    {
+      "claim_id": "CD-013",
+      "statement": "Der historische Kataloggraph hat 32 Knoten und 19 Empfehlungsrelationen; die ausgewählten zehn Python-Module haben 15 interne statische Importrelationen.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "boundary": "Katalogstand 11.10.2026 und explizite statische Quellauswahl; keine beobachtete produktive Wirkungskette.",
+      "proof_refs": [],
+      "sources": [
+        "FRAMEWORK"
+      ]
+    },
+    {
+      "claim_id": "CD-014",
+      "statement": "Ein lesendes Personenprofil erzeugt sieben Quellenrouten; sechs zusätzliche Tests prüfen Wiederverwendung und Begrenzung.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "boundary": "Parameterisierte Wissensansicht; keine Authentisierung und keine Handlungsvollmacht.",
+      "proof_refs": [],
+      "sources": [
+        "PROFILE"
+      ]
+    },
+    {
+      "claim_id": "CD-015",
+      "statement": "Die gekoppelte Speicher-, Prüf- und Navigationsarchitektur kann als Baustein künstlicher Handlungs- und Wissensfähigkeit dienen.",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "boundary": "Architekturinterpretation; keine biologische oder phänomenologische Hinlänglichkeit.",
+      "proof_refs": [],
+      "sources": []
+    }
+  ]
+}

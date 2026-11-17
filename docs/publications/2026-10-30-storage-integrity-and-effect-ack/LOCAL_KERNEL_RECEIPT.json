@@ -1,0 +1,94 @@
+{
+  "schema": "qikvrt_storage_integrity_local_kernel_receipt_v1",
+  "scope": "ABSTRACT_MODEL_NOT_PYTHON_OR_HARDWARE_VERIFICATION",
+  "source_base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "630fe6a2db8b202fd8483a3ed5d9d13112839d46",
+    "tree": "ba8e32c34d387c6d2532c491088c06fcbad4106e"
+  },
+  "source_state": "UNCOMMITTED_CANDIDATE_BOUND_BY_FILE_HASHES",
+  "toolchain": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+  "upstream_archive_sha256": "6fe3ce97a58f44e2b3567d455b994eacec5bfe9ae7774f2a573444480ba813fe",
+  "bindings": [
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrity.lean",
+      "bytes": 7297,
+      "sha256": "456ba4f7c5f0ea9f960eb547b66de8630436af6678e400d92b350a77648e11e6"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/StorageIntegrityAxiomAudit.lean",
+      "bytes": 1672,
+      "sha256": "ed31f5a2a5c66138c3c03fc998a3a77f4f218f29ccdd269abb0cd500b9c55786"
+    },
+    {
+      "path": "formalization/QIKVRT_Formalization_v2.0/.lake/build/lib/lean/QIKVRTEffectAck/StorageIntegrity.olean",
+      "bytes": 356344,
+      "sha256": "67b58844716d34fbf2a7582b27f7f0cc5fe80b830f0c5d18c0b30ab684dd93af"
+    },
+    {
+      "path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/AXIOM_AUDIT.txt",
+      "bytes": 1936,
+      "sha256": "871e61af9d267d8779bd03a895f1711d46c645fbce43c6d0e009a702dc1d9c66"
+    }
+  ],
+  "theorem_axioms": {
+    "QIKVRT.StorageIntegrity.V1.valid_requires_rights": [],
+    "QIKVRT.StorageIntegrity.V1.valid_requires_signature": [],
+    "QIKVRT.StorageIntegrity.V1.single_bit_changes_bits": [],
+    "QIKVRT.StorageIntegrity.V1.single_signature_bit_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.single_rights_bit_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.removed_nonempty_signature_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.removed_nonempty_rights_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.payload_independent_notice_check": [],
+    "QIKVRT.StorageIntegrity.V1.public_notice_does_not_authenticate_payload": [],
+    "QIKVRT.StorageIntegrity.V1.changed_subject_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.missing_checker_is_unverified": [],
+    "QIKVRT.StorageIntegrity.V1.mismatch_is_rejected": [],
+    "QIKVRT.StorageIntegrity.V1.stopped_checker_cannot_signal": [],
+    "QIKVRT.StorageIntegrity.V1.missing_channel_cannot_signal": [],
+    "QIKVRT.StorageIntegrity.V1.live_detection_signals": [],
+    "QIKVRT.StorageIntegrity.V1.lossless_reconstruction": [],
+    "QIKVRT.StorageIntegrity.V1.canonical_reencoding": [],
+    "QIKVRT.StorageIntegrity.V1.codec_is_injective": [],
+    "QIKVRT.StorageIntegrity.V1.adaptation_preserves_checked_property": [],
+    "QIKVRT.StorageIntegrity.V1.every_finite_verified_adaptation_preserves": [],
+    "QIKVRT.StorageIntegrity.V1.no_lossless_boolean_storage_in_unit": [],
+    "QIKVRT.StorageIntegrity.V1.accepted_example_exists": []
+  },
+  "negative_controls": [
+    {
+      "source": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative/FalseChangedSignatureValid.lean",
+      "source_sha256": "1ccb15e8e7d4912422d00b08b8b3dc474d7462a301dbea019ace36732b9c289c",
+      "exit_code": 1,
+      "diagnostic_sha256": "2e08e20a5892fb2dcac338ae4ebc968df3adf86153b9d540aecec62fc8023cef",
+      "diagnostic_path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/FalseChangedSignatureValid.txt"
+    },
+    {
+      "source": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative/FalsePublicNoticeAuthenticatesPayload.lean",
+      "source_sha256": "faf825f66e914a730deddfd46871ef592dd8dc5cc36e10266585215f47bb0166",
+      "exit_code": 1,
+      "diagnostic_sha256": "b95c7f6f16092056f439779f834dcd74b71fb673b497868c32d1c2429bd083ce",
+      "diagnostic_path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/FalsePublicNoticeAuthenticatesPayload.txt"
+    },
+    {
+      "source": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/negative/FalseStoppedSignal.lean",
+      "source_sha256": "40a7f352323d2d7400818b9108f0e8d2b1553405d73b94c831f07c386616f83b",
+      "exit_code": 1,
+      "diagnostic_sha256": "992c497b72c0c16c66fb6d0106e46eb67d2cc788cbb0035a8943e8884a9328ab",
+      "diagnostic_path": "docs/publications/2026-10-30-storage-integrity-and-effect-ack/FalseStoppedSignal.txt"
+    }
+  ],
+  "environment_compatibility": {
+    "reason": "Lean 4.19 resolves /proc/getpid()/exe; namespace PIDs differ from exposed host procfs. Only current-process app-path readlink is redirected to /proc/self/exe. Kernel, parser, proof code and library bytes are unchanged.",
+    "source": "APP_PATH_COMPAT.c",
+    "sha256": "4cf10f8a50d7311d3870cd570da4417a475a01608771ef7bc953d35365f779b6",
+    "ci_requires_native_unmodified_execution": true
+  },
+  "effect_ack_done": false,
+  "independent_peer_review": false,
+  "integration_base": {
+    "head": "6fc9c45a272fb661f09bf5547e63e70e42d45271",
+    "tree": "7b705174f4a8d1948d884930ffa2e6cee6c23304",
+    "method": "27 text blobs from merged PR643 independently matched to Git blob hashes; three integrity files regenerated"
+  }
+}

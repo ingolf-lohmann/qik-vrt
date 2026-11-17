@@ -1,0 +1,473 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2",
+  "publication_id": "qikvrt-causal-distance-lean-20261024",
+  "content_changed": true,
+  "original_files": [
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+      "bytes": 144095,
+      "sha256": "cc54bf812966a7f0d2e89f2a04208e855e5a66b24822fa4dbf0eab13beb33e36",
+      "git_blob_sha1": "95e4c34c4dbe5d7af105ce946b709cb482a39681"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+      "bytes": 118624,
+      "sha256": "530c47f95261b0abd48321e1f66e73c51b21f2e873bca5150da7865b8986d2e3",
+      "git_blob_sha1": "6e827ad67d9ced188ad4355bc5f179f6e16e990c"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/Fachartikel.md",
+      "bytes": 31909,
+      "sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "git_blob_sha1": "d4bb226e00aa44b144ded7cce39e88685e54f5a8"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/Prosaartikel.txt",
+      "bytes": 26052,
+      "sha256": "d6b83f1ef8923788662c85673901822b1ba320dc9436ca177d9875c0dec59171",
+      "git_blob_sha1": "8ce4713cb5d44d5eeed96d72c7d08dd3db1a28ea"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Prosa_Vorlesetext.txt",
+      "bytes": 22652,
+      "sha256": "3c0d71501d6151e7746ce4b6d0063cd898a4ed2e1399cbed1d810e6f8f9e5ebd",
+      "git_blob_sha1": "cd75018d03b77ad609cfa57a452995a73a477d9b"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Causal_Distance_20261024.zip",
+      "bytes": 262030,
+      "sha256": "d070ae7e9c15feeadedddf55b3bf77072a3b74289dad60bb3adce4aee7089f91",
+      "git_blob_sha1": "87d485faf527dab24a1bc98dd28cd7ab532a764a"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/QIKVRT_Framework_Selbstvermessung_20261024.zip",
+      "bytes": 201027,
+      "sha256": "01d874f116d68119c3278345bc09fb72fcd1917e88dd27e51b726ef950b3e542",
+      "git_blob_sha1": "9d604052aab7807bdfd394467efe2b5dc62bad65"
+    },
+    {
+      "path": "release/causal-distance-temporal-memory-2026-10-24/LESEPFAD_NACH_INTERESSE.md",
+      "bytes": 7588,
+      "sha256": "becc9ff671680db7fbe1a6f7869b7aba5df0916a0be50f339abe23ce57e43024",
+      "git_blob_sha1": "9e9a2c23436f43d5866e48c1534c5dae00ce3aa3"
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Kausale_Distanz_Fachartikel.pdf",
+      "bytes": 149762,
+      "sha256": "7e50bc80d4017b6e43c495fdc7c19a2a322e51a2cd7e2fd9edb1072cf389caf5",
+      "git_blob_sha1": "a23b5e1081037d2614b9cd2219eb4f429423b549"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Wie_weit_ist_eine_Wirkung_Prosa.pdf",
+      "bytes": 121544,
+      "sha256": "feaa7c803c0f556b8c0c52ad33b47d606399da2b6701f0a26d90be87952afd8f",
+      "git_blob_sha1": "0f00df3cd8b3808716b603b50203a3dda091d897"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/Fachartikel.md",
+      "bytes": 37142,
+      "sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "git_blob_sha1": "6f0c7ff7ac59376c77b6c5e448df7c53310e66b6"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/Prosaartikel.txt",
+      "bytes": 28752,
+      "sha256": "ad6623349bfa59326677dfd2fa2774698e6678ca0822d8fe6a0d956826991191",
+      "git_blob_sha1": "2895785d4f1cb737d1140587e2f7cdc6a0c7b70c"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Prosa_Vorlesetext.txt",
+      "bytes": 24863,
+      "sha256": "1fbeaec8006b4180405b07c45444f3dc8010236d742a62a43fd2b556d5f50b57",
+      "git_blob_sha1": "9a28b62c912ff174aa59d6848f44d315e1db0a69"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Causal_Distance_20261024.zip",
+      "bytes": 262030,
+      "sha256": "d070ae7e9c15feeadedddf55b3bf77072a3b74289dad60bb3adce4aee7089f91",
+      "git_blob_sha1": "87d485faf527dab24a1bc98dd28cd7ab532a764a"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Framework_Selbstvermessung_20261024.zip",
+      "bytes": 201027,
+      "sha256": "01d874f116d68119c3278345bc09fb72fcd1917e88dd27e51b726ef950b3e542",
+      "git_blob_sha1": "9d604052aab7807bdfd394467efe2b5dc62bad65"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/LESEPFAD_NACH_INTERESSE.md",
+      "bytes": 7588,
+      "sha256": "becc9ff671680db7fbe1a6f7869b7aba5df0916a0be50f339abe23ce57e43024",
+      "git_blob_sha1": "9e9a2c23436f43d5866e48c1534c5dae00ce3aa3"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/QIKVRT_Lean_Anschluss_20261024.zip",
+      "bytes": 167096,
+      "sha256": "939b7da32b31972ea596b4a1ffdb8a9c1baafe3d8eb02d99f659ac005e813636",
+      "git_blob_sha1": "f5dd753352370e665d89625cb0d4e2270b407ff3"
+    },
+    {
+      "path": "release/causal-distance-lean-2026-10-24/LEAN_ANBINDUNG.md",
+      "bytes": 10937,
+      "sha256": "210047901873f28d110f837f284f4ce3a76e76acd6c62e35bbe88884b1174dae",
+      "git_blob_sha1": "3b5b918c1b1b16f9a83ca3426288df7a9de97eda"
+    }
+  ],
+  "changed_claim_ids": [
+    "CD-011",
+    "CDL-001",
+    "CDL-002",
+    "CDL-003",
+    "CDL-004",
+    "CDL-005",
+    "CDL-006",
+    "CDL-007",
+    "CDL-008",
+    "CDL-009",
+    "CDL-010",
+    "CDL-011",
+    "CDL-012",
+    "CDL-013",
+    "CDL-014",
+    "CDL-015",
+    "CDL-016",
+    "CDL-017",
+    "CDL-018",
+    "CDL-019",
+    "CDL-020",
+    "CDL-021",
+    "CDL-022",
+    "CDL-023",
+    "CDL-024",
+    "CDL-025",
+    "CDL-026",
+    "CDL-027",
+    "CDL-028",
+    "CDL-029",
+    "CDL-030",
+    "CDL-031",
+    "CDL-032",
+    "CDL-033",
+    "CDL-034",
+    "CDL-035",
+    "CDL-036",
+    "CDL-OPEN-01",
+    "CDL-OPEN-02",
+    "CDL-OPEN-03",
+    "CDL-OPEN-04",
+    "CDL-OPEN-05"
+  ],
+  "change_reasons": [
+    {
+      "claim_id": "CD-011",
+      "reason": "Die zuvor offene Lean-Modellprüfung ist durch den gesondert gebundenen 36-Theorem-Kern geschlossen; externe Reproduktion und reale Verallgemeinerung bleiben eigene Aufgaben.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-001",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-002",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-003",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-004",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-005",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-006",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-007",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-008",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-009",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-010",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-011",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-012",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-013",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-014",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-015",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-016",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-017",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-018",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-019",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-020",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-021",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-022",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-023",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-024",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-025",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-026",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-027",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-028",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-029",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-030",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-031",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-032",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-033",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-034",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-035",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-036",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-OPEN-01",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-OPEN-02",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-OPEN-03",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-OPEN-04",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    },
+    {
+      "claim_id": "CDL-OPEN-05",
+      "reason": "Ergänzung der exakt benannten formalen Modellfolge oder ihrer ausdrücklich offenen Reichweitengrenze; keine Übertragung auf biologische oder physikalische Vorgänge ohne eigene Evidenz.",
+      "original_sha256": "2f46b8b92d7dbf790c9f06b450c5d391bfc69beab104520c7af561205bcee7bb",
+      "corrected_sha256": "08f15d85578bee513c63e1d3f5dfabceb64ad3ee93cad74f43a51ac0f4ee92ad",
+      "exact_candidate_path": "release/causal-distance-lean-2026-10-24/Fachartikel.md"
+    }
+  ],
+  "change_notice_path": "release/causal-distance-lean-2026-10-24/CHANGE_NOTICE.md",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "CURRENT_CHAT_COMMENTARY_FROZEN_PREVIEW_ZIP_PDF_TTS_PLUS_FINAL_VISIBLE_NOTICE_AND_CANDIDATE_IDENTITIES",
+    "returned_at": "2026-10-24T12:44:24+00:00",
+    "visible_change_notice_returned": true
+  }
+}

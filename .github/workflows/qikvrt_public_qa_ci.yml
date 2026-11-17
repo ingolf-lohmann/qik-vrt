@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+name: QIKVRT public QA exact-head tests
+
+on:
+  pull_request:
+    paths:
+      - "runtime/public_qa/**"
+      - "docs/fragen/**"
+      - "docs/assets/js/qikvrt-questions.js"
+      - "docs/index.html"
+      - "tests/test_public_qa_server.py"
+      - "tests/test_public_question_entrypoint.py"
+      - "tests/test_digital_twin_sso_gate.py"
+      - "policy/QIKVRT_DIGITAL_TWIN_SSO_AUTHORITY_V1.json"
+      - "src/qikvrt_digital_twin_rest.py"
+      - ".github/workflows/qikvrt_public_qa_ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  public-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - name: Checkout exact subject
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Verify Python runtime
+        run: python3 --version
+      - name: Run public QA and Digital Twin SSO contracts
+        run: |
+          set -euo pipefail
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
+            tests.test_public_qa_server \
+            tests.test_public_question_entrypoint \
+            tests.test_digital_twin_sso_gate
+          python3 -m py_compile runtime/public_qa/server.py src/qikvrt_digital_twin_rest.py

@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt-webkit-apt-diagnosis/v1",
+  "observed_at": "2026-10-27T06:04:18.289Z",
+  "state": "UNVERIFIED",
+  "mirror": "azure.archive.ubuntu.com",
+  "request_timeout_ms": 30000,
+  "sample_limit_bytes": 1048576,
+  "probes": [
+    {
+      "url": "http://azure.archive.ubuntu.com/ubuntu/pool/main/f/fonts-freefont/fonts-freefont-ttf_20211204+svn4273-2_all.deb",
+      "requested_bytes": 1048576,
+      "received_bytes": 1048576,
+      "status": "SAMPLED",
+      "http_status": 206,
+      "timings_ms": {
+        "dns": 29.599,
+        "connect": 31.231,
+        "first_byte": 234.456,
+        "total": 11563.406
+      },
+      "remote_address": "20.106.104.242",
+      "transport": "NODE_NATIVE_DIRECT; NO_APT_OR_ENVIRONMENT_PROXY; NO_REDIRECTS",
+      "complete_package_sha256_verified": false,
+      "error": null,
+      "bytes_per_second": 90681,
+      "sample_sha256": "de0dbfe88e06d5115e0f7fe472c16534c81fd1d241a10b0c374a1b52ecae7624"
+    },
+    {
+      "url": "https://azure.archive.ubuntu.com/ubuntu/pool/main/f/fonts-freefont/fonts-freefont-ttf_20211204+svn4273-2_all.deb",
+      "requested_bytes": 1048576,
+      "received_bytes": 0,
+      "status": "UNVERIFIED",
+      "http_status": null,
+      "timings_ms": {
+        "dns": 15.097,
+        "total": 30004.807
+      },
+      "remote_address": null,
+      "transport": "NODE_NATIVE_DIRECT; NO_APT_OR_ENVIRONMENT_PROXY; NO_REDIRECTS",
+      "complete_package_sha256_verified": false,
+      "error": "WALL_TIMEOUT",
+      "bytes_per_second": 0,
+      "sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "errors": [],
+  "effect_ack_done": false,
+  "browser_acceptance_established": false,
+  "apt_sources_modified": false,
+  "source_head": "d20da6b1d1171c82a60e0bb0d4d39848d503c241",
+  "source_tree": "2a90916c70978ef3d6e63bf27666e3e542d91ab5",
+  "apt": {
+    "numeric": {
+      "Acquire::http::Timeout": 15,
+      "Acquire::Retries": 1,
+      "Acquire::https::Timeout": 15
+    },
+    "apt_proxy_configured": {
+      "http": false,
+      "https": false
+    },
+    "environment_present": {
+      "APT_CONFIG": false,
+      "http_proxy": false,
+      "https_proxy": false,
+      "all_proxy": false,
+      "no_proxy": false,
+      "HTTP_PROXY": false,
+      "HTTPS_PROXY": false,
+      "ALL_PROXY": false,
+      "NO_PROXY": false
+    },
+    "scope": "ROOT_APT_CONFIG_AFTER_ORIGINAL_INSTALL_ATTEMPT; PROXY_VALUES_WITHHELD"
+  },
+  "package": {
+    "package": "fonts-freefont-ttf",
+    "version": "20211204+svn4273-2",
+    "architecture": "all",
+    "filename": "pool/main/f/fonts-freefont/fonts-freefont-ttf_20211204+svn4273-2_all.deb",
+    "size": 5640794,
+    "sha256": "c8283ec9ca390e6ad8d2114cb0942182db62bb97f5142c2f955218fc5f2027b4"
+  },
+  "identical_prefix_verified": false,
+  "interpretation": "BOUNDED_DIRECT_TRANSFER_OBSERVATION; NO_THROTTLE_OR_MIRROR_CAUSE_ESTABLISHED; NOT_AN_APT_RETRY"
+}

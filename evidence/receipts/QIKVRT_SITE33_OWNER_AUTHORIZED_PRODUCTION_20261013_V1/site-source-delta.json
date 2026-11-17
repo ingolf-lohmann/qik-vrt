@@ -1,0 +1,85 @@
+{
+  "schema": "qikvrt-site-source-delta/v1",
+  "base_head": "17fb5f3ff3904bbdc389a85d10a72c06eb7f5395",
+  "base_tree": "2f3440e0e441f8da3e6624688d57f699ac2d7f83",
+  "published_head": "c6ece66477cd7b81d114c455225bb4ab9ba54b41",
+  "published_tree": "9ab38c852a82eb7ca7016b687540414e5eeb12dd",
+  "files": [
+    {
+      "path": "app/layout.tsx",
+      "bytes": 638,
+      "sha256": "6a5764589358d6a8379d588c717ee5b023c121fc0f76907c7ef6405b76de97d3",
+      "git_blob_sha1": "43fe2859b2e79e99f99efd86afe01204982f780d"
+    },
+    {
+      "path": "app/page.tsx",
+      "bytes": 38219,
+      "sha256": "fade28c289df27ad1b7b4ec832eafab9a12827f2b91aaa0ca3301db64e87663f",
+      "git_blob_sha1": "2762acc028f71db9ec26a0ff400d46484d357f01"
+    },
+    {
+      "path": "lib/mesh-core.ts",
+      "bytes": 21706,
+      "sha256": "37baa4fb67e286a34e34e704ebd6694aba8ef8b9b03ceaa7d888135e45ac97b8",
+      "git_blob_sha1": "10396ab3ad7c8287e5902c39a768ce8caacc1272"
+    },
+    {
+      "path": "package.json",
+      "bytes": 2307,
+      "sha256": "aa4f110b37a89debb96f723b612292d97b89c2736dc2e9c8042de1f628e7ac52",
+      "git_blob_sha1": "d4b5856c1d6a4fd29e9dadac33148d1d5c323880"
+    },
+    {
+      "path": "public/AI",
+      "bytes": 2035,
+      "sha256": "bd0db22cf7cd0a1cb9754f95f21c1dea1b91fb166c450612ecc03da4df3eb948",
+      "git_blob_sha1": "c5a337e5f92770bea7a8f543bfb439fbfe7a6e6d"
+    },
+    {
+      "path": "public/index.html",
+      "bytes": 17540,
+      "sha256": "3b11e34a1a1ba8e061373445753184d433b44831ad1a530c6c3540594534fa98",
+      "git_blob_sha1": "c2173493e46ef423fc2339c0d5845089a55b3dd5"
+    },
+    {
+      "path": "runtime/offline/BROWSER_LOCK.json",
+      "bytes": 827,
+      "sha256": "2e142fd90526bc39b31f4c0b89fb953411dba50480a73912fe6fdf157398becf",
+      "git_blob_sha1": "dfdf3556bfe20356b0342c97fa1ab650ddd592d7"
+    },
+    {
+      "path": "runtime/offline/browser-tests/browser.test.mjs",
+      "bytes": 26465,
+      "sha256": "eb25d680e57ebb672d578f16bf33bb6f86ed5d89e71fcb97c9a8a7b57f339e48",
+      "git_blob_sha1": "572def8307f88ac2a00aaaa39bb21b329a4d5e0a"
+    },
+    {
+      "path": "runtime/offline/browser-tests/package-lock.json",
+      "bytes": 1803,
+      "sha256": "0dcbcee753ca4f5fb3bae42743399158c850708836a07f373c82f5d60b8dfa90",
+      "git_blob_sha1": "4b3e0b0289e1e5719c28dd2c39942b091a924b25"
+    },
+    {
+      "path": "runtime/offline/browser-tests/package.json",
+      "bytes": 221,
+      "sha256": "d7eeddf1f92b1856d69eef2cd312a77a942d37a43d2e1825280e90bd000ee533",
+      "git_blob_sha1": "1c418d0ce1e44c4eaad4a685d42805c0e79fbbd7"
+    },
+    {
+      "path": "scripts/verify-evidence.mjs",
+      "bytes": 34369,
+      "sha256": "a68077c51d2fcc8e3cb6fae1fd83eb69cdb5c3ab6ad7c937bd1f1f8b240c1609",
+      "git_blob_sha1": "7ec0f1a758dbeff132328ef16965acdc21b2e784"
+    },
+    {
+      "path": "scripts/verify-offline.mjs",
+      "bytes": 8013,
+      "sha256": "5b227c224bd193335d440e5c60cdb17f532dc3615c3798bea61b3bed349e4a94",
+      "git_blob_sha1": "61f9f41c3d0bb5dd0d41392043f264b64738148e"
+    }
+  ],
+  "offline_client_changed": false,
+  "browser_suite_equals_existing_pr_bytes": true,
+  "native_browser_acceptance": "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/independent-browser-acceptance.json",
+  "live_public_origin_browser_acceptance": false
+}

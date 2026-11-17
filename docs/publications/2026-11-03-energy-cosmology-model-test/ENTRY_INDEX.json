@@ -1,0 +1,16 @@
+{
+  "schema": "qikvrt-research-entry-index/v1",
+  "revision": 3,
+  "read_order": [
+    "README.md",
+    "CLAIM_MATRIX.json",
+    "REVISION_3.json",
+    "formal_evidence/THEOREM_INVENTORY.json",
+    "formal_evidence/RECEIPT.json",
+    "SOURCE_GATE_PENDING.json"
+  ],
+  "code": "run_experiment.py",
+  "result": "results/RESULTS.json",
+  "formal_package": "../../../formalization/QIKVRT_RealEnergy_v1",
+  "draft_only": true
+}

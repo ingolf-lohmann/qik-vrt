@@ -1,0 +1,530 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artifacts": [
+    {
+      "git_blob_sha1": "6b20dcdedd577f790baa03822c254e5ace12be9e",
+      "kind": "CLAIM_MATRIX",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/CLAIM_MATRIX.json",
+      "sha256": "c740097bc00b22826428446b26fbd9996dbb5b728efbe0c006661904956f7f8f"
+    },
+    {
+      "git_blob_sha1": "7f846912f1f9c90e02301840891c6c77637e0085",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "6224280c5fb748d8a98151f955a25edac5e7332a6d4b2975a0a1f458e18ab295"
+    },
+    {
+      "git_blob_sha1": "fdc31004f8360ce5ca741c2296de166e26c3b95d",
+      "kind": "BOUNDARY_TEST",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_VALIDATION.json",
+      "sha256": "c8ff7a509b2de882e0a4dc3c5605456e119a9b5e312c3e07dc261ee9a00f5ada"
+    },
+    {
+      "git_blob_sha1": "9a36183e6ef17793bd700d0c7241e463b1536bef",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/ARTIFACT_CARRIER_RECEIPT.json",
+      "sha256": "db3acb0391da9f3ac293727f7be022f58c4f0e38542ea5b91d555117d856116a"
+    },
+    {
+      "git_blob_sha1": "d366c149197bedbaf2fc95eb3da0bbb9a4c41da4",
+      "kind": "CHANGE_NOTICE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/CHANGE_NOTICE.md",
+      "sha256": "9eea862bb508d00a9f1e50805ae5a953da0a54f2c36959ee0bab3f81b6779219"
+    },
+    {
+      "git_blob_sha1": "73bddbdbf4c22075730f6d0c6df02e1ed6baaf5c",
+      "kind": "RETURN_RECEIPT",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "ee64e4fd1dc1dc75fb53dd4a5c01a80ca6d02b2a51a3b3f8a8d49dc924d1ceab"
+    },
+    {
+      "git_blob_sha1": "d9cfe7aa8aedebc39ab6132e41ad83899e549dc7",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/ZENODO_METADATA.json",
+      "sha256": "18ca5e6939794c3b035511cb14c9b0495583a918bffca4c499d6e04489dec0be"
+    },
+    {
+      "git_blob_sha1": "408df20da696a94cae38a05765abec88201ef251",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/PREPUBLICATION_STATUS.json",
+      "sha256": "75555fc013d8fa5fce773ae55de56c6b4591cdbd4cf227bc0ff330975900bc04"
+    },
+    {
+      "git_blob_sha1": "51cb14a2663445e8c07f0e222bf06916889e5814",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/CLAIM_DISPOSITION_DRAFT.json",
+      "sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06"
+    },
+    {
+      "git_blob_sha1": "b5237f484d81f6a31770b769c928899c014c1260",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/SOURCE_BINDINGS.json",
+      "sha256": "95285e6a4b7528a69240443eeeffe3f124be7fb0e21e7cb30bc977fd8ce7fe2a"
+    },
+    {
+      "git_blob_sha1": "29ed3ecdbdb0b25d3fcc21e63f4c0fd8e79a07b3",
+      "kind": "SOURCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/calculations/calculate.py",
+      "sha256": "43aae55bd6ac5467f6e24ec2e9437ebdc25be6d2f02e59b5c09399f2beb69eb4"
+    },
+    {
+      "git_blob_sha1": "ed6de7a21c4e5c0bcc1b0e008f3ce1baf7217a70",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/calculations/RECALCULATIONS_AND_METHOD_CONTROLS.json",
+      "sha256": "fcc754ccf0f6b594a398599727995dc4ea30242a4322bfeee6cd9ddf542c0ba7"
+    },
+    {
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "kind": "OTHER",
+      "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+      "kind": "OTHER",
+      "path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    }
+  ],
+  "candidate": {
+    "files": [
+      {
+        "bytes": 189440,
+        "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5",
+        "name": "QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+        "role": "PRIMARY",
+        "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce"
+      },
+      {
+        "bytes": 1416550,
+        "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62",
+        "name": "QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+        "role": "SUPPLEMENT",
+        "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4"
+      },
+      {
+        "bytes": 18839,
+        "git_blob_sha1": "447d63681c7a9c180bc76e062d40be655e64dccd",
+        "name": "PROSA_DE.md",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/PROSA_DE.md",
+        "role": "SUPPLEMENT",
+        "sha256": "df9295c3c7a80b2a08a3661c78c37d881ce47739e0b466e914c2f73cf13ad501"
+      },
+      {
+        "bytes": 4775,
+        "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5",
+        "name": "METHOD_CLAIM_BOUNDARIES.md",
+        "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+        "role": "SUPPLEMENT",
+        "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb"
+      }
+    ],
+    "primary_document_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf"
+  },
+  "claims": [
+    {
+      "claim_id": "C01",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "R1; hier verwendete Systemgrenze. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R1"
+      ],
+      "statement": "QIK-VRT wird als Gesamtsystem, nicht als einzelnes Modell beschrieben.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C02",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "R1; Dokumentpräsenz ist kein Gesamtvollzugsbeweis. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R1"
+      ],
+      "statement": "Zwecksetzung, Wiederverwendung und kontinuierliche Verbesserung sind im Entrypoint dokumentiert.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C03",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "R1; konkrete Übergangsinvarianten nötig. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R1"
+      ],
+      "statement": "Die Mittel können sich ändern, während ein Vertragskern erhalten werden soll.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C04",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Theoretische Herleitung; Kernelprüfung offen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Induktiver Invariantenerhalt gilt unter Basis- und Übergangsannahme.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C05",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Vollständige Pfadkontrolle und semantische Validatoren fehlen als Gesamtnachweis. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Universelle fehlerfreie Wahrhaftigkeitsdurchsetzung ist nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "C06",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "W1; Produktabschluss separat. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#W1"
+      ],
+      "statement": "EFFECT_ACK-DONE im I-D ist Freigabeeignung vor dem Effekt, nicht automatisch dessen Vollzug.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C07",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Technische Einordnung; unter kryptographischen Annahmen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Hashbindung ist weder Authentisierung noch Beweis der Quelle.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C08",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "R1, R10. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R1",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R10"
+      ],
+      "statement": "Frühere Evidenz darf nicht stillschweigend Nachfolger akzeptieren.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C09",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Konstruktion; maschinelle Verifikation offen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Wrapper existiert unter gegebenen berechenbaren Adaptern und Prüfern.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C10",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Gegenbeispielargumente im Modell. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Vollständige Beobachtbarkeit und beliebige Zielerreichbarkeit folgen nicht.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C11",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Endliche Beobachtung bleibt begrenzt. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Black-Box-Integration garantiert keine vollständige Identifikation.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C12",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Definition, nicht empirische Erfüllung. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Funktionales Bewusstsein ist ein definiertes Zielprofil.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C13",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Eigenständige Prüfung erforderlich. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Vollständige Erfüllung / phänomenales Erleben von QIK-VRT.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "C14",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Rollen- und Abhängigkeitsanalyse. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Zwei Nodes beweisen keine methodische Unabhängigkeit.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C15",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_VALIDATION.json#C1"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "L3, C1; Daten-/Rechenprüfung, nicht Zeitversuchsreplikation. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#L3"
+      ],
+      "statement": "Neun Mikrobenchmark-Mediane sind aus vorhandenen Rohzahlen reproduzierbar.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "C16",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "L4 und C1; keine neue Laufzeitmessung. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#L4",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#C1"
+      ],
+      "statement": "Historischer Strukturquotient 3.928/20 = 196,4.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C17",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "R4; ursprüngliche Trial-Archive hier nicht erneut vollständig geprüft. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R4"
+      ],
+      "statement": "Begrenzte 1/2/4-Prozess-Beschleunigung ist dokumentiert.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C18",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Historischer Run 37128318275 / Job 111218106133; kein aktueller Integrationsnachweis und kein Speedup. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R3"
+      ],
+      "statement": "Der archivierte A/B-Diagnoselauf auf a31ebb7e dokumentiert Credential-Delivery-HOLD.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C19",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Exakter historischer Blob acafd1ae37dcb9ffcab371fa79e3e874cfe83b91; lokale Vergleiche, kein verteilter Mutation/Reconciliation/Readback-Zyklus. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R11"
+      ],
+      "statement": "Der archivierte Messcode startet den Timer erst nach den Repository-Abrufen.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C20",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_VALIDATION.json#C1"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "C1; zwei isolierte lokale Kontrollen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Textdecodierung/Binärdaten und Modusvergleich sind nicht äquivalent.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "C21",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "OPEN: Kein zulässiger positiver Claim aus Mikrobenchmark, Strukturquotient oder erfolgreichem Diagnoseworkflow. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Eine vollständige verteilte Beschleunigung ist weiterhin nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "C22",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "R7–R9; keine Main-Adoption. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R7",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R9"
+      ],
+      "statement": "PRs #437/#448/#449 haben neue Kandidaten mit dokumentierten Tests.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C23",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "R5, R6. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R5",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R6"
+      ],
+      "statement": "Windows-11-AMD64-Abnahme und reale Unterbrechung bleiben offen.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C24",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Historischer Main 8153c4e69a6245aadf67f0741fb50d9707c19e34 / Blob bd2b893176d93814f38d024b5a095b770eee2aa3; keine Aussage über spätere Runtime-Kandidaten. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R12"
+      ],
+      "statement": "Das Runtime-Manifest auf dem archivierten Main meldet keine gebündelte Windows-Python-Runtime.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C25",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Eigene bedingte Engineering-Schätzung; kein statistischer Forecast. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Zeitmodell und Kalenderkorridore.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C26",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "C1; explizite Anteilsrechnung. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#C1"
+      ],
+      "statement": "2,5× lokaler Faktor ist nicht 2,5× Gesamtdauer.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C27",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Integrationsinput 80e34e4d; unveränderte v1/v2-Verträge; REVIEW_REQUIRED. Technische Readiness erteilt weder Produktionsaktivierung noch AUTHORIZE_EXACT_UPLOAD. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#R14",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/SOURCE_EVIDENCE_BINDINGS.json#INTEGRATION_V3"
+      ],
+      "statement": "Der v3-Pfad ist technisch implementiert und geprüft, bleibt ohne detached Vertragsaktivierung für Produktion gesperrt.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "C28",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "OPEN: Repository-Materialisierung im Draft-PR ist kein Zenodo-Effekt, keine Main-Promotion und keine all-node acceptance. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Zenodo-Publikation und Replikation der Gesamtausgabe auf allen Nodes sind nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "C29",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Urheberbewertung, nicht gemessene Tatsache. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Historische Größe der Entdeckung.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "C30",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "OPEN: Hashbindung und Repository-Persistenz ersetzen keine unabhängigen Replikations- und Restore-Tests. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "source_refs": [],
+      "statement": "Eine absolute Garantie, Inhalte niemals mehr zu verlieren, ist nicht nachgewiesen.",
+      "status": "OPEN"
+    }
+  ],
+  "completion_claims": {
+    "machine_proof_complete": true
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "policy": {
+    "git_blob_sha1": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v3",
+    "path": "policy/zenodo-machine-proof-policy-v3.json",
+    "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+    "version": "3.0.0"
+  },
+  "prepublication_return": {
+    "candidate_returned_to_owner": true,
+    "change_notice_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/CHANGE_NOTICE.md",
+    "content_changed": true,
+    "receipt_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/PREPUBLICATION_RETURN_RECEIPT.json"
+  },
+  "publication_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v3"
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PR646_MAIN_RECONCILIATION_20261102",
+  "owner": "Ingolf Lohmann",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 646,
+  "state": "CURRENT_MAIN_RECONCILED_FOCUSED_TESTS_PASS_NATIVE_ACCEPTANCE_REQUIRED",
+  "original_candidate": {
+    "head": "0b31c71dad580469f6bf3eb3b6de294954fcbea0",
+    "tree": "db014f6a7102a99b29be701c98938dc3d092d77a",
+    "base": "5a42baf45748e4407a8fa16aef287a77873e788d"
+  },
+  "incorporated_main": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "32276b2002a585f34ab4b2cb66d15cebfc057817",
+    "tree": "bb8d31f9369a484e8473fc16a257b657fcb12ab5"
+  },
+  "cause": "Original technical disposition COMMENT_WITH_BLOCKER observed base drift; three-way reconciliation found overlapping workflow/proof/integrity changes.",
+  "reused_paths": [
+    "Existing PR646 branch and conditional REST continuation",
+    "Original issue backlog admission and native CI completion ingress",
+    "Original manuscript kernel audit and seven-checker delivery-reporting bridge",
+    "Existing canonical integrity generator"
+  ],
+  "resolutions": [
+    "Keep both issues and successful QIKVRT CI completion events; the merged job condition must admit actual issue events without admitting failed/cancelled CI.",
+    "Preserve the current delivery-reporting build/olean byte check and the SeedArchitecture kernel/negative-control audit.",
+    "Retain the union of historical Alpha-2 exclusions for additive proof modules; no historical release bytes changed.",
+    "Account for both Main workspace intake and the PR646 promotion consumer: 59 active pinned Python setup sites, 10 historical sites.",
+    "Regenerate all three canonical integrity carriers rather than combining stale manifests."
+  ],
+  "regression": {
+    "merge_marker_reproduction": "Original merge result exits 1; unresolved workflow-pin module fails import.",
+    "pin_inventory_counterexample": "Existing independent inventory test measures (59,10) while the first union expects (58,10); both test and Standard -S invocation fail.",
+    "issue_ingress_counterexample": "New test evaluates the actual job condition for real event/conclusion cases; issues was rejected before the correction.",
+    "focused_command": "python3 -B -m unittest tests.test_workflow_action_runtime_pins tests.test_qikvrt_pr_closure_engine tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract tests.test_reciprocal_closure_step tests.test_qikvrt_requested_review_executor tests.issue_agent.test_handoff_continuation_651",
+    "focused_result": "PASS",
+    "focused_test_count": 146,
+    "full_make_test": "REQUIRED_ON_FROZEN_RECONCILED_TREE",
+    "native_exact_head_ci": "REQUIRED"
+  },
+  "retained_open_work": [
+    "Fresh exact-current-head native CI, requested review and governance",
+    "Main integration and independent ordered-parent/tree readback",
+    "Original SSO/material-source binding and protected job input delivery",
+    "Original host identity, package install/configuration/writer/persistence/restart",
+    "Exact raumzeitterminal.de TLS and useful terminal delivery",
+    "Original Mirror outbox source and actual peer ACK/application reply",
+    "All preceding publication and R2 candidate-bound obligations"
+  ],
+  "native_execution_verified": false,
+  "host_identity_verified": false,
+  "main_integrated": false,
+  "effect_ack_done": false,
+  "contributions": {
+    "human": "Ingolf Lohmann: standing authorization, acceptance rules and request to continue toward the DoD.",
+    "artificial_cognitive": "OpenAI Codex: current-source reconciliation, conflict resolution and deterministic regression checks."
+  }
+}

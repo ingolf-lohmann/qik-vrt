@@ -1,0 +1,75 @@
+{
+  "artificial_contribution": "OpenAI Codex: reuse of existing native CI job, exact-subject admission and original journal resolver; fixture tests. No credential values handled.",
+  "base_subject": {
+    "head": "e776a02d138196e44b50cae8b3f53c4a53dc17d4",
+    "pr": 523,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "469fffc7c77755c1f4a3a9b1fe69de24fa985de4"
+  },
+  "effect_ack_done": false,
+  "human_contribution": {
+    "authorization_source": "DIRECT_OWNER_INSTRUCTION",
+    "authorized_at": "2026-10-17T09:33:35Z",
+    "independent_native_review": false,
+    "instruction": "Ja, genau dafür ist die Continuous Integration Continuous Development Pipeline in der Linux-Distribution ja gedacht, diesen Teil zu übernehmen. Freigabe erteilt."
+  },
+  "id": "QIKVRT_OWNER_LINUX_CI_SIGNING_HANDOFF_20261017_V1",
+  "native_effect": {
+    "credential_delivery": "NOT_REOBSERVED",
+    "firefox_activation_verified": false,
+    "observed_for_successor": false,
+    "signed_original_returned": false,
+    "signing_requested": null
+  },
+  "observed_at": "2026-10-17T09:44:58.378449+00:00",
+  "open_obligations": [
+    "Observe the exact successor native full test and actual CI handoff.",
+    "Securely delivered AMO pair, official signed original and actual default-policy Firefox persistent activation.",
+    "Independent native review and effective Main governance before PR523 promotion.",
+    "Exact-host delivery, archive, Zenodo and Mesh obligations retained by client continuity receipt."
+  ],
+  "ordinary_release": false,
+  "owner": "Ingolf Lohmann",
+  "package": {
+    "six_standard_source_components_changed": false,
+    "unsigned_xpi_sha256": "1f5f583181d6134584f98bf6b59848d4542176d624d97709fa915b9934e2c46c"
+  },
+  "predecessor_native_observation": {
+    "conclusion": "success",
+    "run_id": 39017768804,
+    "scope": "Historical e776a02d PR fixpoint, not acceptance of this uncommitted successor.",
+    "test_job_id": 117353277840
+  },
+  "repair": {
+    "admission": [
+      "Direct Owner original and triggering actor only; fixed repository, existing integration branch, workflow source and first attempt.",
+      "Successful test outputs bind the committed signing checkout; current open PR523 and exact package are reobserved before effect.",
+      "Existing serialized add-on/version writer, bounded manual plus Owner-push producer histories, original journal recovery, no unresolved resubmission."
+    ],
+    "causal_delta": "Existing successful Owner-push Linux test gate can hand the unchanged authorized Standard package to the existing signing consumer without a separate workflow_dispatch.",
+    "existing_components": [
+      ".github/workflows/qikvrt_ci.yml:amo_unlisted",
+      "tools/qikvrt_workflow_executor.py",
+      "tools/qikvrt_self_host.py:firefox_amo_unlisted"
+    ],
+    "firefox_signature_enforcement_weakened": false,
+    "main_or_review_policy_weakened": false,
+    "new_workflow_trigger_server_proxy_or_permission_scope": false
+  },
+  "schema": "qikvrt-work-unit/v1",
+  "source_sha256": {
+    ".github/workflows/qikvrt_ci.yml": "631875beb9531e1e7fdd56594bba798e5af9ae6f9e9ba0dcc0db69cb533a1f56",
+    "docs/operations/AUTONOMOUS_PR_CONTINUATION.md": "7d7d0dc24ab2d8525c296eb6717f1cdf980459ee8268be18248ddd8bd36552fe",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json": "21d259ef7a7319464521025b3b72ac84c8d49995f1bddcd8ea8cb446d23ecc09",
+    "tests/test_effect_ack_release_workflows.py": "9867541a1c99d555a30ab58604813d8fcd8d5e0c83c38c8a5baf7b27a706c58b",
+    "tests/test_qikvrt_workflow_executor_mesh_contract.py": "58dd52a3e73f0af534b33c05fd22f84c3d05cb6cb4d959beaf1af7cc8b7d5fc3",
+    "tools/qikvrt_workflow_executor.py": "75b1c193c14ad58b7fee0573c3df7dc1e1ea1d1111d35b58e49cbd8c0e2d19e5"
+  },
+  "state": "SOURCE_REPAIR_TESTED_NATIVE_HANDOFF_PENDING",
+  "validation": {
+    "focused_tests_passed": 259,
+    "new_owner_ci_and_journal_tests": 7,
+    "scope": "Local executable admission, real inline preflight and provider-shaped bounded history fixtures; no live signing claim.",
+    "tool_cache": "34/34 declared tools, 100% coverage"
+  }
+}

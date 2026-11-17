@@ -1,0 +1,131 @@
+{
+  "schema": "qikvrt-scoped-research-claim-matrix/v1",
+  "claims": [
+    {
+      "claim_id": "DW-001",
+      "statement": "Eine Eigenschaft ist auf dem Beobachtungsbild genau dann exakt bestimmbar, wenn sie auf den Beobachtungsfasern konstant ist.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "scope": "Mengen- und Aussagenlogik; keine Berechenbarkeits- oder Messgarantie.",
+      "evidence_refs": [
+        "Proof.lean#QIKVRTComparison.factorization_iff_fiber_constant",
+        "evidence/LEAN_KERNEL_RECEIPT.json"
+      ]
+    },
+    {
+      "claim_id": "DW-002",
+      "statement": "Gleich beobachtete Zustände mit verschiedenem Zielwahrheitswert schließen einen perfekten, nur darauf arbeitenden Entscheider aus.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "scope": "Ein festgelegter Beobachtungsraum.",
+      "evidence_refs": [
+        "Proof.lean#QIKVRTComparison.indistinguishable_outcomes_no_perfect_classifier",
+        "evidence/LEAN_KERNEL_RECEIPT.json"
+      ]
+    },
+    {
+      "claim_id": "DW-003",
+      "statement": "Korrekte Evidenz-Welt-Bindung und vollständige Mediation implizieren die bedingte Korrektheit der Akzeptanz.",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "scope": "Die Korrektheit der Beobachtung und der Pfadkontrolle sind Prämissen, keine hier bewiesenen Eigenschaften beliebiger Systeme.",
+      "evidence_refs": [
+        "Proof.lean#QIKVRTComparison.mediated_acceptance_implies_goal",
+        "evidence/LEAN_KERNEL_RECEIPT.json"
+      ]
+    },
+    {
+      "claim_id": "DW-004",
+      "statement": "64 und 1296 Funktionspaare bestätigen in ihren vollständig enumerierten Domänen das Konstanzkriterium.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "scope": "Vollständige endliche Berechnung, keine Naturmessung; die 64er-Domäne reproduziert RE-001 aus der veröffentlichten Quelle.",
+      "evidence_refs": [
+        "evidence/PROOF_REPORT.json#/finite_factorization",
+        "sources/zenodo/21498773/proof-report.json#RE-001"
+      ]
+    },
+    {
+      "claim_id": "DW-005",
+      "statement": "Im 13-Fall-Versuch ergeben A/B/C/D 8/6/0/0 falsche Abschlussmeldungen.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "scope": "Ein lokales SQLite-Experiment; unterschiedliche Informations- und Regelablationen, kein Marktproduktbenchmark.",
+      "evidence_refs": [
+        "experiment.py",
+        "evidence/PROOF_REPORT.json#/policy_summary"
+      ]
+    },
+    {
+      "claim_id": "DW-006",
+      "statement": "Zwölf nach geänderten Voraussetzungen ausgeführte Nachfolger werden korrekt lokal akzeptiert.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "scope": "Die fehlenden Voraussetzungen werden im Testaufbau hergestellt, nicht bei fremden Diensten repariert.",
+      "evidence_refs": [
+        "evidence/PROOF_REPORT.json#/repairs"
+      ]
+    },
+    {
+      "claim_id": "DW-007",
+      "statement": "Die separat strukturierte konventionelle Kontrolle liefert in allen 13 Fällen dieselben Entscheidungen wie der Prinzipdemonstrator.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "scope": "Gleiche Evidenz und Akzeptanzanforderungen; derselbe Autor, Rechner und Versuchsrahmen.",
+      "evidence_refs": [
+        "evidence/PROOF_REPORT.json#/cases"
+      ]
+    },
+    {
+      "claim_id": "DW-008",
+      "statement": "Gefälschte Beobachtung, nachträgliche Änderung und Umgehung sind ausgeführte Grenzen unbedingter Garantien.",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "scope": "Drei ausdrücklich ausgewiesene lokale Grenzgegenbeispiele.",
+      "evidence_refs": [
+        "evidence/PROOF_REPORT.json#/boundary_counterexamples"
+      ]
+    },
+    {
+      "claim_id": "DW-009",
+      "statement": "Die Methode kann Übergaben, nachvollziehbare Assistenz und andere Anwendungen unterstützen.",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "scope": "Begründete Übertragungsperspektiven, keine hier vermessenen gesellschaftlichen oder wirtschaftlichen Effekte.",
+      "evidence_refs": [
+        "output/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.md#14"
+      ]
+    },
+    {
+      "claim_id": "DW-010",
+      "statement": "Der technische Wirkungsnachweis allein entscheidet nicht über die ethische Güte des Zwecks.",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "scope": "Menschlicher Zweck- und Verantwortungsmaßstab; kein Naturgesetz.",
+      "evidence_refs": [
+        "output/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.md#1"
+      ]
+    },
+    {
+      "claim_id": "DW-011",
+      "statement": "Eine pauschale Überlegenheit gegenüber jeder Technik ohne QIK-VRT ist durch diese Arbeit nicht nachgewiesen.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "scope": "Keine Umbenennung der konventionellen Kontrolle und keine Ableitung aus einem Produktnamen.",
+      "evidence_refs": [
+        "evidence/PROOF_REPORT.json",
+        "output/QIKVRT_Wirkungsnachweis_Wissenschaft_20261016.md#16"
+      ]
+    },
+    {
+      "claim_id": "DW-012",
+      "statement": "Native Mesh-Produktabnahme, Integration in alle Nodes und neue Zenodo-Veröffentlichung sind nicht hergestellt.",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "scope": "Lokale Forschungsergebnisse sind kein Ende-zu-Ende-Nachweis der offenen Produkt- und Publikationspflichten.",
+      "evidence_refs": [
+        "evidence/CLOSING_READBACK.json"
+      ]
+    }
+  ]
+}

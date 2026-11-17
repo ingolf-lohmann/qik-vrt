@@ -1,0 +1,20 @@
+{
+  "schema": "qikvrt_work_unit_provenance_v1",
+  "work_unit_id": "OWNER_REMINDER_20261006_V1",
+  "owner": "Ingolf Lohmann",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_commit": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+  "scope": "Owner-requested private daily document task; six bounded reminders on 2026-10-06",
+  "human_contribution": "Requested a new personal task for today and reminders every two hours until evening; standing repository-native rule applies.",
+  "artificial_cognitive_contribution": "Selected 20:00 Europe/Paris deadline and 10/12/14/16/18/20 slots; private artifact, bounded expiry, adapter extension, tests and source binding.",
+  "origin": "SEPARABLE_JOINT_COMPONENTS",
+  "private_artifact": {
+    "library_file_id": "libfile_5c40e2b3922881919b2369df7539f0c2",
+    "version": 0,
+    "sha256": "20a6a1fd5252a9f2752c4ed2449860d210f1fa7865dae0f8a8eb03244ecbe6a7"
+  },
+  "authorization": "Current Owner reminder instruction; no further financial, medical, legal, physical or document-application effect authorized.",
+  "acceptance": "Registry and schedule readback on main; bounded tests pass; actual scheduled delivery separately evidenced by exact bot comment. Human task completion remains OPEN.",
+  "baseline_integrity_repair": "Current main lifecycle receipt updates changed eight classified entries; deterministic manifest regenerated without editing source evidence.",
+  "runtime_boundary": "No new local ChatGPT automation, no alternate scheduler; existing repository executor reused."
+}

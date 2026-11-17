@@ -12,6 +12,7 @@ permissions: {}
 
 jobs:
   signal:
+    name: Review event observed (no enforcement or approval)
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
@@ -31,5 +32,9 @@ jobs:
               raise SystemExit("BLOCK: pull-request number is unavailable")
           if pr.get("base", {}).get("ref") != "main":
               raise SystemExit("BLOCK: pull request is not based on main")
-          print(f"observed review lifecycle event for PR #{number}")
+          print(f"EVENT_OBSERVED_ONLY: PR #{number}; native enforcement and independent approval NOT_EVALUATED")
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a", encoding="utf-8") as stream:
+                  stream.write("## Review event observation only\n\nSuccessful execution validates an event selector. Native Ruleset enforcement and independent Code Owner approval are NOT_EVALUATED. Governance acceptance requires the fresh `QIKVRT required code-owner review` status and native rules/reviews.\n")
           PY

@@ -1,0 +1,812 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "2026 Ingolf Lohmann; generated formal contribution disclosed separately",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2",
+  "publication_id": "qikvrt-connectability-maximality-20261015-v1",
+  "policy": {
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "version": "2.0.0",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be"
+  },
+  "candidate": {
+    "primary_document_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.pdf",
+    "files": [
+      {
+        "path": "LICENSES/CC-BY-NC-ND-4.0.txt",
+        "bytes": 19127,
+        "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+        "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+        "name": "E_030a83551794_CC-BY-NC-ND-4.0.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt",
+        "bytes": 35982,
+        "sha256": "7ed6684675e0f4b0fc06ecfc1995b19dd2ec888c57904c3346de434f46f6b3ae",
+        "git_blob_sha1": "c5d1e49751cbc124ab662052fe347b1651b36694",
+        "name": "ABGLEICH_UND_BEWEISBRUECKEN_20261015.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ARTICLE_DE.txt",
+        "bytes": 21977,
+        "sha256": "7d8ca4cf3748f6687af1ba33eca1d3b8bf85ade03c972e1e69feca558ee94b1d",
+        "git_blob_sha1": "87ac49065627cf2b2ec3b9492bcf3ef98a95e474",
+        "name": "ARTICLE_DE.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/Anschlussfaehigkeit_und_groesstes_Element_20261015.pdf",
+        "bytes": 83859,
+        "sha256": "9b807fd5ac4c75ac2951a2479b6a9605fa2fd30dd85aa2de468dd832fb0e30c6",
+        "git_blob_sha1": "79f248ecc23b493d22704c16712b63f062481a8b",
+        "name": "Anschlussfaehigkeit_und_groesstes_Element_20261015.pdf",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CORPUS_COVERAGE.json",
+        "bytes": 117549,
+        "sha256": "0d93a3e47815e5d323865fcc0588bf981c924139654d8cdc46a3b27346f00dfe",
+        "git_blob_sha1": "72ef63ff992654d0d0c72b339ef86741a7e40631",
+        "name": "CORPUS_COVERAGE.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/EXTERNAL_COMPARISON_SOURCES.json",
+        "bytes": 1080,
+        "sha256": "e3ff41dfc39819f826b30501427bd9b25c378f999d9ea4cabaa43e9a1e76a242",
+        "git_blob_sha1": "f8e2d9e8db48bc1a48d99bc3c1a7d46b3cf01c46",
+        "name": "EXTERNAL_COMPARISON_SOURCES.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/FORMAL_SOURCE_SNAPSHOT.json",
+        "bytes": 52444,
+        "sha256": "883d865fb71ff1f89cec299f342c1566e37887b5efca6b6a1c9e71916046ec65",
+        "git_blob_sha1": "8d1c44d711822c97b7e4af24180a2352a88fef08",
+        "name": "FORMAL_SOURCE_SNAPSHOT.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.pdf",
+        "bytes": 103905,
+        "sha256": "926cceff006063d91797feaa3616cca0a6ff2c2c30d2e7f53f501ba5f3da97f6",
+        "git_blob_sha1": "c53348766fb6c1f372629a295dac48d4937fb948",
+        "name": "GESAMTBETRACHTUNG_DE.pdf",
+        "role": "PRIMARY"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTBETRACHTUNG_DE.txt",
+        "bytes": 48241,
+        "sha256": "a1e10e4e1fff9711f2cb6268df5524b501368866911d6820cd32109becaff1cb",
+        "git_blob_sha1": "6c02f9ea349b316d80d103d0df586aa44bfdfebf",
+        "name": "GESAMTBETRACHTUNG_DE.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/GESAMTINVENTAR_20261015.csv",
+        "bytes": 9379,
+        "sha256": "7f5f6c18e43aabdff49e8669ba45f7acbb85ceb49b9acfbb5556497706aeb3ad",
+        "git_blob_sha1": "4001ca3893d4e273d2561818c96fc7099c7c3214",
+        "name": "GESAMTINVENTAR_20261015.csv",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/IETF_ALL_REVISIONS_READBACK.json",
+        "bytes": 1635,
+        "sha256": "ac35bec0a95dc973ff73b98fbeaae0d68601927bb3b7eb4f226cdbb9d59fc2ea",
+        "git_blob_sha1": "655f172682dbf551624321e848eafa0c3a60334e",
+        "name": "IETF_ALL_REVISIONS_READBACK.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_CLARIFICATION_20261015.txt",
+        "bytes": 206,
+        "sha256": "c3b5ec09a93ecb4b2e80c2e26ae7c3bd73b4d5f246775f260f657365f2b89973",
+        "git_blob_sha1": "61295b93bdcf95f4d6a9a039b2f67818994ee4a5",
+        "name": "OWNER_CLARIFICATION_20261015.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_FULL_CORPUS_REQUIREMENT_20261015.txt",
+        "bytes": 161,
+        "sha256": "3bbb711de52111f24fb01de4af74cd45c54ae518743e6c0f9afd29804a793b6e",
+        "git_blob_sha1": "36523c13810b0c6ca42683e8c9eb9c691b6df557",
+        "name": "OWNER_FULL_CORPUS_REQUIREMENT_20261015.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/OWNER_STATEMENT.txt",
+        "bytes": 286,
+        "sha256": "2b2e0ea1be24fdb89108d10f815ae3453ad80226370a5bae2b841c1afcdbd33a",
+        "git_blob_sha1": "5b3426c89e4705283f04193e3912aacdc763912c",
+        "name": "OWNER_STATEMENT.txt",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLICATION_SOURCES.json",
+        "bytes": 15465,
+        "sha256": "5385d950031b715369eaa1dd1879ab11f10fdcea17bbda372d04ddfbc5bbef0b",
+        "git_blob_sha1": "4aad2b8df9298241c688f79627da7c3330abb54d",
+        "name": "PUBLICATION_SOURCES.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PUBLIC_CORPUS_RECONCILIATION.json",
+        "bytes": 28218,
+        "sha256": "b0e9a686fed4770524c4123a8122656766bb2789fd48b6d3f2e8985436fd8aac",
+        "git_blob_sha1": "35191d07dbc9616a399fa6f090037612c9932caa",
+        "name": "PUBLIC_CORPUS_RECONCILIATION.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/README.md",
+        "bytes": 4809,
+        "sha256": "890f6a2d4a86ebb061f090e83508e95027161cb1fa99b34f19ab7085a2e7113c",
+        "git_blob_sha1": "cc5affec76a397802f6f8f4f6c8dc7d6c5cb92b6",
+        "name": "README.md",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/RECONCILIATION_CLAIM_DISPOSITIONS.json",
+        "bytes": 5027,
+        "sha256": "68e4fc936b834d8c38a46747dc792b8d4c5f8f622eda59caf8d310efcf5394a6",
+        "git_blob_sha1": "a999afac5f956c564ef8ba8ec50e094bb846d318",
+        "name": "RECONCILIATION_CLAIM_DISPOSITIONS.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/RECONCILIATION_VISIBLE_SOURCES.json",
+        "bytes": 17511,
+        "sha256": "1e67f548f48a9d5dee75b4afb22078d156e7b0465a352ccd20d8de28f5f22267",
+        "git_blob_sha1": "26afbd57cde05fa3eed88d3120f22bb423497e04",
+        "name": "RECONCILIATION_VISIBLE_SOURCES.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SCIENTIFIC_SOURCES.zip",
+        "bytes": 1096962,
+        "sha256": "5cc3a06c2c49341e39e6c017487ffe6435ec26690ff475c131fe7d972d03a768",
+        "git_blob_sha1": "6ba676e9c2bdbd2a4d65a58903cf22f247f41c0f",
+        "name": "SCIENTIFIC_SOURCES.zip",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SCIENTIFIC_SOURCE_ARCHIVE.json",
+        "bytes": 88615,
+        "sha256": "337281009c0bda4fb5ba179aafdc699df139e5ceb829b9458ad0de012a1b4988",
+        "git_blob_sha1": "4d4593eb46c8345ed521ac103aaaeeca0d6dacf9",
+        "name": "SCIENTIFIC_SOURCE_ARCHIVE.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/VISIBLE_SOURCES.json",
+        "bytes": 15262,
+        "sha256": "14b07a4184300e9be1d9c8039ed09010fc0eb95ebaba76956b0cfc55c6d89a74",
+        "git_blob_sha1": "1c769111ddaac9896a0bcc60fe2be13606a60c69",
+        "name": "VISIBLE_SOURCES.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/ZENODO_ALL_FILE_READBACK.json",
+        "bytes": 227639,
+        "sha256": "1d2f922518ea997b1323ab656cb40ba850d2f58e4b58e3986e95a1e2269d88f8",
+        "git_blob_sha1": "69975880bd083f22d285fda6a86b43b442c0dae3",
+        "name": "ZENODO_ALL_FILE_READBACK.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/LimitedIsGreatest.lean",
+        "bytes": 309,
+        "sha256": "e0b2efbd97201c6eea4ffb42d95655036f2e493e93d67dd312e02a21f85b46f4",
+        "git_blob_sha1": "faf4205bab1af5dac4a2b032c71fcfdfe023cc45",
+        "name": "E_6b48c56025db_LimitedIsGreatest.lean",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/negative/SharedInterfaceImpliesDominance.lean",
+        "bytes": 277,
+        "sha256": "fe39abd47e0bfb6912d5032fb27397e52795b57e7414048b29e90fd8155d7c5d",
+        "git_blob_sha1": "1bf4d3d3d0c7a3ee623328244a731a25417f8aae",
+        "name": "E_f06776d11534_SharedInterfaceImpliesDominance.lean",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "docs/publications/2026-08-02-causality-is-relation-vrtcore/lean_selfexe_compat.c",
+        "bytes": 1076,
+        "sha256": "5b797bcf5673e81099b2f675f42211b0af92bef2c4553701e82d02035bc08f4d",
+        "git_blob_sha1": "4b000f83ffbf360dde435970719d4ab67ee734fe",
+        "name": "E_c0489969dfc5_lean_selfexe_compat.c",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+        "bytes": 3806,
+        "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+        "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+        "name": "E_719c0230f22e_qikvrt-prepublication-return-receipt-v2.schema.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+        "bytes": 6311,
+        "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e",
+        "git_blob_sha1": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+        "name": "E_aa742c713a34_qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+        "role": "SUPPLEMENT"
+      },
+      {
+        "path": "policy/zenodo-machine-proof-policy-v2.json",
+        "bytes": 4992,
+        "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+        "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+        "name": "E_5c7a932ee382_zenodo-machine-proof-policy-v2.json",
+        "role": "SUPPLEMENT"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "claim_id": "MAX-001",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "A family of pointed viability simulations into the target implies GreatestIn for the declared family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX001_simulation_family_implies_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-002",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "GreatestIn is equivalent to inclusion of the union of member languages in the target language.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX002_greatest_iff_union_inclusion"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-003",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "GreatestIn for all finite words implies dominance at every finite horizon.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX003_greatest_implies_every_finite_horizon"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-004",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "One accepted member trace missing in the target refutes GreatestIn.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX004_missing_trace_refutes_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-005",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "The two explicit systems share a viable event, but limited does not dominate extended.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX005_shared_interface_does_not_imply_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-006",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "The explicit extended Bool system is greatest in any declared Bool-labelled family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX006_extended_greatest_in_any_bool_family"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-007",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "The explicit limited system is not greatest in the two-member family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX007_limited_not_greatest_in_counterexample_family"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-008",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "Member-language coverage by an environment and pointed simulation of that environment into the target imply GreatestIn.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX008_environment_bridge_implies_greatest"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "MAX-009",
+      "classification": "FORMAL_PROVED",
+      "status": "PROVED",
+      "publication_wording": "ESTABLISHED_WITHIN_SCOPE",
+      "statement": "Full inclusion of one declared environment alone does not imply greatestness in a larger comparison family.",
+      "scope": "Exactly the Lean proposition and its typed hypotheses; shared label meaning and concrete implementation correspondence are external. No QIK-VRT global superiority or empirical reality claim.",
+      "proof_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json#QIKVRT.V2.ConnectabilityMaximality.MAX009_environment_inclusion_alone_insufficient"
+      ],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-008"
+      ]
+    },
+    {
+      "claim_id": "OPEN-QIK-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Bind an exact QIK-VRT implementation and establish its refinement to the pointed viable-trace model.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-CLASS-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Define the comparison family independently and justify historical completeness at the claimed cutoff.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-SEM-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Justify common label semantics, contracts and the claimed correspondence to reality.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-SIM-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Construct simulations or prove language coverage for all justified comparison members.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-RESOURCE-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Bind any claimed common resource, latency, security and operating-condition constraints.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-GLOBAL-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "The concrete all-humanity historical greatestness claim is not proved by this candidate.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-ZENODO-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "No new Zenodo record or DOI exists for these new proof bytes; exact publication remains pending.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-MIRROR-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Goldkelch/qik-vrt concrete repository reads return 404 despite listing permissions; no mirror write or equality is established.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OPEN-DELIVERY-001",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "No new raumzeitterminal.de delivery acceptance is established by the formal proof or repository copy.",
+      "scope": "This candidate and the stated requested effect.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": []
+    },
+    {
+      "claim_id": "OWNER-001",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "statement": "Ingolf Lohmann asserts the historical greatestness and reality-correspondence claim; attribution does not establish its truth.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-006"
+      ]
+    },
+    {
+      "claim_id": "SOURCE-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "The full public corpus includes all 44 identified Zenodo versions and five native IETF revisions. All 479 native Zenodo files are byte-verified. Historical proof results retain their exact scopes; only the nine new results were independently kernel-executed here.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-007",
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-002"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-001"
+      ]
+    },
+    {
+      "claim_id": "CHECK-001",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "status": "EVIDENCED",
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "statement": "The recorded Lean execution accepted nine theorems without axioms and rejected both deliberately invalid proof attempts. No independent reproduction is claimed.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-003"
+      ],
+      "source_refs": []
+    },
+    {
+      "claim_id": "PUB-RULE-001",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "statement": "Exact candidate return, publication authorization, existing governance and public readback are required before claiming Zenodo publication.",
+      "scope": "Attributed source, recorded local verification or declared publication process only.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-009"
+      ]
+    },
+    {
+      "claim_id": "OWNER-002",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "statement": "Ingolf Lohmann adds that reality includes all virtual realities and regards the loop as sufficiently closed by connection to real physics. Physical membership is distinguished from behavioral refinement into QIK-VRT.",
+      "scope": "Attributed clarification; MAX-008 gives the conditional bridge and MAX-009 its missing-coverage boundary. No global QIK-VRT implementation theorem is inferred.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-004"
+      ]
+    },
+    {
+      "claim_id": "OWNER-003",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "statement": "Owner requires all Zenodo and IETF publications in the overall assessment. All identified public publications and all their native files are included; inventory limitations are explicit.",
+      "scope": "Full identified public author corpus as of 2026-10-15.",
+      "proof_refs": [],
+      "evidence_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-001"
+      ],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-005"
+      ]
+    },
+    {
+      "claim_id": "REC-INV-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "44 published Zenodo versions, 32 native families and five native IETF revisions in the observed public author scope",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-INV-001"
+      ]
+    },
+    {
+      "claim_id": "REC-BYTES-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "All 479 reused originals match fresh public size/MD5 and previous SHA256; six selected Zenodo files and five IETF texts freshly redownloaded",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-BYTES-001"
+      ]
+    },
+    {
+      "claim_id": "REC-FORMAL-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "Published formal results are reused within their exact premises; no independent new run of all historical proofs",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-FORMAL-001"
+      ]
+    },
+    {
+      "claim_id": "REC-EMPIRICAL-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "Historical Quality Gates document 103 passed and one skipped case, a scoped 394-byte core and a one-host loopback Mesh; physical correspondence is not inferred",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-EMPIRICAL-001"
+      ]
+    },
+    {
+      "claim_id": "REC-COMPARE-001",
+      "classification": "SOURCE_BOUND",
+      "status": "BOUND",
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "statement": "External primary publications provide domain-specific simulator/HITL/chronon precedents; they supply no common QIKVRT head-to-head ranking",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-COMPARE-001"
+      ]
+    },
+    {
+      "claim_id": "REC-OWNER-001",
+      "classification": "INTERPRETATIVE",
+      "status": "DECLARED",
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "statement": "Owner asserts QIKVRT reality correspondence and greatest connectability; attribution is preserved and empirical confirmation remains separately evidence-bound",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-OWNER-001"
+      ]
+    },
+    {
+      "claim_id": "REC-PUB-001",
+      "classification": "NORMATIVE",
+      "status": "DECLARED",
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "statement": "Publication requires complete claim disposition, exact artifact identities, appropriate proof/evidence, return receipt, exact owner authorization and admitted publisher",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-PUB-001"
+      ]
+    },
+    {
+      "claim_id": "REC-B1",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Concrete implementation refinement and common semantics",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B1"
+      ]
+    },
+    {
+      "claim_id": "REC-B2",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Calibrated physical sensor/actuator round trip with independent observed effect",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B2"
+      ]
+    },
+    {
+      "claim_id": "REC-B3",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Bounded reproducible comparison plus justified universal class/simulation argument for global greatestness",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B3"
+      ]
+    },
+    {
+      "claim_id": "REC-B4",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Feasibility-qualified independent empirical test of PTG-P01/PTG-T01",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B4"
+      ]
+    },
+    {
+      "claim_id": "REC-B5",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Physical dynamics, known-limit recovery, stability/unitarity and cosmological correspondence",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B5"
+      ]
+    },
+    {
+      "claim_id": "REC-B6",
+      "classification": "OPEN",
+      "status": "OPEN",
+      "publication_wording": "EXPLICITLY_OPEN",
+      "statement": "Independent reproduction of an exact formal/software subject",
+      "scope": "2026-10-15 public corpus reconciliation and the explicitly proposed, unexecuted proof/experiment bridges; historical evidence retains its original scope.",
+      "proof_refs": [],
+      "evidence_refs": [],
+      "source_refs": [
+        "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json#SRC-REC-B6"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CLAIM_MATRIX.json",
+      "sha256": "21bcb539aad4e6af6389036b4cd9f0e3b86671db3f1477572da531c1e7b049e1",
+      "git_blob_sha1": "a4bc28671544a16f64dac5319904d03293da7ca4",
+      "kind": "CLAIM_MATRIX"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/KERNEL_RECEIPT.json",
+      "sha256": "ac3b42b050cff507d841957c1498c68cf364d58bd6278ec41c43f920ae14fc5a",
+      "git_blob_sha1": "9136b1c36ff509b302231e17f2b8306217454d87",
+      "kind": "KERNEL_RECEIPT"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/SOURCE_BINDINGS.json",
+      "sha256": "ca08d162102cb9c5eeda010af0d4a5db6aa54c111d18a02c3655b8057450b78e",
+      "git_blob_sha1": "b1fe83f42b69ece817210dab8852ed360bf1123b",
+      "kind": "SOURCE"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CHANGE_NOTICE.md",
+      "sha256": "9d39f14a554c8b669bc82af9f091160a05b8ef797dafa70c30e058ec0dab79e7",
+      "git_blob_sha1": "5eca08fa60dde9375558ad72f52d0d30796c72e4",
+      "kind": "CHANGE_NOTICE"
+    },
+    {
+      "path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "f37afe97fc45dd705eadd0887d18c5faacd1dc6b82ed37163f13014c2bdc66fd",
+      "git_blob_sha1": "bd156aab9643fea1a049f4841305dcd500eb1239",
+      "kind": "RETURN_RECEIPT"
+    }
+  ],
+  "prepublication_return": {
+    "content_changed": true,
+    "candidate_returned_to_owner": true,
+    "change_notice_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/CHANGE_NOTICE.md",
+    "receipt_path": "docs/publications/2026-07-31-survival-anschlussfaehigsten/maximality-2026-10-15/PREPUBLICATION_RETURN_RECEIPT.json"
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "completion_claims": {
+    "machine_proof_complete": false,
+    "zenodo_upload_authorized": false
+  }
+}

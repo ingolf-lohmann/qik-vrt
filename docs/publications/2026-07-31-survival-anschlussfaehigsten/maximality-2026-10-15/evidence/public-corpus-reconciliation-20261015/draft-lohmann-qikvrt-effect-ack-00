@@ -1,0 +1,336 @@
+
+
+
+
+Independent Submission                                        I. Lohmann
+Internet-Draft                                    Independent Researcher
+Intended status: Experimental                               18 June 2026
+Expires: 20 December 2026
+
+
+              The QIK-VRT Effect Acknowledgement Protocol
+                   draft-lohmann-qikvrt-effect-ack-00
+
+Abstract
+
+   This document defines the QIK-VRT Effect Acknowledgement Protocol
+   (EFFECT_ACK), a protocol layer between technical transport
+   acknowledgement and responsible semantic release.  TCP
+   acknowledgement confirms technical arrival.  EFFECT_ACK confirms
+   whether received information may responsibly continue as an effect.
+   The protocol distinguishes TRANSPORT_ACK from EFFECT_ACK, defines
+   five effect states, introduces a versioned and hash-linked
+   Responsibility Protocol, and specifies deterministic hashing and
+   canonical JSON requirements for reproducible audit.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 20 December 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.
+
+
+
+Lohmann                 Expires 20 December 2026                [Page 1]
+
+Internet-Draft             QIK-VRT EFFECT_ACK                  June 2026
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Layering Model  . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Core Principle  . . . . . . . . . . . . . . . . . . . . . . .   3
+   5.  Effect ACK States . . . . . . . . . . . . . . . . . . . . . .   3
+   6.  Responsibility Protocol . . . . . . . . . . . . . . . . . . .   4
+   7.  Hashing Rule  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   8.  Canonical JSON  . . . . . . . . . . . . . . . . . . . . . . .   4
+   9.  Synchronous and Asynchronous Operation  . . . . . . . . . . .   5
+   10. Compliance Requirements . . . . . . . . . . . . . . . . . . .   5
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   12. Privacy Considerations  . . . . . . . . . . . . . . . . . . .   5
+   13. Canonical Summary . . . . . . . . . . . . . . . . . . . . . .   5
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+
+1.  Introduction
+
+   Modern information systems increasingly transmit not only data, but
+   effects.  Texts, code, decisions, model outputs, recommendations,
+   warnings, legal assessments, financial signals, governance actions,
+   machine-to-machine messages, and AI-generated content can change
+   behavior, trigger downstream processes, influence decisions, or cause
+   harm.
+
+   Traditional network layers answer whether information arrived.  QIK-
+   VRT adds the required next question: may this information responsibly
+   continue to have effect?
+
+   TRANSPORT_ACK != EFFECT_ACK
+
+   A transport acknowledgement confirms arrival.  An effect
+   acknowledgement confirms responsible permission for further effect.
+
+2.  Terminology
+
+   The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD,
+   SHOULD NOT, RECOMMENDED, MAY, and OPTIONAL in this document are to be
+   interpreted as normative requirement levels.
+
+   A TRANSPORT_ACK confirms technical arrival but not semantic validity,
+   contextual correctness, safety, responsibility, or release
+   permission.
+
+
+
+
+
+
+Lohmann                 Expires 20 December 2026                [Page 2]
+
+Internet-Draft             QIK-VRT EFFECT_ACK                  June 2026
+
+
+   An EFFECT_ACK confirms that a received information unit has passed a
+   QIK-VRT effect gate and has been classified into one of the defined
+   release states.
+
+   A Responsibility Protocol, abbreviated as P, is a versioned, hash-
+   linked, audit-capable record of checks, evidence, risks, open
+   questions, reasons, and responsibility assignments that support an
+   EFFECT_ACK decision.
+
+3.  Layering Model
+
+   Layer 3: IP
+     Addressing, routing, reachability
+
+   Layer 4: TCP
+     Sequencing, acknowledgement, retransmission, timeout
+
+   Layer 4.5: QIK-VRT EFFECT_ACK_GATE
+     Effect checking, responsibility, release gating
+
+   Layer 7+: Application / cognitive / governance layer
+     Meaning, action, decision, publication, storage, execution
+
+   Transport confirmation is not release confirmation.
+
+4.  Core Principle
+
+   A QIK-VRT-compliant system MUST NOT treat received information as
+   released effect merely because it has been technically received.
+
+   received != released
+   received -> effect-checked -> classified -> released-or-not-released
+
+   TRANSPORT_ACK + RESPONSIBILITY_PROTOCOL = EFFECT_ACK
+
+   This yields EFFECT_ACK_DONE only if the responsibility protocol is
+   sufficiently complete and release policy permits further effect.
+
+5.  Effect ACK States
+
+   EFFECT_NACK
+   EFFECT_ACK_CONTINUE
+   EFFECT_ACK_DONE
+   EFFECT_ACK_ISOLATE
+   EFFECT_ACK_BLOCK
+
+   EFFECT_NACK means no effect-checkable reception exists.
+
+
+
+
+Lohmann                 Expires 20 December 2026                [Page 3]
+
+Internet-Draft             QIK-VRT EFFECT_ACK                  June 2026
+
+
+   EFFECT_ACK_CONTINUE means effect checking may continue, but effect is
+   not released.
+
+   EFFECT_ACK_DONE means effect has been checked sufficiently for
+   responsible release.
+
+   EFFECT_ACK_ISOLATE means effect must be separated from ordinary flow
+   and examined in containment.
+
+   EFFECT_ACK_BLOCK means effect must not continue.
+
+6.  Responsibility Protocol
+
+   Every EFFECT_ACK result MUST include a versioned and immutable
+   Responsibility Protocol P.  New evidence MUST create a new protocol
+   version.
+
+   A minimal protocol contains protocol_root_id, protocol_version,
+   protocol_id, previous_protocol_id, previous_protocol_hash,
+   protocol_hash, input_id, input_hash, state, transport_ack,
+   origin_checked, context_checked, semantics_reconstructed,
+   effect_anticipated, risk_classified, risk_level,
+   responsibility_assigned, responsibility_owner, connection_decided,
+   reasons, evidence_refs, open_questions, next_required_checks, and
+   created_utc.
+
+7.  Hashing Rule
+
+   The protocol_hash MUST be computed over deterministic content only.
+   Timestamps and volatile runtime metadata MUST NOT be included in
+   protocol_hash.
+
+   same content -> same hash
+   different evidence -> different hash
+   different timestamp only -> same hash
+
+8.  Canonical JSON
+
+   canonical_json() MUST serialize the hash projection deterministically
+   using UTF-8 without BOM, sorted keys, no whitespace outside strings,
+   normalized Unicode, and removal of volatile fields.
+
+   protocol_hash =
+     "sha256:" + SHA256(UTF8(canonical_json(protocol_hash_projection)))
+
+
+
+
+
+
+
+Lohmann                 Expires 20 December 2026                [Page 4]
+
+Internet-Draft             QIK-VRT EFFECT_ACK                  June 2026
+
+
+9.  Synchronous and Asynchronous Operation
+
+   The protocol defines a synchronous haltpoint and asynchronous
+   evidence continuation. effectAckSync() MUST return a deterministic
+   state without unbounded waiting.
+
+10.  Compliance Requirements
+
+   A system claiming QIK-VRT EFFECT_ACK compliance MUST distinguish
+   TRANSPORT_ACK from EFFECT_ACK, include Responsibility Protocol P in
+   every result, hash deterministic content only, version every evidence
+   change, treat CONTINUE as unreleased effect, and treat DONE as the
+   only ordinary release state.
+
+   A system MUST NOT claim EFFECT_ACK_DONE if origin is unchecked,
+   context is unchecked, semantics are unreconstructed, risk is unknown,
+   responsibility is unassigned, connection decision is missing,
+   required evidence is absent, or policy does not allow release.
+
+11.  Security Considerations
+
+   EFFECT_ACK is designed to prevent received-equals-released fallacy,
+   hallucination propagation, context loss, false certainty, ungated
+   downstream effect, silent evidence mutation, unowned responsibility,
+   unbounded waiting, unsafe asynchronous release, and false DONE
+   claims.
+
+12.  Privacy Considerations
+
+   Responsibility protocols may contain sensitive contextual,
+   evidential, or ownership information.  Implementations SHOULD support
+   evidence minimization, hash-only evidence references, redacted
+   protocol views, and access-controlled audit logs.
+
+13.  Canonical Summary
+
+   TCP ACK confirms arrival.
+   EFFECT ACK confirms responsible permission to continue effect.
+
+   Transport_ACK != Effect_ACK.
+
+   CONTINUE means:
+     continue checking,
+     do not release effect.
+
+   DONE means:
+     responsible effect release.
+
+
+
+
+Lohmann                 Expires 20 December 2026                [Page 5]
+
+Internet-Draft             QIK-VRT EFFECT_ACK                  June 2026
+
+
+Acknowledgements
+
+   q.e.d.  Ingolf Lohmann.
+
+Author's Address
+
+   Ingolf Lohmann
+   Independent Researcher
+   Germany
+   Email: ingolf.lohmann@web.de
+   URI:   https://github.com/ingolf-lohmann
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lohmann                 Expires 20 December 2026                [Page 6]

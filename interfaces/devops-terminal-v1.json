@@ -1,0 +1,95 @@
+{
+  "version": "qikvrt.devops.terminal.v1",
+  "purpose": "Shared transport-neutral DevOps contract for static React HTML clients and authorized ChatGPT connectors via admitted Universal Terminal and Universal Transputer",
+  "transport": {
+    "events": {
+      "method": "GET",
+      "path": "/v1/devops/events",
+      "content_type": "text/event-stream",
+      "credentials": "authenticated session",
+      "event_types": [
+        "snapshot",
+        "stage.transition",
+        "command.receipt",
+        "effect.readback"
+      ],
+      "required_fields": [
+        "event_id",
+        "subject",
+        "head_sha",
+        "tree_sha",
+        "stage",
+        "status",
+        "evidence_url"
+      ]
+    },
+    "commands": {
+      "method": "POST",
+      "path": "/v1/devops/commands",
+      "credentials": "authenticated session",
+      "request_fields": [
+        "version",
+        "kind",
+        "title",
+        "description",
+        "priority",
+        "client_nonce"
+      ],
+      "response_fields": [
+        "receipt_id",
+        "admission",
+        "issue_number",
+        "evidence_url"
+      ]
+    },
+    "snapshot": {
+      "method": "GET",
+      "path": "/v1/devops/snapshot",
+      "content_type": "application/json",
+      "required_fields": [
+        "version",
+        "subject",
+        "head_sha",
+        "tree_sha",
+        "stages",
+        "evidence_url"
+      ]
+    },
+    "event_replay": {
+      "cursor": "Last-Event-ID or opaque cursor",
+      "guarantee": "Durable original terminal journal, monotonic event identifiers, gap detection, readback before display; no synthetic SUCCESS"
+    }
+  },
+  "pipeline_stages": [
+    "ingress",
+    "admission",
+    "processing",
+    "handoff",
+    "ci",
+    "review",
+    "merge",
+    "effect"
+  ],
+  "invariants": [
+    "Event publication only after original terminal/transputer readback",
+    "Authenticated principal and idempotent nonce",
+    "Never expose GitHub credentials to HTML client",
+    "Native issue processing via existing GitHub issue events, no timer automation",
+    "Source, CI, merge, runtime and EFFECT_ACK_DONE are separate evidence domains",
+    "SSE transport availability is not claimed by this contract",
+    "Origin, CSRF, CORS, authorization and replay protection required",
+    "All clients consume the same canonical events and distinguish receipt, execution, CI, merge and productive effect",
+    "ChatGPT interface changes require platform support; a repository contract alone does not enable ChatGPT-native streaming or tool connectivity"
+  ],
+  "clients": {
+    "static_react_html": {
+      "read": "GET /v1/devops/snapshot; GET /v1/devops/events (SSE)",
+      "write": "POST /v1/devops/commands after authenticated native admission"
+    },
+    "chatgpt": {
+      "read": "Connector/MCP read of the same persisted terminal snapshots and event journal; no assertion of continuous SSE in a chat session",
+      "write": "Explicit owner-authorized connector/MCP action carrying identical command schema and nonce; persist receipt and read back terminal state",
+      "limitations": "ChatGPT client UI is platform controlled; repository code cannot replace its native interface or create an always-running chat session"
+    }
+  }
+}

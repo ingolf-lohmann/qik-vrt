@@ -1,0 +1,85 @@
+{
+  "schema": "QIKVRT_CAUSAL_DISTANCE_PUBLICATION_CONTINUATION_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pull_request": 597,
+  "candidate_head": "9a51dfc0533bdaaf178c1cf255489708d5fcf2c3",
+  "main_evidence_merge": "51f516368ae33d1d788e50b0301929d0252187e5",
+  "archive_sha256": "a8f808ac97932575215297a346696fb727a39d4eb620b72398578ed67d356336",
+  "remote_parts": [
+    {
+      "part": 1,
+      "blob": "e07f84cfd4139769a6cc61a4bece7d26d19e4deb",
+      "byte_exact": true
+    },
+    {
+      "part": 2,
+      "blob": "2fda05389c4727b5079cfcd8afe53f0b93457d76",
+      "byte_exact": true
+    },
+    {
+      "part": 3,
+      "blob": "e5b59368988690a0a7169191406d1d6fba13f2aa",
+      "byte_exact": true
+    }
+  ],
+  "remote_readable": [
+    {
+      "file": "QIKVRT_Prosa_Vorlesetext.txt",
+      "sha": "cd75018d03b77ad609cfa57a452995a73a477d9b",
+      "byte_exact": true
+    },
+    {
+      "file": "QIKVRT_Prosaartikel_mit_Quellen.txt",
+      "sha": "8ce4713cb5d44d5eeed96d72c7d08dd3db1a28ea",
+      "byte_exact": true
+    },
+    {
+      "file": "QIKVRT_Kausale_Distanz_Fachartikel.md",
+      "sha": "d4bb226e00aa44b144ded7cce39e88685e54f5a8",
+      "byte_exact": true
+    },
+    {
+      "file": "LESEPFAD_NACH_INTERESSE.md",
+      "sha": "9e9a2c23436f43d5866e48c1534c5dae00ce3aa3",
+      "byte_exact": true
+    },
+    {
+      "file": "EXACT_UPLOAD_DECISION_REQUEST.txt",
+      "sha": "b4d9e781c4755a0f2c20563e15e8992db76cc254",
+      "byte_exact": true
+    },
+    {
+      "file": "PUBLICATION_STATE.json",
+      "sha": "bace8787deacedf811e7a97ff939e1d22ae87717",
+      "byte_exact": true
+    },
+    {
+      "file": "RESTORE_AND_VALIDATE.md",
+      "sha": "9a195975764a05093bc5e180d5f727bd4d04d1cc",
+      "byte_exact": true
+    }
+  ],
+  "observation": {
+    "id": "5a15002e-81cf-47d9-887d-bae9bd0d999d",
+    "observed_at": "2026-10-24T09:22:25.532Z",
+    "sha256": "0533bd6470b82e775acb7c9dcf9163e19437c249b0f155817892f216dee31b21",
+    "independent_byte_verified": true,
+    "open_gates": [
+      "ADMITTED_MESH_RUNTIME_ENDPOINT"
+    ],
+    "scope": "CURRENT_PUBLIC_RUNTIME_DISCOVERY_AND_CONFIGURATION_ONLY"
+  },
+  "publication": {
+    "published": false,
+    "doi": null,
+    "exact_owner_event_received": false,
+    "publisher_admitted": false
+  },
+  "next_steps": [
+    "Let existing native integrity/fixpoint CI complete; inspect exact successor before integration.",
+    "Retain original journal and all authorization; do not substitute executor.",
+    "Materialize frozen upload files through admitted original route.",
+    "Obtain exact post-return decision required by policy; never synthesize it.",
+    "Use original publisher, verify public metadata and re-download exact published bytes before reporting Zenodo completion."
+  ]
+}
