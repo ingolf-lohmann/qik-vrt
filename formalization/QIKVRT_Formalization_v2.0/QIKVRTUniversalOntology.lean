@@ -1,5 +1,6 @@
 import QIKVRTUniversalOntology.Core
 import QIKVRTFormalization.WorldFormula.Relations
+import QIKVRTFormalization.WorldFormula.ScienceRulesWorlds
 
 /-!
 Top-level import for the consolidated QIK-VRT universal-ontology finite-model
