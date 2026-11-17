@@ -25,6 +25,7 @@ import QIKVRTFormalization.Claims.Batch04
 import QIKVRTFormalization.Claims.Batch05
 import QIKVRTFormalization.Claims.Completion
 import QIKVRTFormalization.WorldFormula.Relations
+import QIKVRTFormalization.WorldFormula.ScienceRulesWorlds
 import QIKVRTFormalization.QuantumFoundations.MeasurementIndependence
 import QIKVRTFormalization.Hardware.AuthorityMirrorWitness
 import QIKVRTFormalization.Decision.ObservationSufficiency
