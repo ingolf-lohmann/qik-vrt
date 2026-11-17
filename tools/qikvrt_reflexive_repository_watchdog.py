@@ -31,7 +31,7 @@ UNTRUSTED_CONCLUSIONS = frozenset({"action_required", "startup_failure"})
 EXECUTED_FAILURE_CONCLUSIONS = frozenset({"failure", "timed_out"})
 GATEWATCH_SCOPES = frozenset({"MAIN", "PULL_REQUEST_MAIN", "PULL_REQUEST_STACKED"})
 MAX_JOB_READBACK_REQUESTS = 20
-MAX_RUN_READBACK_PAGES = 10
+MAX_RUN_READBACK_PAGES = 40
 MAX_WORK_READBACK_PAGES = 10
 READBACK_PAGE_SIZE = 100
 GATEWATCH_STATES = frozenset(
@@ -259,6 +259,29 @@ def _collect_pages(endpoint: str, key: str, directory: Path, *, max_requests: in
             items.append(entry)
         if blocker or len(items) == total:
             break
+    # For histories exceeding the former ten-page cap, recheck the first
+    # page's high-water IDs and total after complete paginated readback.
+    # A moving snapshot is HOLD, never a valid basis for jobs or ACK.
+    if (blocker is None and key == "workflow_runs" and total is not None
+            and total > 1000 and len(items) == total):
+        if requests >= max_requests:
+            blocker = "READBACK_REQUEST_BUDGET_EXCEEDED"
+        else:
+            check = _readback_page(
+                f"{endpoint}&per_page={READBACK_PAGE_SIZE}&page=1",
+                directory / "run-high-water-confirmation.json",
+            )
+            requests += 1
+            head = check.get(key)
+            if (type(check.get("total_count")) is not int
+                    or check["total_count"] != total
+                    or check.get("truncated", False) is not False
+                    or not isinstance(head, list)
+                    or len(head) != min(READBACK_PAGE_SIZE, total)
+                    or any(not isinstance(entry, Mapping) for entry in head)
+                    or [entry.get("id") for entry in head]
+                       != [entry["id"] for entry in items[:len(head)]]):
+                blocker = "RUN_SNAPSHOT_DRIFT"
     if blocker is None and (total is None or len(items) != total):
         blocker = "READBACK_REQUEST_BUDGET_EXCEEDED"
     return {"total_count": total, key: items, "truncated": blocker is not None,
