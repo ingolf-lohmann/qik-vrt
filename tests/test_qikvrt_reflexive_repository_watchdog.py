@@ -1101,7 +1101,9 @@ class JobReadbackBudgetTests(unittest.TestCase):
     def test_run_pagination_budget_and_numeric_latest_tie_break(self):
         result, requests, _ = self.collect(self.page(1001))
         self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(len(requests), 10)
+        # 1001 complete runs = 11 pages plus one high-water verification.
+        # The subsequent HOLD comes from the unchanged job budget of 20.
+        self.assertEqual(len(requests), 12)
         self.assertTrue(all(r['kind'] == 'runs' for r in requests))
         page = self.page(10)
         for entry in page['workflow_runs']:
