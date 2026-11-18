@@ -14,6 +14,9 @@ import pathlib
 import re
 import subprocess
 import sys
+# Match the trusted helper copied alongside this controller by the workflow.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import qikvrt_writer_fence as writer_fence
 import tarfile
 import tempfile
 import stat
@@ -610,7 +613,7 @@ ATTEMPT_PATTERN = re.compile(
 
 
 class GitHubREST:
-    """Use only gh api; never gh pr, Git network transport or GraphQL."""
+    """Use Git Data REST and GitHub GraphQL for atomic multi-ref CAS."""
 
     def __init__(self, repository: str):
         if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
@@ -668,6 +671,41 @@ class GitHubREST:
             raise SelfHealBlock("immutable continuation receipt readback mismatch")
         return True
 
+
+    def atomic_refs(self, changes: list[dict[str, str]], *, operation_id: str) -> None:
+        """No-retry GraphQL updateRefs. Caller independently reads back all refs."""
+        if not changes or not all(
+            isinstance(c, dict) and
+            set(c) == {"name", "beforeOid", "afterOid"} and
+            c["name"].startswith("refs/") and
+            all(SHA_PATTERN.fullmatch(c[k] or "") for k in ("beforeOid", "afterOid"))
+            for c in changes
+        ):
+            raise SelfHealBlock("INVALID_ATOMIC_REF_TRANSACTION")
+        metadata = self.call("GET", "")
+        repository_id = metadata.get("node_id") if isinstance(metadata, dict) else None
+        if not isinstance(repository_id, str) or not repository_id:
+            raise SelfHealBlock("GITHUB_REPOSITORY_NODE_ID_REQUIRED")
+        mutation = ("mutation($input:UpdateRefsInput!){updateRefs(input:$input)"
+                    "{clientMutationId}}")
+        payload = {"query": mutation, "variables": {"input": {
+            "repositoryId": repository_id, "clientMutationId": operation_id,
+            "refUpdates": changes,
+        }}}
+        result = subprocess.run(
+            ["gh", "api", "graphql", "--input", "-"],
+            input=json.dumps(payload, separators=(",", ":")), text=True,
+            capture_output=True, check=False, timeout=120)
+        if result.returncode:
+            raise SelfHealBlock("ATOMIC_REF_CAS_REJECTED_OR_AMBIGUOUS; readback only")
+        try:
+            outcome = json.loads(result.stdout)
+        except (ValueError, TypeError) as exc:
+            raise SelfHealBlock("ATOMIC_REF_RESPONSE_INVALID; readback only") from exc
+        if (outcome.get("errors") or
+                ((outcome.get("data") or {}).get("updateRefs") or {}).get("clientMutationId")
+                != operation_id):
+            raise SelfHealBlock("ATOMIC_REF_CAS_NOT_CONFIRMED; readback only")
 
 def eligible_pr(pr: Mapping[str, Any], repository: str) -> bool:
     head, base = pr.get("head") or {}, pr.get("base") or {}
@@ -750,15 +788,9 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
         return dict(plan, state="NO_ELIGIBLE_PR")
     selected = plan["selected"]
     reobserve_selection(api, plan, selected["head_sha"])
-    run_ref = CONTINUATION_REFS + f"runs/{run_id}"
-    if not api.create_once(run_ref, plan["base_sha"]):
-        return dict(plan, state="DUPLICATE_RUN_NOOP", selected=None)
-    if not api.create_once(CONTINUATION_REFS + f"turns/{plan['turn_number']}", selected["head_sha"]):
-        return dict(plan, state="CONTENDED_TURN_NOOP", selected=None)
-    receipt = (CONTINUATION_REFS + f"attempts/{plan['turn_number']}-{selected['pull_request']}-"
-               f"{selected['head_sha']}-{plan['base_sha']}-{run_id}")
-    if not api.create_once(receipt, selected["head_sha"]):
-        raise SelfHealBlock("attempt receipt already consumed")
+    # Durable lease and monotonically increasing fencing are bound to
+    # run, turn and attempt in one atomic updateRefs CAS.
+    claim = writer_fence.acquire(api, plan, run_id)
     successors = api.pages(f"git/matching-refs/qikvrt/pr-continuation/effects/{selected['pull_request']}/")
     resume = []
     for ref in successors:
@@ -769,8 +801,8 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
         raise SelfHealBlock("ambiguous predecessor handoff binding")
     if resume:
         selected = dict(selected, source_head_sha=resume[0], resume_handoff=True)
-    return dict(plan, selected=selected, state="SELECTION_CLAIMED", run_id=run_id, attempt_ref=receipt)
-
+    return dict(plan, selected=selected, state="SELECTION_CLAIMED",
+                run_id=run_id, **claim)
 
 def handoff_pr(api: GitHubREST, plan: Mapping[str, Any], candidate: str) -> dict[str, Any]:
     selected = plan["selected"]
@@ -1034,13 +1066,9 @@ def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str
     reobserve_selection(api, plan, source)
     selected = plan["selected"]
     key = CONTINUATION_REFS + f"effects/{selected['pull_request']}/{source}-{plan['base_sha']}/successor"
-    if not api.create_once(key, candidate):
-        raise SelfHealBlock("successor already claimed; observe current branch before recovery")
-    try:
-        api.call("PATCH", "git/refs/heads/" + selected["head_ref"], {"sha": candidate, "force": False})
-    except SelfHealBlock:
-        # A timeout may follow a successful ref write. Never repeat the PATCH.
-        reobserve_selection(api, plan, candidate)
+    # updateRefs atomically advances the control lease/fence, exact target
+    # branch and successor receipt. No standalone PATCH, no ambiguous retry.
+    writer_fence.publish(api, plan, candidate, effect_ref=key)
     reobserve_selection(api, plan, candidate)
 
 
