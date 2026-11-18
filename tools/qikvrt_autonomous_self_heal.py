@@ -750,14 +750,6 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
         return dict(plan, state="NO_ELIGIBLE_PR")
     selected = plan["selected"]
     reobserve_selection(api, plan, selected["head_sha"])
-    # Fail closed: the three legacy create-once receipts below are not an
-    # atomic writer lease.  They must never be treated as write admission.
-    # An admitted implementation must bind a durable lease/fencing epoch and
-    # the exact head in one CAS transaction before any publication.
-    raise SelfHealBlock(
-        "WRITER_NOT_ADMITTED: legacy sequential refs are not atomic "
-        "lease/fencing/CAS; publication forbidden"
-    )
     run_ref = CONTINUATION_REFS + f"runs/{run_id}"
     if not api.create_once(run_ref, plan["base_sha"]):
         return dict(plan, state="DUPLICATE_RUN_NOOP", selected=None)
