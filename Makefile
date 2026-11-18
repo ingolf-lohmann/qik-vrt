@@ -182,7 +182,7 @@ test: self-heal-materialization-test
 
 .PHONY: autonomous-pr-continuation-test
 autonomous-pr-continuation-test:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_fallback_reentry tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract
 
 test: autonomous-pr-continuation-test
 
