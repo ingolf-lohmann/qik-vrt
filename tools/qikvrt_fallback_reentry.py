@@ -18,6 +18,26 @@ def decide_reentry(state: Mapping[str, Any]) -> dict[str, Any]:
     if missing:
         return {"decision": "HOLD", "reason": "UNKNOWN_INPUT",
                 "missing": missing, "effect_ack_done": False}
+    # A stale or malformed lease cannot be used as authority merely because
+    # a caller set a boolean to True.  Re-entry needs an explicit, bound
+    # work-unit/owner/token/HEAD tuple from an independent readback.
+    binding = state.get("admission_binding")
+    if state["continuation_required"] and not state["active_writer"]:
+        if not isinstance(binding, dict) or set(binding) != {
+            "work_unit_id", "writer_id", "fencing_token", "expected_head",
+            "lease_expires_at", "checkpoint_sha",
+        }:
+            return {"decision": "HOLD", "reason": "MISSING_ATOMIC_BINDING",
+                    "effect_ack_done": False}
+        if (any(not isinstance(binding[k], str) or not binding[k].strip()
+                for k in ("work_unit_id", "writer_id", "expected_head",
+                          "lease_expires_at", "checkpoint_sha"))
+                or type(binding["fencing_token"]) is not int
+                or binding["fencing_token"] < 1
+                or len(binding["expected_head"]) != 40
+                or any(c not in "0123456789abcdef" for c in binding["expected_head"])):
+            return {"decision": "HOLD", "reason": "INVALID_ATOMIC_BINDING",
+                    "effect_ack_done": False}
     if not state["continuation_required"]:
         return {"decision": "NO_CONTINUATION", "effect_ack_done": False}
     if state["active_writer"]:
