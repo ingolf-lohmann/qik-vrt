@@ -1,0 +1,41 @@
+{
+  "boundaries": {
+    "active_writer_lease": false,
+    "legacy_main_adoption": false,
+    "main_activation": false,
+    "ordinary_release": false
+  },
+  "effect_ack_done": false,
+  "expected_main": "42a538789d07b9ab48fdbd1471ad3067fbb34989",
+  "expected_parent": "95c7adc8ff3749dc7abb162222acfdcd88384d73",
+  "instructions": [
+    {
+      "sha256": "39c953454d68f88d672e92b464bb702f243430f8e29b119a9e5660fbe0873706",
+      "source": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "text": "autorisierte Bootstrap-Transaktion über GitHubs updateRefs, die Control-Ref, Fencing-Epoche und Ziel-HEAD gemeinsam bindet."
+    },
+    {
+      "sha256": "232e7f0958e6ee6fa90fb4bc0177fb4f8c2828e5860eab5ce1c67bede792fcc1",
+      "source": "DIRECT_HUMAN_INSTRUCTION_IN_CURRENT_SESSION",
+      "text": "Ja, und vor allem musst du mal begreifen, dass es ja nicht damit getan ist, den Request zu empfangen und irgendwo abzuspeichern, sondern er muss so ins Repository integriert und angestoßen werden in der Ausführung, dass in einem Durchlauf die Response wieder eingesammelt werden kann. Alles andere war, ist und bleibt inakzeptabel"
+    }
+  ],
+  "predecessor_prepared_intent": "997b229a1440af68ea12bfb9bf055cd6ca2e922f",
+  "principal": {
+    "github_id": 294949349,
+    "github_login": "ingolf-lohmann",
+    "name": "Ingolf Lohmann"
+  },
+  "pull_request": 756,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_writer_bootstrap_request_v1",
+  "scope": "INITIAL_CONTROL_EPOCH_AND_EXACT_HEAD_GUARDS",
+  "source_pins": {
+    ".github/workflows/qikvrt_autonomous_pr_continuation.yml": "a55e2a479338cd304d7b7fc6e7dc4e44ac9a0772b7e3de0031e8f1d292ec45cb",
+    "tests/test_qikvrt_writer_bootstrap.py": "f55f8b04b4757d7bab0d4d7768712d79a1fef997e302ed7ede4ffef0580abdcd",
+    "tools/qikvrt_autonomous_self_heal.py": "571c41d5623bcb80c559ae1ee0293e9b421b56281d67d2ee514716f57a597ffc",
+    "tools/qikvrt_writer_fence.py": "a34c81a577deffa9687c1187f9776700da97a282405e0d85baf112b1f6aa173d"
+  },
+  "source_publication_basis": "The later direct Owner instruction requires executable integration and triggering on the existing repository path. This request authorizes the bounded PR756 bootstrap installation and its one transaction, with fresh CAS and source checks.",
+  "target_ref": "refs/heads/repair/writer-fencing-temdd-20261118"
+}

@@ -670,8 +670,23 @@ class GitHubREST:
         return True
 
 
-    def atomic_refs(self, changes: list[dict[str, str]], *, operation_id: str) -> None:
-        """No-retry GraphQL updateRefs. Caller independently reads back all refs."""
+    @staticmethod
+    def record_once(path: pathlib.Path, value: Any) -> None:
+        """Durable original request/response bytes; an existing intent is never overwritten."""
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("x", encoding="utf-8") as stream:
+            json.dump(value, stream, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        descriptor = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+
+    def atomic_request(self, changes: list[dict[str, str]], *, operation_id: str) -> dict[str, Any]:
+        """Prepare the fixed existing updateRefs operation without submitting it."""
         if not changes or not all(
             isinstance(c, dict) and
             set(c) == {"name", "beforeOid", "afterOid"} and
@@ -680,30 +695,61 @@ class GitHubREST:
             for c in changes
         ):
             raise SelfHealBlock("INVALID_ATOMIC_REF_TRANSACTION")
+        if (len({change["name"] for change in changes}) != len(changes)
+                or not isinstance(operation_id, str)
+                or not re.fullmatch(r"[A-Za-z0-9._:-]{1,128}", operation_id)):
+            raise SelfHealBlock("INVALID_ATOMIC_REF_TRANSACTION")
         metadata = self.call("GET", "")
         repository_id = metadata.get("node_id") if isinstance(metadata, dict) else None
         if not isinstance(repository_id, str) or not repository_id:
             raise SelfHealBlock("GITHUB_REPOSITORY_NODE_ID_REQUIRED")
         mutation = ("mutation($input:UpdateRefsInput!){updateRefs(input:$input)"
                     "{clientMutationId}}")
-        payload = {"query": mutation, "variables": {"input": {
+        return {"query": mutation, "variables": {"input": {
             "repositoryId": repository_id, "clientMutationId": operation_id,
             "refUpdates": changes,
         }}}
-        result = subprocess.run(
-            ["gh", "api", "graphql", "--input", "-"],
-            input=json.dumps(payload, separators=(",", ":")), text=True,
-            capture_output=True, check=False, timeout=120)
+
+    def atomic_refs(self, changes: list[dict[str, str]], *, operation_id: str,
+                    journal: pathlib.Path | None = None,
+                    expected_request: Mapping[str, Any] | None = None) -> dict[str, Any]:
+        """One POST, original response preservation, no replay on any outcome."""
+        payload = self.atomic_request(changes, operation_id=operation_id)
+        if expected_request is not None and payload != expected_request:
+            raise SelfHealBlock("ATOMIC_REQUEST_DRIFT")
+        if journal is not None:
+            self.record_once(journal / "request.json", payload)
+        try:
+            result = subprocess.run(
+                ["gh", "api", "graphql", "--input", "-"],
+                input=json.dumps(payload, separators=(",", ":")), text=True,
+                capture_output=True, check=False, timeout=120)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            if journal is not None:
+                self.record_once(journal / "response.json", {
+                    "returncode": None, "transport_error": type(exc).__name__,
+                    "stdout": (getattr(exc, "stdout", None) or b"").decode("utf-8", "replace")
+                        if isinstance(getattr(exc, "stdout", None), bytes)
+                        else (getattr(exc, "stdout", None) or ""),
+                })
+            raise SelfHealBlock("ATOMIC_REF_TRANSPORT_UNCONFIRMED; readback only") from exc
+        if journal is not None:
+            self.record_once(journal / "response.json", {
+                "returncode": result.returncode, "stdout": result.stdout,
+                "stderr": result.stderr, "transport_error": None,
+            })
         if result.returncode:
             raise SelfHealBlock("ATOMIC_REF_CAS_REJECTED_OR_AMBIGUOUS; readback only")
         try:
             outcome = json.loads(result.stdout)
         except (ValueError, TypeError) as exc:
             raise SelfHealBlock("ATOMIC_REF_RESPONSE_INVALID; readback only") from exc
-        if (outcome.get("errors") or
-                ((outcome.get("data") or {}).get("updateRefs") or {}).get("clientMutationId")
-                != operation_id):
+        data = outcome.get("data") if isinstance(outcome, dict) else None
+        updated = data.get("updateRefs") if isinstance(data, dict) else None
+        if (not isinstance(outcome, dict) or "errors" in outcome
+                or not isinstance(updated, dict) or updated.get("clientMutationId") != operation_id):
             raise SelfHealBlock("ATOMIC_REF_CAS_NOT_CONFIRMED; readback only")
+        return outcome
 
 
 def _writer_fence():
@@ -798,12 +844,20 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
         raise SelfHealBlock("native run identity is required")
     if plan["selected"] is None:
         return dict(plan, state="NO_ELIGIBLE_PR")
+    prior_run = api.ref(CONTINUATION_REFS + f"runs/{run_id}")
+    if prior_run is not None:
+        if prior_run.get("object", {}).get("sha") != plan["base_sha"]:
+            raise SelfHealBlock("prior native run binding differs; readback only")
+        return dict(plan, selected=None, state="DUPLICATE_RUN_NOOP")
     selected = plan["selected"]
     reobserve_selection(api, plan, selected["head_sha"])
     # Durable lease and monotonically increasing fencing are bound to
     # run, turn and attempt in one atomic updateRefs CAS.
     writer_fence = _writer_fence()
-    claim = writer_fence.acquire(api, plan, run_id)
+    try:
+        claim = writer_fence.acquire(api, plan, run_id)
+    except RuntimeError as exc:
+        raise SelfHealBlock(str(exc)) from exc
     successors = api.pages(f"git/matching-refs/qikvrt/pr-continuation/effects/{selected['pull_request']}/")
     resume = []
     for ref in successors:
@@ -1082,21 +1136,51 @@ def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str
     # updateRefs atomically advances the control lease/fence, exact target
     # branch and successor receipt. No standalone PATCH, no ambiguous retry.
     writer_fence = _writer_fence()
-    writer_fence.publish(api, plan, candidate, effect_ref=key)
+    try:
+        writer_fence.publish(api, plan, candidate, effect_ref=key)
+    except RuntimeError as exc:
+        raise SelfHealBlock(str(exc)) from exc
     reobserve_selection(api, plan, candidate)
 
 
 def pr_cli(argv: Sequence[str]) -> int:
     parser = argparse.ArgumentParser(description="Existing autonomous PR continuation, REST-only")
-    parser.add_argument("command", choices=("pr-plan", "pr-select", "pr-checkout", "pr-import", "pr-fixtures", "pr-publish", "pr-resume"))
+    parser.add_argument("command", choices=("pr-plan", "pr-select", "pr-checkout", "pr-import", "pr-fixtures", "pr-publish", "pr-resume", "pr-bootstrap-checkout", "pr-bootstrap"))
     parser.add_argument("--repository", default=os.environ.get("GITHUB_REPOSITORY"))
     parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path.cwd())
     parser.add_argument("--sha")
     parser.add_argument("--selection", type=pathlib.Path)
     parser.add_argument("--output", type=pathlib.Path)
+    parser.add_argument("--request", type=pathlib.Path)
+    parser.add_argument("--journal", type=pathlib.Path)
     args = parser.parse_args(argv)
     api = GitHubREST(args.repository or "")
-    if args.command == "pr-checkout":
+    if args.command == "pr-bootstrap":
+        if args.request is None or args.journal is None:
+            raise SelfHealBlock("BOOTSTRAP_REQUEST_AND_JOURNAL_REQUIRED")
+        try:
+            result = _writer_fence().bootstrap(api, json.loads(args.request.read_text()),
+                                               root=args.root, journal=args.journal)
+        except (RuntimeError, ValueError, OSError) as exc:
+            result = {"state": "BOOTSTRAP_HOLD", "reason": str(exc),
+                      "error_type": type(exc).__name__, "readback_verified": False,
+                      "automatic_retry": False, "effect_ack_done": False}
+            if not (args.journal / "result.json").exists():
+                api.record_once(args.journal / "result.json", result)
+        print(json.dumps(result, sort_keys=True, indent=2))
+        return 0 if result.get("readback_verified") else 2
+    elif args.command == "pr-bootstrap-checkout":
+        # Only this direct Owner-bound push may load the candidate bootstrap.
+        # This command imports bytes, never grants a writer or mutates remote refs.
+        if (os.environ.get("GITHUB_EVENT_NAME") != "push"
+                or os.environ.get("GITHUB_ACTOR_ID") != "294949349"
+                or os.environ.get("GITHUB_REF") != "refs/heads/repair/writer-fencing-temdd-20261118"
+                or args.sha != os.environ.get("GITHUB_SHA")
+                or (api.ref(os.environ["GITHUB_REF"]) or {}).get("object", {}).get("sha") != args.sha):
+            raise SelfHealBlock("BOOTSTRAP_CHECKOUT_BINDING_INVALID")
+        import_rest_snapshot(api, args.root, args.sha, checkout=True)
+        result = {"state": "EXACT_BOOTSTRAP_REST_CHECKOUT", "head_sha": args.sha}
+    elif args.command == "pr-checkout":
         sha = api.ref("refs/heads/main")["object"]["sha"]
         if args.sha != sha:
             raise SelfHealBlock("trusted controller main binding changed before checkout")

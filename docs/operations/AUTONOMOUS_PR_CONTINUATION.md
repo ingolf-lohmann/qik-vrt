@@ -662,3 +662,30 @@ when an original completion has no PR selector. This replaces the old timer
 repair of that observation gap; each selected PR still receives fresh identity,
 review, rule and exact-head checks. A partial candidate scan cannot declare
 quiescence while an admitted later successor remains uninspected.
+
+## Owner-authorized synchronous writer bootstrap — 19 November 2026
+
+`state/autonomy/WRITER_BOOTSTRAP_REQUEST_V1.json` records the direct Owner
+instructions to integrate, execute and collect the response in one invocation.
+The existing continuation workflow selects its bounded bootstrap operation on
+the existing PR756 branch, under its unchanged repository-wide concurrency.
+The ordinary continuation job is excluded for that push; no additional timer,
+controller service or credential scope is introduced.
+
+The existing `pr-bootstrap` consumer verifies the original Actions run, Owner
+actor, exact parent/Main/target and pinned source bytes. Complete applicable
+source gates precede the effect. It creates an immutable, create-only remote
+intent, then sends one GraphQL `updateRefs`: absent control and epoch/1 refs
+are bound to the same control commit together with exact Main and target HEAD
+guards. The bootstrap completes its own zero-duration lease; future admitted
+claims increment the epoch. This does not activate the candidate on Main or
+prove that legacy writers use the new fencing protocol.
+
+The same invocation preserves the original request and response, then reads
+every bound ref and control record independently on success, rejection or a
+lost response. Its existing workflow returns the result as
+`qikvrt-writer-bootstrap-<run>-<attempt>`. A later invocation reads the original
+remote intent and reconciles it without another POST. A crash after intent
+reservation retains HOLD even if the effect has not been observed. A stored
+request, green source tests or provider transport alone cannot establish
+bootstrap application, active writer admission or `EFFECT_ACK_DONE`.

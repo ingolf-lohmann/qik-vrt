@@ -34,6 +34,8 @@ class FakeAPI:
         return {"ref": name, "object": {"sha": oid}} if oid else None
 
     def call(self, method, path, payload=None):
+        if method == "GET" and path.startswith("actions/runs/"):
+            return {"id": int(path.split("/")[-1]), "status": "in_progress"}
         if method == "GET" and path.startswith("git/commits/"):
             return self.commits[path.removeprefix("git/commits/")]
         if method == "POST" and path == "git/commits":
@@ -100,7 +102,7 @@ class FenceTEMDD(unittest.TestCase):
         c = self.claim()
         self.assertEqual(c["fencing_epoch"], 1)
         self.assertEqual(len(self.api.atomic_calls), 1)
-        self.assertEqual(len(self.api.atomic_calls[0][0]), 6)
+        self.assertEqual(len(self.api.atomic_calls[0][0]), 7)
         plan = dict(self.plan, **c)
         effect = "refs/qikvrt/pr-continuation/effects/756/" + SOURCE + "-" + MAIN + "/successor"
         res = fence.publish(self.api, plan, CANDIDATE, effect_ref=effect)
@@ -155,6 +157,32 @@ class FenceTEMDD(unittest.TestCase):
         with patch.dict(os.environ, {"GITHUB_RUN_ID": "999"}):
             with self.assertRaisesRegex(fence.FenceBlocked, "WRITER_IDENTITY_REQUIRED"):
                 self.claim()
+
+    def test_deleted_control_cannot_reset_an_existing_fencing_epoch(self):
+        self.claim()
+        del self.api.refs[fence.CONTROL_REF]
+        with self.assertRaisesRegex(fence.FenceBlocked, "CAS_CONFLICT"):
+            self.claim()
+        self.assertNotIn(fence.CONTROL_REF, self.api.refs)
+
+    def test_another_run_cannot_publish_using_a_copied_valid_claim(self):
+        claim = self.claim()
+        with patch.dict(os.environ, {"GITHUB_RUN_ID": "999"}):
+            with self.assertRaisesRegex(fence.FenceBlocked, "WRITER_IDENTITY_REQUIRED"):
+                fence.publish(self.api, dict(self.plan, **claim), CANDIDATE,
+                              effect_ref="refs/qikvrt/pr-continuation/effects/x")
+        self.assertEqual(SOURCE, self.api.refs["refs/heads/repair"])
+
+    def test_completed_original_run_allows_monotonic_recovery_before_expiry(self):
+        first = self.claim()
+        original = self.api.call
+        def observed(method, path, payload=None):
+            if method == "GET" and path == "actions/runs/123":
+                return {"id": 123, "status": "completed"}
+            return original(method, path, payload)
+        with patch.object(self.api, "call", side_effect=observed), patch.dict(os.environ, {"GITHUB_RUN_ID": "124"}):
+            second = fence.acquire(self.api, dict(self.plan, turn_number=501), 124)
+        self.assertEqual(first["fencing_epoch"] + 1, second["fencing_epoch"])
 
 
 if __name__ == "__main__":
