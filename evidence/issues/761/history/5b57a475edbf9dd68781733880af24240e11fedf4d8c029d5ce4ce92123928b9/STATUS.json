@@ -1,0 +1,27 @@
+{
+  "automatic_issue_close": false,
+  "automatic_merge": false,
+  "closure_recommended": false,
+  "common_tag_required": false,
+  "deterministic_compilation_completed": true,
+  "disposition_reason": "UNSUPPORTED_DETERMINISTIC_WORK_UNIT",
+  "external_model_used": false,
+  "generated_at": "2026-11-19T12:15:15.926553+00:00",
+  "issue_disposition": "BLOCKED_WITH_NEXT_ACTION",
+  "issue_materialized": true,
+  "mirror_sync_required": false,
+  "model_inference_completed": false,
+  "next_action": "Add and review one schema-validated, effect-bounded handler for this work-unit class, then replay the unchanged issue event.",
+  "no_false_pass": true,
+  "processing_carrier": "repository-local-deterministic-compiler",
+  "status": "BLOCK",
+  "validated_disposition_at": "2026-11-19T12:15:16.010647+00:00",
+  "work_unit": {
+    "answer_sha256": "925b0f5a512b58c9af7af74d0194ce9a89ae6280d0eedcf6df1ed8dce020176b",
+    "capability_gap": "NO_REVIEWED_EFFECTING_HANDLER_OR_AUTHORIZED_INFERENCE_CARRIER",
+    "context_sha256": "7047fb209537dd56efbadec173dbaf1975ee047c17803d81cb9a1a777a605752",
+    "effecting_handler": null,
+    "request_sha256": "4b3dd1fd06a9dc4b628c0f393729f1e5c5202a5b526feff3130878fa1a40aab8",
+    "schema": "qikvrt_issue_deterministic_work_unit_v1"
+  }
+}
