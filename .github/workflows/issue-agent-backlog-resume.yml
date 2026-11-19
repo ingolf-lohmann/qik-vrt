@@ -47,16 +47,41 @@ jobs:
 
           python3 -B tools/qikvrt_tool_cache.py verify
 
+          # Reuse the existing fail-closed, paginated watchdog inventory.
+          # The Issues API includes pull requests; only actual open Issues may
+          # enter the issue-agent, while PRs remain visible to the PR consumer.
+          inventory_root="$RUNNER_TEMP/issue-agent-backlog-inventory"
+          mkdir -p "$inventory_root"
+          inventory_head="$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+          [[ "$inventory_head" =~ ^[0-9a-f]{40}$ ]]
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py collect-work \
+            --repository "$REPOSITORY" --expect-head "$inventory_head" \
+            --pages-dir "$inventory_root/pages" --now "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --json > "$inventory_root/open-work.json"
+          jq -e '.complete == true and .truncated == false and
+                 .total_count == (.items | length) and .first_blocker == null' \
+            "$inventory_root/open-work.json" >/dev/null
+          readback_head="$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+          if [ "$inventory_head" != "$readback_head" ]; then
+            echo "state=BLOCK reason=MAIN_HEAD_CHANGED_DURING_OPEN_WORK_INVENTORY" >&2
+            exit 2
+          fi
+          inventory_issues="$(jq '[.items[] | select(.kind == "ISSUE")] | length' "$inventory_root/open-work.json")"
+          inventory_prs="$(jq '[.items[] | select(.kind == "PULL_REQUEST")] | length' "$inventory_root/open-work.json")"
+          echo "inventory=COMPLETE main=$inventory_head open_issues=$inventory_issues open_prs=$inventory_prs"
+
           if [ -n "${REQUESTED_ISSUE:-}" ]; then
             [[ "$REQUESTED_ISSUE" =~ ^[1-9][0-9]*$ ]]
+            if ! jq -e --argjson number "$REQUESTED_ISSUE" \
+              '.items | any(.number == $number and .kind == "ISSUE")' \
+              "$inventory_root/open-work.json" >/dev/null; then
+              echo "state=BLOCK reason=REQUESTED_ISSUE_NOT_IN_FRESH_OPEN_WORK_INVENTORY" >&2
+              exit 2
+            fi
             issues="$REQUESTED_ISSUE"
           else
-            issues="$(gh pr list \
-              --repo "$REPOSITORY" \
-              --state open \
-              --limit 200 \
-              --json headRefName \
-              --jq '.[] | select(.headRefName | startswith("issue-agent/")) | .headRefName | split("/")[1]')"
+            issues="$(jq -r '.items[] | select(.kind == "ISSUE") | .number' \
+              "$inventory_root/open-work.json")"
           fi
 
           resumed=0
@@ -70,7 +95,10 @@ jobs:
             status_url="repos/$REPOSITORY/contents/evidence/issues/$issue/STATUS.json?ref=$branch"
 
             if ! status_json="$(gh api -H 'Accept: application/vnd.github.raw+json' "$status_url" 2>/dev/null)"; then
-              echo "issue=$issue state=BLOCK reason=missing_status"
+              # Unprocessed issues remain visible in the complete inventory.
+              # 404 and permission/readback failure are not interchangeable:
+              # never infer completion or a verified missing branch here.
+              echo "issue=$issue state=UNKNOWN reason=issue_agent_status_not_verified"
               blocked_missing_status=$((blocked_missing_status + 1))
               continue
             fi
@@ -94,9 +122,19 @@ jobs:
             input="$RUNNER_TEMP/issue-resume/$issue"
             mkdir -p "$input"
             gh api "repos/$REPOSITORY/issues/$issue" > "$input/issue.json"
+            if ! jq -e --argjson number "$issue" \
+              '.number == $number and .state == "open" and (has("pull_request") | not)' \
+              "$input/issue.json" >/dev/null; then
+              echo "issue=$issue state=BLOCK reason=SUBJECT_CLOSED_OR_NOT_ISSUE"
+              continue
+            fi
+            # Causal issue bytes must still match at the last dispatch boundary.
+            issue_subject="$(jq -cS '{number,state,title,body,updated_at}' "$input/issue.json")"
             python3 -B scripts/issue_agent/materialize.py --issue "$input/issue.json" \
               --repository "$REPOSITORY" --output-dir "$input"
             git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            admission_branch_head="$(git rev-parse --verify "refs/remotes/origin/$branch^{commit}")"
+            [[ "$admission_branch_head" =~ ^[0-9a-f]{40}$ ]]
             if ! python3 -B scripts/issue_agent/compile.py --check-admission \
               --issue "$input/issue.json" --repository "$REPOSITORY" \
               --context "$input/CONTEXT.md" --previous-ref "refs/remotes/origin/$branch" \
@@ -110,6 +148,19 @@ jobs:
               continue
             fi
 
+            # Never dispatch work admitted against a stale issue, branch or Main.
+            fresh_issue="$(gh api "repos/$REPOSITORY/issues/$issue")"
+            fresh_subject="$(printf '%s' "$fresh_issue" | jq -cS '{number,state,title,body,updated_at}')"
+            if [ "$fresh_subject" != "$issue_subject" ]; then
+              echo "issue=$issue state=BLOCK reason=ISSUE_CHANGED_BEFORE_DISPATCH"
+              continue
+            fi
+            fresh_main="$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+            fresh_branch="$(gh api "repos/$REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            if [ "$fresh_main" != "$inventory_head" ] || [ "$fresh_branch" != "$admission_branch_head" ]; then
+              echo "issue=$issue state=BLOCK reason=HEAD_OR_ISSUE_AGENT_BRANCH_DRIFT"
+              continue
+            fi
             jq -n --arg issue "$issue" '{ref:"main",inputs:{issue_number:$issue}}' > "$input/DISPATCH.json"
             gh api --method POST "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/dispatches" \
               --input "$input/DISPATCH.json"
@@ -120,6 +171,11 @@ jobs:
           {
             echo "## Issue-agent backlog resume"
             echo
+            echo "- inventory state: COMPLETE (fresh Main ref re-read)"
+            echo "- inventory Main HEAD: $inventory_head"
+            echo "- open Issues discovered: $inventory_issues"
+            echo "- open Pull Requests discovered: $inventory_prs"
+            echo "- resume scope: open Issues with verified non-final issue-agent status"
             echo "- resumed: $resumed"
             echo "- unchanged causal inputs: $skipped_unchanged"
             echo "- final/awaiting auto-finish: $skipped_final"
