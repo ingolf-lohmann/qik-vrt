@@ -620,7 +620,8 @@ class GitHubREST:
         self.prefix = f"repos/{repository}/"
 
     def call(self, method: str, path: str, payload: Any = None) -> Any:
-        command = ["gh", "api", "--method", method, self.prefix + path]
+        endpoint = self.prefix + path if path else self.prefix.rstrip("/")
+        command = ["gh", "api", "--method", method, endpoint]
         if payload is not None:
             command += ["--input", "-"]
         result = subprocess.run(command, input=None if payload is None else json.dumps(payload),

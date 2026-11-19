@@ -204,6 +204,14 @@ class WriterBootstrapTEMDD(unittest.TestCase):
 
 
 class AtomicResponsePreservationTEMDD(unittest.TestCase):
+    def test_repository_metadata_uses_the_canonical_rest_endpoint(self):
+        api = controller.GitHubREST("ingolf-lohmann/qik-vrt")
+        with patch.object(controller.subprocess, "run", return_value=subprocess.CompletedProcess(
+                [], 0, '{"node_id":"R_kgDOS-xnUw"}', "")) as transport:
+            api.call("GET", "")
+        self.assertEqual(["gh", "api", "--method", "GET", "repos/ingolf-lohmann/qik-vrt"],
+                         transport.call_args.args[0])
+
     def test_transport_rejection_records_original_response_before_raising(self):
         api = controller.GitHubREST("ingolf-lohmann/qik-vrt")
         changes = [{"name": fence.CONTROL_REF, "beforeOid": fence.ZERO, "afterOid": SOURCE}]
