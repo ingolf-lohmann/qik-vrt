@@ -1198,6 +1198,35 @@ class OpenWorkCollectionTests(unittest.TestCase):
         self.assertTrue(value["truncated"])
         self.assertEqual(read.call_count, MODULE.MAX_WORK_READBACK_PAGES)
 
+    def test_resume_consumer_uses_complete_live_issue_and_pr_inventory(self):
+        workflow = (ROOT / ".github/workflows/issue-agent-backlog-resume.yml").read_text()
+        self.assertIn("qikvrt_reflexive_repository_watchdog.py collect-work", workflow)
+        self.assertIn("inventory_issues=", workflow)
+        self.assertIn("inventory_prs=", workflow)
+        self.assertIn("MAIN_HEAD_CHANGED_DURING_OPEN_WORK_INVENTORY", workflow)
+        self.assertIn("REQUESTED_ISSUE_NOT_IN_FRESH_OPEN_WORK_INVENTORY", workflow)
+        self.assertIn('select(.kind == "ISSUE")', workflow)
+        self.assertIn('select(.kind == "PULL_REQUEST")', workflow)
+        self.assertIn('issue_agent_status_not_verified', workflow)
+        self.assertIn('scripts/issue_agent/compile.py --check-admission', workflow)
+        self.assertNotIn("gh pr list", workflow)
+        self.assertNotIn("--limit 200", workflow)
+
+    def test_complete_open_work_inventory_covers_more_than_old_200_pr_limit(self):
+        first = self.entries(100, 1)
+        second = self.entries(100, 101)
+        third = self.entries(51, 201)
+        with mock.patch.object(MODULE, "_readback_page",
+                               side_effect=[first, second, third, first]) as read:
+            value = self.collect()
+        self.assertTrue(value["complete"])
+        self.assertEqual(value["total_count"], 251)
+        self.assertEqual(len([item for item in value["items"]
+                              if item["kind"] == "ISSUE"]), 126)
+        self.assertEqual(len([item for item in value["items"]
+                              if item["kind"] == "PULL_REQUEST"]), 125)
+        self.assertEqual(read.call_count, 4)
+
     def test_producer_and_consumer_are_connected_without_a_completion_feedback_loop(self):
         producer = WORKFLOW.read_text()
         consumer = (ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml").read_text()
