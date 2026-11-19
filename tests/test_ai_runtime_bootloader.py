@@ -1793,5 +1793,36 @@ class StandpointDiscoveryTests(unittest.TestCase):
                     self.assertFalse(report["mirror_outbox_source"]["assessment_performed"])
                     self.assertIn("before outbox assessment", report["next_action"])
 
+class RepositoryRoleGuardTests(unittest.TestCase):
+    def setUp(self) -> None:
+        from tools import ai_handoff
+        self.handoff = ai_handoff
+        self.context = json.loads((ROOT / "AI_CONTEXT.json").read_text(encoding="utf-8"))
+
+    def test_normative_authority_and_scoped_symmetric_equivalence_are_distinct(self) -> None:
+        authority, mirror = self.handoff.validate_repository_roles(self.context)
+        self.assertEqual(authority, "ingolf-lohmann/qik-vrt")
+        self.assertEqual(mirror, "Goldkelch/qik-vrt")
+        self.assertEqual(self.context["project"]["canonicality"]["mode"], "symmetric-canonical")
+
+    def test_role_projection_drift_fails_closed(self) -> None:
+        altered = copy.deepcopy(self.context)
+        altered["project"]["repository_role_guard"]["authority_repository"] = "Goldkelch/qik-vrt"
+        with self.assertRaisesRegex(SystemExit, "2"):
+            self.handoff.validate_repository_roles(altered)
+
+    def test_normative_policy_cannot_promote_retired_mirror(self) -> None:
+        policy = json.loads((ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").read_text(encoding="utf-8"))
+        policy["canonical_upstream"]["repository"] = "Goldkelch/qik-vrt"
+        with patch.object(self.handoff, "load_json", return_value=policy):
+            with self.assertRaisesRegex(SystemExit, "2"):
+                self.handoff.validate_repository_roles(self.context)
+
+    def test_every_registered_adapter_loads_shared_entrypoint_and_context(self) -> None:
+        _, count = self.handoff.validate_adapters(self.context)
+        registry = json.loads((ROOT / "AI_ADAPTERS.json").read_text(encoding="utf-8"))
+        self.assertEqual(count, len(registry["adapters"]))
+        self.assertTrue(registry["required_shared_contract"]["acknowledgement_required_for_node_adoption"])
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
