@@ -6,6 +6,7 @@ import json
 import copy
 import concurrent.futures
 import base64
+import hashlib
 import datetime
 import io
 import os
@@ -154,7 +155,7 @@ def pr(number: int, head: str | None = None) -> dict:
 
 
 class MemoryREST(controller.GitHubREST):
-    """An independent in-memory REST server with atomic create-only refs."""
+    """Independent REST/Git/atomic-ref fixture; no live writer admission."""
     def __init__(self, prs=None):
         super().__init__(REPOSITORY)
         self.prs = copy.deepcopy(prs or [pr(437), pr(459)])
@@ -167,13 +168,34 @@ class MemoryREST(controller.GitHubREST):
         self.lock = threading.RLock()
         self.barrier = None
         self._reads = 0
+        self.commits = {}
+        self.atomic_calls = []
 
     def ref(self, ref):
         with self.lock:
             value = copy.deepcopy(self.refs.get(ref))
-        if self.barrier and "/turns/" in ref and value is None:
-            self.barrier.wait(timeout=10)
+            if value is None:
+                value = next(({"ref": ref, "object": {"sha": item["head"]["sha"]}}
+                              for item in self.prs if ref == "refs/heads/" + item["head"]["ref"]), None)
         return value
+
+    def atomic_refs(self, changes, *, operation_id):
+        if self.barrier:
+            self.barrier.wait(timeout=10)
+        with self.lock:
+            if any((self.ref(change["name"]) or {}).get("object", {}).get("sha", "0" * 40)
+                   != change["beforeOid"] for change in changes):
+                raise controller.SelfHealBlock("atomic reference CAS conflict")
+            self.atomic_calls.append(copy.deepcopy(changes))
+            self.posts.append(("GRAPHQL", "updateRefs", copy.deepcopy(changes)))
+            for change in changes:
+                if change["beforeOid"] == change["afterOid"]:
+                    continue
+                branch = next((p for p in self.prs if change["name"] == "refs/heads/" + p["head"]["ref"]), None)
+                if branch is not None:
+                    branch["head"]["sha"] = change["afterOid"]
+                else:
+                    self.refs[change["name"]] = {"ref": change["name"], "object": {"sha": change["afterOid"]}}
 
     def pages(self, path):
         with self.lock:
@@ -189,11 +211,21 @@ class MemoryREST(controller.GitHubREST):
         with self.lock:
             if (method, path) in self.rejections:
                 raise controller.SelfHealBlock('REST ' + method + ' ' + path + ': 403; no automatic retry')
+            if method == "GET" and path.startswith("actions/runs/"):
+                return {"id": int(path.split("/")[-1]), "status": "completed"}
+            if method == "GET" and path.startswith("git/commits/"):
+                sha = path.split("/")[-1]
+                return copy.deepcopy(self.commits.get(sha, {"sha": sha, "tree": {"sha": "d" * 40}, "message": "", "parents": []}))
             if method == "GET" and path.startswith("pulls/"):
                 return copy.deepcopy(next(p for p in self.prs if p['number'] == int(path.split('/')[1])))
             if method == "GET" and path.startswith("issues/comments/"):
                 return copy.deepcopy(next(c for cs in self.comments.values() for c in cs if c['id'] == int(path.split('/')[-1])))
-            if method == "POST" and path == "git/refs":
+            if method == "POST" and path == "git/commits":
+                sha = hashlib.sha1(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+                self.commits[sha] = {"sha": sha, "tree": {"sha": payload["tree"]}, "message": payload["message"],
+                                     "parents": [{"sha": parent} for parent in payload["parents"]]}
+                result = {"sha": sha}
+            elif method == "POST" and path == "git/refs":
                 if payload['ref'] in self.refs:
                     raise controller.SelfHealBlock("REST POST git/refs: 422; no automatic retry")
                 self.refs[payload['ref']] = {"ref": payload['ref'], "object": {"sha": payload['sha']}}
@@ -215,6 +247,16 @@ class MemoryREST(controller.GitHubREST):
             return result
 
 
+def fenced_fixture(test):
+    # These existing fairness/transport tests model independent native runs.
+    # Identity rejection itself remains covered by the fence/bootstrap TEMDD.
+    helper = controller._writer_fence()
+    helper._claim_identity = lambda api, run_id: f"fixture-native-run:{run_id}:1"
+    binding = mock.patch.object(controller, "_writer_fence", return_value=helper)
+    binding.start()
+    test.addCleanup(binding.stop)
+
+
 class FairSelfHealHandoffIntegrationTests(unittest.TestCase):
     """Exercise both production functions against one persistent REST state.
 
@@ -224,6 +266,7 @@ class FairSelfHealHandoffIntegrationTests(unittest.TestCase):
     """
 
     def setUp(self):
+        fenced_fixture(self)
         from tools import qikvrt_self_heal_pr_materializer as materializer
         self.materializer = materializer
         fingerprint = "f" * 64
@@ -294,7 +337,7 @@ class FairSelfHealHandoffIntegrationTests(unittest.TestCase):
         self.assertEqual(self.api.ref("refs/heads/" + self.candidate.branch)
                          ["object"]["sha"], self.candidate_head)
         self.git.assert_not_called()
-        self.assertTrue(all(path in ("git/refs", "pulls")
+        self.assertTrue(all(path in ("git/refs", "git/commits", "updateRefs", "pulls")
                             for _, path, _ in self.api.posts))
         for _, path, payload in self.api.posts:
             if path == "git/refs":
@@ -384,6 +427,9 @@ class FairSelfHealHandoffIntegrationTests(unittest.TestCase):
 
 
 class FairContinuationRegressionTests(unittest.TestCase):
+    def setUp(self):
+        fenced_fixture(self)
+
     def test_initial_selection_uses_legacy_service_without_touching_459(self):
         api = MemoryREST()
         api.comments[437] = [{"user": {"login": "github-actions[bot]"},
@@ -395,15 +441,17 @@ class FairContinuationRegressionTests(unittest.TestCase):
         self.assertEqual(api.prs[1], original)
         self.assertEqual(api.posts, [])
 
-    def test_many_noops_rotate_all_prs_without_commits_or_handoffs(self):
+    def test_many_noops_rotate_all_prs_without_branch_changes_or_handoffs(self):
         api = MemoryREST([pr(500), pr(459), pr(437)])
         selected = []
         for run_id in range(1, 13):
             result = controller.claim_pr_plan(api, controller.observe_pr_plan(api), run_id)
             selected.append(result['selected']['pull_request'])
         self.assertEqual(selected, [437, 459, 500] * 4)
-        self.assertTrue(all(path == 'git/refs' for _, path, _ in api.posts))
-        self.assertTrue(all(value['ref'].startswith(controller.CONTINUATION_REFS) for _, _, value in api.posts))
+        self.assertTrue(all(path in ('git/commits', 'updateRefs') for _, path, _ in api.posts))
+        self.assertTrue(all(change['beforeOid'] == change['afterOid']
+                            for changes in api.atomic_calls for change in changes
+                            if change['name'].startswith('refs/heads/')))
 
     def test_noop_cannot_publish_a_successor(self):
         api = MemoryREST()
@@ -547,7 +595,7 @@ class FairContinuationRegressionTests(unittest.TestCase):
         self.assertTrue(resumed['selected']['resume_handoff'])
         self.assertEqual(resumed['selected']['source_head_sha'], selected['head_sha'])
         self.assertEqual(resumed['selected']['head_sha'], candidate)
-        self.assertTrue(all(path == 'git/refs' for _, path, _ in api.posts))
+        self.assertTrue(all(path in ('git/refs', 'git/commits', 'updateRefs') for _, path, _ in api.posts))
 
     def test_changed_head_before_handoff_has_no_external_effect(self):
         api, plan, candidate = self.prepare_handoff()
@@ -660,7 +708,9 @@ class GitDataREST(MemoryREST):
         elif method == 'POST' and path == 'git/commits':
             headers = ['tree ' + payload['tree'], *['parent ' + p for p in payload['parents']]]
             for role in ('author', 'committer'):
-                identity = payload[role]; date = datetime.datetime.fromisoformat(identity['date'])
+                identity = payload.get(role, {'name': 'native fixture', 'email': 'fixture@example.invalid',
+                                              'date': '2026-10-08T12:00:00+00:00'})
+                date = datetime.datetime.fromisoformat(identity['date'])
                 zone = date.strftime('%z')
                 headers.append(f"{role} {identity['name']} <{identity['email']}> {int(date.timestamp())} {zone}")
             raw = ('\n'.join(headers) + '\n\n' + payload['message'] + '\n').encode()
@@ -677,6 +727,7 @@ class GitDataREST(MemoryREST):
 
 class RESTTransportRegressionTests(unittest.TestCase):
     def setUp(self):
+        fenced_fixture(self)
         self.directory = tempfile.TemporaryDirectory()
         self.root = pathlib.Path(self.directory.name) / 'source'; self.root.mkdir()
         git_bytes(self.root, 'init', '-b', 'main')
@@ -780,9 +831,13 @@ class RESTTransportRegressionTests(unittest.TestCase):
         controller.export_rest_successor(api, self.root, plan, candidate)
         self.assertEqual(api.prs[0]['head']['sha'], candidate)
         patches = [payload for method, _, payload in api.posts if method == 'PATCH']
-        self.assertEqual(patches, [{'sha': candidate, 'force': False}])
+        self.assertEqual(patches, [])
+        publication = api.atomic_calls[-1]
+        self.assertIn({'name': 'refs/heads/work/pr-437', 'beforeOid': source, 'afterOid': candidate}, publication)
+        self.assertTrue(any(change['name'] == 'refs/qikvrt/pr-continuation/control'
+                            and change['beforeOid'] == plan['control_sha'] for change in publication))
         commits = [payload for _, path, payload in api.posts if path == 'git/commits']
-        self.assertEqual(commits[0]['parents'], [source, main])
+        self.assertEqual([commit for commit in commits if commit['parents'] == [source, main]][0]['tree'], tree)
         trees = [payload for _, path, payload in api.posts if path == 'git/trees']
         self.assertTrue(any(item['sha'] is None and item['path'] == 'nested/run.sh' for item in trees[0]['tree']))
         self.assertEqual(git_bytes(self.root, 'rev-parse', candidate + '^{tree}').decode().strip(), tree)
@@ -806,6 +861,7 @@ class RESTTransportRegressionTests(unittest.TestCase):
         candidate = self.commit('candidate')
         api = GitDataREST(self.root, self.initial, self.initial)
         plan = self.plan(api)
+        api.export_start = len(api.posts)
         original = api.call
         reads = []
         def call(method, path, payload=None):
@@ -835,7 +891,8 @@ class RESTTransportRegressionTests(unittest.TestCase):
         tree = git_bytes(self.root, 'rev-parse', candidate + '^{tree}').decode().strip()
         self.assertEqual(reads, ['git/trees/' + tree])
         self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
-        self.assertEqual(sum(method == 'PATCH' for method, _, _ in api.posts), 1)
+        self.assertEqual(sum(method == 'PATCH' for method, _, _ in api.posts), 0)
+        self.assertEqual(sum(path == 'updateRefs' for _, path, _ in api.posts[api.export_start:]), 1)
 
     def test_tree_transport_timeout_uses_one_readback_without_another_post(self):
         api, plan, candidate, reads = self.ambiguous_tree_export(failure='timeout')
@@ -853,8 +910,8 @@ class RESTTransportRegressionTests(unittest.TestCase):
                 self.assertEqual(api.prs[0]['head']['sha'], self.initial)
                 self.assertEqual(len(reads), 1)
                 self.assertEqual(sum(path == 'git/trees' for _, path, _ in api.posts), 1)
-                self.assertFalse(any(path == 'git/commits' or method == 'PATCH'
-                                     for method, path, _ in api.posts))
+                self.assertFalse(any(path in ('git/commits', 'updateRefs') or method == 'PATCH'
+                                     for method, path, _ in api.posts[api.export_start:]))
 
     def test_tree_permission_denial_is_not_reclassified_as_an_ambiguous_ack(self):
         api, plan, candidate, reads = self.ambiguous_tree_export(failure='403')
