@@ -1209,6 +1209,15 @@ class OpenWorkCollectionTests(unittest.TestCase):
         self.assertIn('select(.kind == "PULL_REQUEST")', workflow)
         self.assertIn('issue_agent_status_not_verified', workflow)
         self.assertIn('scripts/issue_agent/compile.py --check-admission', workflow)
+        self.assertIn("SUBJECT_CLOSED_OR_NOT_ISSUE", workflow)
+        self.assertIn("ISSUE_CHANGED_BEFORE_DISPATCH", workflow)
+        self.assertIn("HEAD_OR_ISSUE_AGENT_BRANCH_DRIFT", workflow)
+        self.assertIn('jq -cS \'{number,state,title,body,updated_at}\'', workflow)
+        self.assertIn('fresh_branch="$(gh api "repos/$REPOSITORY/git/ref/heads/$branch"', workflow)
+        self.assertLess(workflow.index("scripts/issue_agent/compile.py --check-admission"),
+                        workflow.index("ISSUE_CHANGED_BEFORE_DISPATCH"))
+        self.assertLess(workflow.index("HEAD_OR_ISSUE_AGENT_BRANCH_DRIFT"),
+                        workflow.index("--input \"$input/DISPATCH.json\""))
         self.assertNotIn("gh pr list", workflow)
         self.assertNotIn("--limit 200", workflow)
 

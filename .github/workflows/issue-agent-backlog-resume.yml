@@ -122,9 +122,19 @@ jobs:
             input="$RUNNER_TEMP/issue-resume/$issue"
             mkdir -p "$input"
             gh api "repos/$REPOSITORY/issues/$issue" > "$input/issue.json"
+            if ! jq -e --argjson number "$issue" \
+              '.number == $number and .state == "open" and (has("pull_request") | not)' \
+              "$input/issue.json" >/dev/null; then
+              echo "issue=$issue state=BLOCK reason=SUBJECT_CLOSED_OR_NOT_ISSUE"
+              continue
+            fi
+            # Causal issue bytes must still match at the last dispatch boundary.
+            issue_subject="$(jq -cS '{number,state,title,body,updated_at}' "$input/issue.json")"
             python3 -B scripts/issue_agent/materialize.py --issue "$input/issue.json" \
               --repository "$REPOSITORY" --output-dir "$input"
             git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            admission_branch_head="$(git rev-parse --verify "refs/remotes/origin/$branch^{commit}")"
+            [[ "$admission_branch_head" =~ ^[0-9a-f]{40}$ ]]
             if ! python3 -B scripts/issue_agent/compile.py --check-admission \
               --issue "$input/issue.json" --repository "$REPOSITORY" \
               --context "$input/CONTEXT.md" --previous-ref "refs/remotes/origin/$branch" \
@@ -138,6 +148,19 @@ jobs:
               continue
             fi
 
+            # Never dispatch work admitted against a stale issue, branch or Main.
+            fresh_issue="$(gh api "repos/$REPOSITORY/issues/$issue")"
+            fresh_subject="$(printf '%s' "$fresh_issue" | jq -cS '{number,state,title,body,updated_at}')"
+            if [ "$fresh_subject" != "$issue_subject" ]; then
+              echo "issue=$issue state=BLOCK reason=ISSUE_CHANGED_BEFORE_DISPATCH"
+              continue
+            fi
+            fresh_main="$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+            fresh_branch="$(gh api "repos/$REPOSITORY/git/ref/heads/$branch" --jq '.object.sha')"
+            if [ "$fresh_main" != "$inventory_head" ] || [ "$fresh_branch" != "$admission_branch_head" ]; then
+              echo "issue=$issue state=BLOCK reason=HEAD_OR_ISSUE_AGENT_BRANCH_DRIFT"
+              continue
+            fi
             jq -n --arg issue "$issue" '{ref:"main",inputs:{issue_number:$issue}}' > "$input/DISPATCH.json"
             gh api --method POST "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/dispatches" \
               --input "$input/DISPATCH.json"
