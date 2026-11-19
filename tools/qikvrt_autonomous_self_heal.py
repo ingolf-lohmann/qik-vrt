@@ -14,9 +14,6 @@ import pathlib
 import re
 import subprocess
 import sys
-# Match the trusted helper copied alongside this controller by the workflow.
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-import qikvrt_writer_fence as writer_fence
 import tarfile
 import tempfile
 import stat
@@ -790,6 +787,7 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
     reobserve_selection(api, plan, selected["head_sha"])
     # Durable lease and monotonically increasing fencing are bound to
     # run, turn and attempt in one atomic updateRefs CAS.
+    import qikvrt_writer_fence as writer_fence
     claim = writer_fence.acquire(api, plan, run_id)
     successors = api.pages(f"git/matching-refs/qikvrt/pr-continuation/effects/{selected['pull_request']}/")
     resume = []
@@ -1068,6 +1066,7 @@ def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str
     key = CONTINUATION_REFS + f"effects/{selected['pull_request']}/{source}-{plan['base_sha']}/successor"
     # updateRefs atomically advances the control lease/fence, exact target
     # branch and successor receipt. No standalone PATCH, no ambiguous retry.
+    import qikvrt_writer_fence as writer_fence
     writer_fence.publish(api, plan, candidate, effect_ref=key)
     reobserve_selection(api, plan, candidate)
 

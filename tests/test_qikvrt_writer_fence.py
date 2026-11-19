@@ -3,6 +3,11 @@ import datetime as dt
 import hashlib
 import json
 import os
+import pathlib
+import shutil
+import subprocess
+import sys
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -52,6 +57,19 @@ class FakeAPI:
             raise fence.FenceBlocked("CAS_CONFLICT")
         for c in changes:
             self.refs[c["name"]] = c["afterOid"]
+
+
+class IsolatedConsumerImportTEMDD(unittest.TestCase):
+    def test_read_only_bootstrap_does_not_require_fencing_helper(self):
+        """Copied historical/repair-consume controller must start without a writer grant."""
+        source = pathlib.Path(__file__).resolve().parents[1] / "tools/qikvrt_autonomous_self_heal.py"
+        with tempfile.TemporaryDirectory() as directory:
+            isolated = pathlib.Path(directory) / "qikvrt_autonomous_self_heal.py"
+            shutil.copyfile(source, isolated)
+            completed = subprocess.run([sys.executable, "-B", str(isolated), "--help"],
+                capture_output=True, text=True, timeout=15)
+        self.assertEqual(0, completed.returncode, completed.stderr)
+        self.assertIn("repair-consume", completed.stdout)
 
 
 class FenceTEMDD(unittest.TestCase):
