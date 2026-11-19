@@ -60,6 +60,13 @@ class FakeAPI:
 
 
 class IsolatedConsumerImportTEMDD(unittest.TestCase):
+    def test_effecting_loader_uses_colocated_repository_helper(self):
+        """A package import and a trusted copied script resolve their own helper."""
+        from tools import qikvrt_autonomous_self_heal as controller
+        helper = controller._writer_fence()
+        self.assertEqual(fence.CONTROL_REF, helper.CONTROL_REF)
+        self.assertEqual(fence.SCHEMA, helper.SCHEMA)
+
     def test_read_only_bootstrap_does_not_require_fencing_helper(self):
         """Copied historical/repair-consume controller must start without a writer grant."""
         source = pathlib.Path(__file__).resolve().parents[1] / "tools/qikvrt_autonomous_self_heal.py"

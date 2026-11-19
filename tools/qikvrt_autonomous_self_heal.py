@@ -8,6 +8,7 @@ import argparse
 import base64
 import datetime
 import hashlib
+import importlib.util
 import json
 import os
 import pathlib
@@ -704,6 +705,20 @@ class GitHubREST:
                 != operation_id):
             raise SelfHealBlock("ATOMIC_REF_CAS_NOT_CONFIRMED; readback only")
 
+
+def _writer_fence():
+    """Load only the helper colocated with this trusted controller byte source."""
+    source = pathlib.Path(__file__).resolve().with_name("qikvrt_writer_fence.py")
+    if not source.is_file() or source.is_symlink():
+        raise SelfHealBlock("TRUSTED_WRITER_FENCE_HELPER_MISSING")
+    spec = importlib.util.spec_from_file_location("qikvrt_colocated_writer_fence", source)
+    if spec is None or spec.loader is None:
+        raise SelfHealBlock("TRUSTED_WRITER_FENCE_HELPER_INVALID")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def eligible_pr(pr: Mapping[str, Any], repository: str) -> bool:
     head, base = pr.get("head") or {}, pr.get("base") or {}
     return (pr.get("state") == "open" and pr.get("draft") is True
@@ -787,7 +802,7 @@ def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[st
     reobserve_selection(api, plan, selected["head_sha"])
     # Durable lease and monotonically increasing fencing are bound to
     # run, turn and attempt in one atomic updateRefs CAS.
-    import qikvrt_writer_fence as writer_fence
+    writer_fence = _writer_fence()
     claim = writer_fence.acquire(api, plan, run_id)
     successors = api.pages(f"git/matching-refs/qikvrt/pr-continuation/effects/{selected['pull_request']}/")
     resume = []
@@ -1066,7 +1081,7 @@ def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str
     key = CONTINUATION_REFS + f"effects/{selected['pull_request']}/{source}-{plan['base_sha']}/successor"
     # updateRefs atomically advances the control lease/fence, exact target
     # branch and successor receipt. No standalone PATCH, no ambiguous retry.
-    import qikvrt_writer_fence as writer_fence
+    writer_fence = _writer_fence()
     writer_fence.publish(api, plan, candidate, effect_ref=key)
     reobserve_selection(api, plan, candidate)
 
