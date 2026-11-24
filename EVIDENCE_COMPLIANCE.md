@@ -1,6 +1,6 @@
 # QIK-VRT Evidence Compliance Record
 
-**Record status: PASS — Mathlib extension evidence controls passed on exact PR #746 head `078d4f9f0bafcde638888a3d3a1f57c61860b3c2` in workflow [#45398901090](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45398901090).**
+**Record status: PASS — Mathlib extension evidence controls passed on exact PR #746 head `68be6a66fa483b649e796a4befe54f2af77db8bf` in workflow [#45400589411](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45400589411).**
 
 This record is the repository's prominent, auditable statement of what has and has not been demonstrated for the Mathlib spacetime extension. It is not a self-certification of universal scientific or ontological truth.
 
@@ -496,3 +496,27 @@ The PASS designation is limited to the Mathlib extension. It does not prove empi
 - The generated commit `6873ce9...` is a new PR head. The three Mathlib acceptance checks have **not yet** been verified on that exact SHA; no PASS is claimed for it in this section.
 - PR #740 remains unchanged; its changed-file list does not include `.github/workflows/qikvrt_devops_ring_integrity_repair_candidate.yml`.
 
+
+
+## Latest exact-head verification — 2026-11-24 (PR #746; manifest-repaired head)
+
+- Repository: `ingolf-lohmann/qik-vrt`
+- Pull request: [#746](https://github.com/ingolf-lohmann/qik-vrt/pull/746) (open, draft, not merged)
+- Branch: `policy/enforce-evidence-boundary-2026-11-11`
+- Exact PR head and verified commit: `68be6a66fa483b649e796a4befe54f2af77db8bf`
+- Successful workflow: [Spacetime Mathlib extension run #45400589411](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45400589411)
+- Job: `mathlib-build-and-axiom-audit` (job ID `138467841267`) — success. The workflow run `head_sha`, PR #746 head, branch ref, and job log's `git log -1 --format=%H` all identify the exact commit above.
+- **Evidence policy check — success.** Log: `Evidence policy check passed: ledger, Lean metadata, axiom audit, normative README boundary, and no placeholders/project axioms.`
+- **Pinned Lean toolchain and dependencies — success.** Lean `v4.19.0`; Mathlib revision `c44e0c8ee63ca166450922a373c7409c5d26b00b`; `leanprover/lean-action` pinned to `bd5cb0b830eda614ce3fc186d8429b9409b16c47`.
+- **Lean/Mathlib build — success.** Log: `Build completed successfully.`
+- **Axiom audit — success.** Log: `axiom-audit: audited 33 declaration(s) under 'QIKVRTSpacetimeBridgeMathlib'; all within the allowlist [propext, Classical.choice, Quot.sound].` It ends with `axiom-audit completed successfully`.
+- The policy check, pinned build, and axiom audit all passed in the same job and workflow on exact commit `68be6a66fa483b649e796a4befe54f2af77db8bf`.
+
+### Integrity regeneration and separate repository CI
+
+- [Integrity repair workflow #45400538462](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45400538462), job `regenerate-candidate` (ID `138467649096`), completed successfully on parent `21dd222088649581c53b722caab830905eb2c9b7`. It ran the 9 DevOps-ring tests, the canonical `tools/qikvrt_integrity.py generate`, and `tools/qikvrt_integrity.py verify`; all succeeded.
+- The workflow committed only the integrity trio to the same PR branch via a non-forced exact-head lease, creating `68be6a66fa483b649e796a4befe54f2af77db8bf`. The generated `SHA256SUMS.txt` now includes the evidence report and updated README, Mathlib source/README, and repair-workflow digests.
+- [QIKVRT CI run #45400593697](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45400593697), job `test` (ID `138467854198`), was still **in progress** at read-back: checkout succeeded; the full compile/launcher/protocol/handler/security/TCP-IP test step was running. No final repository-wide CI result is claimed here.
+- The integrity repair workflow dispatched the Mathlib and QIKVRT CI workflows against the generated exact head. This Mathlib workflow completed successfully as recorded above.
+
+**Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by `.github/workflows/spacetime-mathlib.yml`. This is not repository-wide compliance. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
