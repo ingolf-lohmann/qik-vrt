@@ -483,3 +483,16 @@ The PASS designation is limited to the Mathlib extension. It does not prove empi
 - This separate repository-integrity failure is not one of the three Mathlib-extension acceptance checks and is not represented as passing. No manifest values were edited manually; regeneration must use the canonical generator on a complete checkout and pass its verification.
 
 **Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by `.github/workflows/spacetime-mathlib.yml`. This is not repository-wide compliance. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
+
+
+## Deterministic repository manifest regeneration — 2026-11-24
+
+- Repair workflow: [QIKVRT DevOps ring integrity repair candidate run #45399706326](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45399706326)
+- Job: `regenerate-candidate` (job ID `138464761841`) — success; all job steps completed successfully.
+- The job checked out exact parent head `f6cf45d3b94de0ada4d8434fb60d39870065ced4`, ran `tests.test_qikvrt_devops_ring` (9 tests, all passed), then ran the canonical `tools/qikvrt_integrity.py generate` and `tools/qikvrt_integrity.py verify` commands successfully.
+- The workflow verified the remote branch still matched the exact expected parent head, then performed a non-forced push. GitHub accepted generated commit `6873ce92413b9a9e17a6a81f0ee15330364f0734` on this same PR branch.
+- The generated commit changes only the integrity trio: `REPOSITORY_FILE_MANIFEST.json`, `SHA256SUMS.txt`, and `REPOSITORY_FILE_MANIFEST.json.sha256`. The regenerated index now covers `EVIDENCE_COMPLIANCE.md` and the updated README, Mathlib source/README, and repair-workflow file digests.
+- No manifest values were edited manually. This is a deterministic integrity-metadata regeneration, not a repository-wide proof of semantic correctness.
+- The generated commit `6873ce9...` is a new PR head. The three Mathlib acceptance checks have **not yet** been verified on that exact SHA; no PASS is claimed for it in this section.
+- PR #740 remains unchanged; its changed-file list does not include `.github/workflows/qikvrt_devops_ring_integrity_repair_candidate.yml`.
+

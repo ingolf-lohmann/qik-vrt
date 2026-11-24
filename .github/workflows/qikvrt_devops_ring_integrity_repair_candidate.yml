@@ -18,6 +18,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: qikvrt-ring-integrity-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
@@ -62,6 +63,16 @@ jobs:
           test "$(git rev-parse "refs/remotes/origin/$PR_BRANCH")" = "$EXPECTED_HEAD"
           git push origin "HEAD:refs/heads/$PR_BRANCH"
           echo "PR_BRANCH_UPDATED: exact original head verified; no main merge or release."
+      - name: Dispatch exact-head validation workflows after integrity repair
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/policy/enforce-evidence-boundary-2026-11-11' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_BRANCH: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/414514608/dispatches" -f ref="$PR_BRANCH"
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/302512331/dispatches" -f ref="$PR_BRANCH"
       - name: Preserve candidate without promoting it
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
