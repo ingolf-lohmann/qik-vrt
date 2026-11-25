@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "## Persistierter Reparaturauftrag\nWork-Unit-Key: REFLEXIVE_IAC_20261125 / automation-native-consumer-coupling\nPrincipal-Freigabe: erteilt; technische Zulassung separat gemäß #758.\nFehlerfingerprint: automation GET HTTP 404; peek PASS; run_now liefert inline_run statt nativem Consumer-Receipt.\nBestehende Primär-/Fallback-Automationen und bestehender Watchdog bleiben erhalten. Historischer Consumer-Eingang: Watchdog 44903257590, Job 136846152809 (frisch revalidieren).\nDieses Issue-opened-Ereignis ist ein dokumentierter Trigger des bestehenden .github/workflows/qikvrt_reflexive_repository_watchdog.yml. Es ist kein QUEUED- oder CLAIMED-Receipt. Producer muss Work-Unit-Bindung und error-analysis-handoff.json erzeugen; bestehender qikvrt_autonomous_pr_continuation.yml workflow_run muss repair-consume aufrufen. Prüfe tatsächliche Run-/Job-/Attempt-Refs und Inbox-Readback. Bei fehlender Subjektbindung kleinste zulässige IaC-Korrektur im bestehenden Pfad, keine zweite App/Writer/Timer. Exklusive Lease, monotones Fencing und Exact-HEAD/TREE-CAS vor Source-Mutation. Integriere #751/#756/#757, führe 16 Original- und 29 Gesamtregressionen tatsächlich aus; unabhängiger EAP-Readback obligatorisch.\nCONTINUATION_REQUIRED=true; EFFECT_ACK_DONE=false; DONE=false.",
+  "created_at": "2026-11-25T15:38:50Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/765",
+  "issue_number": 765,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "P0: REFLEXIVE_IAC_20261125 – Automationsstart an nativen Repair-Consumer koppeln",
+  "updated_at": "2026-11-25T15:38:50Z"
+}
