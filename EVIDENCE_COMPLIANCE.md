@@ -544,3 +544,29 @@ The PASS designation is limited to the Mathlib extension. It does not prove empi
 **Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by `.github/workflows/spacetime-mathlib.yml`. This is not repository-wide compliance. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
 
 **Follow-up:** this record update itself creates a new PR head; its exact-head CI and deterministic repository-manifest regeneration must be checked separately. This section does not claim that the documentation commit has already passed CI.
+
+
+## Latest exact-head verification — 2026-11-25 (PR #746; deterministic manifest-repaired head)
+
+- Repository: `ingolf-lohmann/qik-vrt`
+- Pull request: [#746](https://github.com/ingolf-lohmann/qik-vrt/pull/746) (open, draft, not merged at verification)
+- Branch: `policy/enforce-evidence-boundary-2026-11-11`
+- Exact PR head and verified commit: `a1edcf57d96c72c52ed0172ec33194c8d3835535`
+- Successful workflow: [Spacetime Mathlib extension run #45403083230](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45403083230)
+- Job: `mathlib-build-and-axiom-audit` (job ID `138476488063`) — completed successfully. The PR head, branch ref, workflow run `head_sha`, and job log's `git log -1 --format=%H` all identify the exact commit above.
+- **Evidence policy check — PASS.** The step `Enforce repository evidence policy` completed successfully. Log: `Evidence policy check passed: ledger, Lean metadata, axiom audit, normative README boundary, and no placeholders/project axioms.`
+- **Pinned Lean toolchain and dependencies — PASS.** Lean `v4.19.0`; Mathlib checked out at revision `c44e0c8ee63ca166450922a373c7409c5d26b00b`; the workflow uses `leanprover/lean-action` pinned to `bd5cb0b830eda614ce3fc186d8429b9409b16c47`.
+- **Lean/Mathlib build — PASS.** Job log: `Build completed successfully.`
+- **Axiom audit — PASS.** Job log: `axiom-audit: audited 33 declaration(s) under 'QIKVRTSpacetimeBridgeMathlib'; all within the allowlist [propext, Classical.choice, Quot.sound].` It ends with `axiom-audit completed successfully`.
+- The evidence-policy check, pinned Lean/Mathlib build, and axiom audit all passed in the same job and workflow run on exact commit `a1edcf57d96c72c52ed0172ec33194c8d3835535`.
+
+### Separate general repository CI status on this commit (not part of the three Mathlib checks)
+
+- [QIKVRT CI run #45403088828](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45403088828) completed with overall conclusion **failure**.
+- The `test` job and offline Chromium/WebKit browser jobs succeeded. The separate `Linux S1 native terminal production and smoke` job failed at `Verify and reuse original PR494 Docker carrier`.
+- Its log reports `{"cause": "HTTP Error 404: Not Found", "effect_ack_done": false, "state": "HOLD"}`, followed by exit code 2. This is a separate PR494 carrier/evidence dependency; it is not a failure of the three Mathlib checks. No correction was attempted because the missing carrier is outside the requested Mathlib scope and the available log does not establish a safe repository-code fix.
+- The branch API currently reports `protected: false` and required-status-check enforcement `off`. Therefore this CI evidence is not a GitHub-enforced merge gate.
+
+**Scope of PASS:** only the evidence-policy controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by `.github/workflows/spacetime-mathlib.yml`. This is not repository-wide compliance. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
+
+**Follow-up:** this record update creates a new PR head. The three Mathlib checks must be verified again on that new exact SHA; this entry does not claim that the documentation commit itself has already passed.
