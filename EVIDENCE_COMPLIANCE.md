@@ -1,6 +1,6 @@
 # QIK-VRT Evidence Compliance Record
 
-**Record status: PASS — Mathlib extension evidence controls passed on exact PR #746 head `68be6a66fa483b649e796a4befe54f2af77db8bf` in workflow [#45400589411](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45400589411).**
+**Record status: PASS — Mathlib extension evidence controls passed on exact PR #746 head `a2416623e858165fcb2a7cbf80f5347330728015` in workflow [#45611514199](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45611514199). This PASS is limited to the Mathlib extension; separate repository CI and branch-protection status are recorded below.**
 
 This record is the repository's prominent, auditable statement of what has and has not been demonstrated for the Mathlib spacetime extension. It is not a self-certification of universal scientific or ontological truth.
 
@@ -570,3 +570,29 @@ The PASS designation is limited to the Mathlib extension. It does not prove empi
 **Scope of PASS:** only the evidence-policy controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by `.github/workflows/spacetime-mathlib.yml`. This is not repository-wide compliance. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
 
 **Follow-up:** this record update creates a new PR head. The three Mathlib checks must be verified again on that new exact SHA; this entry does not claim that the documentation commit itself has already passed.
+
+
+## Latest exact-head verification — 2026-11-26 (PR #746; manifest-repaired head)
+
+- Repository: `ingolf-lohmann/qik-vrt`
+- Pull request: [#746](https://github.com/ingolf-lohmann/qik-vrt/pull/746) (open, draft, not merged)
+- Branch: `policy/enforce-evidence-boundary-2026-11-11`
+- Exact PR head and verified commit: `a2416623e858165fcb2a7cbf80f5347330728015`
+- Successful workflow: [Spacetime Mathlib extension run #45611514199](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45611514199)
+- Job: `mathlib-build-and-axiom-audit` (job ID `139195973484`) — completed successfully. The PR head, branch ref, workflow run `head_sha`, and job log's `git log -1 --format=%H` all identify the exact commit above.
+- **Evidence policy check — PASS.** The step `Enforce repository evidence policy` completed successfully. Log: `Evidence policy check passed: ledger, Lean metadata, axiom audit, normative README boundary, and no placeholders/project axioms.`
+- **Pinned Lean toolchain and dependencies — PASS.** Lean `v4.19.0`; Mathlib checked out at revision `c44e0c8ee63ca166450922a373c7409c5d26b00b`; `leanprover/lean-action` pinned to `bd5cb0b830eda614ce3fc186d8429b9409b16c47`.
+- **Lean/Mathlib build — PASS.** The decoded job log reports `Build completed successfully.`
+- **Axiom audit — PASS.** The log reports: `axiom-audit: audited 33 declaration(s) under 'QIKVRTSpacetimeBridgeMathlib'; all within the allowlist [propext, Classical.choice, Quot.sound].` It ends with `axiom-audit completed successfully`.
+- The evidence-policy check, pinned Lean/Mathlib build, and axiom audit all passed in the same job and workflow run on exact commit `a2416623e858165fcb2a7cbf80f5347330728015`.
+
+### Separate general repository CI status on this commit (not part of the three Mathlib checks)
+
+- [QIKVRT CI run #45611518635](https://github.com/ingolf-lohmann/qik-vrt/actions/runs/45611518635) completed with overall conclusion **failure**.
+- The general `test` job completed successfully, including full compile, launcher, protocol, handler, security and TCP/IP tests; both offline browser jobs and the Mozilla signing-admission job also succeeded.
+- The separate job `Linux S1 native terminal production and smoke` (job ID `139201044017`) failed at `Verify and reuse original PR494 Docker carrier`. The job log reports an HTTP 404 for the original carrier, `effect_ack_done: false`, and state `HOLD`; dependent native build/smoke steps were skipped. This is a separate PR494 carrier/evidence dependency, not one of the three Mathlib-extension acceptance checks. No code change was made because the available evidence does not establish a safe fix within PR #746's requested scope.
+- The branch API reports `protected: false`; required-status-check enforcement is `off`. These successful Mathlib checks therefore are not shown to be enforced as a GitHub merge gate.
+
+**Scope of PASS:** only the controls and declarations under `formalization/QIKVRT_SpacetimeBridge_Mathlib_v1` exercised by `.github/workflows/spacetime-mathlib.yml`. This is not repository-wide compliance. It does not prove empirical truth, universal ontology, complete physical-model validity, GitHub branch protection, or acceptance by third parties.
+
+**Follow-up:** this record update creates a new PR head. Its exact-head Mathlib workflow must be checked separately; this section does not claim that the documentation commit itself has already passed.
