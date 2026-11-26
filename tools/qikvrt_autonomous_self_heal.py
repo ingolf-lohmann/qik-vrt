@@ -1090,6 +1090,24 @@ def create_rest_tree(api: GitHubREST, payload: Mapping[str, Any], expected: str)
 
 
 def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str, Any], candidate: str) -> None:
+    # Re-read the immutable attempt receipt before exporting any successor.
+    # This prevents stale or fabricated selection files from authorizing writes.
+    selected = plan.get("selected")
+    if not isinstance(selected, Mapping):
+        raise SelfHealBlock("WRITER_NOT_ADMITTED: missing selected work unit")
+    run_id = plan.get("run_id")
+    if type(run_id) is not int or run_id < 1:
+        raise SelfHealBlock("WRITER_NOT_ADMITTED: missing native run identity")
+    receipt = plan.get("attempt_ref")
+    expected = (CONTINUATION_REFS + f"attempts/{plan.get('turn_number')}-{selected.get('pull_request')}-"
+                f"{selected.get('head_sha')}-{plan.get('base_sha')}-{run_id}")
+    if receipt != expected:
+        raise SelfHealBlock("WRITER_NOT_ADMITTED: attempt binding mismatch")
+    observed = api.ref(receipt)
+    if observed is None or observed.get("ref") != receipt or observed.get("object", {}).get("sha") != selected.get("head_sha"):
+        raise SelfHealBlock("WRITER_NOT_ADMITTED: attempt receipt readback failed")
+    if api.ref("refs/heads/main")["object"]["sha"] != plan.get("base_sha"):
+        raise SelfHealBlock("WRITER_NOT_ADMITTED: main exact-head changed")
     source = plan["selected"]["head_sha"]
     if candidate == source:
         raise SelfHealBlock("NOOP cannot create an external successor")
