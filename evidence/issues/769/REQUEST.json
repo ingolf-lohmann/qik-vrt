@@ -1,0 +1,10 @@
+{
+  "author": "ingolf-lohmann",
+  "body": "## Principal-authorized read-only native proof execution\nWork-Unit-Key: SEED_ARCHITECTURE_EXACT_HEAD_KERNEL_20261128_V1\nSubject repository ingolf-lohmann/qik-vrt, commit `29d7a7127cec2479a0018f74ebce9cd5297e196b`, tree `fb08f8107e3aab7eb769587742d9ce25b7eeeac0`. Reuse existing issue-opened native intake and existing `.github/workflows/qikvrt_manuscript_proof.yml` proof gate lines 412–448. No new writer, workflow, executor or source changes. Independent exact checkout and Git blob readback required. Directory `formalization/QIKVRT_Formalization_v2.0`; Lean 4.19.0, pinned release archive per existing toolchain contract. Original SeedArchitecture.lean blob `477f88a4f7b4a11962ef425781f3b24191ebfeb1`, SeedArchitectureAxiomAudit.lean blob `44eb81b7dd83e79f13d075f625a375e2e6f3d612`, docs/proofs/seed-architecture-2026-10-30/CLAIM_MATRIX.json blob `27b5e34cb4ab1d639b4877d37b87a20be3218ca5`. Run `lake build QIKVRTEffectAck.SeedArchitecture QIKVRTEffectAck.SeedArchitectureAxiomAudit` and `lake env lean QIKVRTEffectAck/SeedArchitectureAxiomAudit.lean`; compare all 30 actual axiom sets to original claim matrix using the existing gate, and execute all four existing negative controls. Expected 17 axiom-free, 10 propext only, 3 propext + Quot.sound; reject all proof escapes and unexpected axioms. Preserve actual per-theorem output, toolchain identity, exit codes, exact HEAD/TREE before and after, run/job/attempt, original log digest and independent persistent readback. Existing recovery #765 and #758 exclusive writer admission apply before any source mutation (none requested). If blocked, persist causal failure and keep continuation open. Issue-opened is ingress only, not QUEUED/CLAIMED/EXECUTED. CONTINUATION_REQUIRED=true; EFFECT_ACK_DONE=false; DONE=false.",
+  "created_at": "2026-11-28T12:45:19Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/769",
+  "issue_number": 769,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "SeedArchitecture: native Lean 4.19.0 kernel and axiom audit at exact HEAD 29d7a712",
+  "updated_at": "2026-11-28T12:45:19Z"
+}
